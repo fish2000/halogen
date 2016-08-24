@@ -5,6 +5,8 @@
     "distutils": {
         "depends": [], 
         "extra_compile_args": [
+            "-Wno-unused-function", 
+            "-Wno-unneeded-internal-declaration", 
             "-O3", 
             "-funroll-loops", 
             "-mtune=native", 
@@ -305,6 +307,7 @@ static CYTHON_INLINE float __PYX_NAN() {
 #include "stdexcept"
 #include "typeinfo"
 #include <vector>
+#include "HalideRuntime.h"
 #include "Halide.h"
 #ifdef _OPENMP
 #include <omp.h>
@@ -526,6 +529,7 @@ static const char *__pyx_f[] = {
 };
 
 /*--- Type declarations ---*/
+struct __pyx_obj_3hal_3api_Type;
 struct __pyx_obj_3hal_3api_Target;
 
 /* "target.pxd":69
@@ -537,8 +541,21 @@ struct __pyx_obj_3hal_3api_Target;
  */
 typedef std::vector<enum Halide::Target::Feature>  __pyx_t_3hal_6target_featurevec_t;
 
-/* "hal/api.pyx":11
- * ## CLASS WRAPPER:
+/* "hal/api.pyx":21
+ * ## CLASS WRAPPERS:
+ * 
+ * cdef class Type:             # <<<<<<<<<<<<<<
+ * 
+ *     cdef:
+ */
+struct __pyx_obj_3hal_3api_Type {
+  PyObject_HEAD
+  Halide::Type __pyx___this__;
+};
+
+
+/* "hal/api.pyx":116
+ * 
  * 
  * cdef class Target:             # <<<<<<<<<<<<<<
  *     """ Cython wrapper class for Halide::Target """
@@ -633,8 +650,31 @@ static CYTHON_INLINE PyObject* __Pyx_PyObject_GetAttrStr(PyObject* obj, PyObject
 /* GetBuiltinName.proto */
 static PyObject *__Pyx_GetBuiltinName(PyObject *name);
 
+/* RaiseArgTupleInvalid.proto */
+static void __Pyx_RaiseArgtupleInvalid(const char* func_name, int exact,
+    Py_ssize_t num_min, Py_ssize_t num_max, Py_ssize_t num_found);
+
 /* KeywordStringCheck.proto */
 static CYTHON_INLINE int __Pyx_CheckKeywordStrings(PyObject *kwdict, const char* function_name, int kw_allowed);
+
+/* PyObjectCall.proto */
+#if CYTHON_COMPILING_IN_CPYTHON
+static CYTHON_INLINE PyObject* __Pyx_PyObject_Call(PyObject *func, PyObject *arg, PyObject *kw);
+#else
+#define __Pyx_PyObject_Call(func, arg, kw) PyObject_Call(func, arg, kw)
+#endif
+
+/* ArgTypeTest.proto */
+static CYTHON_INLINE int __Pyx_ArgTypeTest(PyObject *obj, PyTypeObject *type, int none_allowed,
+    const char *name, int exact);
+
+/* RaiseDoubleKeywords.proto */
+static void __Pyx_RaiseDoubleKeywordsError(const char* func_name, PyObject* kw_name);
+
+/* ParseKeywords.proto */
+static int __Pyx_ParseOptionalKeywords(PyObject *kwds, PyObject **argnames[],\
+    PyObject *kwds2, PyObject *values[], Py_ssize_t num_pos_args,\
+    const char* function_name);
 
 /* PyDictContains.proto */
 static CYTHON_INLINE int __Pyx_PyDict_ContainsTF(PyObject* item, PyObject* dict, int eq) {
@@ -667,13 +707,6 @@ static CYTHON_INLINE PyObject *__Pyx_GetItemInt_Generic(PyObject *o, PyObject* j
 static CYTHON_INLINE PyObject *__Pyx_GetItemInt_Fast(PyObject *o, Py_ssize_t i,
                                                      int is_list, int wraparound, int boundscheck);
 
-/* PyObjectCall.proto */
-#if CYTHON_COMPILING_IN_CPYTHON
-static CYTHON_INLINE PyObject* __Pyx_PyObject_Call(PyObject *func, PyObject *arg, PyObject *kw);
-#else
-#define __Pyx_PyObject_Call(func, arg, kw) PyObject_Call(func, arg, kw)
-#endif
-
 /* PyThreadStateGet.proto */
 #if CYTHON_COMPILING_IN_CPYTHON
 #define __Pyx_PyThreadState_declare  PyThreadState *__pyx_tstate;
@@ -701,17 +734,11 @@ static CYTHON_INLINE void __Pyx_ErrFetchInState(PyThreadState *tstate, PyObject 
 /* RaiseException.proto */
 static void __Pyx_Raise(PyObject *type, PyObject *value, PyObject *tb, PyObject *cause);
 
-/* RaiseArgTupleInvalid.proto */
-static void __Pyx_RaiseArgtupleInvalid(const char* func_name, int exact,
-    Py_ssize_t num_min, Py_ssize_t num_max, Py_ssize_t num_found);
+/* GetModuleGlobalName.proto */
+static CYTHON_INLINE PyObject *__Pyx_GetModuleGlobalName(PyObject *name);
 
-/* RaiseDoubleKeywords.proto */
-static void __Pyx_RaiseDoubleKeywordsError(const char* func_name, PyObject* kw_name);
-
-/* ParseKeywords.proto */
-static int __Pyx_ParseOptionalKeywords(PyObject *kwds, PyObject **argnames[],\
-    PyObject *kwds2, PyObject *values[], Py_ssize_t num_pos_args,\
-    const char* function_name);
+/* GetNameInClass.proto */
+static PyObject *__Pyx_GetNameInClass(PyObject *nmspace, PyObject *name);
 
 /* CodeObjectCache.proto */
 typedef struct {
@@ -736,6 +763,12 @@ static void __Pyx_AddTraceback(const char *funcname, int c_line,
 #include <new>
 
 /* CIntToPy.proto */
+static CYTHON_INLINE PyObject* __Pyx_PyInt_From_halide_type_code_t(halide_type_code_t value);
+
+/* CIntToPy.proto */
+static CYTHON_INLINE PyObject* __Pyx_PyInt_From_int(int value);
+
+/* CIntToPy.proto */
 static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value);
 
 /* CIntToPy.proto */
@@ -745,19 +778,25 @@ static CYTHON_INLINE PyObject* __Pyx_PyInt_From_enum__Halide_3a__3a_Target_3a__3
 static CYTHON_INLINE PyObject* __Pyx_PyInt_From_enum__Halide_3a__3a_Target_3a__3a_Arch(enum Halide::Target::Arch value);
 
 /* CIntToPy.proto */
-static CYTHON_INLINE PyObject* __Pyx_PyInt_From_int(int value);
-
-/* CIntToPy.proto */
 static CYTHON_INLINE PyObject* __Pyx_PyInt_From_int64_t(int64_t value);
+
+/* CIntFromPy.proto */
+static CYTHON_INLINE int __Pyx_PyInt_As_int(PyObject *);
+
+/* CIntFromPy.proto */
+static CYTHON_INLINE halide_type_code_t __Pyx_PyInt_As_halide_type_code_t(PyObject *);
+
+/* CIntFromPy.proto */
+static CYTHON_INLINE uint8_t __Pyx_PyInt_As_uint8_t(PyObject *);
+
+/* CIntFromPy.proto */
+static CYTHON_INLINE uint16_t __Pyx_PyInt_As_uint16_t(PyObject *);
 
 /* CIntFromPy.proto */
 static CYTHON_INLINE enum Halide::Target::OS __Pyx_PyInt_As_enum__Halide_3a__3a_Target_3a__3a_OS(PyObject *);
 
 /* CIntFromPy.proto */
 static CYTHON_INLINE enum Halide::Target::Arch __Pyx_PyInt_As_enum__Halide_3a__3a_Target_3a__3a_Arch(PyObject *);
-
-/* CIntFromPy.proto */
-static CYTHON_INLINE int __Pyx_PyInt_As_int(PyObject *);
 
 /* CIntFromPy.proto */
 static CYTHON_INLINE long __Pyx_PyInt_As_long(PyObject *);
@@ -777,9 +816,14 @@ static int __Pyx_InitStrings(__Pyx_StringTabEntry *t);
 
 /* Module declarations from 'libcpp.vector' */
 
+/* Module declarations from 'hal.runtime' */
+
+/* Module declarations from 'hal.type' */
+
 /* Module declarations from 'hal.target' */
 
 /* Module declarations from 'hal.api' */
+static PyTypeObject *__pyx_ptype_3hal_3api_Type = 0;
 static PyTypeObject *__pyx_ptype_3hal_3api_Target = 0;
 static std::string __pyx_convert_string_from_py_std__in_string(PyObject *); /*proto*/
 static CYTHON_INLINE PyObject *__pyx_convert_PyObject_string_to_py_std__in_string(std::string const &); /*proto*/
@@ -791,17 +835,22 @@ static CYTHON_INLINE PyObject *__pyx_convert_PyByteArray_string_to_py_std__in_st
 int __pyx_module_is_main_hal__api = 0;
 
 /* Implementation of 'hal.api' */
+static PyObject *__pyx_builtin_staticmethod;
 static PyObject *__pyx_builtin_ValueError;
 static const char __pyx_k_[] = "";
+static const char __pyx_k_Int[] = "Int";
 static const char __pyx_k_get[] = "get";
 static const char __pyx_k_out[] = "out";
+static const char __pyx_k_Bool[] = "Bool";
+static const char __pyx_k_UInt[] = "UInt";
+static const char __pyx_k_bits[] = "bits";
 static const char __pyx_k_main[] = "__main__";
 static const char __pyx_k_test[] = "__test__";
-static const char __pyx_k_exc_tb[] = "exc_tb";
-static const char __pyx_k_exc_tp[] = "exc_tp";
-static const char __pyx_k_exc_val[] = "exc_val";
+static const char __pyx_k_Float[] = "Float";
+static const char __pyx_k_lanes[] = "lanes";
 static const char __pyx_k_hal_api[] = "hal.api";
 static const char __pyx_k_ValueError[] = "ValueError";
+static const char __pyx_k_staticmethod[] = "staticmethod";
 static const char __pyx_k_target_string[] = "target_string";
 static const char __pyx_k_get_host_target[] = "get_host_target";
 static const char __pyx_k_validate_target_string[] = "validate_target_string";
@@ -810,22 +859,47 @@ static const char __pyx_k_get_target_from_environment[] = "get_target_from_envir
 static const char __pyx_k_Users_fish_Dropbox_halogen_hal[] = "/Users/fish/Dropbox/halogen/hal/api.pyx";
 static const char __pyx_k_get_jit_target_from_environment[] = "get_jit_target_from_environment";
 static PyObject *__pyx_kp_s_;
+static PyObject *__pyx_n_s_Bool;
+static PyObject *__pyx_n_s_Float;
+static PyObject *__pyx_n_s_Int;
+static PyObject *__pyx_n_s_UInt;
 static PyObject *__pyx_kp_s_Users_fish_Dropbox_halogen_hal;
 static PyObject *__pyx_n_s_ValueError;
-static PyObject *__pyx_n_s_exc_tb;
-static PyObject *__pyx_n_s_exc_tp;
-static PyObject *__pyx_n_s_exc_val;
+static PyObject *__pyx_n_s_bits;
 static PyObject *__pyx_n_s_get;
 static PyObject *__pyx_n_s_get_host_target;
 static PyObject *__pyx_n_s_get_jit_target_from_environment;
 static PyObject *__pyx_n_s_get_target_from_environment;
 static PyObject *__pyx_n_s_hal_api;
 static PyObject *__pyx_kp_s_invalid_target_string_s;
+static PyObject *__pyx_n_s_lanes;
 static PyObject *__pyx_n_s_main;
 static PyObject *__pyx_n_s_out;
+static PyObject *__pyx_n_s_staticmethod;
 static PyObject *__pyx_n_s_target_string;
 static PyObject *__pyx_n_s_test;
 static PyObject *__pyx_n_s_validate_target_string;
+static int __pyx_pf_3hal_3api_4Type___init__(CYTHON_UNUSED struct __pyx_obj_3hal_3api_Type *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_3hal_3api_4Type_2code(struct __pyx_obj_3hal_3api_Type *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_3hal_3api_4Type_4bytes(struct __pyx_obj_3hal_3api_Type *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_3hal_3api_4Type_6bits(struct __pyx_obj_3hal_3api_Type *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_3hal_3api_4Type_8lanes(struct __pyx_obj_3hal_3api_Type *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_3hal_3api_4Type_10with_code(struct __pyx_obj_3hal_3api_Type *__pyx_v_self, PyObject *__pyx_v_code); /* proto */
+static PyObject *__pyx_pf_3hal_3api_4Type_12with_bits(struct __pyx_obj_3hal_3api_Type *__pyx_v_self, PyObject *__pyx_v_bits); /* proto */
+static PyObject *__pyx_pf_3hal_3api_4Type_14with_lanes(struct __pyx_obj_3hal_3api_Type *__pyx_v_self, PyObject *__pyx_v_lanes); /* proto */
+static PyObject *__pyx_pf_3hal_3api_4Type_16is_bool(struct __pyx_obj_3hal_3api_Type *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_3hal_3api_4Type_18is_vector(struct __pyx_obj_3hal_3api_Type *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_3hal_3api_4Type_20is_scalar(struct __pyx_obj_3hal_3api_Type *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_3hal_3api_4Type_22is_float(struct __pyx_obj_3hal_3api_Type *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_3hal_3api_4Type_24is_int(struct __pyx_obj_3hal_3api_Type *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_3hal_3api_4Type_26is_uint(struct __pyx_obj_3hal_3api_Type *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_3hal_3api_4Type_28is_handle(struct __pyx_obj_3hal_3api_Type *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_3hal_3api_4Type_30same_handle_type(struct __pyx_obj_3hal_3api_Type *__pyx_v_self, struct __pyx_obj_3hal_3api_Type *__pyx_v_other); /* proto */
+static PyObject *__pyx_pf_3hal_3api_4Type_32element_of(struct __pyx_obj_3hal_3api_Type *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_3hal_3api_4Type_34Int(int __pyx_v_bits, int __pyx_v_lanes); /* proto */
+static PyObject *__pyx_pf_3hal_3api_4Type_36UInt(int __pyx_v_bits, int __pyx_v_lanes); /* proto */
+static PyObject *__pyx_pf_3hal_3api_4Type_38Float(int __pyx_v_bits, int __pyx_v_lanes); /* proto */
+static PyObject *__pyx_pf_3hal_3api_4Type_40Bool(int __pyx_v_lanes); /* proto */
 static int __pyx_pf_3hal_3api_6Target___init__(struct __pyx_obj_3hal_3api_Target *__pyx_v_self, PyObject *__pyx_v_args, PyObject *__pyx_v_kwargs); /* proto */
 static PyObject *__pyx_pf_3hal_3api_6Target_2os___get__(struct __pyx_obj_3hal_3api_Target *__pyx_v_self); /* proto */
 static int __pyx_pf_3hal_3api_6Target_2os_2__set__(struct __pyx_obj_3hal_3api_Target *__pyx_v_self, PyObject *__pyx_v_value); /* proto */
@@ -838,23 +912,1645 @@ static PyObject *__pyx_pf_3hal_3api_6Target_4to_string(struct __pyx_obj_3hal_3ap
 static PyObject *__pyx_pf_3hal_3api_6Target_6maximum_buffer_size(struct __pyx_obj_3hal_3api_Target *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_3hal_3api_6Target_8supported(struct __pyx_obj_3hal_3api_Target *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_3hal_3api_6Target_10__str__(struct __pyx_obj_3hal_3api_Target *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_3hal_3api_6Target_12__enter__(struct __pyx_obj_3hal_3api_Target *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_3hal_3api_6Target_14__exit__(CYTHON_UNUSED struct __pyx_obj_3hal_3api_Target *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v_exc_tp, CYTHON_UNUSED PyObject *__pyx_v_exc_val, CYTHON_UNUSED PyObject *__pyx_v_exc_tb); /* proto */
 static PyObject *__pyx_pf_3hal_3api_get_host_target(CYTHON_UNUSED PyObject *__pyx_self); /* proto */
 static PyObject *__pyx_pf_3hal_3api_2get_target_from_environment(CYTHON_UNUSED PyObject *__pyx_self); /* proto */
 static PyObject *__pyx_pf_3hal_3api_4get_jit_target_from_environment(CYTHON_UNUSED PyObject *__pyx_self); /* proto */
 static PyObject *__pyx_pf_3hal_3api_6validate_target_string(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_target_string); /* proto */
+static PyObject *__pyx_tp_new_3hal_3api_Type(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
 static PyObject *__pyx_tp_new_3hal_3api_Target(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
 static PyObject *__pyx_tuple__2;
 static PyObject *__pyx_tuple__4;
 static PyObject *__pyx_tuple__6;
 static PyObject *__pyx_tuple__8;
+static PyObject *__pyx_tuple__10;
+static PyObject *__pyx_tuple__12;
+static PyObject *__pyx_tuple__14;
+static PyObject *__pyx_tuple__16;
 static PyObject *__pyx_codeobj__3;
 static PyObject *__pyx_codeobj__5;
 static PyObject *__pyx_codeobj__7;
 static PyObject *__pyx_codeobj__9;
+static PyObject *__pyx_codeobj__11;
+static PyObject *__pyx_codeobj__13;
+static PyObject *__pyx_codeobj__15;
+static PyObject *__pyx_codeobj__17;
 
-/* "hal/api.pyx":17
+/* "hal/api.pyx":26
+ *         HalType __this__
+ * 
+ *     def __init__(Type self):             # <<<<<<<<<<<<<<
+ *         pass
+ * 
+ */
+
+/* Python wrapper */
+static int __pyx_pw_3hal_3api_4Type_1__init__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static int __pyx_pw_3hal_3api_4Type_1__init__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+  int __pyx_r;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("__init__ (wrapper)", 0);
+  if (unlikely(PyTuple_GET_SIZE(__pyx_args) > 0)) {
+    __Pyx_RaiseArgtupleInvalid("__init__", 1, 0, 0, PyTuple_GET_SIZE(__pyx_args)); return -1;}
+  if (unlikely(__pyx_kwds) && unlikely(PyDict_Size(__pyx_kwds) > 0) && unlikely(!__Pyx_CheckKeywordStrings(__pyx_kwds, "__init__", 0))) return -1;
+  __pyx_r = __pyx_pf_3hal_3api_4Type___init__(((struct __pyx_obj_3hal_3api_Type *)__pyx_v_self));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static int __pyx_pf_3hal_3api_4Type___init__(CYTHON_UNUSED struct __pyx_obj_3hal_3api_Type *__pyx_v_self) {
+  int __pyx_r;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("__init__", 0);
+
+  /* function exit code */
+  __pyx_r = 0;
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "hal/api.pyx":29
+ *         pass
+ * 
+ *     def code(Type self):             # <<<<<<<<<<<<<<
+ *         return self.__this__.code()
+ * 
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_3hal_3api_4Type_3code(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_pw_3hal_3api_4Type_3code(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("code (wrapper)", 0);
+  __pyx_r = __pyx_pf_3hal_3api_4Type_2code(((struct __pyx_obj_3hal_3api_Type *)__pyx_v_self));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_3hal_3api_4Type_2code(struct __pyx_obj_3hal_3api_Type *__pyx_v_self) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  __Pyx_RefNannySetupContext("code", 0);
+
+  /* "hal/api.pyx":30
+ * 
+ *     def code(Type self):
+ *         return self.__this__.code()             # <<<<<<<<<<<<<<
+ * 
+ *     def bytes(Type self):
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = __Pyx_PyInt_From_halide_type_code_t(__pyx_v_self->__pyx___this__.code()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 30, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* "hal/api.pyx":29
+ *         pass
+ * 
+ *     def code(Type self):             # <<<<<<<<<<<<<<
+ *         return self.__this__.code()
+ * 
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("hal.api.Type.code", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "hal/api.pyx":32
+ *         return self.__this__.code()
+ * 
+ *     def bytes(Type self):             # <<<<<<<<<<<<<<
+ *         return self.__this__.bytes()
+ * 
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_3hal_3api_4Type_5bytes(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_pw_3hal_3api_4Type_5bytes(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("bytes (wrapper)", 0);
+  __pyx_r = __pyx_pf_3hal_3api_4Type_4bytes(((struct __pyx_obj_3hal_3api_Type *)__pyx_v_self));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_3hal_3api_4Type_4bytes(struct __pyx_obj_3hal_3api_Type *__pyx_v_self) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  __Pyx_RefNannySetupContext("bytes", 0);
+
+  /* "hal/api.pyx":33
+ * 
+ *     def bytes(Type self):
+ *         return self.__this__.bytes()             # <<<<<<<<<<<<<<
+ * 
+ *     def bits(Type self):
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->__pyx___this__.bytes()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 33, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* "hal/api.pyx":32
+ *         return self.__this__.code()
+ * 
+ *     def bytes(Type self):             # <<<<<<<<<<<<<<
+ *         return self.__this__.bytes()
+ * 
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("hal.api.Type.bytes", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "hal/api.pyx":35
+ *         return self.__this__.bytes()
+ * 
+ *     def bits(Type self):             # <<<<<<<<<<<<<<
+ *         return self.__this__.bits()
+ * 
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_3hal_3api_4Type_7bits(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_pw_3hal_3api_4Type_7bits(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("bits (wrapper)", 0);
+  __pyx_r = __pyx_pf_3hal_3api_4Type_6bits(((struct __pyx_obj_3hal_3api_Type *)__pyx_v_self));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_3hal_3api_4Type_6bits(struct __pyx_obj_3hal_3api_Type *__pyx_v_self) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  __Pyx_RefNannySetupContext("bits", 0);
+
+  /* "hal/api.pyx":36
+ * 
+ *     def bits(Type self):
+ *         return self.__this__.bits()             # <<<<<<<<<<<<<<
+ * 
+ *     def lanes(Type self):
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->__pyx___this__.bits()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 36, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* "hal/api.pyx":35
+ *         return self.__this__.bytes()
+ * 
+ *     def bits(Type self):             # <<<<<<<<<<<<<<
+ *         return self.__this__.bits()
+ * 
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("hal.api.Type.bits", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "hal/api.pyx":38
+ *         return self.__this__.bits()
+ * 
+ *     def lanes(Type self):             # <<<<<<<<<<<<<<
+ *         return self.__this__.lanes()
+ * 
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_3hal_3api_4Type_9lanes(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_pw_3hal_3api_4Type_9lanes(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("lanes (wrapper)", 0);
+  __pyx_r = __pyx_pf_3hal_3api_4Type_8lanes(((struct __pyx_obj_3hal_3api_Type *)__pyx_v_self));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_3hal_3api_4Type_8lanes(struct __pyx_obj_3hal_3api_Type *__pyx_v_self) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  __Pyx_RefNannySetupContext("lanes", 0);
+
+  /* "hal/api.pyx":39
+ * 
+ *     def lanes(Type self):
+ *         return self.__this__.lanes()             # <<<<<<<<<<<<<<
+ * 
+ *     def with_code(Type self, code):
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->__pyx___this__.lanes()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 39, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* "hal/api.pyx":38
+ *         return self.__this__.bits()
+ * 
+ *     def lanes(Type self):             # <<<<<<<<<<<<<<
+ *         return self.__this__.lanes()
+ * 
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("hal.api.Type.lanes", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "hal/api.pyx":41
+ *         return self.__this__.lanes()
+ * 
+ *     def with_code(Type self, code):             # <<<<<<<<<<<<<<
+ *         out = Type()
+ *         out.__this__ = self.__this__.with_code(code)
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_3hal_3api_4Type_11with_code(PyObject *__pyx_v_self, PyObject *__pyx_v_code); /*proto*/
+static PyObject *__pyx_pw_3hal_3api_4Type_11with_code(PyObject *__pyx_v_self, PyObject *__pyx_v_code) {
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("with_code (wrapper)", 0);
+  __pyx_r = __pyx_pf_3hal_3api_4Type_10with_code(((struct __pyx_obj_3hal_3api_Type *)__pyx_v_self), ((PyObject *)__pyx_v_code));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_3hal_3api_4Type_10with_code(struct __pyx_obj_3hal_3api_Type *__pyx_v_self, PyObject *__pyx_v_code) {
+  struct __pyx_obj_3hal_3api_Type *__pyx_v_out = NULL;
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  halide_type_code_t __pyx_t_2;
+  __Pyx_RefNannySetupContext("with_code", 0);
+
+  /* "hal/api.pyx":42
+ * 
+ *     def with_code(Type self, code):
+ *         out = Type()             # <<<<<<<<<<<<<<
+ *         out.__this__ = self.__this__.with_code(code)
+ *         return out
+ */
+  __pyx_t_1 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_3hal_3api_Type), __pyx_empty_tuple, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 42, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_v_out = ((struct __pyx_obj_3hal_3api_Type *)__pyx_t_1);
+  __pyx_t_1 = 0;
+
+  /* "hal/api.pyx":43
+ *     def with_code(Type self, code):
+ *         out = Type()
+ *         out.__this__ = self.__this__.with_code(code)             # <<<<<<<<<<<<<<
+ *         return out
+ * 
+ */
+  __pyx_t_2 = ((halide_type_code_t)__Pyx_PyInt_As_halide_type_code_t(__pyx_v_code)); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 43, __pyx_L1_error)
+  __pyx_v_out->__pyx___this__ = __pyx_v_self->__pyx___this__.with_code(__pyx_t_2);
+
+  /* "hal/api.pyx":44
+ *         out = Type()
+ *         out.__this__ = self.__this__.with_code(code)
+ *         return out             # <<<<<<<<<<<<<<
+ * 
+ *     def with_bits(Type self, bits):
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __Pyx_INCREF(((PyObject *)__pyx_v_out));
+  __pyx_r = ((PyObject *)__pyx_v_out);
+  goto __pyx_L0;
+
+  /* "hal/api.pyx":41
+ *         return self.__this__.lanes()
+ * 
+ *     def with_code(Type self, code):             # <<<<<<<<<<<<<<
+ *         out = Type()
+ *         out.__this__ = self.__this__.with_code(code)
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("hal.api.Type.with_code", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XDECREF((PyObject *)__pyx_v_out);
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "hal/api.pyx":46
+ *         return out
+ * 
+ *     def with_bits(Type self, bits):             # <<<<<<<<<<<<<<
+ *         out = Type()
+ *         out.__this__ = self.__this__.with_bits(<uint8_t>bits)
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_3hal_3api_4Type_13with_bits(PyObject *__pyx_v_self, PyObject *__pyx_v_bits); /*proto*/
+static PyObject *__pyx_pw_3hal_3api_4Type_13with_bits(PyObject *__pyx_v_self, PyObject *__pyx_v_bits) {
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("with_bits (wrapper)", 0);
+  __pyx_r = __pyx_pf_3hal_3api_4Type_12with_bits(((struct __pyx_obj_3hal_3api_Type *)__pyx_v_self), ((PyObject *)__pyx_v_bits));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_3hal_3api_4Type_12with_bits(struct __pyx_obj_3hal_3api_Type *__pyx_v_self, PyObject *__pyx_v_bits) {
+  struct __pyx_obj_3hal_3api_Type *__pyx_v_out = NULL;
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  uint8_t __pyx_t_2;
+  __Pyx_RefNannySetupContext("with_bits", 0);
+
+  /* "hal/api.pyx":47
+ * 
+ *     def with_bits(Type self, bits):
+ *         out = Type()             # <<<<<<<<<<<<<<
+ *         out.__this__ = self.__this__.with_bits(<uint8_t>bits)
+ *         return out
+ */
+  __pyx_t_1 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_3hal_3api_Type), __pyx_empty_tuple, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 47, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_v_out = ((struct __pyx_obj_3hal_3api_Type *)__pyx_t_1);
+  __pyx_t_1 = 0;
+
+  /* "hal/api.pyx":48
+ *     def with_bits(Type self, bits):
+ *         out = Type()
+ *         out.__this__ = self.__this__.with_bits(<uint8_t>bits)             # <<<<<<<<<<<<<<
+ *         return out
+ * 
+ */
+  __pyx_t_2 = __Pyx_PyInt_As_uint8_t(__pyx_v_bits); if (unlikely((__pyx_t_2 == (uint8_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 48, __pyx_L1_error)
+  __pyx_v_out->__pyx___this__ = __pyx_v_self->__pyx___this__.with_bits(((uint8_t)__pyx_t_2));
+
+  /* "hal/api.pyx":49
+ *         out = Type()
+ *         out.__this__ = self.__this__.with_bits(<uint8_t>bits)
+ *         return out             # <<<<<<<<<<<<<<
+ * 
+ *     def with_lanes(Type self, lanes):
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __Pyx_INCREF(((PyObject *)__pyx_v_out));
+  __pyx_r = ((PyObject *)__pyx_v_out);
+  goto __pyx_L0;
+
+  /* "hal/api.pyx":46
+ *         return out
+ * 
+ *     def with_bits(Type self, bits):             # <<<<<<<<<<<<<<
+ *         out = Type()
+ *         out.__this__ = self.__this__.with_bits(<uint8_t>bits)
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("hal.api.Type.with_bits", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XDECREF((PyObject *)__pyx_v_out);
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "hal/api.pyx":51
+ *         return out
+ * 
+ *     def with_lanes(Type self, lanes):             # <<<<<<<<<<<<<<
+ *         out = Type()
+ *         out.__this__ = self.__this__.with_lanes(<uint16_t>lanes)
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_3hal_3api_4Type_15with_lanes(PyObject *__pyx_v_self, PyObject *__pyx_v_lanes); /*proto*/
+static PyObject *__pyx_pw_3hal_3api_4Type_15with_lanes(PyObject *__pyx_v_self, PyObject *__pyx_v_lanes) {
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("with_lanes (wrapper)", 0);
+  __pyx_r = __pyx_pf_3hal_3api_4Type_14with_lanes(((struct __pyx_obj_3hal_3api_Type *)__pyx_v_self), ((PyObject *)__pyx_v_lanes));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_3hal_3api_4Type_14with_lanes(struct __pyx_obj_3hal_3api_Type *__pyx_v_self, PyObject *__pyx_v_lanes) {
+  struct __pyx_obj_3hal_3api_Type *__pyx_v_out = NULL;
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  uint16_t __pyx_t_2;
+  __Pyx_RefNannySetupContext("with_lanes", 0);
+
+  /* "hal/api.pyx":52
+ * 
+ *     def with_lanes(Type self, lanes):
+ *         out = Type()             # <<<<<<<<<<<<<<
+ *         out.__this__ = self.__this__.with_lanes(<uint16_t>lanes)
+ *         return out
+ */
+  __pyx_t_1 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_3hal_3api_Type), __pyx_empty_tuple, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 52, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_v_out = ((struct __pyx_obj_3hal_3api_Type *)__pyx_t_1);
+  __pyx_t_1 = 0;
+
+  /* "hal/api.pyx":53
+ *     def with_lanes(Type self, lanes):
+ *         out = Type()
+ *         out.__this__ = self.__this__.with_lanes(<uint16_t>lanes)             # <<<<<<<<<<<<<<
+ *         return out
+ * 
+ */
+  __pyx_t_2 = __Pyx_PyInt_As_uint16_t(__pyx_v_lanes); if (unlikely((__pyx_t_2 == (uint16_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 53, __pyx_L1_error)
+  __pyx_v_out->__pyx___this__ = __pyx_v_self->__pyx___this__.with_lanes(((uint16_t)__pyx_t_2));
+
+  /* "hal/api.pyx":54
+ *         out = Type()
+ *         out.__this__ = self.__this__.with_lanes(<uint16_t>lanes)
+ *         return out             # <<<<<<<<<<<<<<
+ * 
+ *     def is_bool(Type self):
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __Pyx_INCREF(((PyObject *)__pyx_v_out));
+  __pyx_r = ((PyObject *)__pyx_v_out);
+  goto __pyx_L0;
+
+  /* "hal/api.pyx":51
+ *         return out
+ * 
+ *     def with_lanes(Type self, lanes):             # <<<<<<<<<<<<<<
+ *         out = Type()
+ *         out.__this__ = self.__this__.with_lanes(<uint16_t>lanes)
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("hal.api.Type.with_lanes", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XDECREF((PyObject *)__pyx_v_out);
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "hal/api.pyx":56
+ *         return out
+ * 
+ *     def is_bool(Type self):             # <<<<<<<<<<<<<<
+ *         return self.__this__.is_bool()
+ * 
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_3hal_3api_4Type_17is_bool(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_pw_3hal_3api_4Type_17is_bool(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("is_bool (wrapper)", 0);
+  __pyx_r = __pyx_pf_3hal_3api_4Type_16is_bool(((struct __pyx_obj_3hal_3api_Type *)__pyx_v_self));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_3hal_3api_4Type_16is_bool(struct __pyx_obj_3hal_3api_Type *__pyx_v_self) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  __Pyx_RefNannySetupContext("is_bool", 0);
+
+  /* "hal/api.pyx":57
+ * 
+ *     def is_bool(Type self):
+ *         return self.__this__.is_bool()             # <<<<<<<<<<<<<<
+ * 
+ *     def is_vector(Type self):
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_v_self->__pyx___this__.is_bool()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 57, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* "hal/api.pyx":56
+ *         return out
+ * 
+ *     def is_bool(Type self):             # <<<<<<<<<<<<<<
+ *         return self.__this__.is_bool()
+ * 
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("hal.api.Type.is_bool", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "hal/api.pyx":59
+ *         return self.__this__.is_bool()
+ * 
+ *     def is_vector(Type self):             # <<<<<<<<<<<<<<
+ *         return self.__this__.is_vector()
+ * 
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_3hal_3api_4Type_19is_vector(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_pw_3hal_3api_4Type_19is_vector(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("is_vector (wrapper)", 0);
+  __pyx_r = __pyx_pf_3hal_3api_4Type_18is_vector(((struct __pyx_obj_3hal_3api_Type *)__pyx_v_self));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_3hal_3api_4Type_18is_vector(struct __pyx_obj_3hal_3api_Type *__pyx_v_self) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  __Pyx_RefNannySetupContext("is_vector", 0);
+
+  /* "hal/api.pyx":60
+ * 
+ *     def is_vector(Type self):
+ *         return self.__this__.is_vector()             # <<<<<<<<<<<<<<
+ * 
+ *     def is_scalar(Type self):
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_v_self->__pyx___this__.is_vector()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 60, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* "hal/api.pyx":59
+ *         return self.__this__.is_bool()
+ * 
+ *     def is_vector(Type self):             # <<<<<<<<<<<<<<
+ *         return self.__this__.is_vector()
+ * 
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("hal.api.Type.is_vector", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "hal/api.pyx":62
+ *         return self.__this__.is_vector()
+ * 
+ *     def is_scalar(Type self):             # <<<<<<<<<<<<<<
+ *         return self.__this__.is_scalar()
+ * 
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_3hal_3api_4Type_21is_scalar(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_pw_3hal_3api_4Type_21is_scalar(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("is_scalar (wrapper)", 0);
+  __pyx_r = __pyx_pf_3hal_3api_4Type_20is_scalar(((struct __pyx_obj_3hal_3api_Type *)__pyx_v_self));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_3hal_3api_4Type_20is_scalar(struct __pyx_obj_3hal_3api_Type *__pyx_v_self) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  __Pyx_RefNannySetupContext("is_scalar", 0);
+
+  /* "hal/api.pyx":63
+ * 
+ *     def is_scalar(Type self):
+ *         return self.__this__.is_scalar()             # <<<<<<<<<<<<<<
+ * 
+ *     def is_float(Type self):
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_v_self->__pyx___this__.is_scalar()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 63, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* "hal/api.pyx":62
+ *         return self.__this__.is_vector()
+ * 
+ *     def is_scalar(Type self):             # <<<<<<<<<<<<<<
+ *         return self.__this__.is_scalar()
+ * 
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("hal.api.Type.is_scalar", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "hal/api.pyx":65
+ *         return self.__this__.is_scalar()
+ * 
+ *     def is_float(Type self):             # <<<<<<<<<<<<<<
+ *         return self.__this__.is_float()
+ * 
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_3hal_3api_4Type_23is_float(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_pw_3hal_3api_4Type_23is_float(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("is_float (wrapper)", 0);
+  __pyx_r = __pyx_pf_3hal_3api_4Type_22is_float(((struct __pyx_obj_3hal_3api_Type *)__pyx_v_self));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_3hal_3api_4Type_22is_float(struct __pyx_obj_3hal_3api_Type *__pyx_v_self) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  __Pyx_RefNannySetupContext("is_float", 0);
+
+  /* "hal/api.pyx":66
+ * 
+ *     def is_float(Type self):
+ *         return self.__this__.is_float()             # <<<<<<<<<<<<<<
+ * 
+ *     def is_int(Type self):
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_v_self->__pyx___this__.is_float()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 66, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* "hal/api.pyx":65
+ *         return self.__this__.is_scalar()
+ * 
+ *     def is_float(Type self):             # <<<<<<<<<<<<<<
+ *         return self.__this__.is_float()
+ * 
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("hal.api.Type.is_float", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "hal/api.pyx":68
+ *         return self.__this__.is_float()
+ * 
+ *     def is_int(Type self):             # <<<<<<<<<<<<<<
+ *         return self.__this__.is_int()
+ * 
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_3hal_3api_4Type_25is_int(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_pw_3hal_3api_4Type_25is_int(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("is_int (wrapper)", 0);
+  __pyx_r = __pyx_pf_3hal_3api_4Type_24is_int(((struct __pyx_obj_3hal_3api_Type *)__pyx_v_self));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_3hal_3api_4Type_24is_int(struct __pyx_obj_3hal_3api_Type *__pyx_v_self) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  __Pyx_RefNannySetupContext("is_int", 0);
+
+  /* "hal/api.pyx":69
+ * 
+ *     def is_int(Type self):
+ *         return self.__this__.is_int()             # <<<<<<<<<<<<<<
+ * 
+ *     def is_uint(Type self):
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_v_self->__pyx___this__.is_int()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 69, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* "hal/api.pyx":68
+ *         return self.__this__.is_float()
+ * 
+ *     def is_int(Type self):             # <<<<<<<<<<<<<<
+ *         return self.__this__.is_int()
+ * 
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("hal.api.Type.is_int", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "hal/api.pyx":71
+ *         return self.__this__.is_int()
+ * 
+ *     def is_uint(Type self):             # <<<<<<<<<<<<<<
+ *         return self.__this__.is_uint()
+ * 
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_3hal_3api_4Type_27is_uint(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_pw_3hal_3api_4Type_27is_uint(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("is_uint (wrapper)", 0);
+  __pyx_r = __pyx_pf_3hal_3api_4Type_26is_uint(((struct __pyx_obj_3hal_3api_Type *)__pyx_v_self));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_3hal_3api_4Type_26is_uint(struct __pyx_obj_3hal_3api_Type *__pyx_v_self) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  __Pyx_RefNannySetupContext("is_uint", 0);
+
+  /* "hal/api.pyx":72
+ * 
+ *     def is_uint(Type self):
+ *         return self.__this__.is_uint()             # <<<<<<<<<<<<<<
+ * 
+ *     def is_handle(Type self):
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_v_self->__pyx___this__.is_uint()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 72, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* "hal/api.pyx":71
+ *         return self.__this__.is_int()
+ * 
+ *     def is_uint(Type self):             # <<<<<<<<<<<<<<
+ *         return self.__this__.is_uint()
+ * 
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("hal.api.Type.is_uint", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "hal/api.pyx":74
+ *         return self.__this__.is_uint()
+ * 
+ *     def is_handle(Type self):             # <<<<<<<<<<<<<<
+ *         return self.__this__.is_handle()
+ * 
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_3hal_3api_4Type_29is_handle(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_pw_3hal_3api_4Type_29is_handle(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("is_handle (wrapper)", 0);
+  __pyx_r = __pyx_pf_3hal_3api_4Type_28is_handle(((struct __pyx_obj_3hal_3api_Type *)__pyx_v_self));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_3hal_3api_4Type_28is_handle(struct __pyx_obj_3hal_3api_Type *__pyx_v_self) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  __Pyx_RefNannySetupContext("is_handle", 0);
+
+  /* "hal/api.pyx":75
+ * 
+ *     def is_handle(Type self):
+ *         return self.__this__.is_handle()             # <<<<<<<<<<<<<<
+ * 
+ *     def same_handle_type(Type self, Type other):
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_v_self->__pyx___this__.is_handle()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 75, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* "hal/api.pyx":74
+ *         return self.__this__.is_uint()
+ * 
+ *     def is_handle(Type self):             # <<<<<<<<<<<<<<
+ *         return self.__this__.is_handle()
+ * 
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("hal.api.Type.is_handle", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "hal/api.pyx":77
+ *         return self.__this__.is_handle()
+ * 
+ *     def same_handle_type(Type self, Type other):             # <<<<<<<<<<<<<<
+ *         return self.__this__.same_handle_type(other.__this__)
+ * 
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_3hal_3api_4Type_31same_handle_type(PyObject *__pyx_v_self, PyObject *__pyx_v_other); /*proto*/
+static PyObject *__pyx_pw_3hal_3api_4Type_31same_handle_type(PyObject *__pyx_v_self, PyObject *__pyx_v_other) {
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("same_handle_type (wrapper)", 0);
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_other), __pyx_ptype_3hal_3api_Type, 1, "other", 0))) __PYX_ERR(0, 77, __pyx_L1_error)
+  __pyx_r = __pyx_pf_3hal_3api_4Type_30same_handle_type(((struct __pyx_obj_3hal_3api_Type *)__pyx_v_self), ((struct __pyx_obj_3hal_3api_Type *)__pyx_v_other));
+
+  /* function exit code */
+  goto __pyx_L0;
+  __pyx_L1_error:;
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_3hal_3api_4Type_30same_handle_type(struct __pyx_obj_3hal_3api_Type *__pyx_v_self, struct __pyx_obj_3hal_3api_Type *__pyx_v_other) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  __Pyx_RefNannySetupContext("same_handle_type", 0);
+
+  /* "hal/api.pyx":78
+ * 
+ *     def same_handle_type(Type self, Type other):
+ *         return self.__this__.same_handle_type(other.__this__)             # <<<<<<<<<<<<<<
+ * 
+ *     def element_of(Type self):
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_v_self->__pyx___this__.same_handle_type(__pyx_v_other->__pyx___this__)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 78, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* "hal/api.pyx":77
+ *         return self.__this__.is_handle()
+ * 
+ *     def same_handle_type(Type self, Type other):             # <<<<<<<<<<<<<<
+ *         return self.__this__.same_handle_type(other.__this__)
+ * 
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("hal.api.Type.same_handle_type", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "hal/api.pyx":80
+ *         return self.__this__.same_handle_type(other.__this__)
+ * 
+ *     def element_of(Type self):             # <<<<<<<<<<<<<<
+ *         out = Type()
+ *         out.__this__ = self.__this__.element_of()
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_3hal_3api_4Type_33element_of(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_pw_3hal_3api_4Type_33element_of(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("element_of (wrapper)", 0);
+  __pyx_r = __pyx_pf_3hal_3api_4Type_32element_of(((struct __pyx_obj_3hal_3api_Type *)__pyx_v_self));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_3hal_3api_4Type_32element_of(struct __pyx_obj_3hal_3api_Type *__pyx_v_self) {
+  struct __pyx_obj_3hal_3api_Type *__pyx_v_out = NULL;
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  __Pyx_RefNannySetupContext("element_of", 0);
+
+  /* "hal/api.pyx":81
+ * 
+ *     def element_of(Type self):
+ *         out = Type()             # <<<<<<<<<<<<<<
+ *         out.__this__ = self.__this__.element_of()
+ *         return out
+ */
+  __pyx_t_1 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_3hal_3api_Type), __pyx_empty_tuple, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 81, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_v_out = ((struct __pyx_obj_3hal_3api_Type *)__pyx_t_1);
+  __pyx_t_1 = 0;
+
+  /* "hal/api.pyx":82
+ *     def element_of(Type self):
+ *         out = Type()
+ *         out.__this__ = self.__this__.element_of()             # <<<<<<<<<<<<<<
+ *         return out
+ * 
+ */
+  __pyx_v_out->__pyx___this__ = __pyx_v_self->__pyx___this__.element_of();
+
+  /* "hal/api.pyx":83
+ *         out = Type()
+ *         out.__this__ = self.__this__.element_of()
+ *         return out             # <<<<<<<<<<<<<<
+ * 
+ *     @staticmethod
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __Pyx_INCREF(((PyObject *)__pyx_v_out));
+  __pyx_r = ((PyObject *)__pyx_v_out);
+  goto __pyx_L0;
+
+  /* "hal/api.pyx":80
+ *         return self.__this__.same_handle_type(other.__this__)
+ * 
+ *     def element_of(Type self):             # <<<<<<<<<<<<<<
+ *         out = Type()
+ *         out.__this__ = self.__this__.element_of()
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("hal.api.Type.element_of", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XDECREF((PyObject *)__pyx_v_out);
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "hal/api.pyx":86
+ * 
+ *     @staticmethod
+ *     def Int(int bits, int lanes=1):             # <<<<<<<<<<<<<<
+ *         out = Type()
+ *         out.__this__ = Type_Int(bits, lanes)
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_3hal_3api_4Type_35Int(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyMethodDef __pyx_mdef_3hal_3api_4Type_35Int = {"Int", (PyCFunction)__pyx_pw_3hal_3api_4Type_35Int, METH_VARARGS|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_3hal_3api_4Type_35Int(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+  int __pyx_v_bits;
+  int __pyx_v_lanes;
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("Int (wrapper)", 0);
+  {
+    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_bits,&__pyx_n_s_lanes,0};
+    PyObject* values[2] = {0,0};
+    if (unlikely(__pyx_kwds)) {
+      Py_ssize_t kw_args;
+      const Py_ssize_t pos_args = PyTuple_GET_SIZE(__pyx_args);
+      switch (pos_args) {
+        case  2: values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
+        case  1: values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+        case  0: break;
+        default: goto __pyx_L5_argtuple_error;
+      }
+      kw_args = PyDict_Size(__pyx_kwds);
+      switch (pos_args) {
+        case  0:
+        if (likely((values[0] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_bits)) != 0)) kw_args--;
+        else goto __pyx_L5_argtuple_error;
+        case  1:
+        if (kw_args > 0) {
+          PyObject* value = PyDict_GetItem(__pyx_kwds, __pyx_n_s_lanes);
+          if (value) { values[1] = value; kw_args--; }
+        }
+      }
+      if (unlikely(kw_args > 0)) {
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "Int") < 0)) __PYX_ERR(0, 86, __pyx_L3_error)
+      }
+    } else {
+      switch (PyTuple_GET_SIZE(__pyx_args)) {
+        case  2: values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
+        case  1: values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+        break;
+        default: goto __pyx_L5_argtuple_error;
+      }
+    }
+    __pyx_v_bits = __Pyx_PyInt_As_int(values[0]); if (unlikely((__pyx_v_bits == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 86, __pyx_L3_error)
+    if (values[1]) {
+      __pyx_v_lanes = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_lanes == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 86, __pyx_L3_error)
+    } else {
+      __pyx_v_lanes = ((int)1);
+    }
+  }
+  goto __pyx_L4_argument_unpacking_done;
+  __pyx_L5_argtuple_error:;
+  __Pyx_RaiseArgtupleInvalid("Int", 0, 1, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 86, __pyx_L3_error)
+  __pyx_L3_error:;
+  __Pyx_AddTraceback("hal.api.Type.Int", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_RefNannyFinishContext();
+  return NULL;
+  __pyx_L4_argument_unpacking_done:;
+  __pyx_r = __pyx_pf_3hal_3api_4Type_34Int(__pyx_v_bits, __pyx_v_lanes);
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_3hal_3api_4Type_34Int(int __pyx_v_bits, int __pyx_v_lanes) {
+  struct __pyx_obj_3hal_3api_Type *__pyx_v_out = NULL;
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  __Pyx_RefNannySetupContext("Int", 0);
+
+  /* "hal/api.pyx":87
+ *     @staticmethod
+ *     def Int(int bits, int lanes=1):
+ *         out = Type()             # <<<<<<<<<<<<<<
+ *         out.__this__ = Type_Int(bits, lanes)
+ *         return out
+ */
+  __pyx_t_1 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_3hal_3api_Type), __pyx_empty_tuple, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 87, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_v_out = ((struct __pyx_obj_3hal_3api_Type *)__pyx_t_1);
+  __pyx_t_1 = 0;
+
+  /* "hal/api.pyx":88
+ *     def Int(int bits, int lanes=1):
+ *         out = Type()
+ *         out.__this__ = Type_Int(bits, lanes)             # <<<<<<<<<<<<<<
+ *         return out
+ * 
+ */
+  __pyx_v_out->__pyx___this__ = Halide::Int(__pyx_v_bits, __pyx_v_lanes);
+
+  /* "hal/api.pyx":89
+ *         out = Type()
+ *         out.__this__ = Type_Int(bits, lanes)
+ *         return out             # <<<<<<<<<<<<<<
+ * 
+ *     @staticmethod
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __Pyx_INCREF(((PyObject *)__pyx_v_out));
+  __pyx_r = ((PyObject *)__pyx_v_out);
+  goto __pyx_L0;
+
+  /* "hal/api.pyx":86
+ * 
+ *     @staticmethod
+ *     def Int(int bits, int lanes=1):             # <<<<<<<<<<<<<<
+ *         out = Type()
+ *         out.__this__ = Type_Int(bits, lanes)
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("hal.api.Type.Int", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XDECREF((PyObject *)__pyx_v_out);
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "hal/api.pyx":92
+ * 
+ *     @staticmethod
+ *     def UInt(int bits, int lanes=1):             # <<<<<<<<<<<<<<
+ *         out = Type()
+ *         out.__this__ = Type_UInt(bits, lanes)
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_3hal_3api_4Type_37UInt(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyMethodDef __pyx_mdef_3hal_3api_4Type_37UInt = {"UInt", (PyCFunction)__pyx_pw_3hal_3api_4Type_37UInt, METH_VARARGS|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_3hal_3api_4Type_37UInt(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+  int __pyx_v_bits;
+  int __pyx_v_lanes;
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("UInt (wrapper)", 0);
+  {
+    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_bits,&__pyx_n_s_lanes,0};
+    PyObject* values[2] = {0,0};
+    if (unlikely(__pyx_kwds)) {
+      Py_ssize_t kw_args;
+      const Py_ssize_t pos_args = PyTuple_GET_SIZE(__pyx_args);
+      switch (pos_args) {
+        case  2: values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
+        case  1: values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+        case  0: break;
+        default: goto __pyx_L5_argtuple_error;
+      }
+      kw_args = PyDict_Size(__pyx_kwds);
+      switch (pos_args) {
+        case  0:
+        if (likely((values[0] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_bits)) != 0)) kw_args--;
+        else goto __pyx_L5_argtuple_error;
+        case  1:
+        if (kw_args > 0) {
+          PyObject* value = PyDict_GetItem(__pyx_kwds, __pyx_n_s_lanes);
+          if (value) { values[1] = value; kw_args--; }
+        }
+      }
+      if (unlikely(kw_args > 0)) {
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "UInt") < 0)) __PYX_ERR(0, 92, __pyx_L3_error)
+      }
+    } else {
+      switch (PyTuple_GET_SIZE(__pyx_args)) {
+        case  2: values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
+        case  1: values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+        break;
+        default: goto __pyx_L5_argtuple_error;
+      }
+    }
+    __pyx_v_bits = __Pyx_PyInt_As_int(values[0]); if (unlikely((__pyx_v_bits == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 92, __pyx_L3_error)
+    if (values[1]) {
+      __pyx_v_lanes = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_lanes == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 92, __pyx_L3_error)
+    } else {
+      __pyx_v_lanes = ((int)1);
+    }
+  }
+  goto __pyx_L4_argument_unpacking_done;
+  __pyx_L5_argtuple_error:;
+  __Pyx_RaiseArgtupleInvalid("UInt", 0, 1, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 92, __pyx_L3_error)
+  __pyx_L3_error:;
+  __Pyx_AddTraceback("hal.api.Type.UInt", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_RefNannyFinishContext();
+  return NULL;
+  __pyx_L4_argument_unpacking_done:;
+  __pyx_r = __pyx_pf_3hal_3api_4Type_36UInt(__pyx_v_bits, __pyx_v_lanes);
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_3hal_3api_4Type_36UInt(int __pyx_v_bits, int __pyx_v_lanes) {
+  struct __pyx_obj_3hal_3api_Type *__pyx_v_out = NULL;
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  __Pyx_RefNannySetupContext("UInt", 0);
+
+  /* "hal/api.pyx":93
+ *     @staticmethod
+ *     def UInt(int bits, int lanes=1):
+ *         out = Type()             # <<<<<<<<<<<<<<
+ *         out.__this__ = Type_UInt(bits, lanes)
+ *         return out
+ */
+  __pyx_t_1 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_3hal_3api_Type), __pyx_empty_tuple, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 93, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_v_out = ((struct __pyx_obj_3hal_3api_Type *)__pyx_t_1);
+  __pyx_t_1 = 0;
+
+  /* "hal/api.pyx":94
+ *     def UInt(int bits, int lanes=1):
+ *         out = Type()
+ *         out.__this__ = Type_UInt(bits, lanes)             # <<<<<<<<<<<<<<
+ *         return out
+ * 
+ */
+  __pyx_v_out->__pyx___this__ = Halide::UInt(__pyx_v_bits, __pyx_v_lanes);
+
+  /* "hal/api.pyx":95
+ *         out = Type()
+ *         out.__this__ = Type_UInt(bits, lanes)
+ *         return out             # <<<<<<<<<<<<<<
+ * 
+ *     @staticmethod
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __Pyx_INCREF(((PyObject *)__pyx_v_out));
+  __pyx_r = ((PyObject *)__pyx_v_out);
+  goto __pyx_L0;
+
+  /* "hal/api.pyx":92
+ * 
+ *     @staticmethod
+ *     def UInt(int bits, int lanes=1):             # <<<<<<<<<<<<<<
+ *         out = Type()
+ *         out.__this__ = Type_UInt(bits, lanes)
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("hal.api.Type.UInt", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XDECREF((PyObject *)__pyx_v_out);
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "hal/api.pyx":98
+ * 
+ *     @staticmethod
+ *     def Float(int bits, int lanes=1):             # <<<<<<<<<<<<<<
+ *         out = Type()
+ *         out.__this__ = Type_Float(bits, lanes)
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_3hal_3api_4Type_39Float(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyMethodDef __pyx_mdef_3hal_3api_4Type_39Float = {"Float", (PyCFunction)__pyx_pw_3hal_3api_4Type_39Float, METH_VARARGS|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_3hal_3api_4Type_39Float(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+  int __pyx_v_bits;
+  int __pyx_v_lanes;
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("Float (wrapper)", 0);
+  {
+    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_bits,&__pyx_n_s_lanes,0};
+    PyObject* values[2] = {0,0};
+    if (unlikely(__pyx_kwds)) {
+      Py_ssize_t kw_args;
+      const Py_ssize_t pos_args = PyTuple_GET_SIZE(__pyx_args);
+      switch (pos_args) {
+        case  2: values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
+        case  1: values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+        case  0: break;
+        default: goto __pyx_L5_argtuple_error;
+      }
+      kw_args = PyDict_Size(__pyx_kwds);
+      switch (pos_args) {
+        case  0:
+        if (likely((values[0] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_bits)) != 0)) kw_args--;
+        else goto __pyx_L5_argtuple_error;
+        case  1:
+        if (kw_args > 0) {
+          PyObject* value = PyDict_GetItem(__pyx_kwds, __pyx_n_s_lanes);
+          if (value) { values[1] = value; kw_args--; }
+        }
+      }
+      if (unlikely(kw_args > 0)) {
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "Float") < 0)) __PYX_ERR(0, 98, __pyx_L3_error)
+      }
+    } else {
+      switch (PyTuple_GET_SIZE(__pyx_args)) {
+        case  2: values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
+        case  1: values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+        break;
+        default: goto __pyx_L5_argtuple_error;
+      }
+    }
+    __pyx_v_bits = __Pyx_PyInt_As_int(values[0]); if (unlikely((__pyx_v_bits == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 98, __pyx_L3_error)
+    if (values[1]) {
+      __pyx_v_lanes = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_lanes == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 98, __pyx_L3_error)
+    } else {
+      __pyx_v_lanes = ((int)1);
+    }
+  }
+  goto __pyx_L4_argument_unpacking_done;
+  __pyx_L5_argtuple_error:;
+  __Pyx_RaiseArgtupleInvalid("Float", 0, 1, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 98, __pyx_L3_error)
+  __pyx_L3_error:;
+  __Pyx_AddTraceback("hal.api.Type.Float", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_RefNannyFinishContext();
+  return NULL;
+  __pyx_L4_argument_unpacking_done:;
+  __pyx_r = __pyx_pf_3hal_3api_4Type_38Float(__pyx_v_bits, __pyx_v_lanes);
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_3hal_3api_4Type_38Float(int __pyx_v_bits, int __pyx_v_lanes) {
+  struct __pyx_obj_3hal_3api_Type *__pyx_v_out = NULL;
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  __Pyx_RefNannySetupContext("Float", 0);
+
+  /* "hal/api.pyx":99
+ *     @staticmethod
+ *     def Float(int bits, int lanes=1):
+ *         out = Type()             # <<<<<<<<<<<<<<
+ *         out.__this__ = Type_Float(bits, lanes)
+ *         return out
+ */
+  __pyx_t_1 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_3hal_3api_Type), __pyx_empty_tuple, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 99, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_v_out = ((struct __pyx_obj_3hal_3api_Type *)__pyx_t_1);
+  __pyx_t_1 = 0;
+
+  /* "hal/api.pyx":100
+ *     def Float(int bits, int lanes=1):
+ *         out = Type()
+ *         out.__this__ = Type_Float(bits, lanes)             # <<<<<<<<<<<<<<
+ *         return out
+ * 
+ */
+  __pyx_v_out->__pyx___this__ = Halide::Float(__pyx_v_bits, __pyx_v_lanes);
+
+  /* "hal/api.pyx":101
+ *         out = Type()
+ *         out.__this__ = Type_Float(bits, lanes)
+ *         return out             # <<<<<<<<<<<<<<
+ * 
+ *     @staticmethod
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __Pyx_INCREF(((PyObject *)__pyx_v_out));
+  __pyx_r = ((PyObject *)__pyx_v_out);
+  goto __pyx_L0;
+
+  /* "hal/api.pyx":98
+ * 
+ *     @staticmethod
+ *     def Float(int bits, int lanes=1):             # <<<<<<<<<<<<<<
+ *         out = Type()
+ *         out.__this__ = Type_Float(bits, lanes)
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("hal.api.Type.Float", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XDECREF((PyObject *)__pyx_v_out);
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "hal/api.pyx":104
+ * 
+ *     @staticmethod
+ *     def Bool(int lanes=1):             # <<<<<<<<<<<<<<
+ *         out = Type()
+ *         out.__this__ = Type_Bool(lanes)
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_3hal_3api_4Type_41Bool(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyMethodDef __pyx_mdef_3hal_3api_4Type_41Bool = {"Bool", (PyCFunction)__pyx_pw_3hal_3api_4Type_41Bool, METH_VARARGS|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_3hal_3api_4Type_41Bool(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+  int __pyx_v_lanes;
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("Bool (wrapper)", 0);
+  {
+    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_lanes,0};
+    PyObject* values[1] = {0};
+    if (unlikely(__pyx_kwds)) {
+      Py_ssize_t kw_args;
+      const Py_ssize_t pos_args = PyTuple_GET_SIZE(__pyx_args);
+      switch (pos_args) {
+        case  1: values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+        case  0: break;
+        default: goto __pyx_L5_argtuple_error;
+      }
+      kw_args = PyDict_Size(__pyx_kwds);
+      switch (pos_args) {
+        case  0:
+        if (kw_args > 0) {
+          PyObject* value = PyDict_GetItem(__pyx_kwds, __pyx_n_s_lanes);
+          if (value) { values[0] = value; kw_args--; }
+        }
+      }
+      if (unlikely(kw_args > 0)) {
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "Bool") < 0)) __PYX_ERR(0, 104, __pyx_L3_error)
+      }
+    } else {
+      switch (PyTuple_GET_SIZE(__pyx_args)) {
+        case  1: values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+        case  0: break;
+        default: goto __pyx_L5_argtuple_error;
+      }
+    }
+    if (values[0]) {
+      __pyx_v_lanes = __Pyx_PyInt_As_int(values[0]); if (unlikely((__pyx_v_lanes == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 104, __pyx_L3_error)
+    } else {
+      __pyx_v_lanes = ((int)1);
+    }
+  }
+  goto __pyx_L4_argument_unpacking_done;
+  __pyx_L5_argtuple_error:;
+  __Pyx_RaiseArgtupleInvalid("Bool", 0, 0, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 104, __pyx_L3_error)
+  __pyx_L3_error:;
+  __Pyx_AddTraceback("hal.api.Type.Bool", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_RefNannyFinishContext();
+  return NULL;
+  __pyx_L4_argument_unpacking_done:;
+  __pyx_r = __pyx_pf_3hal_3api_4Type_40Bool(__pyx_v_lanes);
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_3hal_3api_4Type_40Bool(int __pyx_v_lanes) {
+  struct __pyx_obj_3hal_3api_Type *__pyx_v_out = NULL;
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  __Pyx_RefNannySetupContext("Bool", 0);
+
+  /* "hal/api.pyx":105
+ *     @staticmethod
+ *     def Bool(int lanes=1):
+ *         out = Type()             # <<<<<<<<<<<<<<
+ *         out.__this__ = Type_Bool(lanes)
+ *         return out
+ */
+  __pyx_t_1 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_3hal_3api_Type), __pyx_empty_tuple, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 105, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_v_out = ((struct __pyx_obj_3hal_3api_Type *)__pyx_t_1);
+  __pyx_t_1 = 0;
+
+  /* "hal/api.pyx":106
+ *     def Bool(int lanes=1):
+ *         out = Type()
+ *         out.__this__ = Type_Bool(lanes)             # <<<<<<<<<<<<<<
+ *         return out
+ * 
+ */
+  __pyx_v_out->__pyx___this__ = Halide::Bool(__pyx_v_lanes);
+
+  /* "hal/api.pyx":107
+ *         out = Type()
+ *         out.__this__ = Type_Bool(lanes)
+ *         return out             # <<<<<<<<<<<<<<
+ * 
+ *     # @staticmethod
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __Pyx_INCREF(((PyObject *)__pyx_v_out));
+  __pyx_r = ((PyObject *)__pyx_v_out);
+  goto __pyx_L0;
+
+  /* "hal/api.pyx":104
+ * 
+ *     @staticmethod
+ *     def Bool(int lanes=1):             # <<<<<<<<<<<<<<
+ *         out = Type()
+ *         out.__this__ = Type_Bool(lanes)
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("hal.api.Type.Bool", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XDECREF((PyObject *)__pyx_v_out);
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "hal/api.pyx":122
  *         HalTarget __this__
  * 
  *     def __init__(Target self, *args, **kwargs):             # <<<<<<<<<<<<<<
@@ -896,7 +2592,7 @@ static int __pyx_pf_3hal_3api_6Target___init__(struct __pyx_obj_3hal_3api_Target
   PyObject *__pyx_t_6 = NULL;
   __Pyx_RefNannySetupContext("__init__", 0);
 
-  /* "hal/api.pyx":18
+  /* "hal/api.pyx":123
  * 
  *     def __init__(Target self, *args, **kwargs):
  *         target_string = ''             # <<<<<<<<<<<<<<
@@ -906,30 +2602,30 @@ static int __pyx_pf_3hal_3api_6Target___init__(struct __pyx_obj_3hal_3api_Target
   __Pyx_INCREF(__pyx_kp_s_);
   __pyx_v_target_string = __pyx_kp_s_;
 
-  /* "hal/api.pyx":19
+  /* "hal/api.pyx":124
  *     def __init__(Target self, *args, **kwargs):
  *         target_string = ''
  *         if 'target_string' in kwargs:             # <<<<<<<<<<<<<<
  *             target_string = kwargs.get('target_string')
  *         elif len(args) == 1:
  */
-  __pyx_t_1 = (__Pyx_PyDict_ContainsTF(__pyx_n_s_target_string, __pyx_v_kwargs, Py_EQ)); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 19, __pyx_L1_error)
+  __pyx_t_1 = (__Pyx_PyDict_ContainsTF(__pyx_n_s_target_string, __pyx_v_kwargs, Py_EQ)); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 124, __pyx_L1_error)
   __pyx_t_2 = (__pyx_t_1 != 0);
   if (__pyx_t_2) {
 
-    /* "hal/api.pyx":20
+    /* "hal/api.pyx":125
  *         target_string = ''
  *         if 'target_string' in kwargs:
  *             target_string = kwargs.get('target_string')             # <<<<<<<<<<<<<<
  *         elif len(args) == 1:
  *             target_string = args[0]
  */
-    __pyx_t_3 = __Pyx_PyDict_GetItemDefault(__pyx_v_kwargs, __pyx_n_s_target_string, Py_None); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 20, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyDict_GetItemDefault(__pyx_v_kwargs, __pyx_n_s_target_string, Py_None); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 125, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF_SET(__pyx_v_target_string, __pyx_t_3);
     __pyx_t_3 = 0;
 
-    /* "hal/api.pyx":19
+    /* "hal/api.pyx":124
  *     def __init__(Target self, *args, **kwargs):
  *         target_string = ''
  *         if 'target_string' in kwargs:             # <<<<<<<<<<<<<<
@@ -939,30 +2635,30 @@ static int __pyx_pf_3hal_3api_6Target___init__(struct __pyx_obj_3hal_3api_Target
     goto __pyx_L3;
   }
 
-  /* "hal/api.pyx":21
+  /* "hal/api.pyx":126
  *         if 'target_string' in kwargs:
  *             target_string = kwargs.get('target_string')
  *         elif len(args) == 1:             # <<<<<<<<<<<<<<
  *             target_string = args[0]
  *         if target_string:
  */
-  __pyx_t_4 = PyTuple_GET_SIZE(__pyx_v_args); if (unlikely(__pyx_t_4 == -1)) __PYX_ERR(0, 21, __pyx_L1_error)
+  __pyx_t_4 = PyTuple_GET_SIZE(__pyx_v_args); if (unlikely(__pyx_t_4 == -1)) __PYX_ERR(0, 126, __pyx_L1_error)
   __pyx_t_2 = ((__pyx_t_4 == 1) != 0);
   if (__pyx_t_2) {
 
-    /* "hal/api.pyx":22
+    /* "hal/api.pyx":127
  *             target_string = kwargs.get('target_string')
  *         elif len(args) == 1:
  *             target_string = args[0]             # <<<<<<<<<<<<<<
  *         if target_string:
  *             if not HalTarget.validate_target_string(target_string):
  */
-    __pyx_t_3 = __Pyx_GetItemInt_Tuple(__pyx_v_args, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 22, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_GetItemInt_Tuple(__pyx_v_args, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 127, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF_SET(__pyx_v_target_string, __pyx_t_3);
     __pyx_t_3 = 0;
 
-    /* "hal/api.pyx":21
+    /* "hal/api.pyx":126
  *         if 'target_string' in kwargs:
  *             target_string = kwargs.get('target_string')
  *         elif len(args) == 1:             # <<<<<<<<<<<<<<
@@ -972,49 +2668,49 @@ static int __pyx_pf_3hal_3api_6Target___init__(struct __pyx_obj_3hal_3api_Target
   }
   __pyx_L3:;
 
-  /* "hal/api.pyx":23
+  /* "hal/api.pyx":128
  *         elif len(args) == 1:
  *             target_string = args[0]
  *         if target_string:             # <<<<<<<<<<<<<<
  *             if not HalTarget.validate_target_string(target_string):
  *                 raise ValueError("invalid target string: %s" % target_string)
  */
-  __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_v_target_string); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 23, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_v_target_string); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 128, __pyx_L1_error)
   if (__pyx_t_2) {
 
-    /* "hal/api.pyx":24
+    /* "hal/api.pyx":129
  *             target_string = args[0]
  *         if target_string:
  *             if not HalTarget.validate_target_string(target_string):             # <<<<<<<<<<<<<<
  *                 raise ValueError("invalid target string: %s" % target_string)
  *             self.__this__ = HalTarget(target_string)
  */
-    __pyx_t_5 = __pyx_convert_string_from_py_std__in_string(__pyx_v_target_string); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 24, __pyx_L1_error)
+    __pyx_t_5 = __pyx_convert_string_from_py_std__in_string(__pyx_v_target_string); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 129, __pyx_L1_error)
     __pyx_t_2 = ((!(Halide::Target::validate_target_string(__pyx_t_5) != 0)) != 0);
     if (__pyx_t_2) {
 
-      /* "hal/api.pyx":25
+      /* "hal/api.pyx":130
  *         if target_string:
  *             if not HalTarget.validate_target_string(target_string):
  *                 raise ValueError("invalid target string: %s" % target_string)             # <<<<<<<<<<<<<<
  *             self.__this__ = HalTarget(target_string)
  * 
  */
-      __pyx_t_3 = __Pyx_PyString_Format(__pyx_kp_s_invalid_target_string_s, __pyx_v_target_string); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 25, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyString_Format(__pyx_kp_s_invalid_target_string_s, __pyx_v_target_string); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 130, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_6 = PyTuple_New(1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 25, __pyx_L1_error)
+      __pyx_t_6 = PyTuple_New(1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 130, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_6);
       __Pyx_GIVEREF(__pyx_t_3);
       PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_3);
       __pyx_t_3 = 0;
-      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_t_6, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 25, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_t_6, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 130, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
       __Pyx_Raise(__pyx_t_3, 0, 0, 0);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __PYX_ERR(0, 25, __pyx_L1_error)
+      __PYX_ERR(0, 130, __pyx_L1_error)
 
-      /* "hal/api.pyx":24
+      /* "hal/api.pyx":129
  *             target_string = args[0]
  *         if target_string:
  *             if not HalTarget.validate_target_string(target_string):             # <<<<<<<<<<<<<<
@@ -1023,17 +2719,17 @@ static int __pyx_pf_3hal_3api_6Target___init__(struct __pyx_obj_3hal_3api_Target
  */
     }
 
-    /* "hal/api.pyx":26
+    /* "hal/api.pyx":131
  *             if not HalTarget.validate_target_string(target_string):
  *                 raise ValueError("invalid target string: %s" % target_string)
  *             self.__this__ = HalTarget(target_string)             # <<<<<<<<<<<<<<
  * 
  *     property os:
  */
-    __pyx_t_5 = __pyx_convert_string_from_py_std__in_string(__pyx_v_target_string); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 26, __pyx_L1_error)
+    __pyx_t_5 = __pyx_convert_string_from_py_std__in_string(__pyx_v_target_string); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 131, __pyx_L1_error)
     __pyx_v_self->__pyx___this__ = Halide::Target(__pyx_t_5);
 
-    /* "hal/api.pyx":23
+    /* "hal/api.pyx":128
  *         elif len(args) == 1:
  *             target_string = args[0]
  *         if target_string:             # <<<<<<<<<<<<<<
@@ -1042,7 +2738,7 @@ static int __pyx_pf_3hal_3api_6Target___init__(struct __pyx_obj_3hal_3api_Target
  */
   }
 
-  /* "hal/api.pyx":17
+  /* "hal/api.pyx":122
  *         HalTarget __this__
  * 
  *     def __init__(Target self, *args, **kwargs):             # <<<<<<<<<<<<<<
@@ -1064,7 +2760,7 @@ static int __pyx_pf_3hal_3api_6Target___init__(struct __pyx_obj_3hal_3api_Target
   return __pyx_r;
 }
 
-/* "hal/api.pyx":30
+/* "hal/api.pyx":135
  *     property os:
  * 
  *         def __get__(Target self):             # <<<<<<<<<<<<<<
@@ -1091,7 +2787,7 @@ static PyObject *__pyx_pf_3hal_3api_6Target_2os___get__(struct __pyx_obj_3hal_3a
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("__get__", 0);
 
-  /* "hal/api.pyx":31
+  /* "hal/api.pyx":136
  * 
  *         def __get__(Target self):
  *             return self.__this__.os             # <<<<<<<<<<<<<<
@@ -1099,13 +2795,13 @@ static PyObject *__pyx_pf_3hal_3api_6Target_2os___get__(struct __pyx_obj_3hal_3a
  *         def __set__(Target self, value):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_enum__Halide_3a__3a_Target_3a__3a_OS(__pyx_v_self->__pyx___this__.os); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 31, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_enum__Halide_3a__3a_Target_3a__3a_OS(__pyx_v_self->__pyx___this__.os); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 136, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "hal/api.pyx":30
+  /* "hal/api.pyx":135
  *     property os:
  * 
  *         def __get__(Target self):             # <<<<<<<<<<<<<<
@@ -1124,7 +2820,7 @@ static PyObject *__pyx_pf_3hal_3api_6Target_2os___get__(struct __pyx_obj_3hal_3a
   return __pyx_r;
 }
 
-/* "hal/api.pyx":33
+/* "hal/api.pyx":138
  *             return self.__this__.os
  * 
  *         def __set__(Target self, value):             # <<<<<<<<<<<<<<
@@ -1151,17 +2847,17 @@ static int __pyx_pf_3hal_3api_6Target_2os_2__set__(struct __pyx_obj_3hal_3api_Ta
   enum Halide::Target::OS __pyx_t_1;
   __Pyx_RefNannySetupContext("__set__", 0);
 
-  /* "hal/api.pyx":34
+  /* "hal/api.pyx":139
  * 
  *         def __set__(Target self, value):
  *             self.__this__.os = <HalTarget.OS>value             # <<<<<<<<<<<<<<
  * 
  *     property arch:
  */
-  __pyx_t_1 = ((enum Halide::Target::OS)__Pyx_PyInt_As_enum__Halide_3a__3a_Target_3a__3a_OS(__pyx_v_value)); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 34, __pyx_L1_error)
+  __pyx_t_1 = ((enum Halide::Target::OS)__Pyx_PyInt_As_enum__Halide_3a__3a_Target_3a__3a_OS(__pyx_v_value)); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 139, __pyx_L1_error)
   __pyx_v_self->__pyx___this__.os = ((enum Halide::Target::OS)__pyx_t_1);
 
-  /* "hal/api.pyx":33
+  /* "hal/api.pyx":138
  *             return self.__this__.os
  * 
  *         def __set__(Target self, value):             # <<<<<<<<<<<<<<
@@ -1180,7 +2876,7 @@ static int __pyx_pf_3hal_3api_6Target_2os_2__set__(struct __pyx_obj_3hal_3api_Ta
   return __pyx_r;
 }
 
-/* "hal/api.pyx":38
+/* "hal/api.pyx":143
  *     property arch:
  * 
  *         def __get__(Target self):             # <<<<<<<<<<<<<<
@@ -1207,7 +2903,7 @@ static PyObject *__pyx_pf_3hal_3api_6Target_4arch___get__(struct __pyx_obj_3hal_
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("__get__", 0);
 
-  /* "hal/api.pyx":39
+  /* "hal/api.pyx":144
  * 
  *         def __get__(Target self):
  *             return self.__this__.arch             # <<<<<<<<<<<<<<
@@ -1215,13 +2911,13 @@ static PyObject *__pyx_pf_3hal_3api_6Target_4arch___get__(struct __pyx_obj_3hal_
  *         def __set__(Target self, value):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_enum__Halide_3a__3a_Target_3a__3a_Arch(__pyx_v_self->__pyx___this__.arch); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 39, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_enum__Halide_3a__3a_Target_3a__3a_Arch(__pyx_v_self->__pyx___this__.arch); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 144, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "hal/api.pyx":38
+  /* "hal/api.pyx":143
  *     property arch:
  * 
  *         def __get__(Target self):             # <<<<<<<<<<<<<<
@@ -1240,7 +2936,7 @@ static PyObject *__pyx_pf_3hal_3api_6Target_4arch___get__(struct __pyx_obj_3hal_
   return __pyx_r;
 }
 
-/* "hal/api.pyx":41
+/* "hal/api.pyx":146
  *             return self.__this__.arch
  * 
  *         def __set__(Target self, value):             # <<<<<<<<<<<<<<
@@ -1267,17 +2963,17 @@ static int __pyx_pf_3hal_3api_6Target_4arch_2__set__(struct __pyx_obj_3hal_3api_
   enum Halide::Target::Arch __pyx_t_1;
   __Pyx_RefNannySetupContext("__set__", 0);
 
-  /* "hal/api.pyx":42
+  /* "hal/api.pyx":147
  * 
  *         def __set__(Target self, value):
  *             self.__this__.arch = <HalTarget.Arch>value             # <<<<<<<<<<<<<<
  * 
  *     property bits:
  */
-  __pyx_t_1 = ((enum Halide::Target::Arch)__Pyx_PyInt_As_enum__Halide_3a__3a_Target_3a__3a_Arch(__pyx_v_value)); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 42, __pyx_L1_error)
+  __pyx_t_1 = ((enum Halide::Target::Arch)__Pyx_PyInt_As_enum__Halide_3a__3a_Target_3a__3a_Arch(__pyx_v_value)); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 147, __pyx_L1_error)
   __pyx_v_self->__pyx___this__.arch = ((enum Halide::Target::Arch)__pyx_t_1);
 
-  /* "hal/api.pyx":41
+  /* "hal/api.pyx":146
  *             return self.__this__.arch
  * 
  *         def __set__(Target self, value):             # <<<<<<<<<<<<<<
@@ -1296,7 +2992,7 @@ static int __pyx_pf_3hal_3api_6Target_4arch_2__set__(struct __pyx_obj_3hal_3api_
   return __pyx_r;
 }
 
-/* "hal/api.pyx":46
+/* "hal/api.pyx":151
  *     property bits:
  * 
  *         def __get__(Target self):             # <<<<<<<<<<<<<<
@@ -1323,7 +3019,7 @@ static PyObject *__pyx_pf_3hal_3api_6Target_4bits___get__(struct __pyx_obj_3hal_
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("__get__", 0);
 
-  /* "hal/api.pyx":47
+  /* "hal/api.pyx":152
  * 
  *         def __get__(Target self):
  *             return self.__this__.bits             # <<<<<<<<<<<<<<
@@ -1331,13 +3027,13 @@ static PyObject *__pyx_pf_3hal_3api_6Target_4bits___get__(struct __pyx_obj_3hal_
  *         def __set__(Target self, value):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->__pyx___this__.bits); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 47, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->__pyx___this__.bits); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 152, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "hal/api.pyx":46
+  /* "hal/api.pyx":151
  *     property bits:
  * 
  *         def __get__(Target self):             # <<<<<<<<<<<<<<
@@ -1356,7 +3052,7 @@ static PyObject *__pyx_pf_3hal_3api_6Target_4bits___get__(struct __pyx_obj_3hal_
   return __pyx_r;
 }
 
-/* "hal/api.pyx":49
+/* "hal/api.pyx":154
  *             return self.__this__.bits
  * 
  *         def __set__(Target self, value):             # <<<<<<<<<<<<<<
@@ -1383,17 +3079,17 @@ static int __pyx_pf_3hal_3api_6Target_4bits_2__set__(struct __pyx_obj_3hal_3api_
   int __pyx_t_1;
   __Pyx_RefNannySetupContext("__set__", 0);
 
-  /* "hal/api.pyx":50
+  /* "hal/api.pyx":155
  * 
  *         def __set__(Target self, value):
  *             self.__this__.bits = <int>value             # <<<<<<<<<<<<<<
  * 
  *     def has_gpu_feature(Target self):
  */
-  __pyx_t_1 = __Pyx_PyInt_As_int(__pyx_v_value); if (unlikely((__pyx_t_1 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 50, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_As_int(__pyx_v_value); if (unlikely((__pyx_t_1 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 155, __pyx_L1_error)
   __pyx_v_self->__pyx___this__.bits = ((int)__pyx_t_1);
 
-  /* "hal/api.pyx":49
+  /* "hal/api.pyx":154
  *             return self.__this__.bits
  * 
  *         def __set__(Target self, value):             # <<<<<<<<<<<<<<
@@ -1412,7 +3108,7 @@ static int __pyx_pf_3hal_3api_6Target_4bits_2__set__(struct __pyx_obj_3hal_3api_
   return __pyx_r;
 }
 
-/* "hal/api.pyx":52
+/* "hal/api.pyx":157
  *             self.__this__.bits = <int>value
  * 
  *     def has_gpu_feature(Target self):             # <<<<<<<<<<<<<<
@@ -1439,7 +3135,7 @@ static PyObject *__pyx_pf_3hal_3api_6Target_2has_gpu_feature(struct __pyx_obj_3h
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("has_gpu_feature", 0);
 
-  /* "hal/api.pyx":53
+  /* "hal/api.pyx":158
  * 
  *     def has_gpu_feature(Target self):
  *         return self.__this__.has_gpu_feature()             # <<<<<<<<<<<<<<
@@ -1447,13 +3143,13 @@ static PyObject *__pyx_pf_3hal_3api_6Target_2has_gpu_feature(struct __pyx_obj_3h
  *     def to_string(Target self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_v_self->__pyx___this__.has_gpu_feature()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 53, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_v_self->__pyx___this__.has_gpu_feature()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 158, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "hal/api.pyx":52
+  /* "hal/api.pyx":157
  *             self.__this__.bits = <int>value
  * 
  *     def has_gpu_feature(Target self):             # <<<<<<<<<<<<<<
@@ -1472,7 +3168,7 @@ static PyObject *__pyx_pf_3hal_3api_6Target_2has_gpu_feature(struct __pyx_obj_3h
   return __pyx_r;
 }
 
-/* "hal/api.pyx":55
+/* "hal/api.pyx":160
  *         return self.__this__.has_gpu_feature()
  * 
  *     def to_string(Target self):             # <<<<<<<<<<<<<<
@@ -1499,7 +3195,7 @@ static PyObject *__pyx_pf_3hal_3api_6Target_4to_string(struct __pyx_obj_3hal_3ap
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("to_string", 0);
 
-  /* "hal/api.pyx":56
+  /* "hal/api.pyx":161
  * 
  *     def to_string(Target self):
  *         return self.__this__.to_string()             # <<<<<<<<<<<<<<
@@ -1507,13 +3203,13 @@ static PyObject *__pyx_pf_3hal_3api_6Target_4to_string(struct __pyx_obj_3hal_3ap
  *     def maximum_buffer_size(Target self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_self->__pyx___this__.to_string()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 56, __pyx_L1_error)
+  __pyx_t_1 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_self->__pyx___this__.to_string()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 161, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "hal/api.pyx":55
+  /* "hal/api.pyx":160
  *         return self.__this__.has_gpu_feature()
  * 
  *     def to_string(Target self):             # <<<<<<<<<<<<<<
@@ -1532,7 +3228,7 @@ static PyObject *__pyx_pf_3hal_3api_6Target_4to_string(struct __pyx_obj_3hal_3ap
   return __pyx_r;
 }
 
-/* "hal/api.pyx":58
+/* "hal/api.pyx":163
  *         return self.__this__.to_string()
  * 
  *     def maximum_buffer_size(Target self):             # <<<<<<<<<<<<<<
@@ -1559,7 +3255,7 @@ static PyObject *__pyx_pf_3hal_3api_6Target_6maximum_buffer_size(struct __pyx_ob
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("maximum_buffer_size", 0);
 
-  /* "hal/api.pyx":59
+  /* "hal/api.pyx":164
  * 
  *     def maximum_buffer_size(Target self):
  *         return self.__this__.maximum_buffer_size()             # <<<<<<<<<<<<<<
@@ -1567,13 +3263,13 @@ static PyObject *__pyx_pf_3hal_3api_6Target_6maximum_buffer_size(struct __pyx_ob
  *     def supported(Target self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_int64_t(__pyx_v_self->__pyx___this__.maximum_buffer_size()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 59, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int64_t(__pyx_v_self->__pyx___this__.maximum_buffer_size()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 164, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "hal/api.pyx":58
+  /* "hal/api.pyx":163
  *         return self.__this__.to_string()
  * 
  *     def maximum_buffer_size(Target self):             # <<<<<<<<<<<<<<
@@ -1592,7 +3288,7 @@ static PyObject *__pyx_pf_3hal_3api_6Target_6maximum_buffer_size(struct __pyx_ob
   return __pyx_r;
 }
 
-/* "hal/api.pyx":61
+/* "hal/api.pyx":166
  *         return self.__this__.maximum_buffer_size()
  * 
  *     def supported(Target self):             # <<<<<<<<<<<<<<
@@ -1619,7 +3315,7 @@ static PyObject *__pyx_pf_3hal_3api_6Target_8supported(struct __pyx_obj_3hal_3ap
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("supported", 0);
 
-  /* "hal/api.pyx":62
+  /* "hal/api.pyx":167
  * 
  *     def supported(Target self):
  *         return self.__this__.supported()             # <<<<<<<<<<<<<<
@@ -1627,13 +3323,13 @@ static PyObject *__pyx_pf_3hal_3api_6Target_8supported(struct __pyx_obj_3hal_3ap
  *     def __str__(Target self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_v_self->__pyx___this__.supported()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 62, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_v_self->__pyx___this__.supported()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 167, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "hal/api.pyx":61
+  /* "hal/api.pyx":166
  *         return self.__this__.maximum_buffer_size()
  * 
  *     def supported(Target self):             # <<<<<<<<<<<<<<
@@ -1652,7 +3348,7 @@ static PyObject *__pyx_pf_3hal_3api_6Target_8supported(struct __pyx_obj_3hal_3ap
   return __pyx_r;
 }
 
-/* "hal/api.pyx":64
+/* "hal/api.pyx":169
  *         return self.__this__.supported()
  * 
  *     def __str__(Target self):             # <<<<<<<<<<<<<<
@@ -1679,21 +3375,21 @@ static PyObject *__pyx_pf_3hal_3api_6Target_10__str__(struct __pyx_obj_3hal_3api
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("__str__", 0);
 
-  /* "hal/api.pyx":65
+  /* "hal/api.pyx":170
  * 
  *     def __str__(Target self):
  *         return self.__this__.to_string()             # <<<<<<<<<<<<<<
  * 
- *     def __enter__(Target self):
+ * 
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_self->__pyx___this__.to_string()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 65, __pyx_L1_error)
+  __pyx_t_1 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_self->__pyx___this__.to_string()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 170, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "hal/api.pyx":64
+  /* "hal/api.pyx":169
  *         return self.__this__.supported()
  * 
  *     def __str__(Target self):             # <<<<<<<<<<<<<<
@@ -1712,167 +3408,7 @@ static PyObject *__pyx_pf_3hal_3api_6Target_10__str__(struct __pyx_obj_3hal_3api
   return __pyx_r;
 }
 
-/* "hal/api.pyx":67
- *         return self.__this__.to_string()
- * 
- *     def __enter__(Target self):             # <<<<<<<<<<<<<<
- *         return self
- * 
- */
-
-/* Python wrapper */
-static PyObject *__pyx_pw_3hal_3api_6Target_13__enter__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-static PyObject *__pyx_pw_3hal_3api_6Target_13__enter__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
-  PyObject *__pyx_r = 0;
-  __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("__enter__ (wrapper)", 0);
-  __pyx_r = __pyx_pf_3hal_3api_6Target_12__enter__(((struct __pyx_obj_3hal_3api_Target *)__pyx_v_self));
-
-  /* function exit code */
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-static PyObject *__pyx_pf_3hal_3api_6Target_12__enter__(struct __pyx_obj_3hal_3api_Target *__pyx_v_self) {
-  PyObject *__pyx_r = NULL;
-  __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("__enter__", 0);
-
-  /* "hal/api.pyx":68
- * 
- *     def __enter__(Target self):
- *         return self             # <<<<<<<<<<<<<<
- * 
- *     def __exit__(Target self, exc_tp, exc_val, exc_tb):
- */
-  __Pyx_XDECREF(__pyx_r);
-  __Pyx_INCREF(((PyObject *)__pyx_v_self));
-  __pyx_r = ((PyObject *)__pyx_v_self);
-  goto __pyx_L0;
-
-  /* "hal/api.pyx":67
- *         return self.__this__.to_string()
- * 
- *     def __enter__(Target self):             # <<<<<<<<<<<<<<
- *         return self
- * 
- */
-
-  /* function exit code */
-  __pyx_L0:;
-  __Pyx_XGIVEREF(__pyx_r);
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-/* "hal/api.pyx":70
- *         return self
- * 
- *     def __exit__(Target self, exc_tp, exc_val, exc_tb):             # <<<<<<<<<<<<<<
- *         return False
- * 
- */
-
-/* Python wrapper */
-static PyObject *__pyx_pw_3hal_3api_6Target_15__exit__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyObject *__pyx_pw_3hal_3api_6Target_15__exit__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
-  CYTHON_UNUSED PyObject *__pyx_v_exc_tp = 0;
-  CYTHON_UNUSED PyObject *__pyx_v_exc_val = 0;
-  CYTHON_UNUSED PyObject *__pyx_v_exc_tb = 0;
-  PyObject *__pyx_r = 0;
-  __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("__exit__ (wrapper)", 0);
-  {
-    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_exc_tp,&__pyx_n_s_exc_val,&__pyx_n_s_exc_tb,0};
-    PyObject* values[3] = {0,0,0};
-    if (unlikely(__pyx_kwds)) {
-      Py_ssize_t kw_args;
-      const Py_ssize_t pos_args = PyTuple_GET_SIZE(__pyx_args);
-      switch (pos_args) {
-        case  3: values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
-        case  2: values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
-        case  1: values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
-        case  0: break;
-        default: goto __pyx_L5_argtuple_error;
-      }
-      kw_args = PyDict_Size(__pyx_kwds);
-      switch (pos_args) {
-        case  0:
-        if (likely((values[0] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_exc_tp)) != 0)) kw_args--;
-        else goto __pyx_L5_argtuple_error;
-        case  1:
-        if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_exc_val)) != 0)) kw_args--;
-        else {
-          __Pyx_RaiseArgtupleInvalid("__exit__", 1, 3, 3, 1); __PYX_ERR(0, 70, __pyx_L3_error)
-        }
-        case  2:
-        if (likely((values[2] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_exc_tb)) != 0)) kw_args--;
-        else {
-          __Pyx_RaiseArgtupleInvalid("__exit__", 1, 3, 3, 2); __PYX_ERR(0, 70, __pyx_L3_error)
-        }
-      }
-      if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__exit__") < 0)) __PYX_ERR(0, 70, __pyx_L3_error)
-      }
-    } else if (PyTuple_GET_SIZE(__pyx_args) != 3) {
-      goto __pyx_L5_argtuple_error;
-    } else {
-      values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
-      values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
-      values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
-    }
-    __pyx_v_exc_tp = values[0];
-    __pyx_v_exc_val = values[1];
-    __pyx_v_exc_tb = values[2];
-  }
-  goto __pyx_L4_argument_unpacking_done;
-  __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__exit__", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 70, __pyx_L3_error)
-  __pyx_L3_error:;
-  __Pyx_AddTraceback("hal.api.Target.__exit__", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __Pyx_RefNannyFinishContext();
-  return NULL;
-  __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_3hal_3api_6Target_14__exit__(((struct __pyx_obj_3hal_3api_Target *)__pyx_v_self), __pyx_v_exc_tp, __pyx_v_exc_val, __pyx_v_exc_tb);
-
-  /* function exit code */
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-static PyObject *__pyx_pf_3hal_3api_6Target_14__exit__(CYTHON_UNUSED struct __pyx_obj_3hal_3api_Target *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v_exc_tp, CYTHON_UNUSED PyObject *__pyx_v_exc_val, CYTHON_UNUSED PyObject *__pyx_v_exc_tb) {
-  PyObject *__pyx_r = NULL;
-  __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("__exit__", 0);
-
-  /* "hal/api.pyx":71
- * 
- *     def __exit__(Target self, exc_tp, exc_val, exc_tb):
- *         return False             # <<<<<<<<<<<<<<
- * 
- * 
- */
-  __Pyx_XDECREF(__pyx_r);
-  __Pyx_INCREF(Py_False);
-  __pyx_r = Py_False;
-  goto __pyx_L0;
-
-  /* "hal/api.pyx":70
- *         return self
- * 
- *     def __exit__(Target self, exc_tp, exc_val, exc_tb):             # <<<<<<<<<<<<<<
- *         return False
- * 
- */
-
-  /* function exit code */
-  __pyx_L0:;
-  __Pyx_XGIVEREF(__pyx_r);
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-/* "hal/api.pyx":75
+/* "hal/api.pyx":174
  * 
  * ## FUNCTION WRAPPERS:
  * def get_host_target():             # <<<<<<<<<<<<<<
@@ -1901,19 +3437,19 @@ static PyObject *__pyx_pf_3hal_3api_get_host_target(CYTHON_UNUSED PyObject *__py
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("get_host_target", 0);
 
-  /* "hal/api.pyx":76
+  /* "hal/api.pyx":175
  * ## FUNCTION WRAPPERS:
  * def get_host_target():
  *     out = Target()             # <<<<<<<<<<<<<<
  *     out.__this__ = halide_get_host_target()
  *     return out
  */
-  __pyx_t_1 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_3hal_3api_Target), __pyx_empty_tuple, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 76, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_3hal_3api_Target), __pyx_empty_tuple, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 175, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_out = ((struct __pyx_obj_3hal_3api_Target *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "hal/api.pyx":77
+  /* "hal/api.pyx":176
  * def get_host_target():
  *     out = Target()
  *     out.__this__ = halide_get_host_target()             # <<<<<<<<<<<<<<
@@ -1922,7 +3458,7 @@ static PyObject *__pyx_pf_3hal_3api_get_host_target(CYTHON_UNUSED PyObject *__py
  */
   __pyx_v_out->__pyx___this__ = Halide::get_host_target();
 
-  /* "hal/api.pyx":78
+  /* "hal/api.pyx":177
  *     out = Target()
  *     out.__this__ = halide_get_host_target()
  *     return out             # <<<<<<<<<<<<<<
@@ -1934,7 +3470,7 @@ static PyObject *__pyx_pf_3hal_3api_get_host_target(CYTHON_UNUSED PyObject *__py
   __pyx_r = ((PyObject *)__pyx_v_out);
   goto __pyx_L0;
 
-  /* "hal/api.pyx":75
+  /* "hal/api.pyx":174
  * 
  * ## FUNCTION WRAPPERS:
  * def get_host_target():             # <<<<<<<<<<<<<<
@@ -1954,7 +3490,7 @@ static PyObject *__pyx_pf_3hal_3api_get_host_target(CYTHON_UNUSED PyObject *__py
   return __pyx_r;
 }
 
-/* "hal/api.pyx":80
+/* "hal/api.pyx":179
  *     return out
  * 
  * def get_target_from_environment():             # <<<<<<<<<<<<<<
@@ -1983,19 +3519,19 @@ static PyObject *__pyx_pf_3hal_3api_2get_target_from_environment(CYTHON_UNUSED P
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("get_target_from_environment", 0);
 
-  /* "hal/api.pyx":81
+  /* "hal/api.pyx":180
  * 
  * def get_target_from_environment():
  *     out = Target()             # <<<<<<<<<<<<<<
  *     out.__this__ = halide_get_target_from_environment()
  *     return out
  */
-  __pyx_t_1 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_3hal_3api_Target), __pyx_empty_tuple, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 81, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_3hal_3api_Target), __pyx_empty_tuple, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 180, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_out = ((struct __pyx_obj_3hal_3api_Target *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "hal/api.pyx":82
+  /* "hal/api.pyx":181
  * def get_target_from_environment():
  *     out = Target()
  *     out.__this__ = halide_get_target_from_environment()             # <<<<<<<<<<<<<<
@@ -2004,7 +3540,7 @@ static PyObject *__pyx_pf_3hal_3api_2get_target_from_environment(CYTHON_UNUSED P
  */
   __pyx_v_out->__pyx___this__ = Halide::get_target_from_environment();
 
-  /* "hal/api.pyx":83
+  /* "hal/api.pyx":182
  *     out = Target()
  *     out.__this__ = halide_get_target_from_environment()
  *     return out             # <<<<<<<<<<<<<<
@@ -2016,7 +3552,7 @@ static PyObject *__pyx_pf_3hal_3api_2get_target_from_environment(CYTHON_UNUSED P
   __pyx_r = ((PyObject *)__pyx_v_out);
   goto __pyx_L0;
 
-  /* "hal/api.pyx":80
+  /* "hal/api.pyx":179
  *     return out
  * 
  * def get_target_from_environment():             # <<<<<<<<<<<<<<
@@ -2036,7 +3572,7 @@ static PyObject *__pyx_pf_3hal_3api_2get_target_from_environment(CYTHON_UNUSED P
   return __pyx_r;
 }
 
-/* "hal/api.pyx":85
+/* "hal/api.pyx":184
  *     return out
  * 
  * def get_jit_target_from_environment():             # <<<<<<<<<<<<<<
@@ -2065,19 +3601,19 @@ static PyObject *__pyx_pf_3hal_3api_4get_jit_target_from_environment(CYTHON_UNUS
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("get_jit_target_from_environment", 0);
 
-  /* "hal/api.pyx":86
+  /* "hal/api.pyx":185
  * 
  * def get_jit_target_from_environment():
  *     out = Target()             # <<<<<<<<<<<<<<
  *     out.__this__ = halide_get_jit_target_from_environment()
  *     return out
  */
-  __pyx_t_1 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_3hal_3api_Target), __pyx_empty_tuple, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 86, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_3hal_3api_Target), __pyx_empty_tuple, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 185, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_out = ((struct __pyx_obj_3hal_3api_Target *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "hal/api.pyx":87
+  /* "hal/api.pyx":186
  * def get_jit_target_from_environment():
  *     out = Target()
  *     out.__this__ = halide_get_jit_target_from_environment()             # <<<<<<<<<<<<<<
@@ -2086,7 +3622,7 @@ static PyObject *__pyx_pf_3hal_3api_4get_jit_target_from_environment(CYTHON_UNUS
  */
   __pyx_v_out->__pyx___this__ = Halide::get_jit_target_from_environment();
 
-  /* "hal/api.pyx":88
+  /* "hal/api.pyx":187
  *     out = Target()
  *     out.__this__ = halide_get_jit_target_from_environment()
  *     return out             # <<<<<<<<<<<<<<
@@ -2098,7 +3634,7 @@ static PyObject *__pyx_pf_3hal_3api_4get_jit_target_from_environment(CYTHON_UNUS
   __pyx_r = ((PyObject *)__pyx_v_out);
   goto __pyx_L0;
 
-  /* "hal/api.pyx":85
+  /* "hal/api.pyx":184
  *     return out
  * 
  * def get_jit_target_from_environment():             # <<<<<<<<<<<<<<
@@ -2118,7 +3654,7 @@ static PyObject *__pyx_pf_3hal_3api_4get_jit_target_from_environment(CYTHON_UNUS
   return __pyx_r;
 }
 
-/* "hal/api.pyx":90
+/* "hal/api.pyx":189
  *     return out
  * 
  * def validate_target_string(target_string):             # <<<<<<<<<<<<<<
@@ -2147,21 +3683,21 @@ static PyObject *__pyx_pf_3hal_3api_6validate_target_string(CYTHON_UNUSED PyObje
   PyObject *__pyx_t_2 = NULL;
   __Pyx_RefNannySetupContext("validate_target_string", 0);
 
-  /* "hal/api.pyx":91
+  /* "hal/api.pyx":190
  * 
  * def validate_target_string(target_string):
  *     return HalTarget.validate_target_string(target_string)             # <<<<<<<<<<<<<<
  * 
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_convert_string_from_py_std__in_string(__pyx_v_target_string); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 91, __pyx_L1_error)
-  __pyx_t_2 = __Pyx_PyBool_FromLong(Halide::Target::validate_target_string(__pyx_t_1)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 91, __pyx_L1_error)
+  __pyx_t_1 = __pyx_convert_string_from_py_std__in_string(__pyx_v_target_string); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 190, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyBool_FromLong(Halide::Target::validate_target_string(__pyx_t_1)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 190, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_r = __pyx_t_2;
   __pyx_t_2 = 0;
   goto __pyx_L0;
 
-  /* "hal/api.pyx":90
+  /* "hal/api.pyx":189
  *     return out
  * 
  * def validate_target_string(target_string):             # <<<<<<<<<<<<<<
@@ -2466,6 +4002,113 @@ static CYTHON_INLINE PyObject *__pyx_convert_PyByteArray_string_to_py_std__in_st
   return __pyx_r;
 }
 
+static PyObject *__pyx_tp_new_3hal_3api_Type(PyTypeObject *t, CYTHON_UNUSED PyObject *a, CYTHON_UNUSED PyObject *k) {
+  struct __pyx_obj_3hal_3api_Type *p;
+  PyObject *o;
+  if (likely((t->tp_flags & Py_TPFLAGS_IS_ABSTRACT) == 0)) {
+    o = (*t->tp_alloc)(t, 0);
+  } else {
+    o = (PyObject *) PyBaseObject_Type.tp_new(t, __pyx_empty_tuple, 0);
+  }
+  if (unlikely(!o)) return 0;
+  p = ((struct __pyx_obj_3hal_3api_Type *)o);
+  new((void*)&(p->__pyx___this__)) Halide::Type();
+  return o;
+}
+
+static void __pyx_tp_dealloc_3hal_3api_Type(PyObject *o) {
+  struct __pyx_obj_3hal_3api_Type *p = (struct __pyx_obj_3hal_3api_Type *)o;
+  #if PY_VERSION_HEX >= 0x030400a1
+  if (unlikely(Py_TYPE(o)->tp_finalize) && (!PyType_IS_GC(Py_TYPE(o)) || !_PyGC_FINALIZED(o))) {
+    if (PyObject_CallFinalizerFromDealloc(o)) return;
+  }
+  #endif
+  __Pyx_call_destructor(p->__pyx___this__);
+  (*Py_TYPE(o)->tp_free)(o);
+}
+
+static PyMethodDef __pyx_methods_3hal_3api_Type[] = {
+  {"code", (PyCFunction)__pyx_pw_3hal_3api_4Type_3code, METH_NOARGS, 0},
+  {"bytes", (PyCFunction)__pyx_pw_3hal_3api_4Type_5bytes, METH_NOARGS, 0},
+  {"bits", (PyCFunction)__pyx_pw_3hal_3api_4Type_7bits, METH_NOARGS, 0},
+  {"lanes", (PyCFunction)__pyx_pw_3hal_3api_4Type_9lanes, METH_NOARGS, 0},
+  {"with_code", (PyCFunction)__pyx_pw_3hal_3api_4Type_11with_code, METH_O, 0},
+  {"with_bits", (PyCFunction)__pyx_pw_3hal_3api_4Type_13with_bits, METH_O, 0},
+  {"with_lanes", (PyCFunction)__pyx_pw_3hal_3api_4Type_15with_lanes, METH_O, 0},
+  {"is_bool", (PyCFunction)__pyx_pw_3hal_3api_4Type_17is_bool, METH_NOARGS, 0},
+  {"is_vector", (PyCFunction)__pyx_pw_3hal_3api_4Type_19is_vector, METH_NOARGS, 0},
+  {"is_scalar", (PyCFunction)__pyx_pw_3hal_3api_4Type_21is_scalar, METH_NOARGS, 0},
+  {"is_float", (PyCFunction)__pyx_pw_3hal_3api_4Type_23is_float, METH_NOARGS, 0},
+  {"is_int", (PyCFunction)__pyx_pw_3hal_3api_4Type_25is_int, METH_NOARGS, 0},
+  {"is_uint", (PyCFunction)__pyx_pw_3hal_3api_4Type_27is_uint, METH_NOARGS, 0},
+  {"is_handle", (PyCFunction)__pyx_pw_3hal_3api_4Type_29is_handle, METH_NOARGS, 0},
+  {"same_handle_type", (PyCFunction)__pyx_pw_3hal_3api_4Type_31same_handle_type, METH_O, 0},
+  {"element_of", (PyCFunction)__pyx_pw_3hal_3api_4Type_33element_of, METH_NOARGS, 0},
+  {"Int", (PyCFunction)__pyx_pw_3hal_3api_4Type_35Int, METH_VARARGS|METH_KEYWORDS, 0},
+  {"UInt", (PyCFunction)__pyx_pw_3hal_3api_4Type_37UInt, METH_VARARGS|METH_KEYWORDS, 0},
+  {"Float", (PyCFunction)__pyx_pw_3hal_3api_4Type_39Float, METH_VARARGS|METH_KEYWORDS, 0},
+  {"Bool", (PyCFunction)__pyx_pw_3hal_3api_4Type_41Bool, METH_VARARGS|METH_KEYWORDS, 0},
+  {0, 0, 0, 0}
+};
+
+static PyTypeObject __pyx_type_3hal_3api_Type = {
+  PyVarObject_HEAD_INIT(0, 0)
+  "hal.api.Type", /*tp_name*/
+  sizeof(struct __pyx_obj_3hal_3api_Type), /*tp_basicsize*/
+  0, /*tp_itemsize*/
+  __pyx_tp_dealloc_3hal_3api_Type, /*tp_dealloc*/
+  0, /*tp_print*/
+  0, /*tp_getattr*/
+  0, /*tp_setattr*/
+  #if PY_MAJOR_VERSION < 3
+  0, /*tp_compare*/
+  #endif
+  #if PY_MAJOR_VERSION >= 3
+  0, /*tp_as_async*/
+  #endif
+  0, /*tp_repr*/
+  0, /*tp_as_number*/
+  0, /*tp_as_sequence*/
+  0, /*tp_as_mapping*/
+  0, /*tp_hash*/
+  0, /*tp_call*/
+  0, /*tp_str*/
+  0, /*tp_getattro*/
+  0, /*tp_setattro*/
+  0, /*tp_as_buffer*/
+  Py_TPFLAGS_DEFAULT|Py_TPFLAGS_HAVE_VERSION_TAG|Py_TPFLAGS_CHECKTYPES|Py_TPFLAGS_HAVE_NEWBUFFER|Py_TPFLAGS_BASETYPE, /*tp_flags*/
+  0, /*tp_doc*/
+  0, /*tp_traverse*/
+  0, /*tp_clear*/
+  0, /*tp_richcompare*/
+  0, /*tp_weaklistoffset*/
+  0, /*tp_iter*/
+  0, /*tp_iternext*/
+  __pyx_methods_3hal_3api_Type, /*tp_methods*/
+  0, /*tp_members*/
+  0, /*tp_getset*/
+  0, /*tp_base*/
+  0, /*tp_dict*/
+  0, /*tp_descr_get*/
+  0, /*tp_descr_set*/
+  0, /*tp_dictoffset*/
+  __pyx_pw_3hal_3api_4Type_1__init__, /*tp_init*/
+  0, /*tp_alloc*/
+  __pyx_tp_new_3hal_3api_Type, /*tp_new*/
+  0, /*tp_free*/
+  0, /*tp_is_gc*/
+  0, /*tp_bases*/
+  0, /*tp_mro*/
+  0, /*tp_cache*/
+  0, /*tp_subclasses*/
+  0, /*tp_weaklist*/
+  0, /*tp_del*/
+  0, /*tp_version_tag*/
+  #if PY_VERSION_HEX >= 0x030400a1
+  0, /*tp_finalize*/
+  #endif
+};
+
 static PyObject *__pyx_tp_new_3hal_3api_Target(PyTypeObject *t, CYTHON_UNUSED PyObject *a, CYTHON_UNUSED PyObject *k) {
   struct __pyx_obj_3hal_3api_Target *p;
   PyObject *o;
@@ -2538,8 +4181,6 @@ static PyMethodDef __pyx_methods_3hal_3api_Target[] = {
   {"to_string", (PyCFunction)__pyx_pw_3hal_3api_6Target_5to_string, METH_NOARGS, 0},
   {"maximum_buffer_size", (PyCFunction)__pyx_pw_3hal_3api_6Target_7maximum_buffer_size, METH_NOARGS, 0},
   {"supported", (PyCFunction)__pyx_pw_3hal_3api_6Target_9supported, METH_NOARGS, 0},
-  {"__enter__", (PyCFunction)__pyx_pw_3hal_3api_6Target_13__enter__, METH_NOARGS, 0},
-  {"__exit__", (PyCFunction)__pyx_pw_3hal_3api_6Target_15__exit__, METH_VARARGS|METH_KEYWORDS, 0},
   {0, 0, 0, 0}
 };
 
@@ -2632,26 +4273,31 @@ static struct PyModuleDef __pyx_moduledef = {
 
 static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_kp_s_, __pyx_k_, sizeof(__pyx_k_), 0, 0, 1, 0},
+  {&__pyx_n_s_Bool, __pyx_k_Bool, sizeof(__pyx_k_Bool), 0, 0, 1, 1},
+  {&__pyx_n_s_Float, __pyx_k_Float, sizeof(__pyx_k_Float), 0, 0, 1, 1},
+  {&__pyx_n_s_Int, __pyx_k_Int, sizeof(__pyx_k_Int), 0, 0, 1, 1},
+  {&__pyx_n_s_UInt, __pyx_k_UInt, sizeof(__pyx_k_UInt), 0, 0, 1, 1},
   {&__pyx_kp_s_Users_fish_Dropbox_halogen_hal, __pyx_k_Users_fish_Dropbox_halogen_hal, sizeof(__pyx_k_Users_fish_Dropbox_halogen_hal), 0, 0, 1, 0},
   {&__pyx_n_s_ValueError, __pyx_k_ValueError, sizeof(__pyx_k_ValueError), 0, 0, 1, 1},
-  {&__pyx_n_s_exc_tb, __pyx_k_exc_tb, sizeof(__pyx_k_exc_tb), 0, 0, 1, 1},
-  {&__pyx_n_s_exc_tp, __pyx_k_exc_tp, sizeof(__pyx_k_exc_tp), 0, 0, 1, 1},
-  {&__pyx_n_s_exc_val, __pyx_k_exc_val, sizeof(__pyx_k_exc_val), 0, 0, 1, 1},
+  {&__pyx_n_s_bits, __pyx_k_bits, sizeof(__pyx_k_bits), 0, 0, 1, 1},
   {&__pyx_n_s_get, __pyx_k_get, sizeof(__pyx_k_get), 0, 0, 1, 1},
   {&__pyx_n_s_get_host_target, __pyx_k_get_host_target, sizeof(__pyx_k_get_host_target), 0, 0, 1, 1},
   {&__pyx_n_s_get_jit_target_from_environment, __pyx_k_get_jit_target_from_environment, sizeof(__pyx_k_get_jit_target_from_environment), 0, 0, 1, 1},
   {&__pyx_n_s_get_target_from_environment, __pyx_k_get_target_from_environment, sizeof(__pyx_k_get_target_from_environment), 0, 0, 1, 1},
   {&__pyx_n_s_hal_api, __pyx_k_hal_api, sizeof(__pyx_k_hal_api), 0, 0, 1, 1},
   {&__pyx_kp_s_invalid_target_string_s, __pyx_k_invalid_target_string_s, sizeof(__pyx_k_invalid_target_string_s), 0, 0, 1, 0},
+  {&__pyx_n_s_lanes, __pyx_k_lanes, sizeof(__pyx_k_lanes), 0, 0, 1, 1},
   {&__pyx_n_s_main, __pyx_k_main, sizeof(__pyx_k_main), 0, 0, 1, 1},
   {&__pyx_n_s_out, __pyx_k_out, sizeof(__pyx_k_out), 0, 0, 1, 1},
+  {&__pyx_n_s_staticmethod, __pyx_k_staticmethod, sizeof(__pyx_k_staticmethod), 0, 0, 1, 1},
   {&__pyx_n_s_target_string, __pyx_k_target_string, sizeof(__pyx_k_target_string), 0, 0, 1, 1},
   {&__pyx_n_s_test, __pyx_k_test, sizeof(__pyx_k_test), 0, 0, 1, 1},
   {&__pyx_n_s_validate_target_string, __pyx_k_validate_target_string, sizeof(__pyx_k_validate_target_string), 0, 0, 1, 1},
   {0, 0, 0, 0, 0, 0, 0}
 };
 static int __Pyx_InitCachedBuiltins(void) {
-  __pyx_builtin_ValueError = __Pyx_GetBuiltinName(__pyx_n_s_ValueError); if (!__pyx_builtin_ValueError) __PYX_ERR(0, 25, __pyx_L1_error)
+  __pyx_builtin_staticmethod = __Pyx_GetBuiltinName(__pyx_n_s_staticmethod); if (!__pyx_builtin_staticmethod) __PYX_ERR(0, 85, __pyx_L1_error)
+  __pyx_builtin_ValueError = __Pyx_GetBuiltinName(__pyx_n_s_ValueError); if (!__pyx_builtin_ValueError) __PYX_ERR(0, 130, __pyx_L1_error)
   return 0;
   __pyx_L1_error:;
   return -1;
@@ -2661,53 +4307,101 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_InitCachedConstants", 0);
 
-  /* "hal/api.pyx":75
+  /* "hal/api.pyx":86
+ * 
+ *     @staticmethod
+ *     def Int(int bits, int lanes=1):             # <<<<<<<<<<<<<<
+ *         out = Type()
+ *         out.__this__ = Type_Int(bits, lanes)
+ */
+  __pyx_tuple__2 = PyTuple_Pack(3, __pyx_n_s_bits, __pyx_n_s_lanes, __pyx_n_s_out); if (unlikely(!__pyx_tuple__2)) __PYX_ERR(0, 86, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__2);
+  __Pyx_GIVEREF(__pyx_tuple__2);
+  __pyx_codeobj__3 = (PyObject*)__Pyx_PyCode_New(2, 0, 3, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__2, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_Users_fish_Dropbox_halogen_hal, __pyx_n_s_Int, 86, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__3)) __PYX_ERR(0, 86, __pyx_L1_error)
+
+  /* "hal/api.pyx":92
+ * 
+ *     @staticmethod
+ *     def UInt(int bits, int lanes=1):             # <<<<<<<<<<<<<<
+ *         out = Type()
+ *         out.__this__ = Type_UInt(bits, lanes)
+ */
+  __pyx_tuple__4 = PyTuple_Pack(3, __pyx_n_s_bits, __pyx_n_s_lanes, __pyx_n_s_out); if (unlikely(!__pyx_tuple__4)) __PYX_ERR(0, 92, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__4);
+  __Pyx_GIVEREF(__pyx_tuple__4);
+  __pyx_codeobj__5 = (PyObject*)__Pyx_PyCode_New(2, 0, 3, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__4, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_Users_fish_Dropbox_halogen_hal, __pyx_n_s_UInt, 92, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__5)) __PYX_ERR(0, 92, __pyx_L1_error)
+
+  /* "hal/api.pyx":98
+ * 
+ *     @staticmethod
+ *     def Float(int bits, int lanes=1):             # <<<<<<<<<<<<<<
+ *         out = Type()
+ *         out.__this__ = Type_Float(bits, lanes)
+ */
+  __pyx_tuple__6 = PyTuple_Pack(3, __pyx_n_s_bits, __pyx_n_s_lanes, __pyx_n_s_out); if (unlikely(!__pyx_tuple__6)) __PYX_ERR(0, 98, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__6);
+  __Pyx_GIVEREF(__pyx_tuple__6);
+  __pyx_codeobj__7 = (PyObject*)__Pyx_PyCode_New(2, 0, 3, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__6, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_Users_fish_Dropbox_halogen_hal, __pyx_n_s_Float, 98, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__7)) __PYX_ERR(0, 98, __pyx_L1_error)
+
+  /* "hal/api.pyx":104
+ * 
+ *     @staticmethod
+ *     def Bool(int lanes=1):             # <<<<<<<<<<<<<<
+ *         out = Type()
+ *         out.__this__ = Type_Bool(lanes)
+ */
+  __pyx_tuple__8 = PyTuple_Pack(2, __pyx_n_s_lanes, __pyx_n_s_out); if (unlikely(!__pyx_tuple__8)) __PYX_ERR(0, 104, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__8);
+  __Pyx_GIVEREF(__pyx_tuple__8);
+  __pyx_codeobj__9 = (PyObject*)__Pyx_PyCode_New(1, 0, 2, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__8, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_Users_fish_Dropbox_halogen_hal, __pyx_n_s_Bool, 104, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__9)) __PYX_ERR(0, 104, __pyx_L1_error)
+
+  /* "hal/api.pyx":174
  * 
  * ## FUNCTION WRAPPERS:
  * def get_host_target():             # <<<<<<<<<<<<<<
  *     out = Target()
  *     out.__this__ = halide_get_host_target()
  */
-  __pyx_tuple__2 = PyTuple_Pack(1, __pyx_n_s_out); if (unlikely(!__pyx_tuple__2)) __PYX_ERR(0, 75, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__2);
-  __Pyx_GIVEREF(__pyx_tuple__2);
-  __pyx_codeobj__3 = (PyObject*)__Pyx_PyCode_New(0, 0, 1, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__2, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_Users_fish_Dropbox_halogen_hal, __pyx_n_s_get_host_target, 75, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__3)) __PYX_ERR(0, 75, __pyx_L1_error)
+  __pyx_tuple__10 = PyTuple_Pack(1, __pyx_n_s_out); if (unlikely(!__pyx_tuple__10)) __PYX_ERR(0, 174, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__10);
+  __Pyx_GIVEREF(__pyx_tuple__10);
+  __pyx_codeobj__11 = (PyObject*)__Pyx_PyCode_New(0, 0, 1, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__10, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_Users_fish_Dropbox_halogen_hal, __pyx_n_s_get_host_target, 174, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__11)) __PYX_ERR(0, 174, __pyx_L1_error)
 
-  /* "hal/api.pyx":80
+  /* "hal/api.pyx":179
  *     return out
  * 
  * def get_target_from_environment():             # <<<<<<<<<<<<<<
  *     out = Target()
  *     out.__this__ = halide_get_target_from_environment()
  */
-  __pyx_tuple__4 = PyTuple_Pack(1, __pyx_n_s_out); if (unlikely(!__pyx_tuple__4)) __PYX_ERR(0, 80, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__4);
-  __Pyx_GIVEREF(__pyx_tuple__4);
-  __pyx_codeobj__5 = (PyObject*)__Pyx_PyCode_New(0, 0, 1, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__4, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_Users_fish_Dropbox_halogen_hal, __pyx_n_s_get_target_from_environment, 80, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__5)) __PYX_ERR(0, 80, __pyx_L1_error)
+  __pyx_tuple__12 = PyTuple_Pack(1, __pyx_n_s_out); if (unlikely(!__pyx_tuple__12)) __PYX_ERR(0, 179, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__12);
+  __Pyx_GIVEREF(__pyx_tuple__12);
+  __pyx_codeobj__13 = (PyObject*)__Pyx_PyCode_New(0, 0, 1, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__12, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_Users_fish_Dropbox_halogen_hal, __pyx_n_s_get_target_from_environment, 179, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__13)) __PYX_ERR(0, 179, __pyx_L1_error)
 
-  /* "hal/api.pyx":85
+  /* "hal/api.pyx":184
  *     return out
  * 
  * def get_jit_target_from_environment():             # <<<<<<<<<<<<<<
  *     out = Target()
  *     out.__this__ = halide_get_jit_target_from_environment()
  */
-  __pyx_tuple__6 = PyTuple_Pack(1, __pyx_n_s_out); if (unlikely(!__pyx_tuple__6)) __PYX_ERR(0, 85, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__6);
-  __Pyx_GIVEREF(__pyx_tuple__6);
-  __pyx_codeobj__7 = (PyObject*)__Pyx_PyCode_New(0, 0, 1, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__6, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_Users_fish_Dropbox_halogen_hal, __pyx_n_s_get_jit_target_from_environment, 85, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__7)) __PYX_ERR(0, 85, __pyx_L1_error)
+  __pyx_tuple__14 = PyTuple_Pack(1, __pyx_n_s_out); if (unlikely(!__pyx_tuple__14)) __PYX_ERR(0, 184, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__14);
+  __Pyx_GIVEREF(__pyx_tuple__14);
+  __pyx_codeobj__15 = (PyObject*)__Pyx_PyCode_New(0, 0, 1, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__14, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_Users_fish_Dropbox_halogen_hal, __pyx_n_s_get_jit_target_from_environment, 184, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__15)) __PYX_ERR(0, 184, __pyx_L1_error)
 
-  /* "hal/api.pyx":90
+  /* "hal/api.pyx":189
  *     return out
  * 
  * def validate_target_string(target_string):             # <<<<<<<<<<<<<<
  *     return HalTarget.validate_target_string(target_string)
  * 
  */
-  __pyx_tuple__8 = PyTuple_Pack(1, __pyx_n_s_target_string); if (unlikely(!__pyx_tuple__8)) __PYX_ERR(0, 90, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__8);
-  __Pyx_GIVEREF(__pyx_tuple__8);
-  __pyx_codeobj__9 = (PyObject*)__Pyx_PyCode_New(1, 0, 1, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__8, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_Users_fish_Dropbox_halogen_hal, __pyx_n_s_validate_target_string, 90, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__9)) __PYX_ERR(0, 90, __pyx_L1_error)
+  __pyx_tuple__16 = PyTuple_Pack(1, __pyx_n_s_target_string); if (unlikely(!__pyx_tuple__16)) __PYX_ERR(0, 189, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__16);
+  __Pyx_GIVEREF(__pyx_tuple__16);
+  __pyx_codeobj__17 = (PyObject*)__Pyx_PyCode_New(1, 0, 1, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__16, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_Users_fish_Dropbox_halogen_hal, __pyx_n_s_validate_target_string, 189, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__17)) __PYX_ERR(0, 189, __pyx_L1_error)
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
@@ -2731,6 +4425,7 @@ PyMODINIT_FUNC PyInit_api(void)
 #endif
 {
   PyObject *__pyx_t_1 = NULL;
+  PyObject *__pyx_t_2 = NULL;
   __Pyx_RefNannyDeclarations
   #if CYTHON_REFNANNY
   __Pyx_RefNanny = __Pyx_RefNannyImportAPI("refnanny");
@@ -2806,9 +4501,13 @@ PyMODINIT_FUNC PyInit_api(void)
   /*--- Variable export code ---*/
   /*--- Function export code ---*/
   /*--- Type init code ---*/
-  if (PyType_Ready(&__pyx_type_3hal_3api_Target) < 0) __PYX_ERR(0, 11, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_3hal_3api_Type) < 0) __PYX_ERR(0, 21, __pyx_L1_error)
+  __pyx_type_3hal_3api_Type.tp_print = 0;
+  if (PyObject_SetAttrString(__pyx_m, "Type", (PyObject *)&__pyx_type_3hal_3api_Type) < 0) __PYX_ERR(0, 21, __pyx_L1_error)
+  __pyx_ptype_3hal_3api_Type = &__pyx_type_3hal_3api_Type;
+  if (PyType_Ready(&__pyx_type_3hal_3api_Target) < 0) __PYX_ERR(0, 116, __pyx_L1_error)
   __pyx_type_3hal_3api_Target.tp_print = 0;
-  if (PyObject_SetAttrString(__pyx_m, "Target", (PyObject *)&__pyx_type_3hal_3api_Target) < 0) __PYX_ERR(0, 11, __pyx_L1_error)
+  if (PyObject_SetAttrString(__pyx_m, "Target", (PyObject *)&__pyx_type_3hal_3api_Target) < 0) __PYX_ERR(0, 116, __pyx_L1_error)
   __pyx_ptype_3hal_3api_Target = &__pyx_type_3hal_3api_Target;
   /*--- Type import code ---*/
   /*--- Variable import code ---*/
@@ -2818,58 +4517,290 @@ PyMODINIT_FUNC PyInit_api(void)
   if (__Pyx_patch_abc() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
 
-  /* "hal/api.pyx":75
+  /* "hal/api.pyx":86
+ * 
+ *     @staticmethod
+ *     def Int(int bits, int lanes=1):             # <<<<<<<<<<<<<<
+ *         out = Type()
+ *         out.__this__ = Type_Int(bits, lanes)
+ */
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_3hal_3api_4Type_35Int, NULL, __pyx_n_s_hal_api); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 86, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+
+  /* "hal/api.pyx":85
+ *         return out
+ * 
+ *     @staticmethod             # <<<<<<<<<<<<<<
+ *     def Int(int bits, int lanes=1):
+ *         out = Type()
+ */
+  __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 85, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_GIVEREF(__pyx_t_1);
+  PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_t_1);
+  __pyx_t_1 = 0;
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_staticmethod, __pyx_t_2, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 85, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  if (PyDict_SetItem((PyObject *)__pyx_ptype_3hal_3api_Type->tp_dict, __pyx_n_s_Int, __pyx_t_1) < 0) __PYX_ERR(0, 86, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  PyType_Modified(__pyx_ptype_3hal_3api_Type);
+
+  /* "hal/api.pyx":86
+ * 
+ *     @staticmethod
+ *     def Int(int bits, int lanes=1):             # <<<<<<<<<<<<<<
+ *         out = Type()
+ *         out.__this__ = Type_Int(bits, lanes)
+ */
+  __pyx_t_1 = __Pyx_GetNameInClass((PyObject *)__pyx_ptype_3hal_3api_Type, __pyx_n_s_Int); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 86, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+
+  /* "hal/api.pyx":85
+ *         return out
+ * 
+ *     @staticmethod             # <<<<<<<<<<<<<<
+ *     def Int(int bits, int lanes=1):
+ *         out = Type()
+ */
+  __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 85, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_GIVEREF(__pyx_t_1);
+  PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_t_1);
+  __pyx_t_1 = 0;
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_staticmethod, __pyx_t_2, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 85, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  if (PyDict_SetItem((PyObject *)__pyx_ptype_3hal_3api_Type->tp_dict, __pyx_n_s_Int, __pyx_t_1) < 0) __PYX_ERR(0, 86, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  PyType_Modified(__pyx_ptype_3hal_3api_Type);
+
+  /* "hal/api.pyx":92
+ * 
+ *     @staticmethod
+ *     def UInt(int bits, int lanes=1):             # <<<<<<<<<<<<<<
+ *         out = Type()
+ *         out.__this__ = Type_UInt(bits, lanes)
+ */
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_3hal_3api_4Type_37UInt, NULL, __pyx_n_s_hal_api); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 92, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+
+  /* "hal/api.pyx":91
+ *         return out
+ * 
+ *     @staticmethod             # <<<<<<<<<<<<<<
+ *     def UInt(int bits, int lanes=1):
+ *         out = Type()
+ */
+  __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 91, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_GIVEREF(__pyx_t_1);
+  PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_t_1);
+  __pyx_t_1 = 0;
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_staticmethod, __pyx_t_2, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 91, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  if (PyDict_SetItem((PyObject *)__pyx_ptype_3hal_3api_Type->tp_dict, __pyx_n_s_UInt, __pyx_t_1) < 0) __PYX_ERR(0, 92, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  PyType_Modified(__pyx_ptype_3hal_3api_Type);
+
+  /* "hal/api.pyx":92
+ * 
+ *     @staticmethod
+ *     def UInt(int bits, int lanes=1):             # <<<<<<<<<<<<<<
+ *         out = Type()
+ *         out.__this__ = Type_UInt(bits, lanes)
+ */
+  __pyx_t_1 = __Pyx_GetNameInClass((PyObject *)__pyx_ptype_3hal_3api_Type, __pyx_n_s_UInt); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 92, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+
+  /* "hal/api.pyx":91
+ *         return out
+ * 
+ *     @staticmethod             # <<<<<<<<<<<<<<
+ *     def UInt(int bits, int lanes=1):
+ *         out = Type()
+ */
+  __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 91, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_GIVEREF(__pyx_t_1);
+  PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_t_1);
+  __pyx_t_1 = 0;
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_staticmethod, __pyx_t_2, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 91, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  if (PyDict_SetItem((PyObject *)__pyx_ptype_3hal_3api_Type->tp_dict, __pyx_n_s_UInt, __pyx_t_1) < 0) __PYX_ERR(0, 92, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  PyType_Modified(__pyx_ptype_3hal_3api_Type);
+
+  /* "hal/api.pyx":98
+ * 
+ *     @staticmethod
+ *     def Float(int bits, int lanes=1):             # <<<<<<<<<<<<<<
+ *         out = Type()
+ *         out.__this__ = Type_Float(bits, lanes)
+ */
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_3hal_3api_4Type_39Float, NULL, __pyx_n_s_hal_api); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 98, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+
+  /* "hal/api.pyx":97
+ *         return out
+ * 
+ *     @staticmethod             # <<<<<<<<<<<<<<
+ *     def Float(int bits, int lanes=1):
+ *         out = Type()
+ */
+  __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 97, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_GIVEREF(__pyx_t_1);
+  PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_t_1);
+  __pyx_t_1 = 0;
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_staticmethod, __pyx_t_2, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 97, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  if (PyDict_SetItem((PyObject *)__pyx_ptype_3hal_3api_Type->tp_dict, __pyx_n_s_Float, __pyx_t_1) < 0) __PYX_ERR(0, 98, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  PyType_Modified(__pyx_ptype_3hal_3api_Type);
+
+  /* "hal/api.pyx":98
+ * 
+ *     @staticmethod
+ *     def Float(int bits, int lanes=1):             # <<<<<<<<<<<<<<
+ *         out = Type()
+ *         out.__this__ = Type_Float(bits, lanes)
+ */
+  __pyx_t_1 = __Pyx_GetNameInClass((PyObject *)__pyx_ptype_3hal_3api_Type, __pyx_n_s_Float); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 98, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+
+  /* "hal/api.pyx":97
+ *         return out
+ * 
+ *     @staticmethod             # <<<<<<<<<<<<<<
+ *     def Float(int bits, int lanes=1):
+ *         out = Type()
+ */
+  __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 97, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_GIVEREF(__pyx_t_1);
+  PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_t_1);
+  __pyx_t_1 = 0;
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_staticmethod, __pyx_t_2, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 97, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  if (PyDict_SetItem((PyObject *)__pyx_ptype_3hal_3api_Type->tp_dict, __pyx_n_s_Float, __pyx_t_1) < 0) __PYX_ERR(0, 98, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  PyType_Modified(__pyx_ptype_3hal_3api_Type);
+
+  /* "hal/api.pyx":104
+ * 
+ *     @staticmethod
+ *     def Bool(int lanes=1):             # <<<<<<<<<<<<<<
+ *         out = Type()
+ *         out.__this__ = Type_Bool(lanes)
+ */
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_3hal_3api_4Type_41Bool, NULL, __pyx_n_s_hal_api); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 104, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+
+  /* "hal/api.pyx":103
+ *         return out
+ * 
+ *     @staticmethod             # <<<<<<<<<<<<<<
+ *     def Bool(int lanes=1):
+ *         out = Type()
+ */
+  __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 103, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_GIVEREF(__pyx_t_1);
+  PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_t_1);
+  __pyx_t_1 = 0;
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_staticmethod, __pyx_t_2, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 103, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  if (PyDict_SetItem((PyObject *)__pyx_ptype_3hal_3api_Type->tp_dict, __pyx_n_s_Bool, __pyx_t_1) < 0) __PYX_ERR(0, 104, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  PyType_Modified(__pyx_ptype_3hal_3api_Type);
+
+  /* "hal/api.pyx":104
+ * 
+ *     @staticmethod
+ *     def Bool(int lanes=1):             # <<<<<<<<<<<<<<
+ *         out = Type()
+ *         out.__this__ = Type_Bool(lanes)
+ */
+  __pyx_t_1 = __Pyx_GetNameInClass((PyObject *)__pyx_ptype_3hal_3api_Type, __pyx_n_s_Bool); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 104, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+
+  /* "hal/api.pyx":103
+ *         return out
+ * 
+ *     @staticmethod             # <<<<<<<<<<<<<<
+ *     def Bool(int lanes=1):
+ *         out = Type()
+ */
+  __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 103, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_GIVEREF(__pyx_t_1);
+  PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_t_1);
+  __pyx_t_1 = 0;
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_staticmethod, __pyx_t_2, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 103, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  if (PyDict_SetItem((PyObject *)__pyx_ptype_3hal_3api_Type->tp_dict, __pyx_n_s_Bool, __pyx_t_1) < 0) __PYX_ERR(0, 104, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  PyType_Modified(__pyx_ptype_3hal_3api_Type);
+
+  /* "hal/api.pyx":174
  * 
  * ## FUNCTION WRAPPERS:
  * def get_host_target():             # <<<<<<<<<<<<<<
  *     out = Target()
  *     out.__this__ = halide_get_host_target()
  */
-  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_3hal_3api_1get_host_target, NULL, __pyx_n_s_hal_api); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 75, __pyx_L1_error)
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_3hal_3api_1get_host_target, NULL, __pyx_n_s_hal_api); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 174, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_get_host_target, __pyx_t_1) < 0) __PYX_ERR(0, 75, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_get_host_target, __pyx_t_1) < 0) __PYX_ERR(0, 174, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "hal/api.pyx":80
+  /* "hal/api.pyx":179
  *     return out
  * 
  * def get_target_from_environment():             # <<<<<<<<<<<<<<
  *     out = Target()
  *     out.__this__ = halide_get_target_from_environment()
  */
-  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_3hal_3api_3get_target_from_environment, NULL, __pyx_n_s_hal_api); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 80, __pyx_L1_error)
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_3hal_3api_3get_target_from_environment, NULL, __pyx_n_s_hal_api); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 179, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_get_target_from_environment, __pyx_t_1) < 0) __PYX_ERR(0, 80, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_get_target_from_environment, __pyx_t_1) < 0) __PYX_ERR(0, 179, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "hal/api.pyx":85
+  /* "hal/api.pyx":184
  *     return out
  * 
  * def get_jit_target_from_environment():             # <<<<<<<<<<<<<<
  *     out = Target()
  *     out.__this__ = halide_get_jit_target_from_environment()
  */
-  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_3hal_3api_5get_jit_target_from_environment, NULL, __pyx_n_s_hal_api); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 85, __pyx_L1_error)
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_3hal_3api_5get_jit_target_from_environment, NULL, __pyx_n_s_hal_api); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 184, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_get_jit_target_from_environment, __pyx_t_1) < 0) __PYX_ERR(0, 85, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_get_jit_target_from_environment, __pyx_t_1) < 0) __PYX_ERR(0, 184, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "hal/api.pyx":90
+  /* "hal/api.pyx":189
  *     return out
  * 
  * def validate_target_string(target_string):             # <<<<<<<<<<<<<<
  *     return HalTarget.validate_target_string(target_string)
  * 
  */
-  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_3hal_3api_7validate_target_string, NULL, __pyx_n_s_hal_api); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 90, __pyx_L1_error)
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_3hal_3api_7validate_target_string, NULL, __pyx_n_s_hal_api); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 189, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_validate_target_string, __pyx_t_1) < 0) __PYX_ERR(0, 90, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_validate_target_string, __pyx_t_1) < 0) __PYX_ERR(0, 189, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "hal/api.pyx":1
  * # distutils: language = c++             # <<<<<<<<<<<<<<
  * 
- * from target cimport Target as HalTarget
+ * from libc.stdint cimport *
  */
   __pyx_t_1 = PyDict_New(); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
@@ -2889,6 +4820,7 @@ PyMODINIT_FUNC PyInit_api(void)
   goto __pyx_L0;
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_XDECREF(__pyx_t_2);
   if (__pyx_m) {
     if (__pyx_d) {
       __Pyx_AddTraceback("init hal.api", __pyx_clineno, __pyx_lineno, __pyx_filename);
@@ -2938,6 +4870,32 @@ static PyObject *__Pyx_GetBuiltinName(PyObject *name) {
     return result;
 }
 
+/* RaiseArgTupleInvalid */
+static void __Pyx_RaiseArgtupleInvalid(
+    const char* func_name,
+    int exact,
+    Py_ssize_t num_min,
+    Py_ssize_t num_max,
+    Py_ssize_t num_found)
+{
+    Py_ssize_t num_expected;
+    const char *more_or_less;
+    if (num_found < num_min) {
+        num_expected = num_min;
+        more_or_less = "at least";
+    } else {
+        num_expected = num_max;
+        more_or_less = "at most";
+    }
+    if (exact) {
+        more_or_less = "exactly";
+    }
+    PyErr_Format(PyExc_TypeError,
+                 "%.200s() takes %.8s %" CYTHON_FORMAT_SSIZE_T "d positional argument%.1s (%" CYTHON_FORMAT_SSIZE_T "d given)",
+                 func_name, more_or_less, num_expected,
+                 (num_expected == 1) ? "" : "s", num_found);
+}
+
 /* KeywordStringCheck */
 static CYTHON_INLINE int __Pyx_CheckKeywordStrings(
     PyObject *kwdict,
@@ -2976,6 +4934,169 @@ invalid_keyword:
         function_name, key);
     #endif
     return 0;
+}
+
+/* PyObjectCall */
+#if CYTHON_COMPILING_IN_CPYTHON
+static CYTHON_INLINE PyObject* __Pyx_PyObject_Call(PyObject *func, PyObject *arg, PyObject *kw) {
+    PyObject *result;
+    ternaryfunc call = func->ob_type->tp_call;
+    if (unlikely(!call))
+        return PyObject_Call(func, arg, kw);
+    if (unlikely(Py_EnterRecursiveCall((char*)" while calling a Python object")))
+        return NULL;
+    result = (*call)(func, arg, kw);
+    Py_LeaveRecursiveCall();
+    if (unlikely(!result) && unlikely(!PyErr_Occurred())) {
+        PyErr_SetString(
+            PyExc_SystemError,
+            "NULL result without error in PyObject_Call");
+    }
+    return result;
+}
+#endif
+
+/* ArgTypeTest */
+static void __Pyx_RaiseArgumentTypeInvalid(const char* name, PyObject *obj, PyTypeObject *type) {
+    PyErr_Format(PyExc_TypeError,
+        "Argument '%.200s' has incorrect type (expected %.200s, got %.200s)",
+        name, type->tp_name, Py_TYPE(obj)->tp_name);
+}
+static CYTHON_INLINE int __Pyx_ArgTypeTest(PyObject *obj, PyTypeObject *type, int none_allowed,
+    const char *name, int exact)
+{
+    if (unlikely(!type)) {
+        PyErr_SetString(PyExc_SystemError, "Missing type object");
+        return 0;
+    }
+    if (none_allowed && obj == Py_None) return 1;
+    else if (exact) {
+        if (likely(Py_TYPE(obj) == type)) return 1;
+        #if PY_MAJOR_VERSION == 2
+        else if ((type == &PyBaseString_Type) && likely(__Pyx_PyBaseString_CheckExact(obj))) return 1;
+        #endif
+    }
+    else {
+        if (likely(PyObject_TypeCheck(obj, type))) return 1;
+    }
+    __Pyx_RaiseArgumentTypeInvalid(name, obj, type);
+    return 0;
+}
+
+/* RaiseDoubleKeywords */
+static void __Pyx_RaiseDoubleKeywordsError(
+    const char* func_name,
+    PyObject* kw_name)
+{
+    PyErr_Format(PyExc_TypeError,
+        #if PY_MAJOR_VERSION >= 3
+        "%s() got multiple values for keyword argument '%U'", func_name, kw_name);
+        #else
+        "%s() got multiple values for keyword argument '%s'", func_name,
+        PyString_AsString(kw_name));
+        #endif
+}
+
+/* ParseKeywords */
+static int __Pyx_ParseOptionalKeywords(
+    PyObject *kwds,
+    PyObject **argnames[],
+    PyObject *kwds2,
+    PyObject *values[],
+    Py_ssize_t num_pos_args,
+    const char* function_name)
+{
+    PyObject *key = 0, *value = 0;
+    Py_ssize_t pos = 0;
+    PyObject*** name;
+    PyObject*** first_kw_arg = argnames + num_pos_args;
+    while (PyDict_Next(kwds, &pos, &key, &value)) {
+        name = first_kw_arg;
+        while (*name && (**name != key)) name++;
+        if (*name) {
+            values[name-argnames] = value;
+            continue;
+        }
+        name = first_kw_arg;
+        #if PY_MAJOR_VERSION < 3
+        if (likely(PyString_CheckExact(key)) || likely(PyString_Check(key))) {
+            while (*name) {
+                if ((CYTHON_COMPILING_IN_PYPY || PyString_GET_SIZE(**name) == PyString_GET_SIZE(key))
+                        && _PyString_Eq(**name, key)) {
+                    values[name-argnames] = value;
+                    break;
+                }
+                name++;
+            }
+            if (*name) continue;
+            else {
+                PyObject*** argname = argnames;
+                while (argname != first_kw_arg) {
+                    if ((**argname == key) || (
+                            (CYTHON_COMPILING_IN_PYPY || PyString_GET_SIZE(**argname) == PyString_GET_SIZE(key))
+                             && _PyString_Eq(**argname, key))) {
+                        goto arg_passed_twice;
+                    }
+                    argname++;
+                }
+            }
+        } else
+        #endif
+        if (likely(PyUnicode_Check(key))) {
+            while (*name) {
+                int cmp = (**name == key) ? 0 :
+                #if !CYTHON_COMPILING_IN_PYPY && PY_MAJOR_VERSION >= 3
+                    (PyUnicode_GET_SIZE(**name) != PyUnicode_GET_SIZE(key)) ? 1 :
+                #endif
+                    PyUnicode_Compare(**name, key);
+                if (cmp < 0 && unlikely(PyErr_Occurred())) goto bad;
+                if (cmp == 0) {
+                    values[name-argnames] = value;
+                    break;
+                }
+                name++;
+            }
+            if (*name) continue;
+            else {
+                PyObject*** argname = argnames;
+                while (argname != first_kw_arg) {
+                    int cmp = (**argname == key) ? 0 :
+                    #if !CYTHON_COMPILING_IN_PYPY && PY_MAJOR_VERSION >= 3
+                        (PyUnicode_GET_SIZE(**argname) != PyUnicode_GET_SIZE(key)) ? 1 :
+                    #endif
+                        PyUnicode_Compare(**argname, key);
+                    if (cmp < 0 && unlikely(PyErr_Occurred())) goto bad;
+                    if (cmp == 0) goto arg_passed_twice;
+                    argname++;
+                }
+            }
+        } else
+            goto invalid_keyword_type;
+        if (kwds2) {
+            if (unlikely(PyDict_SetItem(kwds2, key, value))) goto bad;
+        } else {
+            goto invalid_keyword;
+        }
+    }
+    return 0;
+arg_passed_twice:
+    __Pyx_RaiseDoubleKeywordsError(function_name, key);
+    goto bad;
+invalid_keyword_type:
+    PyErr_Format(PyExc_TypeError,
+        "%.200s() keywords must be strings", function_name);
+    goto bad;
+invalid_keyword:
+    PyErr_Format(PyExc_TypeError,
+    #if PY_MAJOR_VERSION < 3
+        "%.200s() got an unexpected keyword argument '%.200s'",
+        function_name, PyString_AsString(key));
+    #else
+        "%s() got an unexpected keyword argument '%U'",
+        function_name, key);
+    #endif
+bad:
+    return -1;
 }
 
 /* dict_getitem_default */
@@ -3086,26 +5207,6 @@ static CYTHON_INLINE PyObject *__Pyx_GetItemInt_Fast(PyObject *o, Py_ssize_t i, 
 #endif
     return __Pyx_GetItemInt_Generic(o, PyInt_FromSsize_t(i));
 }
-
-/* PyObjectCall */
-#if CYTHON_COMPILING_IN_CPYTHON
-static CYTHON_INLINE PyObject* __Pyx_PyObject_Call(PyObject *func, PyObject *arg, PyObject *kw) {
-    PyObject *result;
-    ternaryfunc call = func->ob_type->tp_call;
-    if (unlikely(!call))
-        return PyObject_Call(func, arg, kw);
-    if (unlikely(Py_EnterRecursiveCall((char*)" while calling a Python object")))
-        return NULL;
-    result = (*call)(func, arg, kw);
-    Py_LeaveRecursiveCall();
-    if (unlikely(!result) && unlikely(!PyErr_Occurred())) {
-        PyErr_SetString(
-            PyExc_SystemError,
-            "NULL result without error in PyObject_Call");
-    }
-    return result;
-}
-#endif
 
 /* PyErrFetchRestore */
 #if CYTHON_COMPILING_IN_CPYTHON
@@ -3294,150 +5395,35 @@ bad:
 }
 #endif
 
-/* RaiseArgTupleInvalid */
-  static void __Pyx_RaiseArgtupleInvalid(
-    const char* func_name,
-    int exact,
-    Py_ssize_t num_min,
-    Py_ssize_t num_max,
-    Py_ssize_t num_found)
-{
-    Py_ssize_t num_expected;
-    const char *more_or_less;
-    if (num_found < num_min) {
-        num_expected = num_min;
-        more_or_less = "at least";
+/* GetModuleGlobalName */
+  static CYTHON_INLINE PyObject *__Pyx_GetModuleGlobalName(PyObject *name) {
+    PyObject *result;
+#if CYTHON_COMPILING_IN_CPYTHON
+    result = PyDict_GetItem(__pyx_d, name);
+    if (likely(result)) {
+        Py_INCREF(result);
     } else {
-        num_expected = num_max;
-        more_or_less = "at most";
+#else
+    result = PyObject_GetItem(__pyx_d, name);
+    if (!result) {
+        PyErr_Clear();
+#endif
+        result = __Pyx_GetBuiltinName(name);
     }
-    if (exact) {
-        more_or_less = "exactly";
-    }
-    PyErr_Format(PyExc_TypeError,
-                 "%.200s() takes %.8s %" CYTHON_FORMAT_SSIZE_T "d positional argument%.1s (%" CYTHON_FORMAT_SSIZE_T "d given)",
-                 func_name, more_or_less, num_expected,
-                 (num_expected == 1) ? "" : "s", num_found);
+    return result;
 }
 
-/* RaiseDoubleKeywords */
-  static void __Pyx_RaiseDoubleKeywordsError(
-    const char* func_name,
-    PyObject* kw_name)
-{
-    PyErr_Format(PyExc_TypeError,
-        #if PY_MAJOR_VERSION >= 3
-        "%s() got multiple values for keyword argument '%U'", func_name, kw_name);
-        #else
-        "%s() got multiple values for keyword argument '%s'", func_name,
-        PyString_AsString(kw_name));
-        #endif
-}
-
-/* ParseKeywords */
-  static int __Pyx_ParseOptionalKeywords(
-    PyObject *kwds,
-    PyObject **argnames[],
-    PyObject *kwds2,
-    PyObject *values[],
-    Py_ssize_t num_pos_args,
-    const char* function_name)
-{
-    PyObject *key = 0, *value = 0;
-    Py_ssize_t pos = 0;
-    PyObject*** name;
-    PyObject*** first_kw_arg = argnames + num_pos_args;
-    while (PyDict_Next(kwds, &pos, &key, &value)) {
-        name = first_kw_arg;
-        while (*name && (**name != key)) name++;
-        if (*name) {
-            values[name-argnames] = value;
-            continue;
-        }
-        name = first_kw_arg;
-        #if PY_MAJOR_VERSION < 3
-        if (likely(PyString_CheckExact(key)) || likely(PyString_Check(key))) {
-            while (*name) {
-                if ((CYTHON_COMPILING_IN_PYPY || PyString_GET_SIZE(**name) == PyString_GET_SIZE(key))
-                        && _PyString_Eq(**name, key)) {
-                    values[name-argnames] = value;
-                    break;
-                }
-                name++;
-            }
-            if (*name) continue;
-            else {
-                PyObject*** argname = argnames;
-                while (argname != first_kw_arg) {
-                    if ((**argname == key) || (
-                            (CYTHON_COMPILING_IN_PYPY || PyString_GET_SIZE(**argname) == PyString_GET_SIZE(key))
-                             && _PyString_Eq(**argname, key))) {
-                        goto arg_passed_twice;
-                    }
-                    argname++;
-                }
-            }
-        } else
-        #endif
-        if (likely(PyUnicode_Check(key))) {
-            while (*name) {
-                int cmp = (**name == key) ? 0 :
-                #if !CYTHON_COMPILING_IN_PYPY && PY_MAJOR_VERSION >= 3
-                    (PyUnicode_GET_SIZE(**name) != PyUnicode_GET_SIZE(key)) ? 1 :
-                #endif
-                    PyUnicode_Compare(**name, key);
-                if (cmp < 0 && unlikely(PyErr_Occurred())) goto bad;
-                if (cmp == 0) {
-                    values[name-argnames] = value;
-                    break;
-                }
-                name++;
-            }
-            if (*name) continue;
-            else {
-                PyObject*** argname = argnames;
-                while (argname != first_kw_arg) {
-                    int cmp = (**argname == key) ? 0 :
-                    #if !CYTHON_COMPILING_IN_PYPY && PY_MAJOR_VERSION >= 3
-                        (PyUnicode_GET_SIZE(**argname) != PyUnicode_GET_SIZE(key)) ? 1 :
-                    #endif
-                        PyUnicode_Compare(**argname, key);
-                    if (cmp < 0 && unlikely(PyErr_Occurred())) goto bad;
-                    if (cmp == 0) goto arg_passed_twice;
-                    argname++;
-                }
-            }
-        } else
-            goto invalid_keyword_type;
-        if (kwds2) {
-            if (unlikely(PyDict_SetItem(kwds2, key, value))) goto bad;
-        } else {
-            goto invalid_keyword;
-        }
-    }
-    return 0;
-arg_passed_twice:
-    __Pyx_RaiseDoubleKeywordsError(function_name, key);
-    goto bad;
-invalid_keyword_type:
-    PyErr_Format(PyExc_TypeError,
-        "%.200s() keywords must be strings", function_name);
-    goto bad;
-invalid_keyword:
-    PyErr_Format(PyExc_TypeError,
-    #if PY_MAJOR_VERSION < 3
-        "%.200s() got an unexpected keyword argument '%.200s'",
-        function_name, PyString_AsString(key));
-    #else
-        "%s() got an unexpected keyword argument '%U'",
-        function_name, key);
-    #endif
-bad:
-    return -1;
+/* GetNameInClass */
+    static PyObject *__Pyx_GetNameInClass(PyObject *nmspace, PyObject *name) {
+    PyObject *result;
+    result = __Pyx_PyObject_GetAttrStr(nmspace, name);
+    if (!result)
+        result = __Pyx_GetModuleGlobalName(name);
+    return result;
 }
 
 /* CodeObjectCache */
-  static int __pyx_bisect_code_objects(__Pyx_CodeObjectCacheEntry* entries, int count, int code_line) {
+    static int __pyx_bisect_code_objects(__Pyx_CodeObjectCacheEntry* entries, int count, int code_line) {
     int start = 0, mid = 0, end = count - 1;
     if (end >= 0 && code_line > entries[end].code_line) {
         return count;
@@ -3517,7 +5503,7 @@ static void __pyx_insert_code_object(int code_line, PyCodeObject* code_object) {
 }
 
 /* AddTraceback */
-  #include "compile.h"
+    #include "compile.h"
 #include "frameobject.h"
 #include "traceback.h"
 static PyCodeObject* __Pyx_CreateCodeObjectForTraceback(
@@ -3597,62 +5583,8 @@ bad:
     Py_XDECREF(py_frame);
 }
 
-/* CIntToPy */
-  static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value) {
-    const long neg_one = (long) -1, const_zero = (long) 0;
-    const int is_unsigned = neg_one > const_zero;
-    if (is_unsigned) {
-        if (sizeof(long) < sizeof(long)) {
-            return PyInt_FromLong((long) value);
-        } else if (sizeof(long) <= sizeof(unsigned long)) {
-            return PyLong_FromUnsignedLong((unsigned long) value);
-        } else if (sizeof(long) <= sizeof(unsigned PY_LONG_LONG)) {
-            return PyLong_FromUnsignedLongLong((unsigned PY_LONG_LONG) value);
-        }
-    } else {
-        if (sizeof(long) <= sizeof(long)) {
-            return PyInt_FromLong((long) value);
-        } else if (sizeof(long) <= sizeof(PY_LONG_LONG)) {
-            return PyLong_FromLongLong((PY_LONG_LONG) value);
-        }
-    }
-    {
-        int one = 1; int little = (int)*(unsigned char *)&one;
-        unsigned char *bytes = (unsigned char *)&value;
-        return _PyLong_FromByteArray(bytes, sizeof(long),
-                                     little, !is_unsigned);
-    }
-}
-
-/* CIntToPy */
-  static CYTHON_INLINE PyObject* __Pyx_PyInt_From_enum__Halide_3a__3a_Target_3a__3a_OS(enum Halide::Target::OS value) {
-    const enum Halide::Target::OS neg_one = (enum Halide::Target::OS) -1, const_zero = (enum Halide::Target::OS) 0;
-    const int is_unsigned = neg_one > const_zero;
-    if (is_unsigned) {
-        if (sizeof(enum Halide::Target::OS) < sizeof(long)) {
-            return PyInt_FromLong((long) value);
-        } else if (sizeof(enum Halide::Target::OS) <= sizeof(unsigned long)) {
-            return PyLong_FromUnsignedLong((unsigned long) value);
-        } else if (sizeof(enum Halide::Target::OS) <= sizeof(unsigned PY_LONG_LONG)) {
-            return PyLong_FromUnsignedLongLong((unsigned PY_LONG_LONG) value);
-        }
-    } else {
-        if (sizeof(enum Halide::Target::OS) <= sizeof(long)) {
-            return PyInt_FromLong((long) value);
-        } else if (sizeof(enum Halide::Target::OS) <= sizeof(PY_LONG_LONG)) {
-            return PyLong_FromLongLong((PY_LONG_LONG) value);
-        }
-    }
-    {
-        int one = 1; int little = (int)*(unsigned char *)&one;
-        unsigned char *bytes = (unsigned char *)&value;
-        return _PyLong_FromByteArray(bytes, sizeof(enum Halide::Target::OS),
-                                     little, !is_unsigned);
-    }
-}
-
 /* CIntFromPyVerify */
-  #define __PYX_VERIFY_RETURN_INT(target_type, func_type, func_value)\
+    #define __PYX_VERIFY_RETURN_INT(target_type, func_type, func_value)\
     __PYX__VERIFY_RETURN_INT(target_type, func_type, func_value, 0)
 #define __PYX_VERIFY_RETURN_INT_EXC(target_type, func_type, func_value)\
     __PYX__VERIFY_RETURN_INT(target_type, func_type, func_value, 1)
@@ -3674,34 +5606,34 @@ bad:
     }
 
 /* CIntToPy */
-  static CYTHON_INLINE PyObject* __Pyx_PyInt_From_enum__Halide_3a__3a_Target_3a__3a_Arch(enum Halide::Target::Arch value) {
-    const enum Halide::Target::Arch neg_one = (enum Halide::Target::Arch) -1, const_zero = (enum Halide::Target::Arch) 0;
+    static CYTHON_INLINE PyObject* __Pyx_PyInt_From_halide_type_code_t(halide_type_code_t value) {
+    const halide_type_code_t neg_one = (halide_type_code_t) -1, const_zero = (halide_type_code_t) 0;
     const int is_unsigned = neg_one > const_zero;
     if (is_unsigned) {
-        if (sizeof(enum Halide::Target::Arch) < sizeof(long)) {
+        if (sizeof(halide_type_code_t) < sizeof(long)) {
             return PyInt_FromLong((long) value);
-        } else if (sizeof(enum Halide::Target::Arch) <= sizeof(unsigned long)) {
+        } else if (sizeof(halide_type_code_t) <= sizeof(unsigned long)) {
             return PyLong_FromUnsignedLong((unsigned long) value);
-        } else if (sizeof(enum Halide::Target::Arch) <= sizeof(unsigned PY_LONG_LONG)) {
+        } else if (sizeof(halide_type_code_t) <= sizeof(unsigned PY_LONG_LONG)) {
             return PyLong_FromUnsignedLongLong((unsigned PY_LONG_LONG) value);
         }
     } else {
-        if (sizeof(enum Halide::Target::Arch) <= sizeof(long)) {
+        if (sizeof(halide_type_code_t) <= sizeof(long)) {
             return PyInt_FromLong((long) value);
-        } else if (sizeof(enum Halide::Target::Arch) <= sizeof(PY_LONG_LONG)) {
+        } else if (sizeof(halide_type_code_t) <= sizeof(PY_LONG_LONG)) {
             return PyLong_FromLongLong((PY_LONG_LONG) value);
         }
     }
     {
         int one = 1; int little = (int)*(unsigned char *)&one;
         unsigned char *bytes = (unsigned char *)&value;
-        return _PyLong_FromByteArray(bytes, sizeof(enum Halide::Target::Arch),
+        return _PyLong_FromByteArray(bytes, sizeof(halide_type_code_t),
                                      little, !is_unsigned);
     }
 }
 
 /* CIntToPy */
-  static CYTHON_INLINE PyObject* __Pyx_PyInt_From_int(int value) {
+    static CYTHON_INLINE PyObject* __Pyx_PyInt_From_int(int value) {
     const int neg_one = (int) -1, const_zero = (int) 0;
     const int is_unsigned = neg_one > const_zero;
     if (is_unsigned) {
@@ -3728,7 +5660,88 @@ bad:
 }
 
 /* CIntToPy */
-  static CYTHON_INLINE PyObject* __Pyx_PyInt_From_int64_t(int64_t value) {
+    static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value) {
+    const long neg_one = (long) -1, const_zero = (long) 0;
+    const int is_unsigned = neg_one > const_zero;
+    if (is_unsigned) {
+        if (sizeof(long) < sizeof(long)) {
+            return PyInt_FromLong((long) value);
+        } else if (sizeof(long) <= sizeof(unsigned long)) {
+            return PyLong_FromUnsignedLong((unsigned long) value);
+        } else if (sizeof(long) <= sizeof(unsigned PY_LONG_LONG)) {
+            return PyLong_FromUnsignedLongLong((unsigned PY_LONG_LONG) value);
+        }
+    } else {
+        if (sizeof(long) <= sizeof(long)) {
+            return PyInt_FromLong((long) value);
+        } else if (sizeof(long) <= sizeof(PY_LONG_LONG)) {
+            return PyLong_FromLongLong((PY_LONG_LONG) value);
+        }
+    }
+    {
+        int one = 1; int little = (int)*(unsigned char *)&one;
+        unsigned char *bytes = (unsigned char *)&value;
+        return _PyLong_FromByteArray(bytes, sizeof(long),
+                                     little, !is_unsigned);
+    }
+}
+
+/* CIntToPy */
+    static CYTHON_INLINE PyObject* __Pyx_PyInt_From_enum__Halide_3a__3a_Target_3a__3a_OS(enum Halide::Target::OS value) {
+    const enum Halide::Target::OS neg_one = (enum Halide::Target::OS) -1, const_zero = (enum Halide::Target::OS) 0;
+    const int is_unsigned = neg_one > const_zero;
+    if (is_unsigned) {
+        if (sizeof(enum Halide::Target::OS) < sizeof(long)) {
+            return PyInt_FromLong((long) value);
+        } else if (sizeof(enum Halide::Target::OS) <= sizeof(unsigned long)) {
+            return PyLong_FromUnsignedLong((unsigned long) value);
+        } else if (sizeof(enum Halide::Target::OS) <= sizeof(unsigned PY_LONG_LONG)) {
+            return PyLong_FromUnsignedLongLong((unsigned PY_LONG_LONG) value);
+        }
+    } else {
+        if (sizeof(enum Halide::Target::OS) <= sizeof(long)) {
+            return PyInt_FromLong((long) value);
+        } else if (sizeof(enum Halide::Target::OS) <= sizeof(PY_LONG_LONG)) {
+            return PyLong_FromLongLong((PY_LONG_LONG) value);
+        }
+    }
+    {
+        int one = 1; int little = (int)*(unsigned char *)&one;
+        unsigned char *bytes = (unsigned char *)&value;
+        return _PyLong_FromByteArray(bytes, sizeof(enum Halide::Target::OS),
+                                     little, !is_unsigned);
+    }
+}
+
+/* CIntToPy */
+    static CYTHON_INLINE PyObject* __Pyx_PyInt_From_enum__Halide_3a__3a_Target_3a__3a_Arch(enum Halide::Target::Arch value) {
+    const enum Halide::Target::Arch neg_one = (enum Halide::Target::Arch) -1, const_zero = (enum Halide::Target::Arch) 0;
+    const int is_unsigned = neg_one > const_zero;
+    if (is_unsigned) {
+        if (sizeof(enum Halide::Target::Arch) < sizeof(long)) {
+            return PyInt_FromLong((long) value);
+        } else if (sizeof(enum Halide::Target::Arch) <= sizeof(unsigned long)) {
+            return PyLong_FromUnsignedLong((unsigned long) value);
+        } else if (sizeof(enum Halide::Target::Arch) <= sizeof(unsigned PY_LONG_LONG)) {
+            return PyLong_FromUnsignedLongLong((unsigned PY_LONG_LONG) value);
+        }
+    } else {
+        if (sizeof(enum Halide::Target::Arch) <= sizeof(long)) {
+            return PyInt_FromLong((long) value);
+        } else if (sizeof(enum Halide::Target::Arch) <= sizeof(PY_LONG_LONG)) {
+            return PyLong_FromLongLong((PY_LONG_LONG) value);
+        }
+    }
+    {
+        int one = 1; int little = (int)*(unsigned char *)&one;
+        unsigned char *bytes = (unsigned char *)&value;
+        return _PyLong_FromByteArray(bytes, sizeof(enum Halide::Target::Arch),
+                                     little, !is_unsigned);
+    }
+}
+
+/* CIntToPy */
+    static CYTHON_INLINE PyObject* __Pyx_PyInt_From_int64_t(int64_t value) {
     const int64_t neg_one = (int64_t) -1, const_zero = (int64_t) 0;
     const int is_unsigned = neg_one > const_zero;
     if (is_unsigned) {
@@ -3755,377 +5768,7 @@ bad:
 }
 
 /* CIntFromPy */
-  static CYTHON_INLINE enum Halide::Target::OS __Pyx_PyInt_As_enum__Halide_3a__3a_Target_3a__3a_OS(PyObject *x) {
-    const enum Halide::Target::OS neg_one = (enum Halide::Target::OS) -1, const_zero = (enum Halide::Target::OS) 0;
-    const int is_unsigned = neg_one > const_zero;
-#if PY_MAJOR_VERSION < 3
-    if (likely(PyInt_Check(x))) {
-        if (sizeof(enum Halide::Target::OS) < sizeof(long)) {
-            __PYX_VERIFY_RETURN_INT(enum Halide::Target::OS, long, PyInt_AS_LONG(x))
-        } else {
-            long val = PyInt_AS_LONG(x);
-            if (is_unsigned && unlikely(val < 0)) {
-                goto raise_neg_overflow;
-            }
-            return (enum Halide::Target::OS) val;
-        }
-    } else
-#endif
-    if (likely(PyLong_Check(x))) {
-        if (is_unsigned) {
-#if CYTHON_USE_PYLONG_INTERNALS
-            const digit* digits = ((PyLongObject*)x)->ob_digit;
-            switch (Py_SIZE(x)) {
-                case  0: return (enum Halide::Target::OS) 0;
-                case  1: __PYX_VERIFY_RETURN_INT(enum Halide::Target::OS, digit, digits[0])
-                case 2:
-                    if (8 * sizeof(enum Halide::Target::OS) > 1 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(enum Halide::Target::OS, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(enum Halide::Target::OS) >= 2 * PyLong_SHIFT) {
-                            return (enum Halide::Target::OS) (((((enum Halide::Target::OS)digits[1]) << PyLong_SHIFT) | (enum Halide::Target::OS)digits[0]));
-                        }
-                    }
-                    break;
-                case 3:
-                    if (8 * sizeof(enum Halide::Target::OS) > 2 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(enum Halide::Target::OS, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(enum Halide::Target::OS) >= 3 * PyLong_SHIFT) {
-                            return (enum Halide::Target::OS) (((((((enum Halide::Target::OS)digits[2]) << PyLong_SHIFT) | (enum Halide::Target::OS)digits[1]) << PyLong_SHIFT) | (enum Halide::Target::OS)digits[0]));
-                        }
-                    }
-                    break;
-                case 4:
-                    if (8 * sizeof(enum Halide::Target::OS) > 3 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(enum Halide::Target::OS, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(enum Halide::Target::OS) >= 4 * PyLong_SHIFT) {
-                            return (enum Halide::Target::OS) (((((((((enum Halide::Target::OS)digits[3]) << PyLong_SHIFT) | (enum Halide::Target::OS)digits[2]) << PyLong_SHIFT) | (enum Halide::Target::OS)digits[1]) << PyLong_SHIFT) | (enum Halide::Target::OS)digits[0]));
-                        }
-                    }
-                    break;
-            }
-#endif
-#if CYTHON_COMPILING_IN_CPYTHON
-            if (unlikely(Py_SIZE(x) < 0)) {
-                goto raise_neg_overflow;
-            }
-#else
-            {
-                int result = PyObject_RichCompareBool(x, Py_False, Py_LT);
-                if (unlikely(result < 0))
-                    return (enum Halide::Target::OS) -1;
-                if (unlikely(result == 1))
-                    goto raise_neg_overflow;
-            }
-#endif
-            if (sizeof(enum Halide::Target::OS) <= sizeof(unsigned long)) {
-                __PYX_VERIFY_RETURN_INT_EXC(enum Halide::Target::OS, unsigned long, PyLong_AsUnsignedLong(x))
-            } else if (sizeof(enum Halide::Target::OS) <= sizeof(unsigned PY_LONG_LONG)) {
-                __PYX_VERIFY_RETURN_INT_EXC(enum Halide::Target::OS, unsigned PY_LONG_LONG, PyLong_AsUnsignedLongLong(x))
-            }
-        } else {
-#if CYTHON_USE_PYLONG_INTERNALS
-            const digit* digits = ((PyLongObject*)x)->ob_digit;
-            switch (Py_SIZE(x)) {
-                case  0: return (enum Halide::Target::OS) 0;
-                case -1: __PYX_VERIFY_RETURN_INT(enum Halide::Target::OS, sdigit, (sdigit) (-(sdigit)digits[0]))
-                case  1: __PYX_VERIFY_RETURN_INT(enum Halide::Target::OS,  digit, +digits[0])
-                case -2:
-                    if (8 * sizeof(enum Halide::Target::OS) - 1 > 1 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(enum Halide::Target::OS, long, -(long) (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(enum Halide::Target::OS) - 1 > 2 * PyLong_SHIFT) {
-                            return (enum Halide::Target::OS) (((enum Halide::Target::OS)-1)*(((((enum Halide::Target::OS)digits[1]) << PyLong_SHIFT) | (enum Halide::Target::OS)digits[0])));
-                        }
-                    }
-                    break;
-                case 2:
-                    if (8 * sizeof(enum Halide::Target::OS) > 1 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(enum Halide::Target::OS, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(enum Halide::Target::OS) - 1 > 2 * PyLong_SHIFT) {
-                            return (enum Halide::Target::OS) ((((((enum Halide::Target::OS)digits[1]) << PyLong_SHIFT) | (enum Halide::Target::OS)digits[0])));
-                        }
-                    }
-                    break;
-                case -3:
-                    if (8 * sizeof(enum Halide::Target::OS) - 1 > 2 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(enum Halide::Target::OS, long, -(long) (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(enum Halide::Target::OS) - 1 > 3 * PyLong_SHIFT) {
-                            return (enum Halide::Target::OS) (((enum Halide::Target::OS)-1)*(((((((enum Halide::Target::OS)digits[2]) << PyLong_SHIFT) | (enum Halide::Target::OS)digits[1]) << PyLong_SHIFT) | (enum Halide::Target::OS)digits[0])));
-                        }
-                    }
-                    break;
-                case 3:
-                    if (8 * sizeof(enum Halide::Target::OS) > 2 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(enum Halide::Target::OS, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(enum Halide::Target::OS) - 1 > 3 * PyLong_SHIFT) {
-                            return (enum Halide::Target::OS) ((((((((enum Halide::Target::OS)digits[2]) << PyLong_SHIFT) | (enum Halide::Target::OS)digits[1]) << PyLong_SHIFT) | (enum Halide::Target::OS)digits[0])));
-                        }
-                    }
-                    break;
-                case -4:
-                    if (8 * sizeof(enum Halide::Target::OS) - 1 > 3 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(enum Halide::Target::OS, long, -(long) (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(enum Halide::Target::OS) - 1 > 4 * PyLong_SHIFT) {
-                            return (enum Halide::Target::OS) (((enum Halide::Target::OS)-1)*(((((((((enum Halide::Target::OS)digits[3]) << PyLong_SHIFT) | (enum Halide::Target::OS)digits[2]) << PyLong_SHIFT) | (enum Halide::Target::OS)digits[1]) << PyLong_SHIFT) | (enum Halide::Target::OS)digits[0])));
-                        }
-                    }
-                    break;
-                case 4:
-                    if (8 * sizeof(enum Halide::Target::OS) > 3 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(enum Halide::Target::OS, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(enum Halide::Target::OS) - 1 > 4 * PyLong_SHIFT) {
-                            return (enum Halide::Target::OS) ((((((((((enum Halide::Target::OS)digits[3]) << PyLong_SHIFT) | (enum Halide::Target::OS)digits[2]) << PyLong_SHIFT) | (enum Halide::Target::OS)digits[1]) << PyLong_SHIFT) | (enum Halide::Target::OS)digits[0])));
-                        }
-                    }
-                    break;
-            }
-#endif
-            if (sizeof(enum Halide::Target::OS) <= sizeof(long)) {
-                __PYX_VERIFY_RETURN_INT_EXC(enum Halide::Target::OS, long, PyLong_AsLong(x))
-            } else if (sizeof(enum Halide::Target::OS) <= sizeof(PY_LONG_LONG)) {
-                __PYX_VERIFY_RETURN_INT_EXC(enum Halide::Target::OS, PY_LONG_LONG, PyLong_AsLongLong(x))
-            }
-        }
-        {
-#if CYTHON_COMPILING_IN_PYPY && !defined(_PyLong_AsByteArray)
-            PyErr_SetString(PyExc_RuntimeError,
-                            "_PyLong_AsByteArray() not available in PyPy, cannot convert large numbers");
-#else
-            enum Halide::Target::OS val;
-            PyObject *v = __Pyx_PyNumber_IntOrLong(x);
- #if PY_MAJOR_VERSION < 3
-            if (likely(v) && !PyLong_Check(v)) {
-                PyObject *tmp = v;
-                v = PyNumber_Long(tmp);
-                Py_DECREF(tmp);
-            }
- #endif
-            if (likely(v)) {
-                int one = 1; int is_little = (int)*(unsigned char *)&one;
-                unsigned char *bytes = (unsigned char *)&val;
-                int ret = _PyLong_AsByteArray((PyLongObject *)v,
-                                              bytes, sizeof(val),
-                                              is_little, !is_unsigned);
-                Py_DECREF(v);
-                if (likely(!ret))
-                    return val;
-            }
-#endif
-            return (enum Halide::Target::OS) -1;
-        }
-    } else {
-        enum Halide::Target::OS val;
-        PyObject *tmp = __Pyx_PyNumber_IntOrLong(x);
-        if (!tmp) return (enum Halide::Target::OS) -1;
-        val = __Pyx_PyInt_As_enum__Halide_3a__3a_Target_3a__3a_OS(tmp);
-        Py_DECREF(tmp);
-        return val;
-    }
-raise_overflow:
-    PyErr_SetString(PyExc_OverflowError,
-        "value too large to convert to enum Halide::Target::OS");
-    return (enum Halide::Target::OS) -1;
-raise_neg_overflow:
-    PyErr_SetString(PyExc_OverflowError,
-        "can't convert negative value to enum Halide::Target::OS");
-    return (enum Halide::Target::OS) -1;
-}
-
-/* CIntFromPy */
-  static CYTHON_INLINE enum Halide::Target::Arch __Pyx_PyInt_As_enum__Halide_3a__3a_Target_3a__3a_Arch(PyObject *x) {
-    const enum Halide::Target::Arch neg_one = (enum Halide::Target::Arch) -1, const_zero = (enum Halide::Target::Arch) 0;
-    const int is_unsigned = neg_one > const_zero;
-#if PY_MAJOR_VERSION < 3
-    if (likely(PyInt_Check(x))) {
-        if (sizeof(enum Halide::Target::Arch) < sizeof(long)) {
-            __PYX_VERIFY_RETURN_INT(enum Halide::Target::Arch, long, PyInt_AS_LONG(x))
-        } else {
-            long val = PyInt_AS_LONG(x);
-            if (is_unsigned && unlikely(val < 0)) {
-                goto raise_neg_overflow;
-            }
-            return (enum Halide::Target::Arch) val;
-        }
-    } else
-#endif
-    if (likely(PyLong_Check(x))) {
-        if (is_unsigned) {
-#if CYTHON_USE_PYLONG_INTERNALS
-            const digit* digits = ((PyLongObject*)x)->ob_digit;
-            switch (Py_SIZE(x)) {
-                case  0: return (enum Halide::Target::Arch) 0;
-                case  1: __PYX_VERIFY_RETURN_INT(enum Halide::Target::Arch, digit, digits[0])
-                case 2:
-                    if (8 * sizeof(enum Halide::Target::Arch) > 1 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(enum Halide::Target::Arch, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(enum Halide::Target::Arch) >= 2 * PyLong_SHIFT) {
-                            return (enum Halide::Target::Arch) (((((enum Halide::Target::Arch)digits[1]) << PyLong_SHIFT) | (enum Halide::Target::Arch)digits[0]));
-                        }
-                    }
-                    break;
-                case 3:
-                    if (8 * sizeof(enum Halide::Target::Arch) > 2 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(enum Halide::Target::Arch, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(enum Halide::Target::Arch) >= 3 * PyLong_SHIFT) {
-                            return (enum Halide::Target::Arch) (((((((enum Halide::Target::Arch)digits[2]) << PyLong_SHIFT) | (enum Halide::Target::Arch)digits[1]) << PyLong_SHIFT) | (enum Halide::Target::Arch)digits[0]));
-                        }
-                    }
-                    break;
-                case 4:
-                    if (8 * sizeof(enum Halide::Target::Arch) > 3 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(enum Halide::Target::Arch, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(enum Halide::Target::Arch) >= 4 * PyLong_SHIFT) {
-                            return (enum Halide::Target::Arch) (((((((((enum Halide::Target::Arch)digits[3]) << PyLong_SHIFT) | (enum Halide::Target::Arch)digits[2]) << PyLong_SHIFT) | (enum Halide::Target::Arch)digits[1]) << PyLong_SHIFT) | (enum Halide::Target::Arch)digits[0]));
-                        }
-                    }
-                    break;
-            }
-#endif
-#if CYTHON_COMPILING_IN_CPYTHON
-            if (unlikely(Py_SIZE(x) < 0)) {
-                goto raise_neg_overflow;
-            }
-#else
-            {
-                int result = PyObject_RichCompareBool(x, Py_False, Py_LT);
-                if (unlikely(result < 0))
-                    return (enum Halide::Target::Arch) -1;
-                if (unlikely(result == 1))
-                    goto raise_neg_overflow;
-            }
-#endif
-            if (sizeof(enum Halide::Target::Arch) <= sizeof(unsigned long)) {
-                __PYX_VERIFY_RETURN_INT_EXC(enum Halide::Target::Arch, unsigned long, PyLong_AsUnsignedLong(x))
-            } else if (sizeof(enum Halide::Target::Arch) <= sizeof(unsigned PY_LONG_LONG)) {
-                __PYX_VERIFY_RETURN_INT_EXC(enum Halide::Target::Arch, unsigned PY_LONG_LONG, PyLong_AsUnsignedLongLong(x))
-            }
-        } else {
-#if CYTHON_USE_PYLONG_INTERNALS
-            const digit* digits = ((PyLongObject*)x)->ob_digit;
-            switch (Py_SIZE(x)) {
-                case  0: return (enum Halide::Target::Arch) 0;
-                case -1: __PYX_VERIFY_RETURN_INT(enum Halide::Target::Arch, sdigit, (sdigit) (-(sdigit)digits[0]))
-                case  1: __PYX_VERIFY_RETURN_INT(enum Halide::Target::Arch,  digit, +digits[0])
-                case -2:
-                    if (8 * sizeof(enum Halide::Target::Arch) - 1 > 1 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(enum Halide::Target::Arch, long, -(long) (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(enum Halide::Target::Arch) - 1 > 2 * PyLong_SHIFT) {
-                            return (enum Halide::Target::Arch) (((enum Halide::Target::Arch)-1)*(((((enum Halide::Target::Arch)digits[1]) << PyLong_SHIFT) | (enum Halide::Target::Arch)digits[0])));
-                        }
-                    }
-                    break;
-                case 2:
-                    if (8 * sizeof(enum Halide::Target::Arch) > 1 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(enum Halide::Target::Arch, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(enum Halide::Target::Arch) - 1 > 2 * PyLong_SHIFT) {
-                            return (enum Halide::Target::Arch) ((((((enum Halide::Target::Arch)digits[1]) << PyLong_SHIFT) | (enum Halide::Target::Arch)digits[0])));
-                        }
-                    }
-                    break;
-                case -3:
-                    if (8 * sizeof(enum Halide::Target::Arch) - 1 > 2 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(enum Halide::Target::Arch, long, -(long) (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(enum Halide::Target::Arch) - 1 > 3 * PyLong_SHIFT) {
-                            return (enum Halide::Target::Arch) (((enum Halide::Target::Arch)-1)*(((((((enum Halide::Target::Arch)digits[2]) << PyLong_SHIFT) | (enum Halide::Target::Arch)digits[1]) << PyLong_SHIFT) | (enum Halide::Target::Arch)digits[0])));
-                        }
-                    }
-                    break;
-                case 3:
-                    if (8 * sizeof(enum Halide::Target::Arch) > 2 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(enum Halide::Target::Arch, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(enum Halide::Target::Arch) - 1 > 3 * PyLong_SHIFT) {
-                            return (enum Halide::Target::Arch) ((((((((enum Halide::Target::Arch)digits[2]) << PyLong_SHIFT) | (enum Halide::Target::Arch)digits[1]) << PyLong_SHIFT) | (enum Halide::Target::Arch)digits[0])));
-                        }
-                    }
-                    break;
-                case -4:
-                    if (8 * sizeof(enum Halide::Target::Arch) - 1 > 3 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(enum Halide::Target::Arch, long, -(long) (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(enum Halide::Target::Arch) - 1 > 4 * PyLong_SHIFT) {
-                            return (enum Halide::Target::Arch) (((enum Halide::Target::Arch)-1)*(((((((((enum Halide::Target::Arch)digits[3]) << PyLong_SHIFT) | (enum Halide::Target::Arch)digits[2]) << PyLong_SHIFT) | (enum Halide::Target::Arch)digits[1]) << PyLong_SHIFT) | (enum Halide::Target::Arch)digits[0])));
-                        }
-                    }
-                    break;
-                case 4:
-                    if (8 * sizeof(enum Halide::Target::Arch) > 3 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(enum Halide::Target::Arch, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(enum Halide::Target::Arch) - 1 > 4 * PyLong_SHIFT) {
-                            return (enum Halide::Target::Arch) ((((((((((enum Halide::Target::Arch)digits[3]) << PyLong_SHIFT) | (enum Halide::Target::Arch)digits[2]) << PyLong_SHIFT) | (enum Halide::Target::Arch)digits[1]) << PyLong_SHIFT) | (enum Halide::Target::Arch)digits[0])));
-                        }
-                    }
-                    break;
-            }
-#endif
-            if (sizeof(enum Halide::Target::Arch) <= sizeof(long)) {
-                __PYX_VERIFY_RETURN_INT_EXC(enum Halide::Target::Arch, long, PyLong_AsLong(x))
-            } else if (sizeof(enum Halide::Target::Arch) <= sizeof(PY_LONG_LONG)) {
-                __PYX_VERIFY_RETURN_INT_EXC(enum Halide::Target::Arch, PY_LONG_LONG, PyLong_AsLongLong(x))
-            }
-        }
-        {
-#if CYTHON_COMPILING_IN_PYPY && !defined(_PyLong_AsByteArray)
-            PyErr_SetString(PyExc_RuntimeError,
-                            "_PyLong_AsByteArray() not available in PyPy, cannot convert large numbers");
-#else
-            enum Halide::Target::Arch val;
-            PyObject *v = __Pyx_PyNumber_IntOrLong(x);
- #if PY_MAJOR_VERSION < 3
-            if (likely(v) && !PyLong_Check(v)) {
-                PyObject *tmp = v;
-                v = PyNumber_Long(tmp);
-                Py_DECREF(tmp);
-            }
- #endif
-            if (likely(v)) {
-                int one = 1; int is_little = (int)*(unsigned char *)&one;
-                unsigned char *bytes = (unsigned char *)&val;
-                int ret = _PyLong_AsByteArray((PyLongObject *)v,
-                                              bytes, sizeof(val),
-                                              is_little, !is_unsigned);
-                Py_DECREF(v);
-                if (likely(!ret))
-                    return val;
-            }
-#endif
-            return (enum Halide::Target::Arch) -1;
-        }
-    } else {
-        enum Halide::Target::Arch val;
-        PyObject *tmp = __Pyx_PyNumber_IntOrLong(x);
-        if (!tmp) return (enum Halide::Target::Arch) -1;
-        val = __Pyx_PyInt_As_enum__Halide_3a__3a_Target_3a__3a_Arch(tmp);
-        Py_DECREF(tmp);
-        return val;
-    }
-raise_overflow:
-    PyErr_SetString(PyExc_OverflowError,
-        "value too large to convert to enum Halide::Target::Arch");
-    return (enum Halide::Target::Arch) -1;
-raise_neg_overflow:
-    PyErr_SetString(PyExc_OverflowError,
-        "can't convert negative value to enum Halide::Target::Arch");
-    return (enum Halide::Target::Arch) -1;
-}
-
-/* CIntFromPy */
-  static CYTHON_INLINE int __Pyx_PyInt_As_int(PyObject *x) {
+    static CYTHON_INLINE int __Pyx_PyInt_As_int(PyObject *x) {
     const int neg_one = (int) -1, const_zero = (int) 0;
     const int is_unsigned = neg_one > const_zero;
 #if PY_MAJOR_VERSION < 3
@@ -4310,7 +5953,932 @@ raise_neg_overflow:
 }
 
 /* CIntFromPy */
-  static CYTHON_INLINE long __Pyx_PyInt_As_long(PyObject *x) {
+    static CYTHON_INLINE halide_type_code_t __Pyx_PyInt_As_halide_type_code_t(PyObject *x) {
+    const halide_type_code_t neg_one = (halide_type_code_t) -1, const_zero = (halide_type_code_t) 0;
+    const int is_unsigned = neg_one > const_zero;
+#if PY_MAJOR_VERSION < 3
+    if (likely(PyInt_Check(x))) {
+        if (sizeof(halide_type_code_t) < sizeof(long)) {
+            __PYX_VERIFY_RETURN_INT(halide_type_code_t, long, PyInt_AS_LONG(x))
+        } else {
+            long val = PyInt_AS_LONG(x);
+            if (is_unsigned && unlikely(val < 0)) {
+                goto raise_neg_overflow;
+            }
+            return (halide_type_code_t) val;
+        }
+    } else
+#endif
+    if (likely(PyLong_Check(x))) {
+        if (is_unsigned) {
+#if CYTHON_USE_PYLONG_INTERNALS
+            const digit* digits = ((PyLongObject*)x)->ob_digit;
+            switch (Py_SIZE(x)) {
+                case  0: return (halide_type_code_t) 0;
+                case  1: __PYX_VERIFY_RETURN_INT(halide_type_code_t, digit, digits[0])
+                case 2:
+                    if (8 * sizeof(halide_type_code_t) > 1 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(halide_type_code_t, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(halide_type_code_t) >= 2 * PyLong_SHIFT) {
+                            return (halide_type_code_t) (((((halide_type_code_t)digits[1]) << PyLong_SHIFT) | (halide_type_code_t)digits[0]));
+                        }
+                    }
+                    break;
+                case 3:
+                    if (8 * sizeof(halide_type_code_t) > 2 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(halide_type_code_t, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(halide_type_code_t) >= 3 * PyLong_SHIFT) {
+                            return (halide_type_code_t) (((((((halide_type_code_t)digits[2]) << PyLong_SHIFT) | (halide_type_code_t)digits[1]) << PyLong_SHIFT) | (halide_type_code_t)digits[0]));
+                        }
+                    }
+                    break;
+                case 4:
+                    if (8 * sizeof(halide_type_code_t) > 3 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(halide_type_code_t, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(halide_type_code_t) >= 4 * PyLong_SHIFT) {
+                            return (halide_type_code_t) (((((((((halide_type_code_t)digits[3]) << PyLong_SHIFT) | (halide_type_code_t)digits[2]) << PyLong_SHIFT) | (halide_type_code_t)digits[1]) << PyLong_SHIFT) | (halide_type_code_t)digits[0]));
+                        }
+                    }
+                    break;
+            }
+#endif
+#if CYTHON_COMPILING_IN_CPYTHON
+            if (unlikely(Py_SIZE(x) < 0)) {
+                goto raise_neg_overflow;
+            }
+#else
+            {
+                int result = PyObject_RichCompareBool(x, Py_False, Py_LT);
+                if (unlikely(result < 0))
+                    return (halide_type_code_t) -1;
+                if (unlikely(result == 1))
+                    goto raise_neg_overflow;
+            }
+#endif
+            if (sizeof(halide_type_code_t) <= sizeof(unsigned long)) {
+                __PYX_VERIFY_RETURN_INT_EXC(halide_type_code_t, unsigned long, PyLong_AsUnsignedLong(x))
+            } else if (sizeof(halide_type_code_t) <= sizeof(unsigned PY_LONG_LONG)) {
+                __PYX_VERIFY_RETURN_INT_EXC(halide_type_code_t, unsigned PY_LONG_LONG, PyLong_AsUnsignedLongLong(x))
+            }
+        } else {
+#if CYTHON_USE_PYLONG_INTERNALS
+            const digit* digits = ((PyLongObject*)x)->ob_digit;
+            switch (Py_SIZE(x)) {
+                case  0: return (halide_type_code_t) 0;
+                case -1: __PYX_VERIFY_RETURN_INT(halide_type_code_t, sdigit, (sdigit) (-(sdigit)digits[0]))
+                case  1: __PYX_VERIFY_RETURN_INT(halide_type_code_t,  digit, +digits[0])
+                case -2:
+                    if (8 * sizeof(halide_type_code_t) - 1 > 1 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(halide_type_code_t, long, -(long) (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(halide_type_code_t) - 1 > 2 * PyLong_SHIFT) {
+                            return (halide_type_code_t) (((halide_type_code_t)-1)*(((((halide_type_code_t)digits[1]) << PyLong_SHIFT) | (halide_type_code_t)digits[0])));
+                        }
+                    }
+                    break;
+                case 2:
+                    if (8 * sizeof(halide_type_code_t) > 1 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(halide_type_code_t, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(halide_type_code_t) - 1 > 2 * PyLong_SHIFT) {
+                            return (halide_type_code_t) ((((((halide_type_code_t)digits[1]) << PyLong_SHIFT) | (halide_type_code_t)digits[0])));
+                        }
+                    }
+                    break;
+                case -3:
+                    if (8 * sizeof(halide_type_code_t) - 1 > 2 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(halide_type_code_t, long, -(long) (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(halide_type_code_t) - 1 > 3 * PyLong_SHIFT) {
+                            return (halide_type_code_t) (((halide_type_code_t)-1)*(((((((halide_type_code_t)digits[2]) << PyLong_SHIFT) | (halide_type_code_t)digits[1]) << PyLong_SHIFT) | (halide_type_code_t)digits[0])));
+                        }
+                    }
+                    break;
+                case 3:
+                    if (8 * sizeof(halide_type_code_t) > 2 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(halide_type_code_t, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(halide_type_code_t) - 1 > 3 * PyLong_SHIFT) {
+                            return (halide_type_code_t) ((((((((halide_type_code_t)digits[2]) << PyLong_SHIFT) | (halide_type_code_t)digits[1]) << PyLong_SHIFT) | (halide_type_code_t)digits[0])));
+                        }
+                    }
+                    break;
+                case -4:
+                    if (8 * sizeof(halide_type_code_t) - 1 > 3 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(halide_type_code_t, long, -(long) (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(halide_type_code_t) - 1 > 4 * PyLong_SHIFT) {
+                            return (halide_type_code_t) (((halide_type_code_t)-1)*(((((((((halide_type_code_t)digits[3]) << PyLong_SHIFT) | (halide_type_code_t)digits[2]) << PyLong_SHIFT) | (halide_type_code_t)digits[1]) << PyLong_SHIFT) | (halide_type_code_t)digits[0])));
+                        }
+                    }
+                    break;
+                case 4:
+                    if (8 * sizeof(halide_type_code_t) > 3 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(halide_type_code_t, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(halide_type_code_t) - 1 > 4 * PyLong_SHIFT) {
+                            return (halide_type_code_t) ((((((((((halide_type_code_t)digits[3]) << PyLong_SHIFT) | (halide_type_code_t)digits[2]) << PyLong_SHIFT) | (halide_type_code_t)digits[1]) << PyLong_SHIFT) | (halide_type_code_t)digits[0])));
+                        }
+                    }
+                    break;
+            }
+#endif
+            if (sizeof(halide_type_code_t) <= sizeof(long)) {
+                __PYX_VERIFY_RETURN_INT_EXC(halide_type_code_t, long, PyLong_AsLong(x))
+            } else if (sizeof(halide_type_code_t) <= sizeof(PY_LONG_LONG)) {
+                __PYX_VERIFY_RETURN_INT_EXC(halide_type_code_t, PY_LONG_LONG, PyLong_AsLongLong(x))
+            }
+        }
+        {
+#if CYTHON_COMPILING_IN_PYPY && !defined(_PyLong_AsByteArray)
+            PyErr_SetString(PyExc_RuntimeError,
+                            "_PyLong_AsByteArray() not available in PyPy, cannot convert large numbers");
+#else
+            halide_type_code_t val;
+            PyObject *v = __Pyx_PyNumber_IntOrLong(x);
+ #if PY_MAJOR_VERSION < 3
+            if (likely(v) && !PyLong_Check(v)) {
+                PyObject *tmp = v;
+                v = PyNumber_Long(tmp);
+                Py_DECREF(tmp);
+            }
+ #endif
+            if (likely(v)) {
+                int one = 1; int is_little = (int)*(unsigned char *)&one;
+                unsigned char *bytes = (unsigned char *)&val;
+                int ret = _PyLong_AsByteArray((PyLongObject *)v,
+                                              bytes, sizeof(val),
+                                              is_little, !is_unsigned);
+                Py_DECREF(v);
+                if (likely(!ret))
+                    return val;
+            }
+#endif
+            return (halide_type_code_t) -1;
+        }
+    } else {
+        halide_type_code_t val;
+        PyObject *tmp = __Pyx_PyNumber_IntOrLong(x);
+        if (!tmp) return (halide_type_code_t) -1;
+        val = __Pyx_PyInt_As_halide_type_code_t(tmp);
+        Py_DECREF(tmp);
+        return val;
+    }
+raise_overflow:
+    PyErr_SetString(PyExc_OverflowError,
+        "value too large to convert to halide_type_code_t");
+    return (halide_type_code_t) -1;
+raise_neg_overflow:
+    PyErr_SetString(PyExc_OverflowError,
+        "can't convert negative value to halide_type_code_t");
+    return (halide_type_code_t) -1;
+}
+
+/* CIntFromPy */
+    static CYTHON_INLINE uint8_t __Pyx_PyInt_As_uint8_t(PyObject *x) {
+    const uint8_t neg_one = (uint8_t) -1, const_zero = (uint8_t) 0;
+    const int is_unsigned = neg_one > const_zero;
+#if PY_MAJOR_VERSION < 3
+    if (likely(PyInt_Check(x))) {
+        if (sizeof(uint8_t) < sizeof(long)) {
+            __PYX_VERIFY_RETURN_INT(uint8_t, long, PyInt_AS_LONG(x))
+        } else {
+            long val = PyInt_AS_LONG(x);
+            if (is_unsigned && unlikely(val < 0)) {
+                goto raise_neg_overflow;
+            }
+            return (uint8_t) val;
+        }
+    } else
+#endif
+    if (likely(PyLong_Check(x))) {
+        if (is_unsigned) {
+#if CYTHON_USE_PYLONG_INTERNALS
+            const digit* digits = ((PyLongObject*)x)->ob_digit;
+            switch (Py_SIZE(x)) {
+                case  0: return (uint8_t) 0;
+                case  1: __PYX_VERIFY_RETURN_INT(uint8_t, digit, digits[0])
+                case 2:
+                    if (8 * sizeof(uint8_t) > 1 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(uint8_t, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(uint8_t) >= 2 * PyLong_SHIFT) {
+                            return (uint8_t) (((((uint8_t)digits[1]) << PyLong_SHIFT) | (uint8_t)digits[0]));
+                        }
+                    }
+                    break;
+                case 3:
+                    if (8 * sizeof(uint8_t) > 2 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(uint8_t, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(uint8_t) >= 3 * PyLong_SHIFT) {
+                            return (uint8_t) (((((((uint8_t)digits[2]) << PyLong_SHIFT) | (uint8_t)digits[1]) << PyLong_SHIFT) | (uint8_t)digits[0]));
+                        }
+                    }
+                    break;
+                case 4:
+                    if (8 * sizeof(uint8_t) > 3 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(uint8_t, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(uint8_t) >= 4 * PyLong_SHIFT) {
+                            return (uint8_t) (((((((((uint8_t)digits[3]) << PyLong_SHIFT) | (uint8_t)digits[2]) << PyLong_SHIFT) | (uint8_t)digits[1]) << PyLong_SHIFT) | (uint8_t)digits[0]));
+                        }
+                    }
+                    break;
+            }
+#endif
+#if CYTHON_COMPILING_IN_CPYTHON
+            if (unlikely(Py_SIZE(x) < 0)) {
+                goto raise_neg_overflow;
+            }
+#else
+            {
+                int result = PyObject_RichCompareBool(x, Py_False, Py_LT);
+                if (unlikely(result < 0))
+                    return (uint8_t) -1;
+                if (unlikely(result == 1))
+                    goto raise_neg_overflow;
+            }
+#endif
+            if (sizeof(uint8_t) <= sizeof(unsigned long)) {
+                __PYX_VERIFY_RETURN_INT_EXC(uint8_t, unsigned long, PyLong_AsUnsignedLong(x))
+            } else if (sizeof(uint8_t) <= sizeof(unsigned PY_LONG_LONG)) {
+                __PYX_VERIFY_RETURN_INT_EXC(uint8_t, unsigned PY_LONG_LONG, PyLong_AsUnsignedLongLong(x))
+            }
+        } else {
+#if CYTHON_USE_PYLONG_INTERNALS
+            const digit* digits = ((PyLongObject*)x)->ob_digit;
+            switch (Py_SIZE(x)) {
+                case  0: return (uint8_t) 0;
+                case -1: __PYX_VERIFY_RETURN_INT(uint8_t, sdigit, (sdigit) (-(sdigit)digits[0]))
+                case  1: __PYX_VERIFY_RETURN_INT(uint8_t,  digit, +digits[0])
+                case -2:
+                    if (8 * sizeof(uint8_t) - 1 > 1 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(uint8_t, long, -(long) (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(uint8_t) - 1 > 2 * PyLong_SHIFT) {
+                            return (uint8_t) (((uint8_t)-1)*(((((uint8_t)digits[1]) << PyLong_SHIFT) | (uint8_t)digits[0])));
+                        }
+                    }
+                    break;
+                case 2:
+                    if (8 * sizeof(uint8_t) > 1 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(uint8_t, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(uint8_t) - 1 > 2 * PyLong_SHIFT) {
+                            return (uint8_t) ((((((uint8_t)digits[1]) << PyLong_SHIFT) | (uint8_t)digits[0])));
+                        }
+                    }
+                    break;
+                case -3:
+                    if (8 * sizeof(uint8_t) - 1 > 2 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(uint8_t, long, -(long) (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(uint8_t) - 1 > 3 * PyLong_SHIFT) {
+                            return (uint8_t) (((uint8_t)-1)*(((((((uint8_t)digits[2]) << PyLong_SHIFT) | (uint8_t)digits[1]) << PyLong_SHIFT) | (uint8_t)digits[0])));
+                        }
+                    }
+                    break;
+                case 3:
+                    if (8 * sizeof(uint8_t) > 2 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(uint8_t, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(uint8_t) - 1 > 3 * PyLong_SHIFT) {
+                            return (uint8_t) ((((((((uint8_t)digits[2]) << PyLong_SHIFT) | (uint8_t)digits[1]) << PyLong_SHIFT) | (uint8_t)digits[0])));
+                        }
+                    }
+                    break;
+                case -4:
+                    if (8 * sizeof(uint8_t) - 1 > 3 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(uint8_t, long, -(long) (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(uint8_t) - 1 > 4 * PyLong_SHIFT) {
+                            return (uint8_t) (((uint8_t)-1)*(((((((((uint8_t)digits[3]) << PyLong_SHIFT) | (uint8_t)digits[2]) << PyLong_SHIFT) | (uint8_t)digits[1]) << PyLong_SHIFT) | (uint8_t)digits[0])));
+                        }
+                    }
+                    break;
+                case 4:
+                    if (8 * sizeof(uint8_t) > 3 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(uint8_t, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(uint8_t) - 1 > 4 * PyLong_SHIFT) {
+                            return (uint8_t) ((((((((((uint8_t)digits[3]) << PyLong_SHIFT) | (uint8_t)digits[2]) << PyLong_SHIFT) | (uint8_t)digits[1]) << PyLong_SHIFT) | (uint8_t)digits[0])));
+                        }
+                    }
+                    break;
+            }
+#endif
+            if (sizeof(uint8_t) <= sizeof(long)) {
+                __PYX_VERIFY_RETURN_INT_EXC(uint8_t, long, PyLong_AsLong(x))
+            } else if (sizeof(uint8_t) <= sizeof(PY_LONG_LONG)) {
+                __PYX_VERIFY_RETURN_INT_EXC(uint8_t, PY_LONG_LONG, PyLong_AsLongLong(x))
+            }
+        }
+        {
+#if CYTHON_COMPILING_IN_PYPY && !defined(_PyLong_AsByteArray)
+            PyErr_SetString(PyExc_RuntimeError,
+                            "_PyLong_AsByteArray() not available in PyPy, cannot convert large numbers");
+#else
+            uint8_t val;
+            PyObject *v = __Pyx_PyNumber_IntOrLong(x);
+ #if PY_MAJOR_VERSION < 3
+            if (likely(v) && !PyLong_Check(v)) {
+                PyObject *tmp = v;
+                v = PyNumber_Long(tmp);
+                Py_DECREF(tmp);
+            }
+ #endif
+            if (likely(v)) {
+                int one = 1; int is_little = (int)*(unsigned char *)&one;
+                unsigned char *bytes = (unsigned char *)&val;
+                int ret = _PyLong_AsByteArray((PyLongObject *)v,
+                                              bytes, sizeof(val),
+                                              is_little, !is_unsigned);
+                Py_DECREF(v);
+                if (likely(!ret))
+                    return val;
+            }
+#endif
+            return (uint8_t) -1;
+        }
+    } else {
+        uint8_t val;
+        PyObject *tmp = __Pyx_PyNumber_IntOrLong(x);
+        if (!tmp) return (uint8_t) -1;
+        val = __Pyx_PyInt_As_uint8_t(tmp);
+        Py_DECREF(tmp);
+        return val;
+    }
+raise_overflow:
+    PyErr_SetString(PyExc_OverflowError,
+        "value too large to convert to uint8_t");
+    return (uint8_t) -1;
+raise_neg_overflow:
+    PyErr_SetString(PyExc_OverflowError,
+        "can't convert negative value to uint8_t");
+    return (uint8_t) -1;
+}
+
+/* CIntFromPy */
+    static CYTHON_INLINE uint16_t __Pyx_PyInt_As_uint16_t(PyObject *x) {
+    const uint16_t neg_one = (uint16_t) -1, const_zero = (uint16_t) 0;
+    const int is_unsigned = neg_one > const_zero;
+#if PY_MAJOR_VERSION < 3
+    if (likely(PyInt_Check(x))) {
+        if (sizeof(uint16_t) < sizeof(long)) {
+            __PYX_VERIFY_RETURN_INT(uint16_t, long, PyInt_AS_LONG(x))
+        } else {
+            long val = PyInt_AS_LONG(x);
+            if (is_unsigned && unlikely(val < 0)) {
+                goto raise_neg_overflow;
+            }
+            return (uint16_t) val;
+        }
+    } else
+#endif
+    if (likely(PyLong_Check(x))) {
+        if (is_unsigned) {
+#if CYTHON_USE_PYLONG_INTERNALS
+            const digit* digits = ((PyLongObject*)x)->ob_digit;
+            switch (Py_SIZE(x)) {
+                case  0: return (uint16_t) 0;
+                case  1: __PYX_VERIFY_RETURN_INT(uint16_t, digit, digits[0])
+                case 2:
+                    if (8 * sizeof(uint16_t) > 1 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(uint16_t, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(uint16_t) >= 2 * PyLong_SHIFT) {
+                            return (uint16_t) (((((uint16_t)digits[1]) << PyLong_SHIFT) | (uint16_t)digits[0]));
+                        }
+                    }
+                    break;
+                case 3:
+                    if (8 * sizeof(uint16_t) > 2 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(uint16_t, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(uint16_t) >= 3 * PyLong_SHIFT) {
+                            return (uint16_t) (((((((uint16_t)digits[2]) << PyLong_SHIFT) | (uint16_t)digits[1]) << PyLong_SHIFT) | (uint16_t)digits[0]));
+                        }
+                    }
+                    break;
+                case 4:
+                    if (8 * sizeof(uint16_t) > 3 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(uint16_t, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(uint16_t) >= 4 * PyLong_SHIFT) {
+                            return (uint16_t) (((((((((uint16_t)digits[3]) << PyLong_SHIFT) | (uint16_t)digits[2]) << PyLong_SHIFT) | (uint16_t)digits[1]) << PyLong_SHIFT) | (uint16_t)digits[0]));
+                        }
+                    }
+                    break;
+            }
+#endif
+#if CYTHON_COMPILING_IN_CPYTHON
+            if (unlikely(Py_SIZE(x) < 0)) {
+                goto raise_neg_overflow;
+            }
+#else
+            {
+                int result = PyObject_RichCompareBool(x, Py_False, Py_LT);
+                if (unlikely(result < 0))
+                    return (uint16_t) -1;
+                if (unlikely(result == 1))
+                    goto raise_neg_overflow;
+            }
+#endif
+            if (sizeof(uint16_t) <= sizeof(unsigned long)) {
+                __PYX_VERIFY_RETURN_INT_EXC(uint16_t, unsigned long, PyLong_AsUnsignedLong(x))
+            } else if (sizeof(uint16_t) <= sizeof(unsigned PY_LONG_LONG)) {
+                __PYX_VERIFY_RETURN_INT_EXC(uint16_t, unsigned PY_LONG_LONG, PyLong_AsUnsignedLongLong(x))
+            }
+        } else {
+#if CYTHON_USE_PYLONG_INTERNALS
+            const digit* digits = ((PyLongObject*)x)->ob_digit;
+            switch (Py_SIZE(x)) {
+                case  0: return (uint16_t) 0;
+                case -1: __PYX_VERIFY_RETURN_INT(uint16_t, sdigit, (sdigit) (-(sdigit)digits[0]))
+                case  1: __PYX_VERIFY_RETURN_INT(uint16_t,  digit, +digits[0])
+                case -2:
+                    if (8 * sizeof(uint16_t) - 1 > 1 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(uint16_t, long, -(long) (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(uint16_t) - 1 > 2 * PyLong_SHIFT) {
+                            return (uint16_t) (((uint16_t)-1)*(((((uint16_t)digits[1]) << PyLong_SHIFT) | (uint16_t)digits[0])));
+                        }
+                    }
+                    break;
+                case 2:
+                    if (8 * sizeof(uint16_t) > 1 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(uint16_t, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(uint16_t) - 1 > 2 * PyLong_SHIFT) {
+                            return (uint16_t) ((((((uint16_t)digits[1]) << PyLong_SHIFT) | (uint16_t)digits[0])));
+                        }
+                    }
+                    break;
+                case -3:
+                    if (8 * sizeof(uint16_t) - 1 > 2 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(uint16_t, long, -(long) (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(uint16_t) - 1 > 3 * PyLong_SHIFT) {
+                            return (uint16_t) (((uint16_t)-1)*(((((((uint16_t)digits[2]) << PyLong_SHIFT) | (uint16_t)digits[1]) << PyLong_SHIFT) | (uint16_t)digits[0])));
+                        }
+                    }
+                    break;
+                case 3:
+                    if (8 * sizeof(uint16_t) > 2 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(uint16_t, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(uint16_t) - 1 > 3 * PyLong_SHIFT) {
+                            return (uint16_t) ((((((((uint16_t)digits[2]) << PyLong_SHIFT) | (uint16_t)digits[1]) << PyLong_SHIFT) | (uint16_t)digits[0])));
+                        }
+                    }
+                    break;
+                case -4:
+                    if (8 * sizeof(uint16_t) - 1 > 3 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(uint16_t, long, -(long) (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(uint16_t) - 1 > 4 * PyLong_SHIFT) {
+                            return (uint16_t) (((uint16_t)-1)*(((((((((uint16_t)digits[3]) << PyLong_SHIFT) | (uint16_t)digits[2]) << PyLong_SHIFT) | (uint16_t)digits[1]) << PyLong_SHIFT) | (uint16_t)digits[0])));
+                        }
+                    }
+                    break;
+                case 4:
+                    if (8 * sizeof(uint16_t) > 3 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(uint16_t, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(uint16_t) - 1 > 4 * PyLong_SHIFT) {
+                            return (uint16_t) ((((((((((uint16_t)digits[3]) << PyLong_SHIFT) | (uint16_t)digits[2]) << PyLong_SHIFT) | (uint16_t)digits[1]) << PyLong_SHIFT) | (uint16_t)digits[0])));
+                        }
+                    }
+                    break;
+            }
+#endif
+            if (sizeof(uint16_t) <= sizeof(long)) {
+                __PYX_VERIFY_RETURN_INT_EXC(uint16_t, long, PyLong_AsLong(x))
+            } else if (sizeof(uint16_t) <= sizeof(PY_LONG_LONG)) {
+                __PYX_VERIFY_RETURN_INT_EXC(uint16_t, PY_LONG_LONG, PyLong_AsLongLong(x))
+            }
+        }
+        {
+#if CYTHON_COMPILING_IN_PYPY && !defined(_PyLong_AsByteArray)
+            PyErr_SetString(PyExc_RuntimeError,
+                            "_PyLong_AsByteArray() not available in PyPy, cannot convert large numbers");
+#else
+            uint16_t val;
+            PyObject *v = __Pyx_PyNumber_IntOrLong(x);
+ #if PY_MAJOR_VERSION < 3
+            if (likely(v) && !PyLong_Check(v)) {
+                PyObject *tmp = v;
+                v = PyNumber_Long(tmp);
+                Py_DECREF(tmp);
+            }
+ #endif
+            if (likely(v)) {
+                int one = 1; int is_little = (int)*(unsigned char *)&one;
+                unsigned char *bytes = (unsigned char *)&val;
+                int ret = _PyLong_AsByteArray((PyLongObject *)v,
+                                              bytes, sizeof(val),
+                                              is_little, !is_unsigned);
+                Py_DECREF(v);
+                if (likely(!ret))
+                    return val;
+            }
+#endif
+            return (uint16_t) -1;
+        }
+    } else {
+        uint16_t val;
+        PyObject *tmp = __Pyx_PyNumber_IntOrLong(x);
+        if (!tmp) return (uint16_t) -1;
+        val = __Pyx_PyInt_As_uint16_t(tmp);
+        Py_DECREF(tmp);
+        return val;
+    }
+raise_overflow:
+    PyErr_SetString(PyExc_OverflowError,
+        "value too large to convert to uint16_t");
+    return (uint16_t) -1;
+raise_neg_overflow:
+    PyErr_SetString(PyExc_OverflowError,
+        "can't convert negative value to uint16_t");
+    return (uint16_t) -1;
+}
+
+/* CIntFromPy */
+    static CYTHON_INLINE enum Halide::Target::OS __Pyx_PyInt_As_enum__Halide_3a__3a_Target_3a__3a_OS(PyObject *x) {
+    const enum Halide::Target::OS neg_one = (enum Halide::Target::OS) -1, const_zero = (enum Halide::Target::OS) 0;
+    const int is_unsigned = neg_one > const_zero;
+#if PY_MAJOR_VERSION < 3
+    if (likely(PyInt_Check(x))) {
+        if (sizeof(enum Halide::Target::OS) < sizeof(long)) {
+            __PYX_VERIFY_RETURN_INT(enum Halide::Target::OS, long, PyInt_AS_LONG(x))
+        } else {
+            long val = PyInt_AS_LONG(x);
+            if (is_unsigned && unlikely(val < 0)) {
+                goto raise_neg_overflow;
+            }
+            return (enum Halide::Target::OS) val;
+        }
+    } else
+#endif
+    if (likely(PyLong_Check(x))) {
+        if (is_unsigned) {
+#if CYTHON_USE_PYLONG_INTERNALS
+            const digit* digits = ((PyLongObject*)x)->ob_digit;
+            switch (Py_SIZE(x)) {
+                case  0: return (enum Halide::Target::OS) 0;
+                case  1: __PYX_VERIFY_RETURN_INT(enum Halide::Target::OS, digit, digits[0])
+                case 2:
+                    if (8 * sizeof(enum Halide::Target::OS) > 1 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(enum Halide::Target::OS, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(enum Halide::Target::OS) >= 2 * PyLong_SHIFT) {
+                            return (enum Halide::Target::OS) (((((enum Halide::Target::OS)digits[1]) << PyLong_SHIFT) | (enum Halide::Target::OS)digits[0]));
+                        }
+                    }
+                    break;
+                case 3:
+                    if (8 * sizeof(enum Halide::Target::OS) > 2 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(enum Halide::Target::OS, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(enum Halide::Target::OS) >= 3 * PyLong_SHIFT) {
+                            return (enum Halide::Target::OS) (((((((enum Halide::Target::OS)digits[2]) << PyLong_SHIFT) | (enum Halide::Target::OS)digits[1]) << PyLong_SHIFT) | (enum Halide::Target::OS)digits[0]));
+                        }
+                    }
+                    break;
+                case 4:
+                    if (8 * sizeof(enum Halide::Target::OS) > 3 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(enum Halide::Target::OS, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(enum Halide::Target::OS) >= 4 * PyLong_SHIFT) {
+                            return (enum Halide::Target::OS) (((((((((enum Halide::Target::OS)digits[3]) << PyLong_SHIFT) | (enum Halide::Target::OS)digits[2]) << PyLong_SHIFT) | (enum Halide::Target::OS)digits[1]) << PyLong_SHIFT) | (enum Halide::Target::OS)digits[0]));
+                        }
+                    }
+                    break;
+            }
+#endif
+#if CYTHON_COMPILING_IN_CPYTHON
+            if (unlikely(Py_SIZE(x) < 0)) {
+                goto raise_neg_overflow;
+            }
+#else
+            {
+                int result = PyObject_RichCompareBool(x, Py_False, Py_LT);
+                if (unlikely(result < 0))
+                    return (enum Halide::Target::OS) -1;
+                if (unlikely(result == 1))
+                    goto raise_neg_overflow;
+            }
+#endif
+            if (sizeof(enum Halide::Target::OS) <= sizeof(unsigned long)) {
+                __PYX_VERIFY_RETURN_INT_EXC(enum Halide::Target::OS, unsigned long, PyLong_AsUnsignedLong(x))
+            } else if (sizeof(enum Halide::Target::OS) <= sizeof(unsigned PY_LONG_LONG)) {
+                __PYX_VERIFY_RETURN_INT_EXC(enum Halide::Target::OS, unsigned PY_LONG_LONG, PyLong_AsUnsignedLongLong(x))
+            }
+        } else {
+#if CYTHON_USE_PYLONG_INTERNALS
+            const digit* digits = ((PyLongObject*)x)->ob_digit;
+            switch (Py_SIZE(x)) {
+                case  0: return (enum Halide::Target::OS) 0;
+                case -1: __PYX_VERIFY_RETURN_INT(enum Halide::Target::OS, sdigit, (sdigit) (-(sdigit)digits[0]))
+                case  1: __PYX_VERIFY_RETURN_INT(enum Halide::Target::OS,  digit, +digits[0])
+                case -2:
+                    if (8 * sizeof(enum Halide::Target::OS) - 1 > 1 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(enum Halide::Target::OS, long, -(long) (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(enum Halide::Target::OS) - 1 > 2 * PyLong_SHIFT) {
+                            return (enum Halide::Target::OS) (((enum Halide::Target::OS)-1)*(((((enum Halide::Target::OS)digits[1]) << PyLong_SHIFT) | (enum Halide::Target::OS)digits[0])));
+                        }
+                    }
+                    break;
+                case 2:
+                    if (8 * sizeof(enum Halide::Target::OS) > 1 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(enum Halide::Target::OS, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(enum Halide::Target::OS) - 1 > 2 * PyLong_SHIFT) {
+                            return (enum Halide::Target::OS) ((((((enum Halide::Target::OS)digits[1]) << PyLong_SHIFT) | (enum Halide::Target::OS)digits[0])));
+                        }
+                    }
+                    break;
+                case -3:
+                    if (8 * sizeof(enum Halide::Target::OS) - 1 > 2 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(enum Halide::Target::OS, long, -(long) (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(enum Halide::Target::OS) - 1 > 3 * PyLong_SHIFT) {
+                            return (enum Halide::Target::OS) (((enum Halide::Target::OS)-1)*(((((((enum Halide::Target::OS)digits[2]) << PyLong_SHIFT) | (enum Halide::Target::OS)digits[1]) << PyLong_SHIFT) | (enum Halide::Target::OS)digits[0])));
+                        }
+                    }
+                    break;
+                case 3:
+                    if (8 * sizeof(enum Halide::Target::OS) > 2 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(enum Halide::Target::OS, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(enum Halide::Target::OS) - 1 > 3 * PyLong_SHIFT) {
+                            return (enum Halide::Target::OS) ((((((((enum Halide::Target::OS)digits[2]) << PyLong_SHIFT) | (enum Halide::Target::OS)digits[1]) << PyLong_SHIFT) | (enum Halide::Target::OS)digits[0])));
+                        }
+                    }
+                    break;
+                case -4:
+                    if (8 * sizeof(enum Halide::Target::OS) - 1 > 3 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(enum Halide::Target::OS, long, -(long) (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(enum Halide::Target::OS) - 1 > 4 * PyLong_SHIFT) {
+                            return (enum Halide::Target::OS) (((enum Halide::Target::OS)-1)*(((((((((enum Halide::Target::OS)digits[3]) << PyLong_SHIFT) | (enum Halide::Target::OS)digits[2]) << PyLong_SHIFT) | (enum Halide::Target::OS)digits[1]) << PyLong_SHIFT) | (enum Halide::Target::OS)digits[0])));
+                        }
+                    }
+                    break;
+                case 4:
+                    if (8 * sizeof(enum Halide::Target::OS) > 3 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(enum Halide::Target::OS, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(enum Halide::Target::OS) - 1 > 4 * PyLong_SHIFT) {
+                            return (enum Halide::Target::OS) ((((((((((enum Halide::Target::OS)digits[3]) << PyLong_SHIFT) | (enum Halide::Target::OS)digits[2]) << PyLong_SHIFT) | (enum Halide::Target::OS)digits[1]) << PyLong_SHIFT) | (enum Halide::Target::OS)digits[0])));
+                        }
+                    }
+                    break;
+            }
+#endif
+            if (sizeof(enum Halide::Target::OS) <= sizeof(long)) {
+                __PYX_VERIFY_RETURN_INT_EXC(enum Halide::Target::OS, long, PyLong_AsLong(x))
+            } else if (sizeof(enum Halide::Target::OS) <= sizeof(PY_LONG_LONG)) {
+                __PYX_VERIFY_RETURN_INT_EXC(enum Halide::Target::OS, PY_LONG_LONG, PyLong_AsLongLong(x))
+            }
+        }
+        {
+#if CYTHON_COMPILING_IN_PYPY && !defined(_PyLong_AsByteArray)
+            PyErr_SetString(PyExc_RuntimeError,
+                            "_PyLong_AsByteArray() not available in PyPy, cannot convert large numbers");
+#else
+            enum Halide::Target::OS val;
+            PyObject *v = __Pyx_PyNumber_IntOrLong(x);
+ #if PY_MAJOR_VERSION < 3
+            if (likely(v) && !PyLong_Check(v)) {
+                PyObject *tmp = v;
+                v = PyNumber_Long(tmp);
+                Py_DECREF(tmp);
+            }
+ #endif
+            if (likely(v)) {
+                int one = 1; int is_little = (int)*(unsigned char *)&one;
+                unsigned char *bytes = (unsigned char *)&val;
+                int ret = _PyLong_AsByteArray((PyLongObject *)v,
+                                              bytes, sizeof(val),
+                                              is_little, !is_unsigned);
+                Py_DECREF(v);
+                if (likely(!ret))
+                    return val;
+            }
+#endif
+            return (enum Halide::Target::OS) -1;
+        }
+    } else {
+        enum Halide::Target::OS val;
+        PyObject *tmp = __Pyx_PyNumber_IntOrLong(x);
+        if (!tmp) return (enum Halide::Target::OS) -1;
+        val = __Pyx_PyInt_As_enum__Halide_3a__3a_Target_3a__3a_OS(tmp);
+        Py_DECREF(tmp);
+        return val;
+    }
+raise_overflow:
+    PyErr_SetString(PyExc_OverflowError,
+        "value too large to convert to enum Halide::Target::OS");
+    return (enum Halide::Target::OS) -1;
+raise_neg_overflow:
+    PyErr_SetString(PyExc_OverflowError,
+        "can't convert negative value to enum Halide::Target::OS");
+    return (enum Halide::Target::OS) -1;
+}
+
+/* CIntFromPy */
+    static CYTHON_INLINE enum Halide::Target::Arch __Pyx_PyInt_As_enum__Halide_3a__3a_Target_3a__3a_Arch(PyObject *x) {
+    const enum Halide::Target::Arch neg_one = (enum Halide::Target::Arch) -1, const_zero = (enum Halide::Target::Arch) 0;
+    const int is_unsigned = neg_one > const_zero;
+#if PY_MAJOR_VERSION < 3
+    if (likely(PyInt_Check(x))) {
+        if (sizeof(enum Halide::Target::Arch) < sizeof(long)) {
+            __PYX_VERIFY_RETURN_INT(enum Halide::Target::Arch, long, PyInt_AS_LONG(x))
+        } else {
+            long val = PyInt_AS_LONG(x);
+            if (is_unsigned && unlikely(val < 0)) {
+                goto raise_neg_overflow;
+            }
+            return (enum Halide::Target::Arch) val;
+        }
+    } else
+#endif
+    if (likely(PyLong_Check(x))) {
+        if (is_unsigned) {
+#if CYTHON_USE_PYLONG_INTERNALS
+            const digit* digits = ((PyLongObject*)x)->ob_digit;
+            switch (Py_SIZE(x)) {
+                case  0: return (enum Halide::Target::Arch) 0;
+                case  1: __PYX_VERIFY_RETURN_INT(enum Halide::Target::Arch, digit, digits[0])
+                case 2:
+                    if (8 * sizeof(enum Halide::Target::Arch) > 1 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(enum Halide::Target::Arch, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(enum Halide::Target::Arch) >= 2 * PyLong_SHIFT) {
+                            return (enum Halide::Target::Arch) (((((enum Halide::Target::Arch)digits[1]) << PyLong_SHIFT) | (enum Halide::Target::Arch)digits[0]));
+                        }
+                    }
+                    break;
+                case 3:
+                    if (8 * sizeof(enum Halide::Target::Arch) > 2 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(enum Halide::Target::Arch, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(enum Halide::Target::Arch) >= 3 * PyLong_SHIFT) {
+                            return (enum Halide::Target::Arch) (((((((enum Halide::Target::Arch)digits[2]) << PyLong_SHIFT) | (enum Halide::Target::Arch)digits[1]) << PyLong_SHIFT) | (enum Halide::Target::Arch)digits[0]));
+                        }
+                    }
+                    break;
+                case 4:
+                    if (8 * sizeof(enum Halide::Target::Arch) > 3 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(enum Halide::Target::Arch, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(enum Halide::Target::Arch) >= 4 * PyLong_SHIFT) {
+                            return (enum Halide::Target::Arch) (((((((((enum Halide::Target::Arch)digits[3]) << PyLong_SHIFT) | (enum Halide::Target::Arch)digits[2]) << PyLong_SHIFT) | (enum Halide::Target::Arch)digits[1]) << PyLong_SHIFT) | (enum Halide::Target::Arch)digits[0]));
+                        }
+                    }
+                    break;
+            }
+#endif
+#if CYTHON_COMPILING_IN_CPYTHON
+            if (unlikely(Py_SIZE(x) < 0)) {
+                goto raise_neg_overflow;
+            }
+#else
+            {
+                int result = PyObject_RichCompareBool(x, Py_False, Py_LT);
+                if (unlikely(result < 0))
+                    return (enum Halide::Target::Arch) -1;
+                if (unlikely(result == 1))
+                    goto raise_neg_overflow;
+            }
+#endif
+            if (sizeof(enum Halide::Target::Arch) <= sizeof(unsigned long)) {
+                __PYX_VERIFY_RETURN_INT_EXC(enum Halide::Target::Arch, unsigned long, PyLong_AsUnsignedLong(x))
+            } else if (sizeof(enum Halide::Target::Arch) <= sizeof(unsigned PY_LONG_LONG)) {
+                __PYX_VERIFY_RETURN_INT_EXC(enum Halide::Target::Arch, unsigned PY_LONG_LONG, PyLong_AsUnsignedLongLong(x))
+            }
+        } else {
+#if CYTHON_USE_PYLONG_INTERNALS
+            const digit* digits = ((PyLongObject*)x)->ob_digit;
+            switch (Py_SIZE(x)) {
+                case  0: return (enum Halide::Target::Arch) 0;
+                case -1: __PYX_VERIFY_RETURN_INT(enum Halide::Target::Arch, sdigit, (sdigit) (-(sdigit)digits[0]))
+                case  1: __PYX_VERIFY_RETURN_INT(enum Halide::Target::Arch,  digit, +digits[0])
+                case -2:
+                    if (8 * sizeof(enum Halide::Target::Arch) - 1 > 1 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(enum Halide::Target::Arch, long, -(long) (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(enum Halide::Target::Arch) - 1 > 2 * PyLong_SHIFT) {
+                            return (enum Halide::Target::Arch) (((enum Halide::Target::Arch)-1)*(((((enum Halide::Target::Arch)digits[1]) << PyLong_SHIFT) | (enum Halide::Target::Arch)digits[0])));
+                        }
+                    }
+                    break;
+                case 2:
+                    if (8 * sizeof(enum Halide::Target::Arch) > 1 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(enum Halide::Target::Arch, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(enum Halide::Target::Arch) - 1 > 2 * PyLong_SHIFT) {
+                            return (enum Halide::Target::Arch) ((((((enum Halide::Target::Arch)digits[1]) << PyLong_SHIFT) | (enum Halide::Target::Arch)digits[0])));
+                        }
+                    }
+                    break;
+                case -3:
+                    if (8 * sizeof(enum Halide::Target::Arch) - 1 > 2 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(enum Halide::Target::Arch, long, -(long) (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(enum Halide::Target::Arch) - 1 > 3 * PyLong_SHIFT) {
+                            return (enum Halide::Target::Arch) (((enum Halide::Target::Arch)-1)*(((((((enum Halide::Target::Arch)digits[2]) << PyLong_SHIFT) | (enum Halide::Target::Arch)digits[1]) << PyLong_SHIFT) | (enum Halide::Target::Arch)digits[0])));
+                        }
+                    }
+                    break;
+                case 3:
+                    if (8 * sizeof(enum Halide::Target::Arch) > 2 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(enum Halide::Target::Arch, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(enum Halide::Target::Arch) - 1 > 3 * PyLong_SHIFT) {
+                            return (enum Halide::Target::Arch) ((((((((enum Halide::Target::Arch)digits[2]) << PyLong_SHIFT) | (enum Halide::Target::Arch)digits[1]) << PyLong_SHIFT) | (enum Halide::Target::Arch)digits[0])));
+                        }
+                    }
+                    break;
+                case -4:
+                    if (8 * sizeof(enum Halide::Target::Arch) - 1 > 3 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(enum Halide::Target::Arch, long, -(long) (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(enum Halide::Target::Arch) - 1 > 4 * PyLong_SHIFT) {
+                            return (enum Halide::Target::Arch) (((enum Halide::Target::Arch)-1)*(((((((((enum Halide::Target::Arch)digits[3]) << PyLong_SHIFT) | (enum Halide::Target::Arch)digits[2]) << PyLong_SHIFT) | (enum Halide::Target::Arch)digits[1]) << PyLong_SHIFT) | (enum Halide::Target::Arch)digits[0])));
+                        }
+                    }
+                    break;
+                case 4:
+                    if (8 * sizeof(enum Halide::Target::Arch) > 3 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(enum Halide::Target::Arch, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(enum Halide::Target::Arch) - 1 > 4 * PyLong_SHIFT) {
+                            return (enum Halide::Target::Arch) ((((((((((enum Halide::Target::Arch)digits[3]) << PyLong_SHIFT) | (enum Halide::Target::Arch)digits[2]) << PyLong_SHIFT) | (enum Halide::Target::Arch)digits[1]) << PyLong_SHIFT) | (enum Halide::Target::Arch)digits[0])));
+                        }
+                    }
+                    break;
+            }
+#endif
+            if (sizeof(enum Halide::Target::Arch) <= sizeof(long)) {
+                __PYX_VERIFY_RETURN_INT_EXC(enum Halide::Target::Arch, long, PyLong_AsLong(x))
+            } else if (sizeof(enum Halide::Target::Arch) <= sizeof(PY_LONG_LONG)) {
+                __PYX_VERIFY_RETURN_INT_EXC(enum Halide::Target::Arch, PY_LONG_LONG, PyLong_AsLongLong(x))
+            }
+        }
+        {
+#if CYTHON_COMPILING_IN_PYPY && !defined(_PyLong_AsByteArray)
+            PyErr_SetString(PyExc_RuntimeError,
+                            "_PyLong_AsByteArray() not available in PyPy, cannot convert large numbers");
+#else
+            enum Halide::Target::Arch val;
+            PyObject *v = __Pyx_PyNumber_IntOrLong(x);
+ #if PY_MAJOR_VERSION < 3
+            if (likely(v) && !PyLong_Check(v)) {
+                PyObject *tmp = v;
+                v = PyNumber_Long(tmp);
+                Py_DECREF(tmp);
+            }
+ #endif
+            if (likely(v)) {
+                int one = 1; int is_little = (int)*(unsigned char *)&one;
+                unsigned char *bytes = (unsigned char *)&val;
+                int ret = _PyLong_AsByteArray((PyLongObject *)v,
+                                              bytes, sizeof(val),
+                                              is_little, !is_unsigned);
+                Py_DECREF(v);
+                if (likely(!ret))
+                    return val;
+            }
+#endif
+            return (enum Halide::Target::Arch) -1;
+        }
+    } else {
+        enum Halide::Target::Arch val;
+        PyObject *tmp = __Pyx_PyNumber_IntOrLong(x);
+        if (!tmp) return (enum Halide::Target::Arch) -1;
+        val = __Pyx_PyInt_As_enum__Halide_3a__3a_Target_3a__3a_Arch(tmp);
+        Py_DECREF(tmp);
+        return val;
+    }
+raise_overflow:
+    PyErr_SetString(PyExc_OverflowError,
+        "value too large to convert to enum Halide::Target::Arch");
+    return (enum Halide::Target::Arch) -1;
+raise_neg_overflow:
+    PyErr_SetString(PyExc_OverflowError,
+        "can't convert negative value to enum Halide::Target::Arch");
+    return (enum Halide::Target::Arch) -1;
+}
+
+/* CIntFromPy */
+    static CYTHON_INLINE long __Pyx_PyInt_As_long(PyObject *x) {
     const long neg_one = (long) -1, const_zero = (long) 0;
     const int is_unsigned = neg_one > const_zero;
 #if PY_MAJOR_VERSION < 3
@@ -4495,7 +7063,7 @@ raise_neg_overflow:
 }
 
 /* CheckBinaryVersion */
-  static int __Pyx_check_binary_version(void) {
+    static int __Pyx_check_binary_version(void) {
     char ctversion[4], rtversion[4];
     PyOS_snprintf(ctversion, 4, "%d.%d", PY_MAJOR_VERSION, PY_MINOR_VERSION);
     PyOS_snprintf(rtversion, 4, "%s", Py_GetVersion());
@@ -4511,7 +7079,7 @@ raise_neg_overflow:
 }
 
 /* InitStrings */
-  static int __Pyx_InitStrings(__Pyx_StringTabEntry *t) {
+    static int __Pyx_InitStrings(__Pyx_StringTabEntry *t) {
     while (t->p) {
         #if PY_MAJOR_VERSION < 3
         if (t->is_unicode) {

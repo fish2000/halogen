@@ -1,12 +1,117 @@
 # distutils: language = c++
 
+from libc.stdint cimport *
+# from libcpp.string cimport string
+# from libcpp.vector cimport vector
+
+from type cimport Type as HalType
+from type cimport Int as Type_Int
+from type cimport UInt as Type_UInt
+from type cimport Float as Type_Float
+from type cimport Bool as Type_Bool
+from type cimport Handle as Type_Handle
+
 from target cimport Target as HalTarget
 from target cimport get_host_target as halide_get_host_target
 from target cimport get_target_from_environment as halide_get_target_from_environment
 from target cimport get_jit_target_from_environment as halide_get_jit_target_from_environment
 
+## CLASS WRAPPERS:
 
-## CLASS WRAPPER:
+cdef class Type:
+    
+    cdef:
+        HalType __this__
+    
+    def __init__(Type self):
+        pass
+    
+    def code(Type self):
+        return self.__this__.code()
+    
+    def bytes(Type self):
+        return self.__this__.bytes()
+    
+    def bits(Type self):
+        return self.__this__.bits()
+    
+    def lanes(Type self):
+        return self.__this__.lanes()
+    
+    def with_code(Type self, code):
+        out = Type()
+        out.__this__ = self.__this__.with_code(code)
+        return out
+    
+    def with_bits(Type self, bits):
+        out = Type()
+        out.__this__ = self.__this__.with_bits(<uint8_t>bits)
+        return out
+    
+    def with_lanes(Type self, lanes):
+        out = Type()
+        out.__this__ = self.__this__.with_lanes(<uint16_t>lanes)
+        return out
+    
+    def is_bool(Type self):
+        return self.__this__.is_bool()
+    
+    def is_vector(Type self):
+        return self.__this__.is_vector()
+    
+    def is_scalar(Type self):
+        return self.__this__.is_scalar()
+    
+    def is_float(Type self):
+        return self.__this__.is_float()
+    
+    def is_int(Type self):
+        return self.__this__.is_int()
+    
+    def is_uint(Type self):
+        return self.__this__.is_uint()
+    
+    def is_handle(Type self):
+        return self.__this__.is_handle()
+    
+    def same_handle_type(Type self, Type other):
+        return self.__this__.same_handle_type(other.__this__)
+    
+    def element_of(Type self):
+        out = Type()
+        out.__this__ = self.__this__.element_of()
+        return out
+    
+    @staticmethod
+    def Int(int bits, int lanes=1):
+        out = Type()
+        out.__this__ = Type_Int(bits, lanes)
+        return out
+    
+    @staticmethod
+    def UInt(int bits, int lanes=1):
+        out = Type()
+        out.__this__ = Type_UInt(bits, lanes)
+        return out
+    
+    @staticmethod
+    def Float(int bits, int lanes=1):
+        out = Type()
+        out.__this__ = Type_Float(bits, lanes)
+        return out
+    
+    @staticmethod
+    def Bool(int lanes=1):
+        out = Type()
+        out.__this__ = Type_Bool(lanes)
+        return out
+    
+    # @staticmethod
+    # def Handle(int bits, int lanes=1):
+    #     out = Type()
+    #     out.__this__ = Type_Handle(bits, lanes)
+    #     return out
+    
 
 cdef class Target:
     """ Cython wrapper class for Halide::Target """
@@ -63,12 +168,6 @@ cdef class Target:
     
     def __str__(Target self):
         return self.__this__.to_string()
-    
-    def __enter__(Target self):
-        return self
-    
-    def __exit__(Target self, exc_tp, exc_val, exc_tb):
-        return False
 
 
 ## FUNCTION WRAPPERS:

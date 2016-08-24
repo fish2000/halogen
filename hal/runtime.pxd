@@ -9,12 +9,12 @@ cdef extern from "HalideRuntime.h":
         halide_type_float
         halide_type_handle
     
-    struct halide_type_t:
+    cdef struct halide_type_t:
         halide_type_code_t code
         uint8_t bits
         uint16_t lanes
     
-    enum halide_error_code_t:
+    cdef enum halide_error_code_t:
         halide_error_code_success
         halide_error_code_generic_error
         halide_error_code_explicit_bounds_too_small
@@ -89,44 +89,44 @@ cdef extern from "HalideRuntime.h":
         int32_t stride[4]
         int32_t min[4]
         int32_t elem_size
-        bool host_dirty
-        bool dev_dirty
+        bint host_dirty
+        bint dev_dirty
     
-    struct halide_scalar_value_t:
-        cdef union u:
-            bool b
-            int8_t i8
-            int16_t i16
-            int32_t i32
-            int64_t i64
-            uint8_t u8
-            uint16_t u16
-            uint32_t u32
-            uint64_t u64
-            float f32
-            double f64
-            void* handle
+    # cdef struct halide_scalar_value_t:
+    #     union u:
+    #         bint b
+    #         int8_t i8
+    #         int16_t i16
+    #         int32_t i32
+    #         int64_t i64
+    #         uint8_t u8
+    #         uint16_t u16
+    #         uint32_t u32
+    #         uint64_t u64
+    #         float f32
+    #         double f64
+    #         void* handle
     
-    enum halide_argument_kind_t:
+    cdef enum halide_argument_kind_t:
         halide_argument_kind_input_scalar
         halide_argument_kind_input_buffer
         halide_argument_kind_output_buffer
     
-    struct halide_filter_argument_t:
-        const char* name
+    cdef struct halide_filter_argument_t:
+        char* name
         int32_t kind
         int32_t dimensions
         halide_type_t type
-        const struct halide_scalar_value_t* def
-        const struct halide_scalar_value_t* min
-        const struct halide_scalar_value_t* max
+        # halide_scalar_value_t* def
+        # halide_scalar_value_t* min
+        # halide_scalar_value_t* max
     
-    struct halide_filter_metadata_t:
-        int32_t version = 0
+    cdef struct halide_filter_metadata_t:
+        int32_t version
         int32_t num_arguments
-        const struct halide_filter_argument_t* arguments
-        const char* target
-        const char* name
+        halide_filter_argument_t* arguments
+        char* target
+        char* name
     
     float halide_float16_bits_to_float(uint16_t)
     double halide_float16_bits_to_double(uint16_t)
