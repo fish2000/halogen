@@ -2,10 +2,23 @@
 from distutils.core import setup
 from distutils.extension import Extension
 from Cython.Build import cythonize
+import os
+
+generators = []
+# generator_dir = os.path.abspath('./generators')
+generator_dir = './generators'
+for dirpath, dirnames, filenames in os.walk(generator_dir):
+    for filename in filenames:
+        if filename.endswith('.cpp'):
+            generators.append(os.path.join(dirpath, filename))
+
+api_extension_sources = ['hal/api.pyx']
+api_extension_sources.extend(generators)
 
 setup(
     ext_modules=cythonize([
-        Extension('hal.api', ['hal/api.pyx', 'generators/lesson_15_generators.cpp'],
+        Extension('hal.api',
+            api_extension_sources,
         extra_link_args=[
             '-lHalide'],
         extra_compile_args=[
