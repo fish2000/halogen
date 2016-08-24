@@ -3,9 +3,11 @@ from libc.stdint cimport *
 from libcpp.string cimport string
 from libcpp.vector cimport vector
 
-cdef extern from "Halide.h" namespace "Halide":
+cdef extern from "Halide.h" namespace "Halide::Target":
     
-    enum OS:
+    # THIS IS NOT TOWARD
+    
+    cdef enum OS:
         OSUnknown
         Linux
         Windows
@@ -16,7 +18,7 @@ cdef extern from "Halide.h" namespace "Halide":
         QuRT
         NoOS
     
-    enum Arch:
+    cdef enum Arch:
         ArchUnknown
         X86
         ARM
@@ -25,7 +27,7 @@ cdef extern from "Halide.h" namespace "Halide":
         Hexagon
         POWERPC
     
-    enum Feature:
+    cdef enum Feature:
         JIT
         Debug
         NoAsserts
@@ -63,8 +65,11 @@ cdef extern from "Halide.h" namespace "Halide":
         HVX_128
         HVX_v62
         FeatureEnd
+
+
+cdef extern from "Halide.h" namespace "Halide":
     
-    cdef cppclass Target:
+    cppclass Target:
         
         # members (defined as enums in header):
         OS os

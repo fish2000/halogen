@@ -4,6 +4,13 @@
 {
     "distutils": {
         "depends": [], 
+        "extra_compile_args": [
+            "-O3", 
+            "-funroll-loops", 
+            "-mtune=native", 
+            "-std=c++1z", 
+            "-stdlib=libc++"
+        ], 
         "language": "c++"
     }, 
     "module_name": "hal.api"
@@ -659,10 +666,10 @@ static void __Pyx_AddTraceback(const char *funcname, int c_line,
 #include <new>
 
 /* CIntToPy.proto */
-static CYTHON_INLINE PyObject* __Pyx_PyInt_From_enum__Halide_3a__3a_OS(enum Halide::OS value);
+static CYTHON_INLINE PyObject* __Pyx_PyInt_From_enum__Halide_3a__3a_Target_3a__3a_OS(enum Halide::Target::OS value);
 
 /* CIntToPy.proto */
-static CYTHON_INLINE PyObject* __Pyx_PyInt_From_enum__Halide_3a__3a_Arch(enum Halide::Arch value);
+static CYTHON_INLINE PyObject* __Pyx_PyInt_From_enum__Halide_3a__3a_Target_3a__3a_Arch(enum Halide::Target::Arch value);
 
 /* CIntToPy.proto */
 static CYTHON_INLINE PyObject* __Pyx_PyInt_From_int(int value);
@@ -671,10 +678,10 @@ static CYTHON_INLINE PyObject* __Pyx_PyInt_From_int(int value);
 static CYTHON_INLINE PyObject* __Pyx_PyInt_From_int64_t(int64_t value);
 
 /* CIntFromPy.proto */
-static CYTHON_INLINE enum Halide::OS __Pyx_PyInt_As_enum__Halide_3a__3a_OS(PyObject *);
+static CYTHON_INLINE enum Halide::Target::OS __Pyx_PyInt_As_enum__Halide_3a__3a_Target_3a__3a_OS(PyObject *);
 
 /* CIntFromPy.proto */
-static CYTHON_INLINE enum Halide::Arch __Pyx_PyInt_As_enum__Halide_3a__3a_Arch(PyObject *);
+static CYTHON_INLINE enum Halide::Target::Arch __Pyx_PyInt_As_enum__Halide_3a__3a_Target_3a__3a_Arch(PyObject *);
 
 /* CIntFromPy.proto */
 static CYTHON_INLINE int __Pyx_PyInt_As_int(PyObject *);
@@ -1015,7 +1022,7 @@ static PyObject *__pyx_pf_3hal_3api_6Target_2os___get__(struct __pyx_obj_3hal_3a
  *         def __set__(Target self, value):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_2 = __Pyx_PyInt_From_enum__Halide_3a__3a_OS(__pyx_v_self->__pyx___this__.os); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 43, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_From_enum__Halide_3a__3a_Target_3a__3a_OS(__pyx_v_self->__pyx___this__.os); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 43, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_r = __pyx_t_2;
   __pyx_t_2 = 0;
@@ -1065,7 +1072,7 @@ static int __pyx_pf_3hal_3api_6Target_2os_2__set__(struct __pyx_obj_3hal_3api_Ta
   int __pyx_r;
   __Pyx_RefNannyDeclarations
   int __pyx_t_1;
-  enum Halide::OS __pyx_t_2;
+  enum Halide::Target::OS __pyx_t_2;
   __Pyx_RefNannySetupContext("__set__", 0);
 
   /* "hal/api.pyx":46
@@ -1084,8 +1091,8 @@ static int __pyx_pf_3hal_3api_6Target_2os_2__set__(struct __pyx_obj_3hal_3api_Ta
  * 
  *     property arch:
  */
-  __pyx_t_2 = ((enum Halide::OS)__Pyx_PyInt_As_enum__Halide_3a__3a_OS(__pyx_v_value)); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 47, __pyx_L1_error)
-  __pyx_v_self->__pyx___this__.bits = ((enum Halide::OS)__pyx_t_2);
+  __pyx_t_2 = ((enum Halide::Target::OS)__Pyx_PyInt_As_enum__Halide_3a__3a_Target_3a__3a_OS(__pyx_v_value)); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 47, __pyx_L1_error)
+  __pyx_v_self->__pyx___this__.bits = ((enum Halide::Target::OS)__pyx_t_2);
 
   /* "hal/api.pyx":45
  *             return self.__this__.os
@@ -1151,7 +1158,7 @@ static PyObject *__pyx_pf_3hal_3api_6Target_4arch___get__(struct __pyx_obj_3hal_
  *         def __set__(Target self, value):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_2 = __Pyx_PyInt_From_enum__Halide_3a__3a_Arch(__pyx_v_self->__pyx___this__.arch); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 53, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_From_enum__Halide_3a__3a_Target_3a__3a_Arch(__pyx_v_self->__pyx___this__.arch); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 53, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_r = __pyx_t_2;
   __pyx_t_2 = 0;
@@ -1201,7 +1208,7 @@ static int __pyx_pf_3hal_3api_6Target_4arch_2__set__(struct __pyx_obj_3hal_3api_
   int __pyx_r;
   __Pyx_RefNannyDeclarations
   int __pyx_t_1;
-  enum Halide::Arch __pyx_t_2;
+  enum Halide::Target::Arch __pyx_t_2;
   __Pyx_RefNannySetupContext("__set__", 0);
 
   /* "hal/api.pyx":56
@@ -1220,8 +1227,8 @@ static int __pyx_pf_3hal_3api_6Target_4arch_2__set__(struct __pyx_obj_3hal_3api_
  * 
  *     property bits:
  */
-  __pyx_t_2 = ((enum Halide::Arch)__Pyx_PyInt_As_enum__Halide_3a__3a_Arch(__pyx_v_value)); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 57, __pyx_L1_error)
-  __pyx_v_self->__pyx___this__.bits = ((enum Halide::Arch)__pyx_t_2);
+  __pyx_t_2 = ((enum Halide::Target::Arch)__Pyx_PyInt_As_enum__Halide_3a__3a_Target_3a__3a_Arch(__pyx_v_value)); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 57, __pyx_L1_error)
+  __pyx_v_self->__pyx___this__.bits = ((enum Halide::Target::Arch)__pyx_t_2);
 
   /* "hal/api.pyx":55
  *             return self.__this__.arch
@@ -3373,28 +3380,28 @@ bad:
 }
 
 /* CIntToPy */
-static CYTHON_INLINE PyObject* __Pyx_PyInt_From_enum__Halide_3a__3a_OS(enum Halide::OS value) {
-    const enum Halide::OS neg_one = (enum Halide::OS) -1, const_zero = (enum Halide::OS) 0;
+static CYTHON_INLINE PyObject* __Pyx_PyInt_From_enum__Halide_3a__3a_Target_3a__3a_OS(enum Halide::Target::OS value) {
+    const enum Halide::Target::OS neg_one = (enum Halide::Target::OS) -1, const_zero = (enum Halide::Target::OS) 0;
     const int is_unsigned = neg_one > const_zero;
     if (is_unsigned) {
-        if (sizeof(enum Halide::OS) < sizeof(long)) {
+        if (sizeof(enum Halide::Target::OS) < sizeof(long)) {
             return PyInt_FromLong((long) value);
-        } else if (sizeof(enum Halide::OS) <= sizeof(unsigned long)) {
+        } else if (sizeof(enum Halide::Target::OS) <= sizeof(unsigned long)) {
             return PyLong_FromUnsignedLong((unsigned long) value);
-        } else if (sizeof(enum Halide::OS) <= sizeof(unsigned PY_LONG_LONG)) {
+        } else if (sizeof(enum Halide::Target::OS) <= sizeof(unsigned PY_LONG_LONG)) {
             return PyLong_FromUnsignedLongLong((unsigned PY_LONG_LONG) value);
         }
     } else {
-        if (sizeof(enum Halide::OS) <= sizeof(long)) {
+        if (sizeof(enum Halide::Target::OS) <= sizeof(long)) {
             return PyInt_FromLong((long) value);
-        } else if (sizeof(enum Halide::OS) <= sizeof(PY_LONG_LONG)) {
+        } else if (sizeof(enum Halide::Target::OS) <= sizeof(PY_LONG_LONG)) {
             return PyLong_FromLongLong((PY_LONG_LONG) value);
         }
     }
     {
         int one = 1; int little = (int)*(unsigned char *)&one;
         unsigned char *bytes = (unsigned char *)&value;
-        return _PyLong_FromByteArray(bytes, sizeof(enum Halide::OS),
+        return _PyLong_FromByteArray(bytes, sizeof(enum Halide::Target::OS),
                                      little, !is_unsigned);
     }
 }
@@ -3422,28 +3429,28 @@ static CYTHON_INLINE PyObject* __Pyx_PyInt_From_enum__Halide_3a__3a_OS(enum Hali
     }
 
 /* CIntToPy */
-static CYTHON_INLINE PyObject* __Pyx_PyInt_From_enum__Halide_3a__3a_Arch(enum Halide::Arch value) {
-    const enum Halide::Arch neg_one = (enum Halide::Arch) -1, const_zero = (enum Halide::Arch) 0;
+static CYTHON_INLINE PyObject* __Pyx_PyInt_From_enum__Halide_3a__3a_Target_3a__3a_Arch(enum Halide::Target::Arch value) {
+    const enum Halide::Target::Arch neg_one = (enum Halide::Target::Arch) -1, const_zero = (enum Halide::Target::Arch) 0;
     const int is_unsigned = neg_one > const_zero;
     if (is_unsigned) {
-        if (sizeof(enum Halide::Arch) < sizeof(long)) {
+        if (sizeof(enum Halide::Target::Arch) < sizeof(long)) {
             return PyInt_FromLong((long) value);
-        } else if (sizeof(enum Halide::Arch) <= sizeof(unsigned long)) {
+        } else if (sizeof(enum Halide::Target::Arch) <= sizeof(unsigned long)) {
             return PyLong_FromUnsignedLong((unsigned long) value);
-        } else if (sizeof(enum Halide::Arch) <= sizeof(unsigned PY_LONG_LONG)) {
+        } else if (sizeof(enum Halide::Target::Arch) <= sizeof(unsigned PY_LONG_LONG)) {
             return PyLong_FromUnsignedLongLong((unsigned PY_LONG_LONG) value);
         }
     } else {
-        if (sizeof(enum Halide::Arch) <= sizeof(long)) {
+        if (sizeof(enum Halide::Target::Arch) <= sizeof(long)) {
             return PyInt_FromLong((long) value);
-        } else if (sizeof(enum Halide::Arch) <= sizeof(PY_LONG_LONG)) {
+        } else if (sizeof(enum Halide::Target::Arch) <= sizeof(PY_LONG_LONG)) {
             return PyLong_FromLongLong((PY_LONG_LONG) value);
         }
     }
     {
         int one = 1; int little = (int)*(unsigned char *)&one;
         unsigned char *bytes = (unsigned char *)&value;
-        return _PyLong_FromByteArray(bytes, sizeof(enum Halide::Arch),
+        return _PyLong_FromByteArray(bytes, sizeof(enum Halide::Target::Arch),
                                      little, !is_unsigned);
     }
 }
@@ -3503,19 +3510,19 @@ static CYTHON_INLINE PyObject* __Pyx_PyInt_From_int64_t(int64_t value) {
 }
 
 /* CIntFromPy */
-static CYTHON_INLINE enum Halide::OS __Pyx_PyInt_As_enum__Halide_3a__3a_OS(PyObject *x) {
-    const enum Halide::OS neg_one = (enum Halide::OS) -1, const_zero = (enum Halide::OS) 0;
+static CYTHON_INLINE enum Halide::Target::OS __Pyx_PyInt_As_enum__Halide_3a__3a_Target_3a__3a_OS(PyObject *x) {
+    const enum Halide::Target::OS neg_one = (enum Halide::Target::OS) -1, const_zero = (enum Halide::Target::OS) 0;
     const int is_unsigned = neg_one > const_zero;
 #if PY_MAJOR_VERSION < 3
     if (likely(PyInt_Check(x))) {
-        if (sizeof(enum Halide::OS) < sizeof(long)) {
-            __PYX_VERIFY_RETURN_INT(enum Halide::OS, long, PyInt_AS_LONG(x))
+        if (sizeof(enum Halide::Target::OS) < sizeof(long)) {
+            __PYX_VERIFY_RETURN_INT(enum Halide::Target::OS, long, PyInt_AS_LONG(x))
         } else {
             long val = PyInt_AS_LONG(x);
             if (is_unsigned && unlikely(val < 0)) {
                 goto raise_neg_overflow;
             }
-            return (enum Halide::OS) val;
+            return (enum Halide::Target::OS) val;
         }
     } else
 #endif
@@ -3524,32 +3531,32 @@ static CYTHON_INLINE enum Halide::OS __Pyx_PyInt_As_enum__Halide_3a__3a_OS(PyObj
 #if CYTHON_USE_PYLONG_INTERNALS
             const digit* digits = ((PyLongObject*)x)->ob_digit;
             switch (Py_SIZE(x)) {
-                case  0: return (enum Halide::OS) 0;
-                case  1: __PYX_VERIFY_RETURN_INT(enum Halide::OS, digit, digits[0])
+                case  0: return (enum Halide::Target::OS) 0;
+                case  1: __PYX_VERIFY_RETURN_INT(enum Halide::Target::OS, digit, digits[0])
                 case 2:
-                    if (8 * sizeof(enum Halide::OS) > 1 * PyLong_SHIFT) {
+                    if (8 * sizeof(enum Halide::Target::OS) > 1 * PyLong_SHIFT) {
                         if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(enum Halide::OS, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(enum Halide::OS) >= 2 * PyLong_SHIFT) {
-                            return (enum Halide::OS) (((((enum Halide::OS)digits[1]) << PyLong_SHIFT) | (enum Halide::OS)digits[0]));
+                            __PYX_VERIFY_RETURN_INT(enum Halide::Target::OS, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(enum Halide::Target::OS) >= 2 * PyLong_SHIFT) {
+                            return (enum Halide::Target::OS) (((((enum Halide::Target::OS)digits[1]) << PyLong_SHIFT) | (enum Halide::Target::OS)digits[0]));
                         }
                     }
                     break;
                 case 3:
-                    if (8 * sizeof(enum Halide::OS) > 2 * PyLong_SHIFT) {
+                    if (8 * sizeof(enum Halide::Target::OS) > 2 * PyLong_SHIFT) {
                         if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(enum Halide::OS, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(enum Halide::OS) >= 3 * PyLong_SHIFT) {
-                            return (enum Halide::OS) (((((((enum Halide::OS)digits[2]) << PyLong_SHIFT) | (enum Halide::OS)digits[1]) << PyLong_SHIFT) | (enum Halide::OS)digits[0]));
+                            __PYX_VERIFY_RETURN_INT(enum Halide::Target::OS, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(enum Halide::Target::OS) >= 3 * PyLong_SHIFT) {
+                            return (enum Halide::Target::OS) (((((((enum Halide::Target::OS)digits[2]) << PyLong_SHIFT) | (enum Halide::Target::OS)digits[1]) << PyLong_SHIFT) | (enum Halide::Target::OS)digits[0]));
                         }
                     }
                     break;
                 case 4:
-                    if (8 * sizeof(enum Halide::OS) > 3 * PyLong_SHIFT) {
+                    if (8 * sizeof(enum Halide::Target::OS) > 3 * PyLong_SHIFT) {
                         if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(enum Halide::OS, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(enum Halide::OS) >= 4 * PyLong_SHIFT) {
-                            return (enum Halide::OS) (((((((((enum Halide::OS)digits[3]) << PyLong_SHIFT) | (enum Halide::OS)digits[2]) << PyLong_SHIFT) | (enum Halide::OS)digits[1]) << PyLong_SHIFT) | (enum Halide::OS)digits[0]));
+                            __PYX_VERIFY_RETURN_INT(enum Halide::Target::OS, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(enum Halide::Target::OS) >= 4 * PyLong_SHIFT) {
+                            return (enum Halide::Target::OS) (((((((((enum Halide::Target::OS)digits[3]) << PyLong_SHIFT) | (enum Halide::Target::OS)digits[2]) << PyLong_SHIFT) | (enum Halide::Target::OS)digits[1]) << PyLong_SHIFT) | (enum Halide::Target::OS)digits[0]));
                         }
                     }
                     break;
@@ -3563,83 +3570,83 @@ static CYTHON_INLINE enum Halide::OS __Pyx_PyInt_As_enum__Halide_3a__3a_OS(PyObj
             {
                 int result = PyObject_RichCompareBool(x, Py_False, Py_LT);
                 if (unlikely(result < 0))
-                    return (enum Halide::OS) -1;
+                    return (enum Halide::Target::OS) -1;
                 if (unlikely(result == 1))
                     goto raise_neg_overflow;
             }
 #endif
-            if (sizeof(enum Halide::OS) <= sizeof(unsigned long)) {
-                __PYX_VERIFY_RETURN_INT_EXC(enum Halide::OS, unsigned long, PyLong_AsUnsignedLong(x))
-            } else if (sizeof(enum Halide::OS) <= sizeof(unsigned PY_LONG_LONG)) {
-                __PYX_VERIFY_RETURN_INT_EXC(enum Halide::OS, unsigned PY_LONG_LONG, PyLong_AsUnsignedLongLong(x))
+            if (sizeof(enum Halide::Target::OS) <= sizeof(unsigned long)) {
+                __PYX_VERIFY_RETURN_INT_EXC(enum Halide::Target::OS, unsigned long, PyLong_AsUnsignedLong(x))
+            } else if (sizeof(enum Halide::Target::OS) <= sizeof(unsigned PY_LONG_LONG)) {
+                __PYX_VERIFY_RETURN_INT_EXC(enum Halide::Target::OS, unsigned PY_LONG_LONG, PyLong_AsUnsignedLongLong(x))
             }
         } else {
 #if CYTHON_USE_PYLONG_INTERNALS
             const digit* digits = ((PyLongObject*)x)->ob_digit;
             switch (Py_SIZE(x)) {
-                case  0: return (enum Halide::OS) 0;
-                case -1: __PYX_VERIFY_RETURN_INT(enum Halide::OS, sdigit, (sdigit) (-(sdigit)digits[0]))
-                case  1: __PYX_VERIFY_RETURN_INT(enum Halide::OS,  digit, +digits[0])
+                case  0: return (enum Halide::Target::OS) 0;
+                case -1: __PYX_VERIFY_RETURN_INT(enum Halide::Target::OS, sdigit, (sdigit) (-(sdigit)digits[0]))
+                case  1: __PYX_VERIFY_RETURN_INT(enum Halide::Target::OS,  digit, +digits[0])
                 case -2:
-                    if (8 * sizeof(enum Halide::OS) - 1 > 1 * PyLong_SHIFT) {
+                    if (8 * sizeof(enum Halide::Target::OS) - 1 > 1 * PyLong_SHIFT) {
                         if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(enum Halide::OS, long, -(long) (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(enum Halide::OS) - 1 > 2 * PyLong_SHIFT) {
-                            return (enum Halide::OS) (((enum Halide::OS)-1)*(((((enum Halide::OS)digits[1]) << PyLong_SHIFT) | (enum Halide::OS)digits[0])));
+                            __PYX_VERIFY_RETURN_INT(enum Halide::Target::OS, long, -(long) (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(enum Halide::Target::OS) - 1 > 2 * PyLong_SHIFT) {
+                            return (enum Halide::Target::OS) (((enum Halide::Target::OS)-1)*(((((enum Halide::Target::OS)digits[1]) << PyLong_SHIFT) | (enum Halide::Target::OS)digits[0])));
                         }
                     }
                     break;
                 case 2:
-                    if (8 * sizeof(enum Halide::OS) > 1 * PyLong_SHIFT) {
+                    if (8 * sizeof(enum Halide::Target::OS) > 1 * PyLong_SHIFT) {
                         if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(enum Halide::OS, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(enum Halide::OS) - 1 > 2 * PyLong_SHIFT) {
-                            return (enum Halide::OS) ((((((enum Halide::OS)digits[1]) << PyLong_SHIFT) | (enum Halide::OS)digits[0])));
+                            __PYX_VERIFY_RETURN_INT(enum Halide::Target::OS, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(enum Halide::Target::OS) - 1 > 2 * PyLong_SHIFT) {
+                            return (enum Halide::Target::OS) ((((((enum Halide::Target::OS)digits[1]) << PyLong_SHIFT) | (enum Halide::Target::OS)digits[0])));
                         }
                     }
                     break;
                 case -3:
-                    if (8 * sizeof(enum Halide::OS) - 1 > 2 * PyLong_SHIFT) {
+                    if (8 * sizeof(enum Halide::Target::OS) - 1 > 2 * PyLong_SHIFT) {
                         if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(enum Halide::OS, long, -(long) (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(enum Halide::OS) - 1 > 3 * PyLong_SHIFT) {
-                            return (enum Halide::OS) (((enum Halide::OS)-1)*(((((((enum Halide::OS)digits[2]) << PyLong_SHIFT) | (enum Halide::OS)digits[1]) << PyLong_SHIFT) | (enum Halide::OS)digits[0])));
+                            __PYX_VERIFY_RETURN_INT(enum Halide::Target::OS, long, -(long) (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(enum Halide::Target::OS) - 1 > 3 * PyLong_SHIFT) {
+                            return (enum Halide::Target::OS) (((enum Halide::Target::OS)-1)*(((((((enum Halide::Target::OS)digits[2]) << PyLong_SHIFT) | (enum Halide::Target::OS)digits[1]) << PyLong_SHIFT) | (enum Halide::Target::OS)digits[0])));
                         }
                     }
                     break;
                 case 3:
-                    if (8 * sizeof(enum Halide::OS) > 2 * PyLong_SHIFT) {
+                    if (8 * sizeof(enum Halide::Target::OS) > 2 * PyLong_SHIFT) {
                         if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(enum Halide::OS, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(enum Halide::OS) - 1 > 3 * PyLong_SHIFT) {
-                            return (enum Halide::OS) ((((((((enum Halide::OS)digits[2]) << PyLong_SHIFT) | (enum Halide::OS)digits[1]) << PyLong_SHIFT) | (enum Halide::OS)digits[0])));
+                            __PYX_VERIFY_RETURN_INT(enum Halide::Target::OS, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(enum Halide::Target::OS) - 1 > 3 * PyLong_SHIFT) {
+                            return (enum Halide::Target::OS) ((((((((enum Halide::Target::OS)digits[2]) << PyLong_SHIFT) | (enum Halide::Target::OS)digits[1]) << PyLong_SHIFT) | (enum Halide::Target::OS)digits[0])));
                         }
                     }
                     break;
                 case -4:
-                    if (8 * sizeof(enum Halide::OS) - 1 > 3 * PyLong_SHIFT) {
+                    if (8 * sizeof(enum Halide::Target::OS) - 1 > 3 * PyLong_SHIFT) {
                         if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(enum Halide::OS, long, -(long) (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(enum Halide::OS) - 1 > 4 * PyLong_SHIFT) {
-                            return (enum Halide::OS) (((enum Halide::OS)-1)*(((((((((enum Halide::OS)digits[3]) << PyLong_SHIFT) | (enum Halide::OS)digits[2]) << PyLong_SHIFT) | (enum Halide::OS)digits[1]) << PyLong_SHIFT) | (enum Halide::OS)digits[0])));
+                            __PYX_VERIFY_RETURN_INT(enum Halide::Target::OS, long, -(long) (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(enum Halide::Target::OS) - 1 > 4 * PyLong_SHIFT) {
+                            return (enum Halide::Target::OS) (((enum Halide::Target::OS)-1)*(((((((((enum Halide::Target::OS)digits[3]) << PyLong_SHIFT) | (enum Halide::Target::OS)digits[2]) << PyLong_SHIFT) | (enum Halide::Target::OS)digits[1]) << PyLong_SHIFT) | (enum Halide::Target::OS)digits[0])));
                         }
                     }
                     break;
                 case 4:
-                    if (8 * sizeof(enum Halide::OS) > 3 * PyLong_SHIFT) {
+                    if (8 * sizeof(enum Halide::Target::OS) > 3 * PyLong_SHIFT) {
                         if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(enum Halide::OS, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(enum Halide::OS) - 1 > 4 * PyLong_SHIFT) {
-                            return (enum Halide::OS) ((((((((((enum Halide::OS)digits[3]) << PyLong_SHIFT) | (enum Halide::OS)digits[2]) << PyLong_SHIFT) | (enum Halide::OS)digits[1]) << PyLong_SHIFT) | (enum Halide::OS)digits[0])));
+                            __PYX_VERIFY_RETURN_INT(enum Halide::Target::OS, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(enum Halide::Target::OS) - 1 > 4 * PyLong_SHIFT) {
+                            return (enum Halide::Target::OS) ((((((((((enum Halide::Target::OS)digits[3]) << PyLong_SHIFT) | (enum Halide::Target::OS)digits[2]) << PyLong_SHIFT) | (enum Halide::Target::OS)digits[1]) << PyLong_SHIFT) | (enum Halide::Target::OS)digits[0])));
                         }
                     }
                     break;
             }
 #endif
-            if (sizeof(enum Halide::OS) <= sizeof(long)) {
-                __PYX_VERIFY_RETURN_INT_EXC(enum Halide::OS, long, PyLong_AsLong(x))
-            } else if (sizeof(enum Halide::OS) <= sizeof(PY_LONG_LONG)) {
-                __PYX_VERIFY_RETURN_INT_EXC(enum Halide::OS, PY_LONG_LONG, PyLong_AsLongLong(x))
+            if (sizeof(enum Halide::Target::OS) <= sizeof(long)) {
+                __PYX_VERIFY_RETURN_INT_EXC(enum Halide::Target::OS, long, PyLong_AsLong(x))
+            } else if (sizeof(enum Halide::Target::OS) <= sizeof(PY_LONG_LONG)) {
+                __PYX_VERIFY_RETURN_INT_EXC(enum Halide::Target::OS, PY_LONG_LONG, PyLong_AsLongLong(x))
             }
         }
         {
@@ -3647,7 +3654,7 @@ static CYTHON_INLINE enum Halide::OS __Pyx_PyInt_As_enum__Halide_3a__3a_OS(PyObj
             PyErr_SetString(PyExc_RuntimeError,
                             "_PyLong_AsByteArray() not available in PyPy, cannot convert large numbers");
 #else
-            enum Halide::OS val;
+            enum Halide::Target::OS val;
             PyObject *v = __Pyx_PyNumber_IntOrLong(x);
  #if PY_MAJOR_VERSION < 3
             if (likely(v) && !PyLong_Check(v)) {
@@ -3667,40 +3674,40 @@ static CYTHON_INLINE enum Halide::OS __Pyx_PyInt_As_enum__Halide_3a__3a_OS(PyObj
                     return val;
             }
 #endif
-            return (enum Halide::OS) -1;
+            return (enum Halide::Target::OS) -1;
         }
     } else {
-        enum Halide::OS val;
+        enum Halide::Target::OS val;
         PyObject *tmp = __Pyx_PyNumber_IntOrLong(x);
-        if (!tmp) return (enum Halide::OS) -1;
-        val = __Pyx_PyInt_As_enum__Halide_3a__3a_OS(tmp);
+        if (!tmp) return (enum Halide::Target::OS) -1;
+        val = __Pyx_PyInt_As_enum__Halide_3a__3a_Target_3a__3a_OS(tmp);
         Py_DECREF(tmp);
         return val;
     }
 raise_overflow:
     PyErr_SetString(PyExc_OverflowError,
-        "value too large to convert to enum Halide::OS");
-    return (enum Halide::OS) -1;
+        "value too large to convert to enum Halide::Target::OS");
+    return (enum Halide::Target::OS) -1;
 raise_neg_overflow:
     PyErr_SetString(PyExc_OverflowError,
-        "can't convert negative value to enum Halide::OS");
-    return (enum Halide::OS) -1;
+        "can't convert negative value to enum Halide::Target::OS");
+    return (enum Halide::Target::OS) -1;
 }
 
 /* CIntFromPy */
-static CYTHON_INLINE enum Halide::Arch __Pyx_PyInt_As_enum__Halide_3a__3a_Arch(PyObject *x) {
-    const enum Halide::Arch neg_one = (enum Halide::Arch) -1, const_zero = (enum Halide::Arch) 0;
+static CYTHON_INLINE enum Halide::Target::Arch __Pyx_PyInt_As_enum__Halide_3a__3a_Target_3a__3a_Arch(PyObject *x) {
+    const enum Halide::Target::Arch neg_one = (enum Halide::Target::Arch) -1, const_zero = (enum Halide::Target::Arch) 0;
     const int is_unsigned = neg_one > const_zero;
 #if PY_MAJOR_VERSION < 3
     if (likely(PyInt_Check(x))) {
-        if (sizeof(enum Halide::Arch) < sizeof(long)) {
-            __PYX_VERIFY_RETURN_INT(enum Halide::Arch, long, PyInt_AS_LONG(x))
+        if (sizeof(enum Halide::Target::Arch) < sizeof(long)) {
+            __PYX_VERIFY_RETURN_INT(enum Halide::Target::Arch, long, PyInt_AS_LONG(x))
         } else {
             long val = PyInt_AS_LONG(x);
             if (is_unsigned && unlikely(val < 0)) {
                 goto raise_neg_overflow;
             }
-            return (enum Halide::Arch) val;
+            return (enum Halide::Target::Arch) val;
         }
     } else
 #endif
@@ -3709,32 +3716,32 @@ static CYTHON_INLINE enum Halide::Arch __Pyx_PyInt_As_enum__Halide_3a__3a_Arch(P
 #if CYTHON_USE_PYLONG_INTERNALS
             const digit* digits = ((PyLongObject*)x)->ob_digit;
             switch (Py_SIZE(x)) {
-                case  0: return (enum Halide::Arch) 0;
-                case  1: __PYX_VERIFY_RETURN_INT(enum Halide::Arch, digit, digits[0])
+                case  0: return (enum Halide::Target::Arch) 0;
+                case  1: __PYX_VERIFY_RETURN_INT(enum Halide::Target::Arch, digit, digits[0])
                 case 2:
-                    if (8 * sizeof(enum Halide::Arch) > 1 * PyLong_SHIFT) {
+                    if (8 * sizeof(enum Halide::Target::Arch) > 1 * PyLong_SHIFT) {
                         if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(enum Halide::Arch, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(enum Halide::Arch) >= 2 * PyLong_SHIFT) {
-                            return (enum Halide::Arch) (((((enum Halide::Arch)digits[1]) << PyLong_SHIFT) | (enum Halide::Arch)digits[0]));
+                            __PYX_VERIFY_RETURN_INT(enum Halide::Target::Arch, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(enum Halide::Target::Arch) >= 2 * PyLong_SHIFT) {
+                            return (enum Halide::Target::Arch) (((((enum Halide::Target::Arch)digits[1]) << PyLong_SHIFT) | (enum Halide::Target::Arch)digits[0]));
                         }
                     }
                     break;
                 case 3:
-                    if (8 * sizeof(enum Halide::Arch) > 2 * PyLong_SHIFT) {
+                    if (8 * sizeof(enum Halide::Target::Arch) > 2 * PyLong_SHIFT) {
                         if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(enum Halide::Arch, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(enum Halide::Arch) >= 3 * PyLong_SHIFT) {
-                            return (enum Halide::Arch) (((((((enum Halide::Arch)digits[2]) << PyLong_SHIFT) | (enum Halide::Arch)digits[1]) << PyLong_SHIFT) | (enum Halide::Arch)digits[0]));
+                            __PYX_VERIFY_RETURN_INT(enum Halide::Target::Arch, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(enum Halide::Target::Arch) >= 3 * PyLong_SHIFT) {
+                            return (enum Halide::Target::Arch) (((((((enum Halide::Target::Arch)digits[2]) << PyLong_SHIFT) | (enum Halide::Target::Arch)digits[1]) << PyLong_SHIFT) | (enum Halide::Target::Arch)digits[0]));
                         }
                     }
                     break;
                 case 4:
-                    if (8 * sizeof(enum Halide::Arch) > 3 * PyLong_SHIFT) {
+                    if (8 * sizeof(enum Halide::Target::Arch) > 3 * PyLong_SHIFT) {
                         if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(enum Halide::Arch, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(enum Halide::Arch) >= 4 * PyLong_SHIFT) {
-                            return (enum Halide::Arch) (((((((((enum Halide::Arch)digits[3]) << PyLong_SHIFT) | (enum Halide::Arch)digits[2]) << PyLong_SHIFT) | (enum Halide::Arch)digits[1]) << PyLong_SHIFT) | (enum Halide::Arch)digits[0]));
+                            __PYX_VERIFY_RETURN_INT(enum Halide::Target::Arch, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(enum Halide::Target::Arch) >= 4 * PyLong_SHIFT) {
+                            return (enum Halide::Target::Arch) (((((((((enum Halide::Target::Arch)digits[3]) << PyLong_SHIFT) | (enum Halide::Target::Arch)digits[2]) << PyLong_SHIFT) | (enum Halide::Target::Arch)digits[1]) << PyLong_SHIFT) | (enum Halide::Target::Arch)digits[0]));
                         }
                     }
                     break;
@@ -3748,83 +3755,83 @@ static CYTHON_INLINE enum Halide::Arch __Pyx_PyInt_As_enum__Halide_3a__3a_Arch(P
             {
                 int result = PyObject_RichCompareBool(x, Py_False, Py_LT);
                 if (unlikely(result < 0))
-                    return (enum Halide::Arch) -1;
+                    return (enum Halide::Target::Arch) -1;
                 if (unlikely(result == 1))
                     goto raise_neg_overflow;
             }
 #endif
-            if (sizeof(enum Halide::Arch) <= sizeof(unsigned long)) {
-                __PYX_VERIFY_RETURN_INT_EXC(enum Halide::Arch, unsigned long, PyLong_AsUnsignedLong(x))
-            } else if (sizeof(enum Halide::Arch) <= sizeof(unsigned PY_LONG_LONG)) {
-                __PYX_VERIFY_RETURN_INT_EXC(enum Halide::Arch, unsigned PY_LONG_LONG, PyLong_AsUnsignedLongLong(x))
+            if (sizeof(enum Halide::Target::Arch) <= sizeof(unsigned long)) {
+                __PYX_VERIFY_RETURN_INT_EXC(enum Halide::Target::Arch, unsigned long, PyLong_AsUnsignedLong(x))
+            } else if (sizeof(enum Halide::Target::Arch) <= sizeof(unsigned PY_LONG_LONG)) {
+                __PYX_VERIFY_RETURN_INT_EXC(enum Halide::Target::Arch, unsigned PY_LONG_LONG, PyLong_AsUnsignedLongLong(x))
             }
         } else {
 #if CYTHON_USE_PYLONG_INTERNALS
             const digit* digits = ((PyLongObject*)x)->ob_digit;
             switch (Py_SIZE(x)) {
-                case  0: return (enum Halide::Arch) 0;
-                case -1: __PYX_VERIFY_RETURN_INT(enum Halide::Arch, sdigit, (sdigit) (-(sdigit)digits[0]))
-                case  1: __PYX_VERIFY_RETURN_INT(enum Halide::Arch,  digit, +digits[0])
+                case  0: return (enum Halide::Target::Arch) 0;
+                case -1: __PYX_VERIFY_RETURN_INT(enum Halide::Target::Arch, sdigit, (sdigit) (-(sdigit)digits[0]))
+                case  1: __PYX_VERIFY_RETURN_INT(enum Halide::Target::Arch,  digit, +digits[0])
                 case -2:
-                    if (8 * sizeof(enum Halide::Arch) - 1 > 1 * PyLong_SHIFT) {
+                    if (8 * sizeof(enum Halide::Target::Arch) - 1 > 1 * PyLong_SHIFT) {
                         if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(enum Halide::Arch, long, -(long) (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(enum Halide::Arch) - 1 > 2 * PyLong_SHIFT) {
-                            return (enum Halide::Arch) (((enum Halide::Arch)-1)*(((((enum Halide::Arch)digits[1]) << PyLong_SHIFT) | (enum Halide::Arch)digits[0])));
+                            __PYX_VERIFY_RETURN_INT(enum Halide::Target::Arch, long, -(long) (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(enum Halide::Target::Arch) - 1 > 2 * PyLong_SHIFT) {
+                            return (enum Halide::Target::Arch) (((enum Halide::Target::Arch)-1)*(((((enum Halide::Target::Arch)digits[1]) << PyLong_SHIFT) | (enum Halide::Target::Arch)digits[0])));
                         }
                     }
                     break;
                 case 2:
-                    if (8 * sizeof(enum Halide::Arch) > 1 * PyLong_SHIFT) {
+                    if (8 * sizeof(enum Halide::Target::Arch) > 1 * PyLong_SHIFT) {
                         if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(enum Halide::Arch, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(enum Halide::Arch) - 1 > 2 * PyLong_SHIFT) {
-                            return (enum Halide::Arch) ((((((enum Halide::Arch)digits[1]) << PyLong_SHIFT) | (enum Halide::Arch)digits[0])));
+                            __PYX_VERIFY_RETURN_INT(enum Halide::Target::Arch, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(enum Halide::Target::Arch) - 1 > 2 * PyLong_SHIFT) {
+                            return (enum Halide::Target::Arch) ((((((enum Halide::Target::Arch)digits[1]) << PyLong_SHIFT) | (enum Halide::Target::Arch)digits[0])));
                         }
                     }
                     break;
                 case -3:
-                    if (8 * sizeof(enum Halide::Arch) - 1 > 2 * PyLong_SHIFT) {
+                    if (8 * sizeof(enum Halide::Target::Arch) - 1 > 2 * PyLong_SHIFT) {
                         if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(enum Halide::Arch, long, -(long) (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(enum Halide::Arch) - 1 > 3 * PyLong_SHIFT) {
-                            return (enum Halide::Arch) (((enum Halide::Arch)-1)*(((((((enum Halide::Arch)digits[2]) << PyLong_SHIFT) | (enum Halide::Arch)digits[1]) << PyLong_SHIFT) | (enum Halide::Arch)digits[0])));
+                            __PYX_VERIFY_RETURN_INT(enum Halide::Target::Arch, long, -(long) (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(enum Halide::Target::Arch) - 1 > 3 * PyLong_SHIFT) {
+                            return (enum Halide::Target::Arch) (((enum Halide::Target::Arch)-1)*(((((((enum Halide::Target::Arch)digits[2]) << PyLong_SHIFT) | (enum Halide::Target::Arch)digits[1]) << PyLong_SHIFT) | (enum Halide::Target::Arch)digits[0])));
                         }
                     }
                     break;
                 case 3:
-                    if (8 * sizeof(enum Halide::Arch) > 2 * PyLong_SHIFT) {
+                    if (8 * sizeof(enum Halide::Target::Arch) > 2 * PyLong_SHIFT) {
                         if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(enum Halide::Arch, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(enum Halide::Arch) - 1 > 3 * PyLong_SHIFT) {
-                            return (enum Halide::Arch) ((((((((enum Halide::Arch)digits[2]) << PyLong_SHIFT) | (enum Halide::Arch)digits[1]) << PyLong_SHIFT) | (enum Halide::Arch)digits[0])));
+                            __PYX_VERIFY_RETURN_INT(enum Halide::Target::Arch, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(enum Halide::Target::Arch) - 1 > 3 * PyLong_SHIFT) {
+                            return (enum Halide::Target::Arch) ((((((((enum Halide::Target::Arch)digits[2]) << PyLong_SHIFT) | (enum Halide::Target::Arch)digits[1]) << PyLong_SHIFT) | (enum Halide::Target::Arch)digits[0])));
                         }
                     }
                     break;
                 case -4:
-                    if (8 * sizeof(enum Halide::Arch) - 1 > 3 * PyLong_SHIFT) {
+                    if (8 * sizeof(enum Halide::Target::Arch) - 1 > 3 * PyLong_SHIFT) {
                         if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(enum Halide::Arch, long, -(long) (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(enum Halide::Arch) - 1 > 4 * PyLong_SHIFT) {
-                            return (enum Halide::Arch) (((enum Halide::Arch)-1)*(((((((((enum Halide::Arch)digits[3]) << PyLong_SHIFT) | (enum Halide::Arch)digits[2]) << PyLong_SHIFT) | (enum Halide::Arch)digits[1]) << PyLong_SHIFT) | (enum Halide::Arch)digits[0])));
+                            __PYX_VERIFY_RETURN_INT(enum Halide::Target::Arch, long, -(long) (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(enum Halide::Target::Arch) - 1 > 4 * PyLong_SHIFT) {
+                            return (enum Halide::Target::Arch) (((enum Halide::Target::Arch)-1)*(((((((((enum Halide::Target::Arch)digits[3]) << PyLong_SHIFT) | (enum Halide::Target::Arch)digits[2]) << PyLong_SHIFT) | (enum Halide::Target::Arch)digits[1]) << PyLong_SHIFT) | (enum Halide::Target::Arch)digits[0])));
                         }
                     }
                     break;
                 case 4:
-                    if (8 * sizeof(enum Halide::Arch) > 3 * PyLong_SHIFT) {
+                    if (8 * sizeof(enum Halide::Target::Arch) > 3 * PyLong_SHIFT) {
                         if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(enum Halide::Arch, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(enum Halide::Arch) - 1 > 4 * PyLong_SHIFT) {
-                            return (enum Halide::Arch) ((((((((((enum Halide::Arch)digits[3]) << PyLong_SHIFT) | (enum Halide::Arch)digits[2]) << PyLong_SHIFT) | (enum Halide::Arch)digits[1]) << PyLong_SHIFT) | (enum Halide::Arch)digits[0])));
+                            __PYX_VERIFY_RETURN_INT(enum Halide::Target::Arch, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(enum Halide::Target::Arch) - 1 > 4 * PyLong_SHIFT) {
+                            return (enum Halide::Target::Arch) ((((((((((enum Halide::Target::Arch)digits[3]) << PyLong_SHIFT) | (enum Halide::Target::Arch)digits[2]) << PyLong_SHIFT) | (enum Halide::Target::Arch)digits[1]) << PyLong_SHIFT) | (enum Halide::Target::Arch)digits[0])));
                         }
                     }
                     break;
             }
 #endif
-            if (sizeof(enum Halide::Arch) <= sizeof(long)) {
-                __PYX_VERIFY_RETURN_INT_EXC(enum Halide::Arch, long, PyLong_AsLong(x))
-            } else if (sizeof(enum Halide::Arch) <= sizeof(PY_LONG_LONG)) {
-                __PYX_VERIFY_RETURN_INT_EXC(enum Halide::Arch, PY_LONG_LONG, PyLong_AsLongLong(x))
+            if (sizeof(enum Halide::Target::Arch) <= sizeof(long)) {
+                __PYX_VERIFY_RETURN_INT_EXC(enum Halide::Target::Arch, long, PyLong_AsLong(x))
+            } else if (sizeof(enum Halide::Target::Arch) <= sizeof(PY_LONG_LONG)) {
+                __PYX_VERIFY_RETURN_INT_EXC(enum Halide::Target::Arch, PY_LONG_LONG, PyLong_AsLongLong(x))
             }
         }
         {
@@ -3832,7 +3839,7 @@ static CYTHON_INLINE enum Halide::Arch __Pyx_PyInt_As_enum__Halide_3a__3a_Arch(P
             PyErr_SetString(PyExc_RuntimeError,
                             "_PyLong_AsByteArray() not available in PyPy, cannot convert large numbers");
 #else
-            enum Halide::Arch val;
+            enum Halide::Target::Arch val;
             PyObject *v = __Pyx_PyNumber_IntOrLong(x);
  #if PY_MAJOR_VERSION < 3
             if (likely(v) && !PyLong_Check(v)) {
@@ -3852,24 +3859,24 @@ static CYTHON_INLINE enum Halide::Arch __Pyx_PyInt_As_enum__Halide_3a__3a_Arch(P
                     return val;
             }
 #endif
-            return (enum Halide::Arch) -1;
+            return (enum Halide::Target::Arch) -1;
         }
     } else {
-        enum Halide::Arch val;
+        enum Halide::Target::Arch val;
         PyObject *tmp = __Pyx_PyNumber_IntOrLong(x);
-        if (!tmp) return (enum Halide::Arch) -1;
-        val = __Pyx_PyInt_As_enum__Halide_3a__3a_Arch(tmp);
+        if (!tmp) return (enum Halide::Target::Arch) -1;
+        val = __Pyx_PyInt_As_enum__Halide_3a__3a_Target_3a__3a_Arch(tmp);
         Py_DECREF(tmp);
         return val;
     }
 raise_overflow:
     PyErr_SetString(PyExc_OverflowError,
-        "value too large to convert to enum Halide::Arch");
-    return (enum Halide::Arch) -1;
+        "value too large to convert to enum Halide::Target::Arch");
+    return (enum Halide::Target::Arch) -1;
 raise_neg_overflow:
     PyErr_SetString(PyExc_OverflowError,
-        "can't convert negative value to enum Halide::Arch");
-    return (enum Halide::Arch) -1;
+        "can't convert negative value to enum Halide::Target::Arch");
+    return (enum Halide::Target::Arch) -1;
 }
 
 /* CIntFromPy */
