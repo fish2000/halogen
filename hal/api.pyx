@@ -15,7 +15,6 @@ cdef class Target:
         HalTarget __this__
         
     def __init__(Target self, *args, **kwargs):
-        # target_string = 'YO DOGG' # invalid
         target_string = ''
         if 'target_string' in kwargs:
             target_string = kwargs.get('target_string')
@@ -26,16 +25,13 @@ cdef class Target:
                 raise ValueError("invalid target string: %s" % target_string)
             self.__this__ = HalTarget(target_string)
     
-    def __dealloc__(Target self):
-        pass
-    
     property os:
         
         def __get__(Target self):
             return self.__this__.os
             
         def __set__(Target self, value):
-            self.__this__.bits = <HalTarget.OS>value
+            self.__this__.os = <HalTarget.OS>value
     
     property arch:
         
@@ -43,7 +39,7 @@ cdef class Target:
             return self.__this__.arch
     
         def __set__(Target self, value):
-            self.__this__.bits = <HalTarget.Arch>value
+            self.__this__.arch = <HalTarget.Arch>value
     
     property bits:
         
@@ -73,7 +69,6 @@ cdef class Target:
     
     def __exit__(Target self, exc_tp, exc_val, exc_tb):
         return False
-    
 
 
 ## FUNCTION WRAPPERS:

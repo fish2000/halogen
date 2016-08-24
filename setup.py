@@ -9,6 +9,8 @@ setup(
             '-lHalide'
         ],
         extra_compile_args=[
+            '-Wno-unused-function',
+            '-Wno-unneeded-internal-declaration',
             '-O3',
             '-funroll-loops',
             '-mtune=native',
