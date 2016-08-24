@@ -28,18 +28,18 @@ cdef extern from "Halide.h" namespace "Halide":
     
     # cppclass halide_handle_cplusplus_type:
     #
-    #     cdef halide_cplusplus_type_name inner_name
-    #     cdef stringvec_t namespaces
-    #     cdef cppnamevec_t enclosing_types
+    #     halide_cplusplus_type_name inner_name
+    #     stringvec_t namespaces
+    #     cppnamevec_t enclosing_types
         
     
     cppclass Type:
         
-        # cdef halide_handle_cplusplus_type* handle_type
+        # halide_handle_cplusplus_type* handle_type
         
         Type()
-        # Type(halide_type_code_t, uint8_t, int, halide_handle_cplusplus_type*)
         Type(Type&)
+        # Type(halide_type_code_t, uint8_t, int, halide_handle_cplusplus_type*)
         # Type(halide_type_t&, halide_handle_cplusplus_type*)
         
         halide_type_code_t code()

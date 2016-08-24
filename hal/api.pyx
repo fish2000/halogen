@@ -4,6 +4,8 @@ from libc.stdint cimport *
 # from libcpp.string cimport string
 # from libcpp.vector cimport vector
 
+from generator cimport GeneratorRegistry, Generator, RegisterGenerator
+
 from type cimport Type as HalType
 from type cimport Int as Type_Int
 from type cimport UInt as Type_UInt
@@ -16,7 +18,10 @@ from target cimport get_host_target as halide_get_host_target
 from target cimport get_target_from_environment as halide_get_target_from_environment
 from target cimport get_jit_target_from_environment as halide_get_jit_target_from_environment
 
-## CLASS WRAPPERS:
+
+def registered_generators():
+    return tuple(GeneratorRegistry.enumerate())
+
 
 cdef class Type:
     """ Cython wrapper class for Halide::Type """
