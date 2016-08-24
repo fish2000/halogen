@@ -2,6 +2,7 @@
 from libc.stdint cimport *
 from libcpp.string cimport string
 from libcpp.vector cimport vector
+from type cimport Type
 
 cdef extern from "Halide.h" namespace "Halide::Target":
     
@@ -96,14 +97,14 @@ cdef extern from "Halide.h" namespace "Halide":
         Target with_feature(Feature f)
         Target without_feature(Feature f)
         
-        # bool supports_type(Type& t)
+        bint supports_type(Type&)
         # bool supports_device_api(DeviceAPI api)
         
         bint operator==(Target& other)
         bint operator!=(Target& other)
         string to_string()
         
-        # int natural_vector_size(Type t)
+        int natural_vector_size(Type)
         # int natural_vector_size[T]()
         int64_t maximum_buffer_size()
         bint supported()

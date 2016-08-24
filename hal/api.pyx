@@ -166,6 +166,12 @@ cdef class Target:
     def supported(Target self):
         return self.__this__.supported()
     
+    def supports_type(Target self, Type t):
+        return self.__this__.supports_type(t.__this__)
+    
+    def natural_vector_size(Target self, Type t):
+        return self.__this__.natural_vector_size(t.__this__)
+    
     def __str__(Target self):
         return self.__this__.to_string()
 
