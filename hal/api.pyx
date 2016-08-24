@@ -19,6 +19,7 @@ from target cimport get_jit_target_from_environment as halide_get_jit_target_fro
 ## CLASS WRAPPERS:
 
 cdef class Type:
+    """ Cython wrapper class for Halide::Type """
     
     cdef:
         HalType __this__
