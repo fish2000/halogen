@@ -66,6 +66,7 @@ cdef extern from "Halide.h" namespace "Halide::Target":
         HVX_v62
         FeatureEnd
 
+ctypedef vector[Feature] featurevec_t
 
 cdef extern from "Halide.h" namespace "Halide":
     
@@ -76,11 +77,9 @@ cdef extern from "Halide.h" namespace "Halide":
         Arch arch
         int bits
         
-        # ctypedef vector[Feature] featurevec_t
-        
         # constructors:
         Target()
-        Target(OS, Arch, int, vector[Feature])
+        Target(OS, Arch, int, featurevec_t)
         Target(string)
         
         # static methods:
@@ -89,15 +88,15 @@ cdef extern from "Halide.h" namespace "Halide":
         
         # instance methods:
         void set_feature(Feature f, bint value)
-        void set_features(vector[Feature] features_to_set, bint value)
+        void set_features(featurevec_t features_to_set, bint value)
         bint has_feature(Feature f)
-        bint features_any_of(vector[Feature] test_features)
-        bint features_all_of(vector[Feature] test_features)
+        bint features_any_of(featurevec_t test_features)
+        bint features_all_of(featurevec_t test_features)
         bint has_gpu_feature()
         Target with_feature(Feature f)
         Target without_feature(Feature f)
         
-        # bool supports_type(Type const& t)
+        # bool supports_type(Type& t)
         # bool supports_device_api(DeviceAPI api)
         
         bint operator==(Target& other)

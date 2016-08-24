@@ -5,6 +5,9 @@ from Cython.Build import cythonize
 
 setup(
     ext_modules=cythonize([Extension('hal.api', ['hal/api.pyx'],
+        extra_link_args=[
+            '-lHalide'
+        ],
         extra_compile_args=[
             '-O3',
             '-funroll-loops',
