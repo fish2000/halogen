@@ -1,7 +1,7 @@
 # distutils: language = c++
 
 from libc.stdint cimport *
-# from libcpp.string cimport string
+from libcpp.string cimport string
 # from libcpp.vector cimport vector
 
 from generator cimport GeneratorRegistry, Generator, RegisterGenerator
@@ -143,15 +143,15 @@ cdef class Target:
             
         def __set__(Target self, value):
             self.__this__.os = <HalTarget.OS>value
-    
+        
     property arch:
         
         def __get__(Target self):
             return self.__this__.arch
-    
+        
         def __set__(Target self, value):
             self.__this__.arch = <HalTarget.Arch>value
-    
+        
     property bits:
         
         def __get__(Target self):
@@ -162,6 +162,12 @@ cdef class Target:
     
     def has_gpu_feature(Target self):
         return self.__this__.has_gpu_feature()
+    
+    def includes_halide_runtime(Target self):
+        try:
+            return str(self).index('no_runtime') < 0
+        except ValueError:
+            return True
     
     def to_string(Target self):
         return self.__this__.to_string()
