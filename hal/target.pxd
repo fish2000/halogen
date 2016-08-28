@@ -98,7 +98,7 @@ cdef extern from "Halide.h" namespace "Halide":
         Target without_feature(Feature f)
         
         bint supports_type(Type&)
-        # bool supports_device_api(DeviceAPI api)
+        # bint supports_device_api(DeviceAPI api)
         
         bint operator==(Target& other)
         bint operator!=(Target& other)

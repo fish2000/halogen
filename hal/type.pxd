@@ -4,20 +4,74 @@ from libcpp.string cimport string
 from libcpp.vector cimport vector
 from runtime cimport halide_type_code_t, halide_type_t
 
-# ctypedef vector[string] stringvec_t
-# ctypedef vector[halide_cplusplus_type_name] cppnamevec_t
+ctypedef vector[string]     stringvec_t
+ctypedef vector[uint8_t]    bytevec_t
 
-# cdef extern from "Halide.h" namespace "Halide::halide_handle_cplusplus_type":
-#
-#     cdef enum Modifier(uint8_t):
-#         Const
-#         Volatile
-#         Restrict
-#         Pointer
+cdef extern from "Halide.h" namespace "halide_cplusplus_type_name":
+    
+    cdef enum CPPTypeType:
+        Simple
+        Struct
+        Class
+        Union
+        Enum
+
+
+cdef extern from "Halide.h":
+    
+    cppclass halide_cplusplus_type_name:
+        
+        CPPTypeType cpp_type_type
+        string name
+        
+        halide_cplusplus_type_name(CPPTypeType, string&)
+        bint operator==(halide_cplusplus_type_name&)
+        bint operator!=(halide_cplusplus_type_name&)
+        bint operator<(halide_cplusplus_type_name&)
+
+
+ctypedef vector[halide_cplusplus_type_name] cppnamevec_t
+
+cdef extern from "Halide.h" namespace "halide_handle_cplusplus_type":
+    
+    cdef enum Modifier:
+        Const
+        Volatile
+        Restrict
+        Pointer
+    
+    cppclass CPPTypeModifiers:
+        uint8_t data[8]
+        
+        CPPTypeModifiers(bytevec_t&)
+        uint8_t& operator[](size_t)
+        bint operator==(CPPTypeModifiers&)
+        uint8_t* begin()
+        uint8_t* end()
+    
+    cdef enum ReferenceType:
+        NotReference
+        LValueReference
+        RValueReference
+
+
+cdef extern from "Halide.h":
+    
+    cppclass halide_handle_cplusplus_type:
+        
+        halide_cplusplus_type_name inner_name
+        stringvec_t namespaces
+        cppnamevec_t enclosing_types
+        CPPTypeModifiers cpp_type_modifiers
+        ReferenceType reference_type
+        
+        halide_handle_cplusplus_type(halide_cplusplus_type_name&,
+                                     stringvec_t&, cppnamevec_t&, bytevec_t&,
+                                     ReferenceType)
 
 
 cdef extern from "Halide.h" namespace "Halide::Type":
-
+    
     cdef halide_type_code_t Int = halide_type_int
     cdef halide_type_code_t UInt = halide_type_uint
     cdef halide_type_code_t Float = halide_type_float
@@ -26,21 +80,14 @@ cdef extern from "Halide.h" namespace "Halide::Type":
 
 cdef extern from "Halide.h" namespace "Halide":
     
-    # cppclass halide_handle_cplusplus_type:
-    #
-    #     halide_cplusplus_type_name inner_name
-    #     stringvec_t namespaces
-    #     cppnamevec_t enclosing_types
-        
-    
     cppclass Type:
         
-        # halide_handle_cplusplus_type* handle_type
+        halide_handle_cplusplus_type* handle_type
         
         Type()
         Type(Type&)
-        # Type(halide_type_code_t, uint8_t, int, halide_handle_cplusplus_type*)
-        # Type(halide_type_t&, halide_handle_cplusplus_type*)
+        Type(halide_type_code_t, uint8_t, int, halide_handle_cplusplus_type*)
+        Type(halide_type_t&, halide_handle_cplusplus_type*)
         
         halide_type_code_t code()
         int bytes()
@@ -78,5 +125,5 @@ cdef extern from "Halide.h" namespace "Halide":
     Type UInt(int bits, int lanes)
     Type Float(int bits, int lanes)
     Type Bool(int lanes)
-    Type Handle(int bits, int lanes)
+    Type Handle(int lanes, halide_handle_cplusplus_type* handle_type)
     

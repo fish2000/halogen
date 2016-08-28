@@ -29,8 +29,24 @@ cdef class Type:
     cdef:
         HalType __this__
     
-    def __init__(Type self):
-        pass
+    @staticmethod
+    def fromother(Type other):
+        out = Type()
+        out.__this__ = HalType(other.__this__)
+        return out
+    
+    def __cinit__(Type self, Type other=None, **kwargs):
+        if other is not None:
+            self.__this__ = HalType(other.__this__)
+    
+    def __init__(Type self, *args, **kwargs):
+        if len(args) < 1:
+            if 'code' in kwargs:
+                self.__this__ = self.__this__.with_code(kwargs.get('code'))
+            elif 'bits' in kwargs:
+                self.__this__ = self.__this__.with_bits(<uint8_t>kwargs.get('bits'))
+            elif 'lanes' in kwargs:
+                self.__this__ = self.__this__.with_lanes(<uint16_t>kwargs.get('lanes'))
     
     def code(Type self):
         return self.__this__.code()
@@ -88,6 +104,25 @@ cdef class Type:
         out.__this__ = self.__this__.element_of()
         return out
     
+    def can_represent(Type self, other):
+        if type(other) == type(self):
+            return self.can_represent_type(other)
+        elif type(other) == type(float()):
+            return self.can_represent_float(float(other))
+        elif type(other) == type(int()) or \
+             type(other) == type(long()):
+            return self.can_represent_long(long(other))
+        return False
+    
+    def can_represent_type(Type self, Type other):
+        return self.__this__.can_represent(other.__this__)
+    
+    def can_represent_float(Type self, float other):
+        return self.__this__.can_represent(<double>other)
+    
+    def can_represent_long(Type self, long other):
+        return self.__this__.can_represent(<int64_t>other)
+    
     @staticmethod
     def Int(int bits, int lanes=1):
         out = Type()
@@ -112,24 +147,28 @@ cdef class Type:
         out.__this__ = Type_Bool(lanes)
         return out
     
-    # @staticmethod
-    # def Handle(int bits, int lanes=1):
-    #     out = Type()
-    #     out.__this__ = Type_Handle(bits, lanes)
-    #     return out
-    
+    @staticmethod
+    def Handle(int lanes=1):
+        out = Type()
+        out.__this__ = Type_Handle(lanes, NULL)
+        return out
+
 
 cdef class Target:
     """ Cython wrapper class for Halide::Target """
     
     cdef:
         HalTarget __this__
-        
+    
+    @staticmethod
+    def validate_target_string(target_string):
+        return HalTarget.validate_target_string(target_string)
+    
     def __init__(Target self, *args, **kwargs):
         target_string = ''
         if 'target_string' in kwargs:
             target_string = kwargs.get('target_string')
-        elif len(args) == 1:
+        elif len(args) > 0:
             target_string = args[0]
         if target_string:
             if not HalTarget.validate_target_string(target_string):

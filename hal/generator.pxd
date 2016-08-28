@@ -25,6 +25,7 @@ cdef extern from "Halide.h" namespace "Halide":
     cppclass NamesInterface:
         pass
 
+
 cdef extern from "Halide.h" namespace "Halide::Internal":
     
     cppclass GeneratorBase(NamesInterface):
@@ -32,6 +33,7 @@ cdef extern from "Halide.h" namespace "Halide::Internal":
     
     cppclass GeneratorFactory:
         pass
+
 
 ctypedef unique_ptr[GeneratorFactory]   factory_ptr_t
 ctypedef unique_ptr[GeneratorBase]      base_ptr_t
@@ -57,5 +59,5 @@ cdef extern from "Halide.h" namespace "Halide":
     
     cppclass RegisterGenerator[T]:
         RegisterGenerator(char*)
-    
-    
+
+
