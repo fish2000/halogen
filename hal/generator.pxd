@@ -1,10 +1,14 @@
 
 from libc.stdint cimport *
+from libcpp.map cimport map as std_map
 from libcpp.string cimport string
 from libcpp.vector cimport vector
 from libcpp.memory cimport unique_ptr
+from target cimport Target
+from type cimport Type
 
-ctypedef vector[string] stringvec_t
+ctypedef vector[string]                 stringvec_t
+ctypedef std_map[string, string]        stringmap_t
 
 cdef extern from "Halide.h" namespace "Halide::Internal":
     
@@ -26,10 +30,33 @@ cdef extern from "Halide.h" namespace "Halide":
         pass
 
 
+ctypedef GeneratorParam[Target]         targetparam_t
+
 cdef extern from "Halide.h" namespace "Halide::Internal":
     
+    ctypedef stringmap_t GeneratorParamValues
+    
     cppclass GeneratorBase(NamesInterface):
-        pass
+        targetparam_t target
+        
+        cppclass EmitOptions:
+            bint emit_o
+            bint emit_h
+            bint emit_cpp
+            bint emit_assembly
+            bint emit_bitcode
+            bint emit_stmt
+            bint emit_stmt_html
+            bint emit_static_library
+            stringmap_t extensions
+            EmitOptions()
+        
+        Target get_target()
+        GeneratorParamValues get_generator_param_values()
+        void set_generator_param_values(GeneratorParamValues&)
+        int natural_vector_size(Type)
+        # int natural_vector_size[T]()
+        void emit_filter(string&, string&, string&, EmitOptions&)
     
     cppclass GeneratorFactory:
         pass

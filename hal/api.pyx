@@ -2,9 +2,12 @@
 
 from libc.stdint cimport *
 from libcpp.string cimport string
-# from libcpp.vector cimport vector
+from cpython.mapping cimport PyMapping_Check
 
-from generator cimport GeneratorRegistry, Generator, RegisterGenerator
+from outputs cimport Outputs as HalOutputs
+
+from generator cimport GeneratorBase, GeneratorRegistry
+from generator cimport stringmap_t
 
 from type cimport Type as HalType
 from type cimport Int as Type_Int
@@ -17,6 +20,131 @@ from target cimport Target as HalTarget
 from target cimport get_host_target as halide_get_host_target
 from target cimport get_target_from_environment as halide_get_target_from_environment
 from target cimport get_jit_target_from_environment as halide_get_jit_target_from_environment
+
+cdef class Outputs:
+    
+    cdef:
+        HalOutputs __this__
+    
+
+
+ctypedef GeneratorBase.EmitOptions EmOpts
+
+cdef class EmitOptions:
+    
+    cdef:
+        EmOpts __this__
+    
+    emit_defaults = {
+        'emit_o'                : True,
+        'emit_h'                : True,
+        'emit_cpp'              : False,
+        'emit_assembly'         : False,
+        'emit_bitcode'          : False,
+        'emit_stmt'             : False,
+        'emit_stmt_html'        : False,
+        'emit_static_library'   : True
+    }
+    
+    def __init__(EmitOptions self, *args, **kwargs):
+        for arg in args:
+            if type(arg) == type(self):
+                self.__this__ = EmOpts()
+                self.__this__.emit_o = arg.emit_o
+                self.__this__.emit_h = arg.emit_h
+                self.__this__.emit_cpp = arg.emit_cpp
+                self.__this__.emit_assembly = arg.emit_assembly
+                self.__this__.emit_bitcode = arg.emit_bitcode
+                self.__this__.emit_stmt = arg.emit_stmt
+                self.__this__.emit_stmt_html = arg.emit_stmt_html
+                self.__this__.emit_static_library = arg.emit_static_library
+                for k, v in arg.extensions.items():
+                    self.__this__.extensions[k] = v
+                return
+        
+        emit_o = kwargs.pop('emit_o',                   self.emit_defaults['emit_o'])
+        emit_h = kwargs.pop('emit_h',                   self.emit_defaults['emit_h'])
+        emit_cpp = kwargs.pop('emit_cpp',               self.emit_defaults['emit_cpp'])
+        emit_assembly = kwargs.pop('emit_assembly',     self.emit_defaults['emit_assembly'])
+        emit_bitcode = kwargs.pop('emit_bitcode',       self.emit_defaults['emit_bitcode'])
+        emit_stmt = kwargs.pop('emit_stmt',             self.emit_defaults['emit_stmt'])
+        emit_stmt_html = kwargs.pop('emit_stmt_html',   self.emit_defaults['emit_stmt_html'])
+        emit_static_library = kwargs.pop('emit_static_library',
+                                                        self.emit_defaults['emit_static_library'])
+        extensions = kwargs.pop('extensions',           dict())
+        
+        if not PyMapping_Check(extensions):
+            raise ValueError("extensions must be a mapping type")
+        
+        self.__this__.emit_o = emit_o
+        self.__this__.emit_h = emit_h
+        self.__this__.emit_cpp = emit_cpp
+        self.__this__.emit_assembly = emit_assembly
+        self.__this__.emit_bitcode = emit_bitcode
+        self.__this__.emit_stmt = emit_stmt
+        self.__this__.emit_stmt_html = emit_stmt_html
+        self.__this__.emit_static_library = emit_static_library
+        
+        for k, v in extensions.items():
+            self.__this__.extensions[k] = v
+    
+    property emit_o:
+        def __get__(EmitOptions self):
+            return self.__this__.emit_o
+        def __set__(EmitOptions self, value):
+            self.__this__.emit_o = <bint>value
+    
+    property emit_h:
+        def __get__(EmitOptions self):
+            return self.__this__.emit_h
+        def __set__(EmitOptions self, value):
+            self.__this__.emit_h = <bint>value
+    
+    property emit_cpp:
+        def __get__(EmitOptions self):
+            return self.__this__.emit_cpp
+        def __set__(EmitOptions self, value):
+            self.__this__.emit_cpp = <bint>value
+    
+    property emit_assembly:
+        def __get__(EmitOptions self):
+            return self.__this__.emit_assembly
+        def __set__(EmitOptions self, value):
+            self.__this__.emit_assembly = <bint>value
+    
+    property emit_bitcode:
+        def __get__(EmitOptions self):
+            return self.__this__.emit_bitcode
+        def __set__(EmitOptions self, value):
+            self.__this__.emit_bitcode = <bint>value
+    
+    property emit_stmt:
+        def __get__(EmitOptions self):
+            return self.__this__.emit_stmt
+        def __set__(EmitOptions self, value):
+            self.__this__.emit_stmt = <bint>value
+    
+    property emit_stmt_html:
+        def __get__(EmitOptions self):
+            return self.__this__.emit_stmt_html
+        def __set__(EmitOptions self, value):
+            self.__this__.emit_stmt_html = <bint>value
+    
+    property emit_static_library:
+        def __get__(EmitOptions self):
+            return self.__this__.emit_static_library
+        def __set__(EmitOptions self, value):
+            self.__this__.emit_static_library = <bint>value
+    
+    property extensions:
+        def __get__(EmitOptions self):
+            return dict(self.__this__.extensions)
+        def __set__(EmitOptions self, value):
+            if not PyMapping_Check(value):
+                raise ValueError("extensions must be a mapping type")
+            self.__this__.extensions = stringmap_t()
+            for k, v in dict(value).items():
+                self.__this__.extensions[k] = v
 
 
 def registered_generators():
