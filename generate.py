@@ -11,7 +11,7 @@ def generate(*generators, **arguments):
     import hal.api
     
     verbose = bool(arguments.pop('verbose', False))
-    target_string = str(arguments.pop('target', ''))
+    target_string = str(arguments.pop('target', 'host'))
     generators = set([str(generator) for generator in generators])
     generator_names = set(arguments.pop('generator_names',
                                         hal.api.registered_generators()))

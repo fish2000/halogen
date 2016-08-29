@@ -4,6 +4,7 @@ from libc.stdint cimport *
 from libcpp.string cimport string
 from cpython.mapping cimport PyMapping_Check
 
+from module cimport ModuleBase
 from outputs cimport Outputs as HalOutputs
 
 from generator cimport stringmap_t
@@ -25,9 +26,12 @@ from target cimport get_jit_target_from_environment as halide_get_jit_target_fro
 from util cimport stringvec_t
 from util cimport extract_namespaces
 
-from runtime cimport halide_type_code_t
-from runtime cimport halide_error_code_t
-from runtime cimport halide_target_feature_t
+
+cdef extern from * namespace "Halide":
+    
+    cppclass Module(ModuleBase):
+        Module()
+        Module(string&, HalTarget&)
 
 
 cdef class Type:
@@ -537,6 +541,43 @@ cdef class EmitOptions:
                 output_files.static_library_name = str(base_path) + self.get_extension(".a")
         
         return output_files
+
+
+cdef class ModuleObject:
+    
+    cdef:
+        Module __this__
+    
+    def __cinit__(ModuleObject self, *args, **kwargs):
+        self.__this__ = Module("", HalTarget('host'))
+    
+    def __init__(ModuleObject self, *args, **kwargs):
+        cdef HalTarget htarg
+        
+        for arg in args:
+            if type(arg) == type(self):
+                htarg = HalTarget(<string>arg.target().to_string())
+                self.__this__ = Module(arg.name(), <HalTarget>htarg)
+                return
+        
+        name = kwargs.get('name', '')
+        tstring = Target(kwargs.get('target', 'host')).to_string()
+        htarg = HalTarget(<string>tstring)
+        self.__this__ = Module(<string>name, <HalTarget>htarg)
+    
+    def name(ModuleObject self):
+        return str(self.__this__.name())
+    
+    def target(ModuleObject self):
+        out = Target()
+        out.__this__ = self.__this__.target()
+        return out
+    
+    cdef HalTarget halide_target(ModuleObject self):
+        return self.__this__.target()
+    
+    def compile(ModuleObject self, Outputs outputs):
+        self.__this__.compile(<HalOutputs>outputs.__this__)
 
 
 ## FUNCTION WRAPPERS:
