@@ -22,7 +22,9 @@ cdef extern from "Halide.h" namespace "Halide":
     
     cppclass Module:
         
+        Module()
         Module(string&, Target&)
+        Module(Module&)
         
         Target& target()
         string& name()

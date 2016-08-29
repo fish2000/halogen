@@ -6,10 +6,11 @@ from libcpp.string cimport string
 from libcpp.memory cimport unique_ptr
 from cpython.mapping cimport PyMapping_Check
 
-from module cimport Module as HalModule
 from outputs cimport Outputs as HalOutputs
+from module cimport Module as HalModule
+from module cimport LinkageType
 
-from generator cimport stringmap_t
+from generator cimport stringmap_t, base_ptr_t
 from generator cimport GeneratorBase, GeneratorRegistry
 
 from type cimport Type as HalType
@@ -605,6 +606,15 @@ cdef class Module:
         out.__this__ = deref(self.__this__).target()
         return out
     
+    @staticmethod
+    cdef Module with_instance(HalModule& m):
+        cdef Module out = Module()
+        out.__this__ = module_ptr_t(new HalModule(m))
+        return out
+    
+    cdef void replace_instance(Module self, HalModule&& m):
+        self.__this__ = module_ptr_t(new HalModule(m))
+    
     def compile(Module self, Outputs outputs):
         deref(self.__this__).compile(<HalOutputs>outputs.__this__)
 
@@ -656,3 +666,17 @@ def compute_base_path(string output_dir,
     return halide_compute_base_path(output_dir,
                                     function_name,
                                     file_base_name)
+
+def get_generator_module(string& name, dict arguments not None):
+    cdef stringmap_t argmap
+    cdef base_ptr_t generator_instance
+    out = Module()
+    
+    for k, v in arguments.items():
+        argmap[<string>k] = <string>v
+    
+    generator_instance = GeneratorRegistry.create(name, argmap)
+    out.replace_instance(<HalModule>deref(generator_instance).build_module(name, <LinkageType>0))
+    return out
+
+
