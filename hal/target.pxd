@@ -4,7 +4,7 @@ from libcpp.string cimport string
 from libcpp.vector cimport vector
 from type cimport Type
 
-cdef extern from "Halide.h" namespace "Halide::Target":
+cdef extern from "Halide.h" namespace "Halide::Target" nogil:
     
     # THIS IS NOT TOWARD
     
@@ -69,7 +69,7 @@ cdef extern from "Halide.h" namespace "Halide::Target":
 
 ctypedef vector[Feature] featurevec_t
 
-cdef extern from "Halide.h" namespace "Halide":
+cdef extern from "Halide.h" namespace "Halide" nogil:
     
     cppclass Target:
         

@@ -8,7 +8,7 @@ from function cimport extargvec_t
 
 ctypedef vector[string] stringvec_t
 
-cdef extern from "Halide.h" namespace "Halide::Internal":
+cdef extern from "Halide.h" namespace "Halide::Internal" nogil:
     
     # arguments to cplusplus_function_mangled_name() are:
     # - string& name,

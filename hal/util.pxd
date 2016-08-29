@@ -5,7 +5,7 @@ from libcpp.vector cimport vector
 
 ctypedef vector[string] stringvec_t
 
-cdef extern from "Halide.h" namespace "Halide::Internal":
+cdef extern from "Halide.h" namespace "Halide::Internal" nogil:
     
     string unique_name(string&)
     stringvec_t split_string(string&, string&)

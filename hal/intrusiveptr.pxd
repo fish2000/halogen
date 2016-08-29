@@ -1,5 +1,5 @@
 
-cdef extern from "Halide.h" namespace "Halide::Internal":
+cdef extern from "Halide.h" namespace "Halide::Internal" nogil:
     
     cppclass IntrusivePtr[T]:
         T* get()

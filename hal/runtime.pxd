@@ -1,7 +1,7 @@
 
 from libc.stdint cimport *
 
-cdef extern from "HalideRuntime.h":
+cdef extern from "HalideRuntime.h" nogil:
     
     ctypedef enum halide_type_code_t:
         halide_type_int

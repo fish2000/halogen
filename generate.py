@@ -11,10 +11,8 @@ valid_emits = frozenset([
 def generate(*generators, **arguments):
     import os
     import hal.api
-    # from copy import deepcopy
     
     generators = set([str(generator) for generator in generators])
-    # args = deepcopy(arguments)
     
     verbose = bool(arguments.pop('verbose', False))
     target_string = str(arguments.pop('target', 'host'))
@@ -37,6 +35,9 @@ def generate(*generators, **arguments):
     if len(generator_names) < 1:
         raise ValueError(">=1 generator name is required")
     
+    if not generators.issubset(generator_names):
+        raise ValueError("unknown generator name in %s" % str(generators))
+    
     if not os.path.isdir(output_directory):
         os.makedirs(output_directory)
     
@@ -57,19 +58,27 @@ def generate(*generators, **arguments):
     for generator in generators:
         base_path = hal.api.compute_base_path(output_directory, generator, "")
         output_files = emit_options.compute_outputs_for_target_and_path(target, base_path)
-        outputs = output_files.static_library('')
+        outputs = output_files.static_library(None)
         
         generator_args = dict(target=target.to_string())
         generator_args.update(arguments)
         
         if verbose:
             print("TARGET: %s" % target.to_string())
-            print(output_files)
             print('')
         
+        if verbose:
+            print("OUTPUTS: %s" % outputs)
+            print('')
         
         module = hal.api.get_generator_module(generator, generator_args)
-        module.compile(outputs)
+        
+        if verbose:
+            print("MODULE: %s" % module.to_string())
+            print('-------------------------------------------------------------')
+            print('')
+        
+        # module.compile(outputs)
 
 if __name__ == '__main__':
     generate('my_first_generator',

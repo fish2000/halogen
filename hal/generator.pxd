@@ -11,7 +11,7 @@ from module cimport Module, LinkageType
 ctypedef vector[string]                 stringvec_t
 ctypedef std_map[string, string]        stringmap_t
 
-cdef extern from "Halide.h" namespace "Halide::Internal":
+cdef extern from "Halide.h" namespace "Halide::Internal" nogil:
     
     cppclass GeneratorParamBase:
         string name
@@ -19,7 +19,7 @@ cdef extern from "Halide.h" namespace "Halide::Internal":
         GeneratorParamBase(GeneratorParamBase&)
 
 
-cdef extern from "Halide.h" namespace "Halide":
+cdef extern from "Halide.h" namespace "Halide" nogil:
     
     cppclass GeneratorParam[T](GeneratorParamBase):
         GeneratorParam(string&, T&)
@@ -33,7 +33,7 @@ cdef extern from "Halide.h" namespace "Halide":
 
 ctypedef GeneratorParam[Target]         targetparam_t
 
-cdef extern from "Halide.h" namespace "Halide::Internal":
+cdef extern from "Halide.h" namespace "Halide::Internal" nogil:
     
     ctypedef stringmap_t GeneratorParamValues
     
@@ -67,7 +67,7 @@ cdef extern from "Halide.h" namespace "Halide::Internal":
 ctypedef unique_ptr[GeneratorFactory]   factory_ptr_t
 ctypedef unique_ptr[GeneratorBase]      base_ptr_t
 
-cdef extern from "Halide.h" namespace "Halide::Internal":
+cdef extern from "Halide.h" namespace "Halide::Internal" nogil:
     
     cppclass GeneratorRegistry:
         
@@ -84,7 +84,7 @@ cdef extern from "Halide.h" namespace "Halide::Internal":
         base_ptr_t create(string&, GeneratorParamValues&)
 
 
-cdef extern from "Halide.h" namespace "Halide":
+cdef extern from "Halide.h" namespace "Halide" nogil:
     
     cppclass Generator[T](GeneratorBase):
         Generator()

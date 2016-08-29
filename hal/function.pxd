@@ -3,13 +3,13 @@ from libcpp.vector cimport vector
 from intrusiveptr cimport IntrusivePtr
 
 
-cdef extern from "Halide.h" namespace "Halide::Internal":
+cdef extern from "Halide.h" namespace "Halide::Internal" nogil:
     
     cppclass FunctionContents:
         pass
 
 
-cdef extern from "Halide.h" namespace "Halide::ExternFuncArgument":
+cdef extern from "Halide.h" namespace "Halide::ExternFuncArgument" nogil:
     
     cdef enum ArgType:
         UndefinedArg
@@ -21,7 +21,7 @@ cdef extern from "Halide.h" namespace "Halide::ExternFuncArgument":
 
 ctypedef IntrusivePtr[FunctionContents] contents_ptr_t
 
-cdef extern from "Halide.h" namespace "Halide":
+cdef extern from "Halide.h" namespace "Halide" nogil:
     
     cppclass ExternFuncArgument:
         

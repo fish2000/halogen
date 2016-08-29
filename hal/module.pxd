@@ -6,19 +6,19 @@ from target cimport Target
 from outputs cimport Outputs
 
 
-cdef extern from "Halide.h" namespace "Halide::Internal::LoweredFunc":
+cdef extern from "Halide.h" namespace "Halide::Internal::LoweredFunc" nogil:
     
     cdef enum LinkageType:
         External
         Internal
 
-cdef extern from "Halide.h" namespace "Halide::Internal":
+cdef extern from "Halide.h" namespace "Halide::Internal" nogil:
     
     cppclass LoweredFunc:
         string name
         LinkageType linkage
 
-cdef extern from "Halide.h" namespace "Halide":
+cdef extern from "Halide.h" namespace "Halide" nogil:
     
     cppclass Module:
         
@@ -32,7 +32,7 @@ cdef extern from "Halide.h" namespace "Halide":
 
 ctypedef vector[Module] modulevec_t
 
-cdef extern from "Halide.h" namespace "Halide":
+cdef extern from "Halide.h" namespace "Halide" nogil:
 
     Module link_modules(string&, modulevec_t&)
     void compile_standalone_runtime(string&, Target)            # creates object file

@@ -78,7 +78,7 @@ cdef extern from "Halide.h" namespace "Halide::Type":
     cdef halide_type_code_t Handle = halide_type_handle
 
 
-cdef extern from "Halide.h" namespace "Halide":
+cdef extern from "Halide.h" namespace "Halide" nogil:
     
     cppclass Type:
         

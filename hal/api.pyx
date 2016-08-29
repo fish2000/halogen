@@ -345,48 +345,66 @@ cdef class Outputs:
         def __set__(Outputs self, value):
             self.__this__.static_library_name = <string>value
     
-    def object(Outputs self, s):
+    def object(Outputs self, s=None):
         out = Outputs()
+        if s is None:
+            s = ''
         out.__this__ = self.__this__.object(<string>s)
         return out
     
-    def assembly(Outputs self, s):
+    def assembly(Outputs self, s=None):
         out = Outputs()
+        if s is None:
+            s = ''
         out.__this__ = self.__this__.assembly(<string>s)
         return out
     
-    def bitcode(Outputs self, s):
+    def bitcode(Outputs self, s=None):
         out = Outputs()
+        if s is None:
+            s = ''
         out.__this__ = self.__this__.bitcode(<string>s)
         return out
     
-    def llvm_assembly(Outputs self, s):
+    def llvm_assembly(Outputs self, s=None):
         out = Outputs()
+        if s is None:
+            s = ''
         out.__this__ = self.__this__.llvm_assembly(<string>s)
         return out
     
-    def c_header(Outputs self, s):
+    def c_header(Outputs self, s=None):
         out = Outputs()
+        if s is None:
+            s = ''
         out.__this__ = self.__this__.c_header(<string>s)
         return out
     
-    def c_source(Outputs self, s):
+    def c_source(Outputs self, s=None):
         out = Outputs()
+        if s is None:
+            s = ''
         out.__this__ = self.__this__.c_source(<string>s)
         return out
     
-    def stmt(Outputs self, s):
+    def stmt(Outputs self, s=None):
         out = Outputs()
+        if s is None:
+            s = ''
         out.__this__ = self.__this__.stmt(<string>s)
         return out
     
-    def stmt_html(Outputs self, s):
+    def stmt_html(Outputs self, s=None):
         out = Outputs()
+        if s is None:
+            s = ''
         out.__this__ = self.__this__.stmt_html(<string>s)
         return out
     
-    def static_library(Outputs self, s):
+    def static_library(Outputs self, s=None):
         out = Outputs()
+        if s is None:
+            s = ''
         out.__this__ = self.__this__.static_library(<string>s)
         return out
     
@@ -582,21 +600,24 @@ cdef class Module:
         module_ptr_t __this__
     
     def __cinit__(Module self, *args, **kwargs):
-        self.__this__ = module_ptr_t(new HalModule("", HalTarget('host')))
-    
-    def __init__(Module self, *args, **kwargs):
         cdef HalTarget htarg
-        
         for arg in args:
             if type(arg) == type(self):
                 htarg = HalTarget(<string>arg.target().to_string())
-                self.__this__ = module_ptr_t(new HalModule(arg.name(), <HalTarget>htarg))
+                self.__this__.reset(new HalModule(arg.name(), <HalTarget>htarg))
                 return
-        
-        name = kwargs.get('name', '')
-        tstring = Target(kwargs.get('target', 'host')).to_string()
-        htarg = HalTarget(<string>tstring)
-        self.__this__ = module_ptr_t(new HalModule(<string>name, <HalTarget>htarg))
+        self.__this__.reset(new HalModule("", HalTarget('host')))
+    
+    def __init__(Module self, *args, **kwargs):
+        cdef HalTarget htarg
+        if len(args) < 1:
+            name = kwargs.get('name', '')
+            tstring = Target(kwargs.get('target', 'host')).to_string()
+            htarg = HalTarget(<string>tstring)
+            self.__this__.reset(new HalModule(<string>name, <HalTarget>htarg))
+    
+    def __dealloc__(Module self):
+        self.__this__.reset(NULL)
     
     def name(Module self):
         return str(deref(self.__this__).name())
@@ -609,14 +630,25 @@ cdef class Module:
     @staticmethod
     cdef Module with_instance(HalModule& m):
         cdef Module out = Module()
-        out.__this__ = module_ptr_t(new HalModule(m))
+        out.__this__.reset(new HalModule(m))
         return out
     
     cdef void replace_instance(Module self, HalModule&& m):
-        self.__this__ = module_ptr_t(new HalModule(m))
+        self.__this__.reset(new HalModule(m))
     
     def compile(Module self, Outputs outputs):
         deref(self.__this__).compile(<HalOutputs>outputs.__this__)
+    
+    def to_string(Module self):
+        cdef string name = deref(self.__this__).name()
+        cdef string targ = deref(self.__this__).target().to_string()
+        field_values = [str(name), str(targ)]
+        return "%s(%s) @ %s" % (self.__class__.__name__,
+                                ", ".join(field_values),
+                                hex(id(self)))
+    
+    def __str__(Module self):
+        return self.to_string()
 
 
 ## FUNCTION WRAPPERS:
@@ -670,7 +702,8 @@ def compute_base_path(string output_dir,
 def get_generator_module(string& name, dict arguments not None):
     cdef stringmap_t argmap
     cdef base_ptr_t generator_instance
-    out = Module()
+    out = Module(name=name)
+    generator_instance.reset(NULL)
     
     for k, v in arguments.items():
         argmap[<string>k] = <string>v
