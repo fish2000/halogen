@@ -1,4 +1,5 @@
 # distutils: language = c++
+cimport cython
 from cython.operator cimport dereference as deref
 
 from libc.stdint cimport *
@@ -28,15 +29,10 @@ from target cimport get_jit_target_from_environment as halide_get_jit_target_fro
 
 from util cimport stringvec_t
 from util cimport extract_namespaces
+from util cimport running_program_name as halide_running_program_name
 
 
-# cdef extern from * namespace "Halide":
-#
-#     cppclass Module(ModuleBase):
-#         Module()
-#         Module(string&, HalTarget&)
-
-
+@cython.freelist(8)
 cdef class Type:
     """ Cython wrapper class for Halide::Type """
     
@@ -168,6 +164,7 @@ cdef class Type:
         return out
 
 
+@cython.freelist(8)
 cdef class Target:
     """ Cython wrapper class for Halide::Target """
     
@@ -700,6 +697,8 @@ def compute_base_path(string output_dir,
                                     file_base_name)
 
 def get_generator_module(string& name, dict arguments not None):
+    """ Retrieve a Halide::Module, wrapped as hal.api.Module,
+        corresponding to the registered generator instance (by name) """
     cdef stringmap_t argmap
     cdef base_ptr_t generator_instance
     out = Module(name=name)
@@ -712,4 +711,6 @@ def get_generator_module(string& name, dict arguments not None):
     out.replace_instance(<HalModule>deref(generator_instance).build_module(name, <LinkageType>0))
     return out
 
-
+def running_program_name():
+    """ Return the name of the running program as a string. """
+    return str(halide_running_program_name())

@@ -5,7 +5,6 @@ from libcpp.vector cimport vector
 from target cimport Target
 from outputs cimport Outputs
 
-
 cdef extern from "Halide.h" namespace "Halide::Internal::LoweredFunc" nogil:
     
     cdef enum LinkageType:

@@ -17,4 +17,6 @@ cdef extern from "Halide.h" namespace "Halide::Internal" nogil:
         uint32_t uid
         uint32_t gid
         uint32_t mode
+    
+    string running_program_name()
 

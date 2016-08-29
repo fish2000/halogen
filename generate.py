@@ -79,6 +79,7 @@ def generate(*generators, **arguments):
             print('')
         
         # module.compile(outputs)
+        module = hal.api.Module(module)
 
 if __name__ == '__main__':
     generate('my_first_generator',
