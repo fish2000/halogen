@@ -261,15 +261,15 @@ cdef class Outputs:
         stmt_html_name = str(kwargs.pop('stmt_html_name', ''))
         static_library_name = str(kwargs.pop('static_library_name', ''))
         
-        self.__this__.object_name = object_name
-        self.__this__.assembly_name = assembly_name
-        self.__this__.bitcode_name = bitcode_name
-        self.__this__.llvm_assembly_name = llvm_assembly_name
-        self.__this__.c_header_name = c_header_name
-        self.__this__.c_source_name = c_source_name
-        self.__this__.stmt_name = stmt_name
-        self.__this__.stmt_html_name = stmt_html_name
-        self.__this__.static_library_name = static_library_name
+        self.__this__.object_name = <string>object_name
+        self.__this__.assembly_name = <string>assembly_name
+        self.__this__.bitcode_name = <string>bitcode_name
+        self.__this__.llvm_assembly_name = <string>llvm_assembly_name
+        self.__this__.c_header_name = <string>c_header_name
+        self.__this__.c_source_name = <string>c_source_name
+        self.__this__.stmt_name = <string>stmt_name
+        self.__this__.stmt_html_name = <string>stmt_html_name
+        self.__this__.static_library_name = <string>static_library_name
     
     property object_name:
         def __get__(Outputs self):
@@ -405,28 +405,28 @@ cdef class EmitOptions:
                     self.__this__.extensions[k] = v
                 return
         
-        emit_o = kwargs.pop('emit_o',                   self.emit_defaults['emit_o'])
-        emit_h = kwargs.pop('emit_h',                   self.emit_defaults['emit_h'])
-        emit_cpp = kwargs.pop('emit_cpp',               self.emit_defaults['emit_cpp'])
-        emit_assembly = kwargs.pop('emit_assembly',     self.emit_defaults['emit_assembly'])
-        emit_bitcode = kwargs.pop('emit_bitcode',       self.emit_defaults['emit_bitcode'])
-        emit_stmt = kwargs.pop('emit_stmt',             self.emit_defaults['emit_stmt'])
-        emit_stmt_html = kwargs.pop('emit_stmt_html',   self.emit_defaults['emit_stmt_html'])
-        emit_static_library = kwargs.pop('emit_static_library',
-                                                        self.emit_defaults['emit_static_library'])
-        extensions = kwargs.pop('extensions',           dict())
+        emit_o = bool(kwargs.pop('emit_o',                  self.emit_defaults['emit_o']))
+        emit_h = bool(kwargs.pop('emit_h',                  self.emit_defaults['emit_h']))
+        emit_cpp = bool(kwargs.pop('emit_cpp',              self.emit_defaults['emit_cpp']))
+        emit_assembly = bool(kwargs.pop('emit_assembly',    self.emit_defaults['emit_assembly']))
+        emit_bitcode = bool(kwargs.pop('emit_bitcode',      self.emit_defaults['emit_bitcode']))
+        emit_stmt = bool(kwargs.pop('emit_stmt',            self.emit_defaults['emit_stmt']))
+        emit_stmt_html = bool(kwargs.pop('emit_stmt_html',  self.emit_defaults['emit_stmt_html']))
+        emit_static_library = bool(kwargs.pop('emit_static_library',
+                                                            self.emit_defaults['emit_static_library']))
+        extensions = kwargs.pop('extensions',               {})
         
         if not PyMapping_Check(extensions):
             raise ValueError("extensions must be a mapping type")
         
-        self.__this__.emit_o = emit_o
-        self.__this__.emit_h = emit_h
-        self.__this__.emit_cpp = emit_cpp
-        self.__this__.emit_assembly = emit_assembly
-        self.__this__.emit_bitcode = emit_bitcode
-        self.__this__.emit_stmt = emit_stmt
-        self.__this__.emit_stmt_html = emit_stmt_html
-        self.__this__.emit_static_library = emit_static_library
+        self.__this__.emit_o = <bint>emit_o
+        self.__this__.emit_h = <bint>emit_h
+        self.__this__.emit_cpp = <bint>emit_cpp
+        self.__this__.emit_assembly = <bint>emit_assembly
+        self.__this__.emit_bitcode = <bint>emit_bitcode
+        self.__this__.emit_stmt = <bint>emit_stmt
+        self.__this__.emit_stmt_html = <bint>emit_stmt_html
+        self.__this__.emit_static_library = <bint>emit_static_library
         
         for k, v in extensions.items():
             self.__this__.extensions[k] = v

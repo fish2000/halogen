@@ -5790,7 +5790,7 @@ static int __pyx_pf_3hal_3api_7Outputs___init__(struct __pyx_obj_3hal_3api_Outpu
  *         stmt_html_name = str(kwargs.pop('stmt_html_name', ''))
  *         static_library_name = str(kwargs.pop('static_library_name', ''))             # <<<<<<<<<<<<<<
  * 
- *         self.__this__.object_name = object_name
+ *         self.__this__.object_name = <string>object_name
  */
   __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_kwargs, __pyx_n_s_pop); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 262, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
@@ -5811,92 +5811,92 @@ static int __pyx_pf_3hal_3api_7Outputs___init__(struct __pyx_obj_3hal_3api_Outpu
   /* "hal/api.pyx":264
  *         static_library_name = str(kwargs.pop('static_library_name', ''))
  * 
- *         self.__this__.object_name = object_name             # <<<<<<<<<<<<<<
- *         self.__this__.assembly_name = assembly_name
- *         self.__this__.bitcode_name = bitcode_name
+ *         self.__this__.object_name = <string>object_name             # <<<<<<<<<<<<<<
+ *         self.__this__.assembly_name = <string>assembly_name
+ *         self.__this__.bitcode_name = <string>bitcode_name
  */
   __pyx_t_5 = __pyx_convert_string_from_py_std__in_string(__pyx_v_object_name); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 264, __pyx_L1_error)
-  __pyx_v_self->__pyx___this__.object_name = __pyx_t_5;
+  __pyx_v_self->__pyx___this__.object_name = ((std::string)__pyx_t_5);
 
   /* "hal/api.pyx":265
  * 
- *         self.__this__.object_name = object_name
- *         self.__this__.assembly_name = assembly_name             # <<<<<<<<<<<<<<
- *         self.__this__.bitcode_name = bitcode_name
- *         self.__this__.llvm_assembly_name = llvm_assembly_name
+ *         self.__this__.object_name = <string>object_name
+ *         self.__this__.assembly_name = <string>assembly_name             # <<<<<<<<<<<<<<
+ *         self.__this__.bitcode_name = <string>bitcode_name
+ *         self.__this__.llvm_assembly_name = <string>llvm_assembly_name
  */
   __pyx_t_5 = __pyx_convert_string_from_py_std__in_string(__pyx_v_assembly_name); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 265, __pyx_L1_error)
-  __pyx_v_self->__pyx___this__.assembly_name = __pyx_t_5;
+  __pyx_v_self->__pyx___this__.assembly_name = ((std::string)__pyx_t_5);
 
   /* "hal/api.pyx":266
- *         self.__this__.object_name = object_name
- *         self.__this__.assembly_name = assembly_name
- *         self.__this__.bitcode_name = bitcode_name             # <<<<<<<<<<<<<<
- *         self.__this__.llvm_assembly_name = llvm_assembly_name
- *         self.__this__.c_header_name = c_header_name
+ *         self.__this__.object_name = <string>object_name
+ *         self.__this__.assembly_name = <string>assembly_name
+ *         self.__this__.bitcode_name = <string>bitcode_name             # <<<<<<<<<<<<<<
+ *         self.__this__.llvm_assembly_name = <string>llvm_assembly_name
+ *         self.__this__.c_header_name = <string>c_header_name
  */
   __pyx_t_5 = __pyx_convert_string_from_py_std__in_string(__pyx_v_bitcode_name); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 266, __pyx_L1_error)
-  __pyx_v_self->__pyx___this__.bitcode_name = __pyx_t_5;
+  __pyx_v_self->__pyx___this__.bitcode_name = ((std::string)__pyx_t_5);
 
   /* "hal/api.pyx":267
- *         self.__this__.assembly_name = assembly_name
- *         self.__this__.bitcode_name = bitcode_name
- *         self.__this__.llvm_assembly_name = llvm_assembly_name             # <<<<<<<<<<<<<<
- *         self.__this__.c_header_name = c_header_name
- *         self.__this__.c_source_name = c_source_name
+ *         self.__this__.assembly_name = <string>assembly_name
+ *         self.__this__.bitcode_name = <string>bitcode_name
+ *         self.__this__.llvm_assembly_name = <string>llvm_assembly_name             # <<<<<<<<<<<<<<
+ *         self.__this__.c_header_name = <string>c_header_name
+ *         self.__this__.c_source_name = <string>c_source_name
  */
   __pyx_t_5 = __pyx_convert_string_from_py_std__in_string(__pyx_v_llvm_assembly_name); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 267, __pyx_L1_error)
-  __pyx_v_self->__pyx___this__.llvm_assembly_name = __pyx_t_5;
+  __pyx_v_self->__pyx___this__.llvm_assembly_name = ((std::string)__pyx_t_5);
 
   /* "hal/api.pyx":268
- *         self.__this__.bitcode_name = bitcode_name
- *         self.__this__.llvm_assembly_name = llvm_assembly_name
- *         self.__this__.c_header_name = c_header_name             # <<<<<<<<<<<<<<
- *         self.__this__.c_source_name = c_source_name
- *         self.__this__.stmt_name = stmt_name
+ *         self.__this__.bitcode_name = <string>bitcode_name
+ *         self.__this__.llvm_assembly_name = <string>llvm_assembly_name
+ *         self.__this__.c_header_name = <string>c_header_name             # <<<<<<<<<<<<<<
+ *         self.__this__.c_source_name = <string>c_source_name
+ *         self.__this__.stmt_name = <string>stmt_name
  */
   __pyx_t_5 = __pyx_convert_string_from_py_std__in_string(__pyx_v_c_header_name); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 268, __pyx_L1_error)
-  __pyx_v_self->__pyx___this__.c_header_name = __pyx_t_5;
+  __pyx_v_self->__pyx___this__.c_header_name = ((std::string)__pyx_t_5);
 
   /* "hal/api.pyx":269
- *         self.__this__.llvm_assembly_name = llvm_assembly_name
- *         self.__this__.c_header_name = c_header_name
- *         self.__this__.c_source_name = c_source_name             # <<<<<<<<<<<<<<
- *         self.__this__.stmt_name = stmt_name
- *         self.__this__.stmt_html_name = stmt_html_name
+ *         self.__this__.llvm_assembly_name = <string>llvm_assembly_name
+ *         self.__this__.c_header_name = <string>c_header_name
+ *         self.__this__.c_source_name = <string>c_source_name             # <<<<<<<<<<<<<<
+ *         self.__this__.stmt_name = <string>stmt_name
+ *         self.__this__.stmt_html_name = <string>stmt_html_name
  */
   __pyx_t_5 = __pyx_convert_string_from_py_std__in_string(__pyx_v_c_source_name); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 269, __pyx_L1_error)
-  __pyx_v_self->__pyx___this__.c_source_name = __pyx_t_5;
+  __pyx_v_self->__pyx___this__.c_source_name = ((std::string)__pyx_t_5);
 
   /* "hal/api.pyx":270
- *         self.__this__.c_header_name = c_header_name
- *         self.__this__.c_source_name = c_source_name
- *         self.__this__.stmt_name = stmt_name             # <<<<<<<<<<<<<<
- *         self.__this__.stmt_html_name = stmt_html_name
- *         self.__this__.static_library_name = static_library_name
+ *         self.__this__.c_header_name = <string>c_header_name
+ *         self.__this__.c_source_name = <string>c_source_name
+ *         self.__this__.stmt_name = <string>stmt_name             # <<<<<<<<<<<<<<
+ *         self.__this__.stmt_html_name = <string>stmt_html_name
+ *         self.__this__.static_library_name = <string>static_library_name
  */
   __pyx_t_5 = __pyx_convert_string_from_py_std__in_string(__pyx_v_stmt_name); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 270, __pyx_L1_error)
-  __pyx_v_self->__pyx___this__.stmt_name = __pyx_t_5;
+  __pyx_v_self->__pyx___this__.stmt_name = ((std::string)__pyx_t_5);
 
   /* "hal/api.pyx":271
- *         self.__this__.c_source_name = c_source_name
- *         self.__this__.stmt_name = stmt_name
- *         self.__this__.stmt_html_name = stmt_html_name             # <<<<<<<<<<<<<<
- *         self.__this__.static_library_name = static_library_name
+ *         self.__this__.c_source_name = <string>c_source_name
+ *         self.__this__.stmt_name = <string>stmt_name
+ *         self.__this__.stmt_html_name = <string>stmt_html_name             # <<<<<<<<<<<<<<
+ *         self.__this__.static_library_name = <string>static_library_name
  * 
  */
   __pyx_t_5 = __pyx_convert_string_from_py_std__in_string(__pyx_v_stmt_html_name); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 271, __pyx_L1_error)
-  __pyx_v_self->__pyx___this__.stmt_html_name = __pyx_t_5;
+  __pyx_v_self->__pyx___this__.stmt_html_name = ((std::string)__pyx_t_5);
 
   /* "hal/api.pyx":272
- *         self.__this__.stmt_name = stmt_name
- *         self.__this__.stmt_html_name = stmt_html_name
- *         self.__this__.static_library_name = static_library_name             # <<<<<<<<<<<<<<
+ *         self.__this__.stmt_name = <string>stmt_name
+ *         self.__this__.stmt_html_name = <string>stmt_html_name
+ *         self.__this__.static_library_name = <string>static_library_name             # <<<<<<<<<<<<<<
  * 
  *     property object_name:
  */
   __pyx_t_5 = __pyx_convert_string_from_py_std__in_string(__pyx_v_static_library_name); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 272, __pyx_L1_error)
-  __pyx_v_self->__pyx___this__.static_library_name = __pyx_t_5;
+  __pyx_v_self->__pyx___this__.static_library_name = ((std::string)__pyx_t_5);
 
   /* "hal/api.pyx":239
  *         HalOutputs __this__
@@ -8075,7 +8075,7 @@ static int __pyx_pf_3hal_3api_11EmitOptions___init__(struct __pyx_obj_3hal_3api_
  *                     self.__this__.extensions[k] = v
  *                 return             # <<<<<<<<<<<<<<
  * 
- *         emit_o = kwargs.pop('emit_o',                   self.emit_defaults['emit_o'])
+ *         emit_o = bool(kwargs.pop('emit_o',                  self.emit_defaults['emit_o']))
  */
       __pyx_r = 0;
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -8103,9 +8103,9 @@ static int __pyx_pf_3hal_3api_11EmitOptions___init__(struct __pyx_obj_3hal_3api_
   /* "hal/api.pyx":408
  *                 return
  * 
- *         emit_o = kwargs.pop('emit_o',                   self.emit_defaults['emit_o'])             # <<<<<<<<<<<<<<
- *         emit_h = kwargs.pop('emit_h',                   self.emit_defaults['emit_h'])
- *         emit_cpp = kwargs.pop('emit_cpp',               self.emit_defaults['emit_cpp'])
+ *         emit_o = bool(kwargs.pop('emit_o',                  self.emit_defaults['emit_o']))             # <<<<<<<<<<<<<<
+ *         emit_h = bool(kwargs.pop('emit_h',                  self.emit_defaults['emit_h']))
+ *         emit_cpp = bool(kwargs.pop('emit_cpp',              self.emit_defaults['emit_cpp']))
  */
   __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_kwargs, __pyx_n_s_pop); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 408, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
@@ -8141,15 +8141,19 @@ static int __pyx_pf_3hal_3api_11EmitOptions___init__(struct __pyx_obj_3hal_3api_
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 408, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_1 = __Pyx_PyBool_FromLong((!(!__pyx_t_4))); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 408, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_emit_o = __pyx_t_1;
   __pyx_t_1 = 0;
 
   /* "hal/api.pyx":409
  * 
- *         emit_o = kwargs.pop('emit_o',                   self.emit_defaults['emit_o'])
- *         emit_h = kwargs.pop('emit_h',                   self.emit_defaults['emit_h'])             # <<<<<<<<<<<<<<
- *         emit_cpp = kwargs.pop('emit_cpp',               self.emit_defaults['emit_cpp'])
- *         emit_assembly = kwargs.pop('emit_assembly',     self.emit_defaults['emit_assembly'])
+ *         emit_o = bool(kwargs.pop('emit_o',                  self.emit_defaults['emit_o']))
+ *         emit_h = bool(kwargs.pop('emit_h',                  self.emit_defaults['emit_h']))             # <<<<<<<<<<<<<<
+ *         emit_cpp = bool(kwargs.pop('emit_cpp',              self.emit_defaults['emit_cpp']))
+ *         emit_assembly = bool(kwargs.pop('emit_assembly',    self.emit_defaults['emit_assembly']))
  */
   __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_kwargs, __pyx_n_s_pop); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 409, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
@@ -8185,15 +8189,19 @@ static int __pyx_pf_3hal_3api_11EmitOptions___init__(struct __pyx_obj_3hal_3api_
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 409, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_1 = __Pyx_PyBool_FromLong((!(!__pyx_t_4))); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 409, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_emit_h = __pyx_t_1;
   __pyx_t_1 = 0;
 
   /* "hal/api.pyx":410
- *         emit_o = kwargs.pop('emit_o',                   self.emit_defaults['emit_o'])
- *         emit_h = kwargs.pop('emit_h',                   self.emit_defaults['emit_h'])
- *         emit_cpp = kwargs.pop('emit_cpp',               self.emit_defaults['emit_cpp'])             # <<<<<<<<<<<<<<
- *         emit_assembly = kwargs.pop('emit_assembly',     self.emit_defaults['emit_assembly'])
- *         emit_bitcode = kwargs.pop('emit_bitcode',       self.emit_defaults['emit_bitcode'])
+ *         emit_o = bool(kwargs.pop('emit_o',                  self.emit_defaults['emit_o']))
+ *         emit_h = bool(kwargs.pop('emit_h',                  self.emit_defaults['emit_h']))
+ *         emit_cpp = bool(kwargs.pop('emit_cpp',              self.emit_defaults['emit_cpp']))             # <<<<<<<<<<<<<<
+ *         emit_assembly = bool(kwargs.pop('emit_assembly',    self.emit_defaults['emit_assembly']))
+ *         emit_bitcode = bool(kwargs.pop('emit_bitcode',      self.emit_defaults['emit_bitcode']))
  */
   __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_kwargs, __pyx_n_s_pop); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 410, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
@@ -8229,15 +8237,19 @@ static int __pyx_pf_3hal_3api_11EmitOptions___init__(struct __pyx_obj_3hal_3api_
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 410, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_1 = __Pyx_PyBool_FromLong((!(!__pyx_t_4))); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 410, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_emit_cpp = __pyx_t_1;
   __pyx_t_1 = 0;
 
   /* "hal/api.pyx":411
- *         emit_h = kwargs.pop('emit_h',                   self.emit_defaults['emit_h'])
- *         emit_cpp = kwargs.pop('emit_cpp',               self.emit_defaults['emit_cpp'])
- *         emit_assembly = kwargs.pop('emit_assembly',     self.emit_defaults['emit_assembly'])             # <<<<<<<<<<<<<<
- *         emit_bitcode = kwargs.pop('emit_bitcode',       self.emit_defaults['emit_bitcode'])
- *         emit_stmt = kwargs.pop('emit_stmt',             self.emit_defaults['emit_stmt'])
+ *         emit_h = bool(kwargs.pop('emit_h',                  self.emit_defaults['emit_h']))
+ *         emit_cpp = bool(kwargs.pop('emit_cpp',              self.emit_defaults['emit_cpp']))
+ *         emit_assembly = bool(kwargs.pop('emit_assembly',    self.emit_defaults['emit_assembly']))             # <<<<<<<<<<<<<<
+ *         emit_bitcode = bool(kwargs.pop('emit_bitcode',      self.emit_defaults['emit_bitcode']))
+ *         emit_stmt = bool(kwargs.pop('emit_stmt',            self.emit_defaults['emit_stmt']))
  */
   __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_kwargs, __pyx_n_s_pop); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 411, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
@@ -8273,15 +8285,19 @@ static int __pyx_pf_3hal_3api_11EmitOptions___init__(struct __pyx_obj_3hal_3api_
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 411, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_1 = __Pyx_PyBool_FromLong((!(!__pyx_t_4))); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 411, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_emit_assembly = __pyx_t_1;
   __pyx_t_1 = 0;
 
   /* "hal/api.pyx":412
- *         emit_cpp = kwargs.pop('emit_cpp',               self.emit_defaults['emit_cpp'])
- *         emit_assembly = kwargs.pop('emit_assembly',     self.emit_defaults['emit_assembly'])
- *         emit_bitcode = kwargs.pop('emit_bitcode',       self.emit_defaults['emit_bitcode'])             # <<<<<<<<<<<<<<
- *         emit_stmt = kwargs.pop('emit_stmt',             self.emit_defaults['emit_stmt'])
- *         emit_stmt_html = kwargs.pop('emit_stmt_html',   self.emit_defaults['emit_stmt_html'])
+ *         emit_cpp = bool(kwargs.pop('emit_cpp',              self.emit_defaults['emit_cpp']))
+ *         emit_assembly = bool(kwargs.pop('emit_assembly',    self.emit_defaults['emit_assembly']))
+ *         emit_bitcode = bool(kwargs.pop('emit_bitcode',      self.emit_defaults['emit_bitcode']))             # <<<<<<<<<<<<<<
+ *         emit_stmt = bool(kwargs.pop('emit_stmt',            self.emit_defaults['emit_stmt']))
+ *         emit_stmt_html = bool(kwargs.pop('emit_stmt_html',  self.emit_defaults['emit_stmt_html']))
  */
   __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_kwargs, __pyx_n_s_pop); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 412, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
@@ -8317,15 +8333,19 @@ static int __pyx_pf_3hal_3api_11EmitOptions___init__(struct __pyx_obj_3hal_3api_
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 412, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_1 = __Pyx_PyBool_FromLong((!(!__pyx_t_4))); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 412, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_emit_bitcode = __pyx_t_1;
   __pyx_t_1 = 0;
 
   /* "hal/api.pyx":413
- *         emit_assembly = kwargs.pop('emit_assembly',     self.emit_defaults['emit_assembly'])
- *         emit_bitcode = kwargs.pop('emit_bitcode',       self.emit_defaults['emit_bitcode'])
- *         emit_stmt = kwargs.pop('emit_stmt',             self.emit_defaults['emit_stmt'])             # <<<<<<<<<<<<<<
- *         emit_stmt_html = kwargs.pop('emit_stmt_html',   self.emit_defaults['emit_stmt_html'])
- *         emit_static_library = kwargs.pop('emit_static_library',
+ *         emit_assembly = bool(kwargs.pop('emit_assembly',    self.emit_defaults['emit_assembly']))
+ *         emit_bitcode = bool(kwargs.pop('emit_bitcode',      self.emit_defaults['emit_bitcode']))
+ *         emit_stmt = bool(kwargs.pop('emit_stmt',            self.emit_defaults['emit_stmt']))             # <<<<<<<<<<<<<<
+ *         emit_stmt_html = bool(kwargs.pop('emit_stmt_html',  self.emit_defaults['emit_stmt_html']))
+ *         emit_static_library = bool(kwargs.pop('emit_static_library',
  */
   __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_kwargs, __pyx_n_s_pop); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 413, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
@@ -8361,15 +8381,19 @@ static int __pyx_pf_3hal_3api_11EmitOptions___init__(struct __pyx_obj_3hal_3api_
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 413, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_1 = __Pyx_PyBool_FromLong((!(!__pyx_t_4))); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 413, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_emit_stmt = __pyx_t_1;
   __pyx_t_1 = 0;
 
   /* "hal/api.pyx":414
- *         emit_bitcode = kwargs.pop('emit_bitcode',       self.emit_defaults['emit_bitcode'])
- *         emit_stmt = kwargs.pop('emit_stmt',             self.emit_defaults['emit_stmt'])
- *         emit_stmt_html = kwargs.pop('emit_stmt_html',   self.emit_defaults['emit_stmt_html'])             # <<<<<<<<<<<<<<
- *         emit_static_library = kwargs.pop('emit_static_library',
- *                                                         self.emit_defaults['emit_static_library'])
+ *         emit_bitcode = bool(kwargs.pop('emit_bitcode',      self.emit_defaults['emit_bitcode']))
+ *         emit_stmt = bool(kwargs.pop('emit_stmt',            self.emit_defaults['emit_stmt']))
+ *         emit_stmt_html = bool(kwargs.pop('emit_stmt_html',  self.emit_defaults['emit_stmt_html']))             # <<<<<<<<<<<<<<
+ *         emit_static_library = bool(kwargs.pop('emit_static_library',
+ *                                                             self.emit_defaults['emit_static_library']))
  */
   __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_kwargs, __pyx_n_s_pop); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 414, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
@@ -8405,24 +8429,28 @@ static int __pyx_pf_3hal_3api_11EmitOptions___init__(struct __pyx_obj_3hal_3api_
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 414, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_1 = __Pyx_PyBool_FromLong((!(!__pyx_t_4))); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 414, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_emit_stmt_html = __pyx_t_1;
   __pyx_t_1 = 0;
 
   /* "hal/api.pyx":415
- *         emit_stmt = kwargs.pop('emit_stmt',             self.emit_defaults['emit_stmt'])
- *         emit_stmt_html = kwargs.pop('emit_stmt_html',   self.emit_defaults['emit_stmt_html'])
- *         emit_static_library = kwargs.pop('emit_static_library',             # <<<<<<<<<<<<<<
- *                                                         self.emit_defaults['emit_static_library'])
- *         extensions = kwargs.pop('extensions',           dict())
+ *         emit_stmt = bool(kwargs.pop('emit_stmt',            self.emit_defaults['emit_stmt']))
+ *         emit_stmt_html = bool(kwargs.pop('emit_stmt_html',  self.emit_defaults['emit_stmt_html']))
+ *         emit_static_library = bool(kwargs.pop('emit_static_library',             # <<<<<<<<<<<<<<
+ *                                                             self.emit_defaults['emit_static_library']))
+ *         extensions = kwargs.pop('extensions',               {})
  */
   __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_kwargs, __pyx_n_s_pop); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 415, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
 
   /* "hal/api.pyx":416
- *         emit_stmt_html = kwargs.pop('emit_stmt_html',   self.emit_defaults['emit_stmt_html'])
- *         emit_static_library = kwargs.pop('emit_static_library',
- *                                                         self.emit_defaults['emit_static_library'])             # <<<<<<<<<<<<<<
- *         extensions = kwargs.pop('extensions',           dict())
+ *         emit_stmt_html = bool(kwargs.pop('emit_stmt_html',  self.emit_defaults['emit_stmt_html']))
+ *         emit_static_library = bool(kwargs.pop('emit_static_library',
+ *                                                             self.emit_defaults['emit_static_library']))             # <<<<<<<<<<<<<<
+ *         extensions = kwargs.pop('extensions',               {})
  * 
  */
   __pyx_t_5 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_emit_defaults); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 416, __pyx_L1_error)
@@ -8457,13 +8485,25 @@ static int __pyx_pf_3hal_3api_11EmitOptions___init__(struct __pyx_obj_3hal_3api_
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+
+  /* "hal/api.pyx":415
+ *         emit_stmt = bool(kwargs.pop('emit_stmt',            self.emit_defaults['emit_stmt']))
+ *         emit_stmt_html = bool(kwargs.pop('emit_stmt_html',  self.emit_defaults['emit_stmt_html']))
+ *         emit_static_library = bool(kwargs.pop('emit_static_library',             # <<<<<<<<<<<<<<
+ *                                                             self.emit_defaults['emit_static_library']))
+ *         extensions = kwargs.pop('extensions',               {})
+ */
+  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 415, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_1 = __Pyx_PyBool_FromLong((!(!__pyx_t_4))); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 415, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_emit_static_library = __pyx_t_1;
   __pyx_t_1 = 0;
 
   /* "hal/api.pyx":417
- *         emit_static_library = kwargs.pop('emit_static_library',
- *                                                         self.emit_defaults['emit_static_library'])
- *         extensions = kwargs.pop('extensions',           dict())             # <<<<<<<<<<<<<<
+ *         emit_static_library = bool(kwargs.pop('emit_static_library',
+ *                                                             self.emit_defaults['emit_static_library']))
+ *         extensions = kwargs.pop('extensions',               {})             # <<<<<<<<<<<<<<
  * 
  *         if not PyMapping_Check(extensions):
  */
@@ -8502,7 +8542,7 @@ static int __pyx_pf_3hal_3api_11EmitOptions___init__(struct __pyx_obj_3hal_3api_
   __pyx_t_1 = 0;
 
   /* "hal/api.pyx":419
- *         extensions = kwargs.pop('extensions',           dict())
+ *         extensions = kwargs.pop('extensions',               {})
  * 
  *         if not PyMapping_Check(extensions):             # <<<<<<<<<<<<<<
  *             raise ValueError("extensions must be a mapping type")
@@ -8516,7 +8556,7 @@ static int __pyx_pf_3hal_3api_11EmitOptions___init__(struct __pyx_obj_3hal_3api_
  *         if not PyMapping_Check(extensions):
  *             raise ValueError("extensions must be a mapping type")             # <<<<<<<<<<<<<<
  * 
- *         self.__this__.emit_o = emit_o
+ *         self.__this__.emit_o = <bint>emit_o
  */
     __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__12, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 420, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
@@ -8525,7 +8565,7 @@ static int __pyx_pf_3hal_3api_11EmitOptions___init__(struct __pyx_obj_3hal_3api_
     __PYX_ERR(0, 420, __pyx_L1_error)
 
     /* "hal/api.pyx":419
- *         extensions = kwargs.pop('extensions',           dict())
+ *         extensions = kwargs.pop('extensions',               {})
  * 
  *         if not PyMapping_Check(extensions):             # <<<<<<<<<<<<<<
  *             raise ValueError("extensions must be a mapping type")
@@ -8536,85 +8576,85 @@ static int __pyx_pf_3hal_3api_11EmitOptions___init__(struct __pyx_obj_3hal_3api_
   /* "hal/api.pyx":422
  *             raise ValueError("extensions must be a mapping type")
  * 
- *         self.__this__.emit_o = emit_o             # <<<<<<<<<<<<<<
- *         self.__this__.emit_h = emit_h
- *         self.__this__.emit_cpp = emit_cpp
+ *         self.__this__.emit_o = <bint>emit_o             # <<<<<<<<<<<<<<
+ *         self.__this__.emit_h = <bint>emit_h
+ *         self.__this__.emit_cpp = <bint>emit_cpp
  */
-  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_v_emit_o); if (unlikely((__pyx_t_4 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 422, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_v_emit_o); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 422, __pyx_L1_error)
   __pyx_v_self->__pyx___this__.emit_o = __pyx_t_4;
 
   /* "hal/api.pyx":423
  * 
- *         self.__this__.emit_o = emit_o
- *         self.__this__.emit_h = emit_h             # <<<<<<<<<<<<<<
- *         self.__this__.emit_cpp = emit_cpp
- *         self.__this__.emit_assembly = emit_assembly
+ *         self.__this__.emit_o = <bint>emit_o
+ *         self.__this__.emit_h = <bint>emit_h             # <<<<<<<<<<<<<<
+ *         self.__this__.emit_cpp = <bint>emit_cpp
+ *         self.__this__.emit_assembly = <bint>emit_assembly
  */
-  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_v_emit_h); if (unlikely((__pyx_t_4 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 423, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_v_emit_h); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 423, __pyx_L1_error)
   __pyx_v_self->__pyx___this__.emit_h = __pyx_t_4;
 
   /* "hal/api.pyx":424
- *         self.__this__.emit_o = emit_o
- *         self.__this__.emit_h = emit_h
- *         self.__this__.emit_cpp = emit_cpp             # <<<<<<<<<<<<<<
- *         self.__this__.emit_assembly = emit_assembly
- *         self.__this__.emit_bitcode = emit_bitcode
+ *         self.__this__.emit_o = <bint>emit_o
+ *         self.__this__.emit_h = <bint>emit_h
+ *         self.__this__.emit_cpp = <bint>emit_cpp             # <<<<<<<<<<<<<<
+ *         self.__this__.emit_assembly = <bint>emit_assembly
+ *         self.__this__.emit_bitcode = <bint>emit_bitcode
  */
-  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_v_emit_cpp); if (unlikely((__pyx_t_4 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 424, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_v_emit_cpp); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 424, __pyx_L1_error)
   __pyx_v_self->__pyx___this__.emit_cpp = __pyx_t_4;
 
   /* "hal/api.pyx":425
- *         self.__this__.emit_h = emit_h
- *         self.__this__.emit_cpp = emit_cpp
- *         self.__this__.emit_assembly = emit_assembly             # <<<<<<<<<<<<<<
- *         self.__this__.emit_bitcode = emit_bitcode
- *         self.__this__.emit_stmt = emit_stmt
+ *         self.__this__.emit_h = <bint>emit_h
+ *         self.__this__.emit_cpp = <bint>emit_cpp
+ *         self.__this__.emit_assembly = <bint>emit_assembly             # <<<<<<<<<<<<<<
+ *         self.__this__.emit_bitcode = <bint>emit_bitcode
+ *         self.__this__.emit_stmt = <bint>emit_stmt
  */
-  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_v_emit_assembly); if (unlikely((__pyx_t_4 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 425, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_v_emit_assembly); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 425, __pyx_L1_error)
   __pyx_v_self->__pyx___this__.emit_assembly = __pyx_t_4;
 
   /* "hal/api.pyx":426
- *         self.__this__.emit_cpp = emit_cpp
- *         self.__this__.emit_assembly = emit_assembly
- *         self.__this__.emit_bitcode = emit_bitcode             # <<<<<<<<<<<<<<
- *         self.__this__.emit_stmt = emit_stmt
- *         self.__this__.emit_stmt_html = emit_stmt_html
+ *         self.__this__.emit_cpp = <bint>emit_cpp
+ *         self.__this__.emit_assembly = <bint>emit_assembly
+ *         self.__this__.emit_bitcode = <bint>emit_bitcode             # <<<<<<<<<<<<<<
+ *         self.__this__.emit_stmt = <bint>emit_stmt
+ *         self.__this__.emit_stmt_html = <bint>emit_stmt_html
  */
-  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_v_emit_bitcode); if (unlikely((__pyx_t_4 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 426, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_v_emit_bitcode); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 426, __pyx_L1_error)
   __pyx_v_self->__pyx___this__.emit_bitcode = __pyx_t_4;
 
   /* "hal/api.pyx":427
- *         self.__this__.emit_assembly = emit_assembly
- *         self.__this__.emit_bitcode = emit_bitcode
- *         self.__this__.emit_stmt = emit_stmt             # <<<<<<<<<<<<<<
- *         self.__this__.emit_stmt_html = emit_stmt_html
- *         self.__this__.emit_static_library = emit_static_library
+ *         self.__this__.emit_assembly = <bint>emit_assembly
+ *         self.__this__.emit_bitcode = <bint>emit_bitcode
+ *         self.__this__.emit_stmt = <bint>emit_stmt             # <<<<<<<<<<<<<<
+ *         self.__this__.emit_stmt_html = <bint>emit_stmt_html
+ *         self.__this__.emit_static_library = <bint>emit_static_library
  */
-  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_v_emit_stmt); if (unlikely((__pyx_t_4 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 427, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_v_emit_stmt); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 427, __pyx_L1_error)
   __pyx_v_self->__pyx___this__.emit_stmt = __pyx_t_4;
 
   /* "hal/api.pyx":428
- *         self.__this__.emit_bitcode = emit_bitcode
- *         self.__this__.emit_stmt = emit_stmt
- *         self.__this__.emit_stmt_html = emit_stmt_html             # <<<<<<<<<<<<<<
- *         self.__this__.emit_static_library = emit_static_library
+ *         self.__this__.emit_bitcode = <bint>emit_bitcode
+ *         self.__this__.emit_stmt = <bint>emit_stmt
+ *         self.__this__.emit_stmt_html = <bint>emit_stmt_html             # <<<<<<<<<<<<<<
+ *         self.__this__.emit_static_library = <bint>emit_static_library
  * 
  */
-  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_v_emit_stmt_html); if (unlikely((__pyx_t_4 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 428, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_v_emit_stmt_html); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 428, __pyx_L1_error)
   __pyx_v_self->__pyx___this__.emit_stmt_html = __pyx_t_4;
 
   /* "hal/api.pyx":429
- *         self.__this__.emit_stmt = emit_stmt
- *         self.__this__.emit_stmt_html = emit_stmt_html
- *         self.__this__.emit_static_library = emit_static_library             # <<<<<<<<<<<<<<
+ *         self.__this__.emit_stmt = <bint>emit_stmt
+ *         self.__this__.emit_stmt_html = <bint>emit_stmt_html
+ *         self.__this__.emit_static_library = <bint>emit_static_library             # <<<<<<<<<<<<<<
  * 
  *         for k, v in extensions.items():
  */
-  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_v_emit_static_library); if (unlikely((__pyx_t_4 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 429, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_v_emit_static_library); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 429, __pyx_L1_error)
   __pyx_v_self->__pyx___this__.emit_static_library = __pyx_t_4;
 
   /* "hal/api.pyx":431
- *         self.__this__.emit_static_library = emit_static_library
+ *         self.__this__.emit_static_library = <bint>emit_static_library
  * 
  *         for k, v in extensions.items():             # <<<<<<<<<<<<<<
  *             self.__this__.extensions[k] = v
@@ -8747,7 +8787,7 @@ static int __pyx_pf_3hal_3api_11EmitOptions___init__(struct __pyx_obj_3hal_3api_
     (__pyx_v_self->__pyx___this__.extensions[__pyx_t_13]) = __pyx_t_12;
 
     /* "hal/api.pyx":431
- *         self.__this__.emit_static_library = emit_static_library
+ *         self.__this__.emit_static_library = <bint>emit_static_library
  * 
  *         for k, v in extensions.items():             # <<<<<<<<<<<<<<
  *             self.__this__.extensions[k] = v
@@ -12534,7 +12574,7 @@ static int __Pyx_InitCachedConstants(void) {
  *         stmt_html_name = str(kwargs.pop('stmt_html_name', ''))
  *         static_library_name = str(kwargs.pop('static_library_name', ''))             # <<<<<<<<<<<<<<
  * 
- *         self.__this__.object_name = object_name
+ *         self.__this__.object_name = <string>object_name
  */
   __pyx_tuple__11 = PyTuple_Pack(2, __pyx_n_s_static_library_name, __pyx_kp_s_); if (unlikely(!__pyx_tuple__11)) __PYX_ERR(0, 262, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__11);
@@ -12545,7 +12585,7 @@ static int __Pyx_InitCachedConstants(void) {
  *         if not PyMapping_Check(extensions):
  *             raise ValueError("extensions must be a mapping type")             # <<<<<<<<<<<<<<
  * 
- *         self.__this__.emit_o = emit_o
+ *         self.__this__.emit_o = <bint>emit_o
  */
   __pyx_tuple__12 = PyTuple_Pack(1, __pyx_kp_s_extensions_must_be_a_mapping_typ); if (unlikely(!__pyx_tuple__12)) __PYX_ERR(0, 420, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__12);
