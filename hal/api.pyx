@@ -493,9 +493,9 @@ cdef class EmitOptions:
         return dict(self.__this__.extensions).get(default, default)
     
     def compute_outputs_for_target_and_path(EmitOptions self, Target target, string base_path):
-        # cdef HalOS windows = HalOS.Windows
-        # cdef HalFeature mingw = HalFeature.MinGW
-        # cdef HalArch pnacl = HalArch.PNaCl
+        # cdef OS windows = OS['Windows']
+        # cdef Feature mingw = HalFeature.MinGW
+        # cdef Arch pnacl = HalArch.PNaCl
         windows = mingw = pnacl = 0
         is_windows_coff = bool(target.os == windows and not target.has_feature(mingw))
         
