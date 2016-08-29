@@ -20,18 +20,18 @@ cdef extern from "Halide.h" namespace "Halide::Internal":
 
 cdef extern from "Halide.h" namespace "Halide":
     
-    cppclass ModuleBase "Module":
+    cppclass Module:
         
-        ModuleBase(string&, Target&)
+        Module(string&, Target&)
         
         Target& target()
         string& name()
         void compile(Outputs&)
 
-ctypedef vector[ModuleBase] modulevec_t
+ctypedef vector[Module] modulevec_t
 
 cdef extern from "Halide.h" namespace "Halide":
 
-    ModuleBase link_modules(string&, modulevec_t&)
+    Module link_modules(string&, modulevec_t&)
     void compile_standalone_runtime(string&, Target)            # creates object file
     Outputs compile_standalone_runtime(Outputs&, Target)        # creates object and/or static library

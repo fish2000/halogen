@@ -1,10 +1,12 @@
 # distutils: language = c++
+from cython.operator cimport dereference as deref
 
 from libc.stdint cimport *
 from libcpp.string cimport string
+from libcpp.memory cimport unique_ptr
 from cpython.mapping cimport PyMapping_Check
 
-from module cimport ModuleBase
+from module cimport Module as HalModule
 from outputs cimport Outputs as HalOutputs
 
 from generator cimport stringmap_t
@@ -27,11 +29,11 @@ from util cimport stringvec_t
 from util cimport extract_namespaces
 
 
-cdef extern from * namespace "Halide":
-    
-    cppclass Module(ModuleBase):
-        Module()
-        Module(string&, HalTarget&)
+# cdef extern from * namespace "Halide":
+#
+#     cppclass Module(ModuleBase):
+#         Module()
+#         Module(string&, HalTarget&)
 
 
 cdef class Type:
@@ -542,42 +544,40 @@ cdef class EmitOptions:
         
         return output_files
 
+ctypedef unique_ptr[HalModule] module_ptr_t
 
-cdef class ModuleObject:
+cdef class Module:
     
     cdef:
-        Module __this__
+        module_ptr_t __this__
     
-    def __cinit__(ModuleObject self, *args, **kwargs):
-        self.__this__ = Module("", HalTarget('host'))
+    def __cinit__(Module self, *args, **kwargs):
+        self.__this__ = module_ptr_t(new HalModule("", HalTarget('host')))
     
-    def __init__(ModuleObject self, *args, **kwargs):
+    def __init__(Module self, *args, **kwargs):
         cdef HalTarget htarg
         
         for arg in args:
             if type(arg) == type(self):
                 htarg = HalTarget(<string>arg.target().to_string())
-                self.__this__ = Module(arg.name(), <HalTarget>htarg)
+                self.__this__ = module_ptr_t(new HalModule(arg.name(), <HalTarget>htarg))
                 return
         
         name = kwargs.get('name', '')
         tstring = Target(kwargs.get('target', 'host')).to_string()
         htarg = HalTarget(<string>tstring)
-        self.__this__ = Module(<string>name, <HalTarget>htarg)
+        self.__this__ = module_ptr_t(new HalModule(<string>name, <HalTarget>htarg))
     
-    def name(ModuleObject self):
-        return str(self.__this__.name())
+    def name(Module self):
+        return str(deref(self.__this__).name())
     
-    def target(ModuleObject self):
+    def target(Module self):
         out = Target()
-        out.__this__ = self.__this__.target()
+        out.__this__ = deref(self.__this__).target()
         return out
     
-    cdef HalTarget halide_target(ModuleObject self):
-        return self.__this__.target()
-    
-    def compile(ModuleObject self, Outputs outputs):
-        self.__this__.compile(<HalOutputs>outputs.__this__)
+    def compile(Module self, Outputs outputs):
+        deref(self.__this__).compile(<HalOutputs>outputs.__this__)
 
 
 ## FUNCTION WRAPPERS:

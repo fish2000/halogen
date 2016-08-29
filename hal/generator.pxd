@@ -6,7 +6,7 @@ from libcpp.vector cimport vector
 from libcpp.memory cimport unique_ptr
 from target cimport Target
 from type cimport Type
-from module cimport ModuleBase, LinkageType
+from module cimport Module, LinkageType
 
 ctypedef vector[string]                 stringvec_t
 ctypedef std_map[string, string]        stringmap_t
@@ -58,7 +58,7 @@ cdef extern from "Halide.h" namespace "Halide::Internal":
         int natural_vector_size(Type)
         # int natural_vector_size[T]()
         void emit_filter(string&, string&, string&, EmitOptions&)
-        ModuleBase build_module(string&, LinkageType)
+        Module build_module(string&, LinkageType)
     
     cppclass GeneratorFactory:
         pass
