@@ -56,7 +56,9 @@ def generate(*generators, **arguments):
         base_path = hal.api.compute_base_path(output_directory, generator, "")
         output_files = emit_options.compute_outputs_for_target_and_path(target, base_path)
         if verbose:
+            print("TARGET: %s" % target.to_string())
             print(output_files)
+            print('')
 
 if __name__ == '__main__':
     generate('my_first_generator',

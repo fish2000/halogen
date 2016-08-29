@@ -248,16 +248,26 @@ cdef class Outputs:
     def __init__(Outputs self, *args, **kwargs):
         for arg in args:
             if type(arg) == type(self):
-                self.__this__ = HalOutputs()
-                self.__this__.object_name = arg.object_name
-                self.__this__.assembly_name = arg.assembly_name
-                self.__this__.bitcode_name = arg.bitcode_name
-                self.__this__.llvm_assembly_name = arg.llvm_assembly_name
-                self.__this__.c_header_name = arg.c_header_name
-                self.__this__.c_source_name = arg.c_source_name
-                self.__this__.stmt_name = arg.stmt_name
-                self.__this__.stmt_html_name = arg.stmt_html_name
-                self.__this__.static_library_name = arg.static_library_name
+                self.__this__ = self.__this__.object(arg.object_name) \
+                                             .assembly(arg.assembly_name) \
+                                             .bitcode(arg.bitcode_name) \
+                                             .llvm_assembly(arg.llvm_assembly_name) \
+                                             .c_header(arg.c_header_name) \
+                                             .c_source(arg.c_source_name) \
+                                             .stmt(arg.stmt_name) \
+                                             .stmt_html(arg.stmt_html_name) \
+                                             .static_library(arg.static_library_name)
+                
+                # self.__this__ = HalOutputs()
+                # self.__this__.object_name = arg.object_name
+                # self.__this__.assembly_name = arg.assembly_name
+                # self.__this__.bitcode_name = arg.bitcode_name
+                # self.__this__.llvm_assembly_name = arg.llvm_assembly_name
+                # self.__this__.c_header_name = arg.c_header_name
+                # self.__this__.c_source_name = arg.c_source_name
+                # self.__this__.stmt_name = arg.stmt_name
+                # self.__this__.stmt_html_name = arg.stmt_html_name
+                # self.__this__.static_library_name = arg.static_library_name
                 return
         
         object_name = str(kwargs.pop('object_name', ''))
@@ -391,7 +401,9 @@ cdef class Outputs:
         field_dict_items = []
         for k, v in field_dict.items():
             field_dict_items.append('''%s="%s"''' % (k, v))
-        return "Outputs(%s)" % ", ".join(field_dict_items)
+        return "%s(%s) @ %s" % (self.__class__.__name__,
+                                ", ".join(field_dict_items),
+                                hex(id(self)))
     
     def __str__(Outputs self):
         return self.to_string()

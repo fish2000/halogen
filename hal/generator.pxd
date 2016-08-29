@@ -72,10 +72,10 @@ cdef extern from "Halide.h" namespace "Halide::Internal":
     cppclass GeneratorRegistry:
         
         @staticmethod
-        void register_factory(string& name, factory_ptr_t factory)
+        void register_factory(string&, factory_ptr_t)
         
         @staticmethod
-        void unregister_factory(string& name)
+        void unregister_factory(string&)
         
         @staticmethod
         stringvec_t enumerate()
@@ -90,6 +90,6 @@ cdef extern from "Halide.h" namespace "Halide":
         Generator()
     
     cppclass RegisterGenerator[T]:
-        RegisterGenerator(char*)
+        RegisterGenerator(string&)
 
 
