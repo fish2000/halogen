@@ -1,4 +1,6 @@
 
+from __future__ import print_function
+
 valid_emits = frozenset([
     'assembly', 'bitcode',
     'cpp', 'h', 'html', 'o',
@@ -10,9 +12,10 @@ def generate(*generators, **arguments):
     import os
     import hal.api
     
+    generators = set([str(generator) for generator in generators])
+    
     verbose = bool(arguments.pop('verbose', False))
     target_string = str(arguments.pop('target', 'host'))
-    generators = set([str(generator) for generator in generators])
     generator_names = set(arguments.pop('generator_names',
                                         hal.api.registered_generators()))
     output_directory = os.path.abspath(arguments.pop('output_directory',
@@ -52,3 +55,21 @@ def generate(*generators, **arguments):
     for generator in generators:
         base_path = hal.api.compute_base_path(output_directory, generator, "")
         output_files = emit_options.compute_outputs_for_target_and_path(target, base_path)
+        if verbose:
+            print(output_files)
+
+if __name__ == '__main__':
+    generate('my_first_generator',
+                    verbose=True,
+                    target='host',
+                    output_directory='/tmp')
+    
+    generate('my_second_generator',
+                    verbose=True,
+                    target='host',
+                    output_directory='/tmp')
+    
+    generate('brighten',
+                    verbose=True,
+                    target='host',
+                    output_directory='/tmp')

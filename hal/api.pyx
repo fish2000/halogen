@@ -378,6 +378,23 @@ cdef class Outputs:
         out = Outputs()
         out.__this__ = self.__this__.static_library(<string>s)
         return out
+    
+    def to_string(Outputs self):
+        fields = ("object_name", "assembly_name", "bitcode_name",
+                  "llvm_assembly_name", "c_header_name", "c_source_name",
+                  "stmt_name", "stmt_html_name", "static_library_name")
+        field_dict = {}
+        for field in fields:
+            field_value = getattr(self, field, "")
+            if field_value:
+                field_dict.update({ field : field_value })
+        field_dict_items = []
+        for k, v in field_dict.items():
+            field_dict_items.append('''%s="%s"''' % (k, v))
+        return "Outputs(%s)" % ", ".join(field_dict_items)
+    
+    def __str__(Outputs self):
+        return self.to_string()
 
 
 ctypedef GeneratorBase.EmitOptions EmOpts
