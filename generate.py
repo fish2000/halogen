@@ -10,6 +10,7 @@ def generate(*generators, **arguments):
     import os
     import hal.api
     
+    verbose = bool(arguments.pop('verbose', False))
     target_string = str(arguments.pop('target', ''))
     generators = set([str(generator) for generator in generators])
     generator_names = set(arguments.pop('generator_names',
@@ -47,3 +48,7 @@ def generate(*generators, **arguments):
     
     emit_options = hal.api.EmitOptions(**emit_dict)
     target = hal.api.Target(target_string=target_string)
+    
+    for generator in generators:
+        base_path = hal.api.compute_base_path(output_directory, generator, "")
+        output_files = emit_options.compute_outputs_for_target_and_path(target, base_path)

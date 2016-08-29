@@ -6,8 +6,8 @@ from cpython.mapping cimport PyMapping_Check
 
 from outputs cimport Outputs as HalOutputs
 
-from generator cimport GeneratorBase, GeneratorRegistry
 from generator cimport stringmap_t
+from generator cimport GeneratorBase, GeneratorRegistry
 
 from type cimport Type as HalType
 from type cimport Int as Type_Int
@@ -22,9 +22,12 @@ from target cimport get_host_target as halide_get_host_target
 from target cimport get_target_from_environment as halide_get_target_from_environment
 from target cimport get_jit_target_from_environment as halide_get_jit_target_from_environment
 
+from util cimport stringvec_t
+from util cimport extract_namespaces
 
-def registered_generators():
-    return tuple(GeneratorRegistry.enumerate())
+from runtime cimport halide_type_code_t
+from runtime cimport halide_error_code_t
+from runtime cimport halide_target_feature_t
 
 
 cdef class Type:
@@ -496,7 +499,11 @@ cdef class EmitOptions:
         # cdef OS windows = OS['Windows']
         # cdef Feature mingw = HalFeature.MinGW
         # cdef Arch pnacl = HalArch.PNaCl
-        windows = mingw = pnacl = 0
+        # windows = mingw = pnacl = 0
+        cdef OS windows = <OS>2
+        # cdef Feature mingw = halide_target_feature_t.halide_target_feature_mingw
+        cdef Feature mingw = <Feature>30
+        cdef Arch pnacl = <Arch>3
         is_windows_coff = bool(target.os == windows and not target.has_feature(mingw))
         
         output_files = Outputs()
@@ -534,20 +541,48 @@ cdef class EmitOptions:
 
 ## FUNCTION WRAPPERS:
 def get_host_target():
+    """ Halide::get_host_target() wrapper call """
     out = Target()
     out.__this__ = halide_get_host_target()
     return out
 
 def get_target_from_environment():
+    """ Halide::get_target_from_environment() wrapper call """
     out = Target()
     out.__this__ = halide_get_target_from_environment()
     return out
 
 def get_jit_target_from_environment():
+    """ Halide::get_jit_target_from_environment() wrapper call """
     out = Target()
     out.__this__ = halide_get_jit_target_from_environment()
     return out
 
 def validate_target_string(string target_string):
+    """ Halide::Target::validate_target_string(s) static method wrapper call """
     return HalTarget.validate_target_string(target_string)
 
+def registered_generators():
+    """ Enumerate registered generators using Halide::GeneratorRegistry """
+    return tuple(GeneratorRegistry.enumerate())
+
+cpdef string halide_compute_base_path(string& output_dir,
+                                      string& function_name,
+                                      string& file_base_name):
+    cdef stringvec_t namespaces
+    cdef string simple_name = extract_namespaces(function_name, namespaces)
+    cdef string base_path = output_dir + "/"
+    if file_base_name.empty():
+        base_path += simple_name
+    else:
+        base_path += file_base_name
+    return base_path
+
+def compute_base_path(string output_dir,
+                      string function_name,
+                      string file_base_name):
+    """ Reimplementation of Halide::Internal::compute_base_path(...)
+        (private function from Halide/src/Generator.cpp) """
+    return halide_compute_base_path(output_dir,
+                                    function_name,
+                                    file_base_name)
