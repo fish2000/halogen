@@ -16,6 +16,8 @@ cdef extern from "Halide.h" namespace "Halide":
         string stmt_html_name
         string static_library_name
         
+        Outputs() # default constructor
+        
         Outputs object(string&)
         Outputs assembly(string&)
         Outputs bitcode(string&)
