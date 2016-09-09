@@ -21,8 +21,8 @@ from type cimport Float as Type_Float
 from type cimport Bool as Type_Bool
 from type cimport Handle as Type_Handle
 
+cimport target
 from target cimport Target as HalTarget
-from target cimport OS, Arch, Feature
 from target cimport get_host_target as halide_get_host_target
 from target cimport get_target_from_environment as halide_get_target_from_environment
 from target cimport get_jit_target_from_environment as halide_get_jit_target_from_environment
@@ -192,7 +192,7 @@ cdef class Target:
             return self.__this__.os
             
         def __set__(Target self, value):
-            self.__this__.os = <OS>value
+            self.__this__.os = <target.OS>value
         
     property arch:
         
@@ -200,7 +200,7 @@ cdef class Target:
             return self.__this__.arch
         
         def __set__(Target self, value):
-            self.__this__.arch = <Arch>value
+            self.__this__.arch = <target.Arch>value
         
     property bits:
         
@@ -255,17 +255,6 @@ cdef class Outputs:
                                              .stmt(arg.stmt_name) \
                                              .stmt_html(arg.stmt_html_name) \
                                              .static_library(arg.static_library_name)
-                
-                # self.__this__ = HalOutputs()
-                # self.__this__.object_name = arg.object_name
-                # self.__this__.assembly_name = arg.assembly_name
-                # self.__this__.bitcode_name = arg.bitcode_name
-                # self.__this__.llvm_assembly_name = arg.llvm_assembly_name
-                # self.__this__.c_header_name = arg.c_header_name
-                # self.__this__.c_source_name = arg.c_source_name
-                # self.__this__.stmt_name = arg.stmt_name
-                # self.__this__.stmt_html_name = arg.stmt_html_name
-                # self.__this__.static_library_name = arg.static_library_name
                 return
         
         object_name = str(kwargs.pop('object_name', ''))
@@ -546,21 +535,30 @@ cdef class EmitOptions:
     def get_extension(EmitOptions self, string default):
         return dict(self.__this__.extensions).get(default, default)
     
-    def compute_outputs_for_target_and_path(EmitOptions self, Target target, string base_path):
+    def compute_outputs_for_target_and_path(EmitOptions self, Target t, string base_path):
         # cdef OS windows = OS['Windows']
         # cdef Feature mingw = HalFeature.MinGW
         # cdef Arch pnacl = HalArch.PNaCl
         # windows = mingw = pnacl = 0
-        cdef OS windows = <OS>2
         # cdef Feature mingw = halide_target_feature_t.halide_target_feature_mingw
-        cdef Feature mingw = <Feature>30
-        cdef Arch pnacl = <Arch>3
-        is_windows_coff = bool(target.os == windows and not target.has_feature(mingw))
+        
+        cdef target.OS windows = <target.OS>2
+        cdef target.Feature mingw = <target.Feature>30
+        cdef target.Arch pnacl = <target.Arch>3
+        
+        # cdef target.OS windows = target.OS.Windows
+        # cdef target.Feature mingw = target.Feature.MinGW
+        # cdef target.Arch pnacl = target.Arch.PNaCL
+        # cpdef target.OS windows = getattr(target.OS, "Windows")
+        # cpdef target.Feature mingw = getattr(target.Feature, "MinGW")
+        # cpdef target.Arch pnacl = getattr(target.Arch, "PNaCL")
+        
+        is_windows_coff = bool(t.os == windows and not t.has_feature(mingw))
         
         output_files = Outputs()
         
         if self.emit_o:
-            if target.arch == pnacl:
+            if t.arch == pnacl:
                 output_files.object_name = str(base_path) + self.get_extension(".bc")
             elif is_windows_coff:
                 output_files.object_name = str(base_path) + self.get_extension(".obj")

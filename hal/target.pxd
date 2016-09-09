@@ -8,7 +8,7 @@ cdef extern from "Halide.h" namespace "Halide::Target" nogil:
     
     # THIS IS NOT TOWARD
     
-    cdef enum OS:
+    ctypedef enum OS:
         OSUnknown
         Linux
         Windows
@@ -19,7 +19,7 @@ cdef extern from "Halide.h" namespace "Halide::Target" nogil:
         QuRT
         NoOS
     
-    cdef enum Arch:
+    ctypedef enum Arch:
         ArchUnknown
         X86
         ARM
@@ -28,7 +28,7 @@ cdef extern from "Halide.h" namespace "Halide::Target" nogil:
         Hexagon
         POWERPC
     
-    cdef enum Feature:
+    ctypedef enum Feature:
         JIT
         Debug
         NoAsserts

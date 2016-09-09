@@ -14,7 +14,7 @@ for dirpath, dirnames, filenames in os.walk(generator_dir):
             generators.append(os.path.join(dirpath, filename))
 
 api_extension_sources = ['hal/api.pyx']
-api_extension_sources.extend(generators)
+# api_extension_sources.extend(generators)
 
 setup(
     ext_modules=cythonize([
