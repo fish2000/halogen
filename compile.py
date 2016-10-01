@@ -2,28 +2,11 @@
 
 from __future__ import print_function
 
-from tempfile import mktemp
 import os
 import shutil
 import config
-
-# What we are going for is:
-
-# TO COMPILE GENERATOR SOURCE (AS BEFORE, BUT SANS `GenGen.cpp`):
-#
-# clang -fno-strict-aliasing -fno-common -dynamic -g -O2 -DNDEBUG -g -fwrapv -O3 -Wall -Wstrict-prototypes
-# -I/usr/local/include -I/usr/local/opt/openssl/include -I/usr/local/opt/sqlite/include
-# -I/usr/local/Cellar/python/2.7.12/Frameworks/Python.framework/Versions/2.7/include/python2.7
-# -c ./generators/lesson_16_rgb_generate.cpp -o build/temp.macosx-10.11-x86_64-2.7/./generators/lesson_16_rgb_generate.o 
-# -Wno-unused-function -Wno-unneeded-internal-declaration
-# -O3 -fno-rtti -funroll-loops -mtune=native -std=c++1z -stdlib=libc++
-#
-# ... note that this generally sucks (-O2 and then two -O3 flags?!) but should probably
-#     favor suckitude-preservation over suck-optimization; likely it will be derived from
-#     whatever `python-config --cflags` barfs up. Halide include directory should either
-#     be explicitly specified (to, like, the function or whatever that does this) or
-#     maybe use `brew --prefix halide` if possible -- or maybe not, I don't fucking know,
-#     why don't you just tell me MIISSSSSSTER SYSADMIN
+from tempfile import mktemp
+from filesystem import TemporaryName
 
 CONF = config.ConfigUnion(config.SysConfig(),
                           config.BrewedHalideConfig())
@@ -39,58 +22,6 @@ class CompilerError(Exception):
 class LinkerError(Exception):
     """ A link-time owie freakout """
     pass
-
-
-class TemporaryName(object):
-    
-    """ This is like NamedTemporaryFile without any of the actual stuff;
-        it just makes a file name -- YOU have to make shit happen with it.
-        But: should you cause such scatalogical events to transpire, this
-        class (when invoked as a context manager) will clean it up for you.
-        Unless you say not to. Really it's your call dogg I could give AF """
-    
-    def __init__(self, prefix="yo-dogg-", suffix="tmp"):
-        self._name = mktemp(prefix=prefix, suffix=".%s" % suffix)
-        self._destroy = True
-        self.prefix = prefix
-        self.suffix = suffix
-    
-    @property
-    def name(self):
-        return self._name
-    
-    @property
-    def exists(self):
-        return os.path.exists(self._name)
-    
-    @property
-    def destroy(self):
-        return self._destroy
-    
-    def copy(self, destination):
-        if self.exists:
-            return shutil.copyfile(self.name, destination)
-        return False
-    
-    def do_not_destroy(self):
-        self._destroy = False
-        return self.name
-    
-    def __enter__(self):
-        return self
-    
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        if self.exists and self.destroy:
-            if os.path.isfile(self._name):
-                os.unlink(self._name)
-            elif os.path.isdir(self._name):
-                subdirs = []
-                for path, dirs, files in os.walk(self._name, followlinks=True):
-                    for tf in files:
-                        os.unlink(os.path.join(path, tf))
-                    subdirs.extend([os.path.join(path, td) for td in dirs])
-                for subdir in subdirs:
-                    os.rmdir(subdir)
 
 
 class Generator(object):
@@ -223,25 +154,15 @@ class Generators(object):
         self.clear()
 
 
-# TO LINK A COMPILED GENERATOR AS A DYNAMIC LIBRARY:
-#
-# clang++ -bundle -undefined dynamic_lookup build/temp.macosx-10.11-x86_64-2.7/hal/api.o 
-# build/temp.macosx-10.11-x86_64-2.7/./generators/lesson_15_generators.o 
-# build/temp.macosx-10.11-x86_64-2.7/./generators/lesson_16_rgb_generate.o
-# -L/usr/local/lib -L/usr/local/opt/openssl/lib -L/usr/local/opt/sqlite/lib
-# -o /Users/fish/Dropbox/halogen/hal/api.so -lHalide
-#
-# ... note that in this case there is unnecessary shit and it should be winnowed down --
-#     but this is generally simpler, it is basically this:
-#       {CC} {flags} generator.o -o generator.dylib -lHalide -L/where/libDalide/is/at
-#     ... where fortunately {flags} are relatively simple, something like e.g.
-#     “-bundle -undefined dynamic_lookup” (as above), with possibly an addendum to
-#     adjust the @rpath as needed.
-
 if __name__ == '__main__':
+    
     directory = "/Users/fish/Dropbox/halogen/generators"
     outshared = "/tmp/yodogg.dylib"
+    
+    if os.path.isfile(outshared):
+        os.unlink(outshared)
+    
     with Generators(CONF, outshared, directory) as gens:
         print("IS IT COMPILED? -- %s" % gens.compiled and "YES" or "no")
         print("IS IT LINKED? -- %s" % gens.compiled and "YES" or "no")
-    
+
