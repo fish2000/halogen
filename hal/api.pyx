@@ -32,13 +32,15 @@ from util cimport extract_namespaces
 from util cimport running_program_name as halide_running_program_name
 
 
-@cython.freelist(8)
+@cython.freelist(32)
 cdef class Type:
     """ Cython wrapper class for Halide::Type """
     
     cdef:
         HalType __this__
     
+    @cython.embedsignature(True)
+    @cython.infer_types(True)
     @staticmethod
     def fromother(Type other):
         out = Type()
@@ -58,62 +60,83 @@ cdef class Type:
             elif 'lanes' in kwargs:
                 self.__this__ = self.__this__.with_lanes(<uint16_t>kwargs.get('lanes'))
     
+    @cython.embedsignature(True)
     def code(Type self):
         return self.__this__.code()
     
+    @cython.embedsignature(True)
     def bytes(Type self):
         return self.__this__.bytes()
     
+    @cython.embedsignature(True)
     def bits(Type self):
         return self.__this__.bits()
     
+    @cython.embedsignature(True)
     def lanes(Type self):
         return self.__this__.lanes()
     
+    @cython.embedsignature(True)
+    @cython.infer_types(True)
     def with_code(Type self, code):
         out = Type()
         out.__this__ = self.__this__.with_code(code)
         return out
     
+    @cython.embedsignature(True)
+    @cython.infer_types(True)
     def with_bits(Type self, bits):
         out = Type()
         out.__this__ = self.__this__.with_bits(<uint8_t>bits)
         return out
     
+    @cython.embedsignature(True)
+    @cython.infer_types(True)
     def with_lanes(Type self, lanes):
         out = Type()
         out.__this__ = self.__this__.with_lanes(<uint16_t>lanes)
         return out
     
+    @cython.embedsignature(True)
     def is_bool(Type self):
         return self.__this__.is_bool()
     
+    @cython.embedsignature(True)
     def is_vector(Type self):
         return self.__this__.is_vector()
     
+    @cython.embedsignature(True)
     def is_scalar(Type self):
         return self.__this__.is_scalar()
     
+    @cython.embedsignature(True)
     def is_float(Type self):
         return self.__this__.is_float()
     
+    @cython.embedsignature(True)
     def is_int(Type self):
         return self.__this__.is_int()
     
+    @cython.embedsignature(True)
     def is_uint(Type self):
         return self.__this__.is_uint()
     
+    @cython.embedsignature(True)
     def is_handle(Type self):
         return self.__this__.is_handle()
     
+    @cython.embedsignature(True)
     def same_handle_type(Type self, Type other):
         return self.__this__.same_handle_type(other.__this__)
     
+    @cython.embedsignature(True)
+    @cython.infer_types(True)
     def element_of(Type self):
         out = Type()
         out.__this__ = self.__this__.element_of()
         return out
     
+    @cython.embedsignature(True)
     def can_represent(Type self, other):
         if type(other) == type(self):
             return self.can_represent_type(other)
@@ -133,30 +156,40 @@ cdef class Type:
     def can_represent_long(Type self, long other):
         return self.__this__.can_represent(<int64_t>other)
     
+    @cython.embedsignature(True)
+    @cython.infer_types(True)
     @staticmethod
     def Int(int bits, int lanes=1):
         out = Type()
         out.__this__ = Type_Int(bits, lanes)
         return out
     
+    @cython.embedsignature(True)
+    @cython.infer_types(True)
     @staticmethod
     def UInt(int bits, int lanes=1):
         out = Type()
         out.__this__ = Type_UInt(bits, lanes)
         return out
     
+    @cython.embedsignature(True)
+    @cython.infer_types(True)
     @staticmethod
     def Float(int bits, int lanes=1):
         out = Type()
         out.__this__ = Type_Float(bits, lanes)
         return out
     
+    @cython.embedsignature(True)
+    @cython.infer_types(True)
     @staticmethod
     def Bool(int lanes=1):
         out = Type()
         out.__this__ = Type_Bool(lanes)
         return out
     
+    @cython.embedsignature(True)
+    @cython.infer_types(True)
     @staticmethod
     def Handle(int lanes=1):
         out = Type()
@@ -164,13 +197,14 @@ cdef class Type:
         return out
 
 
-@cython.freelist(8)
+@cython.freelist(32)
 cdef class Target:
     """ Cython wrapper class for Halide::Target """
     
     cdef:
         HalTarget __this__
     
+    @cython.embedsignature(True)
     @staticmethod
     def validate_target_string(string target_string):
         return HalTarget.validate_target_string(target_string)
@@ -210,39 +244,50 @@ cdef class Target:
         def __set__(Target self, value):
             self.__this__.bits = <int>value
     
+    @cython.embedsignature(True)
     def has_gpu_feature(Target self):
         return self.__this__.has_gpu_feature()
     
+    @cython.embedsignature(True)
     def includes_halide_runtime(Target self):
         try:
             return str(self).index('no_runtime') < 0
         except ValueError:
             return True
     
+    @cython.embedsignature(True)
     def to_string(Target self):
         return self.__this__.to_string()
     
+    @cython.embedsignature(True)
     def maximum_buffer_size(Target self):
         return self.__this__.maximum_buffer_size()
     
+    @cython.embedsignature(True)
     def supported(Target self):
         return self.__this__.supported()
     
+    @cython.embedsignature(True)
     def supports_type(Target self, Type t):
         return self.__this__.supports_type(t.__this__)
     
+    @cython.embedsignature(True)
     def natural_vector_size(Target self, Type t):
         return self.__this__.natural_vector_size(t.__this__)
     
+    @cython.embedsignature(True)
     def __str__(Target self):
         return self.__this__.to_string()
 
 
 cdef class Outputs:
     
+    """ Cython wrapper class for Halide::Outputs """
+    
     cdef:
         HalOutputs __this__
     
+    @cython.infer_types(True)
     def __init__(Outputs self, *args, **kwargs):
         for arg in args:
             if type(arg) == type(self):
@@ -331,6 +376,8 @@ cdef class Outputs:
         def __set__(Outputs self, value):
             self.__this__.static_library_name = <string>value
     
+    @cython.embedsignature(True)
+    @cython.infer_types(True)
     def object(Outputs self, s=None):
         out = Outputs()
         if s is None:
@@ -338,6 +385,8 @@ cdef class Outputs:
         out.__this__ = self.__this__.object(<string>s)
         return out
     
+    @cython.embedsignature(True)
+    @cython.infer_types(True)
     def assembly(Outputs self, s=None):
         out = Outputs()
         if s is None:
@@ -345,6 +394,8 @@ cdef class Outputs:
         out.__this__ = self.__this__.assembly(<string>s)
         return out
     
+    @cython.embedsignature(True)
+    @cython.infer_types(True)
     def bitcode(Outputs self, s=None):
         out = Outputs()
         if s is None:
@@ -352,6 +403,8 @@ cdef class Outputs:
         out.__this__ = self.__this__.bitcode(<string>s)
         return out
     
+    @cython.embedsignature(True)
+    @cython.infer_types(True)
     def llvm_assembly(Outputs self, s=None):
         out = Outputs()
         if s is None:
@@ -359,6 +412,8 @@ cdef class Outputs:
         out.__this__ = self.__this__.llvm_assembly(<string>s)
         return out
     
+    @cython.embedsignature(True)
+    @cython.infer_types(True)
     def c_header(Outputs self, s=None):
         out = Outputs()
         if s is None:
@@ -366,6 +421,8 @@ cdef class Outputs:
         out.__this__ = self.__this__.c_header(<string>s)
         return out
     
+    @cython.embedsignature(True)
+    @cython.infer_types(True)
     def c_source(Outputs self, s=None):
         out = Outputs()
         if s is None:
@@ -373,6 +430,8 @@ cdef class Outputs:
         out.__this__ = self.__this__.c_source(<string>s)
         return out
     
+    @cython.embedsignature(True)
+    @cython.infer_types(True)
     def stmt(Outputs self, s=None):
         out = Outputs()
         if s is None:
@@ -380,6 +439,8 @@ cdef class Outputs:
         out.__this__ = self.__this__.stmt(<string>s)
         return out
     
+    @cython.embedsignature(True)
+    @cython.infer_types(True)
     def stmt_html(Outputs self, s=None):
         out = Outputs()
         if s is None:
@@ -387,6 +448,8 @@ cdef class Outputs:
         out.__this__ = self.__this__.stmt_html(<string>s)
         return out
     
+    @cython.embedsignature(True)
+    @cython.infer_types(True)
     def static_library(Outputs self, s=None):
         out = Outputs()
         if s is None:
@@ -394,6 +457,7 @@ cdef class Outputs:
         out.__this__ = self.__this__.static_library(<string>s)
         return out
     
+    @cython.embedsignature(True)
     def to_string(Outputs self):
         fields = ("object_name", "assembly_name", "bitcode_name",
                   "llvm_assembly_name", "c_header_name", "c_source_name",
@@ -410,6 +474,7 @@ cdef class Outputs:
                                 ", ".join(field_dict_items),
                                 hex(id(self)))
     
+    @cython.embedsignature(True)
     def __str__(Outputs self):
         return self.to_string()
 
@@ -417,6 +482,8 @@ cdef class Outputs:
 ctypedef GeneratorBase.EmitOptions EmOpts
 
 cdef class EmitOptions:
+    
+    """ Cython wrapper class for Halide::Internal::GeneratorBase::EmitOptions """
     
     cdef:
         EmOpts __this__
@@ -432,6 +499,7 @@ cdef class EmitOptions:
         'emit_static_library'   : True
     }
     
+    @cython.infer_types(True)
     def __init__(EmitOptions self, *args, **kwargs):
         for arg in args:
             if type(arg) == type(self):
@@ -532,9 +600,11 @@ cdef class EmitOptions:
             for k, v in dict(value).items():
                 self.__this__.extensions[k] = v
     
+    @cython.embedsignature(True)
     def get_extension(EmitOptions self, string default):
         return dict(self.__this__.extensions).get(default, default)
     
+    @cython.embedsignature(True)
     def compute_outputs_for_target_and_path(EmitOptions self, Target t, string base_path):
         # cdef OS windows = OS['Windows']
         # cdef Feature mingw = HalFeature.MinGW
@@ -554,36 +624,36 @@ cdef class EmitOptions:
         # cpdef target.Arch pnacl = getattr(target.Arch, "PNaCL")
         
         is_windows_coff = bool(t.os == windows and not t.has_feature(mingw))
-        
+        base_path_str = str(base_path)
         output_files = Outputs()
         
         if self.emit_o:
             if t.arch == pnacl:
-                output_files.object_name = str(base_path) + self.get_extension(".bc")
+                output_files.object_name = base_path_str + self.get_extension(".bc")
             elif is_windows_coff:
-                output_files.object_name = str(base_path) + self.get_extension(".obj")
+                output_files.object_name = base_path_str + self.get_extension(".obj")
             else:
-                output_files.object_name = str(base_path) + self.get_extension(".o")
+                output_files.object_name = base_path_str + self.get_extension(".o")
         
         if self.emit_assembly:
-            output_files.assembly_name = str(base_path) + self.get_extension(".s")
+            output_files.assembly_name = base_path_str + self.get_extension(".s")
         
         if self.emit_bitcode:
-            output_files.bitcode_name = str(base_path) + self.get_extension(".bc")
+            output_files.bitcode_name = base_path_str + self.get_extension(".bc")
         if self.emit_h:
-            output_files.c_header_name = str(base_path) + self.get_extension(".h")
+            output_files.c_header_name = base_path_str + self.get_extension(".h")
         if self.emit_cpp:
-            output_files.c_source_name = str(base_path) + self.get_extension(".cpp")
+            output_files.c_source_name = base_path_str + self.get_extension(".cpp")
         if self.emit_stmt:
-            output_files.stmt_name = str(base_path) + self.get_extension(".stmt")
+            output_files.stmt_name = base_path_str + self.get_extension(".stmt")
         if self.emit_stmt_html:
-            output_files.stmt_html_name = str(base_path) + self.get_extension(".html")
+            output_files.stmt_html_name = base_path_str + self.get_extension(".html")
         
         if self.emit_static_library:
             if is_windows_coff:
-                output_files.static_library_name = str(base_path) + self.get_extension(".lib")
+                output_files.static_library_name = base_path_str + self.get_extension(".lib")
             else:
-                output_files.static_library_name = str(base_path) + self.get_extension(".a")
+                output_files.static_library_name = base_path_str + self.get_extension(".a")
         
         return output_files
 
@@ -614,9 +684,12 @@ cdef class Module:
     def __dealloc__(Module self):
         self.__this__.reset(NULL)
     
+    @cython.embedsignature(True)
     def name(Module self):
         return str(deref(self.__this__).name())
     
+    @cython.embedsignature(True)
+    @cython.infer_types(True)
     def target(Module self):
         out = Target()
         out.__this__ = deref(self.__this__).target()
@@ -631,9 +704,11 @@ cdef class Module:
     cdef void replace_instance(Module self, HalModule&& m):
         self.__this__.reset(new HalModule(m))
     
+    @cython.embedsignature(True)
     def compile(Module self, Outputs outputs):
         deref(self.__this__).compile(<HalOutputs>outputs.__this__)
     
+    @cython.embedsignature(True)
     def to_string(Module self):
         cdef string name = deref(self.__this__).name()
         cdef string targ = deref(self.__this__).target().to_string()
@@ -642,33 +717,39 @@ cdef class Module:
                                 ", ".join(field_values),
                                 hex(id(self)))
     
+    @cython.embedsignature(True)
     def __str__(Module self):
         return self.to_string()
 
 
 ## FUNCTION WRAPPERS:
+@cython.embedsignature(True)
 def get_host_target():
     """ Halide::get_host_target() wrapper call """
     out = Target()
     out.__this__ = halide_get_host_target()
     return out
 
+@cython.embedsignature(True)
 def get_target_from_environment():
     """ Halide::get_target_from_environment() wrapper call """
     out = Target()
     out.__this__ = halide_get_target_from_environment()
     return out
 
+@cython.embedsignature(True)
 def get_jit_target_from_environment():
     """ Halide::get_jit_target_from_environment() wrapper call """
     out = Target()
     out.__this__ = halide_get_jit_target_from_environment()
     return out
 
+@cython.embedsignature(True)
 def validate_target_string(string target_string):
     """ Halide::Target::validate_target_string(s) static method wrapper call """
     return HalTarget.validate_target_string(target_string)
 
+@cython.embedsignature(True)
 def registered_generators():
     """ Enumerate registered generators using Halide::GeneratorRegistry """
     return tuple(GeneratorRegistry.enumerate())
@@ -685,6 +766,7 @@ cpdef string halide_compute_base_path(string& output_dir,
         base_path += file_base_name
     return base_path
 
+@cython.embedsignature(True)
 def compute_base_path(string output_dir,
                       string function_name,
                       string file_base_name):
@@ -694,6 +776,7 @@ def compute_base_path(string output_dir,
                                     function_name,
                                     file_base_name)
 
+@cython.embedsignature(True)
 def get_generator_module(string& name, dict arguments not None):
     """ Retrieve a Halide::Module, wrapped as hal.api.Module,
         corresponding to the registered generator instance (by name) """
@@ -709,6 +792,7 @@ def get_generator_module(string& name, dict arguments not None):
     out.replace_instance(<HalModule>deref(generator_instance).build_module(name, <LinkageType>0))
     return out
 
+@cython.embedsignature(True)
 def running_program_name():
     """ Return the name of the running program as a string. """
     return str(halide_running_program_name())
