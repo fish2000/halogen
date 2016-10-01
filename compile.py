@@ -86,7 +86,8 @@ class Generators(object):
         for each discovered source file, OK) use a TemporaryName as their output targets -- so
         it's like POOF, no fuss no muss, basically """
     
-    def __init__(self, conf, destination, directory=None, suffix="cpp"):
+    def __init__(self, conf, destination, directory=None, suffix="cpp",
+                                          do_shared=True, do_static=True):
         if not directory:
             directory = os.getcwd()
         if not suffix:
@@ -100,6 +101,8 @@ class Generators(object):
         self.archive = "%s%s" % (destination, config.STATIC_LIBRARY_SUFFIX)
         self.directory = directory
         self.suffix = suffix
+        self.do_shared = do_shared
+        self.do_static = do_static
         self.sources = []
         self.prelink = []
         self.link_result = tuple()
@@ -168,21 +171,23 @@ class Generators(object):
         self.compile_all()
         
         # 2: link dynamically
-        self.link()
-        if len(self.link_result) > 0:
-            if len(self.link_result[1]) > 0:
-                # failure
-                raise LinkerError(self.link_result[1])
-            self._linked = os.path.exists(self.library)
+        if self.do_shared:
+            self.link()
+            if len(self.link_result) > 0:
+                if len(self.link_result[1]) > 0:
+                    # failure
+                    raise LinkerError(self.link_result[1])
+                self._linked = os.path.exists(self.library)
         
         # 3: link statically (née 'archive')
-        self.arch()
-        if len(self.archive_result) > 0:
-            if len(self.archive_result[1]) > 0:
-                # failure
-                raise ArchiverError(self.archive_result[1])
-            self._archived = os.path.exists(self.archive)
-        return self
+        if self.do_static:
+            self.arch()
+            if len(self.archive_result) > 0:
+                if len(self.archive_result[1]) > 0:
+                    # failure
+                    raise ArchiverError(self.archive_result[1])
+                self._archived = os.path.exists(self.archive)
+            return self
     
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.clear()
