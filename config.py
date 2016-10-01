@@ -11,6 +11,7 @@ from os.path import splitext
 from filesystem import back_tick
 
 SHARED_LIBRARY_SUFFIX = splitext(ctypes.util.find_library("c"))[-1]
+STATIC_LIBRARY_SUFFIX = ".a"
 
 class PythonConfig(object):
     
@@ -266,6 +267,16 @@ def LD(conf, outfile, *infiles, **kwargs):
                                          " ".join(infiles), outfile), ret_err=True,
                                                                       verbose=kwargs.pop('verbose', False))
 
+def AR(conf, outfile, *infiles, **kwargs):
+    # This function is the ugly duckling here because:
+    #   a) it does not use the `conf` arg at all, and
+    #   b) it has to manually amend 'ARFLAGS' it would seem
+    #       b)[1] ... most configuration-getting pc-configgish flag tools
+    #                 could not give less fucks about 'ARFLAGS', and so.
+    return back_tick("%s %s %s %s" % (sysconfig.get_config_var('AR'),
+                                      "%ss" % sysconfig.get_config_var('ARFLAGS'),
+                                      outfile, " ".join(infiles)), ret_err=True,
+                                                                   verbose=kwargs.pop('verbose', False))
 
 test_generator_source = """
 #include "Halide.h"

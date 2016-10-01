@@ -23,6 +23,10 @@ class LinkerError(Exception):
     """ A link-time owie freakout """
     pass
 
+class ArchiverError(Exception):
+    """ We couldn't be making the archive dood """
+    pass
+
 
 class Generator(object):
     
@@ -89,13 +93,17 @@ class Generators(object):
             suffix = "cpp"
         self._compiled = False
         self._linked = False
+        self._archived = False
         self.conf = conf
         self.destination = destination
+        self.library = "%s%s" % (destination, config.SHARED_LIBRARY_SUFFIX)
+        self.archive = "%s%s" % (destination, config.STATIC_LIBRARY_SUFFIX)
         self.directory = directory
         self.suffix = suffix
         self.sources = []
         self.prelink = []
-        self.result = tuple()
+        self.link_result = tuple()
+        self.archive_result = tuple()
         for path, dirs, files in os.walk(self.directory,
                                          followlinks=True):
             for df in files:
@@ -111,6 +119,10 @@ class Generators(object):
     @property
     def linked(self):
         return self._linked
+    
+    @property
+    def archived(self):
+        return self._archived
     
     def compile_all(self):
         if len(self.sources) < 1:
@@ -130,24 +142,46 @@ class Generators(object):
             raise LinkerError("can't link before compilation: %s" % self.directory)
         if len(self.prelink) < 1:
             raise LinkerError("no files available for linker: %s" % self.directory)
-        if os.path.exists(self.destination):
-            raise LinkerError("can't overwrite linker output: %s" % self.destination)
-        self.result += config.LD(self.conf,
-                                 self.destination,
-                                *self.prelink, verbose=VERBOSE)
+        if os.path.exists(self.library):
+            raise LinkerError("can't overwrite linker output: %s" % self.library)
+        self.link_result += config.LD(self.conf,
+                                      self.library,
+                                     *self.prelink, verbose=VERBOSE)
+    
+    def arch(self):
+        if not self.compiled:
+            raise ArchiverError("can't archive before compilation: %s" % self.directory)
+        if len(self.prelink) < 1:
+            raise ArchiverError("no files available for archiver: %s" % self.directory)
+        if os.path.exists(self.archive):
+            raise ArchiverError("can't overwrite archiver output: %s" % self.archive)
+        self.archive_result += config.AR(self.conf,
+                                         self.archive,
+                                        *self.prelink, verbose=VERBOSE)
     
     def clear(self):
         for of in self.prelink:
             os.unlink(of)
     
     def __enter__(self):
+        # 1: COMPILE ALL THE THINGS
         self.compile_all()
+        
+        # 2: link dynamically
         self.link()
-        if len(self.result) > 0:
-            if len(self.result[1]) > 0:
+        if len(self.link_result) > 0:
+            if len(self.link_result[1]) > 0:
                 # failure
-                raise LinkerError(self.result[1])
-            self._linked = os.path.exists(self.destination)
+                raise LinkerError(self.link_result[1])
+            self._linked = os.path.exists(self.library)
+        
+        # 3: link statically (née 'archive')
+        self.arch()
+        if len(self.archive_result) > 0:
+            if len(self.archive_result[1]) > 0:
+                # failure
+                raise ArchiverError(self.archive_result[1])
+            self._archived = os.path.exists(self.archive)
         return self
     
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -157,12 +191,17 @@ class Generators(object):
 if __name__ == '__main__':
     
     directory = "/Users/fish/Dropbox/halogen/generators"
-    outshared = "/tmp/yodogg.dylib"
+    destination = "/tmp/yodogg"
     
-    if os.path.isfile(outshared):
-        os.unlink(outshared)
+    library = "%s%s" % (destination, config.SHARED_LIBRARY_SUFFIX)
+    archive = "%s%s" % (destination, config.STATIC_LIBRARY_SUFFIX)
+    if os.path.isfile(library):
+        os.unlink(library)
+    if os.path.isfile(archive):
+        os.unlink(archive)
     
-    with Generators(CONF, outshared, directory) as gens:
+    with Generators(CONF, destination, directory) as gens:
         print("IS IT COMPILED? -- %s" % gens.compiled and "YES" or "no")
-        print("IS IT LINKED? -- %s" % gens.compiled and "YES" or "no")
+        print("IS IT LINKED? -- %s" % gens.linked and "YES" or "no")
+        print("IS IT ARCHIVED? -- %s" % gens.archived and "YES" or "no")
 
