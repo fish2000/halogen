@@ -87,7 +87,7 @@ class TemporaryName(object):
     
     def copy(self, destination):
         if self.exists:
-            return shutil.copyfile(self.name, destination)
+            return shutil.copy2(self.name, destination)
         return False
     
     def do_not_destroy(self):

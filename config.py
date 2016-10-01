@@ -361,7 +361,7 @@ if __name__ == '__main__':
             print(output[1], file=sys.stderr)
             if os.path.exists(adotout):
                 # another = os.path.basename(mktemp(suffix=".cpp.o", prefix=px))
-                # shutil.copyfile(adotout, "/tmp/%s" % another)
+                # shutil.copy2(adotout, "/tmp/%s" % another)
                 os.unlink(adotout)
             else:
                 print("... BUT THEN WHERE THE FUCK IS MY SHIT?!?!")

@@ -69,7 +69,7 @@ class Generator(object):
             if len(self.result[1]) > 0:
                 # failure
                 raise CompilerError(self.result[1])
-            shutil.copyfile(self.transient, self.destination)
+            shutil.copy2(self.transient, self.destination)
             self._compiled = os.path.exists(self.destination)
         return self
     
