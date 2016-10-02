@@ -109,3 +109,4 @@ class TemporaryName(object):
                     subdirs.extend([os.path.join(path, td) for td in dirs])
                 for subdir in subdirs:
                     os.rmdir(subdir)
+
