@@ -40,30 +40,31 @@ PDFs about AVX2 intrinsics (or someshit) and then spend an evening pulling
 your hair out while sqinting at debug traces as your friends had a great time
 watching football and/or fornicating! Nice!
 
+```c++
+#include "Halide.h"
+#include <stdio.h>
 
-    #include "Halide.h"
-    #include <stdio.h>
+using namespace Halide;
+
+class MyFirstGenerator : public Halide::Generator<MyFirstGenerator> {
     
-    using namespace Halide;
-    
-    class MyFirstGenerator : public Halide::Generator<MyFirstGenerator> {
+    public:
         
-        public:
-            
-            Param<uint8_t>  offset{ "offset" };
-            ImageParam      input{  UInt(8), 2, "input" };
-            Var x, y;
-            
-            Func build() {
-                Func brighter;
-                brighter(x, y) = input(x, y) + offset;
-                brighter.vectorize(x, 16).parallel(y);
-                return brighter;
-            }
+        Param<uint8_t>  offset{ "offset" };
+        ImageParam      input{  UInt(8), 2, "input" };
+        Var x, y;
         
-    };
+        Func build() {
+            Func brighter;
+            brighter(x, y) = input(x, y) + offset;
+            brighter.vectorize(x, 16).parallel(y);
+            return brighter;
+        }
     
-    RegisterGenerator<MyFirstGenerator> my_first_generator{ "my_first_generator" };
+};
+
+RegisterGenerator<MyFirstGenerator> my_first_generator{ "my_first_generator" };
+```
 
 _Figure 1: Example Halide Generator._
 
