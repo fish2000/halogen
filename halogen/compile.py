@@ -41,6 +41,8 @@ class Generator(object):
         self.destination = destination
         self.source = os.path.realpath(source)
         self.result = tuple()
+        if VERBOSE:
+            print("Compiling generator: %s\n" % self.source)
     
     def compile(self):
         if not self._compiled:
@@ -107,6 +109,8 @@ class Generators(object):
         self.prelink = []
         self.link_result = tuple()
         self.archive_result = tuple()
+        if VERBOSE:
+            print(u"Scanning %s for “%s” files" % (self.directory, self.suffix))
         for path, dirs, files in os.walk(self.directory,
                                          followlinks=True):
             for df in files:
@@ -114,6 +118,8 @@ class Generators(object):
                     self.sources.append(
                         os.path.realpath(
                             os.path.join(path, df)))
+        if VERBOSE:
+            print("Found %s generator sources\n" % len(self.sources))
     
     @property
     def compiled(self):
@@ -172,6 +178,9 @@ class Generators(object):
         
         # 2: link dynamically
         if self.do_shared:
+            if VERBOSE:
+                print("Linking %s generators as %s\n" % (len(self.prelink),
+                                                         os.path.basename(self.library)))
             self.link()
             if len(self.link_result) > 0:
                 if len(self.link_result[1]) > 0:
@@ -181,6 +190,9 @@ class Generators(object):
         
         # 3: link statically (née 'archive')
         if self.do_static:
+            if VERBOSE:
+                print("Archiving %s generators as %s\n" % (len(self.prelink),
+                                                           os.path.basename(self.archive)))
             self.arch()
             if len(self.archive_result) > 0:
                 if len(self.archive_result[1]) > 0:

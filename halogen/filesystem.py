@@ -41,7 +41,7 @@ def back_tick(cmd, ret_err=False, as_str=True, raise_err=None, verbose=False):
     retcode = proc.returncode
     cmd_str = ' '.join(cmd) if cmd_is_seq else cmd
     if verbose:
-        print("EXECUTING: `%s`" % cmd_str)
+        print("EXECUTING: `%s`\n" % cmd_str)
     if retcode is None:
         proc.terminate()
         raise RuntimeError(cmd_str + ' process did not terminate')

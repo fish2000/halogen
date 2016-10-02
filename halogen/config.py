@@ -162,8 +162,7 @@ class BrewedConfig(object):
     
     cflags = set(["-funroll-loops",
                   "-mtune=native",
-                  "-std=c++1z",
-                  "-stdlib=libc++"])
+                  "-O3"])
     
     def __init__(self, brew_name=None):
         if not brew_name:
@@ -207,7 +206,9 @@ class BrewedConfig(object):
 class BrewedHalideConfig(BrewedConfig):
     
     library = "Halide"
-    cflags = set(["-fno-rtti"]) | BrewedConfig.cflags
+    cflags = set(["-fno-rtti",
+                  "-std=c++1z",
+                  "-stdlib=libc++"]) | BrewedConfig.cflags
     
     def __init__(self):
         super(BrewedHalideConfig, self).__init__(brew_name=self.library.lower())
@@ -222,6 +223,7 @@ class BrewedHalideConfig(BrewedConfig):
 class ConfigUnion(object):
     
     """ WTF HAX """
+    TOKEN = ' -'
     
     def __init__(self, *configs):
         self.configs = list(configs)
@@ -229,26 +231,26 @@ class ConfigUnion(object):
     def get_includes(self):
         out = set()
         for config in self.configs:
-            out |= set((" %s" % config.get_includes()).split(' -'))
-        return (" -".join(sorted([flag.strip() for flag in out]))).strip()
+            out |= set((" %s" % config.get_includes()).split(self.TOKEN))
+        return (self.TOKEN.join(sorted([flag.strip() for flag in out]))).strip()
     
     def get_libs(self):
         out = set()
         for config in self.configs:
-            out |= set((" %s" % config.get_libs()).split(' -'))
-        return (" -".join(sorted([flag.strip() for flag in out]))).strip()
+            out |= set((" %s" % config.get_libs()).split(self.TOKEN))
+        return (self.TOKEN.join(sorted([flag.strip() for flag in out]))).strip()
     
     def get_cflags(self):
         out = set()
         for config in self.configs:
-            out |= set((" %s" % config.get_cflags()).split(' -'))
-        return (" -".join(sorted([flag.strip() for flag in out]))).strip()
+            out |= set((" %s" % config.get_cflags()).split(self.TOKEN))
+        return (self.TOKEN.join(sorted([flag.strip() for flag in out]))).strip()
     
     def get_ldflags(self):
         out = set()
         for config in self.configs:
-            out |= set((" %s" % config.get_ldflags()).split(' -'))
-        return (" -".join(sorted([flag.strip() for flag in out]))).strip()
+            out |= set((" %s" % config.get_ldflags()).split(self.TOKEN))
+        return (self.TOKEN.join(sorted([flag.strip() for flag in out]))).strip()
 
 
 def CC(conf, outfile, infile, verbose=False):

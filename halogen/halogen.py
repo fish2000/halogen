@@ -6,8 +6,8 @@
 #       Run a Halide generator as part of a build system
 #       (c) 2016 Alexander Bohn, All Rights Reserved
 #
-
 from __future__ import print_function
+
 import os, sys, re
 from os.path import basename, dirname
 from docopt import docopt
