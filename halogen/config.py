@@ -111,48 +111,51 @@ class BrewedPythonConfig(PythonConfig):
         return super(BrewedPythonConfig, self).get_ldflags()
 
 
+def environ_override(name):
+    return os.environ.get(name, sysconfig.get_config_var(name) or '')
+
 class SysConfig(PythonConfig):
     
     def __init__(self):
-        self.prefix = sysconfig.get_path("data").strip()
+        self.prefix = sysconfig.get_path("data")
     
     def bin(self):
-        return sysconfig.get_path("scripts").strip()
+        return sysconfig.get_path("scripts")
     
     def include(self):
-        return sysconfig.get_path("include").strip()
+        return sysconfig.get_path("include")
     
     def lib(self):
-        return sysconfig.get_config_var('LIBDIR').strip()
+        return environ_override('LIBDIR')
     
     def Frameworks(self):
-        return sysconfig.get_config_var('PYTHONFRAMEWORKPREFIX').strip()
+        return environ_override('PYTHONFRAMEWORKPREFIX')
     
     def Headers(self):
         return os.path.join(
-            sysconfig.get_config_var('PYTHONFRAMEWORKINSTALLDIR'),
+            environ_override('PYTHONFRAMEWORKINSTALLDIR'),
             'Headers')
     
     def Resources(self):
         return os.path.join(
-            sysconfig.get_config_var('PYTHONFRAMEWORKINSTALLDIR'),
+            environ_override('PYTHONFRAMEWORKINSTALLDIR'),
             'Resources')
     
     def get_includes(self):
-        return "-I%s" % self.include().strip()
+        return "-I%s" % self.include()
     
     def get_libs(self):
-        return "-l%s %s" % (self.library_name, " ".join(
-                            sysconfig.get_config_var('LIBS').split()))
+        return "-l%s %s" % (self.library_name,
+                            environ_override('LIBS'))
     
     def get_cflags(self):
-        return "-I%s %s" % (self.include().strip(),
-                            sysconfig.get_config_var('CFLAGS'))
+        return "-I%s %s" % (self.include(),
+                            environ_override('CFLAGS'))
     
     def get_ldflags(self):
-        return "-L%s -l%s %s" % (sysconfig.get_config_var('LIBPL').strip(),
-                                 self.library_name, " ".join(
-                                 sysconfig.get_config_var('LIBS').split()))
+        return "-L%s -l%s %s" % (environ_override('LIBPL'),
+                                 self.library_name,
+                                 environ_override('LIBS'))
 
 
 class BrewedConfig(object):
@@ -160,9 +163,9 @@ class BrewedConfig(object):
     brew = 'brew'
     prefix = '/usr/local'
     
-    cflags = set(["-funroll-loops",
-                  "-mtune=native",
-                  "-O3"])
+    cflags = frozenset(("-funroll-loops",
+                        "-mtune=native",
+                        "-O3"))
     
     def __init__(self, brew_name=None):
         if not brew_name:
@@ -191,24 +194,24 @@ class BrewedConfig(object):
         return self.subdirectory("share")
     
     def get_includes(self):
-        return "-I%s" % self.include().strip()
+        return "-I%s" % self.include()
     
     def get_libs(self):
         return ""
     
     def get_cflags(self):
-        return "-I%s %s" % (self.include().strip(), " ".join(self.cflags))
+        return "-I%s %s" % (self.include(), " ".join(self.cflags))
     
     def get_ldflags(self):
-        return "-L%s" % self.lib().strip()
+        return "-L%s" % self.lib()
 
 
 class BrewedHalideConfig(BrewedConfig):
     
     library = "Halide"
-    cflags = set(["-fno-rtti",
-                  "-std=c++1z",
-                  "-stdlib=libc++"]) | BrewedConfig.cflags
+    cflags = frozenset(("-fno-rtti",
+                        "-std=c++1z",
+                        "-stdlib=libc++")) | BrewedConfig.cflags
     
     def __init__(self):
         super(BrewedHalideConfig, self).__init__(brew_name=self.library.lower())
@@ -217,7 +220,7 @@ class BrewedHalideConfig(BrewedConfig):
         return "-l%s" % self.library
     
     def get_ldflags(self):
-        return "-L%s -l%s" % (self.lib().strip(), self.library)
+        return "-L%s -l%s" % (self.lib(), self.library)
 
 
 class ConfigUnion(object):
@@ -254,17 +257,17 @@ class ConfigUnion(object):
 
 
 def CC(conf, outfile, infile, verbose=False):
-    return back_tick("%s %s -c %s -o %s" % (sysconfig.get_config_var('CC'),
+    return back_tick("%s %s -c %s -o %s" % (environ_override('CC'),
                                             conf.get_cflags(),
                                             infile, outfile), ret_err=True, verbose=verbose)
 
 def CXX(conf, outfile, infile, verbose=False):
-    return back_tick("%s %s -c %s -o %s" % (sysconfig.get_config_var('CXX'),
+    return back_tick("%s %s -c %s -o %s" % (environ_override('CXX'),
                                             conf.get_cflags(),
                                             infile, outfile), ret_err=True, verbose=verbose)
 
 def LD(conf, outfile, *infiles, **kwargs):
-    return back_tick("%s %s %s -o %s" % (sysconfig.get_config_var('LDCXXSHARED'),
+    return back_tick("%s %s %s -o %s" % (environ_override('LDCXXSHARED'),
                                          conf.get_ldflags(),
                                          " ".join(infiles), outfile), ret_err=True,
                                                                       verbose=kwargs.pop('verbose', False))
@@ -275,8 +278,8 @@ def AR(conf, outfile, *infiles, **kwargs):
     #   b) it has to manually amend 'ARFLAGS' it would seem
     #       b)[1] ... most configuration-getting pc-configgish flag tools
     #                 could not give less fucks about 'ARFLAGS', and so.
-    return back_tick("%s %s %s %s" % (sysconfig.get_config_var('AR'),
-                                      "%ss" % sysconfig.get_config_var('ARFLAGS'),
+    return back_tick("%s %s %s %s" % (environ_override('AR'),
+                                      "%ss" % environ_override('ARFLAGS'),
                                       outfile, " ".join(infiles)), ret_err=True,
                                                                    verbose=kwargs.pop('verbose', False))
 
