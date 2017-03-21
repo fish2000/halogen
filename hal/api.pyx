@@ -1,6 +1,8 @@
+#!/usr/bin/env cython
 # distutils: language = c++
 cimport cython
 from cython.operator cimport dereference as deref
+from cython.operator cimport address as addr
 
 from libc.stdint cimport *
 from libcpp.string cimport string
@@ -13,6 +15,8 @@ from module cimport LinkageType
 
 from generator cimport stringmap_t, base_ptr_t
 from generator cimport GeneratorBase, GeneratorRegistry
+from generator cimport GeneratorContext, JITGeneratorContext
+from generator cimport generator_registry_get, generator_registry_create
 
 from type cimport Type as HalType
 from type cimport Int as Type_Int
@@ -278,6 +282,13 @@ cdef class Target:
     @cython.embedsignature(True)
     def __str__(Target self):
         return self.__this__.to_string()
+    
+    # @cython.embedsignature(True)
+    # cdef HalTarget& wrapped_struct(Target self):
+    #    return self.__this__
+    
+    # cdef JITGeneratorContext get_context(Target self):
+    #     return JITGeneratorContext(self.__this__)
 
 
 cdef class Outputs:
@@ -512,8 +523,8 @@ cdef class EmitOptions:
                 self.__this__.emit_stmt = arg.emit_stmt
                 self.__this__.emit_stmt_html = arg.emit_stmt_html
                 self.__this__.emit_static_library = arg.emit_static_library
-                for k, v in arg.extensions.items():
-                    self.__this__.extensions[k] = v
+                for k, v in arg.substitutions.items():
+                    self.__this__.substitutions[k] = v
                 return
         
         emit_o = bool(kwargs.pop('emit_o',                  self.emit_defaults['emit_o']))
@@ -525,10 +536,10 @@ cdef class EmitOptions:
         emit_stmt_html = bool(kwargs.pop('emit_stmt_html',  self.emit_defaults['emit_stmt_html']))
         emit_static_library = bool(kwargs.pop('emit_static_library',
                                                             self.emit_defaults['emit_static_library']))
-        extensions = kwargs.pop('extensions',               {})
+        substitutions = kwargs.pop('substitutions',         {})
         
-        if not PyMapping_Check(extensions):
-            raise ValueError("extensions must be a mapping type")
+        if not PyMapping_Check(substitutions):
+            raise ValueError("substitutions must be a mapping type")
         
         self.__this__.emit_o = <bint>emit_o
         self.__this__.emit_h = <bint>emit_h
@@ -539,8 +550,8 @@ cdef class EmitOptions:
         self.__this__.emit_stmt_html = <bint>emit_stmt_html
         self.__this__.emit_static_library = <bint>emit_static_library
         
-        for k, v in extensions.items():
-            self.__this__.extensions[k] = v
+        for k, v in substitutions.items():
+            self.__this__.substitutions[k] = v
     
     property emit_o:
         def __get__(EmitOptions self):
@@ -590,19 +601,19 @@ cdef class EmitOptions:
         def __set__(EmitOptions self, value):
             self.__this__.emit_static_library = <bint>value
     
-    property extensions:
+    property substitutions:
         def __get__(EmitOptions self):
-            return dict(self.__this__.extensions)
+            return dict(self.__this__.substitutions)
         def __set__(EmitOptions self, value):
             if not PyMapping_Check(value):
-                raise ValueError("extensions must be a mapping type")
-            self.__this__.extensions = stringmap_t()
+                raise ValueError("substitutions must be a mapping type")
+            self.__this__.substitutions = stringmap_t()
             for k, v in dict(value).items():
-                self.__this__.extensions[k] = v
+                self.__this__.substitutions[k] = v
     
     @cython.embedsignature(True)
-    def get_extension(EmitOptions self, string default):
-        return dict(self.__this__.extensions).get(default, default)
+    def get_substitution(EmitOptions self, string default):
+        return dict(self.__this__.substitutions).get(default, default)
     
     @cython.embedsignature(True)
     def compute_outputs_for_target_and_path(EmitOptions self, Target t, string base_path):
@@ -629,31 +640,31 @@ cdef class EmitOptions:
         
         if self.emit_o:
             if t.arch == pnacl:
-                output_files.object_name = base_path_str + self.get_extension(".bc")
+                output_files.object_name = base_path_str + self.get_substitution(".bc")
             elif is_windows_coff:
-                output_files.object_name = base_path_str + self.get_extension(".obj")
+                output_files.object_name = base_path_str + self.get_substitution(".obj")
             else:
-                output_files.object_name = base_path_str + self.get_extension(".o")
+                output_files.object_name = base_path_str + self.get_substitution(".o")
         
         if self.emit_assembly:
-            output_files.assembly_name = base_path_str + self.get_extension(".s")
+            output_files.assembly_name = base_path_str + self.get_substitution(".s")
         
         if self.emit_bitcode:
-            output_files.bitcode_name = base_path_str + self.get_extension(".bc")
+            output_files.bitcode_name = base_path_str + self.get_substitution(".bc")
         if self.emit_h:
-            output_files.c_header_name = base_path_str + self.get_extension(".h")
+            output_files.c_header_name = base_path_str + self.get_substitution(".h")
         if self.emit_cpp:
-            output_files.c_source_name = base_path_str + self.get_extension(".cpp")
+            output_files.c_source_name = base_path_str + self.get_substitution(".cpp")
         if self.emit_stmt:
-            output_files.stmt_name = base_path_str + self.get_extension(".stmt")
+            output_files.stmt_name = base_path_str + self.get_substitution(".stmt")
         if self.emit_stmt_html:
-            output_files.stmt_html_name = base_path_str + self.get_extension(".html")
+            output_files.stmt_html_name = base_path_str + self.get_substitution(".html")
         
         if self.emit_static_library:
             if is_windows_coff:
-                output_files.static_library_name = base_path_str + self.get_extension(".lib")
+                output_files.static_library_name = base_path_str + self.get_substitution(".lib")
             else:
-                output_files.static_library_name = base_path_str + self.get_extension(".a")
+                output_files.static_library_name = base_path_str + self.get_substitution(".a")
         
         return output_files
 
@@ -784,11 +795,20 @@ def get_generator_module(string& name, dict arguments not None):
     cdef base_ptr_t generator_instance
     out = Module(name=name)
     generator_instance.reset(NULL)
+    # cdef unique_ptr[JITGeneratorContext] context
+    # cdef JITGeneratorContext* context = new JITGeneratorContext(HalTarget())
+    # context.reset(new JITGeneratorContext(HalTarget()))
+    t = arguments.get('target', Target())
+    # HalTarget* ht = addr(<HalTarget>target.wrapped_struct())
+    # JITGeneratorContext context = Target().get_context()
+    # <HalTarget>deref(ht)
+    cdef unique_ptr[HalTarget] ht
+    ht.reset(new HalTarget(t.to_string()))
     
     for k, v in arguments.items():
         argmap[<string>k] = <string>v
     
-    generator_instance = GeneratorRegistry.create(name, argmap)
+    generator_instance = generator_registry_get(name, deref(ht), argmap)
     out.replace_instance(<HalModule>deref(generator_instance).build_module(name, <LinkageType>0))
     return out
 

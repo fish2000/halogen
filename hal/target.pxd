@@ -4,6 +4,24 @@ from libcpp.string cimport string
 from libcpp.vector cimport vector
 from type cimport Type
 
+cdef extern from "Halide.h" namespace "Halide::Internal" nogil:
+    
+    cdef cppclass DeviceAPI:
+        pass
+
+cdef extern from "Halide.h" namespace "Halide::Internal::DeviceAPI" nogil:
+    
+    cdef DeviceAPI None
+    cdef DeviceAPI Host
+    cdef DeviceAPI Default_GPU
+    cdef DeviceAPI CUDA
+    cdef DeviceAPI OpenCL
+    cdef DeviceAPI GLSL
+    cdef DeviceAPI OpenGLCompute
+    cdef DeviceAPI Metal
+    cdef DeviceAPI Hexagon
+    
+
 cdef extern from "Halide.h" namespace "Halide::Target" nogil:
     
     # THIS IS NOT TOWARD
@@ -15,7 +33,6 @@ cdef extern from "Halide.h" namespace "Halide::Target" nogil:
         OSX
         Android
         IOS
-        NaCl
         QuRT
         NoOS
     
@@ -23,7 +40,6 @@ cdef extern from "Halide.h" namespace "Halide::Target" nogil:
         ArchUnknown
         X86
         ARM
-        PNaCl
         MIPS
         Hexagon
         POWERPC
@@ -52,9 +68,7 @@ cdef extern from "Halide.h" namespace "Halide::Target" nogil:
         CLDoubles
         OpenGL
         OpenGLCompute
-        Renderscript
         UserContext
-        RegisterMetadata
         Matlab
         Profile
         NoRuntime
@@ -65,6 +79,14 @@ cdef extern from "Halide.h" namespace "Halide::Target" nogil:
         HVX_64
         HVX_128
         HVX_v62
+        HVX_shared_object
+        FuzzFloatStores
+        SoftFloatABI
+        MSAN
+        AVX512
+        AVX512_KNL
+        AVX512_Skylake
+        AVX512_Cannonlake
         FeatureEnd
 
 ctypedef vector[Feature] featurevec_t
@@ -112,5 +134,7 @@ cdef extern from "Halide.h" namespace "Halide" nogil:
     Target get_host_target()
     Target get_target_from_environment()
     Target get_jit_target_from_environment()
+    
+    Feature target_feature_for_device_api(DeviceAPI)
     
     # Target.Feature target_feature_for_device_api(DeviceAPI api)

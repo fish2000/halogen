@@ -8,8 +8,19 @@ from target cimport Target
 from type cimport Type
 from module cimport Module, LinkageType
 
+cdef extern from "Halide.h" namespace "Halide" nogil:
+    
+    cppclass LoopLevel:
+        # string func_name
+        # string var_name
+        # bint is_rvar
+        # LoopLevel(string&, string&, bint)
+        LoopLevel()
+
+
 ctypedef vector[string]                 stringvec_t
 ctypedef std_map[string, string]        stringmap_t
+ctypedef std_map[string, LoopLevel]     llevelmap_t
 
 cdef extern from "Halide.h" namespace "Halide::Internal" nogil:
     
@@ -18,8 +29,14 @@ cdef extern from "Halide.h" namespace "Halide::Internal" nogil:
         GeneratorParamBase(string&)
         GeneratorParamBase(GeneratorParamBase&)
 
-
 cdef extern from "Halide.h" namespace "Halide" nogil:
+    
+    cppclass GeneratorContext:
+        Target get_target()
+    
+    cppclass JITGeneratorContext:
+        JITGeneratorContext(Target&)
+        Target get_target()
     
     cppclass GeneratorParam[T](GeneratorParamBase):
         GeneratorParam(string&, T&)
@@ -37,7 +54,7 @@ cdef extern from "Halide.h" namespace "Halide::Internal" nogil:
     
     ctypedef stringmap_t GeneratorParamValues
     
-    cppclass GeneratorBase(NamesInterface):
+    cppclass GeneratorBase(NamesInterface, GeneratorContext):
         targetparam_t target
         
         cppclass EmitOptions:
@@ -49,15 +66,27 @@ cdef extern from "Halide.h" namespace "Halide::Internal" nogil:
             bint emit_stmt
             bint emit_stmt_html
             bint emit_static_library
-            stringmap_t extensions
+            bint emit_cpp_stub
+            stringmap_t substitutions
             EmitOptions()
         
         Target get_target()
-        GeneratorParamValues get_generator_param_values()
-        void set_generator_param_values(GeneratorParamValues&)
+        
+        # GeneratorParamValues get_generator_param_values()
+        #void set_generator_param_values(GeneratorParamValues&)
+        void set_generator_param(string&, string&)
+        void set_generator_param_values(stringmap_t&)
+        
+        GeneratorBase& set_generator_param[T](string&, T&)
+        GeneratorBase& set_schedule_param[T](string&, T&)
+        
+        void set_schedule_param_values(stringmap_t&, llevelmap_t&)
         int natural_vector_size(Type)
         # int natural_vector_size[T]()
-        void emit_filter(string&, string&, string&, EmitOptions&)
+        
+        void emit_cpp_stub(string&)
+        # void emit_filter(string&, string&, string&, EmitOptions&)
+        
         Module build_module(string&, LinkageType)
     
     cppclass GeneratorFactory:
@@ -81,7 +110,7 @@ cdef extern from "Halide.h" namespace "Halide::Internal" nogil:
         stringvec_t enumerate()
         
         @staticmethod
-        base_ptr_t create(string&, GeneratorParamValues&)
+        base_ptr_t create(string&, JITGeneratorContext&, stringmap_t&)
 
 
 cdef extern from "Halide.h" namespace "Halide" nogil:
@@ -92,4 +121,11 @@ cdef extern from "Halide.h" namespace "Halide" nogil:
     cppclass RegisterGenerator[T]:
         RegisterGenerator(string&)
 
+cdef inline base_ptr_t generator_registry_get(string& name,
+                                              Target& target,
+                                              stringmap_t& args):
+    return GeneratorRegistry.create(name, JITGeneratorContext(target), args)
 
+cdef inline base_ptr_t generator_registry_create(string& name):
+    cdef Target t
+    return GeneratorRegistry.create(name, JITGeneratorContext(t), stringmap_t())

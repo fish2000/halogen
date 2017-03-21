@@ -3,6 +3,7 @@ from distutils.core import setup
 from Cython.Distutils import Extension
 from Cython.Build import cythonize
 
+# api_extension_sources = ['hal/api.pyx', 'generators/lesson_15_generators.cpp', 'generators/lesson_16_rgb_generate.cpp']
 api_extension_sources = ['hal/api.pyx']
 
 setup(
