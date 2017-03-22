@@ -35,6 +35,7 @@ from ext.halide.target cimport get_host_target as halide_get_host_target
 from ext.halide.target cimport get_target_from_environment as halide_get_target_from_environment
 from ext.halide.target cimport get_jit_target_from_environment as halide_get_jit_target_from_environment
 from ext.halide.target cimport target_ptr_t
+cimport ext.halide.target as target
 
 from ext.halide.util cimport stringvec_t
 from ext.halide.util cimport extract_namespaces
@@ -639,18 +640,20 @@ cdef class EmitOptions:
     
     @cython.embedsignature(True)
     def compute_outputs_for_target_and_path(EmitOptions self, Target t, string base_path):
-        cdef OS windows = <OS>2
-        cdef Feature mingw = <Feature>30
-        cdef Arch pnacl = <Arch>3
-        
-        is_windows_coff = bool(t.os == <int>windows and not t.has_feature(haldol.integral(<Py_ssize_t>mingw)))
+        """ A reimplementation of `compute_outputs()`, private to Halide’s Generator.cpp """
+        # This is a reimplementation of the C++ orig --
+        # there used to be some checking here for PNaCl, but all the PNaCl-specific values
+        # seem to have disappeared from the Halide::Target enums. I don’t give much of a
+        # whole fuck about PNaCl, personally, so if you do and this behavior is wrong,
+        # you should explain how the wrongness works to me (preferably with a scathingly
+        # witty tweet that embarasses me in front of all my friends and the greater C++,
+        # Cythoin, and Halide communities in general).
+        is_windows_coff = bool(t.os == target.Windows and not t.has_feature(target.MinGW))
         base_path_str = str(base_path)
         output_files = Outputs()
         
         if self.emit_o:
-            if t.arch == <int>pnacl:
-                output_files.object_name = base_path_str + self.get_substitution(".bc")
-            elif is_windows_coff:
+            if is_windows_coff:
                 output_files.object_name = base_path_str + self.get_substitution(".obj")
             else:
                 output_files.object_name = base_path_str + self.get_substitution(".o")
