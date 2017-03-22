@@ -20,74 +20,83 @@ cdef extern from "Halide.h" namespace "Halide::Internal::DeviceAPI" nogil:
     cdef DeviceAPI OpenGLCompute
     cdef DeviceAPI Metal
     cdef DeviceAPI Hexagon
-    
 
 cdef extern from "Halide.h" namespace "Halide::Target" nogil:
     
-    # THIS IS NOT TOWARD
+    cdef cppclass OS:
+        pass
     
-    ctypedef enum OS:
-        OSUnknown
-        Linux
-        Windows
-        OSX
-        Android
-        IOS
-        QuRT
-        NoOS
+    cdef cppclass Arch:
+        pass
     
-    ctypedef enum Arch:
-        ArchUnknown
-        X86
-        ARM
-        MIPS
-        Hexagon
-        POWERPC
+    cdef cppclass Feature:
+        pass
+
+cdef extern from "Halide.h" namespace "Halide::Target::OS" nogil:
     
-    ctypedef enum Feature:
-        JIT
-        Debug
-        NoAsserts
-        NoBoundsQuery
-        SSE41
-        AVX
-        AVX2
-        FMA
-        FMA4
-        F16C
-        ARMv7s
-        NoNEON
-        VSX
-        POWER_ARCH_2_07
-        CUDA
-        CUDACapability30
-        CUDACapability32
-        CUDACapability35
-        CUDACapability50
-        OpenCL
-        CLDoubles
-        OpenGL
-        OpenGLCompute
-        UserContext
-        Matlab
-        Profile
-        NoRuntime
-        Metal
-        MinGW
-        CPlusPlusMangling
-        LargeBuffers
-        HVX_64
-        HVX_128
-        HVX_v62
-        HVX_shared_object
-        FuzzFloatStores
-        SoftFloatABI
-        MSAN
-        AVX512
-        AVX512_KNL
-        AVX512_Skylake
-        AVX512_Cannonlake
-        FeatureEnd
+    cdef OS OSUnknown
+    cdef OS Linux
+    cdef OS Windows
+    cdef OS OSX
+    cdef OS Android
+    cdef OS IOS
+    cdef OS QuRT
+    cdef OS NoOS
+
+cdef extern from "Halide.h" namespace "Halide::Target::Arch" nogil:
+    
+    cdef Arch ArchUnknown
+    cdef Arch X86
+    cdef Arch ARM
+    cdef Arch MIPS
+    cdef Arch Hexagon
+    cdef Arch POWERPC
+
+cdef extern from "Halide.h" namespace "Halide::Target::Feature" nogil:
+    
+    cdef Feature JIT
+    cdef Feature Debug
+    cdef Feature NoAsserts
+    cdef Feature NoBoundsQuery
+    cdef Feature SSE41
+    cdef Feature AVX
+    cdef Feature AVX2
+    cdef Feature FMA
+    cdef Feature FMA4
+    cdef Feature F16C
+    cdef Feature ARMv7s
+    cdef Feature NoNEON
+    cdef Feature VSX
+    cdef Feature POWER_ARCH_2_07
+    cdef Feature CUDA
+    cdef Feature CUDACapability30
+    cdef Feature CUDACapability32
+    cdef Feature CUDACapability35
+    cdef Feature CUDACapability50
+    cdef Feature OpenCL
+    cdef Feature CLDoubles
+    cdef Feature OpenGL
+    cdef Feature OpenGLCompute
+    cdef Feature UserContext
+    cdef Feature Matlab
+    cdef Feature Profile
+    cdef Feature NoRuntime
+    cdef Feature Metal
+    cdef Feature MinGW
+    cdef Feature CPlusPlusMangling
+    cdef Feature LargeBuffers
+    cdef Feature HVX_64
+    cdef Feature HVX_128
+    cdef Feature HVX_v62
+    cdef Feature HVX_shared_object
+    cdef Feature FuzzFloatStores
+    cdef Feature SoftFloatABI
+    cdef Feature MSAN
+    cdef Feature AVX512
+    cdef Feature AVX512_KNL
+    cdef Feature AVX512_Skylake
+    cdef Feature AVX512_Cannonlake
+    cdef Feature FeatureEnd
 
 ctypedef vector[Feature] featurevec_t
 

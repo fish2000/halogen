@@ -8,32 +8,36 @@ from libc.stdint cimport *
 from libcpp.string cimport string
 from libcpp.memory cimport unique_ptr
 from cpython.mapping cimport PyMapping_Check
+from cpython.long cimport PyLong_AsLong
 
-from outputs cimport Outputs as HalOutputs
-from module cimport Module as HalModule
-from module cimport LinkageType
+from ext cimport haldol
 
-from generator cimport stringmap_t, base_ptr_t
-from generator cimport GeneratorBase, GeneratorRegistry
-from generator cimport GeneratorContext, JITGeneratorContext
-from generator cimport generator_registry_get, generator_registry_create
+from ext.halide.outputs cimport Outputs as HalOutputs
+from ext.halide.module cimport Module as HalModule
+from ext.halide.module cimport LinkageType
 
-from type cimport Type as HalType
-from type cimport Int as Type_Int
-from type cimport UInt as Type_UInt
-from type cimport Float as Type_Float
-from type cimport Bool as Type_Bool
-from type cimport Handle as Type_Handle
+from ext.halide.generator cimport stringmap_t, base_ptr_t
+from ext.halide.generator cimport GeneratorBase, GeneratorRegistry
+from ext.halide.generator cimport GeneratorContext, JITGeneratorContext
+from ext.halide.generator cimport generator_registry_get, generator_registry_create
 
-cimport target
-from target cimport Target as HalTarget
-from target cimport get_host_target as halide_get_host_target
-from target cimport get_target_from_environment as halide_get_target_from_environment
-from target cimport get_jit_target_from_environment as halide_get_jit_target_from_environment
+from ext.halide.type cimport Type as HalType
+from ext.halide.type cimport Int as Type_Int
+from ext.halide.type cimport UInt as Type_UInt
+from ext.halide.type cimport Float as Type_Float
+from ext.halide.type cimport Bool as Type_Bool
+from ext.halide.type cimport Handle as Type_Handle
 
-from util cimport stringvec_t
-from util cimport extract_namespaces
-from util cimport running_program_name as halide_running_program_name
+#cimport ext.halide.target
+from ext.halide.target cimport OS, Arch, Feature
+from ext.halide.target cimport Target as HalTarget
+from ext.halide.target cimport get_host_target as halide_get_host_target
+from ext.halide.target cimport get_target_from_environment as halide_get_target_from_environment
+from ext.halide.target cimport get_jit_target_from_environment as halide_get_jit_target_from_environment
+
+from ext.halide.util cimport stringvec_t
+from ext.halide.util cimport extract_namespaces
+from ext.halide.util cimport running_program_name as halide_running_program_name
 
 
 @cython.freelist(32)
@@ -227,18 +231,18 @@ cdef class Target:
     property os:
         
         def __get__(Target self):
-            return self.__this__.os
+            return <int>self.__this__.os
             
         def __set__(Target self, value):
-            self.__this__.os = <target.OS>value
+            self.__this__.os = <OS>PyLong_AsLong(value)
         
     property arch:
         
         def __get__(Target self):
-            return self.__this__.arch
+            return <int>self.__this__.arch
         
         def __set__(Target self, value):
-            self.__this__.arch = <target.Arch>value
+            self.__this__.arch = <Arch>PyLong_AsLong(value)
         
     property bits:
         
@@ -246,7 +250,7 @@ cdef class Target:
             return self.__this__.bits
         
         def __set__(Target self, value):
-            self.__this__.bits = <int>value
+            self.__this__.bits = haldol.convert(value)
     
     @cython.embedsignature(True)
     def has_gpu_feature(Target self):
@@ -623,9 +627,9 @@ cdef class EmitOptions:
         # windows = mingw = pnacl = 0
         # cdef Feature mingw = halide_target_feature_t.halide_target_feature_mingw
         
-        cdef target.OS windows = <target.OS>2
-        cdef target.Feature mingw = <target.Feature>30
-        cdef target.Arch pnacl = <target.Arch>3
+        cdef OS windows = <OS>2
+        cdef Feature mingw = <Feature>30
+        cdef Arch pnacl = <Arch>3
         
         # cdef target.OS windows = target.OS.Windows
         # cdef target.Feature mingw = target.Feature.MinGW
@@ -634,12 +638,12 @@ cdef class EmitOptions:
         # cpdef target.Feature mingw = getattr(target.Feature, "MinGW")
         # cpdef target.Arch pnacl = getattr(target.Arch, "PNaCL")
         
-        is_windows_coff = bool(t.os == windows and not t.has_feature(mingw))
+        is_windows_coff = bool(t.os == <int>windows and not t.has_feature(haldol.integral(<Py_ssize_t>mingw)))
         base_path_str = str(base_path)
         output_files = Outputs()
         
         if self.emit_o:
-            if t.arch == pnacl:
+            if t.arch == <int>pnacl:
                 output_files.object_name = base_path_str + self.get_substitution(".bc")
             elif is_windows_coff:
                 output_files.object_name = base_path_str + self.get_substitution(".obj")
