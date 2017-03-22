@@ -2,6 +2,7 @@
 from libc.stdint cimport *
 from libcpp.string cimport string
 from libcpp.vector cimport vector
+from libcpp.memory cimport unique_ptr
 from type cimport Type
 
 cdef extern from "Halide.h" namespace "Halide::Internal" nogil:
@@ -145,3 +146,5 @@ cdef extern from "Halide.h" namespace "Halide" nogil:
     Target get_jit_target_from_environment()
     
     Feature target_feature_for_device_api(DeviceAPI)
+
+ctypedef unique_ptr[Target] target_ptr_t

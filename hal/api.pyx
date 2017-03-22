@@ -34,6 +34,7 @@ from ext.halide.target cimport Target as HalTarget
 from ext.halide.target cimport get_host_target as halide_get_host_target
 from ext.halide.target cimport get_target_from_environment as halide_get_target_from_environment
 from ext.halide.target cimport get_jit_target_from_environment as halide_get_jit_target_from_environment
+from ext.halide.target cimport target_ptr_t
 
 from ext.halide.util cimport stringvec_t
 from ext.halide.util cimport extract_namespaces
@@ -765,7 +766,11 @@ def validate_target_string(string target_string):
 @cython.embedsignature(True)
 def registered_generators():
     """ Enumerate registered generators using Halide::GeneratorRegistry """
-    return tuple(GeneratorRegistry.enumerate())
+    out = tuple()
+    names = tuple(GeneratorRegistry.enumerate())
+    for enumerated_name in names:
+        out += tuple([str(enumerated_name)])
+    return out
 
 cpdef string halide_compute_base_path(string& output_dir,
                                       string& function_name,
@@ -790,21 +795,35 @@ def compute_base_path(string output_dir,
                                     file_base_name)
 
 @cython.embedsignature(True)
-def get_generator_module(string& name, dict arguments not None):
+cpdef Module get_generator_module(string& name, dict arguments={}):
     """ Retrieve a Halide::Module, wrapped as hal.api.Module,
         corresponding to the registered generator instance (by name) """
+    # first, check name against registered generators:
+    if str(name) not in registered_generators():
+        raise ValueError("""can't find a registered generator named "%s" """ % str(name))
+    
+    # stack-allocate a named module (per the `name` argument),
+    # a unique pointer (for holding a Halide::GeneratorBase instance), and
+    # a std::map<std::string, std::string> (to pass along arguments to Halide):
     cdef stringmap_t argmap
     cdef base_ptr_t generator_instance
     out = Module(name=name)
     generator_instance.reset(NULL)
-    t = arguments.get('target', Target())
-    cdef unique_ptr[HalTarget] ht
-    ht.reset(new HalTarget(t.to_string()))
     
+    # Heap-allocate a Target object (from either the environment or
+    # as per the argument dict) held in a unique pointer:
+    t = arguments.get('target', Target.jit_target_from_environment())
+    cdef target_ptr_t generator_target
+    generator_target.reset(new HalTarget(t.to_string()))
+    
+    # Copy arguments from the Python dict to the STL map:
     for k, v in arguments.items():
         argmap[<string>k] = <string>v
     
-    generator_instance = generator_registry_get(name, deref(ht), argmap)
+    # Actually get an instance of the named generator:
+    generator_instance = generator_registry_get(name, deref(generator_target), argmap)
+    
+    # “Modulize” and return the generator instance (which that is a Halide thing, modulization):
     out.replace_instance(<HalModule>deref(generator_instance).build_module(name, <LinkageType>0))
     return out
 
