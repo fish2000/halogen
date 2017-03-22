@@ -7,9 +7,13 @@ from outputs cimport Outputs
 
 cdef extern from "Halide.h" namespace "Halide::Internal::LoweredFunc" nogil:
     
-    cdef enum LinkageType:
-        External
-        Internal
+    cdef cppclass LinkageType:
+        pass
+
+cdef extern from "Halide.h" namespace "Halide::Internal::LoweredFunc::LinkageType" nogil:
+    
+    cdef LinkageType External
+    cdef LinkageType Internal
 
 cdef extern from "Halide.h" namespace "Halide::Internal" nogil:
     

@@ -5,17 +5,19 @@ from cython.operator cimport dereference as deref
 from cython.operator cimport address as addr
 
 from libc.stdint cimport *
+# from libcpp cimport bool
 from libcpp.string cimport string
 from libcpp.memory cimport unique_ptr
 from cpython.mapping cimport PyMapping_Check
 from cpython.long cimport PyLong_AsLong
 
 from ext cimport haldol
-#from ext.haldol.terminal cimport terminal_width
 
 from ext.halide.outputs cimport Outputs as HalOutputs
 from ext.halide.module cimport Module as HalModule
 from ext.halide.module cimport LinkageType
+from ext.halide.module cimport Internal as Linkage_Internal
+from ext.halide.module cimport External as Linkage_External
 
 from ext.halide.generator cimport stringmap_t, base_ptr_t
 from ext.halide.generator cimport GeneratorBase, GeneratorRegistry
@@ -257,6 +259,10 @@ cdef class Target:
     @cython.embedsignature(True)
     def has_gpu_feature(Target self):
         return self.__this__.has_gpu_feature()
+    
+    @cython.embedsignature(True)
+    def has_feature(Target self, f):
+        return self.__this__.has_feature(<Feature>PyLong_AsLong(f))
     
     @cython.embedsignature(True)
     def includes_halide_runtime(Target self):
@@ -642,12 +648,12 @@ cdef class EmitOptions:
     def compute_outputs_for_target_and_path(EmitOptions self, Target t, string base_path):
         """ A reimplementation of `compute_outputs()`, private to Halide’s Generator.cpp """
         # This is a reimplementation of the C++ orig --
-        # there used to be some checking here for PNaCl, but all the PNaCl-specific values
-        # seem to have disappeared from the Halide::Target enums. I don’t give much of a
-        # whole fuck about PNaCl, personally, so if you do and this behavior is wrong,
-        # you should explain how the wrongness works to me (preferably with a scathingly
-        # witty tweet that embarasses me in front of all my friends and the greater C++,
-        # Cythoin, and Halide communities in general).
+        # ... there used to be some checking here for PNaCl, but all the PNaCl-specific values
+        # seem to have vanished from the Halide::Target enums of late. I don’t give much of
+        # a whole fuck about PNaCl, personally, so if you are a shit-gifter and you find this
+        # behavior to be wrong, please do explain how this wrongness works to me (preferably
+        # with a scathingly witty tweet that embarasses me in front of all my friends, and
+        # also the greater C++, Cython, and Halide communities in general).
         is_windows_coff = bool(t.os == target.Windows and not t.has_feature(target.MinGW))
         base_path_str = str(base_path)
         output_files = Outputs()
@@ -827,7 +833,7 @@ cpdef Module get_generator_module(string& name, dict arguments={}):
     generator_instance = generator_registry_get(name, deref(generator_target), argmap)
     
     # “Modulize” and return the generator instance (which that is a Halide thing, modulization):
-    out.replace_instance(<HalModule>deref(generator_instance).build_module(name, <LinkageType>0))
+    out.replace_instance(<HalModule>deref(generator_instance).build_module(name, Linkage_Internal))
     return out
 
 @cython.embedsignature(True)
