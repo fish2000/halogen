@@ -28,7 +28,6 @@ from ext.halide.type cimport Float as Type_Float
 from ext.halide.type cimport Bool as Type_Bool
 from ext.halide.type cimport Handle as Type_Handle
 
-#cimport ext.halide.target
 from ext.halide.target cimport OS, Arch, Feature
 from ext.halide.target cimport Target as HalTarget
 from ext.halide.target cimport get_host_target as halide_get_host_target
@@ -286,13 +285,6 @@ cdef class Target:
     @cython.embedsignature(True)
     def __str__(Target self):
         return self.__this__.to_string()
-    
-    # @cython.embedsignature(True)
-    # cdef HalTarget& wrapped_struct(Target self):
-    #    return self.__this__
-    
-    # cdef JITGeneratorContext get_context(Target self):
-    #     return JITGeneratorContext(self.__this__)
 
 
 cdef class Outputs:
@@ -621,22 +613,9 @@ cdef class EmitOptions:
     
     @cython.embedsignature(True)
     def compute_outputs_for_target_and_path(EmitOptions self, Target t, string base_path):
-        # cdef OS windows = OS['Windows']
-        # cdef Feature mingw = HalFeature.MinGW
-        # cdef Arch pnacl = HalArch.PNaCl
-        # windows = mingw = pnacl = 0
-        # cdef Feature mingw = halide_target_feature_t.halide_target_feature_mingw
-        
         cdef OS windows = <OS>2
         cdef Feature mingw = <Feature>30
         cdef Arch pnacl = <Arch>3
-        
-        # cdef target.OS windows = target.OS.Windows
-        # cdef target.Feature mingw = target.Feature.MinGW
-        # cdef target.Arch pnacl = target.Arch.PNaCL
-        # cpdef target.OS windows = getattr(target.OS, "Windows")
-        # cpdef target.Feature mingw = getattr(target.Feature, "MinGW")
-        # cpdef target.Arch pnacl = getattr(target.Arch, "PNaCL")
         
         is_windows_coff = bool(t.os == <int>windows and not t.has_feature(haldol.integral(<Py_ssize_t>mingw)))
         base_path_str = str(base_path)
@@ -799,13 +778,7 @@ def get_generator_module(string& name, dict arguments not None):
     cdef base_ptr_t generator_instance
     out = Module(name=name)
     generator_instance.reset(NULL)
-    # cdef unique_ptr[JITGeneratorContext] context
-    # cdef JITGeneratorContext* context = new JITGeneratorContext(HalTarget())
-    # context.reset(new JITGeneratorContext(HalTarget()))
     t = arguments.get('target', Target())
-    # HalTarget* ht = addr(<HalTarget>target.wrapped_struct())
-    # JITGeneratorContext context = Target().get_context()
-    # <HalTarget>deref(ht)
     cdef unique_ptr[HalTarget] ht
     ht.reset(new HalTarget(t.to_string()))
     

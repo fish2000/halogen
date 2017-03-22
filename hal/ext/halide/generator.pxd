@@ -4,6 +4,7 @@ from libcpp.map cimport map as std_map
 from libcpp.string cimport string
 from libcpp.vector cimport vector
 from libcpp.memory cimport unique_ptr
+
 from target cimport Target
 from type cimport Type
 from module cimport Module, LinkageType
@@ -72,8 +73,6 @@ cdef extern from "Halide.h" namespace "Halide::Internal" nogil:
         
         Target get_target()
         
-        # GeneratorParamValues get_generator_param_values()
-        #void set_generator_param_values(GeneratorParamValues&)
         void set_generator_param(string&, string&)
         void set_generator_param_values(stringmap_t&)
         

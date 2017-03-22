@@ -129,7 +129,7 @@ cdef extern from "Halide.h" namespace "Halide" nogil:
         Target without_feature(Feature f)
         
         bint supports_type(Type&)
-        # bint supports_device_api(DeviceAPI api)
+        bint supports_device_api(DeviceAPI api)
         
         bint operator==(Target& other)
         bint operator!=(Target& other)
@@ -145,5 +145,3 @@ cdef extern from "Halide.h" namespace "Halide" nogil:
     Target get_jit_target_from_environment()
     
     Feature target_feature_for_device_api(DeviceAPI)
-    
-    # Target.Feature target_feature_for_device_api(DeviceAPI api)

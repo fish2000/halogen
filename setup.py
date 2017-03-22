@@ -31,7 +31,6 @@ api_extension_sources = ['hal/api.pyx']
 haldol_source_names = ('detail.cc', 'gil.cc', 'structcode.cc', 'typecode.cc')
 haldol_sources = [os.path.join('haldol', source) for source in haldol_source_names]
 
-build_with_numpy = False
 include_dirs = [
     get_python_inc(plat_specific=1),
     numpy.get_include(),
@@ -59,6 +58,7 @@ setup(
             '-Wno-unused-function',
             '-Wno-unneeded-internal-declaration',
             '-O3',
+            '-fstrict-aliasing',
             '-fno-rtti',
             '-funroll-loops',
             '-mtune=native',
