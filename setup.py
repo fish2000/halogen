@@ -28,7 +28,7 @@ exec(compile(
 
 # api_extension_sources = ['hal/api.pyx', 'generators/lesson_15_generators.cpp', 'generators/lesson_16_rgb_generate.cpp']
 api_extension_sources = ['hal/api.pyx']
-haldol_source_names = ('detail.cc', 'gil.cc', 'structcode.cc', 'typecode.cc')
+haldol_source_names = ('detail.cc', 'gil.cc', 'structcode.cc', 'terminal.cc', 'typecode.cc')
 haldol_sources = [os.path.join('haldol', source) for source in haldol_source_names]
 
 include_dirs = [
