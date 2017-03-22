@@ -63,7 +63,7 @@ cdef class Type:
         if other is not None:
             self.__this__ = HalType(other.__this__)
     
-    def __init__(Type self, *args, **kwargs):
+    def __cinit__(Type self, *args, **kwargs):
         if len(args) < 1:
             if 'code' in kwargs:
                 self.__this__ = self.__this__.with_code(kwargs.get('code'))
@@ -221,7 +221,7 @@ cdef class Target:
     def validate_target_string(string target_string):
         return HalTarget.validate_target_string(target_string)
     
-    def __init__(Target self, *args, **kwargs):
+    def __cinit__(Target self, *args, **kwargs):
         target_string = ''
         if 'target_string' in kwargs:
             target_string = kwargs.get('target_string')
@@ -231,6 +231,7 @@ cdef class Target:
             if not HalTarget.validate_target_string(target_string):
                 raise ValueError("invalid target string: %s" % target_string)
             self.__this__ = HalTarget(target_string)
+            # INSERT FEATURE CHECK HERE
     
     property os:
         
@@ -702,7 +703,7 @@ cdef class Module:
                 return
         self.__this__.reset(new HalModule("", HalTarget('host')))
     
-    def __init__(Module self, *args, **kwargs):
+    def __cinit__(Module self, *args, **kwargs):
         cdef HalTarget htarg
         if len(args) < 1:
             name = kwargs.get('name', '')
