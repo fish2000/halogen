@@ -285,6 +285,30 @@ cdef class Target:
     @cython.embedsignature(True)
     def __str__(Target self):
         return self.__this__.to_string()
+    
+    @cython.embedsignature(True)
+    @cython.infer_types(True)
+    @staticmethod
+    def host_target(Target self):
+        out = Target()
+        out.__this__ = halide_get_host_target()
+        return out
+    
+    @cython.embedsignature(True)
+    @cython.infer_types(True)
+    @staticmethod
+    def target_from_environment(Target self):
+        out = Target()
+        out.__this__ = halide_get_target_from_environment()
+        return out
+    
+    @cython.embedsignature(True)
+    @cython.infer_types(True)
+    @staticmethod
+    def jit_target_from_environment(Target self):
+        out = Target()
+        out.__this__ = halide_get_jit_target_from_environment()
+        return out
 
 
 cdef class Outputs:
@@ -720,23 +744,17 @@ cdef class Module:
 @cython.embedsignature(True)
 def get_host_target():
     """ Halide::get_host_target() wrapper call """
-    out = Target()
-    out.__this__ = halide_get_host_target()
-    return out
+    return Target.host_target()
 
 @cython.embedsignature(True)
 def get_target_from_environment():
     """ Halide::get_target_from_environment() wrapper call """
-    out = Target()
-    out.__this__ = halide_get_target_from_environment()
-    return out
+    return Target.target_from_environment()
 
 @cython.embedsignature(True)
 def get_jit_target_from_environment():
     """ Halide::get_jit_target_from_environment() wrapper call """
-    out = Target()
-    out.__this__ = halide_get_jit_target_from_environment()
-    return out
+    return Target.jit_target_from_environment()
 
 @cython.embedsignature(True)
 def validate_target_string(string target_string):
