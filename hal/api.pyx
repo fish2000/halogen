@@ -324,13 +324,9 @@ cdef class Target:
     @cython.infer_types(True)
     def __richcmp__(Target self, Target other, int op):
         if op == 2: # ==
-            return (bool(<size_t>self.__this__.os   == <size_t>other.__this__.os) and
-                    bool(<size_t>self.__this__.arch == <size_t>other.__this__.arch) and
-                    bool(<int>self.__this__.bits    == <int>other.__this__.bits))
+            return bool(<HalTarget>self.__this__ == <HalTarget>other.__this__)
         elif op == 3: # !=
-            return (bool(<size_t>self.__this__.os   != <size_t>other.__this__.os) or
-                    bool(<size_t>self.__this__.arch != <size_t>other.__this__.arch) or
-                    bool(<int>self.__this__.bits    != <int>other.__this__.bits))
+            return bool(<HalTarget>self.__this__ != <HalTarget>other.__this__)
         return False
     
     @cython.embedsignature(True)
