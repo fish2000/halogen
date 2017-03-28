@@ -1,11 +1,22 @@
 
 from libc.stdint cimport *
+from libcpp.map cimport map as std_map
 from libcpp.string cimport string
 from libcpp.vector cimport vector
 from runtime cimport halide_type_code_t, halide_type_t
 
 ctypedef vector[string]     stringvec_t
 ctypedef vector[uint8_t]    bytevec_t
+
+cdef extern from "Halide.h" namespace "Halide" nogil:
+    
+    cppclass LoopLevel:
+        # string func_name
+        # string var_name
+        # bint is_rvar
+        # LoopLevel(string&, string&, bint)
+        LoopLevel()
+
 
 cdef extern from "Halide.h" namespace "halide_cplusplus_type_name":
     
@@ -126,4 +137,20 @@ cdef extern from "Halide.h" namespace "Halide" nogil:
     Type Float(int bits, int lanes)
     Type Bool(int lanes)
     Type Handle(int lanes, halide_handle_cplusplus_type* handle_type)
+
+ctypedef std_map[string, LoopLevel]     llevelmap_t
+ctypedef std_map[string, Type]          haltypemap_t
+
+cdef extern from "Halide.h" namespace "Halide::Internal" nogil:
     
+    # These functions, at time of writing, are prototyped out in Generator.h:
+    
+    haltypemap_t& get_halide_type_enum_map()
+    string halide_type_to_enum_string(Type&)
+    
+    LoopLevel get_halide_undefined_looplevel()
+    llevelmap_t& get_halide_looplevel_enum_map()
+    string halide_looplevel_to_enum_string(LoopLevel&)
+    
+    string halide_type_to_c_source(Type&)
+    string halide_type_to_c_type(Type&)

@@ -2,10 +2,8 @@
 # distutils: language = c++
 cimport cython
 from cython.operator cimport dereference as deref
-from cython.operator cimport address as addr
 
 from libc.stdint cimport *
-# from libcpp cimport bool
 from libcpp.string cimport string
 from libcpp.memory cimport unique_ptr
 from cpython.mapping cimport PyMapping_Check
@@ -30,6 +28,9 @@ from ext.halide.type cimport UInt as Type_UInt
 from ext.halide.type cimport Float as Type_Float
 from ext.halide.type cimport Bool as Type_Bool
 from ext.halide.type cimport Handle as Type_Handle
+from ext.halide.type cimport halide_type_to_c_source
+from ext.halide.type cimport halide_type_to_c_type
+from ext.halide.type cimport halide_type_to_enum_string
 
 from ext.halide.target cimport OS, Arch, Feature
 from ext.halide.target cimport Target as HalTarget
@@ -60,17 +61,23 @@ cdef class Type:
         return out
     
     def __cinit__(Type self, Type other=None, **kwargs):
+        # FIRST: examine `other` argument, looking for an existing Type object,
+        # from which we can copy-construct:
         if other is not None:
-            self.__this__ = HalType(other.__this__)
-    
-    def __cinit__(Type self, *args, **kwargs):
-        if len(args) < 1:
-            if 'code' in kwargs:
-                self.__this__ = self.__this__.with_code(kwargs.get('code'))
-            elif 'bits' in kwargs:
-                self.__this__ = self.__this__.with_bits(<uint8_t>kwargs.get('bits'))
-            elif 'lanes' in kwargs:
-                self.__this__ = self.__this__.with_lanes(<uint16_t>kwargs.get('lanes'))
+            if type(other) == type(self):
+                self.__this__ = HalType(other.__this__)
+                return
+        # NEXT, IF THAT DIDN’T WORK: check **kwargs for one of either:
+        # 'code', 'bits', or 'lanes' -- if any one of these is specified,
+        # try to use it to default-ish-construct a new Type with the named
+        # specification. We do it like this because Halide::Type implements these
+        # `with_whatever()` single-argument static construction helper methods:
+        if 'code' in kwargs:
+            self.__this__ = self.__this__.with_code(kwargs.get('code'))
+        elif 'bits' in kwargs:
+            self.__this__ = self.__this__.with_bits(<uint8_t>kwargs.get('bits'))
+        elif 'lanes' in kwargs:
+            self.__this__ = self.__this__.with_lanes(<uint16_t>kwargs.get('lanes'))
     
     @cython.embedsignature(True)
     def code(Type self):
@@ -149,6 +156,7 @@ cdef class Type:
         return out
     
     @cython.embedsignature(True)
+    @cython.infer_types(True)
     def can_represent(Type self, other):
         if type(other) == type(self):
             return self.can_represent_type(other)
@@ -159,14 +167,29 @@ cdef class Type:
             return self.can_represent_long(long(other))
         return False
     
-    def can_represent_type(Type self, Type other):
+    cpdef object can_represent_type(Type self, Type other):
         return self.__this__.can_represent(other.__this__)
     
-    def can_represent_float(Type self, float other):
+    cpdef object can_represent_float(Type self, float other):
         return self.__this__.can_represent(<double>other)
     
-    def can_represent_long(Type self, long other):
+    cpdef object can_represent_long(Type self, long other):
         return self.__this__.can_represent(<int64_t>other)
+    
+    @cython.embedsignature(True)
+    @cython.infer_types(True)
+    def repr_c_source(Type self):
+        return halide_type_to_c_source(self.__this__)
+    
+    @cython.embedsignature(True)
+    @cython.infer_types(True)
+    def repr_c_type(Type self):
+        return halide_type_to_c_type(self.__this__)
+    
+    @cython.embedsignature(True)
+    @cython.infer_types(True)
+    def repr_enum_string(Type self):
+        return halide_type_to_enum_string(self.__this__)
     
     @cython.embedsignature(True)
     @cython.infer_types(True)
@@ -262,8 +285,8 @@ cdef class Target:
         return self.__this__.has_gpu_feature()
     
     @cython.embedsignature(True)
-    def has_feature(Target self, f):
-        return self.__this__.has_feature(<Feature>PyLong_AsLong(f))
+    def has_feature(Target self, feature):
+        return self.__this__.has_feature(<Feature>PyLong_AsLong(feature))
     
     @cython.embedsignature(True)
     def includes_halide_runtime(Target self):
@@ -329,7 +352,7 @@ cdef class Outputs:
         HalOutputs __this__
     
     @cython.infer_types(True)
-    def __init__(Outputs self, *args, **kwargs):
+    def __cinit__(Outputs self, *args, **kwargs):
         for arg in args:
             if type(arg) == type(self):
                 self.__this__ = self.__this__.object(arg.object_name) \
@@ -537,7 +560,8 @@ cdef class EmitOptions:
         'emit_bitcode'          : False,
         'emit_stmt'             : False,
         'emit_stmt_html'        : False,
-        'emit_static_library'   : True
+        'emit_static_library'   : True,
+        'emit_cpp_stub'         : False
     }
     
     @cython.infer_types(True)
@@ -553,20 +577,21 @@ cdef class EmitOptions:
                 self.__this__.emit_stmt = arg.emit_stmt
                 self.__this__.emit_stmt_html = arg.emit_stmt_html
                 self.__this__.emit_static_library = arg.emit_static_library
+                self.__this__.emit_cpp_stub = arg.emit_cpp_stub
                 for k, v in arg.substitutions.items():
                     self.__this__.substitutions[k] = v
                 return
         
-        emit_o = bool(kwargs.pop('emit_o',                  self.emit_defaults['emit_o']))
-        emit_h = bool(kwargs.pop('emit_h',                  self.emit_defaults['emit_h']))
-        emit_cpp = bool(kwargs.pop('emit_cpp',              self.emit_defaults['emit_cpp']))
-        emit_assembly = bool(kwargs.pop('emit_assembly',    self.emit_defaults['emit_assembly']))
-        emit_bitcode = bool(kwargs.pop('emit_bitcode',      self.emit_defaults['emit_bitcode']))
-        emit_stmt = bool(kwargs.pop('emit_stmt',            self.emit_defaults['emit_stmt']))
-        emit_stmt_html = bool(kwargs.pop('emit_stmt_html',  self.emit_defaults['emit_stmt_html']))
-        emit_static_library = bool(kwargs.pop('emit_static_library',
-                                                            self.emit_defaults['emit_static_library']))
-        substitutions = kwargs.pop('substitutions',         {})
+        emit_o = bool(kwargs.pop('emit_o',                              self.emit_defaults['emit_o']))
+        emit_h = bool(kwargs.pop('emit_h',                              self.emit_defaults['emit_h']))
+        emit_cpp = bool(kwargs.pop('emit_cpp',                          self.emit_defaults['emit_cpp']))
+        emit_assembly = bool(kwargs.pop('emit_assembly',                self.emit_defaults['emit_assembly']))
+        emit_bitcode = bool(kwargs.pop('emit_bitcode',                  self.emit_defaults['emit_bitcode']))
+        emit_stmt = bool(kwargs.pop('emit_stmt',                        self.emit_defaults['emit_stmt']))
+        emit_stmt_html = bool(kwargs.pop('emit_stmt_html',              self.emit_defaults['emit_stmt_html']))
+        emit_static_library = bool(kwargs.pop('emit_static_library',    self.emit_defaults['emit_static_library']))
+        emit_cpp_stub = bool(kwargs.pop('emit_cpp_stub',                self.emit_defaults['emit_cpp_stub']))
+        substitutions = kwargs.pop('substitutions',                     {})
         
         if not PyMapping_Check(substitutions):
             raise ValueError("substitutions must be a mapping type")
@@ -579,6 +604,7 @@ cdef class EmitOptions:
         self.__this__.emit_stmt = <bint>emit_stmt
         self.__this__.emit_stmt_html = <bint>emit_stmt_html
         self.__this__.emit_static_library = <bint>emit_static_library
+        self.__this__.emit_cpp_stub = <bint>emit_cpp_stub
         
         for k, v in substitutions.items():
             self.__this__.substitutions[k] = v
@@ -631,6 +657,12 @@ cdef class EmitOptions:
         def __set__(EmitOptions self, value):
             self.__this__.emit_static_library = <bint>value
     
+    property emit_cpp_stub:
+        def __get__(EmitOptions self):
+            return self.__this__.emit_cpp_stub
+        def __set__(EmitOptions self, value):
+            self.__this__.emit_cpp_stub = <bint>value
+    
     property substitutions:
         def __get__(EmitOptions self):
             return dict(self.__this__.substitutions)
@@ -674,6 +706,10 @@ cdef class EmitOptions:
             output_files.c_header_name = base_path_str + self.get_substitution(".h")
         if self.emit_cpp:
             output_files.c_source_name = base_path_str + self.get_substitution(".cpp")
+        
+        # N.B. Currently the Halide `compute_outputs()` version has no substitution logic
+        # for `emit_cpp_stub` -- q.v. Halide/src/Generator.cpp lines 54-96 sub.
+        
         if self.emit_stmt:
             output_files.stmt_name = base_path_str + self.get_substitution(".stmt")
         if self.emit_stmt_html:
@@ -703,7 +739,7 @@ cdef class Module:
                 return
         self.__this__.reset(new HalModule("", HalTarget('host')))
     
-    def __cinit__(Module self, *args, **kwargs):
+    def __init__(Module self, *args, **kwargs):
         cdef HalTarget htarg
         if len(args) < 1:
             name = kwargs.get('name', '')
@@ -712,6 +748,9 @@ cdef class Module:
             self.__this__.reset(new HalModule(<string>name, <HalTarget>htarg))
     
     def __dealloc__(Module self):
+        # Manually calling `reset()` on the internal std::unique_ptr here
+        # is not necessary, strictly speaking, as it will reset itself upon
+        # scoped stack-deallocation (but who the fuck really knows, rite? huh.)
         self.__this__.reset(NULL)
     
     @cython.embedsignature(True)

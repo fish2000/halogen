@@ -6,22 +6,11 @@ from libcpp.vector cimport vector
 from libcpp.memory cimport unique_ptr
 
 from target cimport Target, get_jit_target_from_environment
-from type cimport Type
+from type cimport Type, LoopLevel, llevelmap_t
 from module cimport Module, LinkageType
-
-cdef extern from "Halide.h" namespace "Halide" nogil:
-    
-    cppclass LoopLevel:
-        # string func_name
-        # string var_name
-        # bint is_rvar
-        # LoopLevel(string&, string&, bint)
-        LoopLevel()
-
 
 ctypedef vector[string]                 stringvec_t
 ctypedef std_map[string, string]        stringmap_t
-ctypedef std_map[string, LoopLevel]     llevelmap_t
 
 cdef extern from "Halide.h" namespace "Halide::Internal" nogil:
     
