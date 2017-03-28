@@ -13,7 +13,7 @@ from ext cimport haldol
 
 from ext.halide.outputs cimport Outputs as HalOutputs
 from ext.halide.module cimport Module as HalModule
-from ext.halide.module cimport LinkageType
+from ext.halide.module cimport LinkageType, LoweredFunc, funcvec_t
 from ext.halide.module cimport Internal as Linkage_Internal
 from ext.halide.module cimport External as Linkage_External
 
@@ -44,6 +44,7 @@ from ext.halide.util cimport stringvec_t
 from ext.halide.util cimport extract_namespaces
 from ext.halide.util cimport running_program_name as halide_running_program_name
 
+from ext.halide.buffer cimport Buffer, buffervec_t
 
 @cython.freelist(32)
 cdef class Type:
@@ -318,6 +319,19 @@ cdef class Target:
     @cython.embedsignature(True)
     def __str__(Target self):
         return self.__this__.to_string()
+    
+    @cython.embedsignature(True)
+    @cython.infer_types(True)
+    def __richcmp__(Target self, Target other, int op):
+        if op == 2: # ==
+            return (bool(<size_t>self.__this__.os   == <size_t>other.__this__.os) and
+                    bool(<size_t>self.__this__.arch == <size_t>other.__this__.arch) and
+                    bool(<int>self.__this__.bits    == <int>other.__this__.bits))
+        elif op == 3: # !=
+            return (bool(<size_t>self.__this__.os   != <size_t>other.__this__.os) or
+                    bool(<size_t>self.__this__.arch != <size_t>other.__this__.arch) or
+                    bool(<int>self.__this__.bits    != <int>other.__this__.bits))
+        return False
     
     @cython.embedsignature(True)
     @cython.infer_types(True)
@@ -741,7 +755,7 @@ cdef class Module:
     
     def __init__(Module self, *args, **kwargs):
         cdef HalTarget htarg
-        if len(args) < 1:
+        if len(args) < 1 and not self.__this__.get():
             name = kwargs.get('name', '')
             tstring = Target(kwargs.get('target', 'host')).to_string()
             htarg = HalTarget(<string>tstring)
@@ -770,8 +784,26 @@ cdef class Module:
         out.__this__.reset(new HalModule(m))
         return out
     
+    @cython.embedsignature(True)
+    cdef buffervec_t buffers(Module self):
+        cdef buffervec_t out = deref(self.__this__).buffers()
+        return out
+    
+    @cython.embedsignature(True)
+    cdef funcvec_t functions(Module self):
+        cdef funcvec_t out = deref(self.__this__).functions()
+        return out
+    
     cdef void replace_instance(Module self, HalModule&& m):
         self.__this__.reset(new HalModule(m))
+    
+    @cython.embedsignature(True)
+    cdef void append_buffer(Module self, Buffer[void] buffer_instance):
+        deref(self.__this__).append(buffer_instance)
+    
+    @cython.embedsignature(True)
+    cdef void append_function(Module self, LoweredFunc lowered_func_instance):
+        deref(self.__this__).append(lowered_func_instance)
     
     @cython.embedsignature(True)
     def compile(Module self, Outputs outputs):
@@ -844,12 +876,16 @@ def compute_base_path(string output_dir,
                                     file_base_name)
 
 @cython.embedsignature(True)
-cpdef Module get_generator_module(string& name, dict arguments={}):
+cpdef Module get_generator_module(string& name, object arguments={}):
     """ Retrieve a Halide::Module, wrapped as hal.api.Module,
         corresponding to the registered generator instance (by name) """
     # first, check name against registered generators:
     if str(name) not in registered_generators():
         raise ValueError("""can't find a registered generator named "%s" """ % str(name))
+    
+    # next, check that `arguments` is a mapping type:
+    if not PyMapping_Check(arguments):
+        raise ValueError(""""arguments" must be a mapping (dict-ish) type""" % str(name))
     
     # stack-allocate a named module (per the `name` argument),
     # a unique pointer (for holding a Halide::GeneratorBase instance), and
@@ -857,7 +893,6 @@ cpdef Module get_generator_module(string& name, dict arguments={}):
     cdef stringmap_t argmap
     cdef base_ptr_t generator_instance
     out = Module(name=name)
-    generator_instance.reset(NULL)
     
     # Heap-allocate a Target object (from either the environment or
     # as per the argument dict) held in a unique pointer:
@@ -875,6 +910,30 @@ cpdef Module get_generator_module(string& name, dict arguments={}):
     # “Modulize” and return the generator instance (which that is a Halide thing, modulization):
     out.replace_instance(<HalModule>deref(generator_instance).build_module(name, Linkage_Internal))
     return out
+
+@cython.embedsignature(True)
+def link_modules(string module_name, *modules):
+    # check that we got some stuff:
+    if len(modules) < 1:
+        raise ValueError("""link_modules() called without modules to link""")
+    
+    # check the type of all positional arguments:
+    for module in modules:
+        if type(module) is not type(Module):
+            raise TypeError("""All positional args must be hal.api.Module""")
+    
+    #check the target of all modules:
+    outtarget = modules[0].target()
+    outmodule = Module(name=str(module_name),
+                       target=str(outtarget.to_string()))
+    for module in modules:
+        if module.target() != outtarget:
+            raise ValueError("""Mismatched targets in modules to link""")
+        # for buffer_instance in module.buffers():
+        #     outmodule.append_buffer(<Buffer[void]>buffer_instance)
+        # for lowered_func_instance in module.functions():
+        #     outmodule.append_function(<LoweredFunc>lowered_func_instance)
+    return outmodule
 
 @cython.embedsignature(True)
 def running_program_name():

@@ -148,3 +148,6 @@ cdef extern from "Halide.h" namespace "Halide" nogil:
     Feature target_feature_for_device_api(DeviceAPI)
 
 ctypedef unique_ptr[Target] target_ptr_t
+
+# cdef inline operator==(OS lhs, OS rhs):
+#     return static_cast<size_t>(lhs) == static_cast<size_t>(rhs)

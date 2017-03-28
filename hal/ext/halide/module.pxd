@@ -4,6 +4,7 @@ from libcpp.string cimport string
 from libcpp.vector cimport vector
 from target cimport Target
 from outputs cimport Outputs
+from buffer cimport Buffer, buffervec_t
 
 cdef extern from "Halide.h" namespace "Halide::Internal::LoweredFunc" nogil:
     
@@ -21,6 +22,8 @@ cdef extern from "Halide.h" namespace "Halide::Internal" nogil:
         string name
         LinkageType linkage
 
+ctypedef vector[LoweredFunc] funcvec_t
+
 cdef extern from "Halide.h" namespace "Halide" nogil:
     
     cppclass Module:
@@ -31,6 +34,11 @@ cdef extern from "Halide.h" namespace "Halide" nogil:
         
         Target& target()
         string& name()
+        buffervec_t buffers()
+        funcvec_t functions()
+        void append(Buffer[void]&)
+        void append(LoweredFunc&)
+        LoweredFunc get_function_by_name(string&)
         void compile(Outputs&)
 
 ctypedef vector[Module] modulevec_t
