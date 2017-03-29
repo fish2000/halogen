@@ -960,8 +960,8 @@ def compile_standalone_runtime(Target target=Target.target_from_environment(),
     # OPTION 1: WE GOT A PATH STRING:
     if pth is not None:
         # real-ify the path - this will raise if problematic:
-        import os
-        realpth = os.path.realpath(pth)
+        from os.path import realpath
+        realpth = realpath(pth)
         if not realpth.lower().endswith('.o'):
             realpth += ".o"
         
@@ -1009,8 +1009,8 @@ def make_standalone_runtime(Target target=Target.target_from_environment(),
     if pth is None:
         raise ValueError("Must specify 'pth'")
     
-    import os
-    realpth = os.path.realpath(pth)
+    from os.path import realpath
+    realpth = realpath(pth)
     
     # Compute the outputs using hal.api.EmitOptions -- the EmitOptions defaults
     # will render object files, headers, and archives (.o, .h, .a) --
