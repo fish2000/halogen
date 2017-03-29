@@ -86,7 +86,7 @@ feels like an ad-hoc mess:
         
     - this is because you need both the static initializer to be
         compiled into the generator TU which also has to have a main()
-        for GenGen.cpp (an issue that Halogen addresses!)
+        for GenGen.cpp (an issue that Halogen addresses using [Cython](http://cython.readthedocs.io/en/latest/src/userguide/external_C_code.html)!)
 
 - … you can then either this really inscrutable script included in the
     Halide source, called gengen.sh (confusingly in the same directory
