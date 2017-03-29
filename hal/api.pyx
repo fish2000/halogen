@@ -6,8 +6,11 @@ from cython.operator cimport dereference as deref
 from libc.stdint cimport *
 from libcpp.string cimport string
 from libcpp.memory cimport unique_ptr
-from cpython.mapping cimport PyMapping_Check
+
+from cpython.bool cimport PyBool_FromLong
 from cpython.long cimport PyLong_AsLong
+from cpython.mapping cimport PyMapping_Check
+from cpython.object cimport PyObject_IsTrue
 
 from ext.haldol.convert cimport convert as haldol_convert
 from ext.haldol.terminal cimport terminal_width as haldol_terminal_width
@@ -16,18 +19,20 @@ from ext.haldol.terminal cimport terminal_width as haldol_terminal_width
 from ext.halide.outputs cimport Outputs as HalOutputs
 from ext.halide.module cimport Module as HalModule
 from ext.halide.module cimport LinkageType, LoweredFunc
+from ext.halide.module cimport Internal as Linkage_Internal
+from ext.halide.module cimport External as Linkage_External
 from ext.halide.module cimport funcvec_t
 from ext.halide.module cimport modulevec_t
 from ext.halide.module cimport link_modules as halide_link_modules
-from ext.halide.module cimport Internal as Linkage_Internal
-from ext.halide.module cimport External as Linkage_External
+from ext.halide.module cimport halide_compile_standalone_runtime_for_path
+from ext.halide.module cimport halide_compile_standalone_runtime_with_outputs
 
-from ext.halide.generator cimport stringmap_t
-from ext.halide.generator cimport base_ptr_t
 from ext.halide.generator cimport GeneratorBase
 from ext.halide.generator cimport GeneratorRegistry
 from ext.halide.generator cimport GeneratorContext
 from ext.halide.generator cimport JITGeneratorContext
+from ext.halide.generator cimport stringmap_t
+from ext.halide.generator cimport base_ptr_t
 from ext.halide.generator cimport generator_registry_get as halide_generator_registry_get
 from ext.halide.generator cimport generator_registry_create as halide_generator_registry_create
 
@@ -41,12 +46,14 @@ from ext.halide.type cimport halide_type_to_c_source
 from ext.halide.type cimport halide_type_to_c_type
 from ext.halide.type cimport halide_type_to_enum_string
 
-from ext.halide.target cimport OS, Arch, Feature
 from ext.halide.target cimport Target as HalTarget
+from ext.halide.target cimport OS, Arch, Feature
+from ext.halide.target cimport Windows as OS_Windows
+from ext.halide.target cimport MinGW as Feature_MinGW
+from ext.halide.target cimport target_ptr_t
 from ext.halide.target cimport get_host_target as halide_get_host_target
 from ext.halide.target cimport get_target_from_environment as halide_get_target_from_environment
 from ext.halide.target cimport get_jit_target_from_environment as halide_get_jit_target_from_environment
-from ext.halide.target cimport target_ptr_t
 cimport ext.halide.target as target
 
 from ext.halide.util cimport stringvec_t
@@ -346,7 +353,7 @@ cdef class Target:
     @cython.embedsignature(True)
     @cython.infer_types(True)
     @staticmethod
-    def host_target(Target self):
+    def host_target():
         out = Target()
         out.__this__ = halide_get_host_target()
         return out
@@ -354,7 +361,7 @@ cdef class Target:
     @cython.embedsignature(True)
     @cython.infer_types(True)
     @staticmethod
-    def target_from_environment(Target self):
+    def target_from_environment():
         out = Target()
         out.__this__ = halide_get_target_from_environment()
         return out
@@ -362,7 +369,7 @@ cdef class Target:
     @cython.embedsignature(True)
     @cython.infer_types(True)
     @staticmethod
-    def jit_target_from_environment(Target self):
+    def jit_target_from_environment():
         out = Target()
         out.__this__ = halide_get_jit_target_from_environment()
         return out
@@ -373,6 +380,10 @@ cdef class Outputs:
     
     cdef:
         HalOutputs __this__
+    
+    @classmethod
+    def check(cls, instance):
+        return getattr(instance, '__class__', None) == cls
     
     @cython.infer_types(True)
     def __cinit__(Outputs self, *args, **kwargs):
@@ -411,57 +422,57 @@ cdef class Outputs:
     
     property object_name:
         def __get__(Outputs self):
-            return self.__this__.object_name
-        def __set__(Outputs self, value):
-            self.__this__.object_name = <string>value
+            return str(self.__this__.object_name)
+        def __set__(Outputs self, string& value):
+            self.__this__.object_name = string(value)
     
     property assembly_name:
         def __get__(Outputs self):
-            return self.__this__.assembly_name
-        def __set__(Outputs self, value):
-            self.__this__.assembly_name = <string>value
+            return str(self.__this__.assembly_name)
+        def __set__(Outputs self, string& value):
+            self.__this__.assembly_name = string(value)
     
     property bitcode_name:
         def __get__(Outputs self):
-            return self.__this__.bitcode_name
-        def __set__(Outputs self, value):
-            self.__this__.bitcode_name = <string>value
+            return str(self.__this__.bitcode_name)
+        def __set__(Outputs self, string& value):
+            self.__this__.bitcode_name = string(value)
     
     property llvm_assembly_name:
         def __get__(Outputs self):
-            return self.__this__.llvm_assembly_name
-        def __set__(Outputs self, value):
-            self.__this__.llvm_assembly_name = <string>value
+            return str(self.__this__.llvm_assembly_name)
+        def __set__(Outputs self, string& value):
+            self.__this__.llvm_assembly_name = string(value)
     
     property c_header_name:
         def __get__(Outputs self):
-            return self.__this__.c_header_name
-        def __set__(Outputs self, value):
-            self.__this__.c_header_name = <string>value
+            return str(self.__this__.c_header_name)
+        def __set__(Outputs self, string& value):
+            self.__this__.c_header_name = string(value)
     
     property c_source_name:
         def __get__(Outputs self):
-            return self.__this__.c_source_name
-        def __set__(Outputs self, value):
-            self.__this__.c_source_name = <string>value
+            return str(self.__this__.c_source_name)
+        def __set__(Outputs self, string& value):
+            self.__this__.c_source_name = string(value)
     
     property stmt_name:
         def __get__(Outputs self):
-            return self.__this__.stmt_name
-        def __set__(Outputs self, value):
-            self.__this__.stmt_name = <string>value
+            return str(self.__this__.stmt_name)
+        def __set__(Outputs self, string& value):
+            self.__this__.stmt_name = string(value)
     
     property stmt_html_name:
         def __get__(Outputs self):
-            return self.__this__.stmt_html_name
-        def __set__(Outputs self, value):
-            self.__this__.stmt_html_name = <string>value
+            return str(self.__this__.stmt_html_name)
+        def __set__(Outputs self, string& value):
+            self.__this__.stmt_html_name = string(value)
     
     property static_library_name:
         def __get__(Outputs self):
-            return self.__this__.static_library_name
-        def __set__(Outputs self, value):
-            self.__this__.static_library_name = <string>value
+            return str(self.__this__.static_library_name)
+        def __set__(Outputs self, string& value):
+            self.__this__.static_library_name = string(value)
     
     @cython.embedsignature(True)
     @cython.infer_types(True)
@@ -591,17 +602,17 @@ cdef class EmitOptions:
         for arg in args:
             if type(arg) == type(self):
                 self.__this__ = EmOpts()
-                self.__this__.emit_o = arg.emit_o
-                self.__this__.emit_h = arg.emit_h
-                self.__this__.emit_cpp = arg.emit_cpp
-                self.__this__.emit_assembly = arg.emit_assembly
-                self.__this__.emit_bitcode = arg.emit_bitcode
-                self.__this__.emit_stmt = arg.emit_stmt
-                self.__this__.emit_stmt_html = arg.emit_stmt_html
-                self.__this__.emit_static_library = arg.emit_static_library
-                self.__this__.emit_cpp_stub = arg.emit_cpp_stub
+                self.__this__.emit_o = PyObject_IsTrue(arg.emit_o)
+                self.__this__.emit_h = PyObject_IsTrue(arg.emit_h)
+                self.__this__.emit_cpp = PyObject_IsTrue(arg.emit_cpp)
+                self.__this__.emit_assembly = PyObject_IsTrue(arg.emit_assembly)
+                self.__this__.emit_bitcode = PyObject_IsTrue(arg.emit_bitcode)
+                self.__this__.emit_stmt = PyObject_IsTrue(arg.emit_stmt)
+                self.__this__.emit_stmt_html = PyObject_IsTrue(arg.emit_stmt_html)
+                self.__this__.emit_static_library = PyObject_IsTrue(arg.emit_static_library)
+                self.__this__.emit_cpp_stub = PyObject_IsTrue(arg.emit_cpp_stub)
                 for k, v in arg.substitutions.items():
-                    self.__this__.substitutions[k] = v
+                    self.__this__.substitutions[k] = <string>v
                 return
         
         emit_o = bool(kwargs.pop('emit_o',                              self.emit_defaults['emit_o']))
@@ -618,72 +629,72 @@ cdef class EmitOptions:
         if not PyMapping_Check(substitutions):
             raise ValueError("substitutions must be a mapping type")
         
-        self.__this__.emit_o = <bint>emit_o
-        self.__this__.emit_h = <bint>emit_h
-        self.__this__.emit_cpp = <bint>emit_cpp
-        self.__this__.emit_assembly = <bint>emit_assembly
-        self.__this__.emit_bitcode = <bint>emit_bitcode
-        self.__this__.emit_stmt = <bint>emit_stmt
-        self.__this__.emit_stmt_html = <bint>emit_stmt_html
-        self.__this__.emit_static_library = <bint>emit_static_library
-        self.__this__.emit_cpp_stub = <bint>emit_cpp_stub
+        self.__this__.emit_o = PyObject_IsTrue(emit_o)
+        self.__this__.emit_h = PyObject_IsTrue(emit_h)
+        self.__this__.emit_cpp = PyObject_IsTrue(emit_cpp)
+        self.__this__.emit_assembly = PyObject_IsTrue(emit_assembly)
+        self.__this__.emit_bitcode = PyObject_IsTrue(emit_bitcode)
+        self.__this__.emit_stmt = PyObject_IsTrue(emit_stmt)
+        self.__this__.emit_stmt_html = PyObject_IsTrue(emit_stmt_html)
+        self.__this__.emit_static_library = PyObject_IsTrue(emit_static_library)
+        self.__this__.emit_cpp_stub = PyObject_IsTrue(emit_cpp_stub)
         
         for k, v in substitutions.items():
-            self.__this__.substitutions[k] = v
+            self.__this__.substitutions[k] = <string>v
     
     property emit_o:
         def __get__(EmitOptions self):
-            return self.__this__.emit_o
+            return PyBool_FromLong(self.__this__.emit_o)
         def __set__(EmitOptions self, value):
-            self.__this__.emit_o = <bint>value
+            self.__this__.emit_o = PyObject_IsTrue(value)
     
     property emit_h:
         def __get__(EmitOptions self):
-            return self.__this__.emit_h
+            return PyBool_FromLong(self.__this__.emit_h)
         def __set__(EmitOptions self, value):
-            self.__this__.emit_h = <bint>value
+            self.__this__.emit_h = PyObject_IsTrue(value)
     
     property emit_cpp:
         def __get__(EmitOptions self):
-            return self.__this__.emit_cpp
+            return PyBool_FromLong(self.__this__.emit_cpp)
         def __set__(EmitOptions self, value):
-            self.__this__.emit_cpp = <bint>value
+            self.__this__.emit_cpp = PyObject_IsTrue(value)
     
     property emit_assembly:
         def __get__(EmitOptions self):
-            return self.__this__.emit_assembly
+            return PyBool_FromLong(self.__this__.emit_assembly)
         def __set__(EmitOptions self, value):
-            self.__this__.emit_assembly = <bint>value
+            self.__this__.emit_assembly = PyObject_IsTrue(value)
     
     property emit_bitcode:
         def __get__(EmitOptions self):
             return self.__this__.emit_bitcode
         def __set__(EmitOptions self, value):
-            self.__this__.emit_bitcode = <bint>value
+            self.__this__.emit_bitcode = PyObject_IsTrue(value)
     
     property emit_stmt:
         def __get__(EmitOptions self):
-            return self.__this__.emit_stmt
+            return PyBool_FromLong(self.__this__.emit_stmt)
         def __set__(EmitOptions self, value):
-            self.__this__.emit_stmt = <bint>value
+            self.__this__.emit_stmt = PyObject_IsTrue(value)
     
     property emit_stmt_html:
         def __get__(EmitOptions self):
-            return self.__this__.emit_stmt_html
+            return PyBool_FromLong(self.__this__.emit_stmt_html)
         def __set__(EmitOptions self, value):
-            self.__this__.emit_stmt_html = <bint>value
+            self.__this__.emit_stmt_html = PyObject_IsTrue(value)
     
     property emit_static_library:
         def __get__(EmitOptions self):
-            return self.__this__.emit_static_library
+            return PyBool_FromLong(self.__this__.emit_static_library)
         def __set__(EmitOptions self, value):
-            self.__this__.emit_static_library = <bint>value
+            self.__this__.emit_static_library = PyObject_IsTrue(value)
     
     property emit_cpp_stub:
         def __get__(EmitOptions self):
-            return self.__this__.emit_cpp_stub
+            return PyBool_FromLong(self.__this__.emit_cpp_stub)
         def __set__(EmitOptions self, value):
-            self.__this__.emit_cpp_stub = <bint>value
+            self.__this__.emit_cpp_stub = PyObject_IsTrue(value)
     
     property substitutions:
         def __get__(EmitOptions self):
@@ -693,14 +704,14 @@ cdef class EmitOptions:
                 raise ValueError("substitutions must be a mapping type")
             self.__this__.substitutions = stringmap_t()
             for k, v in dict(value).items():
-                self.__this__.substitutions[k] = v
+                self.__this__.substitutions[k] = <string>v
     
     @cython.embedsignature(True)
-    def get_substitution(EmitOptions self, string default):
-        return dict(self.__this__.substitutions).get(default, default)
+    def get_substitution(EmitOptions self, string& default):
+        return dict(self.__this__.substitutions).get(str(default), str(default))
     
     @cython.embedsignature(True)
-    def compute_outputs_for_target_and_path(EmitOptions self, Target t, string base_path):
+    def compute_outputs_for_target_and_path(EmitOptions self, Target t, string& base_path):
         """ A reimplementation of `compute_outputs()`, private to Halide’s Generator.cpp """
         # This is a reimplementation of the C++ orig --
         # ... there used to be some checking here for PNaCl, but all the PNaCl-specific values
@@ -709,7 +720,7 @@ cdef class EmitOptions:
         # behavior to be wrong, please do explain how this wrongness works to me (preferably
         # with a scathingly witty tweet that embarasses me in front of all my friends, and
         # also the greater C++, Cython, and Halide communities in general).
-        is_windows_coff = bool(t.os == target.Windows and not t.has_feature(target.MinGW))
+        is_windows_coff = bool(<size_t>t.os == <size_t>OS_Windows and not t.has_feature(<size_t>Feature_MinGW))
         base_path_str = str(base_path)
         output_files = Outputs()
         
@@ -829,27 +840,27 @@ cdef class Module:
 ## FUNCTION WRAPPERS:
 @cython.embedsignature(True)
 def get_host_target():
-    """ Halide::get_host_target() wrapper call """
+    """ Halide::get_host_target() wrapper call. """
     return Target.host_target()
 
 @cython.embedsignature(True)
 def get_target_from_environment():
-    """ Halide::get_target_from_environment() wrapper call """
+    """ Halide::get_target_from_environment() wrapper call. """
     return Target.target_from_environment()
 
 @cython.embedsignature(True)
 def get_jit_target_from_environment():
-    """ Halide::get_jit_target_from_environment() wrapper call """
+    """ Halide::get_jit_target_from_environment() wrapper call. """
     return Target.jit_target_from_environment()
 
 @cython.embedsignature(True)
 def validate_target_string(string target_string):
-    """ Halide::Target::validate_target_string(s) static method wrapper call """
+    """ Halide::Target::validate_target_string(s) static method wrapper call. """
     return HalTarget.validate_target_string(target_string)
 
 @cython.embedsignature(True)
 def registered_generators():
-    """ Enumerate registered generators using Halide::GeneratorRegistry """
+    """ Enumerate registered generators using Halide::GeneratorRegistry. """
     out = tuple()
     names = tuple(GeneratorRegistry.enumerate())
     for enumerated_name in names:
@@ -873,7 +884,7 @@ def compute_base_path(string output_dir,
                       string function_name,
                       string file_base_name):
     """ Reimplementation of Halide::Internal::compute_base_path(...)
-        (private function from Halide/src/Generator.cpp) """
+        (a private function found in Halide/src/Generator.cpp). """
     return halide_compute_base_path(output_dir,
                                     function_name,
                                     file_base_name)
@@ -881,7 +892,7 @@ def compute_base_path(string output_dir,
 @cython.embedsignature(True)
 cpdef Module get_generator_module(string& name, object arguments={}):
     """ Retrieve a Halide::Module, wrapped as hal.api.Module,
-        corresponding to the registered generator instance (by name) """
+        corresponding to the registered generator instance (by name). """
     # first, check name against registered generators:
     if str(name) not in registered_generators():
         raise ValueError("""can't find a registered generator named "%s" """ % str(name))
@@ -937,6 +948,92 @@ def link_modules(string module_name, *modules):
     
     out.replace_instance(<HalModule>halide_link_modules(module_name, modulevec))
     return out
+
+@cython.embedsignature(True)
+def compile_standalone_runtime(Target target=Target.target_from_environment(),
+                                  object pth=None,
+                             Outputs outputs=None):
+    """ Compile a standalone Halide runtime library, as directed, per the specified target. """
+    # Where we keep the native Options struct, if need be:
+    cdef HalOutputs out
+    
+    # OPTION 1: WE GOT A PATH STRING:
+    if pth is not None:
+        # real-ify the path - this will raise if problematic:
+        import os
+        realpth = os.path.realpath(pth)
+        if not realpth.lower().endswith('.o'):
+            realpth += ".o"
+        
+        # make the actual call:
+        halide_compile_standalone_runtime_for_path(<string>realpth,
+                                                   <HalTarget>target.__this__)
+        
+        # return the real-ified path:
+        return str(realpth)
+    
+    # OPTION 2: WE GOT A FULL-BLOWN “OUTPUTS” OBJECT:
+    elif outputs is not None:
+        # confirm the type of the “outputs” object:
+        if not Outputs.check(outputs):
+            raise TypeError("type(outputs) must be Outputs, not %s" % outputs.__class__.__name__)
+        
+        # make the actual call, returning another native Options object:
+        out = halide_compile_standalone_runtime_with_outputs(<HalOutputs>outputs.__this__,
+                                                             <HalTarget>target.__this__)
+        
+        # return a new hal.api.Outputs matching the returned value above:
+        return Outputs(
+            object_name=str(out.object_name),
+            assembly_name=str(out.assembly_name),
+            bitcode_name=str(out.bitcode_name),
+            llvm_assembly_name=str(out.llvm_assembly_name),
+            c_header_name=str(out.c_header_name),
+            c_source_name=str(out.c_source_name),
+            stmt_name=str(out.stmt_name),
+            stmt_html_name=str(out.stmt_html_name),
+            static_library_name=str(out.static_library_name))
+    
+    # OPTION 3: WE GOT NEITHER OF THE ABOVE,
+    # WHICH MEANS BASICALLY WE CAN DO FUCK-ALL:
+    raise ValueError("Either the 'pth' or 'outputs' args must be non-None")
+
+@cython.embedsignature(True)
+def make_standalone_runtime(Target target=Target.target_from_environment(),
+                               object pth=None):
+    # Where to store the output output:
+    cdef Outputs outputs
+    cdef HalOutputs out
+    
+    # Sanity-check the passed-in base-path value:
+    if pth is None:
+        raise ValueError("Must specify 'pth'")
+    
+    import os
+    realpth = os.path.realpath(pth)
+    
+    # Compute the outputs using hal.api.EmitOptions -- the EmitOptions defaults
+    # will render object files, headers, and archives (.o, .h, .a) --
+    # HOWEVER, Halide::compile_standalone_runtime() in Module.cpp recreates
+    # the Outputs object with only object files and archives (.o, .a) enabled:
+    outputs = EmitOptions().compute_outputs_for_target_and_path(t=target,
+                                                        base_path=<string>realpth)
+    
+    # make the actual call, returning another native Options object:
+    out = halide_compile_standalone_runtime_with_outputs(<HalOutputs>outputs.__this__,
+                                                         <HalTarget>target.__this__)
+    
+    # return a new hal.api.Outputs matching the returned value above:
+    return Outputs(
+        object_name=str(out.object_name),
+        assembly_name=str(out.assembly_name),
+        bitcode_name=str(out.bitcode_name),
+        llvm_assembly_name=str(out.llvm_assembly_name),
+        c_header_name=str(out.c_header_name),
+        c_source_name=str(out.c_source_name),
+        stmt_name=str(out.stmt_name),
+        stmt_html_name=str(out.stmt_html_name),
+        static_library_name=str(out.static_library_name))
 
 @cython.embedsignature(True)
 def running_program_name():

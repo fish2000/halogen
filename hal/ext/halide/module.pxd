@@ -46,5 +46,5 @@ ctypedef vector[Module] modulevec_t
 cdef extern from "Halide.h" namespace "Halide" nogil:
 
     Module link_modules(string&, modulevec_t&)
-    void compile_standalone_runtime(string&, Target)            # creates object file
-    Outputs compile_standalone_runtime(Outputs&, Target)        # creates object and/or static library
+    void halide_compile_standalone_runtime_for_path        "compile_standalone_runtime" (string&, Target)  # creates object file
+    Outputs halide_compile_standalone_runtime_with_outputs "compile_standalone_runtime" (Outputs&, Target) # creates object and/or static library
