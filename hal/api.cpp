@@ -774,8 +774,6 @@ typedef std::vector<Halide::Target::Feature>  __pyx_t_3hal_3ext_6halide_6target_
  *     Feature target_feature_for_device_api(DeviceAPI)
  * 
  * ctypedef unique_ptr[Target] target_ptr_t             # <<<<<<<<<<<<<<
- * 
- * # cdef inline operator==(OS lhs, OS rhs):
  */
 typedef std::unique_ptr<Halide::Target>  __pyx_t_3hal_3ext_6halide_6target_target_ptr_t;
 
@@ -18248,7 +18246,7 @@ static PyObject *__pyx_pf_3hal_3api_24terminal_width(CYTHON_UNUSED PyObject *__p
   return __pyx_r;
 }
 
-/* "ext/halide/generator.pxd":112
+/* "ext/halide/generator.pxd":113
  *         RegisterGenerator(string&)
  * 
  * cdef inline base_ptr_t generator_registry_get(string& name,             # <<<<<<<<<<<<<<
@@ -18261,7 +18259,7 @@ static CYTHON_INLINE __pyx_t_3hal_3ext_6halide_9generator_base_ptr_t __pyx_f_3ha
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("generator_registry_get", 0);
 
-  /* "ext/halide/generator.pxd":115
+  /* "ext/halide/generator.pxd":116
  *                                               Target& target,
  *                                               stringmap_t& args):
  *     return GeneratorRegistry.create(name, JITGeneratorContext(target), args)             # <<<<<<<<<<<<<<
@@ -18271,7 +18269,7 @@ static CYTHON_INLINE __pyx_t_3hal_3ext_6halide_9generator_base_ptr_t __pyx_f_3ha
   __pyx_r = Halide::Internal::GeneratorRegistry::create(__pyx_v_name, Halide::JITGeneratorContext(__pyx_v_target), __pyx_v_args);
   goto __pyx_L0;
 
-  /* "ext/halide/generator.pxd":112
+  /* "ext/halide/generator.pxd":113
  *         RegisterGenerator(string&)
  * 
  * cdef inline base_ptr_t generator_registry_get(string& name,             # <<<<<<<<<<<<<<
@@ -18285,7 +18283,7 @@ static CYTHON_INLINE __pyx_t_3hal_3ext_6halide_9generator_base_ptr_t __pyx_f_3ha
   return __pyx_r;
 }
 
-/* "ext/halide/generator.pxd":117
+/* "ext/halide/generator.pxd":118
  *     return GeneratorRegistry.create(name, JITGeneratorContext(target), args)
  * 
  * cdef inline base_ptr_t generator_registry_create(string& name):             # <<<<<<<<<<<<<<
@@ -18300,7 +18298,7 @@ static CYTHON_INLINE __pyx_t_3hal_3ext_6halide_9generator_base_ptr_t __pyx_f_3ha
   __pyx_t_3hal_3ext_6halide_9generator_stringmap_t __pyx_t_1;
   __Pyx_RefNannySetupContext("generator_registry_create", 0);
 
-  /* "ext/halide/generator.pxd":118
+  /* "ext/halide/generator.pxd":119
  * 
  * cdef inline base_ptr_t generator_registry_create(string& name):
  *     cdef Target t = get_jit_target_from_environment()             # <<<<<<<<<<<<<<
@@ -18308,7 +18306,7 @@ static CYTHON_INLINE __pyx_t_3hal_3ext_6halide_9generator_base_ptr_t __pyx_f_3ha
  */
   __pyx_v_t = Halide::get_jit_target_from_environment();
 
-  /* "ext/halide/generator.pxd":119
+  /* "ext/halide/generator.pxd":120
  * cdef inline base_ptr_t generator_registry_create(string& name):
  *     cdef Target t = get_jit_target_from_environment()
  *     return GeneratorRegistry.create(name, JITGeneratorContext(t), stringmap_t())             # <<<<<<<<<<<<<<
@@ -18317,12 +18315,12 @@ static CYTHON_INLINE __pyx_t_3hal_3ext_6halide_9generator_base_ptr_t __pyx_f_3ha
     __pyx_t_1 = __pyx_t_3hal_3ext_6halide_9generator_stringmap_t();
   } catch(...) {
     __Pyx_CppExn2PyErr();
-    __PYX_ERR(1, 119, __pyx_L1_error)
+    __PYX_ERR(1, 120, __pyx_L1_error)
   }
   __pyx_r = Halide::Internal::GeneratorRegistry::create(__pyx_v_name, Halide::JITGeneratorContext(__pyx_v_t), __pyx_t_1);
   goto __pyx_L0;
 
-  /* "ext/halide/generator.pxd":117
+  /* "ext/halide/generator.pxd":118
  *     return GeneratorRegistry.create(name, JITGeneratorContext(target), args)
  * 
  * cdef inline base_ptr_t generator_registry_create(string& name):             # <<<<<<<<<<<<<<
