@@ -660,16 +660,6 @@ namespace py {
         /// of label/format subtuples germane to the description
         /// of the parsed typecode you pass it
         PyObject* structcode_to_dtype(char const* code);
-        
-        /// One-and-done functions for dumping a tuple of python strings
-        /// filled with valid (as in registered) format suffixes; currently
-        /// we just call this the once in the extensions' init func and stash
-        /// the return value in the `im` module PyObject, just in there like
-        /// alongside the types and other junk
-        // using stringvec_t = std::vector<std::string>;
-        // stringvec_t& formats_as_vector();                   /// this one is GIL-optional (how european!)
-        PyObject* formats_as_pytuple(int idx = 0);          /// whereas here, no GIL no shoes no funcall
-        PyObject* formats_as_infodict(int idx = 0);
     }
     
 }

@@ -2,6 +2,7 @@
 # distutils: language = c++
 cimport cython
 from cython.operator cimport dereference as deref
+from cython.operator cimport address as addr
 
 from libc.stdint cimport *
 from libcpp.string cimport string
@@ -13,7 +14,9 @@ from ext cimport haldol
 
 from ext.halide.outputs cimport Outputs as HalOutputs
 from ext.halide.module cimport Module as HalModule
-from ext.halide.module cimport LinkageType, LoweredFunc, funcvec_t
+from ext.halide.module cimport LinkageType, LoweredFunc
+from ext.halide.module cimport funcvec_t, modulevec_t
+from ext.halide.module cimport link_modules as halide_link_modules
 from ext.halide.module cimport Internal as Linkage_Internal
 from ext.halide.module cimport External as Linkage_External
 
@@ -355,7 +358,6 @@ cdef class Target:
 
 
 cdef class Outputs:
-    
     """ Cython wrapper class for Halide::Outputs """
     
     cdef:
@@ -556,7 +558,6 @@ cdef class Outputs:
 ctypedef GeneratorBase.EmitOptions EmOpts
 
 cdef class EmitOptions:
-    
     """ Cython wrapper class for Halide::Internal::GeneratorBase::EmitOptions """
     
     cdef:
@@ -736,6 +737,8 @@ cdef class EmitOptions:
 ctypedef unique_ptr[HalModule] module_ptr_t
 
 cdef class Module:
+    """ Cython wrapper class for Halide::Module --
+        internally uses a std::unique_ptr<Halide::Module> """
     
     cdef:
         module_ptr_t __this__
@@ -790,16 +793,9 @@ cdef class Module:
         cdef funcvec_t out = deref(self.__this__).functions()
         return out
     
+    @cython.embedsignature(True)
     cdef void replace_instance(Module self, HalModule&& m):
         self.__this__.reset(new HalModule(m))
-    
-    @cython.embedsignature(True)
-    cdef void append_buffer(Module self, Buffer[void] buffer_instance):
-        deref(self.__this__).append(buffer_instance)
-    
-    @cython.embedsignature(True)
-    cdef void append_function(Module self, LoweredFunc lowered_func_instance):
-        deref(self.__this__).append(lowered_func_instance)
     
     @cython.embedsignature(True)
     def compile(Module self, Outputs outputs):
@@ -907,8 +903,15 @@ cpdef Module get_generator_module(string& name, object arguments={}):
     out.replace_instance(<HalModule>deref(generator_instance).build_module(name, Linkage_Internal))
     return out
 
+cdef void f_insert_into(Module module, modulevec_t& modulevec):
+    modulevec.push_back(deref(module.__this__))
+
 @cython.embedsignature(True)
 def link_modules(string module_name, *modules):
+    """ Python wrapper for Halide::link_modules() from src/Module.h """
+    cdef modulevec_t modulevec
+    out = Module(name=module_name)
+    
     # check that we got some stuff:
     if len(modules) < 1:
         raise ValueError("""link_modules() called without modules to link""")
@@ -918,18 +921,11 @@ def link_modules(string module_name, *modules):
         if type(module) is not type(Module):
             raise TypeError("""All positional args must be hal.api.Module""")
     
-    #check the target of all modules:
-    outtarget = modules[0].target()
-    outmodule = Module(name=str(module_name),
-                       target=str(outtarget.to_string()))
     for module in modules:
-        if module.target() != outtarget:
-            raise ValueError("""Mismatched targets in modules to link""")
-        # for buffer_instance in module.buffers():
-        #     outmodule.append_buffer(<Buffer[void]>buffer_instance)
-        # for lowered_func_instance in module.functions():
-        #     outmodule.append_function(<LoweredFunc>lowered_func_instance)
-    return outmodule
+        f_insert_into(module, modulevec)
+    
+    out.replace_instance(<HalModule>halide_link_modules(module_name, modulevec))
+    return out
 
 @cython.embedsignature(True)
 def running_program_name():

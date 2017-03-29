@@ -28,7 +28,7 @@ cdef extern from "Halide.h" namespace "Halide" nogil:
     
     cppclass Module:
         
-        Module()
+        # Module()
         Module(string&, Target&)
         Module(Module&)
         
