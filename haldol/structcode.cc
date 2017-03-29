@@ -87,7 +87,7 @@ namespace structcode {
     bool field_namer::has(std::string const& field_name) {
         for (auto fn = std::begin(field_name_vector);
                   fn != std::end(field_name_vector); ++fn) {
-            if (std::string(*fn) == field_name) { return true; }
+            if (*fn == field_name) { return true; }
         }
         return false;
     }

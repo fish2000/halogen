@@ -12,7 +12,6 @@ namespace structcode {
     using stringvec_t = std::vector<std::string>;
     
     struct structcodemaps {
-        
         static stringmap_t init_byteorder();
         static stringmap_t init_native();
         static stringmap_t init_standard();

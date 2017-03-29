@@ -6,6 +6,10 @@ from libcpp.string cimport string as std_string
 from libcpp.vector cimport vector
 from libcpp.utility cimport pair
 
+# import numpy as np
+# cimport numpy as np
+# np.import_array()
+
 from cpython.object cimport PyTypeObject, Py_buffer
 # from numpy cimport ndarray, dtype
 

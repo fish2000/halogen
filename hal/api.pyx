@@ -28,15 +28,15 @@ from ext.halide.generator cimport GeneratorBase
 from ext.halide.generator cimport GeneratorRegistry
 from ext.halide.generator cimport GeneratorContext
 from ext.halide.generator cimport JITGeneratorContext
-from ext.halide.generator cimport generator_registry_get
-from ext.halide.generator cimport generator_registry_create
+from ext.halide.generator cimport generator_registry_get as halide_generator_registry_get
+from ext.halide.generator cimport generator_registry_create as halide_generator_registry_create
 
 from ext.halide.type cimport Type as HalType
-from ext.halide.type cimport Int as Type_Int
-from ext.halide.type cimport UInt as Type_UInt
-from ext.halide.type cimport Float as Type_Float
-from ext.halide.type cimport Bool as Type_Bool
-from ext.halide.type cimport Handle as Type_Handle
+from ext.halide.type cimport Int as HalType_Int
+from ext.halide.type cimport UInt as HalType_UInt
+from ext.halide.type cimport Float as HalType_Float
+from ext.halide.type cimport Bool as HalType_Bool
+from ext.halide.type cimport Handle as HalType_Handle
 from ext.halide.type cimport halide_type_to_c_source
 from ext.halide.type cimport halide_type_to_c_type
 from ext.halide.type cimport halide_type_to_enum_string
@@ -50,11 +50,15 @@ from ext.halide.target cimport target_ptr_t
 cimport ext.halide.target as target
 
 from ext.halide.util cimport stringvec_t
-from ext.halide.util cimport extract_namespaces
+from ext.halide.util cimport extract_namespaces as halide_extract_namespaces
 from ext.halide.util cimport running_program_name as halide_running_program_name
 
 from ext.halide.buffer cimport Buffer
 from ext.halide.buffer cimport buffervec_t
+
+# import numpy
+# cimport numpy
+# numpy.import_array()
 
 @cython.freelist(32)
 cdef class Type:
@@ -207,7 +211,7 @@ cdef class Type:
     @staticmethod
     def Int(int bits, int lanes=1):
         out = Type()
-        out.__this__ = Type_Int(bits, lanes)
+        out.__this__ = HalType_Int(bits, lanes)
         return out
     
     @cython.embedsignature(True)
@@ -215,7 +219,7 @@ cdef class Type:
     @staticmethod
     def UInt(int bits, int lanes=1):
         out = Type()
-        out.__this__ = Type_UInt(bits, lanes)
+        out.__this__ = HalType_UInt(bits, lanes)
         return out
     
     @cython.embedsignature(True)
@@ -223,7 +227,7 @@ cdef class Type:
     @staticmethod
     def Float(int bits, int lanes=1):
         out = Type()
-        out.__this__ = Type_Float(bits, lanes)
+        out.__this__ = HalType_Float(bits, lanes)
         return out
     
     @cython.embedsignature(True)
@@ -231,7 +235,7 @@ cdef class Type:
     @staticmethod
     def Bool(int lanes=1):
         out = Type()
-        out.__this__ = Type_Bool(lanes)
+        out.__this__ = HalType_Bool(lanes)
         return out
     
     @cython.embedsignature(True)
@@ -239,7 +243,7 @@ cdef class Type:
     @staticmethod
     def Handle(int lanes=1):
         out = Type()
-        out.__this__ = Type_Handle(lanes, NULL)
+        out.__this__ = HalType_Handle(lanes, NULL)
         return out
 
 
@@ -856,7 +860,7 @@ cpdef string halide_compute_base_path(string& output_dir,
                                       string& function_name,
                                       string& file_base_name):
     cdef stringvec_t namespaces
-    cdef string simple_name = extract_namespaces(function_name, namespaces)
+    cdef string simple_name = halide_extract_namespaces(function_name, namespaces)
     cdef string base_path = output_dir + "/"
     if file_base_name.empty():
         base_path += simple_name
@@ -904,7 +908,7 @@ cpdef Module get_generator_module(string& name, object arguments={}):
         argmap[<string>k] = <string>v
     
     # Actually get an instance of the named generator:
-    generator_instance = generator_registry_get(name, deref(generator_target), argmap)
+    generator_instance = halide_generator_registry_get(name, deref(generator_target), argmap)
     
     # “Modulize” and return the generator instance (which that is a Halide thing, modulization):
     out.replace_instance(<HalModule>deref(generator_instance).build_module(name, Linkage_Internal))
