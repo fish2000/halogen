@@ -39,7 +39,7 @@ cdef extern from "numpy/arrayobject.h":
         NPY_USERDEF
         NPY_NTYPES_ABI_COMPATIBLE
     
-    enum NPY_TYPECHAR:
+    cdef enum NPY_TYPECHAR:
         NPY_BOOLLTR
         NPY_BYTELTR
         NPY_UBYTELTR
@@ -115,5 +115,5 @@ cdef extern from "haldol/include/typecode.hh" namespace "typecode" nogil:
     cdef NPY_TYPECHAR typechar(NPY_TYPES)
     cdef NPY_TYPECHAR typechar(unsigned int)
     
-    # string "typechar_name" name (NPY_TYPES)
-    # string "typechar_name" name (unsigned int)
+    string literal(NPY_TYPES)
+    string literal(unsigned int)

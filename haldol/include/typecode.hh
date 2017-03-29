@@ -73,8 +73,8 @@ namespace typecode {
     NPY_TYPECHAR typechar(NPY_TYPES typecode);
     NPY_TYPECHAR typechar(unsigned int typecode);
     
-    std::string name(NPY_TYPES typecode);
-    std::string name(unsigned int typecode);
+    std::string literal(NPY_TYPES typecode);
+    std::string literal(unsigned int typecode);
 }
 
 
