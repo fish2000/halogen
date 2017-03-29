@@ -17,11 +17,8 @@
 #include <Python.h>
 #include "haldol.hh"
 
-/// forward-declare PyArrayObject and PyArray_Descr from numpy:
-struct _PyArray_Descr;
-struct tagPyArrayObject;
-typedef _PyArray_Descr PyArray_Descr;
-typedef tagPyArrayObject PyArrayObject;
+#define NO_IMPORT_ARRAY
+#include <numpy/arrayobject.h>
 
 namespace py {
     
@@ -43,7 +40,6 @@ namespace py {
     PyObject* string(char const*, std::size_t);
     PyObject* string(char);
     PyObject* format(char const*, ...);
-    // PyObject* format(std::string const&, ...);
     PyObject* object(PyObject* arg);
     PyObject* object(PyFileObject* arg);
     PyObject* object(PyStringObject* arg);
@@ -155,7 +151,7 @@ namespace py {
     namespace impl {
         
         __attribute__((format(printf, 1, 2)))
-        void argcheck(const char *format, ...);
+        void argcheck(const char* format, ...);
         va_list&& argcompand(std::nullptr_t, ...);
         
         #define static_argcheck(disambiguate, ...) \
@@ -582,11 +578,11 @@ namespace py {
         /// pollyfills for C++17 std::clamp()
         /// q.v. http://ideone.com/IpcDt9, http://en.cppreference.com/w/cpp/algorithm/clamp
         template <class T, class Compare>
-        constexpr const T& clamp(const T& v, const T& lo, const T& hi, Compare comp) {
+        constexpr T const& clamp(T const& v, T const& lo, T const& hi, Compare comp) {
             return comp(v, hi) ? std::max(v, lo, comp) : std::min(v, hi, comp);
         }
         template <class T>
-        constexpr const T& clamp(const T& v, const T& lo, const T& hi) {
+        constexpr T const& clamp(T const& v, T const& lo, T const& hi) {
             return clamp(v, lo, hi, std::less<>());
         }
         
@@ -642,7 +638,7 @@ namespace py {
             if (!source) { return std::unique_ptr<T>(); }
             
             /// Throws a std::bad_cast() if this doesn't work out
-            T *destination = &dynamic_cast<T&>(*source.get());
+            T* destination = &dynamic_cast<T&>(*source.get());
             
             source.release();
             std::unique_ptr<T> out(destination);

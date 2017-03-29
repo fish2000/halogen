@@ -1,6 +1,5 @@
 
 from libc.stdint cimport *
-# from libcpp.map cimport map as std_map
 from libcpp.string cimport string
 from libcpp.vector cimport vector
 from intrusiveptr cimport IntrusivePtr

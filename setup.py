@@ -34,7 +34,8 @@ haldol_sources = [os.path.join('haldol', source) for source in haldol_source_nam
 include_dirs = [
     get_python_inc(plat_specific=1),
     numpy.get_include(),
-    'haldol/include']
+    'haldol/include',
+    '.']
 
 define_macros = []
 define_macros.append(

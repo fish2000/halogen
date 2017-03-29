@@ -7,9 +7,6 @@
 #include "gil.hh"
 #include "structcode.hh"
 
-#define NO_IMPORT_ARRAY
-#include <numpy/ndarrayobject.h>
-
 namespace py {
     
     PyObject* None()  { return Py_BuildValue("O", Py_None); }
@@ -49,13 +46,6 @@ namespace py {
         va_end(arguments);
         return out;
     }
-    // PyObject* format(std::string const& format, ...) {
-    //     va_list arguments;
-    //     va_start(arguments, format);
-    //     PyObject* out = PyString_FromFormatV(format.c_str(), arguments);
-    //     va_end(arguments);
-    //     return out;
-    // }
     #elif PY_MAJOR_VERSION >= 3
     PyObject* string(std::string const& s) {
         return PyBytes_FromStringAndSize(s.c_str(), s.size());
@@ -85,13 +75,6 @@ namespace py {
         va_end(arguments);
         return out;
     }
-    // PyObject* format(std::string const& format, ...) {
-    //     va_list arguments;
-    //     va_start(arguments, format);
-    //     PyObject* out = PyString_FromFormatV(format.c_str(), arguments);
-    //     va_end(arguments);
-    //     return out;
-    // }
     #endif
     
     PyObject* object(PyObject* arg) {
@@ -129,12 +112,10 @@ namespace py {
     PyObject* convert(int16_t operand)              { return PyInt_FromSsize_t(static_cast<Py_ssize_t>(operand)); }
     PyObject* convert(int32_t operand)              { return PyInt_FromSsize_t(static_cast<Py_ssize_t>(operand)); }
     PyObject* convert(int64_t operand)              { return PyLong_FromLong(operand); }
-    // PyObject* convert(int128_t operand)             { return PyLong_FromLongLong(operand); }
     PyObject* convert(uint8_t operand)              { return PyInt_FromSize_t(static_cast<std::size_t>(operand)); }
     PyObject* convert(uint16_t operand)             { return PyInt_FromSize_t(static_cast<std::size_t>(operand)); }
     PyObject* convert(uint32_t operand)             { return PyInt_FromSize_t(static_cast<std::size_t>(operand)); }
     PyObject* convert(uint64_t operand)             { return PyLong_FromUnsignedLong(operand); }
-    // PyObject* convert(uint128_t operand)            { return PyLong_FromUnsignedLongLong(operand); }
     PyObject* convert(float operand)                { return PyFloat_FromDouble(static_cast<double>(operand)); }
     PyObject* convert(double operand)               { return PyFloat_FromDouble(operand); }
     PyObject* convert(long double operand)          { return PyFloat_FromDouble(static_cast<double>(operand)); }
@@ -237,7 +218,7 @@ namespace py {
         }
     }
     
-    ref const& ref::set(pyptr_t new_referent) {
+    ref const& ref::set(ref::pyptr_t new_referent) {
         if (new_referent == referent) {
             return *this;
         }
@@ -251,7 +232,7 @@ namespace py {
         return *this;
     }
     
-    ref const& ref::set(pyptr_t new_referent, bool new_destroy_value) {
+    ref const& ref::set(ref::pyptr_t new_referent, bool new_destroy_value) {
         if (new_referent == referent) {
             return *this;
         }
@@ -443,14 +424,6 @@ namespace py {
         int setitem(PyObject* dict, PyObject* key, py::ref value) {
             return PyDict_SetItem(dict, key, value);
         }
-        
-        // int setitem(PyObject* dict, char const* key, py::ref value) {
-        //     return PyDict_SetItemString(dict, key, value);
-        // }
-        
-        // int setitem(PyObject* dict, std::string const& key, py::ref value) {
-        //     return PyDict_SetItemString(dict, key.c_str(), value);
-        // }
         
         int setitemstring(PyObject* dict, char const* key, py::ref value) {
             return PyDict_SetItemString(dict, key, value);

@@ -2,7 +2,6 @@
 # distutils: language = c++
 cimport cython
 from cython.operator cimport dereference as deref
-from cython.operator cimport address as addr
 
 from libc.stdint cimport *
 from libcpp.string cimport string
@@ -10,20 +9,27 @@ from libcpp.memory cimport unique_ptr
 from cpython.mapping cimport PyMapping_Check
 from cpython.long cimport PyLong_AsLong
 
-from ext cimport haldol
+from ext.haldol.convert cimport convert as haldol_convert
+from ext.haldol.terminal cimport terminal_width as haldol_terminal_width
+# from ext.haldol.typecode cimport typechar
 
 from ext.halide.outputs cimport Outputs as HalOutputs
 from ext.halide.module cimport Module as HalModule
 from ext.halide.module cimport LinkageType, LoweredFunc
-from ext.halide.module cimport funcvec_t, modulevec_t
+from ext.halide.module cimport funcvec_t
+from ext.halide.module cimport modulevec_t
 from ext.halide.module cimport link_modules as halide_link_modules
 from ext.halide.module cimport Internal as Linkage_Internal
 from ext.halide.module cimport External as Linkage_External
 
-from ext.halide.generator cimport stringmap_t, base_ptr_t
-from ext.halide.generator cimport GeneratorBase, GeneratorRegistry
-from ext.halide.generator cimport GeneratorContext, JITGeneratorContext
-from ext.halide.generator cimport generator_registry_get, generator_registry_create
+from ext.halide.generator cimport stringmap_t
+from ext.halide.generator cimport base_ptr_t
+from ext.halide.generator cimport GeneratorBase
+from ext.halide.generator cimport GeneratorRegistry
+from ext.halide.generator cimport GeneratorContext
+from ext.halide.generator cimport JITGeneratorContext
+from ext.halide.generator cimport generator_registry_get
+from ext.halide.generator cimport generator_registry_create
 
 from ext.halide.type cimport Type as HalType
 from ext.halide.type cimport Int as Type_Int
@@ -47,7 +53,8 @@ from ext.halide.util cimport stringvec_t
 from ext.halide.util cimport extract_namespaces
 from ext.halide.util cimport running_program_name as halide_running_program_name
 
-from ext.halide.buffer cimport Buffer, buffervec_t
+from ext.halide.buffer cimport Buffer
+from ext.halide.buffer cimport buffervec_t
 
 @cython.freelist(32)
 cdef class Type:
@@ -279,10 +286,10 @@ cdef class Target:
     property bits:
         
         def __get__(Target self):
-            return self.__this__.bits
+            return <int>self.__this__.bits
         
         def __set__(Target self, value):
-            self.__this__.bits = haldol.convert(value)
+            self.__this__.bits = <int>PyLong_AsLong(value)
     
     @cython.embedsignature(True)
     def has_gpu_feature(Target self):
@@ -935,6 +942,6 @@ def running_program_name():
 @cython.embedsignature(True)
 cpdef int terminal_width():
     """ Attempt to return the width of the terminal as an integer. """
-    cdef int32_t tw = haldol.terminal_width()
-    return haldol.convert(tw)
+    cdef int32_t tw = haldol_terminal_width()
+    return haldol_convert(tw)
 
