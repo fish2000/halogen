@@ -5,9 +5,10 @@ from __future__ import print_function
 import os
 import sys
 import sysconfig
-
 import ctypes.util
+
 from os.path import splitext
+from functools import wraps
 from filesystem import back_tick
 
 SHARED_LIBRARY_SUFFIX = splitext(ctypes.util.find_library("c"))[-1]
@@ -257,7 +258,7 @@ class ConfigUnion(object):
     
     """ A config class that provides values as the union of all provided values
         for the arbitrary config classes specified upon construction. E.g.:
-        
+            
             config_one = SysConfig()
             config_two = BrewedHalideConfig()
             config_union = ConfigUnion(config_one, config_two)
@@ -267,24 +268,30 @@ class ConfigUnion(object):
         
         """ Decorator class to abstract the entrails of a ConfigUnion.get_something() function,
             used with function stubs, like so:
-        
+            
             class ConfigUnion(object):
             
                 @union_of('includes')           # function name without "get_" prefix;
                 def get_includes(self, out):    # function definition, specifying `out` set;
-                    return out                  # transform the `out` set, if necessary
+                    return out                  # transform the `out` set, if necessary,
+                                                # and return it
         """
         
-        def __init__(self, name=None, outcall=None, *args, **kwargs):
+        def __init__(self, name=None):
+            """ Initialize the @union_of decorator, stashing the name of the function
+                to call upon those config-class instances wrapped by the ConfigUnion
+                instance in question. """
             self.name = None
             if name is not None:
                 self.name = "get_%s" % str(name)
         
         def __call__(self, base_function):
+            """ Process the decorated method, passed in as `base_function` --
+                The `base_function` call should process the populated `out` set of flags,
+                returning them modified or not. """
+            # N.B. the curly-brace expression below is a set comprehension:
+            @wraps(base_function)
             def getter(this):
-                """ Return the union of all flags amassed from the calling
-                    of all base Config objects' %s(): """ % self.name
-                # N.B. the curly-brace expression below is a set comprehension:
                 out = set()
                 for config in this.configs:
                     function_to_call = getattr(config, self.name)
@@ -330,59 +337,29 @@ class ConfigUnion(object):
         self.configs = list(configs)
     
     @union_of(name='includes')
-    def get_includes(self, out):
-        return out
+    def get_includes(self, includes):
+        """ Return the union of all flags amassed from the calling
+            of all base Config objects' `get_includes()`: """
+        return includes
     
     @union_of(name='libs')
-    def get_libs(self, out):
-        return out
+    def get_libs(self, libs):
+        """ Return the union of all flags amassed from the calling
+            of all base Config objects' `get_libs()`: """
+        return libs
     
     @union_of(name='cflags')
-    def get_cflags(self, out):
-        return self.highest_optimization_level(out)
+    def get_cflags(self, cflags):
+        """ Return the union of all flags amassed from the calling
+            of all base Config objects' `get_cflags()`: """
+        # Consolidate optimization flags, passing only the highest flag:
+        return self.highest_optimization_level(cflags)
     
     @union_of(name='ldflags')
-    def get_ldflags(self, out):
-        return out
-
-
-class OldConfigUnion(object):
-    
-    def get_includes(self):
+    def get_ldflags(self, ldflags):
         """ Return the union of all flags amassed from the calling
-            of all base Config objects' get_includes(): """
-        # N.B. the curly-brace expression below is a set comprehension:
-        out = set()
-        for config in self.configs:
-            out |= { x.rstrip() for x in (" %s" % str(" %s" % config.get_includes())).split(self.TOKEN) }
-        return (self.TOKEN.join(sorted([flag.strip() for flag in out]))).strip()
-    
-    def get_libs(self):
-        """ Return the union of all flags amassed from the calling
-            of all base Config objects' get_libs(): """
-        # N.B. the curly-brace expression below is a set comprehension:
-        out = set()
-        for config in self.configs:
-            out |= { x.rstrip() for x in (" %s" % str(" %s" % config.get_libs())).split(self.TOKEN) }
-        return (self.TOKEN.join(sorted([flag.strip() for flag in out]))).strip()
-    
-    def get_cflags(self):
-        """ Return the union of all flags amassed from the calling
-            of all base Config objects' get_cflags(): """
-        # N.B. the curly-brace expression below is a set comprehension:
-        out = set()
-        for config in self.configs:
-            out |= { x.rstrip() for x in (" %s" % str(" %s" % config.get_cflags())).split(self.TOKEN) }
-        return (self.TOKEN.join(sorted([flag.strip() for flag in self.highest_optimization_level(out)]))).strip()
-    
-    def get_ldflags(self):
-        """ Return the union of all flags amassed from the calling
-            of all base Config objects' get_ldflags(): """
-        # N.B. the curly-brace expression below is a set comprehension:
-        out = set()
-        for config in self.configs:
-            out |= { x.rstrip() for x in (" %s" % str(" %s" % config.get_ldflags())).split(self.TOKEN) }
-        return (self.TOKEN.join(sorted([flag.strip() for flag in out]))).strip()
+            of all base Config objects' `get_ldflags()`: """
+        return ldflags
 
 
 def CC(conf, outfile, infile, verbose=DEFAULT_VERBOSITY):
