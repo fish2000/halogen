@@ -75,7 +75,7 @@ class PythonConfig(object):
 class BrewedPythonConfig(PythonConfig):
     
     def __init__(self, brew_name='python'):
-        cmd = "brew --prefix %s" % brew_name
+        cmd = "/usr/local/bin/brew --prefix %s" % brew_name
         super(BrewedPythonConfig, self).__init__(cmd)
     
     def include(self):
@@ -171,7 +171,7 @@ class BrewedConfig(object):
         if not brew_name:
             brew_name = 'halide'
         self.brew_name = brew_name
-        cmd = '%s --prefix %s' % (self.brew, self.brew_name)
+        cmd = '/usr/local/bin/%s --prefix %s' % (self.brew, self.brew_name)
         self.prefix = back_tick(cmd, ret_err=False)
     
     def subdirectory(self, subdir):
@@ -228,8 +228,25 @@ class ConfigUnion(object):
     """ WTF HAX """
     TOKEN = ' -'
     
+    optimization_levels = ('0', 's', 'fast', 'g', '1', '', '2', '3' '4')
+    optimization_flags = ["O%s" % flag for flag in optimization_levels]
+    
     def __init__(self, *configs):
         self.configs = list(configs)
+    
+    @classmethod
+    def highest_optimization_level(cls, flags):
+        """ Strip all but the highest optimization-level compiler flag
+            from a set of (de-dashed) flags. Returns a new set. """
+        optflags = set(flags) & set(cls.optimization_flags)
+        if len(optflags) < 1:
+            return flags
+        levels_index = reduce(lambda x, y: max(x, y),
+                           map(lambda flag: cls.optimization_flags.index(flag),
+                               optflags))
+        out = set(flags) - set(cls.optimization_flags)
+        out |= set([cls.optimization_flags[levels_index]])
+        return out
     
     def get_includes(self):
         out = set()
@@ -247,7 +264,7 @@ class ConfigUnion(object):
         out = set()
         for config in self.configs:
             out |= set((" %s" % config.get_cflags()).split(self.TOKEN))
-        return (self.TOKEN.join(sorted([flag.strip() for flag in out]))).strip()
+        return (self.TOKEN.join(sorted([flag.strip() for flag in self.highest_optimization_level(out)]))).strip()
     
     def get_ldflags(self):
         out = set()

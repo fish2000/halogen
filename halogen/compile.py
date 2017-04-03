@@ -6,6 +6,7 @@ import os
 import shutil
 import config
 from tempfile import mktemp
+from errors import HalogenError
 from filesystem import TemporaryName
 
 CONF = config.ConfigUnion(config.SysConfig(),
@@ -14,16 +15,17 @@ VERBOSE = True
 
 # A few bespoke errors ... because yes on the occasions I do indulge myself,
 # my version of a real TREAT-YO-SELF bender is: exception subclasses. It is true.
+# All are subclasses of both IOError and halogen.errors.HalogenError:
 
-class CompilerError(Exception):
+class CompilerError(IOError, HalogenError):
     """ A boo-boo during compilation """
     pass
 
-class LinkerError(Exception):
+class LinkerError(IOError, HalogenError):
     """ A link-time owie freakout """
     pass
 
-class ArchiverError(Exception):
+class ArchiverError(IOError, HalogenError):
     """ We couldn't be making the archive dood """
     pass
 
@@ -47,9 +49,9 @@ class Generator(object):
     def compile(self):
         if not self._compiled:
             if not os.path.isfile(self.source):
-                raise IOError("can't find compilation input: %s" % self.source)
+                raise CompilerError("can't find compilation input: %s" % self.source)
             if os.path.exists(self.destination):
-                raise IOError("can't overwrite compilation output: %s" % self.destination)
+                raise CompilerError("can't overwrite compilation output: %s" % self.destination)
             splitbase = os.path.splitext(os.path.basename(self.source))
             self.transient = mktemp(prefix=splitbase[0],
                                     suffix="%s.o" % splitbase[1])
@@ -135,7 +137,7 @@ class Generators(object):
     
     def compile_all(self):
         if len(self.sources) < 1:
-            raise IOError("can't find any compilation inputs: %s" % self.directory)
+            raise CompilerError("can't find any compilation inputs: %s" % self.directory)
         for source in self.sources:
             with TemporaryName(suffix="%s.o" % self.suffix) as tn:
                 with Generator(self.conf,
