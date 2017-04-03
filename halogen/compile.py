@@ -11,7 +11,8 @@ from filesystem import TemporaryName
 
 CONF = config.ConfigUnion(config.SysConfig(),
                           config.BrewedHalideConfig())
-VERBOSE = True
+
+DEFAULT_VERBOSITY = config.DEFAULT_VERBOSITY
 
 # A few bespoke errors ... because yes on the occasions I do indulge myself,
 # my version of a real TREAT-YO-SELF bender is: exception subclasses. It is true.
@@ -37,13 +38,14 @@ class Generator(object):
         destination. An intermediate temporary file is used, for some reason.
         Use it as a context manager for atomic auto-cleanup, if you're into that. """
     
-    def __init__(self, conf, destination, source):
+    def __init__(self, conf, destination, source, **kwargs):
+        self.VERBOSE = kwargs.pop('verbose', DEFAULT_VERBOSITY)
         self._compiled = False
         self.conf = conf
         self.destination = destination
         self.source = os.path.realpath(source)
         self.result = tuple()
-        if VERBOSE:
+        if self.VERBOSE:
             print("Compiling generator: %s\n" % self.source)
     
     def compile(self):
@@ -57,7 +59,7 @@ class Generator(object):
                                     suffix="%s.o" % splitbase[1])
             self.result += config.CXX(self.conf,
                                       self.transient,
-                                      self.source, verbose=VERBOSE)
+                                      self.source, verbose=self.VERBOSE)
     
     @property
     def compiled(self):
@@ -91,11 +93,13 @@ class Generators(object):
         it's like POOF, no fuss no muss, basically """
     
     def __init__(self, conf, destination, directory=None, suffix="cpp",
-                                          do_shared=True, do_static=True):
+                                          do_shared=True, do_static=True,
+                                          **kwargs):
         if not directory:
             directory = os.getcwd()
         if not suffix:
             suffix = "cpp"
+        self.VERBOSE = kwargs.pop('verbose', DEFAULT_VERBOSITY)
         self._compiled = False
         self._linked = False
         self._archived = False
@@ -111,7 +115,7 @@ class Generators(object):
         self.prelink = []
         self.link_result = tuple()
         self.archive_result = tuple()
-        if VERBOSE:
+        if self.VERBOSE:
             print(u"Scanning %s for “%s” files" % (self.directory, self.suffix))
         for path, dirs, files in os.walk(self.directory,
                                          followlinks=True):
@@ -120,7 +124,7 @@ class Generators(object):
                     self.sources.append(
                         os.path.realpath(
                             os.path.join(path, df)))
-        if VERBOSE:
+        if self.VERBOSE:
             print("Found %s generator sources\n" % len(self.sources))
     
     @property
@@ -141,8 +145,8 @@ class Generators(object):
         for source in self.sources:
             with TemporaryName(suffix="%s.o" % self.suffix) as tn:
                 with Generator(self.conf,
-                               destination=tn.name,
-                               source=source) as gen:
+                               source=source, destination=tn.name,
+                               verbose=self.VERBOSE) as gen:
                     if gen.compiled:
                         self.prelink.append(tn.do_not_destroy())
         if len(self.sources) == len(self.prelink):
@@ -157,7 +161,7 @@ class Generators(object):
             raise LinkerError("can't overwrite linker output: %s" % self.library)
         self.link_result += config.LD(self.conf,
                                       self.library,
-                                     *self.prelink, verbose=VERBOSE)
+                                     *self.prelink, verbose=self.VERBOSE)
     
     def arch(self):
         if not self.compiled:
@@ -168,7 +172,7 @@ class Generators(object):
             raise ArchiverError("can't overwrite archiver output: %s" % self.archive)
         self.archive_result += config.AR(self.conf,
                                          self.archive,
-                                        *self.prelink, verbose=VERBOSE)
+                                        *self.prelink, verbose=self.VERBOSE)
     
     def clear(self):
         for of in self.prelink:
@@ -180,7 +184,7 @@ class Generators(object):
         
         # 2: link dynamically
         if self.do_shared:
-            if VERBOSE:
+            if self.VERBOSE:
                 print("Linking %s generators as %s\n" % (len(self.prelink),
                                                          os.path.basename(self.library)))
             self.link()
@@ -192,7 +196,7 @@ class Generators(object):
         
         # 3: link statically (née 'archive')
         if self.do_static:
-            if VERBOSE:
+            if self.VERBOSE:
                 print("Archiving %s generators as %s\n" % (len(self.prelink),
                                                            os.path.basename(self.archive)))
             self.arch()
@@ -214,12 +218,13 @@ if __name__ == '__main__':
     
     library = "%s%s" % (destination, config.SHARED_LIBRARY_SUFFIX)
     archive = "%s%s" % (destination, config.STATIC_LIBRARY_SUFFIX)
+    
     if os.path.isfile(library):
         os.unlink(library)
     if os.path.isfile(archive):
         os.unlink(archive)
     
-    with Generators(CONF, destination, directory) as gens:
+    with Generators(CONF, destination, directory, verbose=True) as gens:
         print("IS IT COMPILED? -- %s" % gens.compiled and "YES" or "no")
         print("IS IT LINKED? -- %s" % gens.linked and "YES" or "no")
         print("IS IT ARCHIVED? -- %s" % gens.archived and "YES" or "no")
