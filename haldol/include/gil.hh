@@ -1,6 +1,6 @@
 
-#ifndef LIBIMREAD_PYTHON_IM_INCLUDE_GIL_HPP_
-#define LIBIMREAD_PYTHON_IM_INCLUDE_GIL_HPP_
+#ifndef HALDOL_INCLUDE_GIL_HPP_
+#define HALDOL_INCLUDE_GIL_HPP_
 
 #include <Python.h>
 
@@ -30,4 +30,4 @@ namespace py {
     
 } /* namespace py */
 
-#endif /// LIBIMREAD_PYTHON_IM_INCLUDE_GIL_HPP_
+#endif /// HALDOL_INCLUDE_GIL_HPP_

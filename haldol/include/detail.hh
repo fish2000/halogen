@@ -1,6 +1,6 @@
 
-#ifndef LIBIMREAD_PYTHON_IM_INCLUDE_DETAIL_HPP_
-#define LIBIMREAD_PYTHON_IM_INCLUDE_DETAIL_HPP_
+#ifndef HALDOL_INCLUDE_DETAIL_HPP_
+#define HALDOL_INCLUDE_DETAIL_HPP_
 
 #include <tuple>
 #include <array>
@@ -676,4 +676,4 @@ namespace std {
     
 } /* namespace std */
 
-#endif /// LIBIMREAD_PYTHON_IM_INCLUDE_DETAIL_HPP_
+#endif /// HALDOL_INCLUDE_DETAIL_HPP_
