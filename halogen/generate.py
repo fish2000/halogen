@@ -9,6 +9,27 @@ valid_emits = frozenset([
     'stmt'
 ])
 
+def preload(library_path, **kwargs):
+    import os, ctypes
+    import config
+    from errors import GeneratorError
+    verbose = bool(kwargs.pop('verbose', config.DEFAULT_VERBOSITY))
+    
+    if not os.path.exists(library_path):
+        raise GeneratorError("No library exists at %s" % library_path)
+    realpth = os.path.realpath(library_path)
+    if realpth in preload.loaded_libraries:
+        if verbose:
+            print("Library %s previously loaded" % realpth)
+        return preload.loaded_libraries[realpth]
+    library_handle = ctypes.cdll.LoadLibrary(realpth)
+    preload.loaded_libraries[realpth] = library_handle
+    if verbose:
+        print("Library %s loaded afresh" % realpth)
+    return preload.loaded_libraries[realpth]
+
+preload.loaded_libraries = dict()
+
 def generate(*generators, **arguments):
     import os
     import hal.api
@@ -83,17 +104,19 @@ def generate(*generators, **arguments):
         module = hal.api.Module(module)
 
 if __name__ == '__main__':
+    import config
+    
     generate('my_first_generator',
-                    verbose=True,
+                    verbose=config.DEFAULT_VERBOSITY,
                     target='host',
                     output_directory='/tmp')
     
     generate('my_second_generator',
-                    verbose=True,
+                    verbose=config.DEFAULT_VERBOSITY,
                     target='host',
                     output_directory='/tmp')
     
     generate('brighten',
-                    verbose=True,
+                    verbose=config.DEFAULT_VERBOSITY,
                     target='host',
                     output_directory='/tmp')

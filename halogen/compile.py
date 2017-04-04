@@ -6,7 +6,8 @@ import os
 import shutil
 import config
 from tempfile import mktemp
-from errors import HalogenError
+from errors import HalogenError, GeneratorError
+from generate import preload
 from filesystem import TemporaryName
 
 CONF = config.ConfigUnion(config.SysConfig(),
@@ -174,6 +175,13 @@ class Generators(object):
                                          self.archive,
                                         *self.prelink, verbose=self.VERBOSE)
     
+    def preload_all(self):
+        if self.compiled and self.linked:
+            # preload() may also raise GeneratorError
+            return preload(gens.library)
+        else:
+            raise GeneratorError("can't preload from an uncompiled/unlinked generator")
+    
     def clear(self):
         for of in self.prelink:
             os.unlink(of)
@@ -213,6 +221,13 @@ class Generators(object):
 
 if __name__ == '__main__':
     
+    import sys
+    sys.path.append(os.path.dirname(os.path.dirname(__file__)))
+    sys.path.append(os.path.dirname(__file__))
+    
+    # from generate import preload
+    import hal.api
+    
     directory = "/Users/fish/Dropbox/halogen/generators"
     destination = "/tmp/yodogg"
     
@@ -224,8 +239,40 @@ if __name__ == '__main__':
     if os.path.isfile(archive):
         os.unlink(archive)
     
+    handle = None
+    loaded_generators = 0
+    
     with Generators(CONF, destination, directory, verbose=True) as gens:
-        print("IS IT COMPILED? -- %s" % gens.compiled and "YES" or "no")
-        print("IS IT LINKED? -- %s" % gens.linked and "YES" or "no")
-        print("IS IT ARCHIVED? -- %s" % gens.archived and "YES" or "no")
-
+        compiled = gens.compiled and "YES" or "no"
+        linked = gens.linked and "YES" or "no"
+        archived = gens.archived and "YES" or "no"
+        
+        print("IS IT COMPILED? -- %s" % compiled)
+        print("IS IT LINKED? -- %s" % linked)
+        print("IS IT ARCHIVED? -- %s" % archived)
+        print("")
+        
+        try:
+            hanlde = gens.preload_all()
+        except GeneratorError, exc:
+            if DEFAULT_VERBOSITY:
+                print("... FAILED TO LOAD LIBRARIES FROM %s" % gens.library)
+                print("%s" % str(exc))
+        
+        loaded_generators += len(hal.api.registered_generators())
+        
+        if DEFAULT_VERBOSITY:
+            print("... SUCCESSFULLY LOADED LIBRARIES FROM %s" % gens.library)
+            print("... THERE ARE %s GENERATORS LOADED FROM THAT LIBRARY, DOGG" % loaded_generators)
+        
+        '''if gens.compiled and gens.linked:
+            try:
+                handle = preload(gens.library)
+            except GeneratorError, exc:
+                if DEFAULT_VERBOSITY:
+                    print("... FAILED TO LOAD LIBRARIES FROM %s" % gens.library)
+                    print("%s" % str(exc))
+            loaded_generators += len(hal.api.registered_generators())
+            if DEFAULT_VERBOSITY:
+                print("... THERE ARE %s GENERATORS LOADED FROM THAT LIBRARY, DOGG" % loaded_generators)
+            '''
