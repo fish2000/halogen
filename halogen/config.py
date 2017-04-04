@@ -305,8 +305,8 @@ class ConfigUnion(object):
     
     # Ordered list of all possible optimization flags:
     optimization_flags = ["O%s" % str(flag) \
-                            for flag in \
-                           ('0', 's', 'fast', 'g', '1', '', '2', '3', '4')]
+                                for flag in \
+                               ('0', 's', 'fast', 'g', '1', '', '2', '3', '4')]
     
     # Set form of optimization flags a la `optimization_flags` above:
     optimization_set = frozenset(optimization_flags)
@@ -317,10 +317,10 @@ class ConfigUnion(object):
     # Ordered list of all possible C++ standard flags --
     # adapted from Clang’s LangStandards.def, https://git.io/vSRX9
     cxx_standard_flags = ["std=%s" % str(flag) \
-                               for flag in \
-                          ('c++98', 'gnu++98', 'c++03', 'c++0x', 'gnu++0x', 'c++11', 'gnu++11',
-                          'c++1y', 'gnu++1y', 'c++14', 'gnu++14', 'c++1z', 'gnu++1z',
-                          'c++17', 'gnu++17')]
+                                   for flag in \
+                                  ('c++98', 'gnu++98', 'c++03', 'c++0x', 'gnu++0x', 'c++11', 'gnu++11',
+                                   'c++1y', 'gnu++1y', 'c++14', 'gnu++14', 'c++1z', 'gnu++1z',
+                                   'c++17', 'gnu++17')]
     
     # Set form of C++ standard flags a la `cxx_standard_flags` above:
     cxx_standard_set = frozenset(cxx_standard_flags)
@@ -369,7 +369,7 @@ class ConfigUnion(object):
         if len(stdflags) < 1:
             return flags
         
-        # Find the optflag with the highest index into cls.cxx_standard_flags:
+        # Find the stdflag with the highest index into cls.cxx_standard_flags:
         flags_index = reduce(lambda x, y: max(x, y),
                           map(lambda flag: cls.cxx_standard_flags.index(flag),
                               stdflags))
@@ -382,6 +382,9 @@ class ConfigUnion(object):
         return out
     
     def __init__(self, *configs):
+        """ Initialize a ConfigUnion instance with one or more config
+            object instances, as needed (although using only one makes
+            very little sense, frankly): """
         self.configs = list(configs)
     
     @union_of(name='includes')
@@ -401,7 +404,7 @@ class ConfigUnion(object):
         """ Return the union of all flags amassed from the calling
             of all base Config objects' `get_cflags()`: """
         # Consolidate optimization and C++ standard flags,
-        # passing only the highest respective flags:
+        # passing only the respective highest-value flags:
         return self.highest_cxx_standard_level(
                self.highest_optimization_level(cflags))
     
