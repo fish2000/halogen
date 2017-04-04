@@ -14,7 +14,10 @@ def preload(library_path, **kwargs):
     import os, ctypes
     import config
     from errors import GeneratorError
+    
     verbose = bool(kwargs.pop('verbose', config.DEFAULT_VERBOSITY))
+    if not hasattr(preload, 'loaded_libraries'):
+        preload.loaded_libraries = {}
     
     if not os.path.exists(library_path):
         raise GeneratorError("No library exists at %s" % library_path)
@@ -33,7 +36,7 @@ def preload(library_path, **kwargs):
         print("Library %s loaded afresh" % realpth)
     return preload.loaded_libraries[realpth]
 
-preload.loaded_libraries = {}
+# preload.loaded_libraries = {}
 
 def generate(*generators, **arguments):
     import os
