@@ -3,40 +3,46 @@
 from __future__ import print_function
 
 valid_emits = frozenset([
-    'assembly', 'bitcode',
+    'assembly',
+    'bitcode',
     'cpp', 'cpp_stub',
-    'h', 'html', 'o',
+    'h', 'o',
     'static_library',
-    'stmt'
+    'stmt',
+    'stmt_html'
 ])
 
 def preload(library_path, **kwargs):
     import os, ctypes
     import config
     from errors import GeneratorError
-    
     verbose = bool(kwargs.pop('verbose', config.DEFAULT_VERBOSITY))
+    
+    # initialize the memoization cache, if we haven’t already:
     if not hasattr(preload, 'loaded_libraries'):
         preload.loaded_libraries = {}
     
+    # throw if the path is bad:
     if not os.path.exists(library_path):
         raise GeneratorError("No library exists at %s" % library_path)
     
+    # normalize the path:
     realpth = os.path.realpath(library_path)
     
+    # return existant handle, because we already loaded that:
     if realpth in preload.loaded_libraries:
         if verbose:
             print("Library %s previously loaded" % realpth)
         return preload.loaded_libraries[realpth]
     
+    # so far, I have no use for the object returned by LoadLibrary:
     library_handle = ctypes.cdll.LoadLibrary(realpth)
     preload.loaded_libraries[realpth] = library_handle
     
+    # return the new and freshly loaded handle
     if verbose:
         print("Library %s loaded afresh" % realpth)
     return preload.loaded_libraries[realpth]
-
-# preload.loaded_libraries = {}
 
 def generate(*generators, **arguments):
     import os
