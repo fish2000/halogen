@@ -13,7 +13,6 @@ from cpython.mapping cimport PyMapping_Check
 from cpython.object cimport PyObject_IsTrue
 
 from ext.haldol.convert cimport convert as haldol_convert
-# from ext.haldol.typecode cimport typechar
 
 from ext.halide.outputs cimport Outputs as HalOutputs
 from ext.halide.module cimport Module as HalModule
@@ -63,10 +62,6 @@ from ext.halide.util cimport running_program_name as halide_running_program_name
 
 from ext.halide.buffer cimport Buffer
 from ext.halide.buffer cimport buffervec_t
-
-# import numpy
-# cimport numpy
-# numpy.import_array()
 
 @cython.freelist(32)
 cdef class Type:
