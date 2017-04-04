@@ -2,7 +2,7 @@
 
 import os
 import shutil
-from tempfile import mktemp, mkdtemp
+from tempfile import mktemp, mkdtemp, gettempprefix
 from utils import stringify
 
 def back_tick(cmd, ret_err=False, as_str=True, raise_err=None, verbose=False):
@@ -191,3 +191,37 @@ class TemporaryDirectory(object):
         if self.exists:
             return os.path.realpath(self.name)
         return self.name
+
+
+def NamedTemporaryFile(mode='w+b', bufsize=-1,
+                       suffix="tmp", prefix=gettempprefix(), dir=None, delete=True):
+    
+    """ Variation on tempfile.NamedTemporaryFile(…), such that suffixes are passed
+        WITHOUT specifying the period in front (versus the standard library version
+        which makes you pass suffixes WITH the fucking period, ugh).
+    """
+    
+    from tempfile import _bin_openflags, _text_openflags,   \
+                         _mkstemp_inner, _os,               \
+                         _TemporaryFileWrapper,             \
+                         gettempdir
+    
+    if dir is None:
+        dir = gettempdir()
+    
+    if 'b' in mode:
+        flags = _bin_openflags
+    else:
+        flags = _text_openflags
+    
+    if _os.name == 'nt' and delete:
+        flags |= _os.O_TEMPORARY
+    
+    (fd, name) = _mkstemp_inner(dir, prefix, ".%s" % suffix, flags)
+    try:
+        file = _os.fdopen(fd, mode, bufsize)
+        return _TemporaryFileWrapper(file, name, delete)
+    except BaseException:
+        _os.unlink(name)
+        _os.close(fd)
+        raise

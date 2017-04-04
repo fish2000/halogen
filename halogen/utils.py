@@ -83,13 +83,12 @@ def print_config(conf):
 def test_compile(conf, test_source):
     import sys, os
     from config import CXX
-    from tempfile import NamedTemporaryFile
-    from filesystem import TemporaryName
+    from filesystem import NamedTemporaryFile, TemporaryName
     
     output = tuple()
     px = "yodogg-"
     
-    with NamedTemporaryFile(suffix=".cpp", prefix=px) as tf:
+    with NamedTemporaryFile(suffix="cpp", prefix=px) as tf:
         tf.file.write(test_source)
         tf.file.flush()
         
@@ -106,7 +105,7 @@ def test_compile(conf, test_source):
                 print("COMPILATION FAILED:")
                 print(output[0], file=sys.stdout)
                 print(output[1], file=sys.stderr)
-                return
+                return False
             
             # success!
             print("COMPILATION TOTALLY WORKED!")
@@ -116,6 +115,7 @@ def test_compile(conf, test_source):
                 # another = os.path.basename(mktemp(suffix=".cpp.o", prefix=px))
                 # shutil.copy2(adotout, "/tmp/%s" % another)
                 # os.unlink(adotout)
-                pass
+                return True
             else:
                 print("... BUT THEN WHERE THE FUCK IS MY SHIT?!?!")
+    return False

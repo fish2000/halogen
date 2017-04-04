@@ -31,20 +31,21 @@ def print_config(conf):
     print("")
     # print("-" * HORIZONTAL_RULE_WIDTH)
 
-class ConfigTests(BaseCase):
+class ConfigTesticles(BaseCase):
     
     def setUp(self):
-        super(ConfigTests, self).setUp()
+        super(ConfigTesticles, self).setUp()
         from halogen.compile import CONF
         self.conf = CONF
     
     def test_compile(self):
         # import shutil
-        from tempfile import NamedTemporaryFile, mktemp
+        from tempfile import mktemp
+        from halogen.filesystem import NamedTemporaryFile
         from halogen.config import test_generator_source, CXX
         output = tuple()
         px = "yodogg-"
-        with NamedTemporaryFile(suffix=".cpp", prefix=px) as tf:
+        with NamedTemporaryFile(suffix="cpp", prefix=px) as tf:
             tf.file.write(test_generator_source)
             tf.file.flush()
             adotout = mktemp(suffix=".cpp.o", prefix=px)
