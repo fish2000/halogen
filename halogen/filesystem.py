@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from tempfile import mktemp
+from tempfile import mktemp, mkdtemp
 import os
 import shutil
 
@@ -68,6 +68,8 @@ class TemporaryName(object):
         class (when invoked as a context manager) will clean it up for you.
         Unless you say not to. Really it's your call dogg I could give AF """
     
+    fields = ('name', 'exists', 'destroy', 'prefix', 'suffix')
+    
     def __init__(self, prefix="yo-dogg-", suffix="tmp"):
         self._name = mktemp(prefix=prefix, suffix=".%s" % suffix)
         self._destroy = True
@@ -110,4 +112,99 @@ class TemporaryName(object):
                     subdirs.extend([os.path.join(path, td) for td in dirs])
                 for subdir in subdirs:
                     os.rmdir(subdir)
+    
+    def to_string(self):
+        field_dict = {}
+        for field in self.fields:
+            field_value = getattr(self, field, "")
+            if field_value:
+                field_dict.update({ field : field_value })
+        field_dict_items = []
+        for k, v in field_dict.items():
+            field_dict_items.append('''%s="%s"''' % (k, v))
+        return "%s(%s) @ %s" % (self.__class__.__name__,
+                                ", ".join(field_dict_items),
+                                hex(id(self)))
+    
+    def __repr__(self):
+        return self.to_string()
+    
+    def __str__(self):
+        return self.to_string()
 
+class TemporaryDirectory(object):
+    
+    """ It's funny how this code looks, like, 99 percent exactly like the above
+        TemporaryName class -- shit just works out that way. But this actually
+        creates the directory in question; much like filesystem::TemporaryDirectory
+        from libimread, this class wraps tempfile.mkdtemp() and can be used as a
+        context manager (the C++ orig used RAII). """
+    
+    fields = ('name', 'exists', 'destroy', 'prefix', 'suffix', 'parent')
+    
+    def __init__(self, prefix="TemporaryDirectory-", suffix="-yo-dogg", parent=None):
+        self._name = mkdtemp(prefix=prefix, suffix=suffix, dir=parent)
+        self._destroy = True
+        self.prefix = prefix
+        self.suffix = suffix
+        self.parent = parent
+    
+    @property
+    def name(self):
+        return self._name
+    
+    @property
+    def exists(self):
+        return os.path.exists(self._name)
+    
+    @property
+    def destroy(self):
+        return self._destroy
+    
+    def copy_all(self, destination):
+        if os.path.exists(destination):
+            raise IOError("copy_all() destination already existant: %s" % destination)
+        if self.exists:
+            return shutil.copytree(self.name, destination)
+        return False
+    
+    def do_not_destroy(self):
+        self._destroy = False
+        return self.name
+    
+    def __enter__(self):
+        if not self.exists:
+            raise IOError("TemporaryDirectory wasn't properly set up: %s" % self.name)
+        return self
+    
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        if self.exists and self.destroy:
+            if os.path.isfile(self._name):
+                os.unlink(self._name)
+            elif os.path.isdir(self._name):
+                subdirs = []
+                for path, dirs, files in os.walk(self._name, followlinks=True):
+                    for tf in files:
+                        os.unlink(os.path.join(path, tf))
+                    subdirs.extend([os.path.join(path, td) for td in dirs])
+                for subdir in subdirs:
+                    os.rmdir(subdir)
+    
+    def to_string(self):
+        field_dict = {}
+        for field in self.fields:
+            field_value = getattr(self, field, "")
+            if field_value:
+                field_dict.update({ field : field_value })
+        field_dict_items = []
+        for k, v in field_dict.items():
+            field_dict_items.append('''%s="%s"''' % (k, v))
+        return "%s(%s) @ %s" % (self.__class__.__name__,
+                                ", ".join(field_dict_items),
+                                hex(id(self)))
+    
+    def __repr__(self):
+        return self.to_string()
+    
+    def __str__(self):
+        return self.to_string()
