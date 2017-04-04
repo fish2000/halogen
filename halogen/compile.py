@@ -7,8 +7,8 @@ import shutil
 import config
 from tempfile import mktemp
 from errors import HalogenError, GeneratorError
-from generate import preload
-from filesystem import TemporaryName
+from generate import preload, generate
+from filesystem import TemporaryName, TemporaryDirectory, rm_rf
 
 CONF = config.ConfigUnion(config.SysConfig(),
                           config.BrewedHalideConfig())
@@ -94,22 +94,26 @@ class Generators(object):
         it's like POOF, no fuss no muss, basically """
     
     def __init__(self, conf, destination, directory=None, suffix="cpp",
+                                          prefix="yodogg",
                                           do_shared=True, do_static=True,
                                           **kwargs):
         if not directory:
             directory = os.getcwd()
         if not suffix:
             suffix = "cpp"
+        if not prefix:
+            prefix = "yodogg"
         self.VERBOSE = kwargs.pop('verbose', DEFAULT_VERBOSITY)
         self._compiled = False
         self._linked = False
         self._archived = False
         self.conf = conf
         self.destination = destination
-        self.library = "%s%s" % (destination, config.SHARED_LIBRARY_SUFFIX)
-        self.archive = "%s%s" % (destination, config.STATIC_LIBRARY_SUFFIX)
+        self.library = "%s/%s%s" % (destination, prefix, config.SHARED_LIBRARY_SUFFIX)
+        self.archive = "%s/%s%s" % (destination, prefix, config.STATIC_LIBRARY_SUFFIX)
         self.directory = directory
         self.suffix = suffix
+        self.prefix = prefix
         self.do_shared = do_shared
         self.do_static = do_static
         self.sources = []
@@ -231,42 +235,76 @@ def main():
     directory = "/Users/fish/Dropbox/halogen/generators"
     destination = "/tmp/yodogg"
     
-    library = "%s%s" % (destination, config.SHARED_LIBRARY_SUFFIX)
-    archive = "%s%s" % (destination, config.STATIC_LIBRARY_SUFFIX)
+    # library = "%s%s" % (destination, config.SHARED_LIBRARY_SUFFIX)
+    # archive = "%s%s" % (destination, config.STATIC_LIBRARY_SUFFIX)
     
-    if os.path.isfile(library):
-        os.unlink(library)
-    if os.path.isfile(archive):
-        os.unlink(archive)
+    # if os.path.isfile(library):
+    #     os.unlink(library)
+    # if os.path.isfile(archive):
+    #     os.unlink(archive)
     
     # handle = None
-    loaded_generators = 0
+    loaded_generator_count = 0
+    bsepths = None
+    outputs = None
+    modules = None
     
-    with Generators(CONF, destination, directory, verbose=True) as gens:
-        compiled = gens.compiled and "YES" or "no"
-        linked = gens.linked and "YES" or "no"
-        archived = gens.archived and "YES" or "no"
+    with TemporaryDirectory(prefix='yo-dogg-', suffix='') as td:
         
-        print("IS IT COMPILED? -- %s" % compiled)
-        print("IS IT LINKED? -- %s" % linked)
-        print("IS IT ARCHIVED? -- %s" % archived)
-        print("")
-        
-        try:
-            gens.preload_all()
-        except GeneratorError, exc:
+        with Generators(CONF, destination=td.name,
+                              directory=directory,
+                              verbose=True) as gens:
+            
+            library = "%s/%s%s" % (td.name, 'yodogg', config.SHARED_LIBRARY_SUFFIX)
+            archive = "%s/%s%s" % (td.name, 'yodogg', config.STATIC_LIBRARY_SUFFIX)
+            
+            compiled = gens.compiled and "YES" or "no"
+            linked = gens.linked and "YES" or "no"
+            archived = gens.archived and "YES" or "no"
+            
+            print("IS IT COMPILED? -- %s" % compiled)
+            print("IS IT LINKED? -- %s" % linked)
+            print("IS IT ARCHIVED? -- %s" % archived)
+            print("")
+            
+            try:
+                gens.preload_all()
+            except GeneratorError, exc:
+                if DEFAULT_VERBOSITY:
+                    print("... FAILED TO LOAD LIBRARIES FROM %s" % gens.library)
+                    print("%s" % str(exc))
+                return
+            
+            loaded_generators = hal.api.registered_generators()
+            loaded_generator_count += len(loaded_generators)
+            
             if DEFAULT_VERBOSITY:
-                print("... FAILED TO LOAD LIBRARIES FROM %s" % gens.library)
-                print("%s" % str(exc))
-            return
-        
-        loaded_generators += len(hal.api.registered_generators())
-        
-        if DEFAULT_VERBOSITY:
-            print("... SUCCESSFULLY LOADED LIBRARIES FROM %s" % gens.library)
-            print("... THERE ARE %s GENERATORS LOADED FROM THAT LIBRARY, DOGG" % loaded_generators)
-        
-        
+                print("... SUCCESSFULLY LOADED LIBRARIES FROM %s" % gens.library)
+                print("... THERE ARE %s GENERATORS LOADED FROM THAT LIBRARY, DOGG" % loaded_generator_count)
+            
+            if os.path.isfile(library):
+                print("LIBRARY: %s" % library)
+            if os.path.isfile(archive):
+                print("ARCHIVE: %s" % archive)
+            
+            # Copy the library and archive files to /tmp/yodogg:
+            if os.path.exists(destination):
+                if DEFAULT_VERBOSITY:
+                    print("Removing %s..." % destination)
+                rm_rf(destination)
+            if DEFAULT_VERBOSITY:
+                print("Copying from %s to %s..." % (td.name, destination))
+            td.copy_all(destination)
+            
+            if DEFAULT_VERBOSITY:
+                print('')
+            
+            # Run generators, storing output files in /tmp/yodogg
+            bsepths, outputs, modules = generate(*loaded_generators, verbose=DEFAULT_VERBOSITY,
+                                                                     target='host',
+                                                                     output_directory=destination)
+    
+    # ... scope exit for Generators `gens` and TemporaryDirectory `td`
 
 if __name__ == '__main__':
     main()

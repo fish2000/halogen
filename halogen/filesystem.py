@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 
-from tempfile import mktemp, mkdtemp
 import os
 import shutil
+from tempfile import mktemp, mkdtemp
+from utils import stringify
 
 def back_tick(cmd, ret_err=False, as_str=True, raise_err=None, verbose=False):
     """ Run command `cmd`, return stdout, or stdout, stderr if `ret_err`
@@ -59,6 +60,20 @@ def back_tick(cmd, ret_err=False, as_str=True, raise_err=None, verbose=False):
         err = err.decode('latin-1')
     return out, err
 
+def rm_rf(pth):
+    if os.path.isfile(pth):
+        os.unlink(pth)
+    elif os.path.isdir(pth):
+        subdirs = []
+        for path, dirs, files in os.walk(pth, followlinks=True):
+            for tf in files:
+                os.unlink(os.path.join(path, tf))
+            subdirs.extend([os.path.join(path, td) for td in dirs])
+        for subdir in subdirs:
+            os.rmdir(subdir)
+        os.rmdir(pth)
+    return True
+
 
 class TemporaryName(object):
     
@@ -98,40 +113,18 @@ class TemporaryName(object):
         self._destroy = False
         return self.name
     
-    def clear(self):
-        if os.path.isfile(self._name):
-            os.unlink(self._name)
-        elif os.path.isdir(self._name):
-            subdirs = []
-            for path, dirs, files in os.walk(self._name, followlinks=True):
-                for tf in files:
-                    os.unlink(os.path.join(path, tf))
-                subdirs.extend([os.path.join(path, td) for td in dirs])
-            for subdir in subdirs:
-                os.rmdir(subdir)
-    
     def __enter__(self):
         return self
     
     def __exit__(self, exc_type, exc_val, exc_tb):
         if self.exists and self.destroy:
-            self.clear()
+            rm_rf(self._name)
     
     def to_string(self):
-        field_dict = {}
-        for field in self.fields:
-            field_value = getattr(self, field, "")
-            if field_value:
-                field_dict.update({ field : field_value })
-        field_dict_items = []
-        for k, v in field_dict.items():
-            field_dict_items.append('''%s="%s"''' % (k, v))
-        return "%s(%s) @ %s" % (self.__class__.__name__,
-                                ", ".join(field_dict_items),
-                                hex(id(self)))
+        return stringify(self, self.fields)
     
     def __repr__(self):
-        return self.to_string()
+        return stringify(self, self.fields)
     
     def __str__(self):
         if self.exists:
@@ -149,7 +142,7 @@ class TemporaryDirectory(object):
     
     fields = ('name', 'exists', 'destroy', 'prefix', 'suffix', 'parent')
     
-    def __init__(self, prefix="TemporaryDirectory-", suffix="-yo-dogg", parent=None):
+    def __init__(self, prefix="TemporaryDirectory-", suffix="", parent=None):
         self._name = mkdtemp(prefix=prefix, suffix=suffix, dir=parent)
         self._destroy = True
         self.prefix = prefix
@@ -162,7 +155,7 @@ class TemporaryDirectory(object):
     
     @property
     def exists(self):
-        return os.path.exists(self._name)
+        return os.path.isdir(self._name)
     
     @property
     def destroy(self):
@@ -179,18 +172,6 @@ class TemporaryDirectory(object):
         self._destroy = False
         return self.name
     
-    def clear(self):
-        if os.path.isfile(self._name):
-            os.unlink(self._name)
-        elif os.path.isdir(self._name):
-            subdirs = []
-            for path, dirs, files in os.walk(self._name, followlinks=True):
-                for tf in files:
-                    os.unlink(os.path.join(path, tf))
-                subdirs.extend([os.path.join(path, td) for td in dirs])
-            for subdir in subdirs:
-                os.rmdir(subdir)
-    
     def __enter__(self):
         if not self.exists:
             raise IOError("TemporaryDirectory wasn't properly set up: %s" % self.name)
@@ -198,23 +179,13 @@ class TemporaryDirectory(object):
     
     def __exit__(self, exc_type, exc_val, exc_tb):
         if self.exists and self.destroy:
-            self.clear()
+            rm_rf(self.name)
     
     def to_string(self):
-        field_dict = {}
-        for field in self.fields:
-            field_value = getattr(self, field, "")
-            if field_value:
-                field_dict.update({ field : field_value })
-        field_dict_items = []
-        for k, v in field_dict.items():
-            field_dict_items.append('''%s="%s"''' % (k, v))
-        return "%s(%s) @ %s" % (self.__class__.__name__,
-                                ", ".join(field_dict_items),
-                                hex(id(self)))
+        return stringify(self, self.fields)
     
     def __repr__(self):
-        return self.to_string()
+        return stringify(self, self.fields)
     
     def __str__(self):
         if self.exists:

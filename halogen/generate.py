@@ -36,8 +36,7 @@ def preload(library_path, **kwargs):
         return preload.loaded_libraries[realpth]
     
     # so far, I have no use for the object returned by LoadLibrary:
-    library_handle = ctypes.cdll.LoadLibrary(realpth)
-    preload.loaded_libraries[realpth] = library_handle
+    preload.loaded_libraries[realpth] = ctypes.cdll.LoadLibrary(realpth)
     
     # return the new and freshly loaded handle
     if verbose:
@@ -48,26 +47,21 @@ def generate(*generators, **arguments):
     import os
     import config
     import hal.api
+    from utils import terminal_width
     
     generators = set([str(generator) for generator in generators])
-    
     verbose = bool(arguments.pop('verbose', config.DEFAULT_VERBOSITY))
-    
     target_string = str(arguments.pop('target', 'host'))
-    
     generator_names = set(arguments.pop('generator_names', hal.api.registered_generators()))
-    
-    output_directory = os.path.abspath(arguments.pop('output_directory',
-                                                     os.path.relpath(os.getcwd())))
-    
-    emits = set(arguments.pop('emit', ['static_library', 'o', 'h']))
-    
-    substitutions = arguments.pop('substitutions', tuple())
+    output_directory = os.path.abspath(arguments.pop('output_directory', os.path.relpath(os.getcwd())))
+    emits = set(arguments.pop('emit', ['static_library', 'h']))
+    substitutions = dict(arguments.pop('substitutions', tuple()))
     
     if target_string == '':
-        raise ValueError("generation target unspecified")
+        # raise ValueError("generation target unspecified")
+        target_string = "host"
     elif not hal.api.validate_target_string(target_string):
-        raise ValueError("generation target %s is invalid" % target_string)
+        raise ValueError("generation target string %s is invalid" % target_string)
     
     if len(generators) < 1:
         raise ValueError(">=1 generator is required")
@@ -84,42 +78,77 @@ def generate(*generators, **arguments):
     if not emits.issubset(valid_emits):
         raise ValueError("invalid emit in %s" % str(emits))
     
+    if verbose:
+        print("Compiling and running %s generators..." % len(generators))
+        print('')
+    
     emit_dict = dict()
     emit_dict['emit_static_library'] = \
         emit_dict['emit_o'] = \
         emit_dict['emit_h'] = False
-    emit_dict['substitutions'] = dict(substitutions)
+    
+    emit_dict['substitutions'] = substitutions
+    
     for emit in emits:
         emit_dict["emit_%s" % emit] = True
     
     emit_options = hal.api.EmitOptions(**emit_dict)
+    
+    if verbose:
+        print("Emit Options:")
+        print(emit_options.to_string())
+        print('')
+    
     target = hal.api.Target(target_string=target_string)
+    
+    if verbose:
+        print("Target:")
+        print(target.to_string())
+        print('')
+    
+    bsepths = list()
+    outputs = list()
+    modules = list()
+    
+    if verbose:
+        print('-' * max(terminal_width, 160))
     
     for generator in generators:
         base_path = hal.api.compute_base_path(output_directory, generator, "")
-        output_files = emit_options.compute_outputs_for_target_and_path(target, base_path)
-        outputs = output_files.static_library(None)
+        output = emit_options.compute_outputs_for_target_and_path(target, base_path)
+        # output = outputs.static_library(None)
+        
+        if verbose:
+            print("BSEPTH: %s" % str(base_path))
+            # print('')
+        
+        if verbose:
+            print("OUTPUT: %s" % output.to_string())
+            # print('')
         
         generator_args = dict(target=target.to_string())
         generator_args.update(arguments)
         
-        if verbose:
-            print("TARGET: %s" % target.to_string())
-            print('')
+        # if verbose:
+        #     print("TARGET: %s" % target.to_string())
+        #     print('')
         
-        if verbose:
-            print("OUTPUTS: %s" % outputs)
-            print('')
-        
-        module = hal.api.get_generator_module(generator, generator_args)
+        module = hal.api.get_generator_module(generator, arguments=generator_args)
         
         if verbose:
             print("MODULE: %s" % module.to_string())
-            print('-------------------------------------------------------------')
-            print('')
+            print('-' * max(terminal_width, 160))
+            # print('')
         
-        # module.compile(outputs)
-        module = hal.api.Module(module)
+        # module = hal.api.Module(module)
+        module.compile(output)
+        
+        bsepths.append(base_path)
+        outputs.append(output)
+        modules.append(module)
+    
+    return bsepths, outputs, modules
+
 
 def main():
     import config

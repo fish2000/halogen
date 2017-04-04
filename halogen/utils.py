@@ -30,6 +30,19 @@ def get_terminal_size(default_LINES=25, default_COLUMNS=80):
 
 terminal_width, terminal_height = get_terminal_size()
 
+def stringify(instance, fields):
+    field_dict = {}
+    for field in fields:
+        field_value = getattr(instance, field, "")
+        if field_value:
+            field_dict.update({ field : field_value })
+    field_dict_items = []
+    for k, v in field_dict.items():
+        field_dict_items.append('''%s="%s"''' % (k, v))
+    return "%s(%s) @ %s" % (instance.__class__.__name__,
+                            ", ".join(field_dict_items),
+                            hex(id(instance)))
+
 def terminal_print(message, color='red', asterisk='*'):
     """ Print a string to the terminal, centered and bookended with asterisks """
     from clint.textui.colored import red

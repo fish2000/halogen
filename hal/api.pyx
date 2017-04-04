@@ -263,9 +263,9 @@ cdef class Target:
         return HalTarget.validate_target_string(target_string)
     
     def __cinit__(Target self, *args, **kwargs):
-        target_string = ''
+        target_string = 'host'
         if 'target_string' in kwargs:
-            target_string = kwargs.get('target_string')
+            target_string = kwargs.get('target_string', "host")
         elif len(args) > 0:
             target_string = args[0]
         if target_string:
@@ -371,6 +371,7 @@ cdef class Target:
         return out
 
 
+@cython.freelist(32)
 cdef class Outputs:
     """ Cython wrapper class for Halide::Outputs """
     
@@ -575,6 +576,7 @@ cdef class Outputs:
 
 ctypedef GeneratorBase.EmitOptions EmOpts
 
+@cython.freelist(32)
 cdef class EmitOptions:
     """ Cython wrapper class for Halide::Internal::GeneratorBase::EmitOptions """
     
@@ -751,6 +753,26 @@ cdef class EmitOptions:
                 output_files.static_library_name = base_path_str + self.get_substitution(".a")
         
         return output_files
+    
+    @cython.embedsignature(True)
+    def to_string(EmitOptions self):
+        fields = self.emit_defaults.keys() + ['substitutions']
+        field_dict = {}
+        for field in fields:
+            field_value = getattr(self, field, "")
+            if field_value:
+                field_dict.update({ field : str(field_value) })
+        field_dict_items = []
+        for k, v in field_dict.items():
+            field_dict_items.append('''%s="%s"''' % (k, v))
+        return "%s(%s) @ %s" % (self.__class__.__name__,
+                                ", ".join(field_dict_items),
+                                hex(id(self)))
+    
+    @cython.embedsignature(True)
+    def __str__(EmitOptions self):
+        return self.to_string()
+
 
 ctypedef unique_ptr[HalModule] module_ptr_t
 
@@ -823,7 +845,8 @@ cdef class Module:
     def to_string(Module self):
         cdef string name = deref(self.__this__).name()
         cdef string targ = deref(self.__this__).target().to_string()
-        field_values = [str(name), str(targ)]
+        field_values = ["name=%s" % str(name),
+                        "target=%s" % str(targ)]
         return "%s(%s) @ %s" % (self.__class__.__name__,
                                 ", ".join(field_values),
                                 hex(id(self)))
@@ -906,9 +929,9 @@ cpdef Module get_generator_module(string& name, object arguments={}):
     
     # Heap-allocate a Target object (from either the environment or
     # as per the argument dict) held in a unique pointer:
-    t = arguments.get('target', Target.target_from_environment())
+    t = arguments.get('target', Target.target_from_environment().to_string())
     cdef target_ptr_t generator_target
-    generator_target.reset(new HalTarget(t.to_string()))
+    generator_target.reset(new HalTarget(<string>t))
     
     # Copy arguments from the Python dict to the STL map:
     for k, v in arguments.items():
