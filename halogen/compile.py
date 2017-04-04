@@ -178,7 +178,7 @@ class Generators(object):
     def preload_all(self):
         if self.compiled and self.linked:
             # preload() may also raise GeneratorError
-            return preload(self.library)
+            return preload(self.library, verbose=self.VERBOSE)
         else:
             raise GeneratorError("can't preload from an uncompiled/unlinked generator")
     

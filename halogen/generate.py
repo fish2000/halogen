@@ -4,7 +4,8 @@ from __future__ import print_function
 
 valid_emits = frozenset([
     'assembly', 'bitcode',
-    'cpp', 'h', 'html', 'o',
+    'cpp', 'cpp_stub',
+    'h', 'html', 'o',
     'static_library',
     'stmt'
 ])
@@ -42,14 +43,17 @@ def generate(*generators, **arguments):
     generators = set([str(generator) for generator in generators])
     
     verbose = bool(arguments.pop('verbose', config.DEFAULT_VERBOSITY))
+    
     target_string = str(arguments.pop('target', 'host'))
-    generator_names = set(arguments.pop('generator_names',
-                                        hal.api.registered_generators()))
+    
+    generator_names = set(arguments.pop('generator_names', hal.api.registered_generators()))
+    
     output_directory = os.path.abspath(arguments.pop('output_directory',
                                                      os.path.relpath(os.getcwd())))
-    emits = set(arguments.pop('emit',
-                             ['static_library', 'o', 'h']))
-    extensions = arguments.pop('extensions', tuple())
+    
+    emits = set(arguments.pop('emit', ['static_library', 'o', 'h']))
+    
+    substitutions = arguments.pop('substitutions', tuple())
     
     if target_string == '':
         raise ValueError("generation target unspecified")
@@ -75,7 +79,7 @@ def generate(*generators, **arguments):
     emit_dict['emit_static_library'] = \
         emit_dict['emit_o'] = \
         emit_dict['emit_h'] = False
-    emit_dict['extensions'] = dict(extensions)
+    emit_dict['substitutions'] = dict(substitutions)
     for emit in emits:
         emit_dict["emit_%s" % emit] = True
     
