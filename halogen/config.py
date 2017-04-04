@@ -311,6 +311,13 @@ class ConfigUnion(object):
     optimization_set = frozenset(optimization_flags)
     
     @classmethod
+    def fake_optimization_flags(cls, flags):
+        import re
+        return set(filter(lambda flag: bool(re.compile("^O(\d+)$").match(flag.strip())) and \
+                                           (flag.strip() not in cls.optimization_set), \
+                                           flags))
+    
+    @classmethod
     def highest_optimization_level(cls, flags):
         """ Strip all but the highest optimization-level compiler flag
             from a set of (de-dashed) flags. Returns a new set. """
@@ -328,6 +335,7 @@ class ConfigUnion(object):
         
         # Assemble all non-optflags in a new set:
         out = flags - cls.optimization_set
+        out -= cls.fake_optimization_flags(flags)
         
         # Append the highest-indexed optflag we found, and return:
         out |= frozenset([cls.optimization_flags[flags_index]])

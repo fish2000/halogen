@@ -138,10 +138,8 @@ class ConfigTests(BaseCase):
         self.assertEqual(ConfigUnion.highest_optimization_level({ "O3", "O2", "O1" }),      { "O3" })
         self.assertEqual(ConfigUnion.highest_optimization_level({ "Os", "Og", "O1" }),      { "O1" })
         self.assertEqual(ConfigUnion.highest_optimization_level({ "O",  "O1", "Os" }),      { "O"  })
-        
-        # TODO: Make this right:
-        self.assertEqual(ConfigUnion.highest_optimization_level({ "O3", "O4", "O5" }),      { "O4", "O5" })
-        self.assertEqual(ConfigUnion.highest_optimization_level({ "O3", "O4", "O8" }),      { "O4", "O8" })
+        self.assertEqual(ConfigUnion.highest_optimization_level({ "O3", "O4", "O5" }),      { "O4" })
+        self.assertEqual(ConfigUnion.highest_optimization_level({ "O3", "O4", "O8" }),      { "O4" })
         
         TOKEN = ConfigUnion.TOKEN
         conf = ConfigUnion(SysConfig(), BrewedHalideConfig())
