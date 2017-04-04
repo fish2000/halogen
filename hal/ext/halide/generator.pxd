@@ -42,8 +42,6 @@ ctypedef GeneratorParam[Target]         targetparam_t
 
 cdef extern from "Halide.h" namespace "Halide::Internal" nogil:
     
-    ctypedef stringmap_t GeneratorParamValues
-    
     cppclass GeneratorBase(NamesInterface, GeneratorContext):
         targetparam_t target
         
@@ -77,7 +75,16 @@ cdef extern from "Halide.h" namespace "Halide::Internal" nogil:
         
         Module build_module(string&, LinkageType)
     
-    cppclass GeneratorFactory:
+    cppclass GeneratorFactory: # ABSTRACT
+        # unique_ptr[GeneratorBase] create(GeneratorContext&, stringmap_t&)
+        pass
+    
+    cppclass GeneratorCreateFunc: # FUNCTOR
+        # std::function<std::unique_ptr<Internal::GeneratorBase>(GeneratorContext const&)>
+        pass
+    
+    cppclass SimpleGeneratorFactory(GeneratorFactory):
+        SimpleGeneratorFactory(GeneratorCreateFunc, string&)
         unique_ptr[GeneratorBase] create(GeneratorContext&, stringmap_t&)
 
 

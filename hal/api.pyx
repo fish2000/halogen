@@ -27,6 +27,8 @@ from ext.halide.module cimport halide_compile_standalone_runtime_for_path
 from ext.halide.module cimport halide_compile_standalone_runtime_with_outputs
 
 from ext.halide.generator cimport GeneratorBase
+# from ext.halide.generator cimport GeneratorCreateFunc
+# from ext.halide.generator cimport SimpleGeneratorFactory
 from ext.halide.generator cimport GeneratorRegistry
 from ext.halide.generator cimport GeneratorContext
 from ext.halide.generator cimport JITGeneratorContext
@@ -909,7 +911,7 @@ cpdef Module get_generator_module(string& name, object arguments={}):
     
     # Heap-allocate a Target object (from either the environment or
     # as per the argument dict) held in a unique pointer:
-    t = arguments.get('target', Target.jit_target_from_environment())
+    t = arguments.get('target', Target.target_from_environment())
     cdef target_ptr_t generator_target
     generator_target.reset(new HalTarget(t.to_string()))
     
