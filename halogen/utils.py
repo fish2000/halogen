@@ -70,7 +70,8 @@ def print_config(conf):
 def test_compile(conf, test_source):
     import sys, os
     from config import CXX
-    from tempfile import NamedTemporaryFile, mktemp
+    from tempfile import NamedTemporaryFile
+    from filesystem import TemporaryName
     
     output = tuple()
     px = "yodogg-"
@@ -78,31 +79,30 @@ def test_compile(conf, test_source):
     with NamedTemporaryFile(suffix=".cpp", prefix=px) as tf:
         tf.file.write(test_source)
         tf.file.flush()
-        adotout = mktemp(suffix=".cpp.o", prefix=px)
         
-        print("C++ SOURCE: %s" % tf.name)
-        print("C++ TARGET: %s" % adotout)
-        
-        output += CXX(conf, adotout, tf.name, verbose=True)
-        
-        print("-" * terminal_width)
-        
-        if len(output[1]) > 0:
-            # failure
-            print("COMPILATION FAILED:")
+        with TemporaryName(suffix="cpp.o", prefix=px) as adotout:
+            print("C++ SOURCE: %s" % tf.name)
+            print("C++ TARGET: %s" % adotout.name)
+            
+            output += CXX(conf, adotout.name, tf.name, verbose=True)
+            
+            print("-" * terminal_width)
+            
+            if len(output[1]) > 0:
+                # failure
+                print("COMPILATION FAILED:")
+                print(output[0], file=sys.stdout)
+                print(output[1], file=sys.stderr)
+                return
+            
+            # success!
+            print("COMPILATION TOTALLY WORKED!")
             print(output[0], file=sys.stdout)
             print(output[1], file=sys.stderr)
-            if os.path.exists(adotout):
-                os.unlink(adotout)
-            return
-        
-        # success!
-        print("COMPILATION TOTALLY WORKED!")
-        print(output[0], file=sys.stdout)
-        print(output[1], file=sys.stderr)
-        if os.path.exists(adotout):
-            # another = os.path.basename(mktemp(suffix=".cpp.o", prefix=px))
-            # shutil.copy2(adotout, "/tmp/%s" % another)
-            os.unlink(adotout)
-        else:
-            print("... BUT THEN WHERE THE FUCK IS MY SHIT?!?!")
+            if os.path.exists(str(adotout)):
+                # another = os.path.basename(mktemp(suffix=".cpp.o", prefix=px))
+                # shutil.copy2(adotout, "/tmp/%s" % another)
+                # os.unlink(adotout)
+                pass
+            else:
+                print("... BUT THEN WHERE THE FUCK IS MY SHIT?!?!")

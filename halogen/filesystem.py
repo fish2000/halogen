@@ -68,13 +68,14 @@ class TemporaryName(object):
         class (when invoked as a context manager) will clean it up for you.
         Unless you say not to. Really it's your call dogg I could give AF """
     
-    fields = ('name', 'exists', 'destroy', 'prefix', 'suffix')
+    fields = ('name', 'exists', 'destroy', 'prefix', 'suffix', 'parent')
     
-    def __init__(self, prefix="yo-dogg-", suffix="tmp"):
-        self._name = mktemp(prefix=prefix, suffix=".%s" % suffix)
+    def __init__(self, prefix="yo-dogg-", suffix="tmp", parent=None):
+        self._name = mktemp(prefix=prefix, suffix=".%s" % suffix, dir=parent)
         self._destroy = True
         self.prefix = prefix
         self.suffix = suffix
+        self.parent = parent
     
     @property
     def name(self):
@@ -97,21 +98,24 @@ class TemporaryName(object):
         self._destroy = False
         return self.name
     
+    def clear(self):
+        if os.path.isfile(self._name):
+            os.unlink(self._name)
+        elif os.path.isdir(self._name):
+            subdirs = []
+            for path, dirs, files in os.walk(self._name, followlinks=True):
+                for tf in files:
+                    os.unlink(os.path.join(path, tf))
+                subdirs.extend([os.path.join(path, td) for td in dirs])
+            for subdir in subdirs:
+                os.rmdir(subdir)
+    
     def __enter__(self):
         return self
     
     def __exit__(self, exc_type, exc_val, exc_tb):
         if self.exists and self.destroy:
-            if os.path.isfile(self._name):
-                os.unlink(self._name)
-            elif os.path.isdir(self._name):
-                subdirs = []
-                for path, dirs, files in os.walk(self._name, followlinks=True):
-                    for tf in files:
-                        os.unlink(os.path.join(path, tf))
-                    subdirs.extend([os.path.join(path, td) for td in dirs])
-                for subdir in subdirs:
-                    os.rmdir(subdir)
+            self.clear()
     
     def to_string(self):
         field_dict = {}
@@ -130,7 +134,10 @@ class TemporaryName(object):
         return self.to_string()
     
     def __str__(self):
-        return self.to_string()
+        if self.exists:
+            return os.path.realpath(self.name)
+        return self.name
+
 
 class TemporaryDirectory(object):
     
@@ -172,6 +179,18 @@ class TemporaryDirectory(object):
         self._destroy = False
         return self.name
     
+    def clear(self):
+        if os.path.isfile(self._name):
+            os.unlink(self._name)
+        elif os.path.isdir(self._name):
+            subdirs = []
+            for path, dirs, files in os.walk(self._name, followlinks=True):
+                for tf in files:
+                    os.unlink(os.path.join(path, tf))
+                subdirs.extend([os.path.join(path, td) for td in dirs])
+            for subdir in subdirs:
+                os.rmdir(subdir)
+    
     def __enter__(self):
         if not self.exists:
             raise IOError("TemporaryDirectory wasn't properly set up: %s" % self.name)
@@ -179,16 +198,7 @@ class TemporaryDirectory(object):
     
     def __exit__(self, exc_type, exc_val, exc_tb):
         if self.exists and self.destroy:
-            if os.path.isfile(self._name):
-                os.unlink(self._name)
-            elif os.path.isdir(self._name):
-                subdirs = []
-                for path, dirs, files in os.walk(self._name, followlinks=True):
-                    for tf in files:
-                        os.unlink(os.path.join(path, tf))
-                    subdirs.extend([os.path.join(path, td) for td in dirs])
-                for subdir in subdirs:
-                    os.rmdir(subdir)
+            self.clear()
     
     def to_string(self):
         field_dict = {}
@@ -207,4 +217,6 @@ class TemporaryDirectory(object):
         return self.to_string()
     
     def __str__(self):
-        return self.to_string()
+        if self.exists:
+            return os.path.realpath(self.name)
+        return self.name
