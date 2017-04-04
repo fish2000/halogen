@@ -71,8 +71,10 @@ def test_compile(conf, test_source):
     import sys, os
     from config import CXX
     from tempfile import NamedTemporaryFile, mktemp
+    
     output = tuple()
     px = "yodogg-"
+    
     with NamedTemporaryFile(suffix=".cpp", prefix=px) as tf:
         tf.file.write(test_source)
         tf.file.flush()

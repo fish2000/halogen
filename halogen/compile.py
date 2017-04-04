@@ -178,7 +178,7 @@ class Generators(object):
     def preload_all(self):
         if self.compiled and self.linked:
             # preload() may also raise GeneratorError
-            return preload(gens.library)
+            return preload(self.library)
         else:
             raise GeneratorError("can't preload from an uncompiled/unlinked generator")
     
@@ -219,7 +219,7 @@ class Generators(object):
         self.clear()
 
 
-if __name__ == '__main__':
+def main():
     
     import sys
     sys.path.append(os.path.dirname(os.path.dirname(__file__)))
@@ -239,7 +239,7 @@ if __name__ == '__main__':
     if os.path.isfile(archive):
         os.unlink(archive)
     
-    handle = None
+    # handle = None
     loaded_generators = 0
     
     with Generators(CONF, destination, directory, verbose=True) as gens:
@@ -253,14 +253,20 @@ if __name__ == '__main__':
         print("")
         
         try:
-            hanlde = gens.preload_all()
+            gens.preload_all()
         except GeneratorError, exc:
             if DEFAULT_VERBOSITY:
                 print("... FAILED TO LOAD LIBRARIES FROM %s" % gens.library)
                 print("%s" % str(exc))
+            return
         
         loaded_generators += len(hal.api.registered_generators())
         
         if DEFAULT_VERBOSITY:
             print("... SUCCESSFULLY LOADED LIBRARIES FROM %s" % gens.library)
             print("... THERE ARE %s GENERATORS LOADED FROM THAT LIBRARY, DOGG" % loaded_generators)
+        
+        
+
+if __name__ == '__main__':
+    main()

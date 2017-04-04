@@ -17,26 +17,31 @@ def preload(library_path, **kwargs):
     
     if not os.path.exists(library_path):
         raise GeneratorError("No library exists at %s" % library_path)
+    
     realpth = os.path.realpath(library_path)
+    
     if realpth in preload.loaded_libraries:
         if verbose:
             print("Library %s previously loaded" % realpth)
         return preload.loaded_libraries[realpth]
+    
     library_handle = ctypes.cdll.LoadLibrary(realpth)
     preload.loaded_libraries[realpth] = library_handle
+    
     if verbose:
         print("Library %s loaded afresh" % realpth)
     return preload.loaded_libraries[realpth]
 
-preload.loaded_libraries = dict()
+preload.loaded_libraries = {}
 
 def generate(*generators, **arguments):
     import os
+    import config
     import hal.api
     
     generators = set([str(generator) for generator in generators])
     
-    verbose = bool(arguments.pop('verbose', False))
+    verbose = bool(arguments.pop('verbose', config.DEFAULT_VERBOSITY))
     target_string = str(arguments.pop('target', 'host'))
     generator_names = set(arguments.pop('generator_names',
                                         hal.api.registered_generators()))
@@ -103,20 +108,23 @@ def generate(*generators, **arguments):
         # module.compile(outputs)
         module = hal.api.Module(module)
 
-if __name__ == '__main__':
+def main():
     import config
     
     generate('my_first_generator',
-                    verbose=config.DEFAULT_VERBOSITY,
-                    target='host',
-                    output_directory='/tmp')
+        verbose=config.DEFAULT_VERBOSITY,
+        target='host',
+        output_directory='/tmp')
     
     generate('my_second_generator',
-                    verbose=config.DEFAULT_VERBOSITY,
-                    target='host',
-                    output_directory='/tmp')
+        verbose=config.DEFAULT_VERBOSITY,
+        target='host',
+        output_directory='/tmp')
     
     generate('brighten',
-                    verbose=config.DEFAULT_VERBOSITY,
-                    target='host',
-                    output_directory='/tmp')
+        verbose=config.DEFAULT_VERBOSITY,
+        target='host',
+        output_directory='/tmp')
+
+if __name__ == '__main__':
+    main()
