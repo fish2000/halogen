@@ -65,14 +65,11 @@ cdef extern from "Halide.h" namespace "Halide::Internal" nogil:
         
         GeneratorBase& set_generator_param[T](string&, T&)
         GeneratorBase& set_schedule_param[T](string&, T&)
-        
         void set_schedule_param_values(stringmap_t&, llevelmap_t&)
         int natural_vector_size(Type)
         # int natural_vector_size[T]()
         
         void emit_cpp_stub(string&)
-        # void emit_filter(string&, string&, string&, EmitOptions&)
-        
         Module build_module(string&, LinkageType)
     
     cppclass GeneratorFactory: # ABSTRACT
