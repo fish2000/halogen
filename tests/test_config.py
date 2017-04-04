@@ -131,8 +131,8 @@ class ConfigTests(BaseCase):
         self.assertEqual("-L%s -l%s" % (conf.lib(),
                                         conf.library),  conf.get_ldflags())
     
-    def test_configunion(self):
-        from halogen.config import ConfigUnion, SysConfig, BrewedHalideConfig
+    def test_highest_optimization_level(self):
+        from halogen.config import ConfigUnion
         
         self.assertEqual(ConfigUnion.highest_optimization_level({ "O3", "O4", "Os" }), { "O4" })
         self.assertEqual(ConfigUnion.highest_optimization_level({ "O3", "O2", "O1" }), { "O3" })
@@ -140,6 +140,18 @@ class ConfigTests(BaseCase):
         self.assertEqual(ConfigUnion.highest_optimization_level({ "O",  "O1", "Os" }), { "O"  })
         self.assertEqual(ConfigUnion.highest_optimization_level({ "O3", "O4", "O5" }), { "O4" })
         self.assertEqual(ConfigUnion.highest_optimization_level({ "O3", "O4", "O8" }), { "O4" })
+    
+    def test_highest_cxx_language_level(self):
+        from halogen.config import ConfigUnion
+        
+        self.assertEqual(ConfigUnion.highest_cxx_standard_level({ "std=gnu++98", "std=c++14", "std=gnu++14" }), { "std=gnu++14" })
+        self.assertEqual(ConfigUnion.highest_cxx_standard_level({ "std=c++1y",   "std=c++14", "std=gnu++1y" }), { "std=c++14"   })
+        # self.assertEqual(ConfigUnion.highest_cxx_standard_level({ "std=gnu++98", "std=c++14", "std=gnu++14" }), { "std=gnu++14" })
+        # self.assertEqual(ConfigUnion.highest_cxx_standard_level({ "std=gnu++98", "std=c++14", "std=gnu++14" }), { "std=gnu++14" })
+        # self.assertEqual(ConfigUnion.highest_cxx_standard_level({ "std=gnu++98", "std=c++14", "std=gnu++14" }), { "std=gnu++14" })
+    
+    def test_configunion(self):
+        from halogen.config import ConfigUnion, SysConfig, BrewedHalideConfig
         
         TOKEN = ConfigUnion.union_of.TOKEN
         conf = ConfigUnion(SysConfig(), BrewedHalideConfig())
