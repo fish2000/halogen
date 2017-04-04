@@ -13,7 +13,6 @@ from cpython.mapping cimport PyMapping_Check
 from cpython.object cimport PyObject_IsTrue
 
 from ext.haldol.convert cimport convert as haldol_convert
-from ext.haldol.terminal cimport terminal_width as haldol_terminal_width
 # from ext.haldol.typecode cimport typechar
 
 from ext.halide.outputs cimport Outputs as HalOutputs
@@ -1039,10 +1038,3 @@ def make_standalone_runtime(Target target=Target.target_from_environment(),
 def running_program_name():
     """ Return the name of the running program as a string. """
     return str(halide_running_program_name())
-
-@cython.embedsignature(True)
-cpdef int terminal_width():
-    """ Attempt to return the width of the terminal as an integer. """
-    cdef int32_t tw = haldol_terminal_width()
-    return haldol_convert(tw)
-
