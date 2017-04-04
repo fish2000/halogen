@@ -134,14 +134,14 @@ class ConfigTests(BaseCase):
     def test_configunion(self):
         from halogen.config import ConfigUnion, SysConfig, BrewedHalideConfig
         
-        self.assertEqual(ConfigUnion.highest_optimization_level({ "O3", "O4", "Os" }),      { "O4" })
-        self.assertEqual(ConfigUnion.highest_optimization_level({ "O3", "O2", "O1" }),      { "O3" })
-        self.assertEqual(ConfigUnion.highest_optimization_level({ "Os", "Og", "O1" }),      { "O1" })
-        self.assertEqual(ConfigUnion.highest_optimization_level({ "O",  "O1", "Os" }),      { "O"  })
-        self.assertEqual(ConfigUnion.highest_optimization_level({ "O3", "O4", "O5" }),      { "O4" })
-        self.assertEqual(ConfigUnion.highest_optimization_level({ "O3", "O4", "O8" }),      { "O4" })
+        self.assertEqual(ConfigUnion.highest_optimization_level({ "O3", "O4", "Os" }), { "O4" })
+        self.assertEqual(ConfigUnion.highest_optimization_level({ "O3", "O2", "O1" }), { "O3" })
+        self.assertEqual(ConfigUnion.highest_optimization_level({ "Os", "Og", "O1" }), { "O1" })
+        self.assertEqual(ConfigUnion.highest_optimization_level({ "O",  "O1", "Os" }), { "O"  })
+        self.assertEqual(ConfigUnion.highest_optimization_level({ "O3", "O4", "O5" }), { "O4" })
+        self.assertEqual(ConfigUnion.highest_optimization_level({ "O3", "O4", "O8" }), { "O4" })
         
-        TOKEN = ConfigUnion.TOKEN
+        TOKEN = ConfigUnion.union_of.TOKEN
         conf = ConfigUnion(SysConfig(), BrewedHalideConfig())
         
         def flags_to_set(flags):

@@ -82,7 +82,7 @@ def print_config(conf):
 
 def test_compile(conf, test_source):
     import sys, os
-    from config import CXX
+    import config
     from filesystem import NamedTemporaryFile, TemporaryName
     
     output = tuple()
@@ -96,7 +96,7 @@ def test_compile(conf, test_source):
             print("C++ SOURCE: %s" % tf.name)
             print("C++ TARGET: %s" % adotout.name)
             
-            output += CXX(conf, adotout.name, tf.name, verbose=True)
+            output += config.CXX(conf, adotout.name, tf.name, verbose=True)
             
             print("-" * terminal_width)
             

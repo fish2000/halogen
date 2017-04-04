@@ -278,6 +278,9 @@ class ConfigUnion(object):
                                                 # and return it
         """
         
+        # WTF HAX
+        TOKEN = ' -'
+        
         def __init__(self, name=None):
             """ Initialize the @union_of decorator, stashing the name of the function
                 to call upon those config-class instances wrapped by the ConfigUnion
@@ -296,12 +299,9 @@ class ConfigUnion(object):
                 out = set()
                 for config in this.configs:
                     function_to_call = getattr(config, self.name)
-                    out |= { x.rstrip() for x in (" %s" % str(" %s" % function_to_call())).split(this.TOKEN) }
-                return (this.TOKEN.join(sorted([flag.strip() for flag in base_function(this, out)]))).strip()
+                    out |= { x.rstrip() for x in (" %s" % str(" %s" % function_to_call())).split(self.TOKEN) }
+                return (self.TOKEN.join(sorted([flag.strip() for flag in base_function(this, out)]))).strip()
             return getter
-    
-    # WTF HAX
-    TOKEN = ' -'
     
     # Ordered list of all possible optimization flags:
     optimization_flags = ["O%s" % str(flag) \
@@ -311,11 +311,12 @@ class ConfigUnion(object):
     # Set form of optimization flags a la `optimization_flags` above:
     optimization_set = frozenset(optimization_flags)
     
-    # Regular expression to match fake optimization flags (e.g. -O8, -O785 etc).
+    # Regular expression to match fake optimization flags e.g. -O8, -O785 etc.
     fake_flag_matcher = re.compile("^O(\d+)$")
     
     @classmethod
     def fake_optimization_flags(cls, flags):
+        """ Prune out fake optimization flags e.g. -O8, -O785 etc. """
         match_func = cls.fake_flag_matcher.match
         opt_set = cls.optimization_set
         return set(filter(lambda flag: bool(match_func(flag)) and \
