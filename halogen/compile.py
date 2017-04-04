@@ -225,7 +225,7 @@ if __name__ == '__main__':
     sys.path.append(os.path.dirname(os.path.dirname(__file__)))
     sys.path.append(os.path.dirname(__file__))
     
-    # from generate import preload
+    # sys.path addenda necessary to load hal.api:
     import hal.api
     
     directory = "/Users/fish/Dropbox/halogen/generators"
@@ -264,15 +264,3 @@ if __name__ == '__main__':
         if DEFAULT_VERBOSITY:
             print("... SUCCESSFULLY LOADED LIBRARIES FROM %s" % gens.library)
             print("... THERE ARE %s GENERATORS LOADED FROM THAT LIBRARY, DOGG" % loaded_generators)
-        
-        '''if gens.compiled and gens.linked:
-            try:
-                handle = preload(gens.library)
-            except GeneratorError, exc:
-                if DEFAULT_VERBOSITY:
-                    print("... FAILED TO LOAD LIBRARIES FROM %s" % gens.library)
-                    print("%s" % str(exc))
-            loaded_generators += len(hal.api.registered_generators())
-            if DEFAULT_VERBOSITY:
-                print("... THERE ARE %s GENERATORS LOADED FROM THAT LIBRARY, DOGG" % loaded_generators)
-            '''
