@@ -3,6 +3,7 @@
 from __future__ import print_function
 
 import os
+import re
 import sys
 import sysconfig
 import ctypes.util
@@ -310,12 +311,16 @@ class ConfigUnion(object):
     # Set form of optimization flags a la `optimization_flags` above:
     optimization_set = frozenset(optimization_flags)
     
+    # Regular expression to match fake optimization flags (e.g. -O8, -O785 etc).
+    fake_flag_matcher = re.compile("^O(\d+)$")
+    
     @classmethod
     def fake_optimization_flags(cls, flags):
-        import re
-        return set(filter(lambda flag: bool(re.compile("^O(\d+)$").match(flag.strip())) and \
-                                           (flag.strip() not in cls.optimization_set), \
-                                           flags))
+        match_func = cls.fake_flag_matcher.match
+        opt_set = cls.optimization_set
+        return set(filter(lambda flag: bool(match_func(flag)) and \
+                                           (flag not in opt_set), \
+                                           map(lambda flag: flag.strip(), flags)))
     
     @classmethod
     def highest_optimization_level(cls, flags):
