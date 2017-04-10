@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import os
+import re
 import shutil
 from errors import ExecutionError, FilesystemError
 from tempfile import mktemp, mkdtemp, gettempprefix
@@ -75,6 +76,31 @@ def rm_rf(pth):
         os.rmdir(pth)
     return True
 
+class Directory(object):
+    
+    def __init__(self, pth):
+        self.old = os.getcwd()
+        self.new = pth
+    
+    def __enter__(self):
+        os.chdir(self.new)
+        return self
+    
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        os.chdir(self.old)
+    
+    def ls(self, pth='.', suffix="txt"):
+        return [f for f in os.listdir(pth) if re.compile("\.%s$" % suffix, re.IGNORECASE).search(f)]
+    
+    def realpath(self):
+        return os.path.realpath(self.new)
+    
+    def ls_la(self, pth='.', suffix="txt"):
+        return [os.path.join(self.realpath(), f) for f in self.ls(pth=pth, suffix=suffix)]
+
+class cd(Directory):
+    pass
+
 
 class TemporaryName(object):
     
@@ -133,7 +159,7 @@ class TemporaryName(object):
         return self.name
 
 
-class TemporaryDirectory(object):
+class TemporaryDirectory(Directory):
     
     """ It's funny how this code looks, like, 99 percent exactly like the above
         TemporaryName class -- shit just works out that way. But this actually
@@ -149,6 +175,7 @@ class TemporaryDirectory(object):
         self.prefix = prefix
         self.suffix = suffix
         self.parent = parent
+        super(TemporaryDirectory, self).__init__(self._name)
     
     @property
     def name(self):
@@ -174,11 +201,13 @@ class TemporaryDirectory(object):
         return self.name
     
     def __enter__(self):
+        super(TemporaryDirectory, self).__enter__()
         if not self.exists:
             raise FilesystemError("TemporaryDirectory wasn't properly set up: %s" % self.name)
         return self
     
     def __exit__(self, exc_type, exc_val, exc_tb):
+        super(TemporaryDirectory, self).__exit__(exc_type, exc_val, exc_tb)
         if self.exists and self.destroy:
             rm_rf(self.name)
     

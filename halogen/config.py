@@ -477,7 +477,7 @@ class MyFirstGenerator : public Halide::Generator<MyFirstGenerator> {
 RegisterGenerator<MyFirstGenerator> my_first_generator{"my_first_generator"};
 """
 
-if __name__ == '__main__':
+def main():
     from utils import print_config, test_compile, terminal_width
     
     brewedHalideConfig = BrewedHalideConfig()
@@ -546,6 +546,7 @@ if __name__ == '__main__':
     print("TEST COMPILATION: CXX(configUnionAll, <out>, <in>) ...")
     print("")
     test_compile(configUnionAll, test_generator_source)
-    
-    
-    
+
+
+if __name__ == '__main__':
+    main()

@@ -231,7 +231,7 @@ def main():
     # sys.path addenda necessary to load hal.api:
     import hal.api
     
-    directory = "/Users/fish/Dropbox/halogen/generators"
+    directory = "/Users/fish/Dropbox/halogen/tests/generators"
     destination = "/tmp/yodogg"
     
     # library = "%s%s" % (destination, config.SHARED_LIBRARY_SUFFIX)
