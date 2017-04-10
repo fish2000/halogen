@@ -15,6 +15,25 @@ class CompileTests(BaseCase):
             self.gendir = gendir.realpath()
             self.genfiles = gendir.ls_la(suffix="cpp")
     
+    def test_generators_compile_link_and_archive_context_manager(self):
+        from halogen.compile import Generators
+        from halogen.filesystem import TemporaryDirectory
+        
+        self.assertTrue(len(self.genfiles) > 0)
+        
+        with TemporaryDirectory(prefix='test-generators-compile-link-and-archive-context-manager-') as td:
+            
+            # EVERYTHING!
+            with Generators(self.CONF,
+                            destination=td.name,
+                            directory=self.gendir,
+                            verbose=False) as gens:
+                self.assertTrue(gens.compiled)
+                self.assertTrue(gens.linked)
+                self.assertTrue(gens.archived)
+                gens.preload_all()
+                self.assertTrue(len(self.hal.api.registered_generators()) > 0)
+    
     def test_generator_compile_context_manager(self):
         from halogen.compile import Generator
         from halogen.filesystem import TemporaryName, TemporaryDirectory

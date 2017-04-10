@@ -76,7 +76,12 @@ def rm_rf(pth):
         os.rmdir(pth)
     return True
 
+
 class Directory(object):
+    
+    """ A context-managed directory: change in on enter, change back out
+        on exit. Plus a few convenience functions for listing and whatnot.
+    """
     
     def __init__(self, pth):
         self.old = os.getcwd()
@@ -90,7 +95,7 @@ class Directory(object):
         os.chdir(self.old)
     
     def ls(self, pth='.', suffix="txt"):
-        return [f for f in os.listdir(pth) if re.compile("\.%s$" % suffix, re.IGNORECASE).search(f)]
+        return [f for f in os.listdir(pth) if re.compile(r"\.%s$" % suffix, re.IGNORECASE).search(f)]
     
     def realpath(self):
         return os.path.realpath(self.new)
