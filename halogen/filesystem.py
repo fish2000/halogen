@@ -2,6 +2,7 @@
 
 import os
 import shutil
+from errors import ExecutionError, FilesystemError
 from tempfile import mktemp, mkdtemp, gettempprefix
 from utils import stringify
 
@@ -46,10 +47,10 @@ def back_tick(cmd, ret_err=False, as_str=True, raise_err=None, verbose=False):
         print("EXECUTING: `%s`\n" % cmd_str)
     if retcode is None:
         proc.terminate()
-        raise RuntimeError(cmd_str + ' process did not terminate')
+        raise ExecutionError(cmd_str + ' process did not terminate')
     if raise_err and retcode != 0:
-        raise RuntimeError('{0} returned code {1} with error {2}'.format(
-                           cmd_str, retcode, err.decode('latin-1')))
+        raise ExecutionError('`{0}` returned code {1} with error “{2}”'.format(
+                             cmd_str, retcode, err.decode('latin-1')))
     out = out.strip()
     if as_str:
         out = out.decode('latin-1')
@@ -163,7 +164,7 @@ class TemporaryDirectory(object):
     
     def copy_all(self, destination):
         if os.path.exists(destination):
-            raise IOError("copy_all() destination already existant: %s" % destination)
+            raise FilesystemError("copy_all() destination already existant: %s" % destination)
         if self.exists:
             return shutil.copytree(self.name, destination)
         return False
@@ -174,7 +175,7 @@ class TemporaryDirectory(object):
     
     def __enter__(self):
         if not self.exists:
-            raise IOError("TemporaryDirectory wasn't properly set up: %s" % self.name)
+            raise FilesystemError("TemporaryDirectory wasn't properly set up: %s" % self.name)
         return self
     
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -221,7 +222,7 @@ def NamedTemporaryFile(mode='w+b', bufsize=-1,
     try:
         file = _os.fdopen(fd, mode, bufsize)
         return _TemporaryFileWrapper(file, name, delete)
-    except BaseException:
+    except BaseException as baseexc:
         _os.unlink(name)
         _os.close(fd)
-        raise
+        raise FilesystemError(str(baseexc))

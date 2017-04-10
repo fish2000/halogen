@@ -3,11 +3,7 @@ from __future__ import print_function
 
 from unittest2 import TestCase
 import sys
-# from os import listdir
-# from os.path import join, abspath, expanduser, dirname, basename
-# from collections import namedtuple
-
-from os.path import abspath, dirname
+from os.path import abspath, dirname, isdir
 
 class BaseCase(TestCase):
     
@@ -19,5 +15,7 @@ class BaseCase(TestCase):
         setattr(self, 'hal', hal)
     
     def tearDown(self):
-        pass
+        from halogen.filesystem import rm_rf
+        if isdir('/tmp/yodogg'):
+            rm_rf('/tmp/yodogg')
 

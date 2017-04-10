@@ -67,8 +67,7 @@ class Generator(object):
         return self._compiled
     
     def clear(self):
-        if os.path.exists(self.transient):
-            os.unlink(self.transient)
+        rm_rf(self.transient)
     
     def __enter__(self):
         self.compile()
@@ -188,7 +187,7 @@ class Generators(object):
     
     def clear(self):
         for of in self.prelink:
-            os.unlink(of)
+            rm_rf(of)
     
     def __enter__(self):
         # 1: COMPILE ALL THE THINGS
@@ -253,7 +252,7 @@ def main():
         
         with Generators(CONF, destination=td.name,
                               directory=directory,
-                              verbose=True) as gens:
+                              verbose=DEFAULT_VERBOSITY) as gens:
             
             library = "%s/%s%s" % (td.name, 'yodogg', config.SHARED_LIBRARY_SUFFIX)
             archive = "%s/%s%s" % (td.name, 'yodogg', config.STATIC_LIBRARY_SUFFIX)

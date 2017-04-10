@@ -7,8 +7,6 @@ class ConfigTests(BaseCase):
     
     def setUp(self):
         super(ConfigTests, self).setUp()
-        # from halogen.compile import CONF
-        # self.conf = CONF
     
     def test_pythonconfig(self):
         from halogen.filesystem import back_tick

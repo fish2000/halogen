@@ -18,7 +18,7 @@ cdef extern from "Halide.h" namespace "Halide" nogil:
         LoopLevel()
 
 
-cdef extern from "Halide.h" namespace "halide_cplusplus_type_name":
+cdef extern from "Halide.h" namespace "halide_cplusplus_type_name" nogil:
     
     cdef enum CPPTypeType:
         Simple
@@ -28,7 +28,7 @@ cdef extern from "Halide.h" namespace "halide_cplusplus_type_name":
         Enum
 
 
-cdef extern from "Halide.h":
+cdef extern from "Halide.h" nogil:
     
     cppclass halide_cplusplus_type_name:
         
@@ -43,7 +43,7 @@ cdef extern from "Halide.h":
 
 ctypedef vector[halide_cplusplus_type_name] cppnamevec_t
 
-cdef extern from "Halide.h" namespace "halide_handle_cplusplus_type":
+cdef extern from "Halide.h" namespace "halide_handle_cplusplus_type" nogil:
     
     cdef enum Modifier:
         Const
@@ -66,7 +66,7 @@ cdef extern from "Halide.h" namespace "halide_handle_cplusplus_type":
         RValueReference
 
 
-cdef extern from "Halide.h":
+cdef extern from "Halide.h" nogil:
     
     cppclass halide_handle_cplusplus_type:
         
@@ -81,7 +81,7 @@ cdef extern from "Halide.h":
                                      ReferenceType)
 
 
-cdef extern from "Halide.h" namespace "Halide::Type":
+cdef extern from "Halide.h" namespace "Halide::Type" nogil:
     
     cdef halide_type_code_t Int = halide_type_int
     cdef halide_type_code_t UInt = halide_type_uint
@@ -89,68 +89,68 @@ cdef extern from "Halide.h" namespace "Halide::Type":
     cdef halide_type_code_t Handle = halide_type_handle
 
 
-cdef extern from "Halide.h" namespace "Halide" nogil:
+cdef extern from "Halide.h" namespace "Halide":
     
     cppclass Type:
         
         halide_handle_cplusplus_type* handle_type
         
-        Type()
-        Type(Type&)
-        Type(halide_type_code_t, uint8_t, int, halide_handle_cplusplus_type*)
-        Type(halide_type_t&, halide_handle_cplusplus_type*)
+        Type() nogil
+        Type(Type&) nogil
+        Type(halide_type_code_t, uint8_t, int, halide_handle_cplusplus_type*) except +
+        Type(halide_type_t&, halide_handle_cplusplus_type*) except +
         
-        halide_type_code_t code()
-        int bytes()
-        int bits()
-        int lanes()
+        halide_type_code_t code() nogil
+        int bytes() nogil
+        int bits() nogil
+        int lanes() nogil
         
-        Type with_code(halide_type_code_t)
-        Type with_bits(uint8_t)
-        Type with_lanes(uint16_t)
+        Type with_code(halide_type_code_t) except +
+        Type with_bits(uint8_t) except +
+        Type with_lanes(uint16_t) except +
         
-        bint is_bool()
-        bint is_vector()
-        bint is_scalar()
-        bint is_float()
-        bint is_int()
-        bint is_uint()
-        bint is_handle()
-        bint same_handle_type(Type&)
+        bint is_bool() nogil
+        bint is_vector() nogil
+        bint is_scalar() nogil
+        bint is_float() nogil
+        bint is_int() nogil
+        bint is_uint() nogil
+        bint is_handle() nogil
+        bint same_handle_type(Type&) nogil
         
-        bint operator==(Type&)
-        bint operator!=(Type&)
+        bint operator==(Type&) nogil
+        bint operator!=(Type&) nogil
         
-        Type element_of()
-        bint can_represent(Type&)
-        bint can_represent(double)
-        bint can_represent(int64_t)
-        bint can_represent(uint64_t)
+        Type element_of() nogil
+        bint can_represent(Type&) nogil
+        bint can_represent(double) nogil
+        bint can_represent(int64_t) nogil
+        bint can_represent(uint64_t) nogil
         
-        bint is_max(uint64_t)
-        bint is_max(int64_t)
-        bint is_min(uint64_t)
-        bint is_min(int64_t)
+        bint is_max(uint64_t) nogil
+        bint is_max(int64_t) nogil
+        bint is_min(uint64_t) nogil
+        bint is_min(int64_t) nogil
     
-    Type Int(int bits, int lanes)
-    Type UInt(int bits, int lanes)
-    Type Float(int bits, int lanes)
-    Type Bool(int lanes)
-    Type Handle(int lanes, halide_handle_cplusplus_type* handle_type)
+    Type Int(int bits, int lanes) except +
+    Type UInt(int bits, int lanes) except +
+    Type Float(int bits, int lanes) except +
+    Type Bool(int lanes) except +
+    Type Handle(int lanes, halide_handle_cplusplus_type* handle_type) except +
 
 ctypedef std_map[string, LoopLevel]     llevelmap_t
 ctypedef std_map[string, Type]          haltypemap_t
 
-cdef extern from "Halide.h" namespace "Halide::Internal" nogil:
+cdef extern from "Halide.h" namespace "Halide::Internal":
     
     # These functions, at time of writing, are prototyped out in Generator.h:
     
-    haltypemap_t& get_halide_type_enum_map()
-    string halide_type_to_enum_string(Type&)
+    haltypemap_t& get_halide_type_enum_map() nogil
+    string halide_type_to_enum_string(Type&) except +
     
-    LoopLevel get_halide_undefined_looplevel()
-    llevelmap_t& get_halide_looplevel_enum_map()
-    string halide_looplevel_to_enum_string(LoopLevel&)
+    LoopLevel get_halide_undefined_looplevel() nogil
+    llevelmap_t& get_halide_looplevel_enum_map() nogil
+    string halide_looplevel_to_enum_string(LoopLevel&) nogil
     
-    string halide_type_to_c_source(Type&)
-    string halide_type_to_c_type(Type&)
+    string halide_type_to_c_source(Type&) except +
+    string halide_type_to_c_type(Type&) except +

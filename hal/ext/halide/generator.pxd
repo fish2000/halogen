@@ -116,9 +116,9 @@ cdef extern from "Halide.h" namespace "Halide" nogil:
 
 cdef inline base_ptr_t generator_registry_get(string& name,
                                               Target& target,
-                                              stringmap_t& args):
+                                              stringmap_t& args) nogil:
     return GeneratorRegistry.create(name, JITGeneratorContext(target), args)
 
-cdef inline base_ptr_t generator_registry_create(string& name):
+cdef inline base_ptr_t generator_registry_create(string& name) nogil:
     cdef Target t = get_jit_target_from_environment()
     return GeneratorRegistry.create(name, JITGeneratorContext(t), stringmap_t())

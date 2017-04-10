@@ -63,7 +63,20 @@ from ext.halide.util cimport running_program_name as halide_running_program_name
 from ext.halide.buffer cimport Buffer
 from ext.halide.buffer cimport buffervec_t
 
-from halogen.utils import stringify
+
+def stringify(instance, fields):
+    field_dict = {}
+    for field in fields:
+        field_value = getattr(instance, field, "")
+        if field_value:
+            field_dict.update({ field : field_value })
+    field_dict_items = []
+    for k, v in field_dict.items():
+        field_dict_items.append('''%s="%s"''' % (k, v))
+    return "%s(%s) @ %s" % (instance.__class__.__name__,
+                            ", ".join(field_dict_items),
+                            hex(id(instance)))
+
 
 @cython.freelist(32)
 cdef class Type:
@@ -98,6 +111,9 @@ cdef class Type:
             self.__this__ = self.__this__.with_bits(<uint8_t>kwargs.get('bits'))
         elif 'lanes' in kwargs:
             self.__this__ = self.__this__.with_lanes(<uint16_t>kwargs.get('lanes'))
+        else:
+            # default to “uint8_t”:
+            self.__this__ = HalType_UInt(8, 1)
     
     @cython.embedsignature(True)
     def code(Type self):
@@ -199,17 +215,52 @@ cdef class Type:
     @cython.embedsignature(True)
     @cython.infer_types(True)
     def repr_c_source(Type self):
-        return halide_type_to_c_source(self.__this__)
+        try:
+            return halide_type_to_c_source(self.__this__)
+        except IndexError:
+            return "Halide::type_sink<void>"
     
     @cython.embedsignature(True)
     @cython.infer_types(True)
     def repr_c_type(Type self):
-        return halide_type_to_c_type(self.__this__)
+        try:
+            return halide_type_to_c_type(self.__this__)
+        except IndexError:
+            return "void"
     
     @cython.embedsignature(True)
     @cython.infer_types(True)
     def repr_enum_string(Type self):
-        return halide_type_to_enum_string(self.__this__)
+        try:
+            return halide_type_to_enum_string(self.__this__)
+        except IndexError:
+            return "void"
+    
+    @cython.embedsignature(True)
+    @cython.infer_types(True)
+    def to_string(Type self):
+        try:
+            return halide_type_to_c_type(self.__this__)
+        except IndexError:
+            return "void"
+    
+    @cython.embedsignature(True)
+    @cython.infer_types(True)
+    def __repr__(Type self):
+        try:
+            c_source = halide_type_to_c_source(self.__this__)
+        except IndexError:
+            c_source = "Halide::type_sink<void>"
+        return "<%s @ %s>" % (c_source,
+                              hex(id(self)))
+    
+    @cython.embedsignature(True)
+    @cython.infer_types(True)
+    def __str__(Type self):
+        try:
+            return halide_type_to_c_type(self.__this__)
+        except IndexError:
+            return "void"
     
     @cython.embedsignature(True)
     @cython.infer_types(True)
@@ -357,7 +408,8 @@ cdef class Target:
     @staticmethod
     def host_target():
         out = Target()
-        out.__this__ = halide_get_host_target()
+        with nogil:
+            out.__this__ = halide_get_host_target()
         return out
     
     @cython.embedsignature(True)
@@ -365,7 +417,8 @@ cdef class Target:
     @staticmethod
     def target_from_environment():
         out = Target()
-        out.__this__ = halide_get_target_from_environment()
+        with nogil:
+            out.__this__ = halide_get_target_from_environment()
         return out
     
     @cython.embedsignature(True)
@@ -373,7 +426,8 @@ cdef class Target:
     @staticmethod
     def jit_target_from_environment():
         out = Target()
-        out.__this__ = halide_get_jit_target_from_environment()
+        with nogil:
+            out.__this__ = halide_get_jit_target_from_environment()
         return out
 
 
@@ -812,7 +866,8 @@ cdef class Module:
     @staticmethod
     cdef Module with_instance(HalModule& m):
         cdef Module out = Module()
-        out.__this__.reset(new HalModule(m))
+        with nogil:
+            out.__this__.reset(new HalModule(m))
         return out
     
     @cython.embedsignature(True)
@@ -826,7 +881,7 @@ cdef class Module:
         return out
     
     @cython.embedsignature(True)
-    cdef void replace_instance(Module self, HalModule&& m):
+    cdef void replace_instance(Module self, HalModule&& m) nogil:
         self.__this__.reset(new HalModule(m))
     
     @cython.embedsignature(True)
@@ -933,14 +988,15 @@ cpdef Module get_generator_module(string& name, object arguments={}):
     for k, v in arguments.items():
         argmap[<string>k] = <string>v
     
-    # Actually get an instance of the named generator:
-    generator_instance = halide_generator_registry_get(name, deref(generator_target), argmap)
-    
-    # “Modulize” and return the generator instance (which that is a Halide thing, modulization):
-    out.replace_instance(<HalModule>deref(generator_instance).build_module(name, Linkage_Internal))
+    with nogil:
+        # Actually get an instance of the named generator:
+        generator_instance = halide_generator_registry_get(name, deref(generator_target), argmap)
+        
+        # “Modulize” and return the generator instance (which that is a Halide thing, modulization):
+        out.replace_instance(<HalModule>deref(generator_instance).build_module(name, Linkage_Internal))
     return out
 
-cdef void f_insert_into(Module module, modulevec_t& modulevec):
+cdef void f_insert_into(Module module, modulevec_t& modulevec) nogil:
     modulevec.push_back(deref(module.__this__))
 
 @cython.embedsignature(True)
@@ -994,8 +1050,9 @@ def compile_standalone_runtime(Target target=Target.target_from_environment(),
             raise TypeError("type(outputs) must be Outputs, not %s" % outputs.__class__.__name__)
         
         # make the actual call, returning another native Options object:
-        out = halide_compile_standalone_runtime_with_outputs(<HalOutputs>outputs.__this__,
-                                                             <HalTarget>target.__this__)
+        with nogil:
+            out = halide_compile_standalone_runtime_with_outputs(<HalOutputs>outputs.__this__,
+                                                                 <HalTarget>target.__this__)
         
         # return a new hal.api.Outputs matching the returned value above:
         return Outputs(
@@ -1035,8 +1092,9 @@ def make_standalone_runtime(Target target=Target.target_from_environment(),
                                                         base_path=<string>realpth)
     
     # make the actual call, returning another native Options object:
-    out = halide_compile_standalone_runtime_with_outputs(<HalOutputs>outputs.__this__,
-                                                         <HalTarget>target.__this__)
+    with nogil:
+        out = halide_compile_standalone_runtime_with_outputs(<HalOutputs>outputs.__this__,
+                                                             <HalTarget>target.__this__)
     
     # return a new hal.api.Outputs matching the returned value above:
     return Outputs(
