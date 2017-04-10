@@ -63,6 +63,8 @@ from ext.halide.util cimport running_program_name as halide_running_program_name
 from ext.halide.buffer cimport Buffer
 from ext.halide.buffer cimport buffervec_t
 
+from halogen.utils import stringify
+
 @cython.freelist(32)
 cdef class Type:
     """ Cython wrapper class for Halide::Type """
@@ -338,6 +340,10 @@ cdef class Target:
         return self.__this__.to_string()
     
     @cython.embedsignature(True)
+    def __repr__(Target self):
+        return stringify(self, ('os', 'arch', 'bits'))
+    
+    @cython.embedsignature(True)
     @cython.infer_types(True)
     def __richcmp__(Target self, Target other, int op):
         if op == 2: # ==
@@ -554,23 +560,16 @@ cdef class Outputs:
     
     @cython.embedsignature(True)
     def to_string(Outputs self):
-        fields = ("object_name", "assembly_name", "bitcode_name",
-                  "llvm_assembly_name", "c_header_name", "c_source_name",
-                  "stmt_name", "stmt_html_name", "static_library_name")
-        field_dict = {}
-        for field in fields:
-            field_value = getattr(self, field, "")
-            if field_value:
-                field_dict.update({ field : field_value })
-        field_dict_items = []
-        for k, v in field_dict.items():
-            field_dict_items.append('''%s="%s"''' % (k, v))
-        return "%s(%s) @ %s" % (self.__class__.__name__,
-                                ", ".join(field_dict_items),
-                                hex(id(self)))
+        return stringify(self, ("object_name", "assembly_name", "bitcode_name",
+                                "llvm_assembly_name", "c_header_name", "c_source_name",
+                                "stmt_name", "stmt_html_name", "static_library_name"))
     
     @cython.embedsignature(True)
     def __str__(Outputs self):
+        return self.to_string()
+    
+    @cython.embedsignature(True)
+    def __repr__(Outputs self):
         return self.to_string()
 
 
@@ -756,21 +755,14 @@ cdef class EmitOptions:
     
     @cython.embedsignature(True)
     def to_string(EmitOptions self):
-        fields = self.emit_defaults.keys() + ['substitutions']
-        field_dict = {}
-        for field in fields:
-            field_value = getattr(self, field, "")
-            if field_value:
-                field_dict.update({ field : str(field_value) })
-        field_dict_items = []
-        for k, v in field_dict.items():
-            field_dict_items.append('''%s="%s"''' % (k, v))
-        return "%s(%s) @ %s" % (self.__class__.__name__,
-                                ", ".join(field_dict_items),
-                                hex(id(self)))
+        return stringify(self, self.emit_defaults.keys() + ['substitutions'])
     
     @cython.embedsignature(True)
     def __str__(EmitOptions self):
+        return self.to_string()
+    
+    @cython.embedsignature(True)
+    def __repr__(EmitOptions self):
         return self.to_string()
 
 
@@ -853,6 +845,10 @@ cdef class Module:
     
     @cython.embedsignature(True)
     def __str__(Module self):
+        return self.to_string()
+    
+    @cython.embedsignature(True)
+    def __repr__(Module self):
         return self.to_string()
 
 
