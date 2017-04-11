@@ -36,7 +36,7 @@ class CompileTests(BaseCase):
                 registered = self.hal.api.registered_generators()
                 self.assertTrue(len(registered) > 0)
                 
-                with TemporaryDirectory(prefix='test-generate-registsred-') as td2:
+                with TemporaryDirectory(prefix='test-generate-registered-') as td2:
                     
                     bsepths, outputs, modules = generate(*registered, verbose=False,
                                                                       target=self.hal.api.Target.target_from_environment().to_string(),

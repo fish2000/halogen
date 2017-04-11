@@ -63,6 +63,7 @@ def back_tick(cmd, ret_err=False, as_str=True, raise_err=None, verbose=False):
     return out, err
 
 def rm_rf(pth):
+    """ rm_rf() does what `rm -rf` does, so for the love of fuck, BE CAREFUL WITH IT. """
     if os.path.isfile(pth):
         os.unlink(pth)
     elif os.path.isdir(pth):
@@ -80,8 +81,7 @@ def rm_rf(pth):
 class Directory(object):
     
     """ A context-managed directory: change in on enter, change back out
-        on exit. Plus a few convenience functions for listing and whatnot.
-    """
+        on exit. Plus a few convenience functions for listing and whatnot. """
     
     def __init__(self, pth):
         self.old = os.getcwd()

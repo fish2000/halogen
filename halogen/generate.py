@@ -13,6 +13,10 @@ valid_emits = frozenset([
 ])
 
 def preload(library_path, **kwargs):
+    """ Load and auto-register generators from a dynamic-link library at a
+        given path. Currently we use ctypes to do this cross-platform-ly.
+        We also use a memoization cache to avoid loading anything twice.
+    """
     import os, ctypes
     import config
     from errors import GeneratorError
@@ -44,6 +48,8 @@ def preload(library_path, **kwargs):
     return preload.loaded_libraries[realpth]
 
 def generate(*generators, **arguments):
+    """ Invoke hal.api.Module.compile(…) with the proper arguments. This function
+        was concieved with replacing GenGen.cpp’s options in mind. """
     import os
     import config
     import hal.api
