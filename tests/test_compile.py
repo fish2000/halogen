@@ -112,7 +112,7 @@ class CompileTests(BaseCase):
             
             # ARCHIVE!
             with TemporaryName(suffix=config.STATIC_LIBRARY_SUFFIX.lstrip("."), parent=td.name) as archfile:
-                arch_result = config.LD(self.CONF,
+                arch_result = config.AR(self.CONF,
                                         archfile.name,
                                        *prelink, verbose=True)
                 self.assertTrue(len(arch_result) > 0)
