@@ -303,33 +303,51 @@ class ConfigUnion(object):
                 return (self.TOKEN.join(sorted([flag.strip() for flag in base_function(this, out)]))).strip()
             return getter
     
-    # Ordered list of all possible optimization flags:
-    optimization_flags = ["O%s" % str(flag) \
-                                for flag in \
-                               ('0', 's', 'fast', 'g', '1', '', '2', '3', '4')]
+    class FlagSet(object):
+        
+        """ A sugary-sweet class for stowing a set of flags whose order is significant. """
+        
+        def __init__(self, template, flaglist):
+            self.flags = [template % str(flag) for flag in flaglist]
+            self.set = frozenset(self.flags)
+        
+        def __contains__(self, rhs):
+            return rhs in self.set
+        
+        def __len__(self):
+            return len(self.flags)
+        
+        def __getitem__(self, key):
+            return self.flags[key]
+        
+        def __setitem__(self, key, value):
+            try:
+                self.flags[key] = value
+            except:
+                raise
+            self.set = frozenset(self.flags)
+        
+        def index(self, value):
+            return self.flags.index(value)
     
-    # Set form of optimization flags a la `optimization_flags` above:
-    optimization_set = frozenset(optimization_flags)
+    
+    # Ordered list of all possible optimization flags:
+    optimization = FlagSet("O%s", ('0', 's', 'fast', 'g', '1', '', '2', '3', '4'))
     
     # Regular expression to match fake optimization flags e.g. -O8, -O785 etc.
     fake_flag_matcher = re.compile("^O(\d+)$")
     
     # Ordered list of all possible C++ standard flags --
     # adapted from Clang’s LangStandards.def, https://git.io/vSRX9
-    cxx_standard_flags = ["std=%s" % str(flag) \
-                                   for flag in \
-                                  ('c++98', 'gnu++98', 'c++03', 'c++0x', 'gnu++0x', 'c++11', 'gnu++11',
-                                   'c++1y', 'gnu++1y', 'c++14', 'gnu++14', 'c++1z', 'gnu++1z',
-                                   'c++17', 'gnu++17')]
-    
-    # Set form of C++ standard flags a la `cxx_standard_flags` above:
-    cxx_standard_set = frozenset(cxx_standard_flags)
+    cxx_standard = FlagSet("std=%s", ('c++98', 'gnu++98', 'c++03', 'c++0x', 'gnu++0x', 'c++11', 'gnu++11',
+                                      'c++1y', 'gnu++1y', 'c++14', 'gnu++14', 'c++1z', 'gnu++1z',
+                                      'c++17', 'gnu++17'))
     
     @classmethod
     def fake_optimization_flags(cls, flags):
         """ Prune out fake optimization flags e.g. -O8, -O785 etc. """
         match_func = cls.fake_flag_matcher.match
-        opt_set = cls.optimization_set
+        opt_set = cls.optimization.set
         return set(filter(lambda flag: bool(match_func(flag)) and \
                                            (flag not in opt_set), \
                                            map(lambda flag: flag.strip(), flags)))
@@ -339,7 +357,7 @@ class ConfigUnion(object):
         """ Strip all but the highest optimization-level compiler flag
             from a set of (de-dashed) flags. Returns a new set. """
         # Which flags are optflags?
-        optflags = flags.intersection(cls.optimization_set)
+        optflags = flags.intersection(cls.optimization.set)
         
         # Exit if the `flags` set contained no optflags:
         if len(optflags) < 1:
@@ -347,15 +365,15 @@ class ConfigUnion(object):
         
         # Find the optflag with the highest index into cls.optimization_flags:
         flags_index = reduce(lambda x, y: max(x, y),
-                          map(lambda flag: cls.optimization_flags.index(flag),
+                          map(lambda flag: cls.optimization.index(flag),
                               optflags))
         
         # Assemble all non-optflags in a new set:
-        out = flags - cls.optimization_set
+        out = flags - cls.optimization.set
         out -= cls.fake_optimization_flags(flags)
         
         # Append the highest-indexed optflag we found, and return:
-        out |= frozenset([cls.optimization_flags[flags_index]])
+        out |= frozenset([cls.optimization[flags_index]])
         return out
     
     @classmethod
@@ -363,7 +381,7 @@ class ConfigUnion(object):
         """ Strip all but the highest C++-standard-level compiler flag
             from a set of (de-dashed) flags. Returns a new set. """
         # Which flags are stdflags?
-        stdflags = flags.intersection(cls.cxx_standard_set)
+        stdflags = flags.intersection(cls.cxx_standard.set)
         
         # Exit if the `flags` set contained no stdflags:
         if len(stdflags) < 1:
@@ -371,14 +389,14 @@ class ConfigUnion(object):
         
         # Find the stdflag with the highest index into cls.cxx_standard_flags:
         flags_index = reduce(lambda x, y: max(x, y),
-                          map(lambda flag: cls.cxx_standard_flags.index(flag),
+                          map(lambda flag: cls.cxx_standard.index(flag),
                               stdflags))
         
         # Assemble all non-stdflags in a new set:
-        out = flags - cls.cxx_standard_set
+        out = flags - cls.cxx_standard.set
         
         # Append the highest-indexed stdflag we found, and return:
-        out |= frozenset([cls.cxx_standard_flags[flags_index]])
+        out |= frozenset([cls.cxx_standard[flags_index]])
         return out
     
     def __init__(self, *configs):
