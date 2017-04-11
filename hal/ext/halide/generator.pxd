@@ -5,7 +5,7 @@ from libcpp.string cimport string
 from libcpp.vector cimport vector
 from libcpp.memory cimport unique_ptr
 
-from target cimport Target, get_jit_target_from_environment
+from target cimport Target, get_target_from_environment
 from type cimport Type, LoopLevel, llevelmap_t
 from module cimport Module, LinkageType
 
@@ -120,5 +120,5 @@ cdef inline base_ptr_t generator_registry_get(string& name,
     return GeneratorRegistry.create(name, JITGeneratorContext(target), args)
 
 cdef inline base_ptr_t generator_registry_create(string& name) nogil:
-    cdef Target t = get_jit_target_from_environment()
+    cdef Target t = get_target_from_environment()
     return GeneratorRegistry.create(name, JITGeneratorContext(t), stringmap_t())

@@ -969,7 +969,7 @@ cpdef Module get_generator_module(string& name, object arguments={}):
     
     # next, check that `arguments` is a mapping type:
     if not PyMapping_Check(arguments):
-        raise ValueError(""""arguments" must be a mapping (dict-ish) type""" % str(name))
+        raise ValueError(""""arguments" must be a mapping (dict-ish) type""")
     
     # stack-allocate a named module (per the `name` argument),
     # a unique pointer (for holding a Halide::GeneratorBase instance), and
