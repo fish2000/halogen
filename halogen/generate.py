@@ -61,10 +61,9 @@ def generate(*generators, **arguments):
     generator_names = set(arguments.pop('generator_names', hal.api.registered_generators()))
     output_directory = os.path.abspath(arguments.pop('output_directory', os.path.relpath(os.getcwd())))
     emits = set(arguments.pop('emit', ['static_library', 'h']))
-    substitutions = dict(arguments.pop('substitutions', tuple()))
+    substitutions = dict(arguments.pop('substitutions', dict()))
     
     if target_string == '':
-        # raise ValueError("generation target unspecified")
         target_string = "host"
     elif not hal.api.validate_target_string(target_string):
         raise ValueError("generation target string %s is invalid" % target_string)
@@ -122,31 +121,30 @@ def generate(*generators, **arguments):
     for generator in generators:
         base_path = hal.api.compute_base_path(output_directory, generator, "")
         output = emit_options.compute_outputs_for_target_and_path(target, base_path)
+        
+        # This next line was originally to compensate in a bug that only manifested
+        # itself on my (now long-dead) MacBook Air:
         # output = outputs.static_library(None)
         
         if verbose:
             print("BSEPTH: %s" % str(base_path))
-            # print('')
         
         if verbose:
             print("OUTPUT: %s" % output.to_string())
-            # print('')
         
         generator_args = dict(target=target.to_string())
         generator_args.update(arguments)
         
-        # if verbose:
-        #     print("TARGET: %s" % target.to_string())
-        #     print('')
+        if verbose:
+            print("TARGET: %s" % target.to_string())
+            # print('')
         
         module = hal.api.get_generator_module(generator, arguments=generator_args)
         
         if verbose:
             print("MODULE: %s" % module.to_string())
             print('-' * max(terminal_width, 160))
-            # print('')
         
-        # module = hal.api.Module(module)
         module.compile(output)
         
         bsepths.append(base_path)

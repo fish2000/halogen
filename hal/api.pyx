@@ -312,7 +312,7 @@ cdef class Target:
     
     @cython.embedsignature(True)
     @staticmethod
-    def validate_target_string(string target_string):
+    def validate_target_string(string& target_string):
         return HalTarget.validate_target_string(target_string)
     
     def __cinit__(Target self, *args, **kwargs):
@@ -924,7 +924,7 @@ def get_jit_target_from_environment():
     return Target.jit_target_from_environment()
 
 @cython.embedsignature(True)
-def validate_target_string(string target_string):
+def validate_target_string(string& target_string):
     """ Halide::Target::validate_target_string(s) static method wrapper call. """
     return HalTarget.validate_target_string(target_string)
 
@@ -950,9 +950,9 @@ cpdef string halide_compute_base_path(string& output_dir,
     return base_path
 
 @cython.embedsignature(True)
-def compute_base_path(string output_dir,
-                      string function_name,
-                      string file_base_name):
+def compute_base_path(string& output_dir,
+                      string& function_name,
+                      string& file_base_name):
     """ Reimplementation of Halide::Internal::compute_base_path(...)
         (a private function found in Halide/src/Generator.cpp). """
     return halide_compute_base_path(output_dir,
@@ -1000,7 +1000,7 @@ cdef void f_insert_into(Module module, modulevec_t& modulevec) nogil:
     modulevec.push_back(deref(module.__this__))
 
 @cython.embedsignature(True)
-def link_modules(string module_name, *modules):
+def link_modules(string& module_name, *modules):
     """ Python wrapper for Halide::link_modules() from src/Module.h """
     cdef modulevec_t modulevec
     out = Module(name=module_name)

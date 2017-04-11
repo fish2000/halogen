@@ -6604,7 +6604,7 @@ static PyObject *__pyx_pf_3hal_3api_4Type_64Handle(int __pyx_v_lanes) {
 /* "hal/api.pyx":315
  *     @cython.embedsignature(True)
  *     @staticmethod
- *     def validate_target_string(string target_string):             # <<<<<<<<<<<<<<
+ *     def validate_target_string(string& target_string):             # <<<<<<<<<<<<<<
  *         return HalTarget.validate_target_string(target_string)
  * 
  */
@@ -6668,7 +6668,7 @@ static PyObject *__pyx_pf_3hal_3api_6Target_validate_target_string(std::string _
 
   /* "hal/api.pyx":316
  *     @staticmethod
- *     def validate_target_string(string target_string):
+ *     def validate_target_string(string& target_string):
  *         return HalTarget.validate_target_string(target_string)             # <<<<<<<<<<<<<<
  * 
  *     def __cinit__(Target self, *args, **kwargs):
@@ -6683,7 +6683,7 @@ static PyObject *__pyx_pf_3hal_3api_6Target_validate_target_string(std::string _
   /* "hal/api.pyx":315
  *     @cython.embedsignature(True)
  *     @staticmethod
- *     def validate_target_string(string target_string):             # <<<<<<<<<<<<<<
+ *     def validate_target_string(string& target_string):             # <<<<<<<<<<<<<<
  *         return HalTarget.validate_target_string(target_string)
  * 
  */
@@ -17339,7 +17339,7 @@ static PyObject *__pyx_pf_3hal_3api_6get_jit_target_from_environment(CYTHON_UNUS
 /* "hal/api.pyx":927
  * 
  * @cython.embedsignature(True)
- * def validate_target_string(string target_string):             # <<<<<<<<<<<<<<
+ * def validate_target_string(string& target_string):             # <<<<<<<<<<<<<<
  *     """ Halide::Target::validate_target_string(s) static method wrapper call. """
  *     return HalTarget.validate_target_string(target_string)
  */
@@ -17376,7 +17376,7 @@ static PyObject *__pyx_pf_3hal_3api_8validate_target_string(CYTHON_UNUSED PyObje
   __Pyx_RefNannySetupContext("validate_target_string", 0);
 
   /* "hal/api.pyx":929
- * def validate_target_string(string target_string):
+ * def validate_target_string(string& target_string):
  *     """ Halide::Target::validate_target_string(s) static method wrapper call. """
  *     return HalTarget.validate_target_string(target_string)             # <<<<<<<<<<<<<<
  * 
@@ -17392,7 +17392,7 @@ static PyObject *__pyx_pf_3hal_3api_8validate_target_string(CYTHON_UNUSED PyObje
   /* "hal/api.pyx":927
  * 
  * @cython.embedsignature(True)
- * def validate_target_string(string target_string):             # <<<<<<<<<<<<<<
+ * def validate_target_string(string& target_string):             # <<<<<<<<<<<<<<
  *     """ Halide::Target::validate_target_string(s) static method wrapper call. """
  *     return HalTarget.validate_target_string(target_string)
  */
@@ -17772,9 +17772,9 @@ static PyObject *__pyx_pf_3hal_3api_12halide_compute_base_path(CYTHON_UNUSED PyO
 /* "hal/api.pyx":953
  * 
  * @cython.embedsignature(True)
- * def compute_base_path(string output_dir,             # <<<<<<<<<<<<<<
- *                       string function_name,
- *                       string file_base_name):
+ * def compute_base_path(string& output_dir,             # <<<<<<<<<<<<<<
+ *                       string& function_name,
+ *                       string& file_base_name):
  */
 
 /* Python wrapper */
@@ -17877,9 +17877,9 @@ static PyObject *__pyx_pf_3hal_3api_14compute_base_path(CYTHON_UNUSED PyObject *
   /* "hal/api.pyx":953
  * 
  * @cython.embedsignature(True)
- * def compute_base_path(string output_dir,             # <<<<<<<<<<<<<<
- *                       string function_name,
- *                       string file_base_name):
+ * def compute_base_path(string& output_dir,             # <<<<<<<<<<<<<<
+ *                       string& function_name,
+ *                       string& file_base_name):
  */
 
   /* function exit code */
@@ -18568,7 +18568,7 @@ static void __pyx_f_3hal_3api_f_insert_into(struct __pyx_obj_3hal_3api_Module *_
 /* "hal/api.pyx":1003
  * 
  * @cython.embedsignature(True)
- * def link_modules(string module_name, *modules):             # <<<<<<<<<<<<<<
+ * def link_modules(string& module_name, *modules):             # <<<<<<<<<<<<<<
  *     """ Python wrapper for Halide::link_modules() from src/Module.h """
  *     cdef modulevec_t modulevec
  */
@@ -18828,7 +18828,7 @@ static PyObject *__pyx_pf_3hal_3api_18link_modules(CYTHON_UNUSED PyObject *__pyx
   /* "hal/api.pyx":1003
  * 
  * @cython.embedsignature(True)
- * def link_modules(string module_name, *modules):             # <<<<<<<<<<<<<<
+ * def link_modules(string& module_name, *modules):             # <<<<<<<<<<<<<<
  *     """ Python wrapper for Halide::link_modules() from src/Module.h """
  *     cdef modulevec_t modulevec
  */
@@ -22234,7 +22234,7 @@ static int __Pyx_InitCachedConstants(void) {
   /* "hal/api.pyx":315
  *     @cython.embedsignature(True)
  *     @staticmethod
- *     def validate_target_string(string target_string):             # <<<<<<<<<<<<<<
+ *     def validate_target_string(string& target_string):             # <<<<<<<<<<<<<<
  *         return HalTarget.validate_target_string(target_string)
  * 
  */
@@ -22309,7 +22309,7 @@ static int __Pyx_InitCachedConstants(void) {
   /* "hal/api.pyx":927
  * 
  * @cython.embedsignature(True)
- * def validate_target_string(string target_string):             # <<<<<<<<<<<<<<
+ * def validate_target_string(string& target_string):             # <<<<<<<<<<<<<<
  *     """ Halide::Target::validate_target_string(s) static method wrapper call. """
  *     return HalTarget.validate_target_string(target_string)
  */
@@ -22333,9 +22333,9 @@ static int __Pyx_InitCachedConstants(void) {
   /* "hal/api.pyx":953
  * 
  * @cython.embedsignature(True)
- * def compute_base_path(string output_dir,             # <<<<<<<<<<<<<<
- *                       string function_name,
- *                       string file_base_name):
+ * def compute_base_path(string& output_dir,             # <<<<<<<<<<<<<<
+ *                       string& function_name,
+ *                       string& file_base_name):
  */
   __pyx_tuple__65 = PyTuple_Pack(3, __pyx_n_s_output_dir, __pyx_n_s_function_name, __pyx_n_s_file_base_name); if (unlikely(!__pyx_tuple__65)) __PYX_ERR(0, 953, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__65);
@@ -22345,7 +22345,7 @@ static int __Pyx_InitCachedConstants(void) {
   /* "hal/api.pyx":1003
  * 
  * @cython.embedsignature(True)
- * def link_modules(string module_name, *modules):             # <<<<<<<<<<<<<<
+ * def link_modules(string& module_name, *modules):             # <<<<<<<<<<<<<<
  *     """ Python wrapper for Halide::link_modules() from src/Module.h """
  *     cdef modulevec_t modulevec
  */
@@ -22899,7 +22899,7 @@ PyMODINIT_FUNC PyInit_api(void)
   /* "hal/api.pyx":315
  *     @cython.embedsignature(True)
  *     @staticmethod
- *     def validate_target_string(string target_string):             # <<<<<<<<<<<<<<
+ *     def validate_target_string(string& target_string):             # <<<<<<<<<<<<<<
  *         return HalTarget.validate_target_string(target_string)
  * 
  */
@@ -22910,7 +22910,7 @@ PyMODINIT_FUNC PyInit_api(void)
  * 
  *     @cython.embedsignature(True)
  *     @staticmethod             # <<<<<<<<<<<<<<
- *     def validate_target_string(string target_string):
+ *     def validate_target_string(string& target_string):
  *         return HalTarget.validate_target_string(target_string)
  */
   __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 314, __pyx_L1_error)
@@ -22928,7 +22928,7 @@ PyMODINIT_FUNC PyInit_api(void)
   /* "hal/api.pyx":315
  *     @cython.embedsignature(True)
  *     @staticmethod
- *     def validate_target_string(string target_string):             # <<<<<<<<<<<<<<
+ *     def validate_target_string(string& target_string):             # <<<<<<<<<<<<<<
  *         return HalTarget.validate_target_string(target_string)
  * 
  */
@@ -22939,7 +22939,7 @@ PyMODINIT_FUNC PyInit_api(void)
  * 
  *     @cython.embedsignature(True)
  *     @staticmethod             # <<<<<<<<<<<<<<
- *     def validate_target_string(string target_string):
+ *     def validate_target_string(string& target_string):
  *         return HalTarget.validate_target_string(target_string)
  */
   __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 314, __pyx_L1_error)
@@ -23277,7 +23277,7 @@ PyMODINIT_FUNC PyInit_api(void)
   /* "hal/api.pyx":927
  * 
  * @cython.embedsignature(True)
- * def validate_target_string(string target_string):             # <<<<<<<<<<<<<<
+ * def validate_target_string(string& target_string):             # <<<<<<<<<<<<<<
  *     """ Halide::Target::validate_target_string(s) static method wrapper call. """
  *     return HalTarget.validate_target_string(target_string)
  */
@@ -23301,9 +23301,9 @@ PyMODINIT_FUNC PyInit_api(void)
   /* "hal/api.pyx":953
  * 
  * @cython.embedsignature(True)
- * def compute_base_path(string output_dir,             # <<<<<<<<<<<<<<
- *                       string function_name,
- *                       string file_base_name):
+ * def compute_base_path(string& output_dir,             # <<<<<<<<<<<<<<
+ *                       string& function_name,
+ *                       string& file_base_name):
  */
   __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_3hal_3api_15compute_base_path, NULL, __pyx_n_s_hal_api); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 953, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
@@ -23331,7 +23331,7 @@ PyMODINIT_FUNC PyInit_api(void)
   /* "hal/api.pyx":1003
  * 
  * @cython.embedsignature(True)
- * def link_modules(string module_name, *modules):             # <<<<<<<<<<<<<<
+ * def link_modules(string& module_name, *modules):             # <<<<<<<<<<<<<<
  *     """ Python wrapper for Halide::link_modules() from src/Module.h """
  *     cdef modulevec_t modulevec
  */

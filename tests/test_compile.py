@@ -33,17 +33,30 @@ class CompileTests(BaseCase):
                 self.assertTrue(gens.linked)
                 self.assertTrue(gens.archived)
                 gens.preload_all()
+                
                 registered = self.hal.api.registered_generators()
                 self.assertTrue(len(registered) > 0)
+                
+                target_string = self.hal.api.Target.target_from_environment().to_string()
+                self.assertTrue(self.hal.api.Target.validate_target_string(target_string))
                 
                 with TemporaryDirectory(prefix='test-generate-registered-') as td2:
                     
                     bsepths, outputs, modules = generate(*registered, verbose=False,
-                                                                      target=self.hal.api.Target.target_from_environment().to_string(),
+                                                                      target=target_string,
                                                                       output_directory=td2.name)
                     self.assertEqual(len(bsepths), len(outputs))
                     self.assertEqual(len(bsepths), len(modules))
                     self.assertEqual(len(outputs), len(modules))
+                    
+                    for output in outputs:
+                        for prop_name in ("object_name", "assembly_name", "bitcode_name",
+                                          "llvm_assembly_name", "c_header_name", "c_source_name",
+                                          "stmt_name", "stmt_html_name", "static_library_name"):
+                            if getattr(output, prop_name, ''):
+                                self.assertTrue(os.path.exists(getattr(output, prop_name)))
+                            else:
+                                self.assertFalse(os.path.exists(getattr(output, prop_name)))
     
     def test_generator_compile_context_manager(self):
         from halogen.compile import Generator
