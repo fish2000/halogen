@@ -937,9 +937,9 @@ def registered_generators():
         out += tuple([str(enumerated_name)])
     return out
 
-cpdef string halide_compute_base_path(string& output_dir,
-                                      string& function_name,
-                                      string& file_base_name):
+cdef string halide_compute_base_path(string& output_dir,
+                                     string& function_name,
+                                     string& file_base_name):
     cdef stringvec_t namespaces
     cdef string simple_name = halide_extract_namespaces(function_name, namespaces)
     cdef string base_path = output_dir + "/"

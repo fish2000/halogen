@@ -1627,7 +1627,7 @@ static PyTypeObject *__pyx_ptype_3hal_3api_Target = 0;
 static PyTypeObject *__pyx_ptype_3hal_3api_Outputs = 0;
 static PyTypeObject *__pyx_ptype_3hal_3api_EmitOptions = 0;
 static PyTypeObject *__pyx_ptype_3hal_3api_Module = 0;
-static std::string __pyx_f_3hal_3api_halide_compute_base_path(std::string &, std::string &, std::string &, int __pyx_skip_dispatch); /*proto*/
+static std::string __pyx_f_3hal_3api_halide_compute_base_path(std::string &, std::string &, std::string &); /*proto*/
 static struct __pyx_obj_3hal_3api_Module *__pyx_f_3hal_3api_get_generator_module(std::string &, int __pyx_skip_dispatch, struct __pyx_opt_args_3hal_3api_get_generator_module *__pyx_optional_args); /*proto*/
 static void __pyx_f_3hal_3api_f_insert_into(struct __pyx_obj_3hal_3api_Module *, __pyx_t_3hal_3ext_6halide_6module_modulevec_t &); /*proto*/
 static std::string __pyx_convert_string_from_py_std__in_string(PyObject *); /*proto*/
@@ -2057,13 +2057,12 @@ static PyObject *__pyx_pf_3hal_3api_4get_target_from_environment(CYTHON_UNUSED P
 static PyObject *__pyx_pf_3hal_3api_6get_jit_target_from_environment(CYTHON_UNUSED PyObject *__pyx_self); /* proto */
 static PyObject *__pyx_pf_3hal_3api_8validate_target_string(CYTHON_UNUSED PyObject *__pyx_self, std::string __pyx_v_target_string); /* proto */
 static PyObject *__pyx_pf_3hal_3api_10registered_generators(CYTHON_UNUSED PyObject *__pyx_self); /* proto */
-static PyObject *__pyx_pf_3hal_3api_12halide_compute_base_path(CYTHON_UNUSED PyObject *__pyx_self, std::string __pyx_v_output_dir, std::string __pyx_v_function_name, std::string __pyx_v_file_base_name); /* proto */
-static PyObject *__pyx_pf_3hal_3api_14compute_base_path(CYTHON_UNUSED PyObject *__pyx_self, std::string __pyx_v_output_dir, std::string __pyx_v_function_name, std::string __pyx_v_file_base_name); /* proto */
-static PyObject *__pyx_pf_3hal_3api_16get_generator_module(CYTHON_UNUSED PyObject *__pyx_self, std::string __pyx_v_name, PyObject *__pyx_v_arguments); /* proto */
-static PyObject *__pyx_pf_3hal_3api_18link_modules(CYTHON_UNUSED PyObject *__pyx_self, std::string __pyx_v_module_name, PyObject *__pyx_v_modules); /* proto */
-static PyObject *__pyx_pf_3hal_3api_20compile_standalone_runtime(CYTHON_UNUSED PyObject *__pyx_self, struct __pyx_obj_3hal_3api_Target *__pyx_v_target, PyObject *__pyx_v_pth, struct __pyx_obj_3hal_3api_Outputs *__pyx_v_outputs); /* proto */
-static PyObject *__pyx_pf_3hal_3api_22make_standalone_runtime(CYTHON_UNUSED PyObject *__pyx_self, struct __pyx_obj_3hal_3api_Target *__pyx_v_target, PyObject *__pyx_v_pth); /* proto */
-static PyObject *__pyx_pf_3hal_3api_24running_program_name(CYTHON_UNUSED PyObject *__pyx_self); /* proto */
+static PyObject *__pyx_pf_3hal_3api_12compute_base_path(CYTHON_UNUSED PyObject *__pyx_self, std::string __pyx_v_output_dir, std::string __pyx_v_function_name, std::string __pyx_v_file_base_name); /* proto */
+static PyObject *__pyx_pf_3hal_3api_14get_generator_module(CYTHON_UNUSED PyObject *__pyx_self, std::string __pyx_v_name, PyObject *__pyx_v_arguments); /* proto */
+static PyObject *__pyx_pf_3hal_3api_16link_modules(CYTHON_UNUSED PyObject *__pyx_self, std::string __pyx_v_module_name, PyObject *__pyx_v_modules); /* proto */
+static PyObject *__pyx_pf_3hal_3api_18compile_standalone_runtime(CYTHON_UNUSED PyObject *__pyx_self, struct __pyx_obj_3hal_3api_Target *__pyx_v_target, PyObject *__pyx_v_pth, struct __pyx_obj_3hal_3api_Outputs *__pyx_v_outputs); /* proto */
+static PyObject *__pyx_pf_3hal_3api_20make_standalone_runtime(CYTHON_UNUSED PyObject *__pyx_self, struct __pyx_obj_3hal_3api_Target *__pyx_v_target, PyObject *__pyx_v_pth); /* proto */
+static PyObject *__pyx_pf_3hal_3api_22running_program_name(CYTHON_UNUSED PyObject *__pyx_self); /* proto */
 static PyObject *__pyx_tp_new_3hal_3api_Type(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
 static PyObject *__pyx_tp_new_3hal_3api_Target(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
 static PyObject *__pyx_tp_new_3hal_3api_Outputs(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
@@ -17534,7 +17533,7 @@ static PyObject *__pyx_pf_3hal_3api_10registered_generators(CYTHON_UNUSED PyObje
  *         out += tuple([str(enumerated_name)])
  *     return out             # <<<<<<<<<<<<<<
  * 
- * cpdef string halide_compute_base_path(string& output_dir,
+ * cdef string halide_compute_base_path(string& output_dir,
  */
   __Pyx_XDECREF(__pyx_r);
   __Pyx_INCREF(__pyx_v_out);
@@ -17568,13 +17567,12 @@ static PyObject *__pyx_pf_3hal_3api_10registered_generators(CYTHON_UNUSED PyObje
 /* "hal/api.pyx":940
  *     return out
  * 
- * cpdef string halide_compute_base_path(string& output_dir,             # <<<<<<<<<<<<<<
- *                                       string& function_name,
- *                                       string& file_base_name):
+ * cdef string halide_compute_base_path(string& output_dir,             # <<<<<<<<<<<<<<
+ *                                      string& function_name,
+ *                                      string& file_base_name):
  */
 
-static PyObject *__pyx_pw_3hal_3api_13halide_compute_base_path(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static std::string __pyx_f_3hal_3api_halide_compute_base_path(std::string &__pyx_v_output_dir, std::string &__pyx_v_function_name, std::string &__pyx_v_file_base_name, CYTHON_UNUSED int __pyx_skip_dispatch) {
+static std::string __pyx_f_3hal_3api_halide_compute_base_path(std::string &__pyx_v_output_dir, std::string &__pyx_v_function_name, std::string &__pyx_v_file_base_name) {
   __pyx_t_3hal_3ext_6halide_4util_stringvec_t __pyx_v_namespaces;
   std::string __pyx_v_simple_name;
   std::string __pyx_v_base_path;
@@ -17587,7 +17585,7 @@ static std::string __pyx_f_3hal_3api_halide_compute_base_path(std::string &__pyx
   __Pyx_RefNannySetupContext("halide_compute_base_path", 0);
 
   /* "hal/api.pyx":944
- *                                       string& file_base_name):
+ *                                      string& file_base_name):
  *     cdef stringvec_t namespaces
  *     cdef string simple_name = halide_extract_namespaces(function_name, namespaces)             # <<<<<<<<<<<<<<
  *     cdef string base_path = output_dir + "/"
@@ -17665,9 +17663,9 @@ static std::string __pyx_f_3hal_3api_halide_compute_base_path(std::string &__pyx
   /* "hal/api.pyx":940
  *     return out
  * 
- * cpdef string halide_compute_base_path(string& output_dir,             # <<<<<<<<<<<<<<
- *                                       string& function_name,
- *                                       string& file_base_name):
+ * cdef string halide_compute_base_path(string& output_dir,             # <<<<<<<<<<<<<<
+ *                                      string& function_name,
+ *                                      string& file_base_name):
  */
 
   /* function exit code */
@@ -17676,96 +17674,6 @@ static std::string __pyx_f_3hal_3api_halide_compute_base_path(std::string &__pyx
   __Pyx_XDECREF(__pyx_t_2);
   __Pyx_WriteUnraisable("hal.api.halide_compute_base_path", __pyx_clineno, __pyx_lineno, __pyx_filename, 0, 0);
   __pyx_L0:;
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-/* Python wrapper */
-static PyObject *__pyx_pw_3hal_3api_13halide_compute_base_path(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyObject *__pyx_pw_3hal_3api_13halide_compute_base_path(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
-  std::string __pyx_v_output_dir;
-  std::string __pyx_v_function_name;
-  std::string __pyx_v_file_base_name;
-  PyObject *__pyx_r = 0;
-  __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("halide_compute_base_path (wrapper)", 0);
-  {
-    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_output_dir,&__pyx_n_s_function_name,&__pyx_n_s_file_base_name,0};
-    PyObject* values[3] = {0,0,0};
-    if (unlikely(__pyx_kwds)) {
-      Py_ssize_t kw_args;
-      const Py_ssize_t pos_args = PyTuple_GET_SIZE(__pyx_args);
-      switch (pos_args) {
-        case  3: values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
-        case  2: values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
-        case  1: values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
-        case  0: break;
-        default: goto __pyx_L5_argtuple_error;
-      }
-      kw_args = PyDict_Size(__pyx_kwds);
-      switch (pos_args) {
-        case  0:
-        if (likely((values[0] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_output_dir)) != 0)) kw_args--;
-        else goto __pyx_L5_argtuple_error;
-        case  1:
-        if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_function_name)) != 0)) kw_args--;
-        else {
-          __Pyx_RaiseArgtupleInvalid("halide_compute_base_path", 1, 3, 3, 1); __PYX_ERR(0, 940, __pyx_L3_error)
-        }
-        case  2:
-        if (likely((values[2] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_file_base_name)) != 0)) kw_args--;
-        else {
-          __Pyx_RaiseArgtupleInvalid("halide_compute_base_path", 1, 3, 3, 2); __PYX_ERR(0, 940, __pyx_L3_error)
-        }
-      }
-      if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "halide_compute_base_path") < 0)) __PYX_ERR(0, 940, __pyx_L3_error)
-      }
-    } else if (PyTuple_GET_SIZE(__pyx_args) != 3) {
-      goto __pyx_L5_argtuple_error;
-    } else {
-      values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
-      values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
-      values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
-    }
-    __pyx_v_output_dir = __pyx_convert_string_from_py_std__in_string(values[0]); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 940, __pyx_L3_error)
-    __pyx_v_function_name = __pyx_convert_string_from_py_std__in_string(values[1]); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 941, __pyx_L3_error)
-    __pyx_v_file_base_name = __pyx_convert_string_from_py_std__in_string(values[2]); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 942, __pyx_L3_error)
-  }
-  goto __pyx_L4_argument_unpacking_done;
-  __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("halide_compute_base_path", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 940, __pyx_L3_error)
-  __pyx_L3_error:;
-  __Pyx_AddTraceback("hal.api.halide_compute_base_path", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __Pyx_RefNannyFinishContext();
-  return NULL;
-  __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_3hal_3api_12halide_compute_base_path(__pyx_self, __pyx_v_output_dir, __pyx_v_function_name, __pyx_v_file_base_name);
-
-  /* function exit code */
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-static PyObject *__pyx_pf_3hal_3api_12halide_compute_base_path(CYTHON_UNUSED PyObject *__pyx_self, std::string __pyx_v_output_dir, std::string __pyx_v_function_name, std::string __pyx_v_file_base_name) {
-  PyObject *__pyx_r = NULL;
-  __Pyx_RefNannyDeclarations
-  PyObject *__pyx_t_1 = NULL;
-  __Pyx_RefNannySetupContext("halide_compute_base_path", 0);
-  __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_f_3hal_3api_halide_compute_base_path(__pyx_v_output_dir, __pyx_v_function_name, __pyx_v_file_base_name, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 940, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_r = __pyx_t_1;
-  __pyx_t_1 = 0;
-  goto __pyx_L0;
-
-  /* function exit code */
-  __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("hal.api.halide_compute_base_path", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __pyx_r = NULL;
-  __pyx_L0:;
-  __Pyx_XGIVEREF(__pyx_r);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -17779,10 +17687,10 @@ static PyObject *__pyx_pf_3hal_3api_12halide_compute_base_path(CYTHON_UNUSED PyO
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_3hal_3api_15compute_base_path(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static char __pyx_doc_3hal_3api_14compute_base_path[] = "compute_base_path(string output_dir, string function_name, string file_base_name)\n Reimplementation of Halide::Internal::compute_base_path(...)\n        (a private function found in Halide/src/Generator.cpp). ";
-static PyMethodDef __pyx_mdef_3hal_3api_15compute_base_path = {"compute_base_path", (PyCFunction)__pyx_pw_3hal_3api_15compute_base_path, METH_VARARGS|METH_KEYWORDS, __pyx_doc_3hal_3api_14compute_base_path};
-static PyObject *__pyx_pw_3hal_3api_15compute_base_path(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_3hal_3api_13compute_base_path(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static char __pyx_doc_3hal_3api_12compute_base_path[] = "compute_base_path(string output_dir, string function_name, string file_base_name)\n Reimplementation of Halide::Internal::compute_base_path(...)\n        (a private function found in Halide/src/Generator.cpp). ";
+static PyMethodDef __pyx_mdef_3hal_3api_13compute_base_path = {"compute_base_path", (PyCFunction)__pyx_pw_3hal_3api_13compute_base_path, METH_VARARGS|METH_KEYWORDS, __pyx_doc_3hal_3api_12compute_base_path};
+static PyObject *__pyx_pw_3hal_3api_13compute_base_path(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   std::string __pyx_v_output_dir;
   std::string __pyx_v_function_name;
   std::string __pyx_v_file_base_name;
@@ -17840,14 +17748,14 @@ static PyObject *__pyx_pw_3hal_3api_15compute_base_path(PyObject *__pyx_self, Py
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_3hal_3api_14compute_base_path(__pyx_self, __pyx_v_output_dir, __pyx_v_function_name, __pyx_v_file_base_name);
+  __pyx_r = __pyx_pf_3hal_3api_12compute_base_path(__pyx_self, __pyx_v_output_dir, __pyx_v_function_name, __pyx_v_file_base_name);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_3hal_3api_14compute_base_path(CYTHON_UNUSED PyObject *__pyx_self, std::string __pyx_v_output_dir, std::string __pyx_v_function_name, std::string __pyx_v_file_base_name) {
+static PyObject *__pyx_pf_3hal_3api_12compute_base_path(CYTHON_UNUSED PyObject *__pyx_self, std::string __pyx_v_output_dir, std::string __pyx_v_function_name, std::string __pyx_v_file_base_name) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -17869,7 +17777,7 @@ static PyObject *__pyx_pf_3hal_3api_14compute_base_path(CYTHON_UNUSED PyObject *
  * 
  * @cython.embedsignature(True)
  */
-  __pyx_t_1 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_f_3hal_3api_halide_compute_base_path(__pyx_v_output_dir, __pyx_v_function_name, __pyx_v_file_base_name, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 958, __pyx_L1_error)
+  __pyx_t_1 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_f_3hal_3api_halide_compute_base_path(__pyx_v_output_dir, __pyx_v_function_name, __pyx_v_file_base_name)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 958, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -17902,7 +17810,7 @@ static PyObject *__pyx_pf_3hal_3api_14compute_base_path(CYTHON_UNUSED PyObject *
  *         corresponding to the registered generator instance (by name). """
  */
 
-static PyObject *__pyx_pw_3hal_3api_17get_generator_module(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_pw_3hal_3api_15get_generator_module(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
 static struct __pyx_obj_3hal_3api_Module *__pyx_f_3hal_3api_get_generator_module(std::string &__pyx_v_name, CYTHON_UNUSED int __pyx_skip_dispatch, struct __pyx_opt_args_3hal_3api_get_generator_module *__pyx_optional_args) {
   PyObject *__pyx_v_arguments = __pyx_k__28;
   __pyx_t_3hal_3ext_6halide_9generator_stringmap_t __pyx_v_argmap;
@@ -18415,9 +18323,9 @@ static struct __pyx_obj_3hal_3api_Module *__pyx_f_3hal_3api_get_generator_module
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_3hal_3api_17get_generator_module(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static char __pyx_doc_3hal_3api_16get_generator_module[] = "get_generator_module(string name, arguments={}) -> Module\n Retrieve a Halide::Module, wrapped as hal.api.Module,\n        corresponding to the registered generator instance (by name). ";
-static PyObject *__pyx_pw_3hal_3api_17get_generator_module(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_3hal_3api_15get_generator_module(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static char __pyx_doc_3hal_3api_14get_generator_module[] = "get_generator_module(string name, arguments={}) -> Module\n Retrieve a Halide::Module, wrapped as hal.api.Module,\n        corresponding to the registered generator instance (by name). ";
+static PyObject *__pyx_pw_3hal_3api_15get_generator_module(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   std::string __pyx_v_name;
   PyObject *__pyx_v_arguments = 0;
   PyObject *__pyx_r = 0;
@@ -18469,14 +18377,14 @@ static PyObject *__pyx_pw_3hal_3api_17get_generator_module(PyObject *__pyx_self,
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_3hal_3api_16get_generator_module(__pyx_self, __pyx_v_name, __pyx_v_arguments);
+  __pyx_r = __pyx_pf_3hal_3api_14get_generator_module(__pyx_self, __pyx_v_name, __pyx_v_arguments);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_3hal_3api_16get_generator_module(CYTHON_UNUSED PyObject *__pyx_self, std::string __pyx_v_name, PyObject *__pyx_v_arguments) {
+static PyObject *__pyx_pf_3hal_3api_14get_generator_module(CYTHON_UNUSED PyObject *__pyx_self, std::string __pyx_v_name, PyObject *__pyx_v_arguments) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -18556,10 +18464,10 @@ static void __pyx_f_3hal_3api_f_insert_into(struct __pyx_obj_3hal_3api_Module *_
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_3hal_3api_19link_modules(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static char __pyx_doc_3hal_3api_18link_modules[] = "link_modules(string module_name, *modules)\n Python wrapper for Halide::link_modules() from src/Module.h ";
-static PyMethodDef __pyx_mdef_3hal_3api_19link_modules = {"link_modules", (PyCFunction)__pyx_pw_3hal_3api_19link_modules, METH_VARARGS|METH_KEYWORDS, __pyx_doc_3hal_3api_18link_modules};
-static PyObject *__pyx_pw_3hal_3api_19link_modules(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_3hal_3api_17link_modules(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static char __pyx_doc_3hal_3api_16link_modules[] = "link_modules(string module_name, *modules)\n Python wrapper for Halide::link_modules() from src/Module.h ";
+static PyMethodDef __pyx_mdef_3hal_3api_17link_modules = {"link_modules", (PyCFunction)__pyx_pw_3hal_3api_17link_modules, METH_VARARGS|METH_KEYWORDS, __pyx_doc_3hal_3api_16link_modules};
+static PyObject *__pyx_pw_3hal_3api_17link_modules(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   std::string __pyx_v_module_name;
   PyObject *__pyx_v_modules = 0;
   PyObject *__pyx_r = 0;
@@ -18612,7 +18520,7 @@ static PyObject *__pyx_pw_3hal_3api_19link_modules(PyObject *__pyx_self, PyObjec
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_3hal_3api_18link_modules(__pyx_self, __pyx_v_module_name, __pyx_v_modules);
+  __pyx_r = __pyx_pf_3hal_3api_16link_modules(__pyx_self, __pyx_v_module_name, __pyx_v_modules);
 
   /* function exit code */
   __Pyx_XDECREF(__pyx_v_modules);
@@ -18620,7 +18528,7 @@ static PyObject *__pyx_pw_3hal_3api_19link_modules(PyObject *__pyx_self, PyObjec
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_3hal_3api_18link_modules(CYTHON_UNUSED PyObject *__pyx_self, std::string __pyx_v_module_name, PyObject *__pyx_v_modules) {
+static PyObject *__pyx_pf_3hal_3api_16link_modules(CYTHON_UNUSED PyObject *__pyx_self, std::string __pyx_v_module_name, PyObject *__pyx_v_modules) {
   __pyx_t_3hal_3ext_6halide_6module_modulevec_t __pyx_v_modulevec;
   struct __pyx_obj_3hal_3api_Module *__pyx_v_out = NULL;
   PyObject *__pyx_v_module = NULL;
@@ -18838,10 +18746,10 @@ static PyObject *__pyx_pf_3hal_3api_18link_modules(CYTHON_UNUSED PyObject *__pyx
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_3hal_3api_21compile_standalone_runtime(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static char __pyx_doc_3hal_3api_20compile_standalone_runtime[] = "compile_standalone_runtime(Target target=<\077\077?>, pth=None, Outputs outputs=None)\n Compile a standalone Halide runtime library, as directed, per the specified target. ";
-static PyMethodDef __pyx_mdef_3hal_3api_21compile_standalone_runtime = {"compile_standalone_runtime", (PyCFunction)__pyx_pw_3hal_3api_21compile_standalone_runtime, METH_VARARGS|METH_KEYWORDS, __pyx_doc_3hal_3api_20compile_standalone_runtime};
-static PyObject *__pyx_pw_3hal_3api_21compile_standalone_runtime(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_3hal_3api_19compile_standalone_runtime(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static char __pyx_doc_3hal_3api_18compile_standalone_runtime[] = "compile_standalone_runtime(Target target=<\077\077?>, pth=None, Outputs outputs=None)\n Compile a standalone Halide runtime library, as directed, per the specified target. ";
+static PyMethodDef __pyx_mdef_3hal_3api_19compile_standalone_runtime = {"compile_standalone_runtime", (PyCFunction)__pyx_pw_3hal_3api_19compile_standalone_runtime, METH_VARARGS|METH_KEYWORDS, __pyx_doc_3hal_3api_18compile_standalone_runtime};
+static PyObject *__pyx_pw_3hal_3api_19compile_standalone_runtime(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   struct __pyx_obj_3hal_3api_Target *__pyx_v_target = 0;
   PyObject *__pyx_v_pth = 0;
   struct __pyx_obj_3hal_3api_Outputs *__pyx_v_outputs = 0;
@@ -18924,7 +18832,7 @@ static PyObject *__pyx_pw_3hal_3api_21compile_standalone_runtime(PyObject *__pyx
   __pyx_L4_argument_unpacking_done:;
   if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_target), __pyx_ptype_3hal_3api_Target, 1, "target", 0))) __PYX_ERR(0, 1024, __pyx_L1_error)
   if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_outputs), __pyx_ptype_3hal_3api_Outputs, 1, "outputs", 0))) __PYX_ERR(0, 1026, __pyx_L1_error)
-  __pyx_r = __pyx_pf_3hal_3api_20compile_standalone_runtime(__pyx_self, __pyx_v_target, __pyx_v_pth, __pyx_v_outputs);
+  __pyx_r = __pyx_pf_3hal_3api_18compile_standalone_runtime(__pyx_self, __pyx_v_target, __pyx_v_pth, __pyx_v_outputs);
 
   /* "hal/api.pyx":1024
  * 
@@ -18943,7 +18851,7 @@ static PyObject *__pyx_pw_3hal_3api_21compile_standalone_runtime(PyObject *__pyx
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_3hal_3api_20compile_standalone_runtime(CYTHON_UNUSED PyObject *__pyx_self, struct __pyx_obj_3hal_3api_Target *__pyx_v_target, PyObject *__pyx_v_pth, struct __pyx_obj_3hal_3api_Outputs *__pyx_v_outputs) {
+static PyObject *__pyx_pf_3hal_3api_18compile_standalone_runtime(CYTHON_UNUSED PyObject *__pyx_self, struct __pyx_obj_3hal_3api_Target *__pyx_v_target, PyObject *__pyx_v_pth, struct __pyx_obj_3hal_3api_Outputs *__pyx_v_outputs) {
   Halide::Outputs __pyx_v_out;
   PyObject *__pyx_v_realpath = NULL;
   PyObject *__pyx_v_realpth = NULL;
@@ -19557,10 +19465,10 @@ static PyObject *__pyx_pf_3hal_3api_20compile_standalone_runtime(CYTHON_UNUSED P
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_3hal_3api_23make_standalone_runtime(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static char __pyx_doc_3hal_3api_22make_standalone_runtime[] = "make_standalone_runtime(Target target=<\077\077?>, pth=None)";
-static PyMethodDef __pyx_mdef_3hal_3api_23make_standalone_runtime = {"make_standalone_runtime", (PyCFunction)__pyx_pw_3hal_3api_23make_standalone_runtime, METH_VARARGS|METH_KEYWORDS, __pyx_doc_3hal_3api_22make_standalone_runtime};
-static PyObject *__pyx_pw_3hal_3api_23make_standalone_runtime(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_3hal_3api_21make_standalone_runtime(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static char __pyx_doc_3hal_3api_20make_standalone_runtime[] = "make_standalone_runtime(Target target=<\077\077?>, pth=None)";
+static PyMethodDef __pyx_mdef_3hal_3api_21make_standalone_runtime = {"make_standalone_runtime", (PyCFunction)__pyx_pw_3hal_3api_21make_standalone_runtime, METH_VARARGS|METH_KEYWORDS, __pyx_doc_3hal_3api_20make_standalone_runtime};
+static PyObject *__pyx_pw_3hal_3api_21make_standalone_runtime(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   struct __pyx_obj_3hal_3api_Target *__pyx_v_target = 0;
   PyObject *__pyx_v_pth = 0;
   PyObject *__pyx_r = 0;
@@ -19624,7 +19532,7 @@ static PyObject *__pyx_pw_3hal_3api_23make_standalone_runtime(PyObject *__pyx_se
   return NULL;
   __pyx_L4_argument_unpacking_done:;
   if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_target), __pyx_ptype_3hal_3api_Target, 1, "target", 0))) __PYX_ERR(0, 1074, __pyx_L1_error)
-  __pyx_r = __pyx_pf_3hal_3api_22make_standalone_runtime(__pyx_self, __pyx_v_target, __pyx_v_pth);
+  __pyx_r = __pyx_pf_3hal_3api_20make_standalone_runtime(__pyx_self, __pyx_v_target, __pyx_v_pth);
 
   /* "hal/api.pyx":1074
  * 
@@ -19643,7 +19551,7 @@ static PyObject *__pyx_pw_3hal_3api_23make_standalone_runtime(PyObject *__pyx_se
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_3hal_3api_22make_standalone_runtime(CYTHON_UNUSED PyObject *__pyx_self, struct __pyx_obj_3hal_3api_Target *__pyx_v_target, PyObject *__pyx_v_pth) {
+static PyObject *__pyx_pf_3hal_3api_20make_standalone_runtime(CYTHON_UNUSED PyObject *__pyx_self, struct __pyx_obj_3hal_3api_Target *__pyx_v_target, PyObject *__pyx_v_pth) {
   struct __pyx_obj_3hal_3api_Outputs *__pyx_v_outputs = 0;
   Halide::Outputs __pyx_v_out;
   PyObject *__pyx_v_realpath = NULL;
@@ -20093,21 +20001,21 @@ static PyObject *__pyx_pf_3hal_3api_22make_standalone_runtime(CYTHON_UNUSED PyOb
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_3hal_3api_25running_program_name(PyObject *__pyx_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-static char __pyx_doc_3hal_3api_24running_program_name[] = "running_program_name()\n Return the name of the running program as a string. ";
-static PyMethodDef __pyx_mdef_3hal_3api_25running_program_name = {"running_program_name", (PyCFunction)__pyx_pw_3hal_3api_25running_program_name, METH_NOARGS, __pyx_doc_3hal_3api_24running_program_name};
-static PyObject *__pyx_pw_3hal_3api_25running_program_name(PyObject *__pyx_self, CYTHON_UNUSED PyObject *unused) {
+static PyObject *__pyx_pw_3hal_3api_23running_program_name(PyObject *__pyx_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static char __pyx_doc_3hal_3api_22running_program_name[] = "running_program_name()\n Return the name of the running program as a string. ";
+static PyMethodDef __pyx_mdef_3hal_3api_23running_program_name = {"running_program_name", (PyCFunction)__pyx_pw_3hal_3api_23running_program_name, METH_NOARGS, __pyx_doc_3hal_3api_22running_program_name};
+static PyObject *__pyx_pw_3hal_3api_23running_program_name(PyObject *__pyx_self, CYTHON_UNUSED PyObject *unused) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("running_program_name (wrapper)", 0);
-  __pyx_r = __pyx_pf_3hal_3api_24running_program_name(__pyx_self);
+  __pyx_r = __pyx_pf_3hal_3api_22running_program_name(__pyx_self);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_3hal_3api_24running_program_name(CYTHON_UNUSED PyObject *__pyx_self) {
+static PyObject *__pyx_pf_3hal_3api_22running_program_name(CYTHON_UNUSED PyObject *__pyx_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -21626,8 +21534,7 @@ static PyTypeObject __pyx_type_3hal_3api_Module = {
 };
 
 static PyMethodDef __pyx_methods[] = {
-  {"halide_compute_base_path", (PyCFunction)__pyx_pw_3hal_3api_13halide_compute_base_path, METH_VARARGS|METH_KEYWORDS, 0},
-  {"get_generator_module", (PyCFunction)__pyx_pw_3hal_3api_17get_generator_module, METH_VARARGS|METH_KEYWORDS, __pyx_doc_3hal_3api_16get_generator_module},
+  {"get_generator_module", (PyCFunction)__pyx_pw_3hal_3api_15get_generator_module, METH_VARARGS|METH_KEYWORDS, __pyx_doc_3hal_3api_14get_generator_module},
   {0, 0, 0, 0}
 };
 
@@ -23298,7 +23205,7 @@ PyMODINIT_FUNC PyInit_api(void)
  *                       string& function_name,
  *                       string& file_base_name):
  */
-  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_3hal_3api_15compute_base_path, NULL, __pyx_n_s_hal_api); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 953, __pyx_L1_error)
+  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_3hal_3api_13compute_base_path, NULL, __pyx_n_s_hal_api); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 953, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_compute_base_path, __pyx_t_2) < 0) __PYX_ERR(0, 953, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
@@ -23328,7 +23235,7 @@ PyMODINIT_FUNC PyInit_api(void)
  *     """ Python wrapper for Halide::link_modules() from src/Module.h """
  *     cdef modulevec_t modulevec
  */
-  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_3hal_3api_19link_modules, NULL, __pyx_n_s_hal_api); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1003, __pyx_L1_error)
+  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_3hal_3api_17link_modules, NULL, __pyx_n_s_hal_api); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1003, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_link_modules, __pyx_t_2) < 0) __PYX_ERR(0, 1003, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
@@ -23364,7 +23271,7 @@ PyMODINIT_FUNC PyInit_api(void)
   __pyx_k__32 = ((struct __pyx_obj_3hal_3api_Target *)__pyx_t_2);
   __Pyx_GIVEREF(__pyx_t_2);
   __pyx_t_2 = 0;
-  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_3hal_3api_21compile_standalone_runtime, NULL, __pyx_n_s_hal_api); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1024, __pyx_L1_error)
+  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_3hal_3api_19compile_standalone_runtime, NULL, __pyx_n_s_hal_api); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1024, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_compile_standalone_runtime, __pyx_t_2) < 0) __PYX_ERR(0, 1024, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
@@ -23400,7 +23307,7 @@ PyMODINIT_FUNC PyInit_api(void)
   __pyx_k__35 = ((struct __pyx_obj_3hal_3api_Target *)__pyx_t_2);
   __Pyx_GIVEREF(__pyx_t_2);
   __pyx_t_2 = 0;
-  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_3hal_3api_23make_standalone_runtime, NULL, __pyx_n_s_hal_api); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1074, __pyx_L1_error)
+  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_3hal_3api_21make_standalone_runtime, NULL, __pyx_n_s_hal_api); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1074, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_make_standalone_runtime, __pyx_t_2) < 0) __PYX_ERR(0, 1074, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
@@ -23412,7 +23319,7 @@ PyMODINIT_FUNC PyInit_api(void)
  *     """ Return the name of the running program as a string. """
  *     return str(halide_running_program_name())
  */
-  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_3hal_3api_25running_program_name, NULL, __pyx_n_s_hal_api); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1112, __pyx_L1_error)
+  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_3hal_3api_23running_program_name, NULL, __pyx_n_s_hal_api); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1112, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_running_program_name, __pyx_t_2) < 0) __PYX_ERR(0, 1112, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;

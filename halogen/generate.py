@@ -87,15 +87,17 @@ def generate(*generators, **arguments):
         print("Compiling and running %s generators..." % len(generators))
         print('')
     
-    emit_dict = dict()
-    emit_dict['emit_static_library'] = \
-        emit_dict['emit_o'] = \
-        emit_dict['emit_h'] = False
+    emit_dict = dict(
+        emit_static_library=False,
+        emit_o=False, emit_h=False)
     
-    emit_dict['substitutions'] = substitutions
+    # emit_dict['emit_static_library'] = \
+    #     emit_dict['emit_o'] = \
+    #     emit_dict['emit_h'] = False
     
     for emit in emits:
         emit_dict["emit_%s" % emit] = True
+    emit_dict['substitutions'] = substitutions
     
     emit_options = hal.api.EmitOptions(**emit_dict)
     
@@ -133,7 +135,7 @@ def generate(*generators, **arguments):
             print("OUTPUT: %s" % output.to_string())
         
         generator_args = dict(target=target.to_string())
-        generator_args.update(arguments)
+        # generator_args.update(arguments)
         
         if verbose:
             print("TARGET: %s" % target.to_string())
