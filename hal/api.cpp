@@ -502,7 +502,9 @@ static CYTHON_INLINE float __PYX_NAN() {
 #include <vector>
 #include <utility>
 #include <map>
+#include <atomic>
 #include "HalideRuntime.h"
+#include "HalideBuffer.h"
 #include "Halide.h"
 #include "haldol/include/detail.hh"
 #ifdef _OPENMP
@@ -1596,6 +1598,8 @@ static PyTypeObject *__pyx_ptype_7cpython_4type_type = 0;
 /* Module declarations from 'libcpp.utility' */
 
 /* Module declarations from 'libcpp.map' */
+
+/* Module declarations from 'hal.ext.libcpp.atomic' */
 
 /* Module declarations from 'hal.ext.halide.runtime' */
 

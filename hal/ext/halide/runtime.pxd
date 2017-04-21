@@ -1,5 +1,6 @@
 
 from libc.stdint cimport *
+from ..libcpp.atomic cimport *
 
 cdef extern from "HalideRuntime.h" nogil:
     
@@ -129,6 +130,7 @@ cdef extern from "HalideRuntime.h" nogil:
         halide_buffer_flag_device_dirty
     
     cdef cppclass halide_buffer_t:
+        # FIELDS:
         uint64_t                    device
         halide_device_interface_t*  device_interface
         uint8_t*                    host
@@ -137,18 +139,18 @@ cdef extern from "HalideRuntime.h" nogil:
         int32_t                     dimensions
         halide_dimension_t*         dim
         void*                       padding
-        
-        bint get_flag(halide_buffer_flags)
-        bint set_flag(halide_buffer_flags, bint)
-        bint host_dirty()
-        bint device_dirty()
-        bint set_host_dirty(bint)
-        bint set_device_dirty(bint)
-        size_t number_of_elements()
-        uint8_t* begin()
-        uint8_t* end()
-        size_t size_in_bytes()
-        uint8_t* address_of(int*)
+        # METHODS:
+        bint                        get_flag(halide_buffer_flags)
+        bint                        set_flag(halide_buffer_flags, bint)
+        bint                        host_dirty()
+        bint                        device_dirty()
+        bint                        set_host_dirty(bint)
+        bint                        set_device_dirty(bint)
+        size_t                      number_of_elements()
+        uint8_t*                    begin()
+        uint8_t*                    end()
+        size_t                      size_in_bytes()
+        uint8_t*                    address_of(int*)
     
     ctypedef struct buffer_t:
         uint64_t    dev
@@ -205,4 +207,15 @@ cdef extern from "HalideRuntime.h" nogil:
     
     float halide_float16_bits_to_float(uint16_t)
     double halide_float16_bits_to_double(uint16_t)
+
+cdef extern from "HalideBuffer.h" namespace "Halide::Runtime" nogil:
     
+    cdef cppclass AllocationHeader:
+        pass
+    
+    cppclass Buffer "Halide::Runtime::Buffer<void, 4>":
+        halide_buffer_t buf
+        halide_dimension_t shape[4]
+        AllocationHeader* alloc
+        atomic[int]* dev_ref_count
+        
