@@ -10,9 +10,10 @@ cdef extern from "HalideRuntime.h" nogil:
         halide_type_handle
     
     cdef cppclass halide_type_t:
-        halide_type_code_t code
-        uint8_t bits
-        uint16_t lanes
+        halide_type_code_t      code
+        uint8_t                 bits
+        uint16_t                lanes
+        
         halide_type_t(halide_type_code_t, uint8_t, uint16_t)
         halide_type_t()
         bint operator==(halide_type_t&)
@@ -113,10 +114,11 @@ cdef extern from "HalideRuntime.h" nogil:
     cdef int halide_can_use_target_features(uint64_t)
     
     cdef cppclass halide_dimension_t:
-        int32_t min
-        int32_t extent
-        int32_t stride
-        uint32_t flags
+        int32_t                     _min        "min"
+        int32_t                     extent
+        int32_t                     stride
+        uint32_t                    flags
+        
         halide_dimension_t()
         halide_dimension_t(int32_t, int32_t, int32_t, uint32_t)
         bint operator==(halide_dimension_t&)
@@ -127,14 +129,15 @@ cdef extern from "HalideRuntime.h" nogil:
         halide_buffer_flag_device_dirty
     
     cdef cppclass halide_buffer_t:
-        uint64_t device
-        halide_device_interface_t* device_interface
-        uint8_t* host
-        uint64_t flags
-        halide_type_t type
-        int32_t dimensions
-        halide_dimension_t* dim
-        void* padding
+        uint64_t                    device
+        halide_device_interface_t*  device_interface
+        uint8_t*                    host
+        uint64_t                    flags
+        halide_type_t               _type       "type"
+        int32_t                     dimensions
+        halide_dimension_t*         dim
+        void*                       padding
+        
         bint get_flag(halide_buffer_flags)
         bint set_flag(halide_buffer_flags, bint)
         bint host_dirty()
@@ -148,32 +151,32 @@ cdef extern from "HalideRuntime.h" nogil:
         uint8_t* address_of(int*)
     
     ctypedef struct buffer_t:
-        uint64_t dev
-        uint8_t* host
-        int32_t extent[4]
-        int32_t stride[4]
-        int32_t min[4]
-        int32_t elem_size
-        bint host_dirty
-        bint dev_dirty
+        uint64_t    dev
+        uint8_t*    host
+        int32_t     extent[4]
+        int32_t     stride[4]
+        int32_t     min[4]
+        int32_t     elem_size
+        bint        host_dirty
+        bint        dev_dirty
     
     int halide_upgrade_buffer_t(void*, char*, buffer_t*, halide_buffer_t*)
     int halide_downgrade_buffer_t(void*, char*, halide_buffer_t*, buffer_t*)
     int halide_downgrade_buffer_t_device_fields(void*, char*, halide_buffer_t*, buffer_t*)
     
     cdef union halide_scalar_value_union:
-        bint b
-        int8_t i8
-        int16_t i16
-        int32_t i32
-        int64_t i64
-        uint8_t u8
-        uint16_t u16
-        uint32_t u32
-        uint64_t u64
-        float f32
-        double f64
-        void* handle
+        bint        b
+        int8_t      i8
+        int16_t     i16
+        int32_t     i32
+        int64_t     i64
+        uint8_t     u8
+        uint16_t    u16
+        uint32_t    u32
+        uint64_t    u64
+        float       f32
+        double      f64
+        void*       handle
     
     cdef struct halide_scalar_value_t:
         halide_scalar_value_union u
@@ -184,20 +187,21 @@ cdef extern from "HalideRuntime.h" nogil:
         halide_argument_kind_output_buffer
     
     cdef struct halide_filter_argument_t:
-        char* name
-        int32_t kind
-        int32_t dimensions
-        halide_type_t type
-        halide_scalar_value_t* _def "def"
-        halide_scalar_value_t* min
-        halide_scalar_value_t* max
+        char*                   name
+        int32_t                 kind
+        int32_t                 dimensions
+        # These next four field names are all namespace collisions:
+        halide_type_t           _type   "type"
+        halide_scalar_value_t*  _def    "def"
+        halide_scalar_value_t*  _min    "min"
+        halide_scalar_value_t*  _max    "max"
     
     cdef struct halide_filter_metadata_t:
-        int32_t version
-        int32_t num_arguments
-        halide_filter_argument_t* arguments
-        char* target
-        char* name
+        int32_t                    version
+        int32_t                    num_arguments
+        halide_filter_argument_t*  arguments
+        char*                      target
+        char*                      name
     
     float halide_float16_bits_to_float(uint16_t)
     double halide_float16_bits_to_double(uint16_t)
