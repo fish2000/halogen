@@ -9,10 +9,23 @@ cdef extern from "HalideRuntime.h" nogil:
         halide_type_float
         halide_type_handle
     
-    cdef struct halide_type_t:
+    cdef cppclass halide_type_t:
         halide_type_code_t code
         uint8_t bits
         uint16_t lanes
+        halide_type_t(halide_type_code_t, uint8_t, uint16_t)
+        halide_type_t()
+        bint operator==(halide_type_t&)
+        bint operator!=(halide_type_t&)
+        int bytes()
+    
+    # halide_set_trace_file() takes a descriptor
+    cdef void halide_set_trace_file(int)
+    cdef int halide_get_trace_file(void*)
+    cdef int halide_shutdown_trace()
+    
+    cdef struct halide_device_interface_t:
+        pass
     
     cdef enum halide_error_code_t:
         halide_error_code_success
@@ -42,6 +55,11 @@ cdef extern from "HalideRuntime.h" nogil:
         halide_error_code_unaligned_host_ptr
         halide_error_code_bad_fold
         halide_error_code_fold_factor_too_small
+        halide_error_code_requirement_failed
+        halide_error_code_buffer_extents_negative
+        halide_error_code_failed_to_upgrade_buffer_t
+        halide_error_code_failed_to_downgrade_buffer_t
+        halide_error_code_specialize_fail
     
     ctypedef enum halide_target_feature_t:
         halide_target_feature_jit
@@ -67,9 +85,8 @@ cdef extern from "HalideRuntime.h" nogil:
         halide_target_feature_cl_doubles
         halide_target_feature_opengl
         halide_target_feature_openglcompute
-        halide_target_feature_renderscript
+        halide_target_feature_unused_23
         halide_target_feature_user_context
-        halide_target_feature_register_metadata
         halide_target_feature_matlab
         halide_target_feature_profile
         halide_target_feature_no_runtime
@@ -80,7 +97,55 @@ cdef extern from "HalideRuntime.h" nogil:
         halide_target_feature_hvx_64
         halide_target_feature_hvx_128
         halide_target_feature_hvx_v62
+        halide_target_feature_fuzz_float_stores
+        halide_target_feature_soft_float_abi
+        halide_target_feature_msan
+        halide_target_feature_avx512
+        halide_target_feature_avx512_knl
+        halide_target_feature_avx512_skylake
+        halide_target_feature_avx512_cannonlake
+        halide_target_feature_hvx_use_shared_object
+        halide_target_feature_trace_loads
+        halide_target_feature_trace_stores
+        halide_target_feature_trace_realizations
         halide_target_feature_end
+    
+    cdef int halide_can_use_target_features(uint64_t)
+    
+    cdef cppclass halide_dimension_t:
+        int32_t min
+        int32_t extent
+        int32_t stride
+        uint32_t flags
+        halide_dimension_t()
+        halide_dimension_t(int32_t, int32_t, int32_t, uint32_t)
+        bint operator==(halide_dimension_t&)
+        bint operator!=(halide_dimension_t&)
+    
+    ctypedef enum halide_buffer_flags:
+        halide_buffer_flag_host_dirty
+        halide_buffer_flag_device_dirty
+    
+    cdef cppclass halide_buffer_t:
+        uint64_t device
+        halide_device_interface_t* device_interface
+        uint8_t* host
+        uint64_t flags
+        halide_type_t type
+        int32_t dimensions
+        halide_dimension_t* dim
+        void* padding
+        bint get_flag(halide_buffer_flags)
+        bint set_flag(halide_buffer_flags, bint)
+        bint host_dirty()
+        bint device_dirty()
+        bint set_host_dirty(bint)
+        bint set_device_dirty(bint)
+        size_t number_of_elements()
+        uint8_t* begin()
+        uint8_t* end()
+        size_t size_in_bytes()
+        uint8_t* address_of(int*)
     
     ctypedef struct buffer_t:
         uint64_t dev
@@ -92,20 +157,26 @@ cdef extern from "HalideRuntime.h" nogil:
         bint host_dirty
         bint dev_dirty
     
-    # cdef struct halide_scalar_value_t:
-    #     union u:
-    #         bint b
-    #         int8_t i8
-    #         int16_t i16
-    #         int32_t i32
-    #         int64_t i64
-    #         uint8_t u8
-    #         uint16_t u16
-    #         uint32_t u32
-    #         uint64_t u64
-    #         float f32
-    #         double f64
-    #         void* handle
+    int halide_upgrade_buffer_t(void*, char*, buffer_t*, halide_buffer_t*)
+    int halide_downgrade_buffer_t(void*, char*, halide_buffer_t*, buffer_t*)
+    int halide_downgrade_buffer_t_device_fields(void*, char*, halide_buffer_t*, buffer_t*)
+    
+    cdef union halide_scalar_value_union:
+        bint b
+        int8_t i8
+        int16_t i16
+        int32_t i32
+        int64_t i64
+        uint8_t u8
+        uint16_t u16
+        uint32_t u32
+        uint64_t u64
+        float f32
+        double f64
+        void* handle
+    
+    cdef struct halide_scalar_value_t:
+        halide_scalar_value_union u
     
     cdef enum halide_argument_kind_t:
         halide_argument_kind_input_scalar
@@ -117,9 +188,9 @@ cdef extern from "HalideRuntime.h" nogil:
         int32_t kind
         int32_t dimensions
         halide_type_t type
-        # halide_scalar_value_t* def
-        # halide_scalar_value_t* min
-        # halide_scalar_value_t* max
+        halide_scalar_value_t* _def "def"
+        halide_scalar_value_t* min
+        halide_scalar_value_t* max
     
     cdef struct halide_filter_metadata_t:
         int32_t version
