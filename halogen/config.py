@@ -20,7 +20,8 @@ DEFAULT_VERBOSITY = True
 class PythonConfig(object):
     
     """ A config class that provides its values via the output of the command-line
-        `python-config` tool (associated with the running Python interpreter). """
+        `python-config` tool (associated with the running Python interpreter).
+    """
     
     # Prefix for the Python installation:
     prefix = '/usr/local'
@@ -89,7 +90,8 @@ class PythonConfig(object):
 class BrewedPythonConfig(PythonConfig):
     
     """ A config class that provides its values through calls to the Mac Homebrew
-        command-line `brew` tool (with fallback calls to the PythonConfig class). """
+        command-line `brew` tool (with fallback calls to the PythonConfig class).
+    """
     
     def __init__(self, brew_name='python'):
         cmd = "/usr/local/bin/brew --prefix %s" % brew_name
@@ -134,7 +136,8 @@ def environ_override(name):
 class SysConfig(PythonConfig):
     
     """ A config class that provides its values using the Python `sysconfig` module
-        (with fallback calls to PythonConfig, and environment variable overrides). """
+        (with fallback calls to PythonConfig, and environment variable overrides).
+    """
     
     def __init__(self):
         self.prefix = sysconfig.get_path("data")
@@ -181,7 +184,8 @@ class SysConfig(PythonConfig):
 class BrewedConfig(object):
     
     """ A config class that provides its values through calls to the Mac Homebrew
-        command-line `brew` tool, for an arbitrary named Homebrew formulae. """
+        command-line `brew` tool, for an arbitrary named Homebrew formulae.
+    """
     
     # Name of, and prefix for, the Homebrew installation:
     brew = 'brew'
@@ -235,7 +239,8 @@ class BrewedConfig(object):
 class BrewedHalideConfig(BrewedConfig):
     
     """ A config class that provides its values through calls to the Mac Homebrew
-        command-line `brew` tool, specifically pertaining to the Halide formula. """
+        command-line `brew` tool, specifically pertaining to the Halide formula.
+    """
     
     # Name of the Halide library (sans “lib” prefix and file extension):
     library = "Halide"
@@ -332,7 +337,9 @@ class ConfigUnion(object):
     
     
     # Ordered list of all possible optimization flags:
-    optimization = FlagSet("O%s", ('0', 's', 'fast', 'g', '1', '', '2', '3', '4'))
+    optimization = FlagSet("O%s", ('0', 's', 'fast', '1',
+                                   'g', '',  '2',    '3',
+                                   '4')) # 4 is technically a fake
     
     # Regular expression to match fake optimization flags e.g. -O8, -O785 etc.
     fake_flag_matcher = re.compile("^O(\d+)$")
@@ -340,12 +347,16 @@ class ConfigUnion(object):
     # Ordered list of all possible C++ standard flags --
     # adapted from Clang’s LangStandards.def, https://git.io/vSRX9
     cxx_standard = FlagSet("std=%s", ('c++98', 'gnu++98', 'c++03', 'c++0x', 'gnu++0x', 'c++11', 'gnu++11',
-                                      'c++1y', 'gnu++1y', 'c++14', 'gnu++14', 'c++1z', 'gnu++1z',
+                                      'c++1y', 'gnu++1y',          'c++14', 'gnu++14', 'c++1z', 'gnu++1z',
                                       'c++17', 'gnu++17'))
     
     @classmethod
     def fake_optimization_flags(cls, flags):
-        """ Prune out fake optimization flags e.g. -O8, -O785 etc. """
+        """ Prune out fake optimization flags e.g. -O8, -O785 etc.
+            N.B. Consider renaming this function to `false_flags`, 
+            in order to search-engine optimize for the Google searches
+            of Breitbart and InfoWars readers (who love that shit).
+        """
         match_func = cls.fake_flag_matcher.match
         opt_set = cls.optimization.set
         return set(filter(lambda flag: bool(match_func(flag)) and \
