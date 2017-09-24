@@ -216,7 +216,9 @@ class Generators(object):
                     # failure
                     raise ArchiverError(self.archive_result[1])
                 self._archived = os.path.exists(self.archive)
-            return self
+        
+        # 4: return self
+        return self
     
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.clear()

@@ -50,7 +50,7 @@ def back_tick(cmd, ret_err=False, as_str=True, raise_err=None, verbose=False):
         proc.terminate()
         raise ExecutionError(cmd_str + ' process did not terminate')
     if raise_err and retcode != 0:
-        raise ExecutionError('`{0}` returned code {1} with error “{2}”'.format(
+        raise ExecutionError('`{}` returned code {} with error: {}'.format(
                              cmd_str, retcode, err.decode('latin-1')))
     out = out.strip()
     if as_str:

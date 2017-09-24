@@ -24,7 +24,9 @@ class PythonConfig(object):
     """
     
     # Prefix for the Python installation:
-    prefix = '/usr/local'
+    # prefix = '/usr/local'
+    # prefix = '/usr/local/opt/python/libexec'
+    prefix = str(sys.prefix)
     
     # Name of the `python-config` binary (nearly always just `python-config`):
     pyconfig = 'python-config'
@@ -311,6 +313,7 @@ class ConfigUnion(object):
     class FlagSet(object):
         
         """ A sugary-sweet class for stowing a set of flags whose order is significant. """
+        slots = ('flags', 'set')
         
         def __init__(self, template, flaglist):
             self.flags = [template % str(flag) for flag in flaglist]
@@ -342,7 +345,11 @@ class ConfigUnion(object):
                                    '4')) # 4 is technically a fake
     
     # Regular expression to match fake optimization flags e.g. -O8, -O785 etc.
-    fake_flag_matcher = re.compile("^O(\d+)$")
+    optimization_flag_matcher = re.compile("^O(\d+)$")
+    
+    # Regular expression to match diretory flags e.g. -I/usr/include, -L/usr/lib etc.
+    # Adapted from example at https://stackoverflow.com/a/33021907/298171
+    directory_flag_matcher = re.compile(r"^[IL]((?:[^/]*/)*)(.*)$")
     
     # Ordered list of all possible C++ standard flags --
     # adapted from Clang’s LangStandards.def, https://git.io/vSRX9
@@ -357,11 +364,23 @@ class ConfigUnion(object):
             in order to search-engine optimize for the Google searches
             of Breitbart and InfoWars readers (who love that shit).
         """
-        match_func = cls.fake_flag_matcher.match
+        match_func = cls.optimization_flag_matcher.match
         opt_set = cls.optimization.set
-        return set(filter(lambda flag: bool(match_func(flag)) and \
-                                           (flag not in opt_set), \
-                                           map(lambda flag: flag.strip(), flags)))
+        return frozenset(
+            filter(lambda flag: bool(match_func(flag)) and \
+                                    (flag not in opt_set), \
+                                     map(lambda flag: flag.strip(), flags)))
+    
+    @classmethod
+    def nonexistent_path_flags(cls, flags):
+        """ Filter out include- or lib-path flags pointing to directories
+            that do not actually exist, from a set of flags: """
+        match_func = cls.directory_flag_matcher.match
+        check_func = os.path.exists
+        return frozenset(
+            filter(lambda flag: bool(match_func(flag)) and \
+                                    (not check_func(flag[1:])), \
+                                     map(lambda flag: flag.strip(), flags)))
     
     @classmethod
     def highest_optimization_level(cls, flags):
@@ -384,7 +403,7 @@ class ConfigUnion(object):
         out -= cls.fake_optimization_flags(flags)
         
         # Append the highest-indexed optflag we found, and return:
-        out |= frozenset([cls.optimization[flags_index]])
+        out |= { cls.optimization[flags_index] }
         return out
     
     @classmethod
@@ -407,20 +426,34 @@ class ConfigUnion(object):
         out = flags - cls.cxx_standard.set
         
         # Append the highest-indexed stdflag we found, and return:
-        out |= frozenset([cls.cxx_standard[flags_index]])
+        out |= { cls.cxx_standard[flags_index] }
         return out
+    
+    def __new__(cls, *configs):
+        """ Create either a new, uninitialized ConfigUnion instance, or –
+            in the case where the ConfigUnion was constructed with only
+            one config instance – just return that sole existing config:
+        """
+        length = len(list(configs))
+        if length == 0:
+            raise AttributeError("ConfigUnion requires 1+ config instances")
+        elif length == 1:
+            return list(configs)[0]
+        return super(ConfigUnion, cls).__new__(cls, *configs)
     
     def __init__(self, *configs):
         """ Initialize a ConfigUnion instance with one or more config
             object instances, as needed (although using only one makes
-            very little sense, frankly): """
+            very little sense, frankly):
+        """
         self.configs = list(configs)
     
     @union_of(name='includes')
     def get_includes(self, includes):
         """ Return the union of all flags amassed from the calling
             of all base Config objects' `get_includes()`: """
-        return includes
+        out = includes - self.nonexistent_path_flags(includes)
+        return out
     
     @union_of(name='libs')
     def get_libs(self, libs):
@@ -434,14 +467,17 @@ class ConfigUnion(object):
             of all base Config objects' `get_cflags()`: """
         # Consolidate optimization and C++ standard flags,
         # passing only the respective highest-value flags:
-        return self.highest_cxx_standard_level(
-               self.highest_optimization_level(cflags))
+        out = self.highest_cxx_standard_level(
+              self.highest_optimization_level(cflags))
+        out -= self.nonexistent_path_flags(out)
+        return out
     
     @union_of(name='ldflags')
     def get_ldflags(self, ldflags):
         """ Return the union of all flags amassed from the calling
             of all base Config objects' `get_ldflags()`: """
-        return ldflags
+        out = ldflags - self.nonexistent_path_flags(ldflags)
+        return out
 
 
 def CC(conf, outfile, infile, verbose=DEFAULT_VERBOSITY):
