@@ -10,7 +10,7 @@ import ctypes.util
 
 from os.path import splitext
 from functools import wraps
-from filesystem import back_tick
+from filesystem import which, back_tick
 
 SHARED_LIBRARY_SUFFIX = splitext(ctypes.util.find_library("c"))[-1]
 STATIC_LIBRARY_SUFFIX = ".a"
@@ -24,8 +24,6 @@ class PythonConfig(object):
     """
     
     # Prefix for the Python installation:
-    # prefix = '/usr/local'
-    # prefix = '/usr/local/opt/python/libexec'
     prefix = str(sys.prefix)
     
     # Name of the `python-config` binary (nearly always just `python-config`):
@@ -45,7 +43,7 @@ class PythonConfig(object):
     @classmethod
     def subdirectory(cls, subdir):
         fulldir = os.path.join(cls.prefix, subdir)
-        return os.path.isdir(fulldir) and fulldir or None
+        return os.path.isdir(fulldir) and os.path.realpath(fulldir) or None
     
     def __init__(self, cmd=None):
         if not cmd:
@@ -96,19 +94,22 @@ class BrewedPythonConfig(PythonConfig):
     """
     
     def __init__(self, brew_name='python'):
-        cmd = "/usr/local/bin/brew --prefix %s" % brew_name
+        brew = which("brew")
+        if not brew:
+            raise IOError("Can't find Homebrew “brew” executable")
+        cmd = "%s --prefix %s" % (brew, brew_name)
         super(BrewedPythonConfig, self).__init__(cmd)
     
     def include(self):
         for path, dirs, files in os.walk(self.prefix, followlinks=True):
             if self.header_file in files:
-                return path
+                return os.path.realpath(path)
         return super(BrewedPythonConfig, self).include()
     
     def lib(self):
         for path, dirs, files in os.walk(self.prefix, followlinks=True):
             if self.library_file in files:
-                return path
+                return os.path.realpath(path)
         return super(BrewedPythonConfig, self).lib()
     
     def get_includes(self):
@@ -142,29 +143,34 @@ class SysConfig(PythonConfig):
     """
     
     def __init__(self):
-        self.prefix = sysconfig.get_path("data")
+        self.prefix = os.path.realpath(
+                        sysconfig.get_path("data"))
     
     def bin(self):
-        return sysconfig.get_path("scripts")
+        return os.path.realpath(
+                sysconfig.get_path("scripts"))
     
     def include(self):
-        return sysconfig.get_path("include")
+        return os.path.realpath(
+                sysconfig.get_path("include"))
     
     def lib(self):
-        return environ_override('LIBDIR')
+        return os.path.realpath(
+                environ_override('LIBDIR'))
     
     def Frameworks(self):
-        return environ_override('PYTHONFRAMEWORKPREFIX')
+        return os.path.realpath(
+                environ_override('PYTHONFRAMEWORKPREFIX'))
     
     def Headers(self):
-        return os.path.join(
+        return os.path.realpath(os.path.join(
             environ_override('PYTHONFRAMEWORKINSTALLDIR'),
-            'Headers')
+            'Headers'))
     
     def Resources(self):
-        return os.path.join(
+        return os.path.realpath(os.path.join(
             environ_override('PYTHONFRAMEWORKINSTALLDIR'),
-            'Resources')
+            'Resources'))
     
     def get_includes(self):
         return "-I%s" % self.include()
@@ -190,8 +196,8 @@ class BrewedConfig(object):
     """
     
     # Name of, and prefix for, the Homebrew installation:
-    brew = 'brew'
-    prefix = '/usr/local'
+    brew = which('brew')
+    prefix = back_tick("%s --prefix" % brew, ret_err=False)
     
     # List of cflags to use with all Homebrew-based config classes:
     cflags = frozenset(("-funroll-loops",
@@ -201,13 +207,13 @@ class BrewedConfig(object):
     @classmethod
     def subdirectory(cls, subdir):
         fulldir = os.path.join(cls.prefix, subdir)
-        return os.path.isdir(fulldir) and fulldir or None
+        return os.path.isdir(fulldir) and os.path.realpath(fulldir) or None
     
     def __init__(self, brew_name=None):
         if not brew_name:
             brew_name = 'halide'
         self.brew_name = brew_name
-        cmd = '/usr/local/bin/%s --prefix %s' % (self.brew, self.brew_name)
+        cmd = '%s --prefix %s' % (self.brew, self.brew_name)
         self.prefix = back_tick(cmd, ret_err=False)
     
     def bin(self):
@@ -550,6 +556,7 @@ def main():
     brewedPythonConfig = BrewedPythonConfig()
     pythonConfig = PythonConfig()
     
+    configUnionOne = ConfigUnion(sysConfig)
     configUnion = ConfigUnion(brewedHalideConfig, sysConfig)
     configUnionAll = ConfigUnion(brewedHalideConfig, sysConfig,
                                  brewedPythonConfig, pythonConfig)
@@ -579,6 +586,12 @@ def main():
     print("TESTING: PythonConfig ...")
     print("")
     print_config(pythonConfig)
+    
+    print("=" * terminal_width)
+    print("")
+    print("TESTING: ConfigUnion<SysConfig> ...")
+    print("")
+    print_config(configUnionOne)
     
     print("=" * terminal_width)
     print("")

@@ -3,9 +3,13 @@
 import os
 import re
 import shutil
+from distutils.spawn import find_executable
 from errors import ExecutionError, FilesystemError
 from tempfile import mktemp, mkdtemp, gettempprefix
 from utils import stringify
+
+def which(binary_name, pathvar=os.getenv("PATH")):
+    return find_executable(binary_name, pathvar) or ""
 
 def back_tick(cmd, ret_err=False, as_str=True, raise_err=None, verbose=False):
     """ Run command `cmd`, return stdout, or stdout, stderr if `ret_err`
