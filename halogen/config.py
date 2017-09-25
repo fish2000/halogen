@@ -359,9 +359,9 @@ class ConfigUnion(object):
     
     # Ordered list of all possible C++ standard flags --
     # adapted from Clang’s LangStandards.def, https://git.io/vSRX9
-    cxx_standard = FlagSet("std=%s", ('c++98', 'gnu++98', 'c++03', 'c++0x', 'gnu++0x', 'c++11', 'gnu++11',
-                                      'c++1y', 'gnu++1y',          'c++14', 'gnu++14', 'c++1z', 'gnu++1z',
-                                      'c++17', 'gnu++17'))
+    cxx_standard = FlagSet("std=%s", ('c++98', 'gnu++98', 'c++0x', 'gnu++0x', 'c++11', 'gnu++11',
+                                      'c++1y', 'gnu++1y', 'c++14', 'gnu++14', 'c++1z', 'gnu++1z',
+                                      'c++17', 'gnu++17', 'c++2a', 'gnu++2a'))
     
     @classmethod
     def fake_optimization_flags(cls, flags):
