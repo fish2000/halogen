@@ -3,6 +3,7 @@
 import os
 import re
 import shutil
+import zipfile
 from errors import ExecutionError, FilesystemError
 from tempfile import mktemp, mkdtemp, gettempprefix
 from utils import stringify
@@ -90,35 +91,6 @@ def rm_rf(pth):
     return True
 
 
-class Directory(object):
-    
-    """ A context-managed directory: change in on enter, change back out
-        on exit. Plus a few convenience functions for listing and whatnot. """
-    
-    def __init__(self, pth):
-        self.old = os.getcwd()
-        self.new = pth
-    
-    def __enter__(self):
-        os.chdir(self.new)
-        return self
-    
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        os.chdir(self.old)
-    
-    def ls(self, pth='.', suffix="txt"):
-        return [f for f in os.listdir(pth) if re.compile(r"\.%s$" % suffix, re.IGNORECASE).search(f)]
-    
-    def realpath(self):
-        return os.path.realpath(self.new)
-    
-    def ls_la(self, pth='.', suffix="txt"):
-        return [os.path.join(self.realpath(), f) for f in self.ls(pth=pth, suffix=suffix)]
-
-class cd(Directory):
-    pass
-
-
 class TemporaryName(object):
     
     """ This is like NamedTemporaryFile without any of the actual stuff;
@@ -174,6 +146,87 @@ class TemporaryName(object):
         if self.exists:
             return os.path.realpath(self.name)
         return self.name
+
+
+class Directory(object):
+    
+    """ A context-managed directory: change in on enter, change back out
+        on exit. Plus a few convenience functions for listing and whatnot. """
+    
+    dotfile_matcher = re.compile(r"^\.")
+    
+    def __init__(self, pth):
+        self.old = os.getcwd()
+        self.new = pth
+    
+    def __enter__(self):
+        os.chdir(self.new)
+        return self
+    
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        os.chdir(self.old)
+    
+    def suffix_searcher(self, suffix):
+        if len(suffix) < 1:
+            return lambda f: True
+        regex_str = r""
+        if suffix.startswith(os.path.extsep):
+            regex_str += r"\%s$" % suffix
+        else:
+            regex_str += r"\%s%s$" % (os.path.extsep, suffix)
+        return lambda f: re.compile(regex_str, re.IGNORECASE).search(f)
+    
+    def ls(self, pth='.', suffix=None):
+        files = [f for f in os.listdir(pth) if not self.dotfile_matcher.match(f)]
+        if not suffix:
+            return files
+        return filter(self.suffix_searcher(suffix), files)
+    
+    def realpath(self, pth=None):
+        if not pth:
+            pth = self.new
+        return os.path.realpath(pth)
+    
+    def ls_la(self, pth='.', suffix=None):
+        files = os.listdir(self.realpath(pth))
+        if not suffix:
+            return files
+        return filter(self.suffix_searcher(suffix), files)
+    
+    def walk(self, followlinks=False):
+        return os.walk(self.new, followlinks=followlinks)
+    
+    def parent(self):
+        return os.path.abspath(
+               os.path.join(self.new, os.pardir))
+    
+    def zip_archive(self, zpth=None, zmode=None):
+        if not zpth:
+            raise FilesystemError("Need to specify a zip-archive file path")
+        if not zpth.lower().endswith(".zip"):
+            zpth += ".zip"
+        if os.path.exists(zpth):
+            if os.path.isdir(zpth):
+                raise FilesystemError("Can't overwrite a directory: %s" % zpth)
+            raise FilesystemError("File path for zip-archive already exists")
+        if not zmode:
+            zmode = zipfile.ZIP_DEFLATED
+        with TemporaryName(prefix="zipdirectory-",
+                           suffix="zip") as ztmp:
+            with zipfile.ZipFile(ztmp.name, "w", zmode) as ziphandle:
+                relparent = lambda p: os.path.relpath(p, self.parent())
+                for root, dirs, files in self.walk(followlinks=True):
+                    ziphandle.write(root, relparent(root)) # add directory
+                    for filename in files:
+                        filepath = os.path.join(root, filename)
+                        if os.path.isfile(filepath): # regular files only
+                            arcname = os.path.join(relparent(root), filename)
+                            ziphandle.write(filepath, arcname) # add regular file
+            ztmp.copy(zpth)
+        return self.realpath(zpth)
+
+class cd(Directory):
+    pass
 
 
 class TemporaryDirectory(Directory):
@@ -236,7 +289,7 @@ class TemporaryDirectory(Directory):
     
     def __str__(self):
         if self.exists:
-            return os.path.realpath(self.name)
+            return self.realpath()
         return self.name
 
 

@@ -55,6 +55,8 @@ def generate(*generators, **arguments):
     import hal.api
     from utils import terminal_width
     
+    # ARGUMENT PROCESSING:
+    
     generators = set([str(generator) for generator in generators])
     verbose = bool(arguments.pop('verbose', config.DEFAULT_VERBOSITY))
     target_string = str(arguments.pop('target', 'host'))
@@ -62,6 +64,8 @@ def generate(*generators, **arguments):
     output_directory = os.path.abspath(arguments.pop('output_directory', os.path.relpath(os.getcwd())))
     emits = set(arguments.pop('emit', ['static_library', 'h']))
     substitutions = dict(arguments.pop('substitutions', dict()))
+    
+    # ARGUMENT POST-PROCESS BOUNDS-CHECKS:
     
     if target_string == '':
         target_string = "host"
@@ -84,21 +88,24 @@ def generate(*generators, **arguments):
         raise ValueError("invalid emit in %s" % str(emits))
     
     if verbose:
-        print("Compiling and running %s generators..." % len(generators))
-        print('')
+        print("Compiling and running %s generators...\n" % len(generators))
     
+    # Set up the default emit-options settings:
     emit_dict = dict(
         emit_static_library=False,
         emit_o=False, emit_h=False)
     
-    # emit_dict['emit_static_library'] = \
-    #     emit_dict['emit_o'] = \
-    #     emit_dict['emit_h'] = False
-    
+    # Set what emits to, er, emit, as per the “emit” keyword argument;
+    # These have been rolled into the “emits” set (see argument processing, above);
+    # …plus, we’ve already ensured that the set is valid:
     for emit in emits:
         emit_dict["emit_%s" % emit] = True
+    
+    # The “substitutions” keyword to the EmitOptions constructor is special;
+    # It’s just a dict, passed forward during argument processing:
     emit_dict['substitutions'] = substitutions
     
+    # Actually create the EmitOptions object from “emit_dict”:
     emit_options = hal.api.EmitOptions(**emit_dict)
     
     if verbose:
@@ -106,6 +113,7 @@ def generate(*generators, **arguments):
         print(emit_options.to_string())
         print('')
     
+    # The “target_string” variable defaults to “host” (see argument processing):
     target = hal.api.Target(target_string=target_string)
     
     if verbose:
@@ -113,6 +121,7 @@ def generate(*generators, **arguments):
         print(target.to_string())
         print('')
     
+    # These lists will store generator module compilation artifacts:
     bsepths = list()
     outputs = list()
     modules = list()
@@ -120,7 +129,9 @@ def generate(*generators, **arguments):
     if verbose:
         print('-' * max(terminal_width, 160))
     
+    # The generator loop compiles each named generator:
     for generator in generators:
+        # “base_path” and “output” are computed using these API methods:
         base_path = hal.api.compute_base_path(output_directory, generator, "")
         output = emit_options.compute_outputs_for_target_and_path(target, base_path)
         
@@ -134,25 +145,28 @@ def generate(*generators, **arguments):
         if verbose:
             print("OUTPUT: %s" % output.to_string())
         
-        generator_args = dict(target=target.to_string())
         # generator_args.update(arguments)
         
         if verbose:
             print("TARGET: %s" % target.to_string())
-            # print('')
         
-        module = hal.api.get_generator_module(generator, arguments=generator_args)
+        # This API call prepares the generator code module:
+        module = hal.api.get_generator_module(generator,
+                                              arguments={ 'target': target.to_string() })
         
         if verbose:
             print("MODULE: %s" % module.to_string())
             print('-' * max(terminal_width, 160))
         
+        # The compilation call:
         module.compile(output)
         
+        # Stow the post-compile values:
         bsepths.append(base_path)
         outputs.append(output)
         modules.append(module)
     
+    # Return the post-compile value lists for all generators:
     return bsepths, outputs, modules
 
 

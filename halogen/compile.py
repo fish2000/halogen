@@ -8,7 +8,7 @@ import config
 from tempfile import mktemp
 from errors import HalogenError, GeneratorError
 from generate import preload, generate
-from filesystem import TemporaryName, TemporaryDirectory, rm_rf
+from filesystem import TemporaryName, Directory, TemporaryDirectory, rm_rf
 
 CONF = config.ConfigUnion(config.SysConfig(),
                           config.BrewedHalideConfig())
@@ -296,6 +296,11 @@ def main():
             if DEFAULT_VERBOSITY:
                 print("Copying from %s to %s..." % (td.name, destination))
             td.copy_all(destination)
+            
+            with TemporaryName(suffix="zip") as tz:
+                if DEFAULT_VERBOSITY:
+                    print("Zip-archiving from %s to %s..." % (destination, tz.name))
+                Directory(destination).zip_archive(tz.name)
             
             if DEFAULT_VERBOSITY:
                 print('')
