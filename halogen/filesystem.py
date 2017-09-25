@@ -3,12 +3,20 @@
 import os
 import re
 import shutil
-from distutils.spawn import find_executable
 from errors import ExecutionError, FilesystemError
 from tempfile import mktemp, mkdtemp, gettempprefix
 from utils import stringify
 
-def which(binary_name, pathvar=os.getenv("PATH")):
+def which(binary_name, pathvar=None):
+    """ Deduces the path corresponding to an executable name,
+        á la the UNIX command “which”. Optionally takes an
+        override for the $PATH environment variable.
+        Always returns a string – an empty one for those
+        executables that cannot be found.
+    """
+    from distutils.spawn import find_executable
+    if not pathvar:
+        pathvar = os.getenv("PATH", "/bin:/usr/bin")
     return find_executable(binary_name, pathvar) or ""
 
 def back_tick(cmd, ret_err=False, as_str=True, raise_err=None, verbose=False):
