@@ -143,24 +143,19 @@ class SysConfig(PythonConfig):
     """
     
     def __init__(self):
-        self.prefix = os.path.realpath(
-                        sysconfig.get_path("data"))
+        self.prefix = os.path.realpath(sysconfig.get_path("data"))
     
     def bin(self):
-        return os.path.realpath(
-                sysconfig.get_path("scripts"))
+        return os.path.realpath(sysconfig.get_path("scripts"))
     
     def include(self):
-        return os.path.realpath(
-                sysconfig.get_path("include"))
+        return os.path.realpath(sysconfig.get_path("include"))
     
     def lib(self):
-        return os.path.realpath(
-                environ_override('LIBDIR'))
+        return os.path.realpath(environ_override('LIBDIR'))
     
     def Frameworks(self):
-        return os.path.realpath(
-                environ_override('PYTHONFRAMEWORKPREFIX'))
+        return os.path.realpath(environ_override('PYTHONFRAMEWORKPREFIX'))
     
     def Headers(self):
         return os.path.realpath(os.path.join(
@@ -436,9 +431,9 @@ class ConfigUnion(object):
         return out
     
     def __new__(cls, *configs):
-        """ Create either a new, uninitialized ConfigUnion instance, or –
+        """ Create either a new, uninitialized ConfigUnion instance, or -
             in the case where the ConfigUnion was constructed with only
-            one config instance – just return that sole existing config:
+            one config instance - just return that sole existing config:
         """
         length = len(list(configs))
         if length == 0:

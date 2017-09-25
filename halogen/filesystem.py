@@ -10,9 +10,9 @@ from utils import stringify
 
 def which(binary_name, pathvar=None):
     """ Deduces the path corresponding to an executable name,
-        á la the UNIX command “which”. Optionally takes an
+        as per the UNIX command `which`. Optionally takes an
         override for the $PATH environment variable.
-        Always returns a string – an empty one for those
+        Always returns a string - an empty one for those
         executables that cannot be found.
     """
     from distutils.spawn import find_executable
