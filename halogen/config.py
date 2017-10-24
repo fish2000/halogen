@@ -184,6 +184,69 @@ class SysConfig(PythonConfig):
                                  environ_override('LIBS'))
 
 
+class PkgConfig(object):
+    
+    """ A config class that provides its values using the `pkg-config`
+        command-line tool, for a package name recognized by same.
+    """
+    
+    # List of cflags to use with all pkg-config-based classes:
+    cflags = frozenset(("-funroll-loops",
+                        "-mtune=native",
+                        "-O3"))
+    
+    # Location of the `pkg-config` binary:
+    pkgconfig = which('pkg-config')
+    
+    def __init__(self, pkg_name=None):
+        if not pkg_name:
+            pkg_name = 'python'
+        self.pkg_name = pkg_name
+        self.prefix = back_tick("%s %s --variable=prefix" % (self.pkgconfig,
+                                                             self.pkg_name),
+                                                             ret_err=False)
+    
+    def subdirectory(self, subdir):
+        fulldir = os.path.join(self.prefix, subdir)
+        return os.path.isdir(fulldir) and os.path.realpath(fulldir) or None
+    
+    def bin(self):
+        return self.subdirectory("bin")
+    
+    def include(self):
+        return self.subdirectory("include")
+    
+    def lib(self):
+        return self.subdirectory("lib")
+    
+    def libexec(self):
+        return self.subdirectory("libexec") or self.lib()
+    
+    def share(self):
+        return self.subdirectory("share")
+    
+    def get_includes(self):
+        return back_tick("%s %s --cflags-only-I" % (self.pkgconfig,
+                                                    self.pkg_name),
+                                                    ret_err=False)
+    
+    def get_libs(self):
+        return back_tick("%s %s --libs-only-l --libs-only-other --static" % (self.pkgconfig,
+                                                                             self.pkg_name),
+                                                                             ret_err=False)
+    
+    def get_cflags(self):
+        return "%s %s" % (" ".join(self.cflags),
+                          back_tick("%s %s --cflags" % (self.pkgconfig,
+                                                        self.pkg_name),
+                                                        ret_err=False))
+    
+    def get_ldflags(self):
+        return back_tick("%s %s --libs --static" % (self.pkgconfig,
+                                                    self.pkg_name),
+                                                    ret_err=False)
+
+
 class BrewedConfig(object):
     
     """ A config class that provides its values through calls to the Mac Homebrew
@@ -192,17 +255,11 @@ class BrewedConfig(object):
     
     # Name of, and prefix for, the Homebrew installation:
     brew = which('brew')
-    prefix = back_tick("%s --prefix" % brew, ret_err=False)
     
     # List of cflags to use with all Homebrew-based config classes:
     cflags = frozenset(("-funroll-loops",
                         "-mtune=native",
                         "-O3"))
-    
-    @classmethod
-    def subdirectory(cls, subdir):
-        fulldir = os.path.join(cls.prefix, subdir)
-        return os.path.isdir(fulldir) and os.path.realpath(fulldir) or None
     
     def __init__(self, brew_name=None):
         if not brew_name:
@@ -210,6 +267,10 @@ class BrewedConfig(object):
         self.brew_name = brew_name
         cmd = '%s --prefix %s' % (self.brew, self.brew_name)
         self.prefix = back_tick(cmd, ret_err=False)
+    
+    def subdirectory(self, subdir):
+        fulldir = os.path.join(self.prefix, subdir)
+        return os.path.isdir(fulldir) and os.path.realpath(fulldir) or None
     
     def bin(self):
         return self.subdirectory("bin")
@@ -273,6 +334,9 @@ class ConfigUnion(object):
             config_union = ConfigUnion(config_one, config_two)
     """
     
+    # WTF HAX
+    TOKEN = ' -'
+    
     class union_of(object):
         
         """ Decorator class to abstract the entrails of a ConfigUnion.get_something() function,
@@ -285,9 +349,7 @@ class ConfigUnion(object):
                     return out                  # transform the `out` set, if necessary,
                                                 # and return it
         """
-        
-        # WTF HAX
-        TOKEN = ' -'
+        slots = ('name',)
         
         def __init__(self, name=None):
             """ Initialize the @union_of decorator, stashing the name of the function
@@ -307,8 +369,8 @@ class ConfigUnion(object):
                 out = set()
                 for config in this.configs:
                     function_to_call = getattr(config, self.name)
-                    out |= { x.rstrip() for x in (" %s" % str(" %s" % function_to_call())).split(self.TOKEN) }
-                return (self.TOKEN.join(sorted([flag.strip() for flag in base_function(this, out)]))).strip()
+                    out |= { flag.strip() for flag in (" %s" % function_to_call()).split(this.TOKEN) }
+                return (this.TOKEN.join(sorted(base_function(this, out)))).strip()
             return getter
     
     class FlagSet(object):
@@ -369,8 +431,7 @@ class ConfigUnion(object):
         opt_set = cls.optimization.set
         return frozenset(
             filter(lambda flag: bool(match_func(flag)) and \
-                                    (flag not in opt_set), \
-                                     map(lambda flag: flag.strip(), flags)))
+                                    (flag not in opt_set), flags))
     
     @classmethod
     def nonexistent_path_flags(cls, flags):
@@ -380,8 +441,7 @@ class ConfigUnion(object):
         check_func = os.path.exists
         return frozenset(
             filter(lambda flag: bool(match_func(flag)) and \
-                                    (not check_func(flag[1:])), \
-                                     map(lambda flag: flag.strip(), flags)))
+                                    (not check_func(flag[1:])), flags))
     
     @classmethod
     def highest_optimization_level(cls, flags):
@@ -392,7 +452,7 @@ class ConfigUnion(object):
         
         # Exit if the `flags` set contained no optflags:
         if len(optflags) < 1:
-            return flags
+            return flags - cls.fake_optimization_flags(flags)
         
         # Find the optflag with the highest index into cls.optimization_flags:
         flags_index = reduce(lambda x, y: max(x, y),
@@ -548,13 +608,15 @@ def main():
     
     brewedHalideConfig = BrewedHalideConfig()
     sysConfig = SysConfig()
+    pkgConfig = PkgConfig()
     brewedPythonConfig = BrewedPythonConfig()
     pythonConfig = PythonConfig()
     
     configUnionOne = ConfigUnion(sysConfig)
     configUnion = ConfigUnion(brewedHalideConfig, sysConfig)
     configUnionAll = ConfigUnion(brewedHalideConfig, sysConfig,
-                                 brewedPythonConfig, pythonConfig)
+                                 brewedPythonConfig, pythonConfig,
+                                                     pkgConfig)
     
     
     """ Test basic config methods: """
@@ -569,6 +631,12 @@ def main():
     print("TESTING: SysConfig ...")
     print("")
     print_config(sysConfig)
+    
+    print("=" * terminal_width)
+    print("")
+    print("TESTING: PkgConfig ...")
+    print("")
+    print_config(pkgConfig)
     
     print("=" * terminal_width)
     print("")
@@ -596,7 +664,7 @@ def main():
     
     print("=" * terminal_width)
     print("")
-    print("TESTING: ConfigUnion<BrewedHalideConfig, SysConfig, BrewedPythonConfig, PythonConfig> ...")
+    print("TESTING: ConfigUnion<BrewedHalideConfig, SysConfig, BrewedPythonConfig, PythonConfig, PkgConfig> ...")
     print("")
     print_config(configUnionAll)
     
