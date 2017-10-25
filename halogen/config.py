@@ -17,17 +17,19 @@ STATIC_LIBRARY_SUFFIX = ".a"
 
 DEFAULT_VERBOSITY = True
 
+# WTF HAX
+TOKEN = ' -'
+
+
 class PythonConfig(object):
     
     """ A config class that provides its values via the output of the command-line
         `python-config` tool (associated with the running Python interpreter).
     """
     
-    # Prefix for the Python installation:
-    prefix = str(sys.prefix)
-    
     # Name of the `python-config` binary (nearly always just `python-config`):
-    pyconfig = 'python-config'
+    pyconfig = "python-config"
+    pyconfigpath = which(pyconfig)
     
     # The semver-ish name of this Python installation:
     library_name = "python%i.%i" % (sys.version_info.major,
@@ -40,15 +42,14 @@ class PythonConfig(object):
     # The actual filename for this Python installations’ base header:
     header_file = 'Python.h'
     
-    @classmethod
-    def subdirectory(cls, subdir):
-        fulldir = os.path.join(cls.prefix, subdir)
-        return os.path.isdir(fulldir) and os.path.realpath(fulldir) or None
+    def __init__(self, prefix=None):
+        if not prefix:
+            prefix = str(sys.prefix)
+        self.prefix = prefix
     
-    def __init__(self, cmd=None):
-        if not cmd:
-            cmd = '%s --prefix' % self.pyconfig
-        self.prefix = back_tick(cmd, ret_err=False)
+    def subdirectory(self, subdir):
+        fulldir = os.path.join(self.prefix, subdir)
+        return os.path.isdir(fulldir) and os.path.realpath(fulldir) or None
     
     def bin(self):
         return self.subdirectory("bin")
@@ -75,16 +76,16 @@ class PythonConfig(object):
         return self.subdirectory("Resources")
     
     def get_includes(self):
-        return back_tick("%s --includes" % self.pyconfig)
+        return back_tick("%s --includes" % self.pyconfigpath)
     
     def get_libs(self):
-        return back_tick("%s --libs" % self.pyconfig)
+        return back_tick("%s --libs" % self.pyconfigpath)
     
     def get_cflags(self):
-        return back_tick("%s --cflags" % self.pyconfig)
+        return back_tick("%s --cflags" % self.pyconfigpath)
     
     def get_ldflags(self):
-        return back_tick("%s --ldflags" % self.pyconfig)
+        return back_tick("%s --ldflags" % self.pyconfigpath)
 
 
 class BrewedPythonConfig(PythonConfig):
@@ -93,12 +94,22 @@ class BrewedPythonConfig(PythonConfig):
         command-line `brew` tool (with fallback calls to the PythonConfig class).
     """
     
-    def __init__(self, brew_name='python'):
-        brew = which("brew")
-        if not brew:
+    # Path to the Homebrew executable CLT `brew`
+    brew = which("brew")
+    
+    def __init__(self, brew_name=None):
+        if not self.brew:
             raise IOError("Can't find Homebrew “brew” executable")
-        cmd = "%s --prefix %s" % (brew, brew_name)
-        super(BrewedPythonConfig, self).__init__(cmd)
+        if not brew_name:
+            brew_name = 'python'
+        self.brew_name = brew_name
+        cmd = "%s --prefix %s" % (self.brew, self.brew_name)
+        prefix = back_tick(cmd, ret_err=False)
+        for path, dirs, files in os.walk(prefix, followlinks=True):
+            if self.pyconfig in files:
+                super(BrewedPythonConfig, self).__init__(prefix=os.path.realpath(path))
+                return
+        super(BrewedPythonConfig, self).__init__(prefix=prefix)
     
     def include(self):
         for path, dirs, files in os.walk(self.prefix, followlinks=True):
@@ -143,7 +154,8 @@ class SysConfig(PythonConfig):
     """
     
     def __init__(self):
-        self.prefix = os.path.realpath(sysconfig.get_path("data"))
+        prefix = os.path.realpath(sysconfig.get_path("data"))
+        super(SysConfig, self).__init__(prefix=prefix)
     
     def bin(self):
         return os.path.realpath(sysconfig.get_path("scripts"))
@@ -159,13 +171,11 @@ class SysConfig(PythonConfig):
     
     def Headers(self):
         return os.path.realpath(os.path.join(
-            environ_override('PYTHONFRAMEWORKINSTALLDIR'),
-            'Headers'))
+            environ_override('PYTHONFRAMEWORKINSTALLDIR'), 'Headers'))
     
     def Resources(self):
         return os.path.realpath(os.path.join(
-            environ_override('PYTHONFRAMEWORKINSTALLDIR'),
-            'Resources'))
+            environ_override('PYTHONFRAMEWORKINSTALLDIR'), 'Resources'))
     
     def get_includes(self):
         return "-I%s" % self.include()
@@ -179,9 +189,16 @@ class SysConfig(PythonConfig):
                             environ_override('CFLAGS'))
     
     def get_ldflags(self):
-        return "-L%s -l%s %s" % (environ_override('LIBPL'),
-                                 self.library_name,
-                                 environ_override('LIBS'))
+        ldstring = ""
+        libpth0 = environ_override('LIBDIR')
+        libpth1 = environ_override('LIBPL')
+        if libpth0:
+            ldstring += " -L%s" % os.path.realpath(libpth0)
+        if libpth1:
+            ldstring += " -L%s" % os.path.realpath(libpth1)
+        return "%s -l%s %s" % (ldstring.strip(),
+                               self.library_name,
+                               environ_override('LIBS'))
 
 
 class PkgConfig(object):
@@ -334,9 +351,6 @@ class ConfigUnion(object):
             config_union = ConfigUnion(config_one, config_two)
     """
     
-    # WTF HAX
-    TOKEN = ' -'
-    
     class union_of(object):
         
         """ Decorator class to abstract the entrails of a ConfigUnion.get_something() function,
@@ -369,8 +383,8 @@ class ConfigUnion(object):
                 out = set()
                 for config in this.configs:
                     function_to_call = getattr(config, self.name)
-                    out |= { flag.strip() for flag in (" %s" % function_to_call()).split(this.TOKEN) }
-                return (this.TOKEN.join(sorted(base_function(this, out)))).strip()
+                    out |= { flag.strip() for flag in (" %s" % function_to_call()).split(TOKEN) }
+                return (TOKEN.join(sorted(base_function(this, out)))).strip()
             return getter
     
     class FlagSet(object):
@@ -664,7 +678,8 @@ def main():
     
     print("=" * terminal_width)
     print("")
-    print("TESTING: ConfigUnion<BrewedHalideConfig, SysConfig, BrewedPythonConfig, PythonConfig, PkgConfig> ...")
+    print("TESTING: ConfigUnion<BrewedHalideConfig, SysConfig,")
+    print("                     BrewedPythonConfig, PythonConfig, PkgConfig> ...")
     print("")
     print_config(configUnionAll)
     
