@@ -54,7 +54,7 @@ namespace typecode {
             { NPY_DATETIME,     NPY_DATETIMELTR },
             { NPY_HALF,         NPY_HALFLTR },
             { NPY_TIMEDELTA,    NPY_TIMEDELTALTR },
-            { NPY_CHAR,         NPY_CHARLTR },
+            { NPY_STRING,       NPY_STRINGLTR },
             { NPY_USERDEF,      NPY_BOOLLTR }, /// bah
         };
         return _typecode_character_map;
@@ -86,7 +86,7 @@ namespace typecode {
             { NPY_DATETIME,     "NPY_DATETIME" },
             { NPY_HALF,         "NPY_HALF" },
             { NPY_TIMEDELTA,    "NPY_TIMEDELTA" },
-            { NPY_CHAR,         "NPY_CHAR" },
+            { NPY_STRING,       "NPY_STRING" },
             { NPY_USERDEF,      "?" }
         };
         return _typecode_literal_map;

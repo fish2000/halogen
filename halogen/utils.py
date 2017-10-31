@@ -30,6 +30,14 @@ def get_terminal_size(default_LINES=25, default_COLUMNS=80):
 
 terminal_width, terminal_height = get_terminal_size()
 
+def memoize(function):
+    class memoizer(dict):
+        def __missing__(self, key):
+            self[key] = out = function(key)
+            return out
+    memoinstance = memoizer()
+    return lambda *args: memoinstance[args]
+
 def stringify(instance, fields):
     field_dict = {}
     for field in fields:

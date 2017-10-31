@@ -6,22 +6,86 @@ import os
 import re
 import sys
 import sysconfig
-import ctypes.util
 
+from abc import ABCMeta, abstractmethod, abstractproperty
 from os.path import splitext
+from ctypes.util import find_library
 from functools import wraps
 from filesystem import which, back_tick
 
-SHARED_LIBRARY_SUFFIX = splitext(ctypes.util.find_library("c"))[-1]
-STATIC_LIBRARY_SUFFIX = ".a"
+SHARED_LIBRARY_SUFFIX = splitext(find_library("c"))[-1].lower()
+STATIC_LIBRARY_SUFFIX = (SHARED_LIBRARY_SUFFIX == ".dll") and ".lib" or ".a"
 
 DEFAULT_VERBOSITY = True
 
 # WTF HAX
 TOKEN = ' -'
 
+class ConfigSubBase(object):
+    
+    class __metaclass__(ABCMeta):
+        pass
+    
+    @abstractproperty
+    def prefix(self): pass
+    
+    @prefix.setter
+    def prefix(self, value): pass
+    
+    @prefix.deleter
+    def prefix(self): pass
+    
+    @abstractmethod
+    def subdirectory(self, subdir, whence=None): pass
+    
+    @abstractmethod
+    def get_includes(self): pass
+    
+    @abstractmethod
+    def get_libs(self): pass
+    
+    @abstractmethod
+    def get_cflags(self): pass
+    
+    @abstractmethod
+    def get_ldflags(self): pass
 
-class PythonConfig(object):
+class ConfigBase(ConfigSubBase):
+    
+    class __metaclass__(ConfigSubBase.__metaclass__):
+        
+        def __new__(cls, name, bases, attributes):
+            outcls = ConfigSubBase.__metaclass__.__new__(cls, name, bases, attributes)
+            ConfigSubBase.register(outcls)
+            return outcls
+    
+    @property
+    def prefix(self):
+        """ The path to the Python installation prefix """
+        if not hasattr(self, '_prefix'):
+            self._prefix = sys.prefix
+        return getattr(self, '_prefix')
+    
+    @prefix.setter
+    def prefix(self, value):
+        if not os.path.exists(value):
+            raise ValueError("prefix path does not exist: %s" % value)
+        self._prefix = value
+    
+    @prefix.deleter
+    def prefix(self):
+        if hasattr(self, '_prefix'):
+            del self._prefix
+    
+    def subdirectory(self, subdir, whence=None):
+        if not whence:
+            whence = self.prefix
+        fulldir = os.path.join(whence, subdir)
+        return os.path.exists(fulldir) and fulldir or None
+    
+
+
+class PythonConfig(ConfigBase):
     
     """ A config class that provides its values via the output of the command-line
         `python-config` tool (associated with the running Python interpreter).
@@ -42,14 +106,16 @@ class PythonConfig(object):
     # The actual filename for this Python installations’ base header:
     header_file = 'Python.h'
     
+    # The name of the framework for this python installation:
+    framework_name = 'Python.framework'
+    
+    # the path to the 'Frameworks' directory (empty before calls):
+    framework_path = None
+    
     def __init__(self, prefix=None):
         if not prefix:
             prefix = str(sys.prefix)
         self.prefix = prefix
-    
-    def subdirectory(self, subdir):
-        fulldir = os.path.join(self.prefix, subdir)
-        return os.path.isdir(fulldir) and os.path.realpath(fulldir) or None
     
     def bin(self):
         return self.subdirectory("bin")
@@ -63,17 +129,44 @@ class PythonConfig(object):
     def libexec(self):
         return self.subdirectory("libexec") or self.lib()
     
+    def libexecbin(self):
+        return self.subdirectory('bin', whence=self.libexec())
+    
     def share(self):
         return self.subdirectory("share")
     
     def Frameworks(self):
-        return self.subdirectory("Frameworks")
+        if not self.framework_path:
+            # from prefix, search depth-first up (linear):
+            if self.framework_name in self.prefix:
+                head = self.prefix
+                tail = "yo dogg" # something not false-y
+                while tail:
+                    head, tail = os.path.split(head)
+                    if tail == self.framework_name:
+                        self.framework_path = head
+                        return self.framework_path
+            # from prefix, search depth-first down (likely exponential):
+            for path, dirs, files in os.walk(self.prefix, followlinks=True):
+                if self.framework_name in dirs:
+                    self.framework_path = path
+                    return self.framework_path
+            # give up, using a sensible default:
+            self.framework_path = self.subdirectory('Frameworks')
+        return self.framework_path
     
     def Headers(self):
-        return self.subdirectory("Headers")
+        return self.subdirectory('Headers',
+                                  whence=os.path.join(self.Frameworks(),
+                                                      self.framework_name))
     
     def Resources(self):
-        return self.subdirectory("Resources")
+        return self.subdirectory('Resources',
+                                  whence=os.path.join(self.Frameworks(),
+                                                      self.framework_name))
+    
+    def framework(self):
+        return self.subdirectory(self.framework_name, self.Frameworks())
     
     def get_includes(self):
         return back_tick("%s --includes" % self.pyconfigpath)
@@ -105,42 +198,42 @@ class BrewedPythonConfig(PythonConfig):
         self.brew_name = brew_name
         cmd = "%s --prefix %s" % (self.brew, self.brew_name)
         prefix = back_tick(cmd, ret_err=False)
-        for path, dirs, files in os.walk(prefix, followlinks=True):
-            if self.pyconfig in files:
-                super(BrewedPythonConfig, self).__init__(prefix=os.path.realpath(path))
-                return
         super(BrewedPythonConfig, self).__init__(prefix=prefix)
     
     def include(self):
         for path, dirs, files in os.walk(self.prefix, followlinks=True):
             if self.header_file in files:
-                return os.path.realpath(path)
+                return path
         return super(BrewedPythonConfig, self).include()
     
     def lib(self):
         for path, dirs, files in os.walk(self.prefix, followlinks=True):
             if self.library_file in files:
-                return os.path.realpath(path)
+                return path
         return super(BrewedPythonConfig, self).lib()
     
     def get_includes(self):
-        if self.bin():
-            return back_tick("%s --includes" % os.path.join(self.bin(), self.pyconfig))
+        if self.libexecbin():
+            return back_tick("%s --includes" % os.path.join(self.libexecbin(),
+                                                            self.pyconfig))
         return super(BrewedPythonConfig, self).get_includes()
     
     def get_libs(self):
-        if self.bin():
-            return back_tick("%s --libs" % os.path.join(self.bin(), self.pyconfig))
+        if self.libexecbin():
+            return back_tick("%s --libs" % os.path.join(self.libexecbin(),
+                                                        self.pyconfig))
         return super(BrewedPythonConfig, self).get_libs()
     
     def get_cflags(self):
-        if self.bin():
-            return back_tick("%s --cflags" % os.path.join(self.bin(), self.pyconfig))
+        if self.libexecbin():
+            return back_tick("%s --cflags" % os.path.join(self.libexecbin(),
+                                                          self.pyconfig))
         return super(BrewedPythonConfig, self).get_cflags()
     
     def get_ldflags(self):
-        if self.bin():
-            return back_tick("%s --ldflags" % os.path.join(self.bin(), self.pyconfig))
+        if self.libexecbin():
+            return back_tick("%s --ldflags" % os.path.join(self.libexecbin(),
+                                                           self.pyconfig))
         return super(BrewedPythonConfig, self).get_ldflags()
 
 
@@ -154,28 +247,28 @@ class SysConfig(PythonConfig):
     """
     
     def __init__(self):
-        prefix = os.path.realpath(sysconfig.get_path("data"))
+        prefix = sysconfig.get_path("data")
         super(SysConfig, self).__init__(prefix=prefix)
     
     def bin(self):
-        return os.path.realpath(sysconfig.get_path("scripts"))
+        return sysconfig.get_path("scripts")
     
     def include(self):
-        return os.path.realpath(sysconfig.get_path("include"))
+        return sysconfig.get_path("include")
     
     def lib(self):
-        return os.path.realpath(environ_override('LIBDIR'))
+        return environ_override('LIBDIR')
     
     def Frameworks(self):
-        return os.path.realpath(environ_override('PYTHONFRAMEWORKPREFIX'))
+        return environ_override('PYTHONFRAMEWORKPREFIX')
     
     def Headers(self):
-        return os.path.realpath(os.path.join(
-            environ_override('PYTHONFRAMEWORKINSTALLDIR'), 'Headers'))
+        return os.path.join(environ_override('PYTHONFRAMEWORKINSTALLDIR'),
+                           'Headers')
     
     def Resources(self):
-        return os.path.realpath(os.path.join(
-            environ_override('PYTHONFRAMEWORKINSTALLDIR'), 'Resources'))
+        return os.path.join(environ_override('PYTHONFRAMEWORKINSTALLDIR'),
+                           'Resources')
     
     def get_includes(self):
         return "-I%s" % self.include()
@@ -190,18 +283,19 @@ class SysConfig(PythonConfig):
     
     def get_ldflags(self):
         ldstring = ""
-        libpth0 = environ_override('LIBDIR')
-        libpth1 = environ_override('LIBPL')
-        if libpth0:
-            ldstring += " -L%s" % os.path.realpath(libpth0)
-        if libpth1:
-            ldstring += " -L%s" % os.path.realpath(libpth1)
-        return "%s -l%s %s" % (ldstring.strip(),
-                               self.library_name,
-                               environ_override('LIBS'))
+        libpths = (environ_override('LIBDIR'),
+                   environ_override('LIBPL'),
+                   environ_override('LIBDEST'))
+        for pth in libpths:
+            if os.path.exists(pth):
+                ldstring += " -L%s" % pth
+        out = "%s -l%s %s" % (ldstring.lstrip(),
+                              self.library_name,
+                              environ_override('LIBS'))
+        return out.lstrip()
 
 
-class PkgConfig(object):
+class PkgConfig(ConfigBase):
     
     """ A config class that provides its values using the `pkg-config`
         command-line tool, for a package name recognized by same.
@@ -223,10 +317,6 @@ class PkgConfig(object):
                                                              self.pkg_name),
                                                              ret_err=False)
     
-    def subdirectory(self, subdir):
-        fulldir = os.path.join(self.prefix, subdir)
-        return os.path.isdir(fulldir) and os.path.realpath(fulldir) or None
-    
     def bin(self):
         return self.subdirectory("bin")
     
@@ -238,6 +328,9 @@ class PkgConfig(object):
     
     def libexec(self):
         return self.subdirectory("libexec") or self.lib()
+    
+    def libexecbin(self):
+        return self.subdirectory('bin', whence=self.libexec())
     
     def share(self):
         return self.subdirectory("share")
@@ -264,7 +357,7 @@ class PkgConfig(object):
                                                     ret_err=False)
 
 
-class BrewedConfig(object):
+class BrewedConfig(ConfigBase):
     
     """ A config class that provides its values through calls to the Mac Homebrew
         command-line `brew` tool, for an arbitrary named Homebrew formulae.
@@ -285,10 +378,6 @@ class BrewedConfig(object):
         cmd = '%s --prefix %s' % (self.brew, self.brew_name)
         self.prefix = back_tick(cmd, ret_err=False)
     
-    def subdirectory(self, subdir):
-        fulldir = os.path.join(self.prefix, subdir)
-        return os.path.isdir(fulldir) and os.path.realpath(fulldir) or None
-    
     def bin(self):
         return self.subdirectory("bin")
     
@@ -300,6 +389,9 @@ class BrewedConfig(object):
     
     def libexec(self):
         return self.subdirectory("libexec") or self.lib()
+    
+    def libexecbin(self):
+        return self.subdirectory('bin', whence=self.libexec())
     
     def share(self):
         return self.subdirectory("share")
@@ -341,7 +433,7 @@ class BrewedHalideConfig(BrewedConfig):
         return "-L%s -l%s" % (self.lib(), self.library)
 
 
-class ConfigUnion(object):
+class ConfigUnion(ConfigBase):
     
     """ A config class that provides values as the union of all provided values
         for the arbitrary config classes specified upon construction. E.g.:
@@ -703,6 +795,20 @@ def main():
     print("")
     test_compile(configUnionAll, test_generator_source)
 
+def corefoundation_check():
+    try:
+        from Foundation import NSBundle
+        from CoreFoundation import (CFBundleGetMainBundle,
+                                    CFBundleGetAllBundles,
+                                    CFBundleGetValueForInfoDictionaryKey,
+                                    CFBundleCopyBundleURL)
+    except ImportError:
+        print("CoreFoundation module not found, skipping PyObjC test")
+    
+    is_python_bundle = lambda bundle: CFBundleGetValueForInfoDictionaryKey(bundle, 'CFBundleIdentifier') == u'org.python.python'
+    python_bundle_set = set(filter(is_python_bundle, CFBundleGetAllBundles())) - { CFBundleGetMainBundle() }
+    python_bundle = python_bundle_set.pop()
+    nsbundle = NSBundle.alloc().initWithURL_(CFBundleCopyBundleURL(python_bundle))
 
 if __name__ == '__main__':
     main()
