@@ -797,6 +797,7 @@ def main():
     test_compile(configUnionAll, test_generator_source)
 
 def corefoundation_check():
+    from utils import print_config, terminal_width
     try:
         from Foundation import NSBundle
         from CoreFoundation import (CFBundleGetMainBundle,
@@ -805,11 +806,22 @@ def corefoundation_check():
                                     CFBundleCopyBundleURL)
     except ImportError:
         print("CoreFoundation module not found, skipping PyObjC test")
+        return
     
     is_python_bundle = lambda bundle: CFBundleGetValueForInfoDictionaryKey(bundle, 'CFBundleIdentifier') == u'org.python.python'
     python_bundle_set = set(filter(is_python_bundle, CFBundleGetAllBundles())) - { CFBundleGetMainBundle() }
     python_bundle = python_bundle_set.pop()
     nsbundle = NSBundle.alloc().initWithURL_(CFBundleCopyBundleURL(python_bundle))
+    bundlepath = str(nsbundle.bundlePath())
+    prefix = os.path.dirname(os.path.dirname(bundlepath))
+    pyConfig = PythonConfig(prefix)
+    
+    print("=" * terminal_width)
+    print("")
+    print("TESTING: PythonConfig with PyObjC prefix ...")
+    print("")
+    print_config(pyConfig)
 
 if __name__ == '__main__':
     main()
+    corefoundation_check()
