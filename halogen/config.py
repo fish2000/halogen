@@ -50,12 +50,14 @@ class ConfigSubBase(object):
     @abstractmethod
     def get_ldflags(self): pass
 
+ConfigSubMeta = ConfigSubBase.__metaclass__
+
 class ConfigBase(ConfigSubBase):
     
-    class __metaclass__(ConfigSubBase.__metaclass__):
+    class __metaclass__(ConfigSubMeta):
         
         def __new__(cls, name, bases, attributes):
-            outcls = ConfigSubBase.__metaclass__.__new__(cls, name, bases, attributes)
+            outcls = ConfigSubMeta.__new__(cls, name, bases, attributes)
             ConfigSubBase.register(outcls)
             return outcls
     
@@ -82,7 +84,6 @@ class ConfigBase(ConfigSubBase):
             whence = self.prefix
         fulldir = os.path.join(whence, subdir)
         return os.path.exists(fulldir) and fulldir or None
-    
 
 
 class PythonConfig(ConfigBase):
