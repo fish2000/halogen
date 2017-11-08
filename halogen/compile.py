@@ -5,6 +5,7 @@ from __future__ import print_function
 import os
 import shutil
 import config
+import scandir
 from tempfile import mktemp
 from errors import HalogenError, GeneratorError
 from generate import preload, generate
@@ -121,8 +122,8 @@ class Generators(object):
         self.archive_result = tuple()
         if self.VERBOSE:
             print(u"Scanning %s for “%s” files" % (self.directory, self.suffix))
-        for path, dirs, files in os.walk(self.directory,
-                                         followlinks=True):
+        for path, dirs, files in scandir.walk(self.directory,
+                                              followlinks=True):
             for df in files:
                 if df.lower().endswith(self.suffix):
                     self.sources.append(

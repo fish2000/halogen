@@ -2,6 +2,7 @@
 
 import os
 import re
+import scandir
 import shutil
 import zipfile
 from errors import ExecutionError, FilesystemError
@@ -81,7 +82,7 @@ def rm_rf(pth):
         os.unlink(pth)
     elif os.path.isdir(pth):
         subdirs = []
-        for path, dirs, files in os.walk(pth, followlinks=True):
+        for path, dirs, files in scandir.walk(pth, followlinks=True):
             for tf in files:
                 os.unlink(os.path.join(path, tf))
             subdirs.extend([os.path.join(path, td) for td in dirs])
@@ -177,7 +178,7 @@ class Directory(object):
         return lambda f: re.compile(regex_str, re.IGNORECASE).search(f)
     
     def ls(self, pth='.', suffix=None):
-        files = [f for f in os.listdir(pth) if not self.dotfile_matcher.match(f)]
+        files = (f for f in scandir.scandir(pth) if not self.dotfile_matcher.match(f))
         if not suffix:
             return files
         return filter(self.suffix_searcher(suffix), files)
@@ -188,13 +189,13 @@ class Directory(object):
         return os.path.realpath(pth)
     
     def ls_la(self, pth='.', suffix=None):
-        files = os.listdir(self.realpath(pth))
+        files = scandir.scandir(self.realpath(pth))
         if not suffix:
             return files
         return filter(self.suffix_searcher(suffix), files)
     
     def walk(self, followlinks=False):
-        return os.walk(self.new, followlinks=followlinks)
+        return scandir.walk(self.new, followlinks=followlinks)
     
     def parent(self):
         return os.path.abspath(

@@ -6,6 +6,7 @@ import os
 import re
 import sys
 import sysconfig
+import scandir
 
 from abc import ABCMeta, abstractmethod, abstractproperty
 from os.path import splitext
@@ -148,7 +149,7 @@ class PythonConfig(ConfigBase):
                         self.framework_path = head
                         return self.framework_path
             # from prefix, search depth-first down (likely exponential):
-            for path, dirs, files in os.walk(self.prefix, followlinks=True):
+            for path, dirs, files in scandir.walk(self.prefix, followlinks=True):
                 if self.framework_name in dirs:
                     self.framework_path = path
                     return self.framework_path
@@ -202,13 +203,13 @@ class BrewedPythonConfig(PythonConfig):
         super(BrewedPythonConfig, self).__init__(prefix=prefix)
     
     def include(self):
-        for path, dirs, files in os.walk(self.prefix, followlinks=True):
+        for path, dirs, files in scandir.walk(self.prefix, followlinks=True):
             if self.header_file in files:
                 return path
         return super(BrewedPythonConfig, self).include()
     
     def lib(self):
-        for path, dirs, files in os.walk(self.prefix, followlinks=True):
+        for path, dirs, files in scandir.walk(self.prefix, followlinks=True):
             if self.library_file in files:
                 return path
         return super(BrewedPythonConfig, self).lib()
@@ -264,12 +265,12 @@ class SysConfig(PythonConfig):
         return environ_override('PYTHONFRAMEWORKPREFIX')
     
     def Headers(self):
-        return os.path.join(environ_override('PYTHONFRAMEWORKINSTALLDIR'),
-                           'Headers')
+        return self.subdirectory('Headers',
+                                  whence=environ_override('PYTHONFRAMEWORKINSTALLDIR'))
     
     def Resources(self):
-        return os.path.join(environ_override('PYTHONFRAMEWORKINSTALLDIR'),
-                           'Resources')
+        return self.subdirectory('Resources',
+                                  whence=environ_override('PYTHONFRAMEWORKINSTALLDIR'))
     
     def get_includes(self):
         return "-I%s" % self.include()
@@ -614,7 +615,14 @@ class ConfigUnion(ConfigBase):
             object instances, as needed (although using only one makes
             very little sense, frankly):
         """
-        self.configs = list(configs)
+        self.configs = []
+        for config in list(configs):
+            if hasattr(config, 'configs'):
+                # extract configs from a ConfigUnion instance:
+                self.configs.extend(config.configs)
+            else:
+                # append the (non-ConfigUnion) config:
+                self.configs.append(config)
     
     @union_of(name='includes')
     def get_includes(self, includes):
@@ -691,23 +699,76 @@ def AR(conf, outfile, *infiles, **kwargs):
 
 test_generator_source = """
 #include "Halide.h"
-#include <stdio.h>
 using namespace Halide;
 
-class MyFirstGenerator : public Halide::Generator<MyFirstGenerator> {
+class Brighten : public Halide::Generator<Brighten> {
+        
     public:
-        Param<uint8_t> offset{"offset"};
-        ImageParam input{UInt(8), 2, "input"};
-        Var x, y;
-        Func build() {
-            Func brighter;
-            brighter(x, y) = input(x, y) + offset;
-            brighter.vectorize(x, 16).parallel(y);
-            return brighter;
+        enum class Layout { Planar, Interleaved, Either, Specialized };
+        
+    public:
+        Input<Buffer<uint8_t>> input{     "input",    3 };
+        GeneratorParam<Layout> layout{    "layout",        Layout::Planar,
+                                    {{    "planar",        Layout::Planar },
+                                     {    "interleaved",   Layout::Interleaved },
+                                     {    "either",        Layout::Either },
+                                     {    "specialized",   Layout::Specialized }}};
+    
+    public:
+        Input<uint8_t> offset{            "offset"      };
+        Output<Buffer<uint8_t>> brighter{ "brighter", 3 };
+        Var x, y, c;
+    
+    public:
+        void generate() {
+            // Define the Func.
+            brighter(x, y, c) = input(x, y, c) + offset;
+            
+            // Schedule it.
+            brighter.vectorize(x, 16);
+            
+            if (layout == Layout::Planar) {
+            } else if (layout == Layout::Interleaved) {
+                input
+                    .dim(0).set_stride(3)
+                    .dim(2).set_stride(1);
+                
+                brighter
+                    .dim(0).set_stride(3)
+                    .dim(2).set_stride(1);
+                
+                input.dim(2).set_bounds(0, 3);
+                brighter.dim(2).set_bounds(0, 3);
+                brighter.reorder(c, x, y).unroll(c);
+            } else if (layout == Layout::Either) {
+                input.dim(0).set_stride(Expr());
+                brighter.dim(0).set_stride(Expr());
+            } else if (layout == Layout::Specialized) {
+                input.dim(0).set_stride(Expr());
+                brighter.dim(0).set_stride(Expr());
+                
+                Expr input_is_planar =
+                    (input.dim(0).stride() == 1);
+                Expr input_is_interleaved =
+                    (input.dim(0).stride() == 3 &&
+                     input.dim(2).stride() == 1 &&
+                     input.dim(2).extent() == 3);
+                
+                Expr output_is_planar =
+                    (brighter.dim(0).stride() == 1);
+                Expr output_is_interleaved =
+                    (brighter.dim(0).stride() == 3 &&
+                     brighter.dim(2).stride() == 1 &&
+                     brighter.dim(2).extent() == 3);
+                
+                brighter.specialize(input_is_planar && output_is_planar);
+                brighter.specialize(input_is_interleaved && output_is_interleaved)
+                    .reorder(c, x, y).unroll(c);
+            }
         }
 };
 
-RegisterGenerator<MyFirstGenerator> my_first_generator{"my_first_generator"};
+HALIDE_REGISTER_GENERATOR(Brighten, brighten);
 """
 
 def main():
@@ -824,4 +885,4 @@ def corefoundation_check():
 
 if __name__ == '__main__':
     main()
-    corefoundation_check()
+    # corefoundation_check()
