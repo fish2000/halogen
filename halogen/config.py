@@ -459,13 +459,11 @@ class ConfigUnion(ConfigBase):
         """
         slots = ('name',)
         
-        def __init__(self, name=None):
+        def __init__(self, name):
             """ Initialize the @union_of decorator, stashing the name of the function
                 to call upon those config-class instances wrapped by the ConfigUnion
                 instance in question. """
-            self.name = None
-            if name is not None:
-                self.name = "get_%s" % str(name)
+            self.name = "get_%s" % str(name)
         
         def __call__(self, base_function):
             """ Process the decorated method, passed in as `base_function` --
@@ -487,7 +485,7 @@ class ConfigUnion(ConfigBase):
         slots = ('flags', 'set')
         
         def __init__(self, template, flaglist):
-            self.flags = [template % str(flag) for flag in flaglist]
+            self.flags = [template % flag for flag in flaglist]
             self.set = frozenset(self.flags)
         
         def __contains__(self, rhs):
@@ -498,13 +496,6 @@ class ConfigUnion(ConfigBase):
         
         def __getitem__(self, key):
             return self.flags[key]
-        
-        def __setitem__(self, key, value):
-            try:
-                self.flags[key] = value
-            except:
-                raise
-            self.set = frozenset(self.flags)
         
         def index(self, value):
             return self.flags.index(value)
