@@ -6,7 +6,14 @@ import os
 import re
 import sys
 import sysconfig
-import scandir
+try:
+    import scandir
+except ImportError:
+    import os as scandir
+try:
+    from functools import reduce
+except ImportError:
+    pass
 
 from abc import ABCMeta, abstractmethod, abstractproperty
 from os.path import splitext
@@ -599,7 +606,8 @@ class ConfigUnion(ConfigBase):
             raise AttributeError("ConfigUnion requires 1+ config instances")
         elif length == 1:
             return list(configs)[0]
-        return super(ConfigUnion, cls).__new__(cls, *configs)
+        # return super(ConfigUnion, cls).__new__(cls, *configs)
+        return object.__new__(cls)
     
     def __init__(self, *configs):
         """ Initialize a ConfigUnion instance with one or more config
@@ -688,7 +696,7 @@ def AR(conf, outfile, *infiles, **kwargs):
                                                                    raise_err=True,
                                                                    verbose=kwargs.pop('verbose', DEFAULT_VERBOSITY))
 
-test_generator_source = """
+test_generator_source = b"""
 #include "Halide.h"
 using namespace Halide;
 

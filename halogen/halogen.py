@@ -87,9 +87,10 @@ def cli(argv=None):
 
 
 if __name__ == '__main__':
+    import tempfile
     # cli(sys.argv)
     # cli(['halogen.py', '--help', '--verbose'])
     # cli(['halogen.py', '--version'])
-    # cli(['halogen.py', '--output=/tmp', '--targets=host,dev,yodogg', 'resize'])
-    # cli(['halogen.py', 'resize', '--output', '/tmp', '--targets', 'host,dev,yodogg'])
+    cli(['halogen.py', '--output=%s' % tempfile.gettempdir(), '--targets=host,dev,yodogg', 'resize'])
+    cli(['halogen.py', 'resize', '--output', tempfile.gettempdir(), '--targets', 'host,dev,yodogg'])
     cli(['halogen.py', 'resize'])

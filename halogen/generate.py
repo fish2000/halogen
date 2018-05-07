@@ -171,22 +171,22 @@ def generate(*generators, **arguments):
 
 
 def main():
-    import config
+    import config, tempfile
     
     generate('my_first_generator',
         verbose=config.DEFAULT_VERBOSITY,
         target='host',
-        output_directory='/tmp')
+        output_directory=tempfile.gettempdir())
     
     generate('my_second_generator',
         verbose=config.DEFAULT_VERBOSITY,
         target='host',
-        output_directory='/tmp')
+        output_directory=tempfile.gettempdir())
     
     generate('brighten',
         verbose=config.DEFAULT_VERBOSITY,
         target='host',
-        output_directory='/tmp')
+        output_directory=tempfile.gettempdir())
 
 if __name__ == '__main__':
     main()

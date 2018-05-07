@@ -5,7 +5,11 @@ from __future__ import print_function
 import os
 import shutil
 import config
-import scandir
+try:
+    import scandir
+except ImportError:
+    import os as scandir
+
 from tempfile import mktemp
 from errors import HalogenError, GeneratorError
 from generate import preload, generate
@@ -109,8 +113,8 @@ class Generators(object):
         self._archived = False
         self.conf = conf
         self.destination = destination
-        self.library = "%s/%s%s" % (destination, prefix, config.SHARED_LIBRARY_SUFFIX)
-        self.archive = "%s/%s%s" % (destination, prefix, config.STATIC_LIBRARY_SUFFIX)
+        self.library = os.path.join(destination, "%s%s" % (prefix, config.SHARED_LIBRARY_SUFFIX))
+        self.archive = os.path.join(destination, "%s%s" % (prefix, config.STATIC_LIBRARY_SUFFIX))
         self.directory = directory
         self.suffix = suffix
         self.prefix = prefix
@@ -234,8 +238,10 @@ def main():
     # sys.path addenda necessary to load hal.api:
     import hal.api
     
+    import tempfile
     directory = "/Users/fish/Dropbox/halogen/tests/generators"
-    destination = "/tmp/yodogg"
+    # destination = "/tmp/yodogg"
+    destination = os.path.join(tempfile.gettempdir(), "yodogg")
     
     # library = "%s%s" % (destination, config.SHARED_LIBRARY_SUFFIX)
     # archive = "%s%s" % (destination, config.STATIC_LIBRARY_SUFFIX)
@@ -257,8 +263,8 @@ def main():
                               directory=directory,
                               verbose=DEFAULT_VERBOSITY) as gens:
             
-            library = "%s/%s%s" % (td.name, 'yodogg', config.SHARED_LIBRARY_SUFFIX)
-            archive = "%s/%s%s" % (td.name, 'yodogg', config.STATIC_LIBRARY_SUFFIX)
+            library = os.path.join(td.name, "%s%s" % ('yodogg', config.SHARED_LIBRARY_SUFFIX))
+            archive = os.path.join(td.name, "%s%s" % ('yodogg', config.STATIC_LIBRARY_SUFFIX))
             
             compiled = gens.compiled and "YES" or "no"
             linked = gens.linked and "YES" or "no"
@@ -271,7 +277,7 @@ def main():
             
             try:
                 gens.preload_all()
-            except GeneratorError, exc:
+            except GeneratorError as exc:
                 if DEFAULT_VERBOSITY:
                     print("... FAILED TO LOAD LIBRARIES FROM %s" % gens.library)
                     print("%s" % str(exc))
@@ -289,7 +295,7 @@ def main():
             if os.path.isfile(archive):
                 print("ARCHIVE: %s" % archive)
             
-            # Copy the library and archive files to /tmp/yodogg:
+            # Copy the library and archive files to $TMP/yodogg:
             if os.path.exists(destination):
                 if DEFAULT_VERBOSITY:
                     print("Removing %s..." % destination)
@@ -306,7 +312,7 @@ def main():
             if DEFAULT_VERBOSITY:
                 print('')
             
-            # Run generators, storing output files in /tmp/yodogg
+            # Run generators, storing output files in $TMP/yodogg
             bsepths, outputs, modules = generate(*loaded_generators, verbose=DEFAULT_VERBOSITY,
                                                                      target='host',
                                                                      output_directory=destination)

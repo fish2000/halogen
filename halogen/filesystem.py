@@ -2,9 +2,13 @@
 
 import os
 import re
-import scandir
 import shutil
 import zipfile
+try:
+    import scandir
+except ImportError:
+    import os as scandir
+
 from errors import ExecutionError, FilesystemError
 from tempfile import mktemp, mkdtemp, gettempprefix
 from utils import stringify
@@ -318,7 +322,7 @@ def NamedTemporaryFile(mode='w+b', bufsize=-1,
     if _os.name == 'nt' and delete:
         flags |= _os.O_TEMPORARY
     
-    (fd, name) = _mkstemp_inner(dir, prefix, ".%s" % suffix, flags)
+    (fd, name) = _mkstemp_inner(dir, prefix, ".%s" % suffix, flags, bytes(suffix, encoding="UTF8"))
     try:
         file = _os.fdopen(fd, mode, bufsize)
         return _TemporaryFileWrapper(file, name, delete)

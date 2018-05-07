@@ -6,12 +6,12 @@ from target cimport Target
 from outputs cimport Outputs
 from buffer cimport Buffer, buffervec_t
 
-cdef extern from "Halide.h" namespace "Halide::Internal::LoweredFunc" nogil:
+cdef extern from "Halide.h" namespace "Halide" nogil:
     
     cdef cppclass LinkageType:
         pass
 
-cdef extern from "Halide.h" namespace "Halide::Internal::LoweredFunc::LinkageType" nogil:
+cdef extern from "Halide.h" namespace "Halide::LinkageType" nogil:
     
     cdef LinkageType External
     cdef LinkageType Internal

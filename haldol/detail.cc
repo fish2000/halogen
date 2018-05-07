@@ -71,7 +71,7 @@ namespace py {
     PyObject* format(char const* format, ...) {
         va_list arguments;
         va_start(arguments, format);
-        PyObject* out = PyString_FromFormatV(format, arguments);
+        PyObject* out = PyBytes_FromFormatV(format, arguments);
         va_end(arguments);
         return out;
     }
@@ -80,12 +80,16 @@ namespace py {
     PyObject* object(PyObject* arg) {
         return Py_BuildValue("O", arg ? arg : Py_None);
     }
+    
+    #if PY_MAJOR_VERSION < 3
     PyObject* object(PyFileObject* arg) {
         return py::object((PyObject*)arg);
     }
     PyObject* object(PyStringObject* arg) {
         return py::object((PyObject*)arg);
     }
+    #endif
+    
     PyObject* object(PyTypeObject* arg) {
         return py::object((PyObject*)arg);
     }
@@ -96,6 +100,7 @@ namespace py {
         return py::object((PyObject*)arg);
     }
     
+    #if PY_MAJOR_VERSION < 3
     PyObject* convert(PyObject* operand)            { return operand; }
     PyObject* convert(PyFileObject* operand)        { return (PyObject*)operand; }
     PyObject* convert(PyStringObject* operand)      { return (PyObject*)operand; }
@@ -119,6 +124,29 @@ namespace py {
     PyObject* convert(float operand)                { return PyFloat_FromDouble(static_cast<double>(operand)); }
     PyObject* convert(double operand)               { return PyFloat_FromDouble(operand); }
     PyObject* convert(long double operand)          { return PyFloat_FromDouble(static_cast<double>(operand)); }
+    #elif PY_MAJOR_VERSION >= 3
+    PyObject* convert(PyObject* operand)            { return operand; }
+    PyObject* convert(PyTypeObject* operand)        { return (PyObject*)operand; }
+    PyObject* convert(PyArrayObject* operand)       { return (PyObject*)operand; }
+    PyObject* convert(PyArray_Descr* operand)       { return (PyObject*)operand; }
+    PyObject* convert(std::nullptr_t operand)       { return Py_BuildValue("O", Py_None); }
+    PyObject* convert(void)                         { return Py_BuildValue("O", Py_None); }
+    PyObject* convert(void* operand)                { return (PyObject*)operand; }
+    PyObject* convert(bool operand)                 { return Py_BuildValue("O", operand ? Py_True : Py_False); }
+    PyObject* convert(std::size_t operand)          { return PyLong_FromSize_t(operand); }
+    PyObject* convert(Py_ssize_t operand)           { return PyLong_FromSsize_t(operand); }
+    PyObject* convert(int8_t operand)               { return PyLong_FromSsize_t(static_cast<Py_ssize_t>(operand)); }
+    PyObject* convert(int16_t operand)              { return PyLong_FromSsize_t(static_cast<Py_ssize_t>(operand)); }
+    PyObject* convert(int32_t operand)              { return PyLong_FromSsize_t(static_cast<Py_ssize_t>(operand)); }
+    PyObject* convert(int64_t operand)              { return PyLong_FromLong(operand); }
+    PyObject* convert(uint8_t operand)              { return PyLong_FromSize_t(static_cast<std::size_t>(operand)); }
+    PyObject* convert(uint16_t operand)             { return PyLong_FromSize_t(static_cast<std::size_t>(operand)); }
+    PyObject* convert(uint32_t operand)             { return PyLong_FromSize_t(static_cast<std::size_t>(operand)); }
+    PyObject* convert(uint64_t operand)             { return PyLong_FromUnsignedLong(operand); }
+    PyObject* convert(float operand)                { return PyFloat_FromDouble(static_cast<double>(operand)); }
+    PyObject* convert(double operand)               { return PyFloat_FromDouble(operand); }
+    PyObject* convert(long double operand)          { return PyFloat_FromDouble(static_cast<double>(operand)); }
+    #endif
     
     #if PY_MAJOR_VERSION < 3
     PyObject* convert(char* operand)                { return PyString_FromString(operand); }
@@ -385,6 +413,7 @@ namespace py {
         return PyObject_RichCompareBool(referent, other.referent, Py_GE) == 1;
     }
     
+    #if PY_MAJOR_VERSION < 3
     std::string const ref::repr() const {
         if (empty()) { return "<nullptr>"; }
         if (PyString_Check(referent)) {
@@ -394,7 +423,19 @@ namespace py {
         py::ref representation = PyObject_Repr(referent);
         return representation.repr();
     }
+    #elif PY_MAJOR_VERSION >= 3
+    std::string const ref::repr() const {
+        if (empty()) { return "<nullptr>"; }
+        if (PyBytes_Check(referent)) {
+            return const_cast<char const*>(
+                PyBytes_AS_STRING(referent));
+        }
+        py::ref representation = PyObject_Repr(referent);
+        return representation.repr();
+    }
+    #endif
     
+    #if PY_MAJOR_VERSION < 3
     std::string const ref::to_string() const {
         if (empty()) { return "<nullptr>"; }
         if (PyString_Check(referent)) {
@@ -404,6 +445,17 @@ namespace py {
         py::ref stringified = PyObject_Str(referent);
         return stringified.to_string();
     }
+    #elif PY_MAJOR_VERSION >= 3
+    std::string const ref::to_string() const {
+        if (empty()) { return "<nullptr>"; }
+        if (PyBytes_Check(referent)) {
+            return const_cast<char const*>(
+                PyBytes_AS_STRING(referent));
+        }
+        py::ref stringified = PyObject_Str(referent);
+        return stringified.to_string();
+    }
+    #endif
     
     ref::operator std::string() const {
         return to_string();

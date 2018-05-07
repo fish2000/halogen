@@ -2,6 +2,7 @@
 from __future__ import print_function
 
 import os
+import os.path
 from distutils.core import setup
 from distutils.sysconfig import get_python_inc
 from Cython.Distutils import Extension
@@ -12,7 +13,7 @@ try:
 except ImportError:
     class FakeNumpy(object):
         def get_include(self):
-            return "."
+            return os.path.curdir
     numpy = FakeNumpy()
     print("NUMPY NOT FOUND (using shim)")
 else:
@@ -26,16 +27,18 @@ exec(compile(
         '__version__.py')).read(),
         '__version__.py', 'exec'))
 
-# api_extension_sources = ['hal/api.pyx', 'generators/lesson_15_generators.cpp', 'generators/lesson_16_rgb_generate.cpp']
-api_extension_sources = ['hal/api.pyx']
+# api_extension_sources = [os.path.join('hal', 'api.pyx'),
+#                          os.path.join('generators', 'lesson_15_generators.cpp'),
+#                          os.path.join('generators', 'lesson_16_rgb_generate.cpp')]
+api_extension_sources = [os.path.join('hal', 'api.pyx')]
 haldol_source_names = ('detail.cc', 'gil.cc', 'structcode.cc', 'terminal.cc', 'typecode.cc')
 haldol_sources = [os.path.join('haldol', source) for source in haldol_source_names]
 
 include_dirs = [
     get_python_inc(plat_specific=1),
     numpy.get_include(),
-    'haldol/include',
-    '.']
+    os.path.join('haldol', 'include'),
+    os.path.curdir]
 
 define_macros = []
 define_macros.append(

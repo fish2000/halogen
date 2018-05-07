@@ -5,6 +5,6 @@ set -x
 : ${THISDIR:=$(cd $(dirname ${BASH_SOURCE[0]}) && pwd)}
 : ${PROJECT:=$(dirname $THISDIR)}
 
-rm ${THISDIR}/hal/api.so && python ${THISDIR}/setup.py build_ext --inplace
+rm -f ${THISDIR}/hal/api.so && python ${THISDIR}/setup.py build_ext --inplace
 
 set +x
