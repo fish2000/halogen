@@ -3,7 +3,8 @@ from __future__ import print_function
 
 import os
 import os.path
-from distutils.core import setup
+from setuptools import setup, find_packages # import before Cython stuff, to avoid
+                                            # overriding Cython’s Extension class.
 from distutils.sysconfig import get_python_inc
 from Cython.Distutils import Extension
 from Cython.Build import cythonize
@@ -27,6 +28,20 @@ exec(compile(
         '__version__.py')).read(),
         '__version__.py', 'exec'))
 
+long_description = """ Cython-based alternative to Halide’s GenGen.cpp """
+
+classifiers = [
+    'Development Status :: 4 - Beta',
+    'Intended Audience :: Developers',
+    'Intended Audience :: Science/Research',
+    'Topic :: Multimedia',
+    'Topic :: Scientific/Engineering :: Image Recognition',
+    'Topic :: Software Development :: Libraries',
+    'Programming Language :: Python',
+    'Programming Language :: Python :: 3',
+    'Programming Language :: C++',
+    'License :: OSI Approved :: MIT License']
+
 # api_extension_sources = [os.path.join('hal', 'api.pyx'),
 #                          os.path.join('generators', 'lesson_15_generators.cpp'),
 #                          os.path.join('generators', 'lesson_16_rgb_generate.cpp')]
@@ -49,25 +64,42 @@ define_macros.append(
     ('PY_ARRAY_UNIQUE_SYMBOL', 'YO_DOGG_I_HEARD_YOU_LIKE_UNIQUE_SYMBOLS'))
 
 
-setup(
+setup(name='halide-halogen',
+    version=__version__,
+    description=long_description,
+    long_description=long_description,
+    author='Alexander Bohn',
+    author_email='fish2000@gmail.com',
+    license='MIT',
+    platforms=['Any'],
+    classifiers=classifiers,
+    url='http://github.com/fish2000/halogen',
+    packages=find_packages(),
+    package_dir={
+        'hal'       : 'hal',
+        'haldol'    : 'haldol',
+        'halogen'   : 'halogen'
+    },
+    package_data=dict(),
+    test_suite='nose.collector',
     ext_modules=cythonize([
         Extension('hal.api',
             api_extension_sources +
             haldol_sources,
-        include_dirs=include_dirs,
-        define_macros=define_macros,
-        extra_link_args=[
-            '-lHalide'],
-        extra_compile_args=[
-            '-Wno-unused-function',
-            '-Wno-unneeded-internal-declaration',
-            '-O3',
-            '-fstrict-aliasing',
-            '-fno-rtti',
-            '-funroll-loops',
-            '-mtune=native',
-            '-std=c++1z',
-            '-stdlib=libc++']
-        )
-    ])
+            include_dirs=include_dirs,
+            define_macros=define_macros,
+            extra_link_args=[
+                '-lHalide'],
+            extra_compile_args=[
+                '-Wno-unused-function',
+                '-Wno-unneeded-internal-declaration',
+                '-O3',
+                '-fstrict-aliasing',
+                '-fno-rtti',
+                '-funroll-loops',
+                '-mtune=native',
+                '-std=c++1z',
+                '-stdlib=libc++']
+        )]
+    )
 )
