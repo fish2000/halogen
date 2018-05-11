@@ -84,8 +84,8 @@ setup(name='halide-halogen',
     test_suite='nose.collector',
     ext_modules=cythonize([
         Extension('hal.api',
-            api_extension_sources +
-            haldol_sources,
+            api_extension_sources + haldol_sources,
+            language="c++",
             include_dirs=include_dirs,
             define_macros=define_macros,
             extra_link_args=[

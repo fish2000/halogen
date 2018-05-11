@@ -12,23 +12,37 @@ namespace structcode {
     using stringvec_t = std::vector<std::string>;
     
     struct structcodemaps {
-        static stringmap_t init_byteorder();
-        static stringmap_t init_native();
-        static stringmap_t init_standard();
         
-        static const stringmap_t byteorder;
-        static const stringmap_t native;
-        static const stringmap_t standard;
+        public:
+            static stringmap_t init_byteorder();
+            static stringmap_t init_native();
+            static stringmap_t init_standard();
+        
+        public:
+            static std::string const& byteorder_get(std::string const&);
+            static std::string const& native_get(std::string const&);
+            static std::string const& standard_get(std::string const&);
+        
+        private:
+            static const stringmap_t byteorder;
+            static const stringmap_t native;
+            static const stringmap_t standard;
+        
     };
     
     struct field_namer {
-        int idx;
-        stringvec_t field_name_vector;
-        field_namer();
-        int next();
-        void add(std::string const&);
-        bool has(std::string const&);
-        std::string operator()();
+        
+        public:
+            field_namer();
+            int next();
+            void add(std::string const&);
+            bool has(std::string const&);
+            std::string operator()();
+        
+        private:
+            int idx;
+            stringvec_t field_name_vector;
+        
     };
     
     using shapevec_t = std::vector<int>;

@@ -74,6 +74,58 @@ namespace structcode {
         return _standard_map;
     }
     
+    std::string const& structcodemaps::byteorder_get(std::string const& key) {
+        try {
+            return byteorder.at(key);
+        } catch (std::out_of_range const& err) {
+            std::cerr    << ">>> Byte order symbol not found: "
+                         << key << std::endl
+                         << ">>> Exception message: "
+                         << err.what() << std::endl;
+            return "";
+        }
+    }
+    
+    std::string const& structcodemaps::native_get(std::string const& key) {
+        try {
+            return native.at(key);
+        } catch (std::out_of_range const& err) {
+            std::cerr    << ">>> Native structcode symbol not found: "
+                         << key << std::endl
+                         << ">>> Exception message: "
+                         << err.what() << std::endl;
+            try {
+                return standard.at(key);
+            } catch (std::out_of_range const& err) {
+                std::cerr    << ">>> Subsequent standard symbol lookup failed: "
+                             << key << std::endl
+                             << ">>> Exception message: "
+                             << err.what() << std::endl;
+                return "";
+            }
+         }
+    }
+    
+    std::string const& structcodemaps::standard_get(std::string const& key) {
+        try {
+            return standard.at(key);
+        } catch (std::out_of_range const& err) {
+            std::cerr    << ">>> Standard structcode symbol not found: "
+                         << key << std::endl
+                         << ">>> Exception message: "
+                         << err.what() << std::endl;
+            try {
+                return native.at(key);
+            } catch (std::out_of_range const& err) {
+                std::cerr    << ">>> Subsequent native structcode symbol lookup failed: "
+                             << key << std::endl
+                             << ">>> Exception message: "
+                             << err.what() << std::endl;
+                return "";
+            }
+        }
+    }
+    
     field_namer::field_namer()
         :idx(0)
         {}
@@ -193,14 +245,15 @@ namespace structcode {
                 case '^':
                 case '!':
                     {
-                        try {
-                            byteorder = structcodemaps::byteorder.at(structcode.substr(0, 1));
-                        } catch (const std::out_of_range &err) {
-                            std::cerr    << ">>> Byte order symbol not found: "
-                                         << structcode.substr(0, 1) << std::endl
-                                         << ">>> Exception message: "
-                                         << err.what() << std::endl;
-                        }
+                        byteorder = structcodemaps::byteorder_get(structcode.substr(0, 1));
+                        // try {
+                        //     byteorder = structcodemaps::byteorder.at(structcode.substr(0, 1));
+                        // } catch (std::out_of_range const& err) {
+                        //     std::cerr    << ">>> Byte order symbol not found: "
+                        //                  << structcode.substr(0, 1) << std::endl
+                        //                  << ">>> Exception message: "
+                        //                  << err.what() << std::endl;
+                        // }
                         structcode.erase(0, 1);
                         tokens.push_back(byteorder);
                     }    
@@ -268,41 +321,43 @@ namespace structcode {
                     name = name.size() ? name : field_names();
                     
                     if (byteorder == "@" || byteorder == "^") {
-                        try {
-                            dtypechar = structcodemaps::native.at(code);
-                        } catch (std::out_of_range const& err) {
-                            std::cerr    << ">>> Native structcode symbol not found: "
-                                         << code << std::endl
-                                         << ">>> Exception message: "
-                                         << err.what() << std::endl;
-                            try {
-                                dtypechar = structcodemaps::standard.at(code);
-                            } catch (std::out_of_range const& err) {
-                                std::cerr    << ">>> Subsequent standard symbol lookup failed: "
-                                             << code << std::endl
-                                             << ">>> Exception message: "
-                                             << err.what() << std::endl;
-                            }
-                            break;
-                         }
+                        dtypechar = structcodemaps::standard_get(code);
+                        // try {
+                        //     dtypechar = structcodemaps::native.at(code);
+                        // } catch (std::out_of_range const& err) {
+                        //     std::cerr    << ">>> Native structcode symbol not found: "
+                        //                  << code << std::endl
+                        //                  << ">>> Exception message: "
+                        //                  << err.what() << std::endl;
+                        //     try {
+                        //         dtypechar = structcodemaps::standard.at(code);
+                        //     } catch (std::out_of_range const& err) {
+                        //         std::cerr    << ">>> Subsequent standard symbol lookup failed: "
+                        //                      << code << std::endl
+                        //                      << ">>> Exception message: "
+                        //                      << err.what() << std::endl;
+                        //     }
+                        //     break;
+                        //  }
                     } else {
-                        try {
-                            dtypechar = structcodemaps::standard.at(code);
-                        } catch (std::out_of_range const& err) {
-                            std::cerr    << ">>> Standard structcode symbol not found: "
-                                         << code << std::endl
-                                         << ">>> Exception message: "
-                                         << err.what() << std::endl;
-                            try {
-                                dtypechar = structcodemaps::native.at(code);
-                            } catch (std::out_of_range const& err) {
-                                std::cerr    << ">>> Subsequent native structcode symbol lookup failed: "
-                                             << code << std::endl
-                                             << ">>> Exception message: "
-                                             << err.what() << std::endl;
-                            }
-                            break;
-                        }
+                        dtypechar = structcodemaps::standard_get(code);
+                        // try {
+                        //     dtypechar = structcodemaps::standard.at(code);
+                        // } catch (std::out_of_range const& err) {
+                        //     std::cerr    << ">>> Standard structcode symbol not found: "
+                        //                  << code << std::endl
+                        //                  << ">>> Exception message: "
+                        //                  << err.what() << std::endl;
+                        //     try {
+                        //         dtypechar = structcodemaps::native.at(code);
+                        //     } catch (std::out_of_range const& err) {
+                        //         std::cerr    << ">>> Subsequent native structcode symbol lookup failed: "
+                        //                      << code << std::endl
+                        //                      << ">>> Exception message: "
+                        //                      << err.what() << std::endl;
+                        //     }
+                        //     break;
+                        // }
                     }
                     
                     if (itemsize > 1) {

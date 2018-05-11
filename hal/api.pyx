@@ -1,6 +1,7 @@
 #!/usr/bin/env cython
 # distutils: language = c++
-cimport cython
+
+import cython
 from cython.operator cimport dereference as deref
 
 from libc.stdint cimport *
@@ -30,7 +31,7 @@ from ext.halide.generator cimport GeneratorBase
 # from ext.halide.generator cimport SimpleGeneratorFactory
 from ext.halide.generator cimport GeneratorRegistry
 from ext.halide.generator cimport GeneratorContext
-from ext.halide.generator cimport JITGeneratorContext
+# from ext.halide.generator cimport JITGeneratorContext
 from ext.halide.generator cimport stringmap_t
 from ext.halide.generator cimport base_ptr_t
 from ext.halide.generator cimport generator_registry_get as halide_generator_registry_get

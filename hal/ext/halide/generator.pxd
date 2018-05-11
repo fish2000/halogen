@@ -22,11 +22,12 @@ cdef extern from "Halide.h" namespace "Halide::Internal" nogil:
 cdef extern from "Halide.h" namespace "Halide" nogil:
     
     cppclass GeneratorContext:
+        GeneratorContext(Target&)
         Target get_target()
     
-    cppclass JITGeneratorContext(GeneratorContext):
-        JITGeneratorContext(Target&)
-        Target get_target()
+    # cppclass JITGeneratorContext(GeneratorContext):
+    #     JITGeneratorContext(Target&)
+    #     Target get_target()
     
     cppclass GeneratorParam[T](GeneratorParamBase):
         GeneratorParam(string&, T&)
@@ -102,7 +103,7 @@ cdef extern from "Halide.h" namespace "Halide::Internal" nogil:
         stringvec_t enumerate()
         
         @staticmethod
-        base_ptr_t create(string&, GeneratorContext&, stringmap_t&)
+        base_ptr_t create(string&, GeneratorContext&)
 
 
 cdef extern from "Halide.h" namespace "Halide" nogil:
@@ -117,8 +118,8 @@ cdef extern from "Halide.h" namespace "Halide" nogil:
 cdef inline base_ptr_t generator_registry_get(string& name,
                                               Target& target,
                                               stringmap_t& args) nogil:
-    return GeneratorRegistry.create(name, JITGeneratorContext(target), args)
+    return GeneratorRegistry.create(name, GeneratorContext(target))
 
 cdef inline base_ptr_t generator_registry_create(string& name) nogil:
     cdef Target t = get_target_from_environment()
-    return GeneratorRegistry.create(name, JITGeneratorContext(t), stringmap_t())
+    return GeneratorRegistry.create(name, GeneratorContext(t))
