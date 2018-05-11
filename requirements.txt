@@ -2,4 +2,3 @@ Cython
 clint
 ctypes
 numpy
-scandir
