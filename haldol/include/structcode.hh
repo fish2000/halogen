@@ -36,7 +36,7 @@ namespace structcode {
             field_namer();
             std::size_t next();
             void add(std::string const&);
-            bool has(std::string const&);
+            bool has(std::string const&) const;
             std::string operator()();
         
         private:

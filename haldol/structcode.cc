@@ -136,7 +136,7 @@ namespace structcode {
         field_name_vector.push_back(field_name);
     }
     
-    bool field_namer::has(std::string const& field_name) {
+    bool field_namer::has(std::string const& field_name) const {
         for (auto fn = std::begin(field_name_vector);
                   fn != std::end(field_name_vector); ++fn) {
             if (*fn == field_name) { return true; }
