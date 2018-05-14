@@ -317,16 +317,15 @@ cdef class Target:
         return HalTarget.validate_target_string(target_string)
     
     def __cinit__(Target self, *args, **kwargs):
-        target_string = 'host'
+        cdef string target_string = 'host'
         if 'target_string' in kwargs:
-            target_string = kwargs.get('target_string', "host")
+            target_string = <string>kwargs.get('target_string', "host")
         elif len(args) > 0:
-            target_string = args[0]
-        if target_string:
-            if not HalTarget.validate_target_string(target_string):
-                raise ValueError("invalid target string: %s" % target_string)
-            self.__this__ = HalTarget(target_string)
-            # INSERT FEATURE CHECK HERE
+            target_string = <string>args[0]
+        if not HalTarget.validate_target_string(target_string):
+            raise ValueError("invalid target string: %s" % target_string)
+        self.__this__ = HalTarget(target_string)
+        # INSERT FEATURE CHECK HERE
     
     property os:
         
