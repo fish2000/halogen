@@ -457,7 +457,7 @@ class ConfigUnion(ConfigBase):
         """ Decorator class to abstract the entrails of a ConfigUnion.get_something() function,
             used with function stubs, like so:
             
-            class ConfigUnion(object):
+            class ConfigUnion(ConfigBase):
             
                 @union_of('includes')           # function name without "get_" prefix;
                 def get_includes(self, out):    # function definition, specifying `out` set;
@@ -606,8 +606,7 @@ class ConfigUnion(ConfigBase):
             raise AttributeError("ConfigUnion requires 1+ config instances")
         elif length == 1:
             return list(configs)[0]
-        # return super(ConfigUnion, cls).__new__(cls, *configs)
-        return object.__new__(cls)
+        return super(ConfigUnion, cls).__new__(cls)
     
     def __init__(self, *configs):
         """ Initialize a ConfigUnion instance with one or more config

@@ -7,6 +7,8 @@
 
 namespace structcode {
     
+    static const std::string nulstring("");
+    
     stringmap_t structcodemaps::init_byteorder() {
         stringmap_t _byteorder_map = {
             {"@", "="},
@@ -82,7 +84,7 @@ namespace structcode {
                          << key << std::endl
                          << ">>> Exception message: "
                          << err.what() << std::endl;
-            return "";
+            return nulstring;
         }
     }
     
@@ -101,7 +103,7 @@ namespace structcode {
                              << key << std::endl
                              << ">>> Exception message: "
                              << err.what() << std::endl;
-                return "";
+                return nulstring;
             }
          }
     }
@@ -121,7 +123,7 @@ namespace structcode {
                              << key << std::endl
                              << ">>> Exception message: "
                              << err.what() << std::endl;
-                return "";
+                return nulstring;
             }
         }
     }
@@ -246,14 +248,6 @@ namespace structcode {
                 case '!':
                     {
                         byteorder = structcodemaps::byteorder_get(structcode.substr(0, 1));
-                        // try {
-                        //     byteorder = structcodemaps::byteorder.at(structcode.substr(0, 1));
-                        // } catch (std::out_of_range const& err) {
-                        //     std::cerr    << ">>> Byte order symbol not found: "
-                        //                  << structcode.substr(0, 1) << std::endl
-                        //                  << ">>> Exception message: "
-                        //                  << err.what() << std::endl;
-                        // }
                         structcode.erase(0, 1);
                         tokens.push_back(byteorder);
                     }    
@@ -322,42 +316,8 @@ namespace structcode {
                     
                     if (byteorder == "@" || byteorder == "^") {
                         dtypechar = structcodemaps::standard_get(code);
-                        // try {
-                        //     dtypechar = structcodemaps::native.at(code);
-                        // } catch (std::out_of_range const& err) {
-                        //     std::cerr    << ">>> Native structcode symbol not found: "
-                        //                  << code << std::endl
-                        //                  << ">>> Exception message: "
-                        //                  << err.what() << std::endl;
-                        //     try {
-                        //         dtypechar = structcodemaps::standard.at(code);
-                        //     } catch (std::out_of_range const& err) {
-                        //         std::cerr    << ">>> Subsequent standard symbol lookup failed: "
-                        //                      << code << std::endl
-                        //                      << ">>> Exception message: "
-                        //                      << err.what() << std::endl;
-                        //     }
-                        //     break;
-                        //  }
                     } else {
-                        dtypechar = structcodemaps::standard_get(code);
-                        // try {
-                        //     dtypechar = structcodemaps::standard.at(code);
-                        // } catch (std::out_of_range const& err) {
-                        //     std::cerr    << ">>> Standard structcode symbol not found: "
-                        //                  << code << std::endl
-                        //                  << ">>> Exception message: "
-                        //                  << err.what() << std::endl;
-                        //     try {
-                        //         dtypechar = structcodemaps::native.at(code);
-                        //     } catch (std::out_of_range const& err) {
-                        //         std::cerr    << ">>> Subsequent native structcode symbol lookup failed: "
-                        //                      << code << std::endl
-                        //                      << ">>> Exception message: "
-                        //                      << err.what() << std::endl;
-                        //     }
-                        //     break;
-                        // }
+                        dtypechar = structcodemaps::native_get(code);
                     }
                     
                     if (itemsize > 1) {
