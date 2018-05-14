@@ -128,11 +128,9 @@ namespace structcode {
         }
     }
     
-    field_namer::field_namer()
-        :idx(0)
-        {}
+    field_namer::field_namer() {}
     
-    int field_namer::next() { return idx++; }
+    std::size_t field_namer::next() { return idx++; }
     
     void field_namer::add(std::string const& field_name) {
         field_name_vector.push_back(field_name);
@@ -149,7 +147,7 @@ namespace structcode {
     std::string field_namer::operator()() {
         char str[5];
         while (true) {
-            std::sprintf(str, "f%i", next());
+            std::sprintf(str, "f%i", static_cast<int>(next()));
             std::string dummy_name(str);
             if (!has(dummy_name)) {
                 add(dummy_name);

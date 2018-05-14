@@ -34,13 +34,13 @@ namespace structcode {
         
         public:
             field_namer();
-            int next();
+            std::size_t next();
             void add(std::string const&);
             bool has(std::string const&);
             std::string operator()();
         
         private:
-            int idx;
+            std::size_t idx = 0;
             stringvec_t field_name_vector;
         
     };
