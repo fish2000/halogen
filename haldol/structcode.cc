@@ -205,8 +205,8 @@ namespace structcode {
                         std::tie(endianness, parsetokens, pairvec) = parse(temp, toplevel=false);
                         
                         structcode.erase(0, siz+1);
-                        for (std::size_t idx = 0; idx < pairvec.size(); ++idx) {
-                            fields.push_back(pairvec[idx]);
+                        for (auto const& pair : pairvec) {
+                            fields.push_back(pair);
                         }
                     }
                     break;
