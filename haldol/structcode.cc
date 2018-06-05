@@ -146,7 +146,7 @@ namespace structcode {
     std::string field_namer::operator()() {
         char str[5];
         while (true) {
-            std::sprintf(str, "f%i", static_cast<int>(next()));
+            std::sprintf(str, "f%zu", next());
             std::string dummy_name(str);
             if (!has(dummy_name)) {
                 add(dummy_name);

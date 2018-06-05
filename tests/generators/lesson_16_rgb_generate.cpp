@@ -225,7 +225,8 @@ public:
 
 // As in lesson 15, we register our generator and then compile this
 // file along with tools/GenGen.cpp.
-RegisterGenerator<Brighten> my_brightest_generator{"brighten"};
+// RegisterGenerator<Brighten> my_brightest_generator{"brighten"};
+HALIDE_REGISTER_GENERATOR(Brighten, my_brightest_generator);
 
 // After compiling this file, see how to use it in
 // lesson_16_rgb_run.cpp

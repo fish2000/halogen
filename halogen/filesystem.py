@@ -5,13 +5,17 @@ import re
 import shutil
 import zipfile
 try:
-    import scandir
+    from scandir import scandir, walk
 except ImportError:
-    import os as scandir
+    from os import scandir, walk
 
 from errors import ExecutionError, FilesystemError
 from tempfile import mktemp, mkdtemp, gettempprefix
 from utils import stringify
+
+DEFAULT_PATH = ":".join(filter(os.path.exists, ("/usr/local/bin",
+                                                "/bin",
+                                                "/usr/bin")))
 
 def which(binary_name, pathvar=None):
     """ Deduces the path corresponding to an executable name,
@@ -22,7 +26,7 @@ def which(binary_name, pathvar=None):
     """
     from distutils.spawn import find_executable
     if not pathvar:
-        pathvar = os.getenv("PATH", "/usr/local/bin:/bin:/usr/bin")
+        pathvar = os.getenv("PATH", DEFAULT_PATH)
     return find_executable(binary_name, pathvar) or ""
 
 def back_tick(cmd, ret_err=False, as_str=True, raise_err=None, verbose=False):
@@ -82,18 +86,22 @@ def back_tick(cmd, ret_err=False, as_str=True, raise_err=None, verbose=False):
 
 def rm_rf(pth):
     """ rm_rf() does what `rm -rf` does, so for the love of fuck, BE CAREFUL WITH IT. """
-    if os.path.isfile(pth):
-        os.unlink(pth)
-    elif os.path.isdir(pth):
-        subdirs = []
-        for path, dirs, files in scandir.walk(pth, followlinks=True):
-            for tf in files:
-                os.unlink(os.path.join(path, tf))
-            subdirs.extend([os.path.join(path, td) for td in dirs])
-        for subdir in subdirs:
-            os.rmdir(subdir)
-        os.rmdir(pth)
-    return True
+    try:
+        if os.path.isfile(pth):
+            os.unlink(pth)
+        elif os.path.isdir(pth):
+            subdirs = []
+            for path, dirs, files in walk(pth, followlinks=True):
+                for tf in files:
+                    os.unlink(os.path.join(path, tf))
+                subdirs.extend([os.path.join(path, td) for td in dirs])
+            for subdir in subdirs:
+                os.rmdir(subdir)
+            os.rmdir(pth)
+        return True
+    except (OSError, IOError):
+        pass
+    return False
 
 
 class TemporaryName(object):
@@ -106,8 +114,15 @@ class TemporaryName(object):
     
     fields = ('name', 'exists', 'destroy', 'prefix', 'suffix', 'parent')
     
-    def __init__(self, prefix="yo-dogg-", suffix="tmp", parent=None):
-        self._name = mktemp(prefix=prefix, suffix=".%s" % suffix, dir=parent)
+    def __init__(self, prefix="yo-dogg-", suffix="tmp", parent=None, **kwargs):
+        if suffix:
+            if not suffix.startswith(os.extsep):
+                suffix = "%s%s" % (os.extsep, suffix)
+        else:
+            suffix = "%stmp" % os.extsep
+        if not parent:
+            parent = kwargs.pop('dir', None)
+        self._name = mktemp(prefix=prefix, suffix=suffix, dir=parent)
         self._destroy = True
         self.prefix = prefix
         self.suffix = suffix
@@ -158,7 +173,7 @@ class Directory(object):
     """ A context-managed directory: change in on enter, change back out
         on exit. Plus a few convenience functions for listing and whatnot. """
     
-    dotfile_matcher = re.compile(r"^\.")
+    dotfile_matcher = re.compile(r"^\.").match
     
     def __init__(self, pth):
         self.old = os.getcwd()
@@ -175,14 +190,15 @@ class Directory(object):
         if len(suffix) < 1:
             return lambda f: True
         regex_str = r""
-        if suffix.startswith(os.path.extsep):
+        if suffix.startswith(os.extsep):
             regex_str += r"\%s$" % suffix
         else:
-            regex_str += r"\%s%s$" % (os.path.extsep, suffix)
-        return lambda f: re.compile(regex_str, re.IGNORECASE).search(f)
+            regex_str += r"\%s%s$" % (os.extsep, suffix)
+        searcher = re.compile(regex_str, re.IGNORECASE).search
+        return lambda f: searcher(f)
     
     def ls(self, pth='.', suffix=None):
-        files = (f for f in scandir.scandir(pth) if not self.dotfile_matcher.match(f))
+        files = (f for f in scandir(self.realpath(pth)) if not self.dotfile_matcher(f))
         if not suffix:
             return files
         return filter(self.suffix_searcher(suffix), files)
@@ -193,13 +209,13 @@ class Directory(object):
         return os.path.realpath(pth)
     
     def ls_la(self, pth='.', suffix=None):
-        files = scandir.scandir(self.realpath(pth))
+        files = scandir(self.realpath(pth))
         if not suffix:
             return files
         return filter(self.suffix_searcher(suffix), files)
     
     def walk(self, followlinks=False):
-        return scandir.walk(self.new, followlinks=followlinks)
+        return walk(self.new, followlinks=followlinks)
     
     def parent(self):
         return os.path.abspath(
@@ -216,7 +232,7 @@ class Directory(object):
             raise FilesystemError("File path for zip-archive already exists")
         if not zmode:
             zmode = zipfile.ZIP_DEFLATED
-        with TemporaryName(prefix="zipdirectory-",
+        with TemporaryName(prefix="ziparchive-",
                            suffix="zip") as ztmp:
             with zipfile.ZipFile(ztmp.name, "w", zmode) as ziphandle:
                 relparent = lambda p: os.path.relpath(p, self.parent())
@@ -244,7 +260,12 @@ class TemporaryDirectory(Directory):
     
     fields = ('name', 'exists', 'destroy', 'prefix', 'suffix', 'parent')
     
-    def __init__(self, prefix="TemporaryDirectory-", suffix="", parent=None):
+    def __init__(self, prefix="TemporaryDirectory-", suffix="", parent=None, **kwargs):
+        if suffix:
+            if not suffix.startswith(os.extsep):
+                suffix = "%s%s" % (os.extsep, suffix)
+        if not parent:
+            parent = kwargs.pop('dir', None)
         self._name = mkdtemp(prefix=prefix, suffix=suffix, dir=parent)
         self._destroy = True
         self.prefix = prefix
@@ -266,9 +287,9 @@ class TemporaryDirectory(Directory):
     
     def copy_all(self, destination):
         if os.path.exists(destination):
-            raise FilesystemError("copy_all() destination already existant: %s" % destination)
+            raise FilesystemError("TemporaryDirectory.copy_all() destination existant: %s" % destination)
         if self.exists:
-            return shutil.copytree(self.name, destination)
+            return shutil.copytree(type(destination)(self.name), destination)
         return False
     
     def do_not_destroy(self):
@@ -276,9 +297,9 @@ class TemporaryDirectory(Directory):
         return self.name
     
     def __enter__(self):
-        super(TemporaryDirectory, self).__enter__()
         if not self.exists:
-            raise FilesystemError("TemporaryDirectory wasn't properly set up: %s" % self.name)
+            raise FilesystemError("TemporaryDirectory “%s” wasn’t created correctly" % self.name)
+        super(TemporaryDirectory, self).__enter__()
         return self
     
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -298,8 +319,10 @@ class TemporaryDirectory(Directory):
         return self.name
 
 
-def NamedTemporaryFile(mode='w+b', bufsize=-1,
-                       suffix="tmp", prefix=gettempprefix(), dir=None, delete=True):
+def NamedTemporaryFile(mode='w+b', buffer_size=-1,
+                       suffix="tmp", prefix=gettempprefix(),
+                       directory=None,
+                       delete=True):
     
     """ Variation on tempfile.NamedTemporaryFile(…), such that suffixes are passed
         WITHOUT specifying the period in front (versus the standard library version
@@ -311,22 +334,29 @@ def NamedTemporaryFile(mode='w+b', bufsize=-1,
                          _TemporaryFileWrapper,             \
                          gettempdir
     
-    if dir is None:
-        dir = gettempdir()
+    if directory is None:
+        directory = gettempdir()
+    
+    if suffix:
+        if not suffix.startswith(os.extsep):
+            suffix = "%s%s" % (os.extsep, suffix)
+    else:
+        suffix = "%stmp" % os.extsep
     
     if 'b' in mode:
         flags = _bin_openflags
     else:
         flags = _text_openflags
-    
     if _os.name == 'nt' and delete:
         flags |= _os.O_TEMPORARY
     
-    (fd, name) = _mkstemp_inner(dir, prefix, ".%s" % suffix, flags, bytes(suffix, encoding="UTF8"))
+    (descriptor, name) = _mkstemp_inner(directory, prefix,
+                                                   suffix, flags,
+                                             bytes(suffix, encoding="UTF-8"))
     try:
-        file = _os.fdopen(fd, mode, bufsize)
-        return _TemporaryFileWrapper(file, name, delete)
-    except BaseException as baseexc:
+        filehandle = _os.fdopen(descriptor, mode, buffer_size)
+        return _TemporaryFileWrapper(filehandle, name, delete)
+    except BaseException as base_exception:
         _os.unlink(name)
-        _os.close(fd)
-        raise FilesystemError(str(baseexc))
+        _os.close(descriptor)
+        raise FilesystemError(str(base_exception))

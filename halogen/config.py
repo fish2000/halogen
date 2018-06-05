@@ -6,10 +6,12 @@ import os
 import re
 import sys
 import sysconfig
+
 try:
-    import scandir
+    from scandir import walk
 except ImportError:
-    import os as scandir
+    from os import walk
+
 try:
     from functools import reduce
 except ImportError:
@@ -156,7 +158,7 @@ class PythonConfig(ConfigBase):
                         self.framework_path = head
                         return self.framework_path
             # from prefix, search depth-first down (likely exponential):
-            for path, dirs, files in scandir.walk(self.prefix, followlinks=True):
+            for path, dirs, files in walk(self.prefix, followlinks=True):
                 if self.framework_name in dirs:
                     self.framework_path = path
                     return self.framework_path
@@ -210,13 +212,13 @@ class BrewedPythonConfig(PythonConfig):
         super(BrewedPythonConfig, self).__init__(prefix=prefix)
     
     def include(self):
-        for path, dirs, files in scandir.walk(self.prefix, followlinks=True):
+        for path, dirs, files in walk(self.prefix, followlinks=True):
             if self.header_file in files:
                 return path
         return super(BrewedPythonConfig, self).include()
     
     def lib(self):
-        for path, dirs, files in scandir.walk(self.prefix, followlinks=True):
+        for path, dirs, files in walk(self.prefix, followlinks=True):
             if self.library_file in files:
                 return path
         return super(BrewedPythonConfig, self).lib()
@@ -320,7 +322,7 @@ class PkgConfig(ConfigBase):
     
     def __init__(self, pkg_name=None):
         if not pkg_name:
-            pkg_name = 'python'
+            pkg_name = 'python3'
         self.pkg_name = pkg_name
         self.prefix = back_tick("%s %s --variable=prefix" % (self.pkgconfig,
                                                              self.pkg_name),
@@ -369,7 +371,7 @@ class PkgConfig(ConfigBase):
 class BrewedConfig(ConfigBase):
     
     """ A config class that provides its values through calls to the Mac Homebrew
-        command-line `brew` tool, for an arbitrary named Homebrew formulae.
+        command-line `brew` tool, for arbitrary named Homebrew formulae.
     """
     
     # Name of, and prefix for, the Homebrew installation:
@@ -856,31 +858,41 @@ def main():
     test_compile(configUnionAll, test_generator_source)
 
 def corefoundation_check():
-    from utils import print_config, terminal_width
+    from utils import print_config, test_compile, terminal_width
     try:
         from Foundation import NSBundle
-        from CoreFoundation import (CFBundleGetMainBundle,
-                                    CFBundleGetAllBundles,
+        from CoreFoundation import (CFBundleGetAllBundles,
                                     CFBundleGetValueForInfoDictionaryKey,
-                                    CFBundleCopyBundleURL)
+                                    CFBundleCopyBundleURL) # CFBundleGetMainBundle
     except ImportError:
         print("CoreFoundation module not found, skipping PyObjC test")
         return
     
     is_python_bundle = lambda bundle: CFBundleGetValueForInfoDictionaryKey(bundle, 'CFBundleIdentifier') == u'org.python.python'
-    python_bundle_set = set(filter(is_python_bundle, CFBundleGetAllBundles())) - { CFBundleGetMainBundle() }
+    # python_bundle_set = set(filter(is_python_bundle, CFBundleGetAllBundles())) - { CFBundleGetMainBundle() }
+    python_bundle_set = set(filter(is_python_bundle, CFBundleGetAllBundles()))
     python_bundle = python_bundle_set.pop()
     nsbundle = NSBundle.alloc().initWithURL_(CFBundleCopyBundleURL(python_bundle))
     bundlepath = str(nsbundle.bundlePath())
     prefix = os.path.dirname(os.path.dirname(bundlepath))
+    
+    brewedHalideConfig = BrewedHalideConfig()
     pyConfig = PythonConfig(prefix)
+    configUnion = ConfigUnion(brewedHalideConfig, pyConfig)
     
     print("=" * terminal_width)
     print("")
-    print("TESTING: PythonConfig with PyObjC prefix ...")
+    print("TESTING: ConfigUnion with PythonConfig PyObjC prefix %s ... " % prefix)
+    print("                                              bundle path %s ... " % bundlepath)
     print("")
-    print_config(pyConfig)
+    print_config(configUnion)
+    
+    print("=" * terminal_width)
+    print("")
+    print("TEST COMPILATION: CXX(configUnion, <out>, <in>) ...")
+    print("")
+    test_compile(configUnion, test_generator_source)
 
 if __name__ == '__main__':
     main()
-    # corefoundation_check()
+    corefoundation_check()

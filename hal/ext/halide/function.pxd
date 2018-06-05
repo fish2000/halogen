@@ -42,4 +42,5 @@ cdef extern from "Halide.h" namespace "Halide" nogil:
         bint is_image_param()
         bint defined()
 
+
 ctypedef vector[ExternFuncArgument] extargvec_t

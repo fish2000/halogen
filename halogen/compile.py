@@ -241,7 +241,7 @@ def main():
     import tempfile
     directory = "/Users/fish/Dropbox/halogen/tests/generators"
     # destination = "/tmp/yodogg"
-    destination = os.path.join(tempfile.gettempdir(), "yodogg")
+    destination = os.path.join(tempfile.gettempdirb(), b"yodogg")
     
     # library = "%s%s" % (destination, config.SHARED_LIBRARY_SUFFIX)
     # archive = "%s%s" % (destination, config.STATIC_LIBRARY_SUFFIX)
@@ -302,12 +302,12 @@ def main():
                 rm_rf(destination)
             if DEFAULT_VERBOSITY:
                 print("Copying from %s to %s..." % (td.name, destination))
-            td.copy_all(destination)
+            td.copy_all(str(destination))
             
             with TemporaryName(suffix="zip") as tz:
                 if DEFAULT_VERBOSITY:
                     print("Zip-archiving from %s to %s..." % (destination, tz.name))
-                Directory(destination).zip_archive(tz.name)
+                Directory(str(destination)).zip_archive(str(tz.name))
             
             if DEFAULT_VERBOSITY:
                 print('')

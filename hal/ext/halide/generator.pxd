@@ -19,6 +19,7 @@ cdef extern from "Halide.h" namespace "Halide::Internal" nogil:
         GeneratorParamBase(string&)
         GeneratorParamBase(GeneratorParamBase&)
 
+
 cdef extern from "Halide.h" namespace "Halide" nogil:
     
     cppclass GeneratorContext:
@@ -72,9 +73,14 @@ cdef extern from "Halide.h" namespace "Halide::Internal" nogil:
         
         void emit_cpp_stub(string&)
         Module build_module(string&, LinkageType)
-    
+
+
+ctypedef unique_ptr[GeneratorBase]      base_ptr_t
+
+cdef extern from "Halide.h" namespace "Halide::Internal" nogil:
+
     cppclass GeneratorFactory: # ABSTRACT
-        # unique_ptr[GeneratorBase] create(GeneratorContext&, stringmap_t&)
+        # base_ptr_t create(GeneratorContext&, stringmap_t&)
         pass
     
     cppclass GeneratorCreateFunc: # FUNCTOR
@@ -83,11 +89,10 @@ cdef extern from "Halide.h" namespace "Halide::Internal" nogil:
     
     cppclass SimpleGeneratorFactory(GeneratorFactory):
         SimpleGeneratorFactory(GeneratorCreateFunc, string&)
-        unique_ptr[GeneratorBase] create(GeneratorContext&, stringmap_t&)
+        base_ptr_t create(GeneratorContext&, stringmap_t&)
 
 
 ctypedef unique_ptr[GeneratorFactory]   factory_ptr_t
-ctypedef unique_ptr[GeneratorBase]      base_ptr_t
 
 cdef extern from "Halide.h" namespace "Halide::Internal" nogil:
     
@@ -114,6 +119,7 @@ cdef extern from "Halide.h" namespace "Halide" nogil:
     
     cppclass RegisterGenerator[GeneratorClass]:
         RegisterGenerator(string&)
+
 
 cdef inline base_ptr_t generator_registry_get(string& name,
                                               Target& target,
