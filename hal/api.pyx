@@ -75,11 +75,6 @@ def stringify(instance, fields):
                             b", ".join(field_dict_items),
                              hex(id(instance)))
 
-def embed_infer(f):
-    embed = cython.embedsignature(True)
-    infer = cython.infer_types(True)
-    return embed(infer(f))
-
 
 @cython.freelist(32)
 cdef class Type:
