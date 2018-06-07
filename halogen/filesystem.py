@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import print_function
+
 import os
 import re
 import shutil
@@ -260,14 +262,22 @@ class cd(Directory):
     
     def __init__(self, pth):
         super(cd, self).__init__(pth=os.path.realpath(pth))
-
-
-class cwd(Directory):
     
-    """ Current working directory (no path specification necessary) """
+    @property
+    def name(self):
+        return self.new
+
+
+class wd(Directory):
+    
+    """ Use the current working directory (no path specification necessary) """
     
     def __init__(self):
-        super(cwd, self).__init__(pth=None)
+        super(wd, self).__init__(pth=None)
+    
+    @property
+    def name(self):
+        return self.new
 
 
 class TemporaryDirectory(Directory):
@@ -380,3 +390,39 @@ def NamedTemporaryFile(mode='w+b', buffer_size=-1,
         _os.unlink(name)
         _os.close(descriptor)
         raise FilesystemError(str(base_exception))
+
+
+def main():
+    
+    # test “cd” and “cwd”:
+    import tempfile, os
+    initial = os.getcwd()
+    
+    with wd() as cwd:
+        print("* Testing working-directory object: %s" % cwd.name)
+        assert os.path.samefile(os.getcwd(),            cwd.new)
+        assert os.path.samefile(os.getcwd(),            cwd.old)
+        assert os.path.samefile(cwd.new,                cwd.old)
+        assert os.path.samefile(cwd.new,                initial)
+        assert os.path.samefile(cwd.old,                initial)
+        assert not cwd.will_change
+        assert not cwd.did_change
+        print("* Working-directory object tests completed OK")
+        print("")
+    
+    with cd(tempfile.gettempdir()) as tmp:
+        print("* Testing directory-change object: %s" % tmp.name)
+        assert os.path.samefile(os.getcwd(),            tempfile.gettempdir())
+        assert os.path.samefile(os.getcwd(),            tmp.new)
+        assert os.path.samefile(tempfile.gettempdir(),  tmp.new)
+        assert not os.path.samefile(os.getcwd(),        initial)
+        assert not os.path.samefile(tmp.new,            initial)
+        assert os.path.samefile(tmp.old,                initial)
+        assert tmp.will_change
+        assert tmp.did_change
+        print("* Directory-change object tests completed OK")
+        print("")
+    
+
+if __name__ == '__main__':
+    main()
