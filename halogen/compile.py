@@ -44,7 +44,9 @@ class Generator(object):
         destination. An intermediate temporary file is used, for some reason.
         Use it as a context manager for atomic auto-cleanup, if you're into that. """
     
-    def __init__(self, conf, destination, source, **kwargs):
+    def __init__(self, conf, destination,
+                             source,
+                           **kwargs):
         self.VERBOSE = kwargs.pop('verbose', DEFAULT_VERBOSITY)
         self._compiled = False
         self.conf = conf
@@ -100,7 +102,7 @@ class Generators(object):
     def __init__(self, conf, destination, directory=None, suffix="cpp",
                                           prefix="yodogg",
                                           do_shared=True, do_static=True,
-                                          **kwargs):
+                                        **kwargs):
         if not directory:
             directory = os.getcwd()
         if not suffix:
