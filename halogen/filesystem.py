@@ -183,7 +183,7 @@ class Directory(object):
         self.did_change = False
     
     def __enter__(self):
-        if not self.will_change:
+        if self.will_change:
             os.chdir(self.new)
             self.did_change = os.path.samefile(self.new,
                                                os.getcwd())
