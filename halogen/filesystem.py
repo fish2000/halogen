@@ -175,16 +175,23 @@ class Directory(object):
     
     dotfile_matcher = re.compile(r"^\.").match
     
-    def __init__(self, pth):
+    def __init__(self, pth=None):
         self.old = os.getcwd()
-        self.new = pth
+        self.new = pth or self.old
+        self.will_change = not os.path.samefile(self.old,
+                                                self.new)
+        self.did_change = False
     
     def __enter__(self):
-        os.chdir(self.new)
+        if not self.will_change:
+            os.chdir(self.new)
+            self.did_change = os.path.samefile(self.new,
+                                               os.getcwd())
         return self
     
     def __exit__(self, exc_type, exc_val, exc_tb):
-        os.chdir(self.old)
+        if self.did_change:
+            os.chdir(self.old)
     
     def suffix_searcher(self, suffix):
         if len(suffix) < 1:
