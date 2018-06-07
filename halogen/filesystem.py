@@ -253,8 +253,21 @@ class Directory(object):
             ztmp.copy(zpth)
         return self.realpath(zpth)
 
+
 class cd(Directory):
-    pass
+    
+    """ Change to a new directory (a new path specification is required) """
+    
+    def __init__(self, pth):
+        super(cd, self).__init__(pth=os.path.realpath(pth))
+
+
+class cwd(Directory):
+    
+    """ Current working directory (no path specification necessary) """
+    
+    def __init__(self):
+        super(cwd, self).__init__(pth=None)
 
 
 class TemporaryDirectory(Directory):
