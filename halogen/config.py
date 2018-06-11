@@ -99,25 +99,25 @@ class ConfigBase(ConfigSubBase):
     
     class FieldList(object):
         
-        slots = ('stored_fields', 'more_fields', 'include_dir_fields')
+        __slots__ = ('stored_fields', 'more_fields', 'include_dir_fields')
         
         def __init__(self, *more_fields, **kwargs):
             self.include_dir_fields = kwargs.pop('dir_fields', False)
-            self.more_fields = tuple(more_fields)
+            self.more_fields = frozenset(more_fields)
             if self.include_dir_fields:
-                self.stored_fields = self.more_fields + ConfigBase.dir_fields
+                self.stored_fields = self.more_fields | frozenset(ConfigBase.dir_fields)
             else:
                 self.stored_fields = self.more_fields
         
         def __get__(self, instance, cls=None):
             if cls is None:
                 cls = type(instance)
-            return getattr(cls, 'base_fields', tuple()) + self.stored_fields
+            return tuple(sorted(frozenset(getattr(cls, 'base_fields', tuple())) | self.stored_fields))
         
         def __set__(self, instance, value):
-            self.more_fields = tuple(value)
+            self.more_fields = frozenset(value)
             if self.include_dir_fields:
-                self.stored_fields = self.more_fields + ConfigBase.dir_fields
+                self.stored_fields = self.more_fields | frozenset(ConfigBase.dir_fields)
             else:
                 self.stored_fields = self.more_fields
         
@@ -129,12 +129,12 @@ class ConfigBase(ConfigSubBase):
         def __new__(cls, name, bases, attributes):
             if not 'base_fields' in attributes:
                 attributes['base_fields'] = tuple()
-            base_fields = set(attributes['base_fields'])
+            base_fields = frozenset(attributes['base_fields'])
             for base in bases:
                 if hasattr(base, 'base_fields'):
-                    base_fields |= set(base.base_fields)
+                    base_fields |= frozenset(base.base_fields)
                 if hasattr(base, 'fields'):
-                    base_fields |= set(base.fields)
+                    base_fields |= frozenset(base.fields)
             # attributes['base_fields'] = tuple(sorted(base_fields))
             outcls = ConfigSubMeta.__new__(cls, name, bases, attributes)
             outcls.base_fields = tuple(sorted(base_fields))
@@ -545,7 +545,7 @@ class ConfigUnion(ConfigBase):
                     return out                  # transform the `out` set, if necessary,
                                                 # and return it
         """
-        slots = ('name',)
+        __slots__ = ('name',)
         
         def __init__(self, name):
             """ Initialize the @union_of decorator, stashing the name of the function
@@ -571,7 +571,7 @@ class ConfigUnion(ConfigBase):
         
         """ A sugary-sweet class for stowing a set of flags whose order is significant. """
         joiner = ", %s" % TOKEN
-        slots = ('flags', 'set')
+        __slots__ = ('flags', 'set')
         
         def __init__(self, template, flaglist):
             self.flags = [template % flag for flag in flaglist]
