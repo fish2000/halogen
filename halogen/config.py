@@ -94,15 +94,15 @@ ConfigSubMeta = ConfigSubBase.__metaclass__
 class ConfigBase(ConfigSubBase):
     
     base_fields = ('prefix', 'get_includes', 'get_libs', 'get_cflags', 'get_ldflags')
-    # dir_fields = ('bin', 'include', 'lib', 'libexec', 'libexecbin', 'share')
-    dir_fields = ('bin', 'include', 'lib', 'libexec', 'share')
+    dir_fields = ('bin', 'include', 'lib', 'libexec', 'share') # 'libexecbin' causes infinite recurse!
     
     class FieldList(object):
         
-        __slots__ = ('stored_fields', 'more_fields', 'include_dir_fields')
+        __slots__ = ('stored_fields', 'more_fields', 'exclude_fields', 'include_dir_fields')
         
         def __init__(self, *more_fields, **kwargs):
             self.include_dir_fields = kwargs.pop('dir_fields', False)
+            self.exclude_fields = frozenset(kwargs.pop('exclude', tuple()))
             self.more_fields = frozenset(more_fields)
             if self.include_dir_fields:
                 self.stored_fields = self.more_fields | frozenset(ConfigBase.dir_fields)
@@ -112,7 +112,9 @@ class ConfigBase(ConfigSubBase):
         def __get__(self, instance, cls=None):
             if cls is None:
                 cls = type(instance)
-            return tuple(sorted(frozenset(getattr(cls, 'base_fields', tuple())) | self.stored_fields))
+            out = frozenset(getattr(cls, 'base_fields', tuple())) | self.stored_fields
+            out -= self.exclude_fields
+            return tuple(sorted(out))
         
         def __set__(self, instance, value):
             self.more_fields = frozenset(value)
@@ -531,7 +533,7 @@ class ConfigUnion(ConfigBase):
             config_union = ConfigUnion(config_one, config_two)
     """
     
-    fields = ConfigBase.FieldList('optimization', 'cxx_standard', dir_fields=False)
+    fields = ConfigBase.FieldList(exclude=['prefix'], dir_fields=False)
     
     class union_of(object):
         
