@@ -11,8 +11,8 @@ try:
 except ImportError:
     from os import scandir, walk
 
-from errors import ExecutionError, FilesystemError
 from tempfile import mktemp, mkdtemp, gettempprefix
+from errors import ExecutionError, FilesystemError
 from utils import stringify
 
 DEFAULT_PATH = ":".join(filter(os.path.exists, ("/usr/local/bin",
@@ -159,15 +159,18 @@ class TemporaryName(object):
             rm_rf(self._name)
     
     def to_string(self):
-        return stringify(self, self.fields)
+        return stringify(self, self.__class__.fields)
     
     def __repr__(self):
-        return stringify(self, self.fields)
+        return stringify(self, self.__class__.fields)
     
     def __str__(self):
         if self.exists:
             return os.path.realpath(self.name)
         return self.name
+    
+    def __unicode__(self):
+        return unicode(str(self))
 
 
 class Directory(object):
@@ -175,6 +178,7 @@ class Directory(object):
     """ A context-managed directory: change in on enter, change back out
         on exit. Plus a few convenience functions for listing and whatnot. """
     
+    fields = ('old', 'new', 'exists', 'will_change', 'did_change')
     dotfile_matcher = re.compile(r"^\.").match
     
     def __init__(self, pth=None):
@@ -184,8 +188,12 @@ class Directory(object):
                                                 self.new)
         self.did_change = False
     
+    @property
+    def exists(self):
+        return os.path.isdir(self.new)
+    
     def __enter__(self):
-        if self.will_change:
+        if self.will_change and self.exists:
             os.chdir(self.new)
             self.did_change = os.path.samefile(self.new,
                                                os.getcwd())
@@ -254,11 +262,27 @@ class Directory(object):
                             ziphandle.write(filepath, arcname) # add regular file
             ztmp.copy(zpth)
         return self.realpath(zpth)
+    
+    def to_string(self):
+        return stringify(self, self.__class__.fields)
+    
+    def __repr__(self):
+        return stringify(self, self.__class__.fields)
+    
+    def __str__(self):
+        if self.exists:
+            return self.realpath()
+        return self.new
+    
+    def __unicode__(self):
+        return unicode(str(self))
 
 
 class cd(Directory):
     
     """ Change to a new directory (a new path specification is required) """
+    
+    fields = ('name', 'old', 'new', 'exists', 'will_change', 'did_change')
     
     def __init__(self, pth):
         super(cd, self).__init__(pth=os.path.realpath(pth))
@@ -271,6 +295,8 @@ class cd(Directory):
 class wd(Directory):
     
     """ Use the current working directory (no path specification necessary) """
+    
+    fields = ('name', 'old', 'new', 'exists', 'will_change', 'did_change')
     
     def __init__(self):
         super(wd, self).__init__(pth=None)
@@ -288,7 +314,7 @@ class TemporaryDirectory(Directory):
         from libimread, this class wraps tempfile.mkdtemp() and can be used as a
         context manager (the C++ orig used RAII). """
     
-    fields = ('name', 'exists', 'destroy', 'prefix', 'suffix', 'parent')
+    fields = ('name', 'old', 'new', 'exists', 'destroy', 'prefix', 'suffix', 'parent')
     
     def __init__(self, prefix="TemporaryDirectory-", suffix="", parent=None, **kwargs):
         if suffix:
@@ -336,12 +362,6 @@ class TemporaryDirectory(Directory):
         super(TemporaryDirectory, self).__exit__(exc_type, exc_val, exc_tb)
         if self.exists and self.destroy:
             rm_rf(self.name)
-    
-    def to_string(self):
-        return stringify(self, self.fields)
-    
-    def __repr__(self):
-        return stringify(self, self.fields)
     
     def __str__(self):
         if self.exists:

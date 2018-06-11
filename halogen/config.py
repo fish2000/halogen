@@ -17,11 +17,12 @@ try:
 except ImportError:
     pass
 
-from abc import ABCMeta, abstractmethod, abstractproperty
+from abc import ABCMeta, abstractmethod
 from os.path import splitext
 from ctypes.util import find_library
 from functools import wraps
 from filesystem import which, back_tick
+from utils import stringify
 
 SHARED_LIBRARY_SUFFIX = splitext(find_library("c"))[-1].lower()
 STATIC_LIBRARY_SUFFIX = (SHARED_LIBRARY_SUFFIX == ".dll") and ".lib" or ".a"
@@ -33,20 +34,48 @@ TOKEN = ' -'
 
 class ConfigSubBase(object):
     
+    # The abstract base-class metaclass:
+    
     class __metaclass__(ABCMeta):
         pass
     
-    @abstractproperty
+    # Prefix get/set/delete methods:
+    
+    @property
+    @abstractmethod
     def prefix(self): pass
     
     @prefix.setter
+    @abstractmethod
     def prefix(self, value): pass
     
     @prefix.deleter
+    @abstractmethod
     def prefix(self): pass
+    
+    # The subdirectory method is used throughout
+    # all Config subclasses:
     
     @abstractmethod
     def subdirectory(self, subdir, whence=None): pass
+    
+    # Stringification and representation methods:
+    
+    @abstractmethod
+    def to_string(self): pass
+    
+    @abstractmethod
+    def __repr__(self): pass
+    
+    @abstractmethod
+    def __str__(self): pass
+    
+    @abstractmethod
+    def __unicode__(self): pass
+    
+    # These four get_* methods make up the bare-bones
+    # requirement for what a Config subclass needs
+    # to provide:
     
     @abstractmethod
     def get_includes(self): pass
@@ -64,10 +93,51 @@ ConfigSubMeta = ConfigSubBase.__metaclass__
 
 class ConfigBase(ConfigSubBase):
     
+    base_fields = ('prefix', 'get_includes', 'get_libs', 'get_cflags', 'get_ldflags')
+    # dir_fields = ('bin', 'include', 'lib', 'libexec', 'libexecbin', 'share')
+    dir_fields = ('bin', 'include', 'lib', 'libexec', 'share')
+    
+    class FieldList(object):
+        
+        slots = ('stored_fields', 'more_fields', 'include_dir_fields')
+        
+        def __init__(self, *more_fields, **kwargs):
+            self.include_dir_fields = kwargs.pop('dir_fields', False)
+            self.more_fields = tuple(more_fields)
+            if self.include_dir_fields:
+                self.stored_fields = self.more_fields + ConfigBase.dir_fields
+            else:
+                self.stored_fields = self.more_fields
+        
+        def __get__(self, instance, cls=None):
+            if cls is None:
+                cls = type(instance)
+            return getattr(cls, 'base_fields', tuple()) + self.stored_fields
+        
+        def __set__(self, instance, value):
+            self.more_fields = tuple(value)
+            if self.include_dir_fields:
+                self.stored_fields = self.more_fields + ConfigBase.dir_fields
+            else:
+                self.stored_fields = self.more_fields
+        
+        def __delete__(self, instance):
+            raise AttributeError("Can't delete a FieldList attribute")
+    
     class __metaclass__(ConfigSubMeta):
         
         def __new__(cls, name, bases, attributes):
+            if not 'base_fields' in attributes:
+                attributes['base_fields'] = tuple()
+            base_fields = set(attributes['base_fields'])
+            for base in bases:
+                if hasattr(base, 'base_fields'):
+                    base_fields |= set(base.base_fields)
+                if hasattr(base, 'fields'):
+                    base_fields |= set(base.fields)
+            # attributes['base_fields'] = tuple(sorted(base_fields))
             outcls = ConfigSubMeta.__new__(cls, name, bases, attributes)
+            outcls.base_fields = tuple(sorted(base_fields))
             ConfigSubBase.register(outcls)
             return outcls
     
@@ -94,6 +164,20 @@ class ConfigBase(ConfigSubBase):
             whence = self.prefix
         fulldir = os.path.join(whence, subdir)
         return os.path.exists(fulldir) and fulldir or None
+    
+    def to_string(self, field_list=None):
+        if not field_list:
+            field_list = self.__class__.fields
+        return stringify(self, field_list)
+    
+    def __repr__(self):
+        return stringify(self, self.__class__.fields)
+    
+    def __str__(self):
+        return stringify(self, self.__class__.fields)
+    
+    def __unicode__(self):
+        return unicode(repr(self))
 
 
 class PythonConfig(ConfigBase):
@@ -101,6 +185,12 @@ class PythonConfig(ConfigBase):
     """ A config class that provides its values via the output of the command-line
         `python-config` tool (associated with the running Python interpreter).
     """
+    
+    fields = ConfigBase.FieldList('pyconfig', 'pyconfigpath',
+                                  'library_name', 'library_file', 'header_file',
+                                  'framework_name', 'framework_path',
+                                  'Frameworks', 'Headers', 'Resources',
+                                  'framework', dir_fields=False)
     
     # Name of the `python-config` binary (nearly always just `python-config`):
     pyconfig = "python-config"
@@ -141,7 +231,7 @@ class PythonConfig(ConfigBase):
         return self.subdirectory("libexec") or self.lib()
     
     def libexecbin(self):
-        return self.subdirectory('bin', whence=self.libexec())
+        return self.subdirectory('bin', whence=self.subdirectory("libexec"))
     
     def share(self):
         return self.subdirectory("share")
@@ -198,6 +288,8 @@ class BrewedPythonConfig(PythonConfig):
         command-line `brew` tool (with fallback calls to the PythonConfig class).
     """
     
+    fields = ConfigBase.FieldList('brew', 'brew_name', dir_fields=True)
+    
     # Path to the Homebrew executable CLT `brew`
     brew = which("brew")
     
@@ -222,36 +314,14 @@ class BrewedPythonConfig(PythonConfig):
             if self.library_file in files:
                 return path
         return super(BrewedPythonConfig, self).lib()
-    
-    def get_includes(self):
-        if self.libexecbin():
-            return back_tick("%s --includes" % os.path.join(self.libexecbin(),
-                                                            self.pyconfig))
-        return super(BrewedPythonConfig, self).get_includes()
-    
-    def get_libs(self):
-        if self.libexecbin():
-            return back_tick("%s --libs" % os.path.join(self.libexecbin(),
-                                                        self.pyconfig))
-        return super(BrewedPythonConfig, self).get_libs()
-    
-    def get_cflags(self):
-        if self.libexecbin():
-            return back_tick("%s --cflags" % os.path.join(self.libexecbin(),
-                                                          self.pyconfig))
-        return super(BrewedPythonConfig, self).get_cflags()
-    
-    def get_ldflags(self):
-        if self.libexecbin():
-            return back_tick("%s --ldflags" % os.path.join(self.libexecbin(),
-                                                           self.pyconfig))
-        return super(BrewedPythonConfig, self).get_ldflags()
 
 
 def environ_override(name):
     return os.environ.get(name, sysconfig.get_config_var(name) or '')
 
 class SysConfig(PythonConfig):
+    
+    fields = ConfigBase.FieldList(dir_fields=True)
     
     """ A config class that provides its values using the Python `sysconfig` module
         (with fallback calls to PythonConfig, and environment variable overrides).
@@ -312,6 +382,9 @@ class PkgConfig(ConfigBase):
         command-line tool, for a package name recognized by same.
     """
     
+    fields = ConfigBase.FieldList('cflags', 'pkgconfig',
+                                            'pkg_name', dir_fields=True)
+    
     # List of cflags to use with all pkg-config-based classes:
     cflags = frozenset(("-funroll-loops",
                         "-mtune=native",
@@ -341,7 +414,7 @@ class PkgConfig(ConfigBase):
         return self.subdirectory("libexec") or self.lib()
     
     def libexecbin(self):
-        return self.subdirectory('bin', whence=self.libexec())
+        return self.subdirectory('bin', whence=self.subdirectory('libexec'))
     
     def share(self):
         return self.subdirectory("share")
@@ -374,6 +447,8 @@ class BrewedConfig(ConfigBase):
         command-line `brew` tool, for arbitrary named Homebrew formulae.
     """
     
+    fields = ConfigBase.FieldList('brew', 'brew_name', 'cflags', dir_fields=True)
+    
     # Name of, and prefix for, the Homebrew installation:
     brew = which('brew')
     
@@ -402,7 +477,7 @@ class BrewedConfig(ConfigBase):
         return self.subdirectory("libexec") or self.lib()
     
     def libexecbin(self):
-        return self.subdirectory('bin', whence=self.libexec())
+        return self.subdirectory('bin', whence=self.subdirectory('libexec'))
     
     def share(self):
         return self.subdirectory("share")
@@ -425,6 +500,8 @@ class BrewedHalideConfig(BrewedConfig):
     """ A config class that provides its values through calls to the Mac Homebrew
         command-line `brew` tool, specifically pertaining to the Halide formula.
     """
+    
+    fields = ConfigBase.FieldList('library', dir_fields=False)
     
     # Name of the Halide library (sans “lib” prefix and file extension):
     library = "Halide"
@@ -453,6 +530,8 @@ class ConfigUnion(ConfigBase):
             config_two = BrewedHalideConfig()
             config_union = ConfigUnion(config_one, config_two)
     """
+    
+    fields = ConfigBase.FieldList('optimization', 'cxx_standard', dir_fields=False)
     
     class union_of(object):
         
@@ -491,6 +570,7 @@ class ConfigUnion(ConfigBase):
     class FlagSet(object):
         
         """ A sugary-sweet class for stowing a set of flags whose order is significant. """
+        joiner = ", %s" % TOKEN
         slots = ('flags', 'set')
         
         def __init__(self, template, flaglist):
@@ -501,14 +581,22 @@ class ConfigUnion(ConfigBase):
             return rhs in self.set
         
         def __len__(self):
-            return len(self.flags)
+            return len(self.set)
         
         def __getitem__(self, key):
             return self.flags[key]
         
         def index(self, value):
             return self.flags.index(value)
-    
+        
+        def __repr__(self):
+            return "[ %s%s ]" % (TOKEN, self.joiner.join(self.flags))
+        
+        def __str__(self):
+            return "[ %s%s ]" % (TOKEN, self.joiner.join(self.flags))
+        
+        def __unicode__(self):
+            return unicode(str(self))
     
     # Ordered list of all possible optimization flags:
     optimization = FlagSet("O%s", ('0', 's', 'fast', '1',
@@ -772,7 +860,8 @@ HALIDE_REGISTER_GENERATOR(Brighten, brighten);
 """
 
 def main():
-    from utils import print_config, test_compile, terminal_width
+    from utils import print_config, terminal_width
+    # from utils import test_compile
     
     brewedHalideConfig = BrewedHalideConfig()
     sysConfig = SysConfig()
@@ -812,11 +901,11 @@ def main():
     print("")
     print_config(brewedPythonConfig)
     
-    print("=" * terminal_width)
-    print("")
-    print("TESTING: PythonConfig ...")
-    print("")
-    print_config(pythonConfig)
+    # print("=" * terminal_width)
+    # print("")
+    # print("TESTING: PythonConfig ...")
+    # print("")
+    # print_config(pythonConfig)
     
     print("=" * terminal_width)
     print("")
@@ -839,26 +928,27 @@ def main():
     
     """ Test compilation with different configs: """
     
-    print("=" * terminal_width)
-    print("")
-    print("TEST COMPILATION: CXX(brewedHalideConfig, <out>, <in>) ...")
-    print("")
-    test_compile(brewedHalideConfig, test_generator_source)
-    
-    print("=" * terminal_width)
-    print("")
-    print("TEST COMPILATION: CXX(configUnion, <out>, <in>) ...")
-    print("")
-    test_compile(configUnion, test_generator_source)
-    
-    print("=" * terminal_width)
-    print("")
-    print("TEST COMPILATION: CXX(configUnionAll, <out>, <in>) ...")
-    print("")
-    test_compile(configUnionAll, test_generator_source)
+    # print("=" * terminal_width)
+    # print("")
+    # print("TEST COMPILATION: CXX(brewedHalideConfig, <out>, <in>) ...")
+    # print("")
+    # test_compile(brewedHalideConfig, test_generator_source)
+    #
+    # print("=" * terminal_width)
+    # print("")
+    # print("TEST COMPILATION: CXX(configUnion, <out>, <in>) ...")
+    # print("")
+    # test_compile(configUnion, test_generator_source)
+    #
+    # print("=" * terminal_width)
+    # print("")
+    # print("TEST COMPILATION: CXX(configUnionAll, <out>, <in>) ...")
+    # print("")
+    # test_compile(configUnionAll, test_generator_source)
 
 def corefoundation_check():
-    from utils import print_config, test_compile, terminal_width
+    from utils import print_config, terminal_width
+    from utils import test_compile
     try:
         from Foundation import NSBundle
         from CoreFoundation import (CFBundleGetAllBundles,
@@ -895,4 +985,10 @@ def corefoundation_check():
 
 if __name__ == '__main__':
     main()
-    corefoundation_check()
+    try:
+        import objc
+    except ImportError:
+        print("SKIPPING: PyObjC-based CoreFoundation test (PyObjC not installed)")
+    else:
+        objc # SHUT UP, FLAKE8!
+        # corefoundation_check()

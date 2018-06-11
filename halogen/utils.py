@@ -42,8 +42,9 @@ def stringify(instance, fields):
     field_dict = {}
     for field in fields:
         field_value = getattr(instance, field, "")
+        field_value = callable(field_value) and field_value() or field_value
         if field_value:
-            field_dict.update({ field : field_value })
+            field_dict.update({ str(field) : field_value })
     field_dict_items = []
     for k, v in field_dict.items():
         field_dict_items.append('''%s="%s"''' % (k, v))
@@ -86,7 +87,14 @@ def print_config(conf):
     print("")
     print(conf.get_ldflags())
     print("")
+    print("-" * terminal_width)
+    
+    print("stringification:")
+    print("")
+    print(str(conf))
+    print("")
     # print("-" * terminal_width)
+    
 
 def test_compile(conf, test_source):
     import sys, os
