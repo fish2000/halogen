@@ -512,8 +512,7 @@ class BrewedHalideConfig(BrewedConfig):
         command-line `brew` tool, specifically pertaining to the Halide formula.
     """
     
-    fields = ConfigBase.FieldList('library',
-                                  'cflags', dir_fields=True)
+    fields = ConfigBase.FieldList('library', dir_fields=True)
     
     # Name of the Halide library (sans “lib” prefix and file extension):
     library = "Halide"
@@ -543,8 +542,8 @@ class ConfigUnion(ConfigBase):
             config_union = ConfigUnion(config_one, config_two)
     """
     
-    fields = ConfigBase.FieldList(exclude=['prefix'],
-                                  dir_fields=False)
+    fields = ConfigBase.FieldList('sub_config_types', exclude=['prefix'],
+                                                      dir_fields=False)
     
     class union_of(object):
         
@@ -724,6 +723,9 @@ class ConfigUnion(ConfigBase):
             else:
                 # append the (non-ConfigUnion) config:
                 self.configs.append(config)
+    
+    def sub_config_types(self):
+        return { config.__class__.__name__ for config in self.configs }
     
     @union_of(name='includes')
     def get_includes(self, includes):
