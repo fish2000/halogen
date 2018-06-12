@@ -89,7 +89,7 @@ class ConfigSubBase(SubBaseAncestor):
     def get_ldflags(self): pass
 
 
-class BaseMeta(ABCMeta):
+class ConfigBaseMeta(ABCMeta):
     
     def __new__(cls, name, bases, attributes):
         if not 'base_fields' in attributes:
@@ -107,7 +107,7 @@ class BaseMeta(ABCMeta):
         return outcls
 
 
-BaseAncestor = six.with_metaclass(BaseMeta, ConfigSubBase)
+BaseAncestor = six.with_metaclass(ConfigBaseMeta, ConfigSubBase)
 class ConfigBase(BaseAncestor):
     
     base_fields = ('prefix', 'get_includes',
