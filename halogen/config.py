@@ -6,6 +6,7 @@ import os
 import re
 import sys
 import sysconfig
+import six
 
 try:
     from scandir import walk
@@ -17,7 +18,7 @@ try:
 except ImportError:
     pass
 
-from abc import ABCMeta, abstractmethod
+from abc import ABC, ABCMeta, abstractmethod
 from os.path import splitext
 from ctypes.util import find_library
 from functools import wraps
@@ -32,12 +33,10 @@ DEFAULT_VERBOSITY = True
 # WTF HAX
 TOKEN = ' -'
 
-class ConfigSubBase(object):
+SubBaseAncestor = six.with_metaclass(ABCMeta, ABC)
+class ConfigSubBase(SubBaseAncestor):
     
-    # The abstract base-class metaclass:
-    
-    class __metaclass__(ABCMeta):
-        pass
+    base_field_cache = {}
     
     # Prefix get/set/delete methods:
     
@@ -62,7 +61,7 @@ class ConfigSubBase(object):
     # Stringification and representation methods:
     
     @abstractmethod
-    def to_string(self): pass
+    def to_string(self, field_list=None): pass
     
     @abstractmethod
     def __repr__(self): pass
@@ -89,16 +88,36 @@ class ConfigSubBase(object):
     @abstractmethod
     def get_ldflags(self): pass
 
-ConfigSubMeta = ConfigSubBase.__metaclass__
 
-class ConfigBase(ConfigSubBase):
+class BaseMeta(ABCMeta):
+    
+    def __new__(cls, name, bases, attributes):
+        if not 'base_fields' in attributes:
+            attributes['base_fields'] = tuple()
+        base_fields = set(attributes['base_fields'])
+        for base in bases:
+            if hasattr(base, 'base_fields'):
+                base_fields |= frozenset(base.base_fields)
+            if hasattr(base, 'fields'):
+                base_fields |= frozenset(base.fields)
+        attributes['base_fields'] = tuple(sorted(base_fields))
+        outcls = ABCMeta.__new__(cls, name, bases, attributes)
+        ConfigSubBase.base_field_cache[name] = tuple(sorted(base_fields))
+        ConfigSubBase.register(outcls)
+        return outcls
+
+
+BaseAncestor = six.with_metaclass(BaseMeta, ConfigSubBase)
+class ConfigBase(BaseAncestor):
     
     base_fields = ('prefix', 'get_includes', 'get_libs', 'get_cflags', 'get_ldflags')
-    dir_fields = ('bin', 'include', 'lib', 'libexec', 'share') # 'libexecbin' causes infinite recurse!
+    dir_fields = ('bin', 'include', 'lib', 'libexec', 'libexecbin', 'share')
     
     class FieldList(object):
         
-        __slots__ = ('stored_fields', 'more_fields', 'exclude_fields', 'include_dir_fields')
+        __slots__ = ('stored_fields', 'more_fields',
+                                      'exclude_fields',
+                                      'include_dir_fields')
         
         def __init__(self, *more_fields, **kwargs):
             self.include_dir_fields = kwargs.pop('dir_fields', False)
@@ -112,7 +131,9 @@ class ConfigBase(ConfigSubBase):
         def __get__(self, instance, cls=None):
             if cls is None:
                 cls = type(instance)
-            out = frozenset(getattr(cls, 'base_fields', tuple())) | self.stored_fields
+            out = set(self.stored_fields)
+            if hasattr(cls, 'base_fields'):
+                out |= frozenset(cls.base_fields)
             out -= self.exclude_fields
             return tuple(sorted(out))
         
@@ -125,23 +146,6 @@ class ConfigBase(ConfigSubBase):
         
         def __delete__(self, instance):
             raise AttributeError("Can't delete a FieldList attribute")
-    
-    class __metaclass__(ConfigSubMeta):
-        
-        def __new__(cls, name, bases, attributes):
-            if not 'base_fields' in attributes:
-                attributes['base_fields'] = tuple()
-            base_fields = frozenset(attributes['base_fields'])
-            for base in bases:
-                if hasattr(base, 'base_fields'):
-                    base_fields |= frozenset(base.base_fields)
-                if hasattr(base, 'fields'):
-                    base_fields |= frozenset(base.fields)
-            # attributes['base_fields'] = tuple(sorted(base_fields))
-            outcls = ConfigSubMeta.__new__(cls, name, bases, attributes)
-            outcls.base_fields = tuple(sorted(base_fields))
-            ConfigSubBase.register(outcls)
-            return outcls
     
     @property
     def prefix(self):
@@ -163,7 +167,7 @@ class ConfigBase(ConfigSubBase):
     
     def subdirectory(self, subdir, whence=None):
         if not whence:
-            whence = self.prefix
+            whence = getattr(self, '_prefix', sys.prefix)
         fulldir = os.path.join(whence, subdir)
         return os.path.exists(fulldir) and fulldir or None
     
@@ -188,11 +192,13 @@ class PythonConfig(ConfigBase):
         `python-config` tool (associated with the running Python interpreter).
     """
     
+    # 'Headers', 'Resources', 'framework'
+    
     fields = ConfigBase.FieldList('pyconfig', 'pyconfigpath',
                                   'library_name', 'library_file', 'header_file',
                                   'framework_name', 'framework_path',
-                                  'Frameworks', 'Headers', 'Resources',
-                                  'framework', dir_fields=False)
+                                  'Frameworks',
+                                   dir_fields=False)
     
     # Name of the `python-config` binary (nearly always just `python-config`):
     pyconfig = "python-config"
@@ -290,7 +296,8 @@ class BrewedPythonConfig(PythonConfig):
         command-line `brew` tool (with fallback calls to the PythonConfig class).
     """
     
-    fields = ConfigBase.FieldList('brew', 'brew_name', dir_fields=True)
+    fields = ConfigBase.FieldList('brew',
+                                  'brew_name', dir_fields=True)
     
     # Path to the Homebrew executable CLT `brew`
     brew = which("brew")
@@ -449,7 +456,9 @@ class BrewedConfig(ConfigBase):
         command-line `brew` tool, for arbitrary named Homebrew formulae.
     """
     
-    fields = ConfigBase.FieldList('brew', 'brew_name', 'cflags', dir_fields=True)
+    fields = ConfigBase.FieldList('brew',
+                                  'brew_name',
+                                  'cflags', dir_fields=False)
     
     # Name of, and prefix for, the Homebrew installation:
     brew = which('brew')
@@ -503,7 +512,8 @@ class BrewedHalideConfig(BrewedConfig):
         command-line `brew` tool, specifically pertaining to the Halide formula.
     """
     
-    fields = ConfigBase.FieldList('library', dir_fields=False)
+    fields = ConfigBase.FieldList('library',
+                                  'cflags', dir_fields=True)
     
     # Name of the Halide library (sans “lib” prefix and file extension):
     library = "Halide"
@@ -533,7 +543,8 @@ class ConfigUnion(ConfigBase):
             config_union = ConfigUnion(config_one, config_two)
     """
     
-    fields = ConfigBase.FieldList(exclude=['prefix'], dir_fields=False)
+    fields = ConfigBase.FieldList(exclude=['prefix'],
+                                  dir_fields=False)
     
     class union_of(object):
         
@@ -861,15 +872,19 @@ class Brighten : public Halide::Generator<Brighten> {
 HALIDE_REGISTER_GENERATOR(Brighten, brighten);
 """
 
+def print_cache():
+    from pprint import pprint
+    pprint(ConfigBase.base_field_cache, indent=4)
+
 def main():
     from utils import print_config, terminal_width
-    # from utils import test_compile
+    from utils import test_compile
     
     brewedHalideConfig = BrewedHalideConfig()
-    sysConfig = SysConfig()
-    pkgConfig = PkgConfig()
     brewedPythonConfig = BrewedPythonConfig()
     pythonConfig = PythonConfig()
+    sysConfig = SysConfig()
+    pkgConfig = PkgConfig()
     
     configUnionOne = ConfigUnion(sysConfig)
     configUnion = ConfigUnion(brewedHalideConfig, sysConfig)
@@ -903,11 +918,11 @@ def main():
     print("")
     print_config(brewedPythonConfig)
     
-    # print("=" * terminal_width)
-    # print("")
-    # print("TESTING: PythonConfig ...")
-    # print("")
-    # print_config(pythonConfig)
+    print("=" * terminal_width)
+    print("")
+    print("TESTING: PythonConfig ...")
+    print("")
+    print_config(pythonConfig)
     
     print("=" * terminal_width)
     print("")
@@ -930,23 +945,31 @@ def main():
     
     """ Test compilation with different configs: """
     
-    # print("=" * terminal_width)
-    # print("")
-    # print("TEST COMPILATION: CXX(brewedHalideConfig, <out>, <in>) ...")
-    # print("")
-    # test_compile(brewedHalideConfig, test_generator_source)
-    #
-    # print("=" * terminal_width)
-    # print("")
-    # print("TEST COMPILATION: CXX(configUnion, <out>, <in>) ...")
-    # print("")
-    # test_compile(configUnion, test_generator_source)
-    #
-    # print("=" * terminal_width)
-    # print("")
-    # print("TEST COMPILATION: CXX(configUnionAll, <out>, <in>) ...")
-    # print("")
-    # test_compile(configUnionAll, test_generator_source)
+    print("=" * terminal_width)
+    print("")
+    print("TEST COMPILATION: CXX(brewedHalideConfig, <out>, <in>) ...")
+    print("")
+    test_compile(brewedHalideConfig, test_generator_source)
+
+    print("=" * terminal_width)
+    print("")
+    print("TEST COMPILATION: CXX(configUnion, <out>, <in>) ...")
+    print("")
+    test_compile(configUnion, test_generator_source)
+
+    print("=" * terminal_width)
+    print("")
+    print("TEST COMPILATION: CXX(configUnionAll, <out>, <in>) ...")
+    print("")
+    test_compile(configUnionAll, test_generator_source)
+    
+    """  Reveal the cached field-value dictionary: """
+    print("=" * terminal_width)
+    print("")
+    print("PRINTING: ConfigBase.base_field_cache -- dict<str> ...")
+    print("")
+    print_cache()
+    
 
 def corefoundation_check():
     from utils import print_config, terminal_width
@@ -993,4 +1016,4 @@ if __name__ == '__main__':
         print("SKIPPING: PyObjC-based CoreFoundation test (PyObjC not installed)")
     else:
         objc # SHUT UP, FLAKE8!
-        # corefoundation_check()
+        corefoundation_check()

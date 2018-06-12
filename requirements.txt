@@ -2,3 +2,4 @@ Cython
 clint
 ctypes
 numpy
+six
