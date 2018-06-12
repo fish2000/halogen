@@ -272,16 +272,16 @@ class PythonConfig(ConfigBase):
     
     def Headers(self):
         return self.subdirectory('Headers',
-                                  whence=os.path.join(self.Frameworks(),
+                                  whence=os.path.join(self.framework_path,
                                                       self.framework_name))
     
     def Resources(self):
         return self.subdirectory('Resources',
-                                  whence=os.path.join(self.Frameworks(),
+                                  whence=os.path.join(self.framework_path,
                                                       self.framework_name))
     
     def framework(self):
-        return self.subdirectory(self.framework_name, self.Frameworks())
+        return self.subdirectory(self.framework_name, self.framework_path)
     
     def get_includes(self):
         return back_tick("%s --includes" % self.pyconfigpath)
