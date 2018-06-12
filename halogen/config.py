@@ -101,8 +101,8 @@ class BaseMeta(ABCMeta):
             if hasattr(base, 'fields'):
                 base_fields |= frozenset(base.fields)
         attributes['base_fields'] = tuple(sorted(base_fields))
-        outcls = ABCMeta.__new__(cls, name, bases, attributes)
         ConfigSubBase.base_field_cache[name] = tuple(sorted(base_fields))
+        outcls = ABCMeta.__new__(cls, name, bases, attributes)
         ConfigSubBase.register(outcls)
         return outcls
 
@@ -110,8 +110,14 @@ class BaseMeta(ABCMeta):
 BaseAncestor = six.with_metaclass(BaseMeta, ConfigSubBase)
 class ConfigBase(BaseAncestor):
     
-    base_fields = ('prefix', 'get_includes', 'get_libs', 'get_cflags', 'get_ldflags')
-    dir_fields = ('bin', 'include', 'lib', 'libexec', 'libexecbin', 'share')
+    base_fields = ('prefix', 'get_includes',
+                             'get_libs',
+                             'get_cflags',
+                             'get_ldflags')
+    
+    dir_fields = ('bin', 'include',
+                  'lib', 'libexec', 'libexecbin',
+                  'share')
     
     class FieldList(object):
         
@@ -391,8 +397,9 @@ class PkgConfig(ConfigBase):
         command-line tool, for a package name recognized by same.
     """
     
-    fields = ConfigBase.FieldList('cflags', 'pkgconfig',
-                                            'pkg_name', dir_fields=True)
+    fields = ConfigBase.FieldList('cflags',
+                                  'pkgconfig',
+                                  'pkg_name', dir_fields=True)
     
     # List of cflags to use with all pkg-config-based classes:
     cflags = frozenset(("-funroll-loops",
