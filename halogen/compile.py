@@ -6,9 +6,9 @@ import os
 import shutil
 import config
 try:
-    import scandir
+    from scandir import walk
 except ImportError:
-    import os as scandir
+    from os import walk
 
 from tempfile import mktemp
 from errors import HalogenError, GeneratorError
@@ -62,7 +62,8 @@ class Generator(object):
                 raise CompilerError("can't find compilation input: %s" % self.source)
             if os.path.exists(self.destination):
                 raise CompilerError("can't overwrite compilation output: %s" % self.destination)
-            splitbase = os.path.splitext(os.path.basename(self.source))
+            splitbase = os.path.splitext(
+                        os.path.basename(self.source))
             self.transient = mktemp(prefix=splitbase[0],
                                     suffix="%s.o" % splitbase[1])
             self.result += config.CXX(self.conf,
@@ -100,7 +101,7 @@ class Generators(object):
         it's like POOF, no fuss no muss, basically """
     
     def __init__(self, conf, destination, directory=None, suffix="cpp",
-                                          prefix="yodogg",
+                                                          prefix="yodogg",
                                           do_shared=True, do_static=True,
                                         **kwargs):
         if not directory:
@@ -128,13 +129,12 @@ class Generators(object):
         self.archive_result = tuple()
         if self.VERBOSE:
             print(u"Scanning %s for “%s” files" % (self.directory, self.suffix))
-        for path, dirs, files in scandir.walk(self.directory,
-                                              followlinks=True):
+        for path, dirs, files in walk(self.directory,
+                                      followlinks=True):
             for df in files:
                 if df.lower().endswith(self.suffix):
-                    self.sources.append(
-                        os.path.realpath(
-                            os.path.join(path, df)))
+                    self.sources.append(os.path.realpath(
+                                        os.path.join(path, df)))
         if self.VERBOSE:
             print("Found %s generator sources\n" % len(self.sources))
     

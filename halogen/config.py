@@ -36,6 +36,27 @@ TOKEN = ' -'
 SubBaseAncestor = six.with_metaclass(ABCMeta, ABC)
 class ConfigSubBase(SubBaseAncestor):
     
+    """ The abstract base class ancestor of all Config-ish classes we define here.
+        
+        By “Config-ish class” I mean, a class we can use as a Config instance when
+        instantiated – and in the Pythonic duck-typology sense of things, all that
+        means is that the class has maybe four basic methods: `get_includes()`,
+        `get_libs()`, `get_cflags()`, and `get_ldflags()`. Like, if your class
+        implements these and the instance methods do what they look like they should
+        do, you can e.g. pass that instance to our CC, CXX, LD, or AR functions (which
+        are defined below) or, say, use that instance in the construction of a working
+        ConfigUnion instance, or what have you.
+        
+        (In fact, you may be able to get away with only implementing `get_cflags()` and
+        `get_ldflags()` – those are the only methods explicitly called by CC/CXX/LD;
+        AR doesn’t even use its config-instance parameter at the moment.)
+        
+        You don’t strictly need to inherit from ConfigSubBase – in fact, that is unwise;
+        I recommend inheriting from ConfigBase (q.v. class definition sub.) as that will
+        get you all of the goodies like FieldList inheritance, the “prefix” property and
+        the “subdirectory()” method, and other stuff you can read about below.
+    """
+    
     base_field_cache = {}
     
     # Prefix get/set/delete methods:
@@ -91,6 +112,10 @@ class ConfigSubBase(SubBaseAncestor):
 
 class ConfigBaseMeta(ABCMeta):
     
+    """ The metaclass for all Config-ish classes we define here; used with
+        ConfigBase (q.v. class definition sub.)
+    """
+    
     def __new__(cls, name, bases, attributes):
         if not 'base_fields' in attributes:
             attributes['base_fields'] = tuple()
@@ -110,6 +135,21 @@ class ConfigBaseMeta(ABCMeta):
 BaseAncestor = six.with_metaclass(ConfigBaseMeta, ConfigSubBase)
 class ConfigBase(BaseAncestor):
     
+    """ The base class for all Config-ish classes we define here. This includes:
+        
+        * The list of “base fields” and “dir(ectory) fields” -- see the docstring
+          below for the inner FieldList class for how these are used.
+        * The definition of the “prefix” property, a property that pretty much all
+          of our Config-ish subclasses rely on (with the notable exception of the 
+          ConfigUnion class, q.v. class definition sub.)
+        * The definition of the “subdirectory(…)” method, which is also very popular
+          with the subclasses.
+        * Definitions for __repr__(), __str__(), __unicode__(), and a “to_string(…)”
+          method -- all of which should be adequate for, like, 99 percent of all of
+          the possible subclasses’ introspection-printing needs; also see docstrings
+          and definitions below of FieldList for related internals.
+    """
+    
     base_fields = ('prefix', 'get_includes',
                              'get_libs',
                              'get_cflags',
@@ -120,6 +160,24 @@ class ConfigBase(BaseAncestor):
                   'share')
     
     class FieldList(object):
+        
+        """ This class enables a sort-of inheritance scheme for the “fields” attribute.
+            The “stringify(…)” function, typically used in __repr__() and __str__() methods,
+            uses the “fields” attribute (an iterable of strings) to determine what fields of
+            the instance to introspect in order to print. By assigning a FieldList instance
+            to “fields” on classes whose metaclass is ConfigBaseMeta (q.v. class definition
+            supra), each FieldList builds its list of fields using the class ancestors’
+            FieldLists as well as the current class.
+            
+            This is accomplished by FieldList, which follows the descriptor protocol and thus
+            has __set__() and __get__() methods governing what happens when a FieldList is
+            accessed as an instance attribute, using set logic to sum the names of all the
+            relevant ancestor fields with those with which it was defined before returning
+            a value.
+            
+            Does that make sense? I hope it makes some sense. If not, read the code and get
+            back to me if you are still confused. Thanks! -Alex
+        """
         
         __slots__ = ('stored_fields', 'more_fields',
                                       'exclude_fields',
@@ -172,6 +230,7 @@ class ConfigBase(BaseAncestor):
             del self._prefix
     
     def subdirectory(self, subdir, whence=None):
+        """ Returns the path to a subdirectory within this Config instances’ prefix """
         if not whence:
             whence = getattr(self, '_prefix', sys.prefix)
         fulldir = os.path.join(whence, subdir)
@@ -549,6 +608,7 @@ class ConfigUnion(ConfigBase):
             config_union = ConfigUnion(config_one, config_two)
     """
     
+    # Unlike most Config-ish classes, “prefix” is irrelevant for ConfigUnions.
     fields = ConfigBase.FieldList('sub_config_types', exclude=['prefix'],
                                                       dir_fields=False)
     
@@ -564,6 +624,7 @@ class ConfigUnion(ConfigBase):
                     return out                  # transform the `out` set, if necessary,
                                                 # and return it
         """
+        
         __slots__ = ('name',)
         
         def __init__(self, name):
@@ -609,10 +670,10 @@ class ConfigUnion(ConfigBase):
             return self.flags.index(value)
         
         def __repr__(self):
-            return "[ %s%s ]" % (TOKEN, self.joiner.join(self.flags))
+            return "[%s%s ]" % (TOKEN, self.joiner.join(self.flags))
         
         def __str__(self):
-            return "[ %s%s ]" % (TOKEN, self.joiner.join(self.flags))
+            return "[%s%s ]" % (TOKEN, self.joiner.join(self.flags))
         
         def __unicode__(self):
             return unicode(str(self))
@@ -731,7 +792,16 @@ class ConfigUnion(ConfigBase):
                 # append the (non-ConfigUnion) config:
                 self.configs.append(config)
     
+    def __len__(self):
+        """ The length of a ConfigUnion instance is equal to how many sub-configs it has """
+        return len(self.configs)
+    
+    def __getitem__(self, key):
+        """ Return a sub-config from the ConfigUnion instance via subscripting """
+        return self.configs[key]
+    
     def sub_config_types(self):
+        """ Return a set of the class names for all sub-configs of this ConfigUnion instance """
         return { config.__class__.__name__ for config in self.configs }
     
     @union_of(name='includes')

@@ -178,7 +178,7 @@ class Directory(object):
     """ A context-managed directory: change in on enter, change back out
         on exit. Plus a few convenience functions for listing and whatnot. """
     
-    fields = ('old', 'new', 'exists', 'will_change', 'did_change')
+    fields = ('name', 'old', 'new', 'exists', 'will_change', 'did_change')
     dotfile_matcher = re.compile(r"^\.").match
     
     def __init__(self, pth=None):
@@ -189,8 +189,12 @@ class Directory(object):
         self.did_change = False
     
     @property
+    def name(self):
+        return self.new
+    
+    @property
     def exists(self):
-        return os.path.isdir(self.new)
+        return os.path.isdir(self.name)
     
     def __enter__(self):
         if self.will_change and self.exists:
@@ -222,7 +226,7 @@ class Directory(object):
     
     def realpath(self, pth=None):
         if not pth:
-            pth = self.new
+            pth = self.name
         return os.path.realpath(pth)
     
     def ls_la(self, pth='.', suffix=None):
@@ -232,11 +236,11 @@ class Directory(object):
         return filter(self.suffix_searcher(suffix), files)
     
     def walk(self, followlinks=False):
-        return walk(self.new, followlinks=followlinks)
+        return walk(self.name, followlinks=followlinks)
     
     def parent(self):
         return os.path.abspath(
-               os.path.join(self.new, os.pardir))
+               os.path.join(self.name, os.pardir))
     
     def zip_archive(self, zpth=None, zmode=None):
         if not zpth:
@@ -272,7 +276,7 @@ class Directory(object):
     def __str__(self):
         if self.exists:
             return self.realpath()
-        return self.new
+        return self.name
     
     def __unicode__(self):
         return unicode(str(self))
@@ -282,28 +286,16 @@ class cd(Directory):
     
     """ Change to a new directory (a new path specification is required) """
     
-    fields = ('name', 'old', 'new', 'exists', 'will_change', 'did_change')
-    
     def __init__(self, pth):
         super(cd, self).__init__(pth=os.path.realpath(pth))
-    
-    @property
-    def name(self):
-        return self.new
 
 
 class wd(Directory):
     
     """ Use the current working directory (no path specification necessary) """
     
-    fields = ('name', 'old', 'new', 'exists', 'will_change', 'did_change')
-    
     def __init__(self):
         super(wd, self).__init__(pth=None)
-    
-    @property
-    def name(self):
-        return self.new
 
 
 class TemporaryDirectory(Directory):
