@@ -3,6 +3,7 @@ from __future__ import print_function
 
 import os
 import os.path
+import psutil
 from setuptools import setup, find_packages # import before Cython stuff, to avoid
                                             # overriding Cython’s Extension class.
 from distutils.sysconfig import get_python_inc
@@ -98,9 +99,10 @@ setup(name='halide-halogen',
                 '-fno-rtti',
                 '-funroll-loops',
                 '-mtune=native',
-                '-std=c++1z',
+                '-std=c++17',
                 '-stdlib=libc++']
         )],
+        nthreads=psutil.cpu_count(),
         language="c++",
         compiler_directives=dict(language_level=2,
                                  infer_types=True,
