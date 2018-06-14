@@ -181,6 +181,10 @@ def main():
     import hal.api
     import config, tempfile
     
+    assert str(hal.api.Target()) != 'host'
+    
+    print(hal.api.registered_generators())
+    
     generate('my_first_generator',
         verbose=config.DEFAULT_VERBOSITY,
         target='host',

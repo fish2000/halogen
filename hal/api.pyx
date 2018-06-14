@@ -267,13 +267,13 @@ cdef class Type:
         return b"<%s @ %s>" % (c_source,
                                hex(id(self)))
     
-    @cython.embedsignature(True)
-    @cython.infer_types(True)
-    def __str__(Type self):
-        try:
-            return halide_type_to_c_type(self.__this__)
-        except IndexError:
-            return "void"
+    # @cython.embedsignature(True)
+    # @cython.infer_types(True)
+    # def __str__(Type self):
+    #     try:
+    #         return str(halide_type_to_c_type(self.__this__))
+    #     except IndexError:
+    #         return "void"
     
     @cython.embedsignature(True)
     @cython.infer_types(True)
@@ -410,7 +410,7 @@ cdef class Target:
     @cython.embedsignature(True)
     @cython.infer_types(True)
     def __str__(Target self):
-        return self.__this__.to_string()
+        return str(self.__this__.to_string())
     
     @cython.embedsignature(True)
     @cython.infer_types(True)

@@ -6,6 +6,8 @@ import os
 import re
 import shutil
 import zipfile
+import six
+
 try:
     from scandir import scandir, walk
 except ImportError:
@@ -170,7 +172,7 @@ class TemporaryName(object):
         return self.name
     
     def __unicode__(self):
-        return unicode(str(self))
+        return six.u(str(self))
 
 
 class Directory(object):
@@ -279,7 +281,7 @@ class Directory(object):
         return self.name
     
     def __unicode__(self):
-        return unicode(str(self))
+        return six.u(str(self))
 
 
 class cd(Directory):

@@ -248,7 +248,7 @@ class ConfigBase(BaseAncestor):
         return stringify(self, self.__class__.fields)
     
     def __unicode__(self):
-        return unicode(repr(self))
+        return six.u(repr(self))
 
 
 class PythonConfig(ConfigBase):
@@ -676,7 +676,7 @@ class ConfigUnion(ConfigBase):
             return "[%s%s ]" % (TOKEN, self.joiner.join(self.flags))
         
         def __unicode__(self):
-            return unicode(str(self))
+            return six.u(str(self))
     
     # Ordered list of all possible optimization flags:
     optimization = FlagSet("O%s", ('0', 's', 'fast', '1',
