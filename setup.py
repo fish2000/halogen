@@ -100,6 +100,9 @@ setup(name='halide-halogen',
                 '-mtune=native',
                 '-std=c++1z',
                 '-stdlib=libc++']
-        )]
+        )],
+        language="c++",
+        compiler_directives=dict(language_level=2,
+                                 embedsignature=True)
     )
 )

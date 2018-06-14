@@ -2,6 +2,7 @@
 # distutils: language = c++
 
 import cython
+cimport cython
 from cython.operator cimport dereference as deref
 
 from libc.stdint cimport *
@@ -61,19 +62,27 @@ from ext.halide.util cimport running_program_name as halide_running_program_name
 from ext.halide.buffer cimport Buffer
 from ext.halide.buffer cimport buffervec_t
 
+# from ext.halide.fused cimport stringish_t
+# from ext.halide.fused cimport floating_t
+
 @cython.infer_types(True)
 def stringify(instance, fields):
     field_dict = {}
     for field in fields:
         field_value = getattr(instance, field, b"")
+        if hasattr(field_value, 'decode'):
+            field_value = field_value.decode('UTF-8')
         if field_value:
             field_dict.update({ field : field_value })
     field_dict_items = []
     for k, v in field_dict.items():
-        field_dict_items.append(b'''%s="%s"''' % (k, v))
-    return b"%s(%s) @ %s" % (instance.__class__.__name__,
+        field_dict_items.append(b'''%s="%s"''' % (bytes(k,      encoding='UTF-8'),
+                                                  bytes(str(v), encoding='UTF-8')))
+    return b"%s(%s) @ %s" % (bytes(instance.__class__.__name__,
+                                   encoding='UTF-8'),
                             b", ".join(field_dict_items),
-                             hex(id(instance)))
+                             bytes(hex(id(instance)),
+                                   encoding='UTF-8'))
 
 
 @cython.freelist(32)
@@ -83,7 +92,6 @@ cdef class Type:
     cdef:
         HalType __this__
     
-    @cython.embedsignature(True)
     @cython.infer_types(True)
     @staticmethod
     def fromother(Type other):
@@ -113,95 +121,78 @@ cdef class Type:
             # default to “uint8_t”:
             self.__this__ = HalType_UInt(8, 1)
     
-    @cython.embedsignature(True)
     @cython.infer_types(True)
     def code(Type self):
         return self.__this__.code()
     
-    @cython.embedsignature(True)
     @cython.infer_types(True)
     def bytes(Type self):
         return self.__this__.bytes()
     
-    @cython.embedsignature(True)
     @cython.infer_types(True)
     def bits(Type self):
         return self.__this__.bits()
     
-    @cython.embedsignature(True)
     @cython.infer_types(True)
     def lanes(Type self):
         return self.__this__.lanes()
     
-    @cython.embedsignature(True)
     @cython.infer_types(True)
     def with_code(Type self, code):
         out = Type()
         out.__this__ = self.__this__.with_code(code)
         return out
     
-    @cython.embedsignature(True)
     @cython.infer_types(True)
     def with_bits(Type self, bits):
         out = Type()
         out.__this__ = self.__this__.with_bits(<uint8_t>bits)
         return out
     
-    @cython.embedsignature(True)
     @cython.infer_types(True)
     def with_lanes(Type self, lanes):
         out = Type()
         out.__this__ = self.__this__.with_lanes(<uint16_t>lanes)
         return out
     
-    @cython.embedsignature(True)
     @cython.infer_types(True)
     def is_bool(Type self):
         return self.__this__.is_bool()
     
-    @cython.embedsignature(True)
     @cython.infer_types(True)
     def is_vector(Type self):
         return self.__this__.is_vector()
     
-    @cython.embedsignature(True)
     @cython.infer_types(True)
     def is_scalar(Type self):
         return self.__this__.is_scalar()
     
-    @cython.embedsignature(True)
     @cython.infer_types(True)
     def is_float(Type self):
         return self.__this__.is_float()
     
-    @cython.embedsignature(True)
     @cython.infer_types(True)
     def is_int(Type self):
         return self.__this__.is_int()
     
-    @cython.embedsignature(True)
     @cython.infer_types(True)
     def is_uint(Type self):
         return self.__this__.is_uint()
     
-    @cython.embedsignature(True)
     @cython.infer_types(True)
     def is_handle(Type self):
         return self.__this__.is_handle()
     
-    @cython.embedsignature(True)
     @cython.infer_types(True)
     def same_handle_type(Type self, Type other):
         return self.__this__.same_handle_type(other.__this__)
     
-    @cython.embedsignature(True)
     @cython.infer_types(True)
     def element_of(Type self):
         out = Type()
         out.__this__ = self.__this__.element_of()
         return out
     
-    @cython.embedsignature(True)
     @cython.infer_types(True)
     def can_represent(Type self, other):
         if type(other) == type(self):
@@ -225,7 +216,6 @@ cdef class Type:
     cpdef object can_represent_long(Type self, long other):
         return self.__this__.can_represent(<int64_t>other)
     
-    @cython.embedsignature(True)
     @cython.infer_types(True)
     def repr_c_source(Type self):
         try:
@@ -233,7 +223,6 @@ cdef class Type:
         except IndexError:
             return "Halide::type_sink<void>"
     
-    @cython.embedsignature(True)
     @cython.infer_types(True)
     def repr_c_type(Type self):
         try:
@@ -241,7 +230,6 @@ cdef class Type:
         except IndexError:
             return "void"
     
-    @cython.embedsignature(True)
     @cython.infer_types(True)
     def repr_enum_string(Type self):
         try:
@@ -249,7 +237,6 @@ cdef class Type:
         except IndexError:
             return "void"
     
-    @cython.embedsignature(True)
     @cython.infer_types(True)
     def to_string(Type self):
         try:
@@ -257,25 +244,31 @@ cdef class Type:
         except IndexError:
             return "void"
     
-    @cython.embedsignature(True)
     @cython.infer_types(True)
     def __repr__(Type self):
         try:
             c_source = halide_type_to_c_source(self.__this__)
         except IndexError:
             c_source = "Halide::type_sink<void>"
-        return b"<%s @ %s>" % (c_source,
-                               hex(id(self)))
+        return str("<%s @ %s>" % (c_source.decode('UTF-8'),
+                                  hex(id(self))))
     
-    # @cython.embedsignature(True)
-    # @cython.infer_types(True)
-    # def __str__(Type self):
-    #     try:
-    #         return str(halide_type_to_c_type(self.__this__))
-    #     except IndexError:
-    #         return "void"
+    @cython.infer_types(True)
+    def __str__(Type self):
+        try:
+            c_type = halide_type_to_c_type(self.__this__)
+        except IndexError:
+            c_type = <string>"void"
+        return c_type.decode('UTF-8')
     
-    @cython.embedsignature(True)
+    @cython.infer_types(True)
+    def __bytes__(Type self):
+        try:
+            c_type = halide_type_to_c_type(self.__this__)
+        except IndexError:
+            c_type = <string>"void"
+        return c_type
+    
     @cython.infer_types(True)
     @staticmethod
     def Int(int bits, int lanes=1):
@@ -283,7 +276,6 @@ cdef class Type:
         out.__this__ = HalType_Int(bits, lanes)
         return out
     
-    @cython.embedsignature(True)
     @cython.infer_types(True)
     @staticmethod
     def UInt(int bits, int lanes=1):
@@ -291,7 +283,6 @@ cdef class Type:
         out.__this__ = HalType_UInt(bits, lanes)
         return out
     
-    @cython.embedsignature(True)
     @cython.infer_types(True)
     @staticmethod
     def Float(int bits, int lanes=1):
@@ -299,7 +290,6 @@ cdef class Type:
         out.__this__ = HalType_Float(bits, lanes)
         return out
     
-    @cython.embedsignature(True)
     @cython.infer_types(True)
     @staticmethod
     def Bool(int lanes=1):
@@ -307,7 +297,6 @@ cdef class Type:
         out.__this__ = HalType_Bool(lanes)
         return out
     
-    @cython.embedsignature(True)
     @cython.infer_types(True)
     @staticmethod
     def Handle(int lanes=1):
@@ -323,7 +312,6 @@ cdef class Target:
     cdef:
         HalTarget __this__
     
-    @cython.embedsignature(True)
     @cython.infer_types(True)
     @staticmethod
     def validate_target_string(string& target_string):
@@ -364,17 +352,14 @@ cdef class Target:
         def __set__(Target self, value):
             self.__this__.bits = <int>PyLong_AsLong(value)
     
-    @cython.embedsignature(True)
     @cython.infer_types(True)
     def has_gpu_feature(Target self):
         return self.__this__.has_gpu_feature()
     
-    @cython.embedsignature(True)
     @cython.infer_types(True)
     def has_feature(Target self, feature):
         return self.__this__.has_feature(<Feature>PyLong_AsLong(feature))
     
-    @cython.embedsignature(True)
     @cython.infer_types(True)
     def includes_halide_runtime(Target self):
         try:
@@ -382,42 +367,38 @@ cdef class Target:
         except ValueError:
             return True
     
-    @cython.embedsignature(True)
     @cython.infer_types(True)
     def to_string(Target self):
         return self.__this__.to_string()
     
-    @cython.embedsignature(True)
     @cython.infer_types(True)
     def maximum_buffer_size(Target self):
         return self.__this__.maximum_buffer_size()
     
-    @cython.embedsignature(True)
     @cython.infer_types(True)
     def supported(Target self):
         return self.__this__.supported()
     
-    @cython.embedsignature(True)
     @cython.infer_types(True)
     def supports_type(Target self, Type t):
         return self.__this__.supports_type(t.__this__)
     
-    @cython.embedsignature(True)
     @cython.infer_types(True)
     def natural_vector_size(Target self, Type t):
         return self.__this__.natural_vector_size(t.__this__)
     
-    @cython.embedsignature(True)
     @cython.infer_types(True)
     def __str__(Target self):
-        return str(self.__this__.to_string())
+        return self.__this__.to_string().decode('UTF-8')
     
-    @cython.embedsignature(True)
+    @cython.infer_types(True)
+    def __bytes__(Target self):
+        return self.__this__.to_string()
+    
     @cython.infer_types(True)
     def __repr__(Target self):
-        return stringify(self, ('os', 'arch', 'bits'))
+        return stringify(self, ('os', 'arch', 'bits')).decode('UTF-8')
     
-    @cython.embedsignature(True)
     @cython.infer_types(True)
     def __richcmp__(Target self, Target other, int op):
         if op == 2: # ==
@@ -426,7 +407,6 @@ cdef class Target:
             return bool(<HalTarget>self.__this__ != <HalTarget>other.__this__)
         return False
     
-    @cython.embedsignature(True)
     @cython.infer_types(True)
     @staticmethod
     def host_target():
@@ -435,7 +415,6 @@ cdef class Target:
             out.__this__ = halide_get_host_target()
         return out
     
-    @cython.embedsignature(True)
     @cython.infer_types(True)
     @staticmethod
     def target_from_environment():
@@ -444,7 +423,6 @@ cdef class Target:
             out.__this__ = halide_get_target_from_environment()
         return out
     
-    @cython.embedsignature(True)
     @cython.infer_types(True)
     @staticmethod
     def jit_target_from_environment():
@@ -461,7 +439,6 @@ cdef class Outputs:
     cdef:
         HalOutputs __this__
     
-    @cython.embedsignature(True)
     @cython.infer_types(True)
     @classmethod
     def check(cls, instance):
@@ -555,7 +532,6 @@ cdef class Outputs:
         def __set__(Outputs self, string& value):
             self.__this__.static_library_name = string(value)
     
-    @cython.embedsignature(True)
     @cython.infer_types(True)
     def object(Outputs self, s=None):
         out = Outputs()
@@ -564,7 +540,6 @@ cdef class Outputs:
         out.__this__ = self.__this__.object(<string>s)
         return out
     
-    @cython.embedsignature(True)
     @cython.infer_types(True)
     def assembly(Outputs self, s=None):
         out = Outputs()
@@ -573,7 +548,6 @@ cdef class Outputs:
         out.__this__ = self.__this__.assembly(<string>s)
         return out
     
-    @cython.embedsignature(True)
     @cython.infer_types(True)
     def bitcode(Outputs self, s=None):
         out = Outputs()
@@ -582,7 +556,6 @@ cdef class Outputs:
         out.__this__ = self.__this__.bitcode(<string>s)
         return out
     
-    @cython.embedsignature(True)
     @cython.infer_types(True)
     def llvm_assembly(Outputs self, s=None):
         out = Outputs()
@@ -591,7 +564,6 @@ cdef class Outputs:
         out.__this__ = self.__this__.llvm_assembly(<string>s)
         return out
     
-    @cython.embedsignature(True)
     @cython.infer_types(True)
     def c_header(Outputs self, s=None):
         out = Outputs()
@@ -600,7 +572,6 @@ cdef class Outputs:
         out.__this__ = self.__this__.c_header(<string>s)
         return out
     
-    @cython.embedsignature(True)
     @cython.infer_types(True)
     def c_source(Outputs self, s=None):
         out = Outputs()
@@ -609,7 +580,6 @@ cdef class Outputs:
         out.__this__ = self.__this__.c_source(<string>s)
         return out
     
-    @cython.embedsignature(True)
     @cython.infer_types(True)
     def stmt(Outputs self, s=None):
         out = Outputs()
@@ -618,7 +588,6 @@ cdef class Outputs:
         out.__this__ = self.__this__.stmt(<string>s)
         return out
     
-    @cython.embedsignature(True)
     @cython.infer_types(True)
     def stmt_html(Outputs self, s=None):
         out = Outputs()
@@ -627,7 +596,6 @@ cdef class Outputs:
         out.__this__ = self.__this__.stmt_html(<string>s)
         return out
     
-    @cython.embedsignature(True)
     @cython.infer_types(True)
     def static_library(Outputs self, s=None):
         out = Outputs()
@@ -636,22 +604,23 @@ cdef class Outputs:
         out.__this__ = self.__this__.static_library(<string>s)
         return out
     
-    @cython.embedsignature(True)
     @cython.infer_types(True)
     def to_string(Outputs self):
         return stringify(self, ("object_name", "assembly_name", "bitcode_name",
                                 "llvm_assembly_name", "c_header_name", "c_source_name",
                                 "stmt_name", "stmt_html_name", "static_library_name"))
     
-    @cython.embedsignature(True)
     @cython.infer_types(True)
-    def __str__(Outputs self):
+    def __bytes__(Outputs self):
         return self.to_string()
     
-    @cython.embedsignature(True)
+    @cython.infer_types(True)
+    def __str__(Outputs self):
+        return self.to_string().decode('UTF-8')
+    
     @cython.infer_types(True)
     def __repr__(Outputs self):
-        return self.to_string()
+        return self.to_string().decode('UTF-8')
 
 
 ctypedef GeneratorBase.EmitOptions EmOpts
@@ -783,13 +752,11 @@ cdef class EmitOptions:
             for k, v in dict(value).items():
                 self.__this__.substitutions[k] = <string>v
     
-    @cython.embedsignature(True)
     @cython.infer_types(True)
     def get_substitution(EmitOptions self, string& default):
         return dict(self.__this__.substitutions).get(bytes(default, encoding="UTF-8"),
                                                      bytes(default, encoding="UTF-8"))
     
-    @cython.embedsignature(True)
     @cython.infer_types(True)
     def compute_outputs_for_target_and_path(EmitOptions self, Target t, string& base_path):
         """ A reimplementation of `compute_outputs()`, private to Halide’s Generator.cpp """
@@ -836,20 +803,21 @@ cdef class EmitOptions:
         
         return output_files
     
-    @cython.embedsignature(True)
     @cython.infer_types(True)
     def to_string(EmitOptions self):
         return stringify(self, list(self.emit_defaults.keys()) + ['substitutions'])
     
-    @cython.embedsignature(True)
     @cython.infer_types(True)
-    def __str__(EmitOptions self):
+    def __bytes__(EmitOptions self):
         return self.to_string()
     
-    @cython.embedsignature(True)
+    @cython.infer_types(True)
+    def __str__(EmitOptions self):
+        return self.to_string().decode('UTF-8')
+    
     @cython.infer_types(True)
     def __repr__(EmitOptions self):
-        return self.to_string()
+        return self.to_string().decode('UTF-8')
 
 
 ctypedef unique_ptr[HalModule] module_ptr_t
@@ -885,12 +853,10 @@ cdef class Module:
         # scoped stack-deallocation (but who the fuck really knows, rite? huh.)
         self.__this__.reset(NULL)
     
-    @cython.embedsignature(True)
     @cython.infer_types(True)
     def name(Module self):
         return bytes(deref(self.__this__).name(), encoding="UTF-8")
     
-    @cython.embedsignature(True)
     @cython.infer_types(True)
     def target(Module self):
         out = Target()
@@ -905,76 +871,70 @@ cdef class Module:
             out.__this__.reset(new HalModule(m))
         return out
     
-    @cython.embedsignature(True)
     @cython.infer_types(True)
     cdef buffervec_t buffers(Module self):
         cdef buffervec_t out = deref(self.__this__).buffers()
         return out
     
-    @cython.embedsignature(True)
     @cython.infer_types(True)
     cdef funcvec_t functions(Module self):
         cdef funcvec_t out = deref(self.__this__).functions()
         return out
     
-    @cython.embedsignature(True)
     @cython.infer_types(True)
     cdef void replace_instance(Module self, HalModule&& m) nogil:
         self.__this__.reset(new HalModule(m))
     
-    @cython.embedsignature(True)
     @cython.infer_types(True)
     def compile(Module self, Outputs outputs):
         deref(self.__this__).compile(<HalOutputs>outputs.__this__)
     
-    @cython.embedsignature(True)
     @cython.infer_types(True)
     def to_string(Module self):
         cdef string name = deref(self.__this__).name()
         cdef string targ = deref(self.__this__).target().to_string()
         field_values = [b"name=%s" % bytes(name, encoding="UTF-8"),
                         b"target=%s" % bytes(targ, encoding="UTF-8")]
-        return b"%s(%s) @ %s" % (self.__class__.__name__,
+        return b"%s(%s) @ %s" % (bytes(self.__class__.__name__,
+                                       encoding="UTF-8"),
                                 b", ".join(field_values),
-                                hex(id(self)))
+                                 bytes(hex(id(self)),
+                                       encoding="UTF-8"))
     
-    @cython.embedsignature(True)
+    @cython.infer_types(True)
+    def __bytes__(Module self):
+        return self.to_string()
+    
     @cython.infer_types(True)
     def __str__(Module self):
-        return self.to_string()
+        return self.to_string().decode('UTF-8')
     
-    @cython.embedsignature(True)
     @cython.infer_types(True)
     def __repr__(Module self):
-        return self.to_string()
+        return self.to_string().decode('UTF-8')
 
 
 ## FUNCTION WRAPPERS:
-@cython.embedsignature(True)
 @cython.infer_types(True)
 def get_host_target():
     """ Halide::get_host_target() wrapper call. """
     return Target.host_target()
 
-@cython.embedsignature(True)
 @cython.infer_types(True)
 def get_target_from_environment():
     """ Halide::get_target_from_environment() wrapper call. """
     return Target.target_from_environment()
 
-@cython.embedsignature(True)
 @cython.infer_types(True)
 def get_jit_target_from_environment():
     """ Halide::get_jit_target_from_environment() wrapper call. """
     return Target.jit_target_from_environment()
 
-@cython.embedsignature(True)
 @cython.infer_types(True)
 cpdef bint validate_target_string(string& target_string):
     """ Halide::Target::validate_target_string(s) static method wrapper call. """
     return HalTarget.validate_target_string(<string>target_string)
 
-@cython.embedsignature(True)
 @cython.infer_types(True)
 def registered_generators():
     """ Enumerate registered generators using Halide::GeneratorRegistry. """
@@ -996,7 +956,6 @@ cdef string halide_compute_base_path(string& output_dir,
         base_path += file_base_name
     return base_path
 
-@cython.embedsignature(True)
 @cython.infer_types(True)
 def compute_base_path(string& output_dir,
                       string& function_name,
@@ -1007,7 +966,6 @@ def compute_base_path(string& output_dir,
                                     function_name,
                                     file_base_name)
 
-@cython.embedsignature(True)
 @cython.infer_types(True)
 cpdef Module get_generator_module(string& name, object arguments={}):
     """ Retrieve a Halide::Module, wrapped as hal.api.Module,
@@ -1048,7 +1006,6 @@ cpdef Module get_generator_module(string& name, object arguments={}):
 cdef void f_insert_into(Module module, modulevec_t& modulevec) nogil:
     modulevec.push_back(deref(module.__this__))
 
-@cython.embedsignature(True)
 @cython.infer_types(True)
 def link_modules(string& module_name, *modules):
     """ Python wrapper for Halide::link_modules() from src/Module.h """
@@ -1070,7 +1027,6 @@ def link_modules(string& module_name, *modules):
     out.replace_instance(<HalModule>halide_link_modules(module_name, modulevec))
     return out
 
-@cython.embedsignature(True)
 @cython.infer_types(True)
 def compile_standalone_runtime(Target target=Target.target_from_environment(),
                                   object pth=None,
@@ -1121,10 +1077,9 @@ def compile_standalone_runtime(Target target=Target.target_from_environment(),
     # WHICH MEANS BASICALLY WE CAN DO FUCK-ALL:
     raise ValueError("Either the 'pth' or 'outputs' args must be non-None")
 
-@cython.embedsignature(True)
 @cython.infer_types(True)
 def make_standalone_runtime(Target target=Target.target_from_environment(),
-                               object pth=None):
+                            object pth=None):
     # Where to store the output output:
     cdef Outputs outputs
     cdef HalOutputs out
@@ -1160,8 +1115,7 @@ def make_standalone_runtime(Target target=Target.target_from_environment(),
         stmt_html_name=bytes(out.stmt_html_name, encoding="UTF-8"),
         static_library_name=bytes(out.static_library_name, encoding="UTF-8"))
 
-@cython.embedsignature(True)
 @cython.infer_types(True)
 def running_program_name():
     """ Return the name of the running program as a string. """
-    return bytes(halide_running_program_name(), encoding="UTF-8")
+    return halide_running_program_name().decode('UTF-8')

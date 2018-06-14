@@ -865,7 +865,7 @@ def LD(conf, outfile, *infiles, **kwargs):
 
 def AR(conf, outfile, *infiles, **kwargs):
     """ Execute the library archiver, as named in the `AR` environment variable,
-        falling back to the compiler specified in Python `sysconfig`: """
+        falling back to the library archiver specified in Python `sysconfig`: """
     # This function is the ugly duckling here because:
     #   a) it does not use the `conf` arg at all, and
     #   b) it has to manually amend 'ARFLAGS' it would seem
