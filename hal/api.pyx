@@ -62,8 +62,8 @@ from ext.halide.util cimport running_program_name as halide_running_program_name
 from ext.halide.buffer cimport Buffer
 from ext.halide.buffer cimport buffervec_t
 
-# from ext.halide.fused cimport stringish_t
-# from ext.halide.fused cimport floating_t
+from ext.halide.fused cimport stringish_t
+from ext.halide.fused cimport floating_t
 
 @cython.infer_types(True)
 def stringify(instance, fields):

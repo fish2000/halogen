@@ -1892,6 +1892,8 @@ static CYTHON_INLINE __pyx_t_3hal_3ext_6halide_9generator_base_ptr_t __pyx_f_3ha
 
 /* Module declarations from 'hal.ext.halide.util' */
 
+/* Module declarations from 'hal.ext.halide.fused' */
+
 /* Module declarations from 'hal.api' */
 static PyTypeObject *__pyx_ptype_3hal_3api_Type = 0;
 static PyTypeObject *__pyx_ptype_3hal_3api_Target = 0;
