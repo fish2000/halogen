@@ -103,6 +103,7 @@ setup(name='halide-halogen',
         )],
         language="c++",
         compiler_directives=dict(language_level=2,
+                                 infer_types=True,
                                  embedsignature=True)
     )
 )
