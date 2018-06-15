@@ -22,7 +22,7 @@ from abc import ABC, ABCMeta, abstractmethod
 from os.path import splitext
 from ctypes.util import find_library
 from functools import wraps
-from filesystem import which, back_tick
+from filesystem import which, back_tick, script_path
 from utils import stringify
 
 SHARED_LIBRARY_SUFFIX = splitext(find_library("c"))[-1].lower()
@@ -468,10 +468,36 @@ class PkgConfig(ConfigBase):
     # Location of the `pkg-config` binary:
     pkgconfig = which('pkg-config')
     
+    # Cache of complete package list:
+    packages = set()
+    did_load_packages = False
+    
+    @classmethod
+    def load_packages(cls):
+        if not cls.did_load_packages:
+            from errors import ExecutionError
+            script = which('all-pkgconfig-packages.sh', pathvar=script_path())
+            try:
+                cls.packages |= frozenset(back_tick(script).split('\n'))
+            except ExecutionError:
+                pass
+            else:
+                cls.did_load_packages = True
+        return len(cls.packages)
+    
+    @classmethod
+    def add_package(cls, pkg_name):
+        cls.packages |= { pkg_name }
+    
+    @classmethod
+    def check_package(cls, pkg_name):
+        return pkg_name in cls.packages
+    
     def __init__(self, pkg_name=None):
         if not pkg_name:
             pkg_name = 'python3'
         self.pkg_name = pkg_name
+        self.add_package(pkg_name)
         self.prefix = back_tick("%s %s --variable=prefix" % (self.pkgconfig,
                                                              self.pkg_name),
                                                              ret_err=False)
@@ -650,7 +676,8 @@ class ConfigUnion(ConfigBase):
     class FlagSet(object):
         
         """ A sugary-sweet class for stowing a set of flags whose order is significant. """
-        joiner = ", %s" % TOKEN
+        
+        joiner = ", %s" % TOKEN.lstrip()
         __slots__ = ('flags', 'set')
         
         def __init__(self, template, flaglist):

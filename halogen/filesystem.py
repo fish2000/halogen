@@ -21,6 +21,11 @@ DEFAULT_PATH = ":".join(filter(os.path.exists, ("/usr/local/bin",
                                                 "/bin",
                                                 "/usr/bin")))
 
+def script_path():
+    """ Return the path to the embedded scripts directory """
+    return os.path.join(
+           os.path.dirname(__file__), 'scripts')
+
 def which(binary_name, pathvar=None):
     """ Deduces the path corresponding to an executable name,
         as per the UNIX command `which`. Optionally takes an

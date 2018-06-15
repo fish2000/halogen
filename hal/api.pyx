@@ -382,6 +382,14 @@ cdef class Target:
         return out
 
 
+cpdef bytes u8bytes(object string_source):
+    if type(string_source) == type(bytes):
+        return string_source
+    return bytes(string_source, encoding='UTF-8')
+
+cpdef str u8str(object string_source):
+    return u8bytes(string_source).decode('UTF-8')
+
 @cython.freelist(32)
 cdef class Outputs:
     """ Cython wrapper class for Halide::Outputs """
@@ -407,141 +415,141 @@ cdef class Outputs:
                                              .static_library(arg.static_library_name)
                 return
         
-        object_name = bytes(kwargs.pop('object_name', ''), encoding="UTF-8")
-        assembly_name = bytes(kwargs.pop('assembly_name', ''), encoding="UTF-8")
-        bitcode_name = bytes(kwargs.pop('bitcode_name', ''), encoding="UTF-8")
-        llvm_assembly_name = bytes(kwargs.pop('llvm_assembly_name', ''), encoding="UTF-8")
-        c_header_name = bytes(kwargs.pop('c_header_name', ''), encoding="UTF-8")
-        c_source_name = bytes(kwargs.pop('c_source_name', ''), encoding="UTF-8")
-        stmt_name = bytes(kwargs.pop('stmt_name', ''), encoding="UTF-8")
-        stmt_html_name = bytes(kwargs.pop('stmt_html_name', ''), encoding="UTF-8")
-        static_library_name = bytes(kwargs.pop('static_library_name', ''), encoding="UTF-8")
+        object_name = kwargs.pop('object_name', '')
+        assembly_name = kwargs.pop('assembly_name', '')
+        bitcode_name = kwargs.pop('bitcode_name', '')
+        llvm_assembly_name = kwargs.pop('llvm_assembly_name', '')
+        c_header_name = kwargs.pop('c_header_name', '')
+        c_source_name = kwargs.pop('c_source_name', '')
+        stmt_name = kwargs.pop('stmt_name', '')
+        stmt_html_name = kwargs.pop('stmt_html_name', '')
+        static_library_name = kwargs.pop('static_library_name', '')
         
-        self.__this__.object_name = <string>object_name
-        self.__this__.assembly_name = <string>assembly_name
-        self.__this__.bitcode_name = <string>bitcode_name
-        self.__this__.llvm_assembly_name = <string>llvm_assembly_name
-        self.__this__.c_header_name = <string>c_header_name
-        self.__this__.c_source_name = <string>c_source_name
-        self.__this__.stmt_name = <string>stmt_name
-        self.__this__.stmt_html_name = <string>stmt_html_name
-        self.__this__.static_library_name = <string>static_library_name
+        self.__this__.object_name = <string>u8bytes(object_name)
+        self.__this__.assembly_name = <string>u8bytes(assembly_name)
+        self.__this__.bitcode_name = <string>u8bytes(bitcode_name)
+        self.__this__.llvm_assembly_name = <string>u8bytes(llvm_assembly_name)
+        self.__this__.c_header_name = <string>u8bytes(c_header_name)
+        self.__this__.c_source_name = <string>u8bytes(c_source_name)
+        self.__this__.stmt_name = <string>u8bytes(stmt_name)
+        self.__this__.stmt_html_name = <string>u8bytes(stmt_html_name)
+        self.__this__.static_library_name = <string>u8bytes(static_library_name)
     
     property object_name:
         def __get__(Outputs self):
-            return bytes(self.__this__.object_name, encoding="UTF-8")
-        def __set__(Outputs self, string& value):
-            self.__this__.object_name = string(value)
+            return <string>self.__this__.object_name
+        def __set__(Outputs self, object value):
+            self.__this__.object_name = <string>u8bytes(value)
     
     property assembly_name:
         def __get__(Outputs self):
-            return str(self.__this__.assembly_name, encoding="UTF-8")
-        def __set__(Outputs self, string& value):
-            self.__this__.assembly_name = string(value)
+            return <string>self.__this__.assembly_name
+        def __set__(Outputs self, object value):
+            self.__this__.assembly_name = <string>u8bytes(value)
     
     property bitcode_name:
         def __get__(Outputs self):
-            return bytes(self.__this__.bitcode_name, encoding="UTF-8")
-        def __set__(Outputs self, string& value):
-            self.__this__.bitcode_name = string(value)
+            return <string>self.__this__.bitcode_name
+        def __set__(Outputs self, object value):
+            self.__this__.bitcode_name = <string>u8bytes(value)
     
     property llvm_assembly_name:
         def __get__(Outputs self):
-            return bytes(self.__this__.llvm_assembly_name, encoding="UTF-8")
-        def __set__(Outputs self, string& value):
-            self.__this__.llvm_assembly_name = string(value)
+            return <string>self.__this__.llvm_assembly_name
+        def __set__(Outputs self, object value):
+            self.__this__.llvm_assembly_name = <string>u8bytes(value)
     
     property c_header_name:
         def __get__(Outputs self):
-            return bytes(self.__this__.c_header_name, encoding="UTF-8")
-        def __set__(Outputs self, string& value):
-            self.__this__.c_header_name = string(value)
+            return <string>self.__this__.c_header_name
+        def __set__(Outputs self, object value):
+            self.__this__.c_header_name = <string>u8bytes(value)
     
     property c_source_name:
         def __get__(Outputs self):
-            return bytes(self.__this__.c_source_name, encoding="UTF-8")
-        def __set__(Outputs self, string& value):
-            self.__this__.c_source_name = string(value)
+            return <string>self.__this__.c_source_name
+        def __set__(Outputs self, object value):
+            self.__this__.c_source_name = <string>u8bytes(value)
     
     property stmt_name:
         def __get__(Outputs self):
-            return bytes(self.__this__.stmt_name, encoding="UTF-8")
-        def __set__(Outputs self, string& value):
-            self.__this__.stmt_name = string(value)
+            return <string>self.__this__.stmt_name
+        def __set__(Outputs self, object value):
+            self.__this__.stmt_name = <string>u8bytes(value)
     
     property stmt_html_name:
         def __get__(Outputs self):
-            return bytes(self.__this__.stmt_html_name, encoding="UTF-8")
-        def __set__(Outputs self, string& value):
-            self.__this__.stmt_html_name = string(value)
+            return <string>self.__this__.stmt_html_name
+        def __set__(Outputs self, object value):
+            self.__this__.stmt_html_name = <string>u8bytes(value)
     
     property static_library_name:
         def __get__(Outputs self):
-            return bytes(self.__this__.static_library_name, encoding="UTF-8")
-        def __set__(Outputs self, string& value):
-            self.__this__.static_library_name = string(value)
+            return <string>self.__this__.static_library_name
+        def __set__(Outputs self, object value):
+            self.__this__.static_library_name = <string>u8bytes(value)
     
-    def object(Outputs self, s=None):
+    def object(Outputs self, object s=None):
         out = Outputs()
         if s is None:
             s = ''
-        out.__this__ = self.__this__.object(<string>s)
+        out.__this__ = self.__this__.object(u8bytes(s))
         return out
     
-    def assembly(Outputs self, s=None):
+    def assembly(Outputs self, object s=None):
         out = Outputs()
         if s is None:
             s = ''
-        out.__this__ = self.__this__.assembly(<string>s)
+        out.__this__ = self.__this__.assembly(u8bytes(s))
         return out
     
-    def bitcode(Outputs self, s=None):
+    def bitcode(Outputs self, object s=None):
         out = Outputs()
         if s is None:
             s = ''
-        out.__this__ = self.__this__.bitcode(<string>s)
+        out.__this__ = self.__this__.bitcode(u8bytes(s))
         return out
     
-    def llvm_assembly(Outputs self, s=None):
+    def llvm_assembly(Outputs self, object s=None):
         out = Outputs()
         if s is None:
             s = ''
-        out.__this__ = self.__this__.llvm_assembly(<string>s)
+        out.__this__ = self.__this__.llvm_assembly(u8bytes(s))
         return out
     
-    def c_header(Outputs self, s=None):
+    def c_header(Outputs self, object s=None):
         out = Outputs()
         if s is None:
             s = ''
-        out.__this__ = self.__this__.c_header(<string>s)
+        out.__this__ = self.__this__.c_header(u8bytes(s))
         return out
     
-    def c_source(Outputs self, s=None):
+    def c_source(Outputs self, object s=None):
         out = Outputs()
         if s is None:
             s = ''
-        out.__this__ = self.__this__.c_source(<string>s)
+        out.__this__ = self.__this__.c_source(u8bytes(s))
         return out
     
-    def stmt(Outputs self, s=None):
+    def stmt(Outputs self, object s=None):
         out = Outputs()
         if s is None:
             s = ''
-        out.__this__ = self.__this__.stmt(<string>s)
+        out.__this__ = self.__this__.stmt(u8bytes(s))
         return out
     
-    def stmt_html(Outputs self, s=None):
+    def stmt_html(Outputs self, object s=None):
         out = Outputs()
         if s is None:
             s = ''
-        out.__this__ = self.__this__.stmt_html(<string>s)
+        out.__this__ = self.__this__.stmt_html(u8bytes(s))
         return out
     
-    def static_library(Outputs self, s=None):
+    def static_library(Outputs self, object s=None):
         out = Outputs()
         if s is None:
             s = ''
-        out.__this__ = self.__this__.static_library(<string>s)
+        out.__this__ = self.__this__.static_library(u8bytes(s))
         return out
     
     def to_string(Outputs self):
@@ -688,12 +696,12 @@ cdef class EmitOptions:
             for k, v in dict(value).items():
                 self.__this__.substitutions[k] = <string>v
     
-    def get_substitution(EmitOptions self, string& default):
-        return dict(self.__this__.substitutions).get(bytes(default, encoding="UTF-8"),
-                                                     bytes(default, encoding="UTF-8"))
+    def get_substitution(EmitOptions self, object default):
+        return <string>dict(self.__this__.substitutions).get(u8bytes(default), u8bytes(default))
     
-    def compute_outputs_for_target_and_path(EmitOptions self, Target t, string& base_path):
+    def compute_outputs_for_target_and_path(EmitOptions self, Target t, object base_path):
         """ A reimplementation of `compute_outputs()`, private to Halide’s Generator.cpp """
+        
         # This is a reimplementation of the C++ orig --
         # ... there used to be some checking here for PNaCl, but all the PNaCl-specific values
         # seem to have vanished from the Halide::Target enums of late. I don’t give much of
@@ -701,39 +709,40 @@ cdef class EmitOptions:
         # behavior to be wrong, please do explain how this wrongness works to me (preferably
         # with a scathingly witty tweet that embarasses me in front of all my friends, and
         # also the greater C++, Cython, and Halide communities in general).
+        
+        cdef string base_path_str = <string>u8bytes(base_path)
         is_windows_coff = bool(<size_t>t.os == <size_t>OS_Windows and not t.has_feature(<size_t>Feature_MinGW))
-        base_path_str = bytes(base_path, encoding="UTF-8")
         output_files = Outputs()
         
         if self.emit_o:
             if is_windows_coff:
-                output_files.object_name = base_path_str + self.get_substitution(b".obj")
+                output_files.object_name = base_path_str + self.get_substitution(".obj")
             else:
-                output_files.object_name = base_path_str + self.get_substitution(b".o")
+                output_files.object_name = base_path_str + self.get_substitution(".o")
         
         if self.emit_assembly:
-            output_files.assembly_name = base_path_str + self.get_substitution(b".s")
+            output_files.assembly_name = base_path_str + self.get_substitution(".s")
         
         if self.emit_bitcode:
-            output_files.bitcode_name = base_path_str + self.get_substitution(b".bc")
+            output_files.bitcode_name = base_path_str + self.get_substitution(".bc")
         if self.emit_h:
-            output_files.c_header_name = base_path_str + self.get_substitution(b".h")
+            output_files.c_header_name = base_path_str + self.get_substitution(".h")
         if self.emit_cpp:
-            output_files.c_source_name = base_path_str + self.get_substitution(b".cpp")
+            output_files.c_source_name = base_path_str + self.get_substitution(".cpp")
         
         # N.B. Currently the Halide `compute_outputs()` version has no substitution logic
         # for `emit_cpp_stub` -- q.v. Halide/src/Generator.cpp lines 54-96 sub.
         
         if self.emit_stmt:
-            output_files.stmt_name = base_path_str + self.get_substitution(b".stmt")
+            output_files.stmt_name = base_path_str + self.get_substitution(".stmt")
         if self.emit_stmt_html:
-            output_files.stmt_html_name = base_path_str + self.get_substitution(b".html")
+            output_files.stmt_html_name = base_path_str + self.get_substitution(".html")
         
         if self.emit_static_library:
             if is_windows_coff:
-                output_files.static_library_name = base_path_str + self.get_substitution(b".lib")
+                output_files.static_library_name = base_path_str + self.get_substitution(".lib")
             else:
-                output_files.static_library_name = base_path_str + self.get_substitution(b".a")
+                output_files.static_library_name = base_path_str + self.get_substitution(".a")
         
         return output_files
     
@@ -771,11 +780,13 @@ cdef class Module:
     
     def __init__(Module self, *args, **kwargs):
         cdef HalTarget htarg
+        cdef string name
+        cdef string tstring
         if len(args) < 1 and not self.__this__.get():
-            name = bytes(kwargs.get('name', ''), encoding="UTF-8")
-            tstring = bytes(Target(bytes(kwargs.get('target', 'host'), encoding="UTF-8")).to_string(), encoding="UTF-8")
-            htarg = HalTarget(<string>tstring)
-            self.__this__.reset(new HalModule(<string>name, <HalTarget>htarg))
+            name = <string>u8bytes(kwargs.get('name', ''))
+            tstring = Target(target_string=kwargs.get('target', 'host')).to_string()
+            htarg = HalTarget(tstring)
+            self.__this__.reset(new HalModule(name, <HalTarget>htarg))
     
     def __dealloc__(Module self):
         # Manually calling `reset()` on the internal std::unique_ptr here
@@ -784,7 +795,7 @@ cdef class Module:
         self.__this__.reset(NULL)
     
     def name(Module self):
-        return bytes(deref(self.__this__).name(), encoding="UTF-8")
+        return deref(self.__this__).name()
     
     def target(Module self):
         out = Target()
@@ -813,10 +824,9 @@ cdef class Module:
         deref(self.__this__).compile(<HalOutputs>outputs.__this__)
     
     def to_string(Module self):
-        cdef string name = deref(self.__this__).name()
-        cdef string targ = deref(self.__this__).target().to_string()
-        field_values = [b"name=%s" % bytes(name, encoding="UTF-8"),
-                        b"target=%s" % bytes(targ, encoding="UTF-8")]
+        cdef string name = <string>deref(self.__this__).name()
+        cdef string targ = <string>deref(self.__this__).target().to_string()
+        field_values = [b"name=%s" % name, b"target=%s" % targ]
         return b"%s(%s) @ %s" % (bytes(self.__class__.__name__,
                                        encoding="UTF-8"),
                                 b", ".join(field_values),
@@ -864,32 +874,35 @@ cdef string halide_compute_base_path(string& output_dir,
                                      string& file_base_name):
     cdef stringvec_t namespaces
     cdef string simple_name = halide_extract_namespaces(function_name, namespaces)
-    cdef string base_path = output_dir + "/"
+    cdef string base_path = output_dir + b"/"
     if file_base_name.empty():
         base_path += simple_name
     else:
         base_path += file_base_name
     return base_path
 
-def compute_base_path(string& output_dir,
-                      string& function_name,
-                      string& file_base_name):
+def compute_base_path(object output_dir,
+                      object function_name,
+                      object file_base_name):
     """ Reimplementation of Halide::Internal::compute_base_path(...)
         (a private function found in Halide/src/Generator.cpp). """
-    return halide_compute_base_path(output_dir,
-                                    function_name,
-                                    file_base_name)
+    cdef string output_dir_string = <string>u8bytes(output_dir)
+    cdef string function_name_string = <string>u8bytes(function_name)
+    cdef string file_base_name_string = <string>u8bytes(file_base_name)
+    return halide_compute_base_path(output_dir_string,
+                                    function_name_string,
+                                    file_base_name_string)
 
-cpdef Module get_generator_module(string& name, object arguments={}):
+cpdef Module get_generator_module(object name, object arguments={}):
     """ Retrieve a Halide::Module, wrapped as hal.api.Module,
         corresponding to the registered generator instance (by name). """
     # first, check name against registered generators:
-    if bytes(name, encoding="UTF-8") not in registered_generators():
-        raise ValueError(b"""can't find a registered generator named "%s" """ % bytes(name, encoding="UTF-8"))
+    if u8bytes(name) not in registered_generators():
+        raise ValueError("""can't find a registered generator named "%s" """ % u8str(name))
     
     # next, check that `arguments` is a mapping type:
     if not PyMapping_Check(arguments):
-        raise ValueError(b""""arguments" must be a mapping (dict-ish) type""")
+        raise ValueError(""""arguments" must be a mapping (dict-ish) type""")
     
     # stack-allocate a named module (per the `name` argument),
     # a unique pointer (for holding a Halide::GeneratorBase instance), and
@@ -900,43 +913,44 @@ cpdef Module get_generator_module(string& name, object arguments={}):
     
     # Heap-allocate a Target object (from either the environment or
     # as per the argument dict) held in a unique pointer:
-    t = arguments.get('target', Target.target_from_environment().to_string())
-    cdef target_ptr_t generator_target
-    generator_target.reset(new HalTarget(<string>t))
+    generator_target = u8bytes(arguments.get('target', Target.target_from_environment().to_string()))
+    cdef target_ptr_t generator_target_ptr
+    generator_target_ptr.reset(new HalTarget(<string>generator_target))
     
     # Copy arguments from the Python dict to the STL map:
     for k, v in arguments.items():
         argmap[<string>k] = <string>v
     
-    with nogil:
-        # Actually get an instance of the named generator:
-        generator_instance = halide_generator_registry_get(name, deref(generator_target), argmap)
-        
-        # “Modulize” and return the generator instance (which that is a Halide thing, modulization):
-        out.replace_instance(<HalModule>deref(generator_instance).build_module(name, Linkage_Internal))
+    # Actually get an instance of the named generator:
+    generator_instance = halide_generator_registry_get(u8bytes(name), deref(generator_target_ptr), argmap)
+    
+    # “Modulize” and return the generator instance (which that is a Halide thing, modulization):
+    out.replace_instance(<HalModule>deref(generator_instance).build_module(u8bytes(name), Linkage_Internal))
+    
+    # return the newly built module:
     return out
 
 cdef void f_insert_into(Module module, modulevec_t& modulevec) nogil:
     modulevec.push_back(deref(module.__this__))
 
-def link_modules(string& module_name, *modules):
+def link_modules(object module_name, *modules):
     """ Python wrapper for Halide::link_modules() from src/Module.h """
     cdef modulevec_t modulevec
-    out = Module(name=module_name)
+    out = Module(name=u8bytes(module_name))
     
     # check that we got some stuff:
     if len(modules) < 1:
-        raise ValueError(b"""link_modules() called without modules to link""")
+        raise ValueError("""link_modules() called without modules to link""")
     
     # check the type of all positional arguments:
     for module in modules:
         if type(module) is not type(Module):
-            raise TypeError(b"""All positional args must be hal.api.Module""")
+            raise TypeError("""All positional args must be hal.api.Module""")
     
     for module in modules:
         f_insert_into(module, modulevec)
     
-    out.replace_instance(<HalModule>halide_link_modules(module_name, modulevec))
+    out.replace_instance(<HalModule>halide_link_modules(u8bytes(module_name), modulevec))
     return out
 
 def compile_standalone_runtime(Target target=Target.target_from_environment(),
@@ -950,16 +964,16 @@ def compile_standalone_runtime(Target target=Target.target_from_environment(),
     if pth is not None:
         # real-ify the path - this will raise if problematic:
         from os.path import realpath
-        realpth = realpath(pth)
-        if not realpth.lower().endswith(b'.o'):
-            realpth += b".o"
+        realpth = realpath(u8str(pth))
+        if not realpth.lower().endswith('.o'):
+            realpth += ".o"
         
         # make the actual call:
-        halide_compile_standalone_runtime_for_path(<string>realpth,
+        halide_compile_standalone_runtime_for_path(<string>u8bytes(realpth),
                                                    <HalTarget>target.__this__)
         
         # return the real-ified path:
-        return bytes(realpth, encoding="UTF-8")
+        return u8bytes(realpth)
     
     # OPTION 2: WE GOT A FULL-BLOWN “OUTPUTS” OBJECT:
     elif outputs is not None:
@@ -974,15 +988,15 @@ def compile_standalone_runtime(Target target=Target.target_from_environment(),
         
         # return a new hal.api.Outputs matching the returned value above:
         return Outputs(
-            object_name=bytes(out.object_name, encoding="UTF-8"),
-            assembly_name=bytes(out.assembly_name, encoding="UTF-8"),
-            bitcode_name=bytes(out.bitcode_name, encoding="UTF-8"),
-            llvm_assembly_name=bytes(out.llvm_assembly_name, encoding="UTF-8"),
-            c_header_name=bytes(out.c_header_name, encoding="UTF-8"),
-            c_source_name=bytes(out.c_source_name, encoding="UTF-8"),
-            stmt_name=bytes(out.stmt_name, encoding="UTF-8"),
-            stmt_html_name=bytes(out.stmt_html_name, encoding="UTF-8"),
-            static_library_name=bytes(out.static_library_name, encoding="UTF-8"))
+            object_name=out.object_name,
+            assembly_name=out.assembly_name,
+            bitcode_name=out.bitcode_name,
+            llvm_assembly_name=out.llvm_assembly_name,
+            c_header_name=out.c_header_name,
+            c_source_name=out.c_source_name,
+            stmt_name=out.stmt_name,
+            stmt_html_name=out.stmt_html_name,
+            static_library_name=out.static_library_name)
     
     # OPTION 3: WE GOT NEITHER OF THE ABOVE,
     # WHICH MEANS BASICALLY WE CAN DO FUCK-ALL:
@@ -999,14 +1013,14 @@ def make_standalone_runtime(Target target=Target.target_from_environment(),
         raise ValueError("Must specify 'pth'")
     
     from os.path import realpath
-    realpth = realpath(pth)
+    realpth = realpath(u8str(pth))
     
     # Compute the outputs using hal.api.EmitOptions -- the EmitOptions defaults
     # will render object files, headers, and archives (.o, .h, .a) --
     # HOWEVER, Halide::compile_standalone_runtime() in Module.cpp recreates
     # the Outputs object with only object files and archives (.o, .a) enabled:
     outputs = EmitOptions().compute_outputs_for_target_and_path(t=target,
-                                                        base_path=<string>realpth)
+                                                        base_path=u8bytes(realpth))
     
     # make the actual call, returning another native Options object:
     with nogil:
@@ -1015,15 +1029,15 @@ def make_standalone_runtime(Target target=Target.target_from_environment(),
     
     # return a new hal.api.Outputs matching the returned value above:
     return Outputs(
-        object_name=bytes(out.object_name, encoding="UTF-8"),
-        assembly_name=bytes(out.assembly_name, encoding="UTF-8"),
-        bitcode_name=bytes(out.bitcode_name, encoding="UTF-8"),
-        llvm_assembly_name=bytes(out.llvm_assembly_name, encoding="UTF-8"),
-        c_header_name=bytes(out.c_header_name, encoding="UTF-8"),
-        c_source_name=bytes(out.c_source_name, encoding="UTF-8"),
-        stmt_name=bytes(out.stmt_name, encoding="UTF-8"),
-        stmt_html_name=bytes(out.stmt_html_name, encoding="UTF-8"),
-        static_library_name=bytes(out.static_library_name, encoding="UTF-8"))
+        object_name=out.object_name,
+        assembly_name=out.assembly_name,
+        bitcode_name=out.bitcode_name,
+        llvm_assembly_name=out.llvm_assembly_name,
+        c_header_name=out.c_header_name,
+        c_source_name=out.c_source_name,
+        stmt_name=out.stmt_name,
+        stmt_html_name=out.stmt_html_name,
+        static_library_name=out.static_library_name)
 
 def running_program_name():
     """ Return the name of the running program as a string. """
