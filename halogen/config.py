@@ -630,6 +630,44 @@ class BrewedHalideConfig(BrewedConfig):
         return "-L%s -l%s" % (self.lib(), self.library)
 
 
+class BrewedImreadConfig(BrewedConfig):
+    
+    """ A config class that provides its values through calls to the Mac Homebrew
+        command-line `brew` tool, specifically pertaining to the “libimread” formula.
+    """
+    
+    fields = ConfigBase.FieldList('library',
+                                  'config_command', dir_fields=True)
+    
+    # Name of the Halide library (sans “lib” prefix and file extension):
+    library = "imread"
+    
+    def __init__(self, brew_name=None):
+        """ Complete override of BrewedConfig’s __init__ method: """
+        if not brew_name:
+            brew_name = 'libimread'
+        self.brew_name = brew_name
+        self.config_command = which('imread-config')
+        cmd = '%s --prefix' % self.config_command
+        self.prefix = back_tick(cmd, ret_err=False)
+    
+    def get_includes(self):
+        return back_tick("%s --includes" % self.config_command,
+                                           ret_err=False)
+    
+    def get_libs(self):
+        return back_tick("%s --libs" % self.config_command,
+                                       ret_err=False)
+    
+    def get_cflags(self):
+        return back_tick("%s --cflags" % self.config_command,
+                                         ret_err=False)
+    
+    def get_ldflags(self):
+        return back_tick("%s --ldflags" % self.config_command,
+                                          ret_err=False)
+
+
 class ConfigUnion(ConfigBase):
     
     """ A config class that provides values as the union of all provided values
