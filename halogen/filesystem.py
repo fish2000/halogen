@@ -15,7 +15,7 @@ except ImportError:
 
 from tempfile import mktemp, mkdtemp, gettempprefix
 from errors import ExecutionError, FilesystemError
-from utils import stringify
+from utils import stringify, u8bytes, u8str
 
 DEFAULT_PATH = ":".join(filter(os.path.exists, ("/usr/local/bin",
                                                 "/bin",
@@ -82,7 +82,8 @@ def back_tick(cmd, ret_err=False, as_str=True, raise_err=None, verbose=False):
         raise ExecutionError(cmd_str + ' process did not terminate')
     if raise_err and retcode != 0:
         raise ExecutionError('`{}` returned code {} with error: {}'.format(
-                             cmd_str, retcode, err.decode('latin-1')))
+                             cmd_str, retcode,
+                             err.decode('latin-1')))
     out = out.strip()
     if as_str:
         out = out.decode('latin-1')
@@ -344,7 +345,8 @@ class TemporaryDirectory(Directory):
         if os.path.exists(destination):
             raise FilesystemError("TemporaryDirectory.copy_all() destination existant: %s" % destination)
         if self.exists:
-            return shutil.copytree(type(destination)(self.name), destination)
+            return shutil.copytree(u8str(self.name),
+                                   u8str(destination))
         return False
     
     def do_not_destroy(self):
@@ -401,7 +403,7 @@ def NamedTemporaryFile(mode='w+b', buffer_size=-1,
     
     (descriptor, name) = _mkstemp_inner(directory, prefix,
                                                    suffix, flags,
-                                             bytes(suffix, encoding="UTF-8"))
+                                           u8bytes(suffix))
     try:
         filehandle = _os.fdopen(descriptor, mode, buffer_size)
         return _TemporaryFileWrapper(filehandle, name, delete)

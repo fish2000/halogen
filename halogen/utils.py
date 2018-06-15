@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import print_function
+import six
 
 # get_terminal_size(): does what you think it does
 # adapted from this: http://stackoverflow.com/a/566752/298171
@@ -37,6 +38,18 @@ def memoize(function):
             return out
     memoinstance = memoizer()
     return lambda *args: memoinstance[args]
+
+def u8bytes(string_source):
+    if type(string_source) == bytes:
+        return string_source
+    elif type(string_source) == str:
+        return bytes(string_source, encoding='UTF-8')
+    elif isinstance(string_source, six.string_types):
+        return bytes(string_source, encoding='UTF-8')
+    return bytes(string_source)
+
+def u8str(string_source):
+    return u8bytes(string_source).decode('UTF-8')
 
 def stringify(instance, fields):
     field_dict = {}

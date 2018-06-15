@@ -23,7 +23,7 @@ from os.path import splitext
 from ctypes.util import find_library
 from functools import wraps
 from filesystem import which, back_tick, script_path
-from utils import stringify
+from utils import stringify, u8bytes
 
 SHARED_LIBRARY_SUFFIX = splitext(find_library("c"))[-1].lower()
 STATIC_LIBRARY_SUFFIX = (SHARED_LIBRARY_SUFFIX == ".dll") and ".lib" or ".a"
@@ -89,6 +89,9 @@ class ConfigSubBase(SubBaseAncestor):
     
     @abstractmethod
     def __str__(self): pass
+    
+    @abstractmethod
+    def __bytes__(self): pass
     
     @abstractmethod
     def __unicode__(self): pass
@@ -246,6 +249,9 @@ class ConfigBase(BaseAncestor):
     
     def __str__(self):
         return stringify(self, self.__class__.fields)
+    
+    def __bytes__(self):
+        return u8bytes(repr(self))
     
     def __unicode__(self):
         return six.u(repr(self))
@@ -702,6 +708,9 @@ class ConfigUnion(ConfigBase):
         def __str__(self):
             return "[%s%s ]" % (TOKEN, self.joiner.join(self.flags))
         
+        def __bytes__(self):
+            return u8bytes(repr(self))
+        
         def __unicode__(self):
             return six.u(str(self))
     
@@ -1121,5 +1130,5 @@ if __name__ == '__main__':
     except ImportError:
         print("SKIPPING: PyObjC-based CoreFoundation test (PyObjC not installed)")
     else:
-        objc # SHUT UP, FLAKE8!
+        objc # SHUT UP, PYFLAKES!
         corefoundation_check()
