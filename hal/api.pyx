@@ -65,23 +65,32 @@ from ext.halide.buffer cimport buffervec_t
 from ext.halide.fused cimport stringish_t
 from ext.halide.fused cimport floating_t
 
+
+cpdef bytes u8bytes(object string_source):
+    if type(string_source) == bytes:
+        return string_source
+    elif type(string_source) == str:
+        return bytes(string_source, encoding='UTF-8')
+    elif type(string_source) == unicode:
+        return bytes(string_source, encoding='UTF-8')
+    return bytes(string_source)
+
+cpdef str u8str(object string_source):
+    return u8bytes(string_source).decode('UTF-8')
+
 def stringify(instance, fields):
     field_dict = {}
     for field in fields:
         field_value = getattr(instance, field, b"")
-        if hasattr(field_value, 'decode'):
-            field_value = field_value.decode('UTF-8')
         if field_value:
             field_dict.update({ field : field_value })
     field_dict_items = []
     for k, v in field_dict.items():
-        field_dict_items.append(b'''%s="%s"''' % (bytes(k,      encoding='UTF-8'),
-                                                  bytes(str(v), encoding='UTF-8')))
-    return b"%s(%s) @ %s" % (bytes(instance.__class__.__name__,
-                                   encoding='UTF-8'),
-                            b", ".join(field_dict_items),
-                             bytes(hex(id(instance)),
-                                   encoding='UTF-8'))
+        field_dict_items.append(b'''%s="%s"''' % (u8bytes(k),
+                                                  u8bytes(v)))
+    return b"%s(%s) @ %s" % (u8bytes(instance.__class__.__name__),
+                             b", ".join(field_dict_items),
+                             u8bytes(hex(id(instance))))
 
 
 @cython.freelist(32)
@@ -198,46 +207,46 @@ cdef class Type:
         try:
             return halide_type_to_c_source(self.__this__)
         except IndexError:
-            return "Halide::type_sink<void>"
+            return b"Halide::type_sink<void>"
     
     def repr_c_type(Type self):
         try:
             return halide_type_to_c_type(self.__this__)
         except IndexError:
-            return "void"
+            return b"void"
     
     def repr_enum_string(Type self):
         try:
             return halide_type_to_enum_string(self.__this__)
         except IndexError:
-            return "void"
+            return b"void"
     
     def to_string(Type self):
         try:
             return halide_type_to_c_type(self.__this__)
         except IndexError:
-            return "void"
+            return b"void"
     
     def __repr__(Type self):
         try:
-            c_source = halide_type_to_c_source(self.__this__)
+            c_source = <bytes>halide_type_to_c_source(self.__this__)
         except IndexError:
-            c_source = "Halide::type_sink<void>"
-        return str("<%s @ %s>" % (c_source.decode('UTF-8'),
-                                  hex(id(self))))
+            c_source = b"Halide::type_sink<void>"
+        return "<%s @ %s>" % (c_source.decode('UTF-8'),
+                              hex(id(self)))
     
     def __str__(Type self):
         try:
-            c_type = halide_type_to_c_type(self.__this__)
+            c_type = <bytes>halide_type_to_c_type(self.__this__)
         except IndexError:
-            c_type = <string>"void"
+            c_type = b"void"
         return c_type.decode('UTF-8')
     
     def __bytes__(Type self):
         try:
-            c_type = halide_type_to_c_type(self.__this__)
+            c_type = <bytes>halide_type_to_c_type(self.__this__)
         except IndexError:
-            c_type = <string>"void"
+            c_type = b"void"
         return c_type
     
     @staticmethod
@@ -279,17 +288,17 @@ cdef class Target:
         HalTarget __this__
     
     @staticmethod
-    def validate_target_string(string& target_string):
-        return HalTarget.validate_target_string(target_string)
+    def validate_target_string(object target_string):
+        return HalTarget.validate_target_string(<string>u8bytes(target_string))
     
     def __cinit__(Target self, *args, **kwargs):
         cdef string target_string = b'host'
         if 'target_string' in kwargs:
-            target_string = <string>kwargs.get('target_string', b"host")
+            target_string = <string>u8bytes(kwargs.get('target_string', b"host"))
         elif len(args) > 0:
-            target_string = <string>args[0]
+            target_string = <string>u8bytes(args[0])
         if not HalTarget.validate_target_string(target_string):
-            raise ValueError(b"invalid target string: %s" % target_string)
+            raise ValueError("invalid target string: %s" % u8str(target_string))
         self.__this__ = HalTarget(target_string)
         # INSERT FEATURE CHECK HERE
     
@@ -325,7 +334,7 @@ cdef class Target:
     
     def includes_halide_runtime(Target self):
         try:
-            return bytes(self, encoding="UTF-8").index(b'no_runtime') < 0
+            return self.to_string().decode('UTF-8').lower().index('no_runtime') < 0
         except ValueError:
             return True
     
@@ -381,14 +390,6 @@ cdef class Target:
             out.__this__ = halide_get_jit_target_from_environment()
         return out
 
-
-cpdef bytes u8bytes(object string_source):
-    if type(string_source) == type(bytes):
-        return string_source
-    return bytes(string_source, encoding='UTF-8')
-
-cpdef str u8str(object string_source):
-    return u8bytes(string_source).decode('UTF-8')
 
 @cython.freelist(32)
 cdef class Outputs:
@@ -602,7 +603,7 @@ cdef class EmitOptions:
                 self.__this__.emit_static_library = PyObject_IsTrue(arg.emit_static_library)
                 self.__this__.emit_cpp_stub = PyObject_IsTrue(arg.emit_cpp_stub)
                 for k, v in arg.substitutions.items():
-                    self.__this__.substitutions[k] = <string>v
+                    self.__this__.substitutions[<string>u8bytes(k)] = <string>u8bytes(v)
                 return
         
         emit_o = bool(kwargs.pop('emit_o',                              self.emit_defaults['emit_o']))
@@ -630,7 +631,7 @@ cdef class EmitOptions:
         self.__this__.emit_cpp_stub = PyObject_IsTrue(emit_cpp_stub)
         
         for k, v in substitutions.items():
-            self.__this__.substitutions[k] = <string>v
+            self.__this__.substitutions[<string>u8bytes(k)] = <string>u8bytes(v)
     
     property emit_o:
         def __get__(EmitOptions self):
@@ -689,15 +690,16 @@ cdef class EmitOptions:
     property substitutions:
         def __get__(EmitOptions self):
             return dict(self.__this__.substitutions)
-        def __set__(EmitOptions self, value):
+        def __set__(EmitOptions self, object value):
             if not PyMapping_Check(value):
                 raise ValueError("substitutions must be a mapping type")
             self.__this__.substitutions = stringmap_t()
             for k, v in dict(value).items():
-                self.__this__.substitutions[k] = <string>v
+                self.__this__.substitutions[<string>u8bytes(k)] = <string>u8bytes(v)
     
     def get_substitution(EmitOptions self, object default):
-        return <string>dict(self.__this__.substitutions).get(u8bytes(default), u8bytes(default))
+        return u8bytes(dict(self.__this__.substitutions).get(u8bytes(default),
+                                                             u8bytes(default)))
     
     def compute_outputs_for_target_and_path(EmitOptions self, Target t, object base_path):
         """ A reimplementation of `compute_outputs()`, private to Halide’s Generator.cpp """
@@ -747,7 +749,7 @@ cdef class EmitOptions:
         return output_files
     
     def to_string(EmitOptions self):
-        return stringify(self, list(self.emit_defaults.keys()) + ['substitutions'])
+        return stringify(self, tuple(self.emit_defaults.keys()) + ('substitutions',))
     
     def __bytes__(EmitOptions self):
         return self.to_string()
@@ -776,7 +778,7 @@ cdef class Module:
                 self.__this__.reset(new HalModule(<string>arg.name(), <HalTarget>htarg))
                 if self.__this__.get():
                     return
-        self.__this__.reset(new HalModule("", HalTarget('host')))
+        self.__this__.reset(new HalModule(<string>b"", HalTarget('host')))
     
     def __init__(Module self, *args, **kwargs):
         cdef HalTarget htarg
@@ -826,12 +828,11 @@ cdef class Module:
     def to_string(Module self):
         cdef string name = <string>deref(self.__this__).name()
         cdef string targ = <string>deref(self.__this__).target().to_string()
-        field_values = [b"name=%s" % name, b"target=%s" % targ]
-        return b"%s(%s) @ %s" % (bytes(self.__class__.__name__,
-                                       encoding="UTF-8"),
-                                b", ".join(field_values),
-                                 bytes(hex(id(self)),
-                                       encoding="UTF-8"))
+        field_values = (b"name=%s" % name,
+                        b"target=%s" % targ)
+        return b"%s(%s) @ %s" % (u8bytes(self.__class__.__name__),
+                                 b", ".join(field_values),
+                                 u8bytes(hex(id(self))))
     
     def __bytes__(Module self):
         return self.to_string()
@@ -857,16 +858,17 @@ def get_jit_target_from_environment():
     """ Halide::get_jit_target_from_environment() wrapper call. """
     return Target.jit_target_from_environment()
 
-cpdef bint validate_target_string(string& target_string):
+cpdef bint validate_target_string(object target_string):
     """ Halide::Target::validate_target_string(s) static method wrapper call. """
-    return HalTarget.validate_target_string(<string>target_string)
+    return HalTarget.validate_target_string(<string>u8bytes(target_string))
 
 def registered_generators():
     """ Enumerate registered generators using Halide::GeneratorRegistry. """
     out = tuple()
     names = tuple(GeneratorRegistry.enumerate())
     for enumerated_name in names:
-        out += tuple([enumerated_name])
+        # out += tuple([enumerated_name])
+        out += (enumerated_name,)
     return out
 
 cdef string halide_compute_base_path(string& output_dir,
@@ -919,7 +921,7 @@ cpdef Module get_generator_module(object name, object arguments={}):
     
     # Copy arguments from the Python dict to the STL map:
     for k, v in arguments.items():
-        argmap[<string>k] = <string>v
+        argmap[<string>u8bytes(k)] = <string>u8bytes(v)
     
     # Actually get an instance of the named generator:
     generator_instance = halide_generator_registry_get(u8bytes(name), deref(generator_target_ptr), argmap)
