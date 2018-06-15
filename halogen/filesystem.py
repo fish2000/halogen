@@ -122,7 +122,8 @@ class TemporaryName(object):
         class (when invoked as a context manager) will clean it up for you.
         Unless you say not to. Really it's your call dogg I could give AF """
     
-    fields = ('name', 'exists', 'destroy', 'prefix', 'suffix', 'parent')
+    fields = ('name', 'exists',
+              'destroy', 'prefix', 'suffix', 'parent')
     
     def __init__(self, prefix="yo-dogg-", suffix="tmp", parent=None, **kwargs):
         if suffix:
@@ -186,7 +187,9 @@ class Directory(object):
     """ A context-managed directory: change in on enter, change back out
         on exit. Plus a few convenience functions for listing and whatnot. """
     
-    fields = ('name', 'old', 'new', 'exists', 'will_change', 'did_change')
+    fields = ('name', 'old', 'new', 'exists',
+              'will_change', 'did_change')
+    
     dotfile_matcher = re.compile(r"^\.").match
     
     def __init__(self, pth=None):
@@ -226,7 +229,7 @@ class Directory(object):
         searcher = re.compile(regex_str, re.IGNORECASE).search
         return lambda f: searcher(f)
     
-    def ls(self, pth='.', suffix=None):
+    def ls(self, pth=os.curdir, suffix=None):
         files = (f for f in scandir(self.realpath(pth)) if not self.dotfile_matcher(f))
         if not suffix:
             return files
@@ -237,7 +240,7 @@ class Directory(object):
             pth = self.name
         return os.path.realpath(pth)
     
-    def ls_la(self, pth='.', suffix=None):
+    def ls_la(self, pth=os.curdir, suffix=None):
         files = scandir(self.realpath(pth))
         if not suffix:
             return files
@@ -314,9 +317,14 @@ class TemporaryDirectory(Directory):
         from libimread, this class wraps tempfile.mkdtemp() and can be used as a
         context manager (the C++ orig used RAII). """
     
-    fields = ('name', 'old', 'new', 'exists', 'destroy', 'prefix', 'suffix', 'parent')
+    fields = ('name', 'old', 'new', 'exists',
+              'destroy', 'prefix', 'suffix', 'parent',
+              'will_change', 'did_change')
     
-    def __init__(self, prefix="TemporaryDirectory-", suffix="", parent=None, **kwargs):
+    def __init__(self, prefix="TemporaryDirectory-", suffix="",
+                                                     parent=None,
+                                                     change=True,
+                                                   **kwargs):
         if suffix:
             if not suffix.startswith(os.extsep):
                 suffix = "%s%s" % (os.extsep, suffix)
@@ -328,6 +336,7 @@ class TemporaryDirectory(Directory):
         self.suffix = suffix
         self.parent = parent
         super(TemporaryDirectory, self).__init__(self._name)
+        self.will_change = self.will_change and change
     
     @property
     def name(self):
