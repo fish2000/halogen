@@ -486,7 +486,7 @@ class PkgConfig(ConfigBase):
             try:
                 cls.packages |= frozenset(back_tick(script).split('\n'))
             except ExecutionError:
-                pass
+                cls.did_load_packages = False
             else:
                 cls.did_load_packages = True
         return len(cls.packages)
