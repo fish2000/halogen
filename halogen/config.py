@@ -639,7 +639,7 @@ class BrewedImreadConfig(BrewedConfig):
     fields = ConfigBase.FieldList('library',
                                   'config_command', dir_fields=True)
     
-    # Name of the Halide library (sans “lib” prefix and file extension):
+    # Name of the libimread library (sans “lib” prefix and file extension):
     library = "imread"
     
     def __init__(self, brew_name=None):
