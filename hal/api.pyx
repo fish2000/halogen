@@ -780,7 +780,6 @@ cdef class Module:
                 self.__this__.reset(new HalModule(<string>arg.name(), <HalTarget>htarg))
                 if self.__this__.get():
                     return
-        # self.__this__.reset(new HalModule(<string>b"", HalTarget('host')))
     
     def __init__(Module self, *args, **kwargs):
         cdef HalTarget htarg
@@ -798,13 +797,18 @@ cdef class Module:
         # scoped stack-deallocation (but who the fuck really knows, rite? huh.)
         self.__this__.reset(NULL)
     
+    @property
     def name(Module self):
         return deref(self.__this__).name()
     
-    def target(Module self):
+    def get_target(Module self):
         out = Target()
         out.__this__ = deref(self.__this__).target()
         return out
+    
+    @property
+    def target(Module self):
+        return self.get_target()
     
     @staticmethod
     cdef Module with_instance(HalModule& m):
@@ -830,10 +834,10 @@ cdef class Module:
     def to_string(Module self):
         cdef string name = <string>deref(self.__this__).name()
         cdef string targ = <string>deref(self.__this__).target().to_string()
-        field_values = (b"name=%s" % name,
-                        b"target=%s" % targ)
+        field_values = (b""" name="%s" """ % name,
+                        b""" target="%s" """ % targ)
         return b"%s(%s) @ %s" % (u8bytes(self.__class__.__name__),
-                                 b", ".join(field_values),
+                                 b", ".join(field_value.strip() for field_value in field_values),
                                  u8bytes(hex(id(self))))
     
     def __bytes__(Module self):

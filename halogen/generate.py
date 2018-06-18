@@ -112,7 +112,7 @@ def generate(*generators, **arguments):
     
     if verbose:
         print("Emit Options:")
-        print(emit_options.to_string())
+        print(str(emit_options))
         print('')
     
     # The “target_string” variable defaults to “host” (see argument processing):
@@ -120,7 +120,7 @@ def generate(*generators, **arguments):
     
     if verbose:
         print("Target:")
-        print(target.to_string())
+        print(str(target))
         print('')
     
     # These lists will store generator module compilation artifacts:
@@ -145,19 +145,19 @@ def generate(*generators, **arguments):
             print("BSEPTH: %s" % str(base_path))
         
         if verbose:
-            print("OUTPUT: %s" % output.to_string())
+            print("OUTPUT: %s" % str(output))
         
         # generator_args.update(arguments)
         
         if verbose:
-            print("TARGET: %s" % target.to_string())
+            print("TARGET: %s" % str(target))
         
         # This API call prepares the generator code module:
         module = hal.api.get_generator_module(generator,
-                                              arguments={ 'target': target.to_string() })
+                                              arguments={ 'target': str(target) })
         
         if verbose:
-            print("MODULE: %s" % module.to_string())
+            print("MODULE: %s (%s)" % (module.name, str(module)))
             print('-' * max(terminal_width, 160))
         
         # The compilation call:
