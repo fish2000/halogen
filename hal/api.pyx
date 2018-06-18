@@ -73,6 +73,8 @@ cpdef bytes u8bytes(object string_source):
         return bytes(string_source, encoding='UTF-8')
     elif type(string_source) == unicode:
         return bytes(string_source, encoding='UTF-8')
+    elif type(string_source) == bool:
+        return string_source and b'True' or b'False'
     return bytes(string_source)
 
 cpdef str u8str(object string_source):
@@ -701,7 +703,7 @@ cdef class EmitOptions:
         return u8bytes(dict(self.__this__.substitutions).get(u8bytes(default),
                                                              u8bytes(default)))
     
-    def compute_outputs_for_target_and_path(EmitOptions self, Target t, object base_path):
+    def compute_outputs_for_target_and_path(EmitOptions self, Target target, object base_path):
         """ A reimplementation of `compute_outputs()`, private to Halide’s Generator.cpp """
         
         # This is a reimplementation of the C++ orig --
@@ -713,7 +715,7 @@ cdef class EmitOptions:
         # also the greater C++, Cython, and Halide communities in general).
         
         cdef string base_path_str = <string>u8bytes(base_path)
-        is_windows_coff = bool(<size_t>t.os == <size_t>OS_Windows and not t.has_feature(<size_t>Feature_MinGW))
+        is_windows_coff = bool(<size_t>target.os == <size_t>OS_Windows and not target.has_feature(<size_t>Feature_MinGW))
         output_files = Outputs()
         
         if self.emit_o:
@@ -778,7 +780,7 @@ cdef class Module:
                 self.__this__.reset(new HalModule(<string>arg.name(), <HalTarget>htarg))
                 if self.__this__.get():
                     return
-        self.__this__.reset(new HalModule(<string>b"", HalTarget('host')))
+        # self.__this__.reset(new HalModule(<string>b"", HalTarget('host')))
     
     def __init__(Module self, *args, **kwargs):
         cdef HalTarget htarg
@@ -885,11 +887,13 @@ cdef string halide_compute_base_path(string& output_dir,
 
 def compute_base_path(object output_dir,
                       object function_name,
-                      object file_base_name):
+                      object file_base_name=None):
     """ Reimplementation of Halide::Internal::compute_base_path(...)
         (a private function found in Halide/src/Generator.cpp). """
     cdef string output_dir_string = <string>u8bytes(output_dir)
     cdef string function_name_string = <string>u8bytes(function_name)
+    if file_base_name is None:
+        file_base_name = ""
     cdef string file_base_name_string = <string>u8bytes(file_base_name)
     return halide_compute_base_path(output_dir_string,
                                     function_name_string,
@@ -938,7 +942,7 @@ cdef void f_insert_into(Module module, modulevec_t& modulevec) nogil:
 def link_modules(object module_name, *modules):
     """ Python wrapper for Halide::link_modules() from src/Module.h """
     cdef modulevec_t modulevec
-    out = Module(name=u8bytes(module_name))
+    cdef Module out = Module(name=u8bytes(module_name))
     
     # check that we got some stuff:
     if len(modules) < 1:
@@ -961,6 +965,7 @@ def compile_standalone_runtime(Target target=Target.target_from_environment(),
     """ Compile a standalone Halide runtime library, as directed, per the specified target. """
     # Where we keep the native Options struct, if need be:
     cdef HalOutputs out
+    cdef object realpth
     
     # OPTION 1: WE GOT A PATH STRING:
     if pth is not None:
@@ -1005,10 +1010,12 @@ def compile_standalone_runtime(Target target=Target.target_from_environment(),
     raise ValueError("Either the 'pth' or 'outputs' args must be non-None")
 
 def make_standalone_runtime(Target target=Target.target_from_environment(),
-                            object pth=None):
+                            object pth=None,
+                                 **emitopts):
     # Where to store the output output:
     cdef Outputs outputs
     cdef HalOutputs out
+    cdef object realpth
     
     # Sanity-check the passed-in base-path value:
     if pth is None:
@@ -1019,10 +1026,11 @@ def make_standalone_runtime(Target target=Target.target_from_environment(),
     
     # Compute the outputs using hal.api.EmitOptions -- the EmitOptions defaults
     # will render object files, headers, and archives (.o, .h, .a) --
+    # plus, additional emit options can be specified as keyword arguments --
     # HOWEVER, Halide::compile_standalone_runtime() in Module.cpp recreates
     # the Outputs object with only object files and archives (.o, .a) enabled:
-    outputs = EmitOptions().compute_outputs_for_target_and_path(t=target,
-                                                        base_path=u8bytes(realpth))
+    outputs = EmitOptions(**emitopts).compute_outputs_for_target_and_path(t=target,
+                                                                  base_path=u8bytes(realpth))
     
     # make the actual call, returning another native Options object:
     with nogil:

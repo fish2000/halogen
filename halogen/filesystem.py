@@ -15,7 +15,7 @@ except ImportError:
 
 from tempfile import mktemp, mkdtemp, gettempprefix
 from errors import ExecutionError, FilesystemError
-from utils import stringify, u8bytes, u8str
+from utils import memoize, u8bytes, u8str, stringify
 
 DEFAULT_PATH = ":".join(filter(os.path.exists, ("/usr/local/bin",
                                                 "/bin",
@@ -40,32 +40,35 @@ def which(binary_name, pathvar=None):
 
 def back_tick(cmd, ret_err=False, as_str=True, raise_err=None, verbose=False):
     """ Run command `cmd`, return stdout, or stdout, stderr if `ret_err`
-    Roughly equivalent to ``check_output`` in Python 2.7
-    Parameters
-    ----------
-    cmd : sequence
-        command to execute
-    ret_err : bool, optional
-        If True, return stderr in addition to stdout.  If False, just return
-        stdout
-    as_str : bool, optional
-        Whether to decode outputs to unicode string on exit.
-    raise_err : None or bool, optional
-        If True, raise RuntimeError for non-zero return code. If None, set to
-        True when `ret_err` is False, False if `ret_err` is True
-    verbose : bool, optional
-        Whether to spew debug information to stderr
-    Returns
-    -------
-    out : str or tuple
-        If `ret_err` is False, return stripped string containing stdout from
-        `cmd`.  If `ret_err` is True, return tuple of (stdout, stderr) where
-        ``stdout`` is the stripped stdout, and ``stderr`` is the stripped
-        stderr.
-    Raises
-    ------
-    Raises RuntimeError if command returns non-zero exit code and `raise_err`
-    is True
+        Roughly equivalent to ``check_output`` in Python 2.7
+        
+        Parameters
+        ----------
+        cmd : sequence
+            command to execute
+        ret_err : bool, optional
+            If True, return stderr in addition to stdout.  If False, just return
+            stdout
+        as_str : bool, optional
+            Whether to decode outputs to unicode string on exit.
+        raise_err : None or bool, optional
+            If True, raise RuntimeError for non-zero return code. If None, set to
+            True when `ret_err` is False, False if `ret_err` is True
+        verbose : bool, optional
+            Whether to spew debug information to stderr
+        
+        Returns
+        -------
+        out : str or tuple
+            If `ret_err` is False, return stripped string containing stdout from
+            `cmd`.  If `ret_err` is True, return tuple of (stdout, stderr) where
+            ``stdout`` is the stripped stdout, and ``stderr`` is the stripped
+            stderr.
+        
+        Raises
+        ------
+        Raises RuntimeError if the executed command returns non-zero exit code
+        and `raise_err` is True
     """
     from subprocess import Popen, PIPE
     if raise_err is None:
@@ -113,6 +116,68 @@ def rm_rf(pth):
         pass
     return False
 
+@memoize
+def TemporaryNamedFile(name, mode='wb', buffer_size=-1, delete=True):
+    
+    """ Variation on ``tempfile.NamedTemporaryFile(…)``, for use within
+        `filesystem.TemporaryName()` – q.v. class definition sub.
+        
+        Parameters
+        ----------
+        name : str / bytes / descriptor / filename-ish
+            File name, path, or descriptor to open
+        mode : str / bytes, optional
+            String-like symbolic explication of mode with which to open
+            the file -- q.v. ``io.open(…)`` or ``__builtins__.open(…)``
+            supra.
+        buffer_size : int, optional
+            Integer indicating buffer size to use during file reading
+            and/or writing. Default value is -1 (which indicates that
+            reads and writes should be unbuffered).
+        delete : bool, optional
+            Boolean value indicating whether to delete the wrapped
+            file upon scope exit or interpreter shutdown (whichever
+            happens first). Default is True.
+        
+        Returns
+        -------
+            A ``tempfile._TemporaryFileWrapper`` object, initialized
+            and ready to be used, as per its counterpart(s),
+            ``tempfile.NamedTemporaryFile``, and
+            `filesystem.NamedTemporaryFile`.
+        
+        Raises
+        ------
+            a filesystem.FilesystemError, corresponding to any errors
+            that may be raised its own internal calls to ``os.open(…)`` and
+            ``os.fdopen(…)``
+        
+    """
+    
+    from tempfile import _bin_openflags,                    \
+                         _text_openflags,                   \
+                         _TemporaryFileWrapper, _os
+    
+    if 'b' in mode:
+        flags = _bin_openflags
+    else:
+        flags = _text_openflags
+    if _os.name == 'nt' and delete:
+        flags |= _os.O_TEMPORARY
+    
+    descriptor = 0
+    filehandle = None
+    
+    try:
+        descriptor = _os.open(name, flags)
+        filehandle = _os.fdopen(descriptor, mode, buffer_size)
+        return _TemporaryFileWrapper(filehandle, name, delete)
+    except BaseException as base_exception:
+        rm_rf(name)
+        if descriptor > 0:
+            _os.close(descriptor)
+        raise FilesystemError(str(base_exception))
+
 
 class TemporaryName(object):
     
@@ -150,6 +215,10 @@ class TemporaryName(object):
     @property
     def destroy(self):
         return self._destroy
+    
+    @property
+    def filehandle(self):
+        return TemporaryNamedFile(self.do_not_destroy())
     
     def copy(self, destination):
         if self.exists:

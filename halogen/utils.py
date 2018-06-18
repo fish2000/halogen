@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import print_function
+from functools import wraps
 import six
 
 # get_terminal_size(): does what you think it does
@@ -31,13 +32,57 @@ def get_terminal_size(default_LINES=25, default_COLUMNS=80):
 
 terminal_width, terminal_height = get_terminal_size()
 
+def wrap_value(value):
+    return lambda *args, **kwargs: value
+
+class Memoizer(dict):
+    
+    def __init__(self, function=None):
+        super(Memoizer, self).__init__()
+        if function is None:
+            function = wrap_value(function)
+        self.original_function = (function,)
+    
+    def __missing__(self, key):
+        function = self.original_function[0]
+        self[key] = out = function(*key)
+        return out
+    
+    @property
+    def original(self):
+        return self.original_function[0]
+    
+    @original.setter
+    def original(self, value):
+        if not callable(value):
+            value = wrap_value(value)
+        self.original_function = (value,)
+    
+    def __call__(self, function):
+        @wraps(function)
+        def memoized(*args):
+            return self[args]
+        self.original = function
+        memoized.original = function
+        return memoized
+
 def memoize(function):
-    class memoizer(dict):
-        def __missing__(self, key):
-            self[key] = out = function(key)
-            return out
-    memoinstance = memoizer()
-    return lambda *args: memoinstance[args]
+    memoinstance = Memoizer(function)
+    @wraps(function)
+    def memoized(*args):
+        return memoinstance[args]
+    memoized.original = function
+    return memoized
+
+@memoize
+def current_umask():
+    import os
+    mask = os.umask(0)
+    os.umask(mask)
+    return mask
+
+def masked_permissions(perms=0o666):
+    return perms & ~current_umask()
 
 def u8bytes(string_source):
     if type(string_source) == bytes:
@@ -122,7 +167,7 @@ def test_compile(conf, test_source):
         tf.file.write(test_source)
         tf.file.flush()
         
-        with TemporaryName(suffix="cpp.o", prefix=px) as adotout:
+        with TemporaryName(suffix="cpp.o", prefix=px).filehandle as adotout:
             print("C++ SOURCE: %s" % tf.name)
             print("C++ TARGET: %s" % adotout.name)
             
