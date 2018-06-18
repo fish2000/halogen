@@ -878,7 +878,11 @@ cdef string halide_compute_base_path(string& output_dir,
                                      string& file_base_name):
     cdef stringvec_t namespaces
     cdef string simple_name = halide_extract_namespaces(function_name, namespaces)
-    cdef string base_path = output_dir + b"/"
+    cdef string base_path
+    if output_dir.back() == b'/':
+        base_path = output_dir
+    else:
+        base_path = output_dir + b'/'
     if file_base_name.empty():
         base_path += simple_name
     else:

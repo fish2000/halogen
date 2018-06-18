@@ -167,7 +167,7 @@ def test_compile(conf, test_source):
         tf.file.write(test_source)
         tf.file.flush()
         
-        with TemporaryName(suffix="cpp.o", prefix=px).filehandle as adotout:
+        with TemporaryName(suffix="cpp.o", prefix=px) as adotout:
             print("C++ SOURCE: %s" % tf.name)
             print("C++ TARGET: %s" % adotout.name)
             
