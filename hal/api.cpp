@@ -1072,7 +1072,7 @@ typedef Halide::Internal::GeneratorBase::EmitOptions __pyx_t_3hal_3api_EmOpts;
  */
 typedef std::unique_ptr<Halide::Module>  __pyx_t_3hal_3api_module_ptr_t;
 
-/* "hal/api.pyx":907
+/* "hal/api.pyx":906
  *                                     file_base_name_string)
  * 
  * cpdef Module get_generator_module(object name, object arguments={}):             # <<<<<<<<<<<<<<
@@ -1899,8 +1899,6 @@ static CYTHON_INLINE __pyx_t_3hal_3ext_6halide_9generator_base_ptr_t __pyx_f_3ha
 
 /* Module declarations from 'hal.ext.halide.util' */
 
-/* Module declarations from 'hal.ext.halide.fused' */
-
 /* Module declarations from 'hal.api' */
 static PyTypeObject *__pyx_ptype_3hal_3api_Type = 0;
 static PyTypeObject *__pyx_ptype_3hal_3api_Target = 0;
@@ -2490,12 +2488,12 @@ static PyObject *__pyx_codeobj__81;
 static PyObject *__pyx_codeobj__82;
 /* Late includes */
 
-/* "hal/api.pyx":69
+/* "hal/api.pyx":66
  * 
  * 
  * cpdef bytes u8bytes(object string_source):             # <<<<<<<<<<<<<<
+ *     """ Custom version of u8bytes() for use in Cython extensions: """
  *     if type(string_source) == bytes:
- *         return string_source
  */
 
 static PyObject *__pyx_pw_3hal_3api_1u8bytes(PyObject *__pyx_self, PyObject *__pyx_v_string_source); /*proto*/
@@ -2508,53 +2506,53 @@ static PyObject *__pyx_f_3hal_3api_u8bytes(PyObject *__pyx_v_string_source, CYTH
   PyObject *__pyx_t_4 = NULL;
   __Pyx_RefNannySetupContext("u8bytes", 0);
 
-  /* "hal/api.pyx":70
- * 
+  /* "hal/api.pyx":68
  * cpdef bytes u8bytes(object string_source):
+ *     """ Custom version of u8bytes() for use in Cython extensions: """
  *     if type(string_source) == bytes:             # <<<<<<<<<<<<<<
  *         return string_source
  *     elif type(string_source) == str:
  */
-  __pyx_t_1 = PyObject_RichCompare(((PyObject *)Py_TYPE(__pyx_v_string_source)), ((PyObject *)(&PyBytes_Type)), Py_EQ); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 70, __pyx_L1_error)
-  __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 70, __pyx_L1_error)
+  __pyx_t_1 = PyObject_RichCompare(((PyObject *)Py_TYPE(__pyx_v_string_source)), ((PyObject *)(&PyBytes_Type)), Py_EQ); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 68, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 68, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   if (__pyx_t_2) {
 
-    /* "hal/api.pyx":71
- * cpdef bytes u8bytes(object string_source):
+    /* "hal/api.pyx":69
+ *     """ Custom version of u8bytes() for use in Cython extensions: """
  *     if type(string_source) == bytes:
  *         return string_source             # <<<<<<<<<<<<<<
  *     elif type(string_source) == str:
  *         return bytes(string_source, encoding='UTF-8')
  */
     __Pyx_XDECREF(__pyx_r);
-    if (!(likely(PyBytes_CheckExact(__pyx_v_string_source))||((__pyx_v_string_source) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "bytes", Py_TYPE(__pyx_v_string_source)->tp_name), 0))) __PYX_ERR(0, 71, __pyx_L1_error)
+    if (!(likely(PyBytes_CheckExact(__pyx_v_string_source))||((__pyx_v_string_source) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "bytes", Py_TYPE(__pyx_v_string_source)->tp_name), 0))) __PYX_ERR(0, 69, __pyx_L1_error)
     __Pyx_INCREF(__pyx_v_string_source);
     __pyx_r = ((PyObject*)__pyx_v_string_source);
     goto __pyx_L0;
 
-    /* "hal/api.pyx":70
- * 
+    /* "hal/api.pyx":68
  * cpdef bytes u8bytes(object string_source):
+ *     """ Custom version of u8bytes() for use in Cython extensions: """
  *     if type(string_source) == bytes:             # <<<<<<<<<<<<<<
  *         return string_source
  *     elif type(string_source) == str:
  */
   }
 
-  /* "hal/api.pyx":72
+  /* "hal/api.pyx":70
  *     if type(string_source) == bytes:
  *         return string_source
  *     elif type(string_source) == str:             # <<<<<<<<<<<<<<
  *         return bytes(string_source, encoding='UTF-8')
  *     elif type(string_source) == unicode:
  */
-  __pyx_t_1 = PyObject_RichCompare(((PyObject *)Py_TYPE(__pyx_v_string_source)), ((PyObject *)(&PyString_Type)), Py_EQ); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 72, __pyx_L1_error)
-  __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 72, __pyx_L1_error)
+  __pyx_t_1 = PyObject_RichCompare(((PyObject *)Py_TYPE(__pyx_v_string_source)), ((PyObject *)(&PyString_Type)), Py_EQ); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 70, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 70, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   if (__pyx_t_2) {
 
-    /* "hal/api.pyx":73
+    /* "hal/api.pyx":71
  *         return string_source
  *     elif type(string_source) == str:
  *         return bytes(string_source, encoding='UTF-8')             # <<<<<<<<<<<<<<
@@ -2562,15 +2560,15 @@ static PyObject *__pyx_f_3hal_3api_u8bytes(PyObject *__pyx_v_string_source, CYTH
  *         return bytes(string_source, encoding='UTF-8')
  */
     __Pyx_XDECREF(__pyx_r);
-    __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 73, __pyx_L1_error)
+    __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 71, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_INCREF(__pyx_v_string_source);
     __Pyx_GIVEREF(__pyx_v_string_source);
     PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_v_string_source);
-    __pyx_t_3 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 73, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 71, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_encoding, __pyx_kp_s_UTF_8) < 0) __PYX_ERR(0, 73, __pyx_L1_error)
-    __pyx_t_4 = __Pyx_PyObject_Call(((PyObject *)(&PyBytes_Type)), __pyx_t_1, __pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 73, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_encoding, __pyx_kp_s_UTF_8) < 0) __PYX_ERR(0, 71, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_Call(((PyObject *)(&PyBytes_Type)), __pyx_t_1, __pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 71, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -2578,7 +2576,7 @@ static PyObject *__pyx_f_3hal_3api_u8bytes(PyObject *__pyx_v_string_source, CYTH
     __pyx_t_4 = 0;
     goto __pyx_L0;
 
-    /* "hal/api.pyx":72
+    /* "hal/api.pyx":70
  *     if type(string_source) == bytes:
  *         return string_source
  *     elif type(string_source) == str:             # <<<<<<<<<<<<<<
@@ -2587,19 +2585,19 @@ static PyObject *__pyx_f_3hal_3api_u8bytes(PyObject *__pyx_v_string_source, CYTH
  */
   }
 
-  /* "hal/api.pyx":74
+  /* "hal/api.pyx":72
  *     elif type(string_source) == str:
  *         return bytes(string_source, encoding='UTF-8')
  *     elif type(string_source) == unicode:             # <<<<<<<<<<<<<<
  *         return bytes(string_source, encoding='UTF-8')
  *     elif type(string_source) == bool:
  */
-  __pyx_t_4 = PyObject_RichCompare(((PyObject *)Py_TYPE(__pyx_v_string_source)), ((PyObject *)(&PyUnicode_Type)), Py_EQ); __Pyx_XGOTREF(__pyx_t_4); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 74, __pyx_L1_error)
-  __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 74, __pyx_L1_error)
+  __pyx_t_4 = PyObject_RichCompare(((PyObject *)Py_TYPE(__pyx_v_string_source)), ((PyObject *)(&PyUnicode_Type)), Py_EQ); __Pyx_XGOTREF(__pyx_t_4); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 72, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 72, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   if (__pyx_t_2) {
 
-    /* "hal/api.pyx":75
+    /* "hal/api.pyx":73
  *         return bytes(string_source, encoding='UTF-8')
  *     elif type(string_source) == unicode:
  *         return bytes(string_source, encoding='UTF-8')             # <<<<<<<<<<<<<<
@@ -2607,15 +2605,15 @@ static PyObject *__pyx_f_3hal_3api_u8bytes(PyObject *__pyx_v_string_source, CYTH
  *         return string_source and b'True' or b'False'
  */
     __Pyx_XDECREF(__pyx_r);
-    __pyx_t_4 = PyTuple_New(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 75, __pyx_L1_error)
+    __pyx_t_4 = PyTuple_New(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 73, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_INCREF(__pyx_v_string_source);
     __Pyx_GIVEREF(__pyx_v_string_source);
     PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_v_string_source);
-    __pyx_t_3 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 75, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 73, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_encoding, __pyx_kp_s_UTF_8) < 0) __PYX_ERR(0, 75, __pyx_L1_error)
-    __pyx_t_1 = __Pyx_PyObject_Call(((PyObject *)(&PyBytes_Type)), __pyx_t_4, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 75, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_encoding, __pyx_kp_s_UTF_8) < 0) __PYX_ERR(0, 73, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_Call(((PyObject *)(&PyBytes_Type)), __pyx_t_4, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 73, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -2623,7 +2621,7 @@ static PyObject *__pyx_f_3hal_3api_u8bytes(PyObject *__pyx_v_string_source, CYTH
     __pyx_t_1 = 0;
     goto __pyx_L0;
 
-    /* "hal/api.pyx":74
+    /* "hal/api.pyx":72
  *     elif type(string_source) == str:
  *         return bytes(string_source, encoding='UTF-8')
  *     elif type(string_source) == unicode:             # <<<<<<<<<<<<<<
@@ -2632,19 +2630,19 @@ static PyObject *__pyx_f_3hal_3api_u8bytes(PyObject *__pyx_v_string_source, CYTH
  */
   }
 
-  /* "hal/api.pyx":76
+  /* "hal/api.pyx":74
  *     elif type(string_source) == unicode:
  *         return bytes(string_source, encoding='UTF-8')
  *     elif type(string_source) == bool:             # <<<<<<<<<<<<<<
  *         return string_source and b'True' or b'False'
  *     return bytes(string_source)
  */
-  __pyx_t_1 = PyObject_RichCompare(((PyObject *)Py_TYPE(__pyx_v_string_source)), ((PyObject*)&PyBool_Type), Py_EQ); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 76, __pyx_L1_error)
-  __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 76, __pyx_L1_error)
+  __pyx_t_1 = PyObject_RichCompare(((PyObject *)Py_TYPE(__pyx_v_string_source)), ((PyObject*)&PyBool_Type), Py_EQ); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 74, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 74, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   if (__pyx_t_2) {
 
-    /* "hal/api.pyx":77
+    /* "hal/api.pyx":75
  *         return bytes(string_source, encoding='UTF-8')
  *     elif type(string_source) == bool:
  *         return string_source and b'True' or b'False'             # <<<<<<<<<<<<<<
@@ -2652,12 +2650,12 @@ static PyObject *__pyx_f_3hal_3api_u8bytes(PyObject *__pyx_v_string_source, CYTH
  * 
  */
     __Pyx_XDECREF(__pyx_r);
-    __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_v_string_source); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 77, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_v_string_source); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 75, __pyx_L1_error)
     if (!__pyx_t_2) {
       goto __pyx_L5_next_or;
     } else {
     }
-    __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_n_b_True); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 77, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_n_b_True); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 75, __pyx_L1_error)
     if (!__pyx_t_2) {
     } else {
       __Pyx_INCREF(__pyx_n_b_True);
@@ -2672,7 +2670,7 @@ static PyObject *__pyx_f_3hal_3api_u8bytes(PyObject *__pyx_v_string_source, CYTH
     __pyx_t_1 = 0;
     goto __pyx_L0;
 
-    /* "hal/api.pyx":76
+    /* "hal/api.pyx":74
  *     elif type(string_source) == unicode:
  *         return bytes(string_source, encoding='UTF-8')
  *     elif type(string_source) == bool:             # <<<<<<<<<<<<<<
@@ -2681,7 +2679,7 @@ static PyObject *__pyx_f_3hal_3api_u8bytes(PyObject *__pyx_v_string_source, CYTH
  */
   }
 
-  /* "hal/api.pyx":78
+  /* "hal/api.pyx":76
  *     elif type(string_source) == bool:
  *         return string_source and b'True' or b'False'
  *     return bytes(string_source)             # <<<<<<<<<<<<<<
@@ -2689,18 +2687,18 @@ static PyObject *__pyx_f_3hal_3api_u8bytes(PyObject *__pyx_v_string_source, CYTH
  * cpdef str u8str(object string_source):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyObject_CallOneArg(((PyObject *)(&PyBytes_Type)), __pyx_v_string_source); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 78, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_CallOneArg(((PyObject *)(&PyBytes_Type)), __pyx_v_string_source); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 76, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "hal/api.pyx":69
+  /* "hal/api.pyx":66
  * 
  * 
  * cpdef bytes u8bytes(object string_source):             # <<<<<<<<<<<<<<
+ *     """ Custom version of u8bytes() for use in Cython extensions: """
  *     if type(string_source) == bytes:
- *         return string_source
  */
 
   /* function exit code */
@@ -2718,7 +2716,7 @@ static PyObject *__pyx_f_3hal_3api_u8bytes(PyObject *__pyx_v_string_source, CYTH
 
 /* Python wrapper */
 static PyObject *__pyx_pw_3hal_3api_1u8bytes(PyObject *__pyx_self, PyObject *__pyx_v_string_source); /*proto*/
-static char __pyx_doc_3hal_3api_u8bytes[] = "u8bytes(string_source) -> bytes";
+static char __pyx_doc_3hal_3api_u8bytes[] = "u8bytes(string_source) -> bytes\n Custom version of u8bytes(\342\200\246) for use in Cython extensions: ";
 static PyObject *__pyx_pw_3hal_3api_1u8bytes(PyObject *__pyx_self, PyObject *__pyx_v_string_source) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
@@ -2736,7 +2734,7 @@ static PyObject *__pyx_pf_3hal_3api_u8bytes(CYTHON_UNUSED PyObject *__pyx_self, 
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("u8bytes", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_3hal_3api_u8bytes(__pyx_v_string_source, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 69, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_3hal_3api_u8bytes(__pyx_v_string_source, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 66, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -2753,12 +2751,12 @@ static PyObject *__pyx_pf_3hal_3api_u8bytes(CYTHON_UNUSED PyObject *__pyx_self, 
   return __pyx_r;
 }
 
-/* "hal/api.pyx":80
+/* "hal/api.pyx":78
  *     return bytes(string_source)
  * 
  * cpdef str u8str(object string_source):             # <<<<<<<<<<<<<<
+ *     """ Custom version of u8str() for use in Cython extensions: """
  *     return u8bytes(string_source).decode('UTF-8')
- * 
  */
 
 static PyObject *__pyx_pw_3hal_3api_3u8str(PyObject *__pyx_self, PyObject *__pyx_v_string_source); /*proto*/
@@ -2769,34 +2767,34 @@ static PyObject *__pyx_f_3hal_3api_u8str(PyObject *__pyx_v_string_source, CYTHON
   PyObject *__pyx_t_2 = NULL;
   __Pyx_RefNannySetupContext("u8str", 0);
 
-  /* "hal/api.pyx":81
- * 
+  /* "hal/api.pyx":80
  * cpdef str u8str(object string_source):
+ *     """ Custom version of u8str() for use in Cython extensions: """
  *     return u8bytes(string_source).decode('UTF-8')             # <<<<<<<<<<<<<<
  * 
  * def stringify(instance, fields):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_3hal_3api_u8bytes(__pyx_v_string_source, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 81, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_3hal_3api_u8bytes(__pyx_v_string_source, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 80, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   if (unlikely(__pyx_t_1 == Py_None)) {
     PyErr_Format(PyExc_AttributeError, "'NoneType' object has no attribute '%.30s'", "decode");
-    __PYX_ERR(0, 81, __pyx_L1_error)
+    __PYX_ERR(0, 80, __pyx_L1_error)
   }
-  __pyx_t_2 = __Pyx_decode_bytes(__pyx_t_1, 0, PY_SSIZE_T_MAX, NULL, NULL, PyUnicode_DecodeUTF8); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 81, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_decode_bytes(__pyx_t_1, 0, PY_SSIZE_T_MAX, NULL, NULL, PyUnicode_DecodeUTF8); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 80, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  if (!(likely(PyString_CheckExact(__pyx_t_2))||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "str", Py_TYPE(__pyx_t_2)->tp_name), 0))) __PYX_ERR(0, 81, __pyx_L1_error)
+  if (!(likely(PyString_CheckExact(__pyx_t_2))||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "str", Py_TYPE(__pyx_t_2)->tp_name), 0))) __PYX_ERR(0, 80, __pyx_L1_error)
   __pyx_r = ((PyObject*)__pyx_t_2);
   __pyx_t_2 = 0;
   goto __pyx_L0;
 
-  /* "hal/api.pyx":80
+  /* "hal/api.pyx":78
  *     return bytes(string_source)
  * 
  * cpdef str u8str(object string_source):             # <<<<<<<<<<<<<<
+ *     """ Custom version of u8str() for use in Cython extensions: """
  *     return u8bytes(string_source).decode('UTF-8')
- * 
  */
 
   /* function exit code */
@@ -2813,7 +2811,7 @@ static PyObject *__pyx_f_3hal_3api_u8str(PyObject *__pyx_v_string_source, CYTHON
 
 /* Python wrapper */
 static PyObject *__pyx_pw_3hal_3api_3u8str(PyObject *__pyx_self, PyObject *__pyx_v_string_source); /*proto*/
-static char __pyx_doc_3hal_3api_2u8str[] = "u8str(string_source) -> str";
+static char __pyx_doc_3hal_3api_2u8str[] = "u8str(string_source) -> str\n Custom version of u8str(\342\200\246) for use in Cython extensions: ";
 static PyObject *__pyx_pw_3hal_3api_3u8str(PyObject *__pyx_self, PyObject *__pyx_v_string_source) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
@@ -2831,7 +2829,7 @@ static PyObject *__pyx_pf_3hal_3api_2u8str(CYTHON_UNUSED PyObject *__pyx_self, P
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("u8str", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_3hal_3api_u8str(__pyx_v_string_source, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 80, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_3hal_3api_u8str(__pyx_v_string_source, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 78, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -2848,17 +2846,17 @@ static PyObject *__pyx_pf_3hal_3api_2u8str(CYTHON_UNUSED PyObject *__pyx_self, P
   return __pyx_r;
 }
 
-/* "hal/api.pyx":83
+/* "hal/api.pyx":82
  *     return u8bytes(string_source).decode('UTF-8')
  * 
  * def stringify(instance, fields):             # <<<<<<<<<<<<<<
+ *     """ Custom version of stringify(instance, fields) for use in Cython extensions: """
  *     field_dict = {}
- *     for field in fields:
  */
 
 /* Python wrapper */
 static PyObject *__pyx_pw_3hal_3api_5stringify(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static char __pyx_doc_3hal_3api_4stringify[] = "stringify(instance, fields)";
+static char __pyx_doc_3hal_3api_4stringify[] = "stringify(instance, fields)\n Custom version of stringify(instance, fields) for use in Cython extensions: ";
 static PyMethodDef __pyx_mdef_3hal_3api_5stringify = {"stringify", (PyCFunction)__pyx_pw_3hal_3api_5stringify, METH_VARARGS|METH_KEYWORDS, __pyx_doc_3hal_3api_4stringify};
 static PyObject *__pyx_pw_3hal_3api_5stringify(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyObject *__pyx_v_instance = 0;
@@ -2889,11 +2887,11 @@ static PyObject *__pyx_pw_3hal_3api_5stringify(PyObject *__pyx_self, PyObject *_
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_fields)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("stringify", 1, 2, 2, 1); __PYX_ERR(0, 83, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("stringify", 1, 2, 2, 1); __PYX_ERR(0, 82, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "stringify") < 0)) __PYX_ERR(0, 83, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "stringify") < 0)) __PYX_ERR(0, 82, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
@@ -2906,7 +2904,7 @@ static PyObject *__pyx_pw_3hal_3api_5stringify(PyObject *__pyx_self, PyObject *_
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("stringify", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 83, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("stringify", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 82, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("hal.api.stringify", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -2941,8 +2939,8 @@ static PyObject *__pyx_pf_3hal_3api_4stringify(CYTHON_UNUSED PyObject *__pyx_sel
   __Pyx_RefNannySetupContext("stringify", 0);
 
   /* "hal/api.pyx":84
- * 
  * def stringify(instance, fields):
+ *     """ Custom version of stringify(instance, fields) for use in Cython extensions: """
  *     field_dict = {}             # <<<<<<<<<<<<<<
  *     for field in fields:
  *         field_value = getattr(instance, field, b"")
@@ -2953,7 +2951,7 @@ static PyObject *__pyx_pf_3hal_3api_4stringify(CYTHON_UNUSED PyObject *__pyx_sel
   __pyx_t_1 = 0;
 
   /* "hal/api.pyx":85
- * def stringify(instance, fields):
+ *     """ Custom version of stringify(instance, fields) for use in Cython extensions: """
  *     field_dict = {}
  *     for field in fields:             # <<<<<<<<<<<<<<
  *         field_value = getattr(instance, field, b"")
@@ -3048,7 +3046,7 @@ static PyObject *__pyx_pf_3hal_3api_4stringify(CYTHON_UNUSED PyObject *__pyx_sel
     }
 
     /* "hal/api.pyx":85
- * def stringify(instance, fields):
+ *     """ Custom version of stringify(instance, fields) for use in Cython extensions: """
  *     field_dict = {}
  *     for field in fields:             # <<<<<<<<<<<<<<
  *         field_value = getattr(instance, field, b"")
@@ -3288,12 +3286,12 @@ static PyObject *__pyx_pf_3hal_3api_4stringify(CYTHON_UNUSED PyObject *__pyx_sel
   __pyx_t_4 = 0;
   goto __pyx_L0;
 
-  /* "hal/api.pyx":83
+  /* "hal/api.pyx":82
  *     return u8bytes(string_source).decode('UTF-8')
  * 
  * def stringify(instance, fields):             # <<<<<<<<<<<<<<
+ *     """ Custom version of stringify(instance, fields) for use in Cython extensions: """
  *     field_dict = {}
- *     for field in fields:
  */
 
   /* function exit code */
@@ -18704,13 +18702,13 @@ static std::string __pyx_f_3hal_3api_halide_compute_base_path(std::string &__pyx
  *                                      string& file_base_name):
  *     cdef stringvec_t namespaces
  *     cdef string simple_name = halide_extract_namespaces(function_name, namespaces)             # <<<<<<<<<<<<<<
- *     # cdef string base_path = output_dir + b"/"
  *     cdef string base_path
+ *     if output_dir.back() == b'/':
  */
   __pyx_v_simple_name = Halide::Internal::extract_namespaces(__pyx_v_function_name, __pyx_v_namespaces);
 
-  /* "hal/api.pyx":883
- *     # cdef string base_path = output_dir + b"/"
+  /* "hal/api.pyx":882
+ *     cdef string simple_name = halide_extract_namespaces(function_name, namespaces)
  *     cdef string base_path
  *     if output_dir.back() == b'/':             # <<<<<<<<<<<<<<
  *         base_path = output_dir
@@ -18719,7 +18717,7 @@ static std::string __pyx_f_3hal_3api_halide_compute_base_path(std::string &__pyx
   __pyx_t_1 = ((__pyx_v_output_dir.back() == '/') != 0);
   if (__pyx_t_1) {
 
-    /* "hal/api.pyx":884
+    /* "hal/api.pyx":883
  *     cdef string base_path
  *     if output_dir.back() == b'/':
  *         base_path = output_dir             # <<<<<<<<<<<<<<
@@ -18728,8 +18726,8 @@ static std::string __pyx_f_3hal_3api_halide_compute_base_path(std::string &__pyx
  */
     __pyx_v_base_path = __pyx_v_output_dir;
 
-    /* "hal/api.pyx":883
- *     # cdef string base_path = output_dir + b"/"
+    /* "hal/api.pyx":882
+ *     cdef string simple_name = halide_extract_namespaces(function_name, namespaces)
  *     cdef string base_path
  *     if output_dir.back() == b'/':             # <<<<<<<<<<<<<<
  *         base_path = output_dir
@@ -18738,7 +18736,7 @@ static std::string __pyx_f_3hal_3api_halide_compute_base_path(std::string &__pyx
     goto __pyx_L3;
   }
 
-  /* "hal/api.pyx":886
+  /* "hal/api.pyx":885
  *         base_path = output_dir
  *     else:
  *         base_path = output_dir + b'/'             # <<<<<<<<<<<<<<
@@ -18746,18 +18744,18 @@ static std::string __pyx_f_3hal_3api_halide_compute_base_path(std::string &__pyx
  *         base_path += simple_name
  */
   /*else*/ {
-    __pyx_t_2 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_output_dir); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 886, __pyx_L1_error)
+    __pyx_t_2 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_output_dir); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 885, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_3 = PyNumber_Add(__pyx_t_2, __pyx_kp_b__37); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 886, __pyx_L1_error)
+    __pyx_t_3 = PyNumber_Add(__pyx_t_2, __pyx_kp_b__37); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 885, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_t_4 = __pyx_convert_string_from_py_std__in_string(__pyx_t_3); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 886, __pyx_L1_error)
+    __pyx_t_4 = __pyx_convert_string_from_py_std__in_string(__pyx_t_3); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 885, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __pyx_v_base_path = __pyx_t_4;
   }
   __pyx_L3:;
 
-  /* "hal/api.pyx":887
+  /* "hal/api.pyx":886
  *     else:
  *         base_path = output_dir + b'/'
  *     if file_base_name.empty():             # <<<<<<<<<<<<<<
@@ -18767,7 +18765,7 @@ static std::string __pyx_f_3hal_3api_halide_compute_base_path(std::string &__pyx
   __pyx_t_1 = (__pyx_v_file_base_name.empty() != 0);
   if (__pyx_t_1) {
 
-    /* "hal/api.pyx":888
+    /* "hal/api.pyx":887
  *         base_path = output_dir + b'/'
  *     if file_base_name.empty():
  *         base_path += simple_name             # <<<<<<<<<<<<<<
@@ -18776,7 +18774,7 @@ static std::string __pyx_f_3hal_3api_halide_compute_base_path(std::string &__pyx
  */
     __pyx_v_base_path += __pyx_v_simple_name;
 
-    /* "hal/api.pyx":887
+    /* "hal/api.pyx":886
  *     else:
  *         base_path = output_dir + b'/'
  *     if file_base_name.empty():             # <<<<<<<<<<<<<<
@@ -18786,7 +18784,7 @@ static std::string __pyx_f_3hal_3api_halide_compute_base_path(std::string &__pyx
     goto __pyx_L4;
   }
 
-  /* "hal/api.pyx":890
+  /* "hal/api.pyx":889
  *         base_path += simple_name
  *     else:
  *         base_path += file_base_name             # <<<<<<<<<<<<<<
@@ -18798,7 +18796,7 @@ static std::string __pyx_f_3hal_3api_halide_compute_base_path(std::string &__pyx
   }
   __pyx_L4:;
 
-  /* "hal/api.pyx":891
+  /* "hal/api.pyx":890
  *     else:
  *         base_path += file_base_name
  *     return base_path             # <<<<<<<<<<<<<<
@@ -18827,7 +18825,7 @@ static std::string __pyx_f_3hal_3api_halide_compute_base_path(std::string &__pyx
   return __pyx_r;
 }
 
-/* "hal/api.pyx":893
+/* "hal/api.pyx":892
  *     return base_path
  * 
  * def compute_base_path(object output_dir,             # <<<<<<<<<<<<<<
@@ -18850,7 +18848,7 @@ static PyObject *__pyx_pw_3hal_3api_17compute_base_path(PyObject *__pyx_self, Py
     static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_output_dir,&__pyx_n_s_function_name,&__pyx_n_s_file_base_name,0};
     PyObject* values[3] = {0,0,0};
 
-    /* "hal/api.pyx":895
+    /* "hal/api.pyx":894
  * def compute_base_path(object output_dir,
  *                       object function_name,
  *                       object file_base_name=None):             # <<<<<<<<<<<<<<
@@ -18880,7 +18878,7 @@ static PyObject *__pyx_pw_3hal_3api_17compute_base_path(PyObject *__pyx_self, Py
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_function_name)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("compute_base_path", 0, 2, 3, 1); __PYX_ERR(0, 893, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("compute_base_path", 0, 2, 3, 1); __PYX_ERR(0, 892, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
@@ -18890,7 +18888,7 @@ static PyObject *__pyx_pw_3hal_3api_17compute_base_path(PyObject *__pyx_self, Py
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "compute_base_path") < 0)) __PYX_ERR(0, 893, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "compute_base_path") < 0)) __PYX_ERR(0, 892, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -18908,7 +18906,7 @@ static PyObject *__pyx_pw_3hal_3api_17compute_base_path(PyObject *__pyx_self, Py
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("compute_base_path", 0, 2, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 893, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("compute_base_path", 0, 2, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 892, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("hal.api.compute_base_path", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -18916,7 +18914,7 @@ static PyObject *__pyx_pw_3hal_3api_17compute_base_path(PyObject *__pyx_self, Py
   __pyx_L4_argument_unpacking_done:;
   __pyx_r = __pyx_pf_3hal_3api_16compute_base_path(__pyx_self, __pyx_v_output_dir, __pyx_v_function_name, __pyx_v_file_base_name);
 
-  /* "hal/api.pyx":893
+  /* "hal/api.pyx":892
  *     return base_path
  * 
  * def compute_base_path(object output_dir,             # <<<<<<<<<<<<<<
@@ -18942,33 +18940,33 @@ static PyObject *__pyx_pf_3hal_3api_16compute_base_path(CYTHON_UNUSED PyObject *
   __Pyx_RefNannySetupContext("compute_base_path", 0);
   __Pyx_INCREF(__pyx_v_file_base_name);
 
-  /* "hal/api.pyx":898
+  /* "hal/api.pyx":897
  *     """ Reimplementation of Halide::Internal::compute_base_path(...)
  *         (a private function found in Halide/src/Generator.cpp). """
  *     cdef string output_dir_string = <string>u8bytes(output_dir)             # <<<<<<<<<<<<<<
  *     cdef string function_name_string = <string>u8bytes(function_name)
  *     if file_base_name is None:
  */
-  __pyx_t_1 = __pyx_f_3hal_3api_u8bytes(__pyx_v_output_dir, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 898, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_3hal_3api_u8bytes(__pyx_v_output_dir, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 897, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 898, __pyx_L1_error)
+  __pyx_t_2 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 897, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_output_dir_string = ((std::string)__pyx_t_2);
 
-  /* "hal/api.pyx":899
+  /* "hal/api.pyx":898
  *         (a private function found in Halide/src/Generator.cpp). """
  *     cdef string output_dir_string = <string>u8bytes(output_dir)
  *     cdef string function_name_string = <string>u8bytes(function_name)             # <<<<<<<<<<<<<<
  *     if file_base_name is None:
  *         file_base_name = ""
  */
-  __pyx_t_1 = __pyx_f_3hal_3api_u8bytes(__pyx_v_function_name, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 899, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_3hal_3api_u8bytes(__pyx_v_function_name, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 898, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 899, __pyx_L1_error)
+  __pyx_t_2 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 898, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_function_name_string = ((std::string)__pyx_t_2);
 
-  /* "hal/api.pyx":900
+  /* "hal/api.pyx":899
  *     cdef string output_dir_string = <string>u8bytes(output_dir)
  *     cdef string function_name_string = <string>u8bytes(function_name)
  *     if file_base_name is None:             # <<<<<<<<<<<<<<
@@ -18979,7 +18977,7 @@ static PyObject *__pyx_pf_3hal_3api_16compute_base_path(CYTHON_UNUSED PyObject *
   __pyx_t_4 = (__pyx_t_3 != 0);
   if (__pyx_t_4) {
 
-    /* "hal/api.pyx":901
+    /* "hal/api.pyx":900
  *     cdef string function_name_string = <string>u8bytes(function_name)
  *     if file_base_name is None:
  *         file_base_name = ""             # <<<<<<<<<<<<<<
@@ -18989,7 +18987,7 @@ static PyObject *__pyx_pf_3hal_3api_16compute_base_path(CYTHON_UNUSED PyObject *
     __Pyx_INCREF(__pyx_kp_s_);
     __Pyx_DECREF_SET(__pyx_v_file_base_name, __pyx_kp_s_);
 
-    /* "hal/api.pyx":900
+    /* "hal/api.pyx":899
  *     cdef string output_dir_string = <string>u8bytes(output_dir)
  *     cdef string function_name_string = <string>u8bytes(function_name)
  *     if file_base_name is None:             # <<<<<<<<<<<<<<
@@ -18998,20 +18996,20 @@ static PyObject *__pyx_pf_3hal_3api_16compute_base_path(CYTHON_UNUSED PyObject *
  */
   }
 
-  /* "hal/api.pyx":902
+  /* "hal/api.pyx":901
  *     if file_base_name is None:
  *         file_base_name = ""
  *     cdef string file_base_name_string = <string>u8bytes(file_base_name)             # <<<<<<<<<<<<<<
  *     return halide_compute_base_path(output_dir_string,
  *                                     function_name_string,
  */
-  __pyx_t_1 = __pyx_f_3hal_3api_u8bytes(__pyx_v_file_base_name, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 902, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_3hal_3api_u8bytes(__pyx_v_file_base_name, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 901, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 902, __pyx_L1_error)
+  __pyx_t_2 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 901, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_file_base_name_string = ((std::string)__pyx_t_2);
 
-  /* "hal/api.pyx":903
+  /* "hal/api.pyx":902
  *         file_base_name = ""
  *     cdef string file_base_name_string = <string>u8bytes(file_base_name)
  *     return halide_compute_base_path(output_dir_string,             # <<<<<<<<<<<<<<
@@ -19020,20 +19018,20 @@ static PyObject *__pyx_pf_3hal_3api_16compute_base_path(CYTHON_UNUSED PyObject *
  */
   __Pyx_XDECREF(__pyx_r);
 
-  /* "hal/api.pyx":905
+  /* "hal/api.pyx":904
  *     return halide_compute_base_path(output_dir_string,
  *                                     function_name_string,
  *                                     file_base_name_string)             # <<<<<<<<<<<<<<
  * 
  * cpdef Module get_generator_module(object name, object arguments={}):
  */
-  __pyx_t_1 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_f_3hal_3api_halide_compute_base_path(__pyx_v_output_dir_string, __pyx_v_function_name_string, __pyx_v_file_base_name_string)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 903, __pyx_L1_error)
+  __pyx_t_1 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_f_3hal_3api_halide_compute_base_path(__pyx_v_output_dir_string, __pyx_v_function_name_string, __pyx_v_file_base_name_string)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 902, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "hal/api.pyx":893
+  /* "hal/api.pyx":892
  *     return base_path
  * 
  * def compute_base_path(object output_dir,             # <<<<<<<<<<<<<<
@@ -19053,7 +19051,7 @@ static PyObject *__pyx_pf_3hal_3api_16compute_base_path(CYTHON_UNUSED PyObject *
   return __pyx_r;
 }
 
-/* "hal/api.pyx":907
+/* "hal/api.pyx":906
  *                                     file_base_name_string)
  * 
  * cpdef Module get_generator_module(object name, object arguments={}):             # <<<<<<<<<<<<<<
@@ -19094,16 +19092,16 @@ static struct __pyx_obj_3hal_3api_Module *__pyx_f_3hal_3api_get_generator_module
     }
   }
 
-  /* "hal/api.pyx":911
+  /* "hal/api.pyx":910
  *         corresponding to the registered generator instance (by name). """
  *     # first, check name against registered generators:
  *     if u8bytes(name) not in registered_generators():             # <<<<<<<<<<<<<<
  *         raise ValueError("""can't find a registered generator named "%s" """ % u8str(name))
  * 
  */
-  __pyx_t_1 = __pyx_f_3hal_3api_u8bytes(__pyx_v_name, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 911, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_3hal_3api_u8bytes(__pyx_v_name, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 910, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_registered_generators); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 911, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_registered_generators); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 910, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_t_4 = NULL;
   if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_3))) {
@@ -19116,39 +19114,39 @@ static struct __pyx_obj_3hal_3api_Module *__pyx_f_3hal_3api_get_generator_module
     }
   }
   if (__pyx_t_4) {
-    __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 911, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 910, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   } else {
-    __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 911, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 910, __pyx_L1_error)
   }
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_5 = (__Pyx_PySequence_ContainsTF(__pyx_t_1, __pyx_t_2, Py_NE)); if (unlikely(__pyx_t_5 < 0)) __PYX_ERR(0, 911, __pyx_L1_error)
+  __pyx_t_5 = (__Pyx_PySequence_ContainsTF(__pyx_t_1, __pyx_t_2, Py_NE)); if (unlikely(__pyx_t_5 < 0)) __PYX_ERR(0, 910, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_t_6 = (__pyx_t_5 != 0);
   if (unlikely(__pyx_t_6)) {
 
-    /* "hal/api.pyx":912
+    /* "hal/api.pyx":911
  *     # first, check name against registered generators:
  *     if u8bytes(name) not in registered_generators():
  *         raise ValueError("""can't find a registered generator named "%s" """ % u8str(name))             # <<<<<<<<<<<<<<
  * 
  *     # next, check that `arguments` is a mapping type:
  */
-    __pyx_t_2 = __pyx_f_3hal_3api_u8str(__pyx_v_name, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 912, __pyx_L1_error)
+    __pyx_t_2 = __pyx_f_3hal_3api_u8str(__pyx_v_name, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 911, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_1 = __Pyx_PyString_Format(__pyx_kp_s_can_t_find_a_registered_generato, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 912, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyString_Format(__pyx_kp_s_can_t_find_a_registered_generato, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 911, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_builtin_ValueError, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 912, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_builtin_ValueError, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 911, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __Pyx_Raise(__pyx_t_2, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __PYX_ERR(0, 912, __pyx_L1_error)
+    __PYX_ERR(0, 911, __pyx_L1_error)
 
-    /* "hal/api.pyx":911
+    /* "hal/api.pyx":910
  *         corresponding to the registered generator instance (by name). """
  *     # first, check name against registered generators:
  *     if u8bytes(name) not in registered_generators():             # <<<<<<<<<<<<<<
@@ -19157,7 +19155,7 @@ static struct __pyx_obj_3hal_3api_Module *__pyx_f_3hal_3api_get_generator_module
  */
   }
 
-  /* "hal/api.pyx":915
+  /* "hal/api.pyx":914
  * 
  *     # next, check that `arguments` is a mapping type:
  *     if not PyMapping_Check(arguments):             # <<<<<<<<<<<<<<
@@ -19167,20 +19165,20 @@ static struct __pyx_obj_3hal_3api_Module *__pyx_f_3hal_3api_get_generator_module
   __pyx_t_6 = ((!(PyMapping_Check(__pyx_v_arguments) != 0)) != 0);
   if (unlikely(__pyx_t_6)) {
 
-    /* "hal/api.pyx":916
+    /* "hal/api.pyx":915
  *     # next, check that `arguments` is a mapping type:
  *     if not PyMapping_Check(arguments):
  *         raise ValueError(""""arguments" must be a mapping (dict-ish) type""")             # <<<<<<<<<<<<<<
  * 
  *     # stack-allocate a named module (per the `name` argument),
  */
-    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__39, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 916, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__39, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 915, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_Raise(__pyx_t_2, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __PYX_ERR(0, 916, __pyx_L1_error)
+    __PYX_ERR(0, 915, __pyx_L1_error)
 
-    /* "hal/api.pyx":915
+    /* "hal/api.pyx":914
  * 
  *     # next, check that `arguments` is a mapping type:
  *     if not PyMapping_Check(arguments):             # <<<<<<<<<<<<<<
@@ -19189,32 +19187,32 @@ static struct __pyx_obj_3hal_3api_Module *__pyx_f_3hal_3api_get_generator_module
  */
   }
 
-  /* "hal/api.pyx":923
+  /* "hal/api.pyx":922
  *     cdef stringmap_t argmap
  *     cdef base_ptr_t generator_instance
  *     out = Module(name=name)             # <<<<<<<<<<<<<<
  * 
  *     # Heap-allocate a Target object (from either the environment or
  */
-  __pyx_t_2 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 923, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 922, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_name_2, __pyx_v_name) < 0) __PYX_ERR(0, 923, __pyx_L1_error)
-  __pyx_t_1 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_3hal_3api_Module), __pyx_empty_tuple, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 923, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_name_2, __pyx_v_name) < 0) __PYX_ERR(0, 922, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_3hal_3api_Module), __pyx_empty_tuple, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 922, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v_out = ((struct __pyx_obj_3hal_3api_Module *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "hal/api.pyx":927
+  /* "hal/api.pyx":926
  *     # Heap-allocate a Target object (from either the environment or
  *     # as per the argument dict) held in a unique pointer:
  *     generator_target = u8bytes(arguments.get('target', Target.target_from_environment().to_string()))             # <<<<<<<<<<<<<<
  *     cdef target_ptr_t generator_target_ptr
  *     generator_target_ptr.reset(new HalTarget(<string>generator_target))
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_arguments, __pyx_n_s_get); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 927, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_arguments, __pyx_n_s_get); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 926, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_7 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_ptype_3hal_3api_Target), __pyx_n_s_target_from_environment); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 927, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_ptype_3hal_3api_Target), __pyx_n_s_target_from_environment); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 926, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __pyx_t_8 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_7))) {
@@ -19227,14 +19225,14 @@ static struct __pyx_obj_3hal_3api_Module *__pyx_f_3hal_3api_get_generator_module
     }
   }
   if (__pyx_t_8) {
-    __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_t_7, __pyx_t_8); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 927, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_t_7, __pyx_t_8); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 926, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
   } else {
-    __pyx_t_4 = __Pyx_PyObject_CallNoArg(__pyx_t_7); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 927, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_CallNoArg(__pyx_t_7); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 926, __pyx_L1_error)
   }
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-  __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_to_string); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 927, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_to_string); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 926, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __pyx_t_4 = NULL;
@@ -19248,10 +19246,10 @@ static struct __pyx_obj_3hal_3api_Module *__pyx_f_3hal_3api_get_generator_module
     }
   }
   if (__pyx_t_4) {
-    __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_t_7, __pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 927, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_t_7, __pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 926, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   } else {
-    __pyx_t_3 = __Pyx_PyObject_CallNoArg(__pyx_t_7); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 927, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_CallNoArg(__pyx_t_7); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 926, __pyx_L1_error)
   }
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
@@ -19270,7 +19268,7 @@ static struct __pyx_obj_3hal_3api_Module *__pyx_f_3hal_3api_get_generator_module
   #if CYTHON_FAST_PYCALL
   if (PyFunction_Check(__pyx_t_2)) {
     PyObject *__pyx_temp[3] = {__pyx_t_7, __pyx_n_s_target, __pyx_t_3};
-    __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_9, 2+__pyx_t_9); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 927, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_9, 2+__pyx_t_9); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 926, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -19279,14 +19277,14 @@ static struct __pyx_obj_3hal_3api_Module *__pyx_f_3hal_3api_get_generator_module
   #if CYTHON_FAST_PYCCALL
   if (__Pyx_PyFastCFunction_Check(__pyx_t_2)) {
     PyObject *__pyx_temp[3] = {__pyx_t_7, __pyx_n_s_target, __pyx_t_3};
-    __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_9, 2+__pyx_t_9); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 927, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_9, 2+__pyx_t_9); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 926, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   } else
   #endif
   {
-    __pyx_t_4 = PyTuple_New(2+__pyx_t_9); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 927, __pyx_L1_error)
+    __pyx_t_4 = PyTuple_New(2+__pyx_t_9); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 926, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     if (__pyx_t_7) {
       __Pyx_GIVEREF(__pyx_t_7); PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_7); __pyx_t_7 = NULL;
@@ -19297,35 +19295,35 @@ static struct __pyx_obj_3hal_3api_Module *__pyx_f_3hal_3api_get_generator_module
     __Pyx_GIVEREF(__pyx_t_3);
     PyTuple_SET_ITEM(__pyx_t_4, 1+__pyx_t_9, __pyx_t_3);
     __pyx_t_3 = 0;
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_4, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 927, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_4, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 926, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   }
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __pyx_f_3hal_3api_u8bytes(__pyx_t_1, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 927, __pyx_L1_error)
+  __pyx_t_2 = __pyx_f_3hal_3api_u8bytes(__pyx_t_1, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 926, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_generator_target = ((PyObject*)__pyx_t_2);
   __pyx_t_2 = 0;
 
-  /* "hal/api.pyx":929
+  /* "hal/api.pyx":928
  *     generator_target = u8bytes(arguments.get('target', Target.target_from_environment().to_string()))
  *     cdef target_ptr_t generator_target_ptr
  *     generator_target_ptr.reset(new HalTarget(<string>generator_target))             # <<<<<<<<<<<<<<
  * 
  *     # Copy arguments from the Python dict to the STL map:
  */
-  __pyx_t_10 = __pyx_convert_string_from_py_std__in_string(__pyx_v_generator_target); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 929, __pyx_L1_error)
+  __pyx_t_10 = __pyx_convert_string_from_py_std__in_string(__pyx_v_generator_target); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 928, __pyx_L1_error)
   __pyx_v_generator_target_ptr.reset(new Halide::Target(((std::string)__pyx_t_10)));
 
-  /* "hal/api.pyx":932
+  /* "hal/api.pyx":931
  * 
  *     # Copy arguments from the Python dict to the STL map:
  *     for k, v in arguments.items():             # <<<<<<<<<<<<<<
  *         argmap[<string>u8bytes(k)] = <string>u8bytes(v)
  * 
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_arguments, __pyx_n_s_items); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 932, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_arguments, __pyx_n_s_items); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 931, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_t_4 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_1))) {
@@ -19338,10 +19336,10 @@ static struct __pyx_obj_3hal_3api_Module *__pyx_f_3hal_3api_get_generator_module
     }
   }
   if (__pyx_t_4) {
-    __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 932, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 931, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   } else {
-    __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 932, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 931, __pyx_L1_error)
   }
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -19349,9 +19347,9 @@ static struct __pyx_obj_3hal_3api_Module *__pyx_f_3hal_3api_get_generator_module
     __pyx_t_1 = __pyx_t_2; __Pyx_INCREF(__pyx_t_1); __pyx_t_11 = 0;
     __pyx_t_12 = NULL;
   } else {
-    __pyx_t_11 = -1; __pyx_t_1 = PyObject_GetIter(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 932, __pyx_L1_error)
+    __pyx_t_11 = -1; __pyx_t_1 = PyObject_GetIter(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 931, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_12 = Py_TYPE(__pyx_t_1)->tp_iternext; if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 932, __pyx_L1_error)
+    __pyx_t_12 = Py_TYPE(__pyx_t_1)->tp_iternext; if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 931, __pyx_L1_error)
   }
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   for (;;) {
@@ -19359,17 +19357,17 @@ static struct __pyx_obj_3hal_3api_Module *__pyx_f_3hal_3api_get_generator_module
       if (likely(PyList_CheckExact(__pyx_t_1))) {
         if (__pyx_t_11 >= PyList_GET_SIZE(__pyx_t_1)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_2 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_11); __Pyx_INCREF(__pyx_t_2); __pyx_t_11++; if (unlikely(0 < 0)) __PYX_ERR(0, 932, __pyx_L1_error)
+        __pyx_t_2 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_11); __Pyx_INCREF(__pyx_t_2); __pyx_t_11++; if (unlikely(0 < 0)) __PYX_ERR(0, 931, __pyx_L1_error)
         #else
-        __pyx_t_2 = PySequence_ITEM(__pyx_t_1, __pyx_t_11); __pyx_t_11++; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 932, __pyx_L1_error)
+        __pyx_t_2 = PySequence_ITEM(__pyx_t_1, __pyx_t_11); __pyx_t_11++; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 931, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         #endif
       } else {
         if (__pyx_t_11 >= PyTuple_GET_SIZE(__pyx_t_1)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_2 = PyTuple_GET_ITEM(__pyx_t_1, __pyx_t_11); __Pyx_INCREF(__pyx_t_2); __pyx_t_11++; if (unlikely(0 < 0)) __PYX_ERR(0, 932, __pyx_L1_error)
+        __pyx_t_2 = PyTuple_GET_ITEM(__pyx_t_1, __pyx_t_11); __Pyx_INCREF(__pyx_t_2); __pyx_t_11++; if (unlikely(0 < 0)) __PYX_ERR(0, 931, __pyx_L1_error)
         #else
-        __pyx_t_2 = PySequence_ITEM(__pyx_t_1, __pyx_t_11); __pyx_t_11++; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 932, __pyx_L1_error)
+        __pyx_t_2 = PySequence_ITEM(__pyx_t_1, __pyx_t_11); __pyx_t_11++; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 931, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         #endif
       }
@@ -19379,7 +19377,7 @@ static struct __pyx_obj_3hal_3api_Module *__pyx_f_3hal_3api_get_generator_module
         PyObject* exc_type = PyErr_Occurred();
         if (exc_type) {
           if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-          else __PYX_ERR(0, 932, __pyx_L1_error)
+          else __PYX_ERR(0, 931, __pyx_L1_error)
         }
         break;
       }
@@ -19391,7 +19389,7 @@ static struct __pyx_obj_3hal_3api_Module *__pyx_f_3hal_3api_get_generator_module
       if (unlikely(size != 2)) {
         if (size > 2) __Pyx_RaiseTooManyValuesError(2);
         else if (size >= 0) __Pyx_RaiseNeedMoreValuesError(size);
-        __PYX_ERR(0, 932, __pyx_L1_error)
+        __PYX_ERR(0, 931, __pyx_L1_error)
       }
       #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
       if (likely(PyTuple_CheckExact(sequence))) {
@@ -19404,15 +19402,15 @@ static struct __pyx_obj_3hal_3api_Module *__pyx_f_3hal_3api_get_generator_module
       __Pyx_INCREF(__pyx_t_4);
       __Pyx_INCREF(__pyx_t_3);
       #else
-      __pyx_t_4 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 932, __pyx_L1_error)
+      __pyx_t_4 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 931, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
-      __pyx_t_3 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 932, __pyx_L1_error)
+      __pyx_t_3 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 931, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       #endif
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     } else {
       Py_ssize_t index = -1;
-      __pyx_t_7 = PyObject_GetIter(__pyx_t_2); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 932, __pyx_L1_error)
+      __pyx_t_7 = PyObject_GetIter(__pyx_t_2); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 931, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_7);
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
       __pyx_t_13 = Py_TYPE(__pyx_t_7)->tp_iternext;
@@ -19420,7 +19418,7 @@ static struct __pyx_obj_3hal_3api_Module *__pyx_f_3hal_3api_get_generator_module
       __Pyx_GOTREF(__pyx_t_4);
       index = 1; __pyx_t_3 = __pyx_t_13(__pyx_t_7); if (unlikely(!__pyx_t_3)) goto __pyx_L7_unpacking_failed;
       __Pyx_GOTREF(__pyx_t_3);
-      if (__Pyx_IternextUnpackEndCheck(__pyx_t_13(__pyx_t_7), 2) < 0) __PYX_ERR(0, 932, __pyx_L1_error)
+      if (__Pyx_IternextUnpackEndCheck(__pyx_t_13(__pyx_t_7), 2) < 0) __PYX_ERR(0, 931, __pyx_L1_error)
       __pyx_t_13 = NULL;
       __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
       goto __pyx_L8_unpacking_done;
@@ -19428,7 +19426,7 @@ static struct __pyx_obj_3hal_3api_Module *__pyx_f_3hal_3api_get_generator_module
       __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
       __pyx_t_13 = NULL;
       if (__Pyx_IterFinish() == 0) __Pyx_RaiseNeedMoreValuesError(index);
-      __PYX_ERR(0, 932, __pyx_L1_error)
+      __PYX_ERR(0, 931, __pyx_L1_error)
       __pyx_L8_unpacking_done:;
     }
     __Pyx_XDECREF_SET(__pyx_v_k, __pyx_t_4);
@@ -19436,24 +19434,24 @@ static struct __pyx_obj_3hal_3api_Module *__pyx_f_3hal_3api_get_generator_module
     __Pyx_XDECREF_SET(__pyx_v_v, __pyx_t_3);
     __pyx_t_3 = 0;
 
-    /* "hal/api.pyx":933
+    /* "hal/api.pyx":932
  *     # Copy arguments from the Python dict to the STL map:
  *     for k, v in arguments.items():
  *         argmap[<string>u8bytes(k)] = <string>u8bytes(v)             # <<<<<<<<<<<<<<
  * 
  *     # Actually get an instance of the named generator:
  */
-    __pyx_t_2 = __pyx_f_3hal_3api_u8bytes(__pyx_v_v, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 933, __pyx_L1_error)
+    __pyx_t_2 = __pyx_f_3hal_3api_u8bytes(__pyx_v_v, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 932, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_10 = __pyx_convert_string_from_py_std__in_string(__pyx_t_2); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 933, __pyx_L1_error)
+    __pyx_t_10 = __pyx_convert_string_from_py_std__in_string(__pyx_t_2); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 932, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_t_2 = __pyx_f_3hal_3api_u8bytes(__pyx_v_k, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 933, __pyx_L1_error)
+    __pyx_t_2 = __pyx_f_3hal_3api_u8bytes(__pyx_v_k, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 932, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_14 = __pyx_convert_string_from_py_std__in_string(__pyx_t_2); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 933, __pyx_L1_error)
+    __pyx_t_14 = __pyx_convert_string_from_py_std__in_string(__pyx_t_2); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 932, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     (__pyx_v_argmap[((std::string)__pyx_t_14)]) = ((std::string)__pyx_t_10);
 
-    /* "hal/api.pyx":932
+    /* "hal/api.pyx":931
  * 
  *     # Copy arguments from the Python dict to the STL map:
  *     for k, v in arguments.items():             # <<<<<<<<<<<<<<
@@ -19463,33 +19461,33 @@ static struct __pyx_obj_3hal_3api_Module *__pyx_f_3hal_3api_get_generator_module
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "hal/api.pyx":936
+  /* "hal/api.pyx":935
  * 
  *     # Actually get an instance of the named generator:
  *     generator_instance = halide_generator_registry_get(u8bytes(name), deref(generator_target_ptr), argmap)             # <<<<<<<<<<<<<<
  * 
  *     # Modulize and return the generator instance (which that is a Halide thing, modulization):
  */
-  __pyx_t_1 = __pyx_f_3hal_3api_u8bytes(__pyx_v_name, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 936, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_3hal_3api_u8bytes(__pyx_v_name, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 935, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_10 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 936, __pyx_L1_error)
+  __pyx_t_10 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 935, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_generator_instance = __pyx_f_3hal_3ext_6halide_9generator_generator_registry_get(__pyx_t_10, (*__pyx_v_generator_target_ptr), __pyx_v_argmap);
 
-  /* "hal/api.pyx":939
+  /* "hal/api.pyx":938
  * 
  *     # Modulize and return the generator instance (which that is a Halide thing, modulization):
  *     out.replace_instance(<HalModule>deref(generator_instance).build_module(u8bytes(name), Linkage_Internal))             # <<<<<<<<<<<<<<
  * 
  *     # return the newly built module:
  */
-  __pyx_t_1 = __pyx_f_3hal_3api_u8bytes(__pyx_v_name, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 939, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_3hal_3api_u8bytes(__pyx_v_name, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 938, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_10 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 939, __pyx_L1_error)
+  __pyx_t_10 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 938, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   ((struct __pyx_vtabstruct_3hal_3api_Module *)__pyx_v_out->__pyx_vtab)->replace_instance(__pyx_v_out, ((Halide::Module)(*__pyx_v_generator_instance).build_module(__pyx_t_10, Halide::LinkageType::Internal)));
 
-  /* "hal/api.pyx":942
+  /* "hal/api.pyx":941
  * 
  *     # return the newly built module:
  *     return out             # <<<<<<<<<<<<<<
@@ -19501,7 +19499,7 @@ static struct __pyx_obj_3hal_3api_Module *__pyx_f_3hal_3api_get_generator_module
   __pyx_r = __pyx_v_out;
   goto __pyx_L0;
 
-  /* "hal/api.pyx":907
+  /* "hal/api.pyx":906
  *                                     file_base_name_string)
  * 
  * cpdef Module get_generator_module(object name, object arguments={}):             # <<<<<<<<<<<<<<
@@ -19566,7 +19564,7 @@ static PyObject *__pyx_pw_3hal_3api_19get_generator_module(PyObject *__pyx_self,
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "get_generator_module") < 0)) __PYX_ERR(0, 907, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "get_generator_module") < 0)) __PYX_ERR(0, 906, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -19582,7 +19580,7 @@ static PyObject *__pyx_pw_3hal_3api_19get_generator_module(PyObject *__pyx_self,
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("get_generator_module", 0, 1, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 907, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("get_generator_module", 0, 1, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 906, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("hal.api.get_generator_module", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -19604,7 +19602,7 @@ static PyObject *__pyx_pf_3hal_3api_18get_generator_module(CYTHON_UNUSED PyObjec
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_2.__pyx_n = 1;
   __pyx_t_2.arguments = __pyx_v_arguments;
-  __pyx_t_1 = ((PyObject *)__pyx_f_3hal_3api_get_generator_module(__pyx_v_name, 0, &__pyx_t_2)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 907, __pyx_L1_error)
+  __pyx_t_1 = ((PyObject *)__pyx_f_3hal_3api_get_generator_module(__pyx_v_name, 0, &__pyx_t_2)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 906, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -19621,7 +19619,7 @@ static PyObject *__pyx_pf_3hal_3api_18get_generator_module(CYTHON_UNUSED PyObjec
   return __pyx_r;
 }
 
-/* "hal/api.pyx":944
+/* "hal/api.pyx":943
  *     return out
  * 
  * cdef void f_insert_into(Module module, modulevec_t& modulevec) nogil:             # <<<<<<<<<<<<<<
@@ -19631,7 +19629,7 @@ static PyObject *__pyx_pf_3hal_3api_18get_generator_module(CYTHON_UNUSED PyObjec
 
 static void __pyx_f_3hal_3api_f_insert_into(struct __pyx_obj_3hal_3api_Module *__pyx_v_module, __pyx_t_3hal_3ext_6halide_6module_modulevec_t &__pyx_v_modulevec) {
 
-  /* "hal/api.pyx":945
+  /* "hal/api.pyx":944
  * 
  * cdef void f_insert_into(Module module, modulevec_t& modulevec) nogil:
  *     modulevec.push_back(deref(module.__this__))             # <<<<<<<<<<<<<<
@@ -19648,10 +19646,10 @@ static void __pyx_f_3hal_3api_f_insert_into(struct __pyx_obj_3hal_3api_Module *_
     #ifdef WITH_THREAD
     __Pyx_PyGILState_Release(__pyx_gilstate_save);
     #endif
-    __PYX_ERR(0, 945, __pyx_L1_error)
+    __PYX_ERR(0, 944, __pyx_L1_error)
   }
 
-  /* "hal/api.pyx":944
+  /* "hal/api.pyx":943
  *     return out
  * 
  * cdef void f_insert_into(Module module, modulevec_t& modulevec) nogil:             # <<<<<<<<<<<<<<
@@ -19666,7 +19664,7 @@ static void __pyx_f_3hal_3api_f_insert_into(struct __pyx_obj_3hal_3api_Module *_
   __pyx_L0:;
 }
 
-/* "hal/api.pyx":947
+/* "hal/api.pyx":946
  *     modulevec.push_back(deref(module.__this__))
  * 
  * def link_modules(object module_name, *modules):             # <<<<<<<<<<<<<<
@@ -19714,7 +19712,7 @@ static PyObject *__pyx_pw_3hal_3api_21link_modules(PyObject *__pyx_self, PyObjec
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t used_pos_args = (pos_args < 1) ? pos_args : 1;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, used_pos_args, "link_modules") < 0)) __PYX_ERR(0, 947, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, used_pos_args, "link_modules") < 0)) __PYX_ERR(0, 946, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) < 1) {
       goto __pyx_L5_argtuple_error;
@@ -19725,7 +19723,7 @@ static PyObject *__pyx_pw_3hal_3api_21link_modules(PyObject *__pyx_self, PyObjec
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("link_modules", 0, 1, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 947, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("link_modules", 0, 1, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 946, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_DECREF(__pyx_v_modules); __pyx_v_modules = 0;
   __Pyx_AddTraceback("hal.api.link_modules", __pyx_clineno, __pyx_lineno, __pyx_filename);
@@ -19754,50 +19752,50 @@ static PyObject *__pyx_pf_3hal_3api_20link_modules(CYTHON_UNUSED PyObject *__pyx
   std::string __pyx_t_6;
   __Pyx_RefNannySetupContext("link_modules", 0);
 
-  /* "hal/api.pyx":950
+  /* "hal/api.pyx":949
  *     """ Python wrapper for Halide::link_modules() from src/Module.h """
  *     cdef modulevec_t modulevec
  *     cdef Module out = Module(name=u8bytes(module_name))             # <<<<<<<<<<<<<<
  * 
  *     # check that we got some stuff:
  */
-  __pyx_t_1 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 950, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 949, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __pyx_f_3hal_3api_u8bytes(__pyx_v_module_name, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 950, __pyx_L1_error)
+  __pyx_t_2 = __pyx_f_3hal_3api_u8bytes(__pyx_v_module_name, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 949, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_name_2, __pyx_t_2) < 0) __PYX_ERR(0, 950, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_name_2, __pyx_t_2) < 0) __PYX_ERR(0, 949, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_3hal_3api_Module), __pyx_empty_tuple, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 950, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_3hal_3api_Module), __pyx_empty_tuple, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 949, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_out = ((struct __pyx_obj_3hal_3api_Module *)__pyx_t_2);
   __pyx_t_2 = 0;
 
-  /* "hal/api.pyx":953
+  /* "hal/api.pyx":952
  * 
  *     # check that we got some stuff:
  *     if len(modules) < 1:             # <<<<<<<<<<<<<<
  *         raise ValueError("""link_modules() called without modules to link""")
  * 
  */
-  __pyx_t_3 = PyTuple_GET_SIZE(__pyx_v_modules); if (unlikely(__pyx_t_3 == ((Py_ssize_t)-1))) __PYX_ERR(0, 953, __pyx_L1_error)
+  __pyx_t_3 = PyTuple_GET_SIZE(__pyx_v_modules); if (unlikely(__pyx_t_3 == ((Py_ssize_t)-1))) __PYX_ERR(0, 952, __pyx_L1_error)
   __pyx_t_4 = ((__pyx_t_3 < 1) != 0);
   if (unlikely(__pyx_t_4)) {
 
-    /* "hal/api.pyx":954
+    /* "hal/api.pyx":953
  *     # check that we got some stuff:
  *     if len(modules) < 1:
  *         raise ValueError("""link_modules() called without modules to link""")             # <<<<<<<<<<<<<<
  * 
  *     # check the type of all positional arguments:
  */
-    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__40, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 954, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__40, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 953, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_Raise(__pyx_t_2, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __PYX_ERR(0, 954, __pyx_L1_error)
+    __PYX_ERR(0, 953, __pyx_L1_error)
 
-    /* "hal/api.pyx":953
+    /* "hal/api.pyx":952
  * 
  *     # check that we got some stuff:
  *     if len(modules) < 1:             # <<<<<<<<<<<<<<
@@ -19806,7 +19804,7 @@ static PyObject *__pyx_pf_3hal_3api_20link_modules(CYTHON_UNUSED PyObject *__pyx
  */
   }
 
-  /* "hal/api.pyx":957
+  /* "hal/api.pyx":956
  * 
  *     # check the type of all positional arguments:
  *     for module in modules:             # <<<<<<<<<<<<<<
@@ -19817,15 +19815,15 @@ static PyObject *__pyx_pf_3hal_3api_20link_modules(CYTHON_UNUSED PyObject *__pyx
   for (;;) {
     if (__pyx_t_3 >= PyTuple_GET_SIZE(__pyx_t_2)) break;
     #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-    __pyx_t_1 = PyTuple_GET_ITEM(__pyx_t_2, __pyx_t_3); __Pyx_INCREF(__pyx_t_1); __pyx_t_3++; if (unlikely(0 < 0)) __PYX_ERR(0, 957, __pyx_L1_error)
+    __pyx_t_1 = PyTuple_GET_ITEM(__pyx_t_2, __pyx_t_3); __Pyx_INCREF(__pyx_t_1); __pyx_t_3++; if (unlikely(0 < 0)) __PYX_ERR(0, 956, __pyx_L1_error)
     #else
-    __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 957, __pyx_L1_error)
+    __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 956, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     #endif
     __Pyx_XDECREF_SET(__pyx_v_module, __pyx_t_1);
     __pyx_t_1 = 0;
 
-    /* "hal/api.pyx":958
+    /* "hal/api.pyx":957
  *     # check the type of all positional arguments:
  *     for module in modules:
  *         if type(module) is not type(Module):             # <<<<<<<<<<<<<<
@@ -19836,20 +19834,20 @@ static PyObject *__pyx_pf_3hal_3api_20link_modules(CYTHON_UNUSED PyObject *__pyx
     __pyx_t_5 = (__pyx_t_4 != 0);
     if (unlikely(__pyx_t_5)) {
 
-      /* "hal/api.pyx":959
+      /* "hal/api.pyx":958
  *     for module in modules:
  *         if type(module) is not type(Module):
  *             raise TypeError("""All positional args must be hal.api.Module""")             # <<<<<<<<<<<<<<
  * 
  *     for module in modules:
  */
-      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__41, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 959, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__41, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 958, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_Raise(__pyx_t_1, 0, 0, 0);
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-      __PYX_ERR(0, 959, __pyx_L1_error)
+      __PYX_ERR(0, 958, __pyx_L1_error)
 
-      /* "hal/api.pyx":958
+      /* "hal/api.pyx":957
  *     # check the type of all positional arguments:
  *     for module in modules:
  *         if type(module) is not type(Module):             # <<<<<<<<<<<<<<
@@ -19858,7 +19856,7 @@ static PyObject *__pyx_pf_3hal_3api_20link_modules(CYTHON_UNUSED PyObject *__pyx
  */
     }
 
-    /* "hal/api.pyx":957
+    /* "hal/api.pyx":956
  * 
  *     # check the type of all positional arguments:
  *     for module in modules:             # <<<<<<<<<<<<<<
@@ -19868,7 +19866,7 @@ static PyObject *__pyx_pf_3hal_3api_20link_modules(CYTHON_UNUSED PyObject *__pyx
   }
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "hal/api.pyx":961
+  /* "hal/api.pyx":960
  *             raise TypeError("""All positional args must be hal.api.Module""")
  * 
  *     for module in modules:             # <<<<<<<<<<<<<<
@@ -19879,25 +19877,25 @@ static PyObject *__pyx_pf_3hal_3api_20link_modules(CYTHON_UNUSED PyObject *__pyx
   for (;;) {
     if (__pyx_t_3 >= PyTuple_GET_SIZE(__pyx_t_2)) break;
     #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-    __pyx_t_1 = PyTuple_GET_ITEM(__pyx_t_2, __pyx_t_3); __Pyx_INCREF(__pyx_t_1); __pyx_t_3++; if (unlikely(0 < 0)) __PYX_ERR(0, 961, __pyx_L1_error)
+    __pyx_t_1 = PyTuple_GET_ITEM(__pyx_t_2, __pyx_t_3); __Pyx_INCREF(__pyx_t_1); __pyx_t_3++; if (unlikely(0 < 0)) __PYX_ERR(0, 960, __pyx_L1_error)
     #else
-    __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 961, __pyx_L1_error)
+    __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 960, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     #endif
     __Pyx_XDECREF_SET(__pyx_v_module, __pyx_t_1);
     __pyx_t_1 = 0;
 
-    /* "hal/api.pyx":962
+    /* "hal/api.pyx":961
  * 
  *     for module in modules:
  *         f_insert_into(module, modulevec)             # <<<<<<<<<<<<<<
  * 
  *     out.replace_instance(<HalModule>halide_link_modules(u8bytes(module_name), modulevec))
  */
-    if (!(likely(((__pyx_v_module) == Py_None) || likely(__Pyx_TypeTest(__pyx_v_module, __pyx_ptype_3hal_3api_Module))))) __PYX_ERR(0, 962, __pyx_L1_error)
+    if (!(likely(((__pyx_v_module) == Py_None) || likely(__Pyx_TypeTest(__pyx_v_module, __pyx_ptype_3hal_3api_Module))))) __PYX_ERR(0, 961, __pyx_L1_error)
     __pyx_f_3hal_3api_f_insert_into(((struct __pyx_obj_3hal_3api_Module *)__pyx_v_module), __pyx_v_modulevec);
 
-    /* "hal/api.pyx":961
+    /* "hal/api.pyx":960
  *             raise TypeError("""All positional args must be hal.api.Module""")
  * 
  *     for module in modules:             # <<<<<<<<<<<<<<
@@ -19907,20 +19905,20 @@ static PyObject *__pyx_pf_3hal_3api_20link_modules(CYTHON_UNUSED PyObject *__pyx
   }
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "hal/api.pyx":964
+  /* "hal/api.pyx":963
  *         f_insert_into(module, modulevec)
  * 
  *     out.replace_instance(<HalModule>halide_link_modules(u8bytes(module_name), modulevec))             # <<<<<<<<<<<<<<
  *     return out
  * 
  */
-  __pyx_t_2 = __pyx_f_3hal_3api_u8bytes(__pyx_v_module_name, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 964, __pyx_L1_error)
+  __pyx_t_2 = __pyx_f_3hal_3api_u8bytes(__pyx_v_module_name, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 963, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_6 = __pyx_convert_string_from_py_std__in_string(__pyx_t_2); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 964, __pyx_L1_error)
+  __pyx_t_6 = __pyx_convert_string_from_py_std__in_string(__pyx_t_2); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 963, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   ((struct __pyx_vtabstruct_3hal_3api_Module *)__pyx_v_out->__pyx_vtab)->replace_instance(__pyx_v_out, ((Halide::Module)Halide::link_modules(__pyx_t_6, __pyx_v_modulevec)));
 
-  /* "hal/api.pyx":965
+  /* "hal/api.pyx":964
  * 
  *     out.replace_instance(<HalModule>halide_link_modules(u8bytes(module_name), modulevec))
  *     return out             # <<<<<<<<<<<<<<
@@ -19932,7 +19930,7 @@ static PyObject *__pyx_pf_3hal_3api_20link_modules(CYTHON_UNUSED PyObject *__pyx
   __pyx_r = ((PyObject *)__pyx_v_out);
   goto __pyx_L0;
 
-  /* "hal/api.pyx":947
+  /* "hal/api.pyx":946
  *     modulevec.push_back(deref(module.__this__))
  * 
  * def link_modules(object module_name, *modules):             # <<<<<<<<<<<<<<
@@ -19954,7 +19952,7 @@ static PyObject *__pyx_pf_3hal_3api_20link_modules(CYTHON_UNUSED PyObject *__pyx
   return __pyx_r;
 }
 
-/* "hal/api.pyx":967
+/* "hal/api.pyx":966
  *     return out
  * 
  * def compile_standalone_runtime(Target target=Target.target_from_environment(),             # <<<<<<<<<<<<<<
@@ -19978,7 +19976,7 @@ static PyObject *__pyx_pw_3hal_3api_23compile_standalone_runtime(PyObject *__pyx
     PyObject* values[3] = {0,0,0};
     values[0] = (PyObject *)__pyx_k__42;
 
-    /* "hal/api.pyx":968
+    /* "hal/api.pyx":967
  * 
  * def compile_standalone_runtime(Target target=Target.target_from_environment(),
  *                                   object pth=None,             # <<<<<<<<<<<<<<
@@ -19987,7 +19985,7 @@ static PyObject *__pyx_pw_3hal_3api_23compile_standalone_runtime(PyObject *__pyx
  */
     values[1] = ((PyObject *)Py_None);
 
-    /* "hal/api.pyx":969
+    /* "hal/api.pyx":968
  * def compile_standalone_runtime(Target target=Target.target_from_environment(),
  *                                   object pth=None,
  *                              Outputs outputs=None):             # <<<<<<<<<<<<<<
@@ -20029,7 +20027,7 @@ static PyObject *__pyx_pw_3hal_3api_23compile_standalone_runtime(PyObject *__pyx
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "compile_standalone_runtime") < 0)) __PYX_ERR(0, 967, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "compile_standalone_runtime") < 0)) __PYX_ERR(0, 966, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -20049,17 +20047,17 @@ static PyObject *__pyx_pw_3hal_3api_23compile_standalone_runtime(PyObject *__pyx
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("compile_standalone_runtime", 0, 0, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 967, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("compile_standalone_runtime", 0, 0, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 966, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("hal.api.compile_standalone_runtime", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_target), __pyx_ptype_3hal_3api_Target, 1, "target", 0))) __PYX_ERR(0, 967, __pyx_L1_error)
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_outputs), __pyx_ptype_3hal_3api_Outputs, 1, "outputs", 0))) __PYX_ERR(0, 969, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_target), __pyx_ptype_3hal_3api_Target, 1, "target", 0))) __PYX_ERR(0, 966, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_outputs), __pyx_ptype_3hal_3api_Outputs, 1, "outputs", 0))) __PYX_ERR(0, 968, __pyx_L1_error)
   __pyx_r = __pyx_pf_3hal_3api_22compile_standalone_runtime(__pyx_self, __pyx_v_target, __pyx_v_pth, __pyx_v_outputs);
 
-  /* "hal/api.pyx":967
+  /* "hal/api.pyx":966
  *     return out
  * 
  * def compile_standalone_runtime(Target target=Target.target_from_environment(),             # <<<<<<<<<<<<<<
@@ -20092,7 +20090,7 @@ static PyObject *__pyx_pf_3hal_3api_22compile_standalone_runtime(CYTHON_UNUSED P
   std::string __pyx_t_8;
   __Pyx_RefNannySetupContext("compile_standalone_runtime", 0);
 
-  /* "hal/api.pyx":976
+  /* "hal/api.pyx":975
  * 
  *     # OPTION 1: WE GOT A PATH STRING:
  *     if pth is not None:             # <<<<<<<<<<<<<<
@@ -20103,36 +20101,36 @@ static PyObject *__pyx_pf_3hal_3api_22compile_standalone_runtime(CYTHON_UNUSED P
   __pyx_t_2 = (__pyx_t_1 != 0);
   if (__pyx_t_2) {
 
-    /* "hal/api.pyx":978
+    /* "hal/api.pyx":977
  *     if pth is not None:
  *         # real-ify the path - this will raise if problematic:
  *         from os.path import realpath             # <<<<<<<<<<<<<<
  *         realpth = realpath(u8str(pth))
  *         if not realpth.lower().endswith('.o'):
  */
-    __pyx_t_3 = PyList_New(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 978, __pyx_L1_error)
+    __pyx_t_3 = PyList_New(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 977, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_INCREF(__pyx_n_s_realpath);
     __Pyx_GIVEREF(__pyx_n_s_realpath);
     PyList_SET_ITEM(__pyx_t_3, 0, __pyx_n_s_realpath);
-    __pyx_t_4 = __Pyx_Import(__pyx_n_s_os_path, __pyx_t_3, -1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 978, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_Import(__pyx_n_s_os_path, __pyx_t_3, -1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 977, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_3 = __Pyx_ImportFrom(__pyx_t_4, __pyx_n_s_realpath); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 978, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_ImportFrom(__pyx_t_4, __pyx_n_s_realpath); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 977, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_INCREF(__pyx_t_3);
     __pyx_v_realpath = __pyx_t_3;
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-    /* "hal/api.pyx":979
+    /* "hal/api.pyx":978
  *         # real-ify the path - this will raise if problematic:
  *         from os.path import realpath
  *         realpth = realpath(u8str(pth))             # <<<<<<<<<<<<<<
  *         if not realpth.lower().endswith('.o'):
  *             realpth += ".o"
  */
-    __pyx_t_3 = __pyx_f_3hal_3api_u8str(__pyx_v_pth, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 979, __pyx_L1_error)
+    __pyx_t_3 = __pyx_f_3hal_3api_u8str(__pyx_v_pth, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 978, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_INCREF(__pyx_v_realpath);
     __pyx_t_5 = __pyx_v_realpath; __pyx_t_6 = NULL;
@@ -20146,14 +20144,14 @@ static PyObject *__pyx_pf_3hal_3api_22compile_standalone_runtime(CYTHON_UNUSED P
       }
     }
     if (!__pyx_t_6) {
-      __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 979, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 978, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
       __Pyx_GOTREF(__pyx_t_4);
     } else {
       #if CYTHON_FAST_PYCALL
       if (PyFunction_Check(__pyx_t_5)) {
         PyObject *__pyx_temp[2] = {__pyx_t_6, __pyx_t_3};
-        __pyx_t_4 = __Pyx_PyFunction_FastCall(__pyx_t_5, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 979, __pyx_L1_error)
+        __pyx_t_4 = __Pyx_PyFunction_FastCall(__pyx_t_5, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 978, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
         __Pyx_GOTREF(__pyx_t_4);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -20162,20 +20160,20 @@ static PyObject *__pyx_pf_3hal_3api_22compile_standalone_runtime(CYTHON_UNUSED P
       #if CYTHON_FAST_PYCCALL
       if (__Pyx_PyFastCFunction_Check(__pyx_t_5)) {
         PyObject *__pyx_temp[2] = {__pyx_t_6, __pyx_t_3};
-        __pyx_t_4 = __Pyx_PyCFunction_FastCall(__pyx_t_5, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 979, __pyx_L1_error)
+        __pyx_t_4 = __Pyx_PyCFunction_FastCall(__pyx_t_5, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 978, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
         __Pyx_GOTREF(__pyx_t_4);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
       } else
       #endif
       {
-        __pyx_t_7 = PyTuple_New(1+1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 979, __pyx_L1_error)
+        __pyx_t_7 = PyTuple_New(1+1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 978, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_7);
         __Pyx_GIVEREF(__pyx_t_6); PyTuple_SET_ITEM(__pyx_t_7, 0, __pyx_t_6); __pyx_t_6 = NULL;
         __Pyx_GIVEREF(__pyx_t_3);
         PyTuple_SET_ITEM(__pyx_t_7, 0+1, __pyx_t_3);
         __pyx_t_3 = 0;
-        __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_7, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 979, __pyx_L1_error)
+        __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_7, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 978, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_4);
         __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
       }
@@ -20184,14 +20182,14 @@ static PyObject *__pyx_pf_3hal_3api_22compile_standalone_runtime(CYTHON_UNUSED P
     __pyx_v_realpth = __pyx_t_4;
     __pyx_t_4 = 0;
 
-    /* "hal/api.pyx":980
+    /* "hal/api.pyx":979
  *         from os.path import realpath
  *         realpth = realpath(u8str(pth))
  *         if not realpth.lower().endswith('.o'):             # <<<<<<<<<<<<<<
  *             realpth += ".o"
  * 
  */
-    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_realpth, __pyx_n_s_lower); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 980, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_realpth, __pyx_n_s_lower); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 979, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __pyx_t_7 = NULL;
     if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_5))) {
@@ -20204,37 +20202,37 @@ static PyObject *__pyx_pf_3hal_3api_22compile_standalone_runtime(CYTHON_UNUSED P
       }
     }
     if (__pyx_t_7) {
-      __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_t_7); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 980, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_t_7); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 979, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
     } else {
-      __pyx_t_4 = __Pyx_PyObject_CallNoArg(__pyx_t_5); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 980, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyObject_CallNoArg(__pyx_t_5); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 979, __pyx_L1_error)
     }
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_endswith); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 980, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_endswith); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 979, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_tuple__43, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 980, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_tuple__43, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 979, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-    __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 980, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 979, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __pyx_t_1 = ((!__pyx_t_2) != 0);
     if (__pyx_t_1) {
 
-      /* "hal/api.pyx":981
+      /* "hal/api.pyx":980
  *         realpth = realpath(u8str(pth))
  *         if not realpth.lower().endswith('.o'):
  *             realpth += ".o"             # <<<<<<<<<<<<<<
  * 
  *         # make the actual call:
  */
-      __pyx_t_4 = PyNumber_InPlaceAdd(__pyx_v_realpth, __pyx_kp_s_o); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 981, __pyx_L1_error)
+      __pyx_t_4 = PyNumber_InPlaceAdd(__pyx_v_realpth, __pyx_kp_s_o); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 980, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_DECREF_SET(__pyx_v_realpth, __pyx_t_4);
       __pyx_t_4 = 0;
 
-      /* "hal/api.pyx":980
+      /* "hal/api.pyx":979
  *         from os.path import realpath
  *         realpth = realpath(u8str(pth))
  *         if not realpth.lower().endswith('.o'):             # <<<<<<<<<<<<<<
@@ -20243,19 +20241,19 @@ static PyObject *__pyx_pf_3hal_3api_22compile_standalone_runtime(CYTHON_UNUSED P
  */
     }
 
-    /* "hal/api.pyx":984
+    /* "hal/api.pyx":983
  * 
  *         # make the actual call:
  *         halide_compile_standalone_runtime_for_path(<string>u8bytes(realpth),             # <<<<<<<<<<<<<<
  *                                                    <HalTarget>target.__this__)
  * 
  */
-    __pyx_t_4 = __pyx_f_3hal_3api_u8bytes(__pyx_v_realpth, 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 984, __pyx_L1_error)
+    __pyx_t_4 = __pyx_f_3hal_3api_u8bytes(__pyx_v_realpth, 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 983, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_8 = __pyx_convert_string_from_py_std__in_string(__pyx_t_4); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 984, __pyx_L1_error)
+    __pyx_t_8 = __pyx_convert_string_from_py_std__in_string(__pyx_t_4); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 983, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-    /* "hal/api.pyx":985
+    /* "hal/api.pyx":984
  *         # make the actual call:
  *         halide_compile_standalone_runtime_for_path(<string>u8bytes(realpth),
  *                                                    <HalTarget>target.__this__)             # <<<<<<<<<<<<<<
@@ -20264,7 +20262,7 @@ static PyObject *__pyx_pf_3hal_3api_22compile_standalone_runtime(CYTHON_UNUSED P
  */
     compile_standalone_runtime(((std::string)__pyx_t_8), ((Halide::Target)__pyx_v_target->__pyx___this__));
 
-    /* "hal/api.pyx":988
+    /* "hal/api.pyx":987
  * 
  *         # return the real-ified path:
  *         return u8bytes(realpth)             # <<<<<<<<<<<<<<
@@ -20272,13 +20270,13 @@ static PyObject *__pyx_pf_3hal_3api_22compile_standalone_runtime(CYTHON_UNUSED P
  *     # OPTION 2: WE GOT A FULL-BLOWN OUTPUTS OBJECT:
  */
     __Pyx_XDECREF(__pyx_r);
-    __pyx_t_4 = __pyx_f_3hal_3api_u8bytes(__pyx_v_realpth, 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 988, __pyx_L1_error)
+    __pyx_t_4 = __pyx_f_3hal_3api_u8bytes(__pyx_v_realpth, 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 987, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __pyx_r = __pyx_t_4;
     __pyx_t_4 = 0;
     goto __pyx_L0;
 
-    /* "hal/api.pyx":976
+    /* "hal/api.pyx":975
  * 
  *     # OPTION 1: WE GOT A PATH STRING:
  *     if pth is not None:             # <<<<<<<<<<<<<<
@@ -20287,7 +20285,7 @@ static PyObject *__pyx_pf_3hal_3api_22compile_standalone_runtime(CYTHON_UNUSED P
  */
   }
 
-  /* "hal/api.pyx":991
+  /* "hal/api.pyx":990
  * 
  *     # OPTION 2: WE GOT A FULL-BLOWN OUTPUTS OBJECT:
  *     elif outputs is not None:             # <<<<<<<<<<<<<<
@@ -20298,14 +20296,14 @@ static PyObject *__pyx_pf_3hal_3api_22compile_standalone_runtime(CYTHON_UNUSED P
   __pyx_t_2 = (__pyx_t_1 != 0);
   if (__pyx_t_2) {
 
-    /* "hal/api.pyx":993
+    /* "hal/api.pyx":992
  *     elif outputs is not None:
  *         # confirm the type of the outputs object:
  *         if not Outputs.check(outputs):             # <<<<<<<<<<<<<<
  *             raise TypeError("type(outputs) must be Outputs, not %s" % outputs.__class__.__name__)
  * 
  */
-    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_ptype_3hal_3api_Outputs), __pyx_n_s_check); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 993, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_ptype_3hal_3api_Outputs), __pyx_n_s_check); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 992, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __pyx_t_7 = NULL;
     if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_5))) {
@@ -20318,13 +20316,13 @@ static PyObject *__pyx_pf_3hal_3api_22compile_standalone_runtime(CYTHON_UNUSED P
       }
     }
     if (!__pyx_t_7) {
-      __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_t_5, ((PyObject *)__pyx_v_outputs)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 993, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_t_5, ((PyObject *)__pyx_v_outputs)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 992, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
     } else {
       #if CYTHON_FAST_PYCALL
       if (PyFunction_Check(__pyx_t_5)) {
         PyObject *__pyx_temp[2] = {__pyx_t_7, ((PyObject *)__pyx_v_outputs)};
-        __pyx_t_4 = __Pyx_PyFunction_FastCall(__pyx_t_5, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 993, __pyx_L1_error)
+        __pyx_t_4 = __Pyx_PyFunction_FastCall(__pyx_t_5, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 992, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
         __Pyx_GOTREF(__pyx_t_4);
       } else
@@ -20332,52 +20330,52 @@ static PyObject *__pyx_pf_3hal_3api_22compile_standalone_runtime(CYTHON_UNUSED P
       #if CYTHON_FAST_PYCCALL
       if (__Pyx_PyFastCFunction_Check(__pyx_t_5)) {
         PyObject *__pyx_temp[2] = {__pyx_t_7, ((PyObject *)__pyx_v_outputs)};
-        __pyx_t_4 = __Pyx_PyCFunction_FastCall(__pyx_t_5, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 993, __pyx_L1_error)
+        __pyx_t_4 = __Pyx_PyCFunction_FastCall(__pyx_t_5, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 992, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
         __Pyx_GOTREF(__pyx_t_4);
       } else
       #endif
       {
-        __pyx_t_3 = PyTuple_New(1+1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 993, __pyx_L1_error)
+        __pyx_t_3 = PyTuple_New(1+1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 992, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
         __Pyx_GIVEREF(__pyx_t_7); PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_t_7); __pyx_t_7 = NULL;
         __Pyx_INCREF(((PyObject *)__pyx_v_outputs));
         __Pyx_GIVEREF(((PyObject *)__pyx_v_outputs));
         PyTuple_SET_ITEM(__pyx_t_3, 0+1, ((PyObject *)__pyx_v_outputs));
-        __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_3, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 993, __pyx_L1_error)
+        __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_3, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 992, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_4);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
       }
     }
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-    __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 993, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 992, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __pyx_t_1 = ((!__pyx_t_2) != 0);
     if (unlikely(__pyx_t_1)) {
 
-      /* "hal/api.pyx":994
+      /* "hal/api.pyx":993
  *         # confirm the type of the outputs object:
  *         if not Outputs.check(outputs):
  *             raise TypeError("type(outputs) must be Outputs, not %s" % outputs.__class__.__name__)             # <<<<<<<<<<<<<<
  * 
  *         # make the actual call, returning another native Options object:
  */
-      __pyx_t_4 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_outputs), __pyx_n_s_class); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 994, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_outputs), __pyx_n_s_class); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 993, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
-      __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_name); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 994, __pyx_L1_error)
+      __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_name); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 993, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_5);
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-      __pyx_t_4 = __Pyx_PyString_Format(__pyx_kp_s_type_outputs_must_be_Outputs_not, __pyx_t_5); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 994, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyString_Format(__pyx_kp_s_type_outputs_must_be_Outputs_not, __pyx_t_5); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 993, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-      __pyx_t_5 = __Pyx_PyObject_CallOneArg(__pyx_builtin_TypeError, __pyx_t_4); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 994, __pyx_L1_error)
+      __pyx_t_5 = __Pyx_PyObject_CallOneArg(__pyx_builtin_TypeError, __pyx_t_4); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 993, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_5);
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
       __Pyx_Raise(__pyx_t_5, 0, 0, 0);
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-      __PYX_ERR(0, 994, __pyx_L1_error)
+      __PYX_ERR(0, 993, __pyx_L1_error)
 
-      /* "hal/api.pyx":993
+      /* "hal/api.pyx":992
  *     elif outputs is not None:
  *         # confirm the type of the outputs object:
  *         if not Outputs.check(outputs):             # <<<<<<<<<<<<<<
@@ -20386,7 +20384,7 @@ static PyObject *__pyx_pf_3hal_3api_22compile_standalone_runtime(CYTHON_UNUSED P
  */
     }
 
-    /* "hal/api.pyx":997
+    /* "hal/api.pyx":996
  * 
  *         # make the actual call, returning another native Options object:
  *         with nogil:             # <<<<<<<<<<<<<<
@@ -20401,7 +20399,7 @@ static PyObject *__pyx_pf_3hal_3api_22compile_standalone_runtime(CYTHON_UNUSED P
         #endif
         /*try:*/ {
 
-          /* "hal/api.pyx":998
+          /* "hal/api.pyx":997
  *         # make the actual call, returning another native Options object:
  *         with nogil:
  *             out = halide_compile_standalone_runtime_with_outputs(<HalOutputs>outputs.__this__,             # <<<<<<<<<<<<<<
@@ -20411,7 +20409,7 @@ static PyObject *__pyx_pf_3hal_3api_22compile_standalone_runtime(CYTHON_UNUSED P
           __pyx_v_out = compile_standalone_runtime(((Halide::Outputs)__pyx_v_outputs->__pyx___this__), ((Halide::Target)__pyx_v_target->__pyx___this__));
         }
 
-        /* "hal/api.pyx":997
+        /* "hal/api.pyx":996
  * 
  *         # make the actual call, returning another native Options object:
  *         with nogil:             # <<<<<<<<<<<<<<
@@ -20430,7 +20428,7 @@ static PyObject *__pyx_pf_3hal_3api_22compile_standalone_runtime(CYTHON_UNUSED P
         }
     }
 
-    /* "hal/api.pyx":1002
+    /* "hal/api.pyx":1001
  * 
  *         # return a new hal.api.Outputs matching the returned value above:
  *         return Outputs(             # <<<<<<<<<<<<<<
@@ -20439,131 +20437,131 @@ static PyObject *__pyx_pf_3hal_3api_22compile_standalone_runtime(CYTHON_UNUSED P
  */
     __Pyx_XDECREF(__pyx_r);
 
-    /* "hal/api.pyx":1003
+    /* "hal/api.pyx":1002
  *         # return a new hal.api.Outputs matching the returned value above:
  *         return Outputs(
  *             object_name=out.object_name,             # <<<<<<<<<<<<<<
  *             assembly_name=out.assembly_name,
  *             bitcode_name=out.bitcode_name,
  */
-    __pyx_t_5 = __Pyx_PyDict_NewPresized(9); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1003, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyDict_NewPresized(9); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1002, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
-    __pyx_t_4 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_out.object_name); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1003, __pyx_L1_error)
+    __pyx_t_4 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_out.object_name); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1002, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_object_name, __pyx_t_4) < 0) __PYX_ERR(0, 1003, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_object_name, __pyx_t_4) < 0) __PYX_ERR(0, 1002, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-    /* "hal/api.pyx":1004
+    /* "hal/api.pyx":1003
  *         return Outputs(
  *             object_name=out.object_name,
  *             assembly_name=out.assembly_name,             # <<<<<<<<<<<<<<
  *             bitcode_name=out.bitcode_name,
  *             llvm_assembly_name=out.llvm_assembly_name,
  */
-    __pyx_t_4 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_out.assembly_name); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1004, __pyx_L1_error)
+    __pyx_t_4 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_out.assembly_name); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1003, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_assembly_name, __pyx_t_4) < 0) __PYX_ERR(0, 1003, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_assembly_name, __pyx_t_4) < 0) __PYX_ERR(0, 1002, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-    /* "hal/api.pyx":1005
+    /* "hal/api.pyx":1004
  *             object_name=out.object_name,
  *             assembly_name=out.assembly_name,
  *             bitcode_name=out.bitcode_name,             # <<<<<<<<<<<<<<
  *             llvm_assembly_name=out.llvm_assembly_name,
  *             c_header_name=out.c_header_name,
  */
-    __pyx_t_4 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_out.bitcode_name); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1005, __pyx_L1_error)
+    __pyx_t_4 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_out.bitcode_name); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1004, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_bitcode_name, __pyx_t_4) < 0) __PYX_ERR(0, 1003, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_bitcode_name, __pyx_t_4) < 0) __PYX_ERR(0, 1002, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-    /* "hal/api.pyx":1006
+    /* "hal/api.pyx":1005
  *             assembly_name=out.assembly_name,
  *             bitcode_name=out.bitcode_name,
  *             llvm_assembly_name=out.llvm_assembly_name,             # <<<<<<<<<<<<<<
  *             c_header_name=out.c_header_name,
  *             c_source_name=out.c_source_name,
  */
-    __pyx_t_4 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_out.llvm_assembly_name); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1006, __pyx_L1_error)
+    __pyx_t_4 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_out.llvm_assembly_name); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1005, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_llvm_assembly_name, __pyx_t_4) < 0) __PYX_ERR(0, 1003, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_llvm_assembly_name, __pyx_t_4) < 0) __PYX_ERR(0, 1002, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-    /* "hal/api.pyx":1007
+    /* "hal/api.pyx":1006
  *             bitcode_name=out.bitcode_name,
  *             llvm_assembly_name=out.llvm_assembly_name,
  *             c_header_name=out.c_header_name,             # <<<<<<<<<<<<<<
  *             c_source_name=out.c_source_name,
  *             stmt_name=out.stmt_name,
  */
-    __pyx_t_4 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_out.c_header_name); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1007, __pyx_L1_error)
+    __pyx_t_4 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_out.c_header_name); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1006, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_c_header_name, __pyx_t_4) < 0) __PYX_ERR(0, 1003, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_c_header_name, __pyx_t_4) < 0) __PYX_ERR(0, 1002, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-    /* "hal/api.pyx":1008
+    /* "hal/api.pyx":1007
  *             llvm_assembly_name=out.llvm_assembly_name,
  *             c_header_name=out.c_header_name,
  *             c_source_name=out.c_source_name,             # <<<<<<<<<<<<<<
  *             stmt_name=out.stmt_name,
  *             stmt_html_name=out.stmt_html_name,
  */
-    __pyx_t_4 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_out.c_source_name); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1008, __pyx_L1_error)
+    __pyx_t_4 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_out.c_source_name); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1007, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_c_source_name, __pyx_t_4) < 0) __PYX_ERR(0, 1003, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_c_source_name, __pyx_t_4) < 0) __PYX_ERR(0, 1002, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-    /* "hal/api.pyx":1009
+    /* "hal/api.pyx":1008
  *             c_header_name=out.c_header_name,
  *             c_source_name=out.c_source_name,
  *             stmt_name=out.stmt_name,             # <<<<<<<<<<<<<<
  *             stmt_html_name=out.stmt_html_name,
  *             static_library_name=out.static_library_name)
  */
-    __pyx_t_4 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_out.stmt_name); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1009, __pyx_L1_error)
+    __pyx_t_4 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_out.stmt_name); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1008, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_stmt_name, __pyx_t_4) < 0) __PYX_ERR(0, 1003, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_stmt_name, __pyx_t_4) < 0) __PYX_ERR(0, 1002, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-    /* "hal/api.pyx":1010
+    /* "hal/api.pyx":1009
  *             c_source_name=out.c_source_name,
  *             stmt_name=out.stmt_name,
  *             stmt_html_name=out.stmt_html_name,             # <<<<<<<<<<<<<<
  *             static_library_name=out.static_library_name)
  * 
  */
-    __pyx_t_4 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_out.stmt_html_name); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1010, __pyx_L1_error)
+    __pyx_t_4 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_out.stmt_html_name); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1009, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_stmt_html_name, __pyx_t_4) < 0) __PYX_ERR(0, 1003, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_stmt_html_name, __pyx_t_4) < 0) __PYX_ERR(0, 1002, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-    /* "hal/api.pyx":1011
+    /* "hal/api.pyx":1010
  *             stmt_name=out.stmt_name,
  *             stmt_html_name=out.stmt_html_name,
  *             static_library_name=out.static_library_name)             # <<<<<<<<<<<<<<
  * 
  *     # OPTION 3: WE GOT NEITHER OF THE ABOVE,
  */
-    __pyx_t_4 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_out.static_library_name); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1011, __pyx_L1_error)
+    __pyx_t_4 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_out.static_library_name); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1010, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_static_library_name, __pyx_t_4) < 0) __PYX_ERR(0, 1003, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_static_library_name, __pyx_t_4) < 0) __PYX_ERR(0, 1002, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-    /* "hal/api.pyx":1002
+    /* "hal/api.pyx":1001
  * 
  *         # return a new hal.api.Outputs matching the returned value above:
  *         return Outputs(             # <<<<<<<<<<<<<<
  *             object_name=out.object_name,
  *             assembly_name=out.assembly_name,
  */
-    __pyx_t_4 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_3hal_3api_Outputs), __pyx_empty_tuple, __pyx_t_5); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1002, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_3hal_3api_Outputs), __pyx_empty_tuple, __pyx_t_5); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1001, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     __pyx_r = __pyx_t_4;
     __pyx_t_4 = 0;
     goto __pyx_L0;
 
-    /* "hal/api.pyx":991
+    /* "hal/api.pyx":990
  * 
  *     # OPTION 2: WE GOT A FULL-BLOWN OUTPUTS OBJECT:
  *     elif outputs is not None:             # <<<<<<<<<<<<<<
@@ -20572,20 +20570,20 @@ static PyObject *__pyx_pf_3hal_3api_22compile_standalone_runtime(CYTHON_UNUSED P
  */
   }
 
-  /* "hal/api.pyx":1015
+  /* "hal/api.pyx":1014
  *     # OPTION 3: WE GOT NEITHER OF THE ABOVE,
  *     # WHICH MEANS BASICALLY WE CAN DO FUCK-ALL:
  *     raise ValueError("Either the 'pth' or 'outputs' args must be non-None")             # <<<<<<<<<<<<<<
  * 
  * def make_standalone_runtime(Target target=Target.target_from_environment(),
  */
-  __pyx_t_4 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__44, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1015, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__44, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1014, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_Raise(__pyx_t_4, 0, 0, 0);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __PYX_ERR(0, 1015, __pyx_L1_error)
+  __PYX_ERR(0, 1014, __pyx_L1_error)
 
-  /* "hal/api.pyx":967
+  /* "hal/api.pyx":966
  *     return out
  * 
  * def compile_standalone_runtime(Target target=Target.target_from_environment(),             # <<<<<<<<<<<<<<
@@ -20610,7 +20608,7 @@ static PyObject *__pyx_pf_3hal_3api_22compile_standalone_runtime(CYTHON_UNUSED P
   return __pyx_r;
 }
 
-/* "hal/api.pyx":1017
+/* "hal/api.pyx":1016
  *     raise ValueError("Either the 'pth' or 'outputs' args must be non-None")
  * 
  * def make_standalone_runtime(Target target=Target.target_from_environment(),             # <<<<<<<<<<<<<<
@@ -20636,7 +20634,7 @@ static PyObject *__pyx_pw_3hal_3api_25make_standalone_runtime(PyObject *__pyx_se
     PyObject* values[2] = {0,0};
     values[0] = (PyObject *)__pyx_k__45;
 
-    /* "hal/api.pyx":1018
+    /* "hal/api.pyx":1017
  * 
  * def make_standalone_runtime(Target target=Target.target_from_environment(),
  *                             object pth=None,             # <<<<<<<<<<<<<<
@@ -20670,7 +20668,7 @@ static PyObject *__pyx_pw_3hal_3api_25make_standalone_runtime(PyObject *__pyx_se
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, __pyx_v_emitopts, values, pos_args, "make_standalone_runtime") < 0)) __PYX_ERR(0, 1017, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, __pyx_v_emitopts, values, pos_args, "make_standalone_runtime") < 0)) __PYX_ERR(0, 1016, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -20687,17 +20685,17 @@ static PyObject *__pyx_pw_3hal_3api_25make_standalone_runtime(PyObject *__pyx_se
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("make_standalone_runtime", 0, 0, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 1017, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("make_standalone_runtime", 0, 0, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 1016, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_DECREF(__pyx_v_emitopts); __pyx_v_emitopts = 0;
   __Pyx_AddTraceback("hal.api.make_standalone_runtime", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_target), __pyx_ptype_3hal_3api_Target, 1, "target", 0))) __PYX_ERR(0, 1017, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_target), __pyx_ptype_3hal_3api_Target, 1, "target", 0))) __PYX_ERR(0, 1016, __pyx_L1_error)
   __pyx_r = __pyx_pf_3hal_3api_24make_standalone_runtime(__pyx_self, __pyx_v_target, __pyx_v_pth, __pyx_v_emitopts);
 
-  /* "hal/api.pyx":1017
+  /* "hal/api.pyx":1016
  *     raise ValueError("Either the 'pth' or 'outputs' args must be non-None")
  * 
  * def make_standalone_runtime(Target target=Target.target_from_environment(),             # <<<<<<<<<<<<<<
@@ -20731,7 +20729,7 @@ static PyObject *__pyx_pf_3hal_3api_24make_standalone_runtime(CYTHON_UNUSED PyOb
   PyObject *__pyx_t_7 = NULL;
   __Pyx_RefNannySetupContext("make_standalone_runtime", 0);
 
-  /* "hal/api.pyx":1026
+  /* "hal/api.pyx":1025
  * 
  *     # Sanity-check the passed-in base-path value:
  *     if pth is None:             # <<<<<<<<<<<<<<
@@ -20742,20 +20740,20 @@ static PyObject *__pyx_pf_3hal_3api_24make_standalone_runtime(CYTHON_UNUSED PyOb
   __pyx_t_2 = (__pyx_t_1 != 0);
   if (unlikely(__pyx_t_2)) {
 
-    /* "hal/api.pyx":1027
+    /* "hal/api.pyx":1026
  *     # Sanity-check the passed-in base-path value:
  *     if pth is None:
  *         raise ValueError("Must specify 'pth'")             # <<<<<<<<<<<<<<
  * 
  *     from os.path import realpath
  */
-    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__46, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1027, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__46, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1026, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_Raise(__pyx_t_3, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __PYX_ERR(0, 1027, __pyx_L1_error)
+    __PYX_ERR(0, 1026, __pyx_L1_error)
 
-    /* "hal/api.pyx":1026
+    /* "hal/api.pyx":1025
  * 
  *     # Sanity-check the passed-in base-path value:
  *     if pth is None:             # <<<<<<<<<<<<<<
@@ -20764,36 +20762,36 @@ static PyObject *__pyx_pf_3hal_3api_24make_standalone_runtime(CYTHON_UNUSED PyOb
  */
   }
 
-  /* "hal/api.pyx":1029
+  /* "hal/api.pyx":1028
  *         raise ValueError("Must specify 'pth'")
  * 
  *     from os.path import realpath             # <<<<<<<<<<<<<<
  *     realpth = realpath(u8str(pth))
  * 
  */
-  __pyx_t_3 = PyList_New(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1029, __pyx_L1_error)
+  __pyx_t_3 = PyList_New(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1028, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_INCREF(__pyx_n_s_realpath);
   __Pyx_GIVEREF(__pyx_n_s_realpath);
   PyList_SET_ITEM(__pyx_t_3, 0, __pyx_n_s_realpath);
-  __pyx_t_4 = __Pyx_Import(__pyx_n_s_os_path, __pyx_t_3, -1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1029, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_Import(__pyx_n_s_os_path, __pyx_t_3, -1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1028, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = __Pyx_ImportFrom(__pyx_t_4, __pyx_n_s_realpath); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1029, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_ImportFrom(__pyx_t_4, __pyx_n_s_realpath); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1028, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_INCREF(__pyx_t_3);
   __pyx_v_realpath = __pyx_t_3;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-  /* "hal/api.pyx":1030
+  /* "hal/api.pyx":1029
  * 
  *     from os.path import realpath
  *     realpth = realpath(u8str(pth))             # <<<<<<<<<<<<<<
  * 
  *     # Compute the outputs using hal.api.EmitOptions -- the EmitOptions defaults
  */
-  __pyx_t_3 = __pyx_f_3hal_3api_u8str(__pyx_v_pth, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1030, __pyx_L1_error)
+  __pyx_t_3 = __pyx_f_3hal_3api_u8str(__pyx_v_pth, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1029, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_INCREF(__pyx_v_realpath);
   __pyx_t_5 = __pyx_v_realpath; __pyx_t_6 = NULL;
@@ -20807,14 +20805,14 @@ static PyObject *__pyx_pf_3hal_3api_24make_standalone_runtime(CYTHON_UNUSED PyOb
     }
   }
   if (!__pyx_t_6) {
-    __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1030, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1029, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_GOTREF(__pyx_t_4);
   } else {
     #if CYTHON_FAST_PYCALL
     if (PyFunction_Check(__pyx_t_5)) {
       PyObject *__pyx_temp[2] = {__pyx_t_6, __pyx_t_3};
-      __pyx_t_4 = __Pyx_PyFunction_FastCall(__pyx_t_5, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1030, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyFunction_FastCall(__pyx_t_5, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1029, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -20823,20 +20821,20 @@ static PyObject *__pyx_pf_3hal_3api_24make_standalone_runtime(CYTHON_UNUSED PyOb
     #if CYTHON_FAST_PYCCALL
     if (__Pyx_PyFastCFunction_Check(__pyx_t_5)) {
       PyObject *__pyx_temp[2] = {__pyx_t_6, __pyx_t_3};
-      __pyx_t_4 = __Pyx_PyCFunction_FastCall(__pyx_t_5, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1030, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyCFunction_FastCall(__pyx_t_5, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1029, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     } else
     #endif
     {
-      __pyx_t_7 = PyTuple_New(1+1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1030, __pyx_L1_error)
+      __pyx_t_7 = PyTuple_New(1+1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1029, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_7);
       __Pyx_GIVEREF(__pyx_t_6); PyTuple_SET_ITEM(__pyx_t_7, 0, __pyx_t_6); __pyx_t_6 = NULL;
       __Pyx_GIVEREF(__pyx_t_3);
       PyTuple_SET_ITEM(__pyx_t_7, 0+1, __pyx_t_3);
       __pyx_t_3 = 0;
-      __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_7, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1030, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_7, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1029, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
     }
@@ -20845,50 +20843,50 @@ static PyObject *__pyx_pf_3hal_3api_24make_standalone_runtime(CYTHON_UNUSED PyOb
   __pyx_v_realpth = __pyx_t_4;
   __pyx_t_4 = 0;
 
-  /* "hal/api.pyx":1037
+  /* "hal/api.pyx":1036
  *     # HOWEVER, Halide::compile_standalone_runtime() in Module.cpp recreates
  *     # the Outputs object with only object files and archives (.o, .a) enabled:
  *     outputs = EmitOptions(**emitopts).compute_outputs_for_target_and_path(t=target,             # <<<<<<<<<<<<<<
  *                                                                   base_path=u8bytes(realpth))
  * 
  */
-  __pyx_t_4 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_3hal_3api_EmitOptions), __pyx_empty_tuple, __pyx_v_emitopts); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1037, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_3hal_3api_EmitOptions), __pyx_empty_tuple, __pyx_v_emitopts); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1036, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_compute_outputs_for_target_and_p); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1037, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_compute_outputs_for_target_and_p); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1036, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = __Pyx_PyDict_NewPresized(2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1037, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyDict_NewPresized(2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1036, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_t, ((PyObject *)__pyx_v_target)) < 0) __PYX_ERR(0, 1037, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_t, ((PyObject *)__pyx_v_target)) < 0) __PYX_ERR(0, 1036, __pyx_L1_error)
 
-  /* "hal/api.pyx":1038
+  /* "hal/api.pyx":1037
  *     # the Outputs object with only object files and archives (.o, .a) enabled:
  *     outputs = EmitOptions(**emitopts).compute_outputs_for_target_and_path(t=target,
  *                                                                   base_path=u8bytes(realpth))             # <<<<<<<<<<<<<<
  * 
  *     # make the actual call, returning another native Options object:
  */
-  __pyx_t_7 = __pyx_f_3hal_3api_u8bytes(__pyx_v_realpth, 0); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1038, __pyx_L1_error)
+  __pyx_t_7 = __pyx_f_3hal_3api_u8bytes(__pyx_v_realpth, 0); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1037, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
-  if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_base_path, __pyx_t_7) < 0) __PYX_ERR(0, 1037, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_base_path, __pyx_t_7) < 0) __PYX_ERR(0, 1036, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
 
-  /* "hal/api.pyx":1037
+  /* "hal/api.pyx":1036
  *     # HOWEVER, Halide::compile_standalone_runtime() in Module.cpp recreates
  *     # the Outputs object with only object files and archives (.o, .a) enabled:
  *     outputs = EmitOptions(**emitopts).compute_outputs_for_target_and_path(t=target,             # <<<<<<<<<<<<<<
  *                                                                   base_path=u8bytes(realpth))
  * 
  */
-  __pyx_t_7 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_empty_tuple, __pyx_t_4); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1037, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_empty_tuple, __pyx_t_4); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1036, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  if (!(likely(((__pyx_t_7) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_7, __pyx_ptype_3hal_3api_Outputs))))) __PYX_ERR(0, 1037, __pyx_L1_error)
+  if (!(likely(((__pyx_t_7) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_7, __pyx_ptype_3hal_3api_Outputs))))) __PYX_ERR(0, 1036, __pyx_L1_error)
   __pyx_v_outputs = ((struct __pyx_obj_3hal_3api_Outputs *)__pyx_t_7);
   __pyx_t_7 = 0;
 
-  /* "hal/api.pyx":1041
+  /* "hal/api.pyx":1040
  * 
  *     # make the actual call, returning another native Options object:
  *     with nogil:             # <<<<<<<<<<<<<<
@@ -20903,7 +20901,7 @@ static PyObject *__pyx_pf_3hal_3api_24make_standalone_runtime(CYTHON_UNUSED PyOb
       #endif
       /*try:*/ {
 
-        /* "hal/api.pyx":1042
+        /* "hal/api.pyx":1041
  *     # make the actual call, returning another native Options object:
  *     with nogil:
  *         out = halide_compile_standalone_runtime_with_outputs(<HalOutputs>outputs.__this__,             # <<<<<<<<<<<<<<
@@ -20913,7 +20911,7 @@ static PyObject *__pyx_pf_3hal_3api_24make_standalone_runtime(CYTHON_UNUSED PyOb
         __pyx_v_out = compile_standalone_runtime(((Halide::Outputs)__pyx_v_outputs->__pyx___this__), ((Halide::Target)__pyx_v_target->__pyx___this__));
       }
 
-      /* "hal/api.pyx":1041
+      /* "hal/api.pyx":1040
  * 
  *     # make the actual call, returning another native Options object:
  *     with nogil:             # <<<<<<<<<<<<<<
@@ -20932,7 +20930,7 @@ static PyObject *__pyx_pf_3hal_3api_24make_standalone_runtime(CYTHON_UNUSED PyOb
       }
   }
 
-  /* "hal/api.pyx":1046
+  /* "hal/api.pyx":1045
  * 
  *     # return a new hal.api.Outputs matching the returned value above:
  *     return Outputs(             # <<<<<<<<<<<<<<
@@ -20941,131 +20939,131 @@ static PyObject *__pyx_pf_3hal_3api_24make_standalone_runtime(CYTHON_UNUSED PyOb
  */
   __Pyx_XDECREF(__pyx_r);
 
-  /* "hal/api.pyx":1047
+  /* "hal/api.pyx":1046
  *     # return a new hal.api.Outputs matching the returned value above:
  *     return Outputs(
  *         object_name=out.object_name,             # <<<<<<<<<<<<<<
  *         assembly_name=out.assembly_name,
  *         bitcode_name=out.bitcode_name,
  */
-  __pyx_t_7 = __Pyx_PyDict_NewPresized(9); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1047, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyDict_NewPresized(9); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1046, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
-  __pyx_t_4 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_out.object_name); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1047, __pyx_L1_error)
+  __pyx_t_4 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_out.object_name); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1046, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  if (PyDict_SetItem(__pyx_t_7, __pyx_n_s_object_name, __pyx_t_4) < 0) __PYX_ERR(0, 1047, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_7, __pyx_n_s_object_name, __pyx_t_4) < 0) __PYX_ERR(0, 1046, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-  /* "hal/api.pyx":1048
+  /* "hal/api.pyx":1047
  *     return Outputs(
  *         object_name=out.object_name,
  *         assembly_name=out.assembly_name,             # <<<<<<<<<<<<<<
  *         bitcode_name=out.bitcode_name,
  *         llvm_assembly_name=out.llvm_assembly_name,
  */
-  __pyx_t_4 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_out.assembly_name); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1048, __pyx_L1_error)
+  __pyx_t_4 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_out.assembly_name); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1047, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  if (PyDict_SetItem(__pyx_t_7, __pyx_n_s_assembly_name, __pyx_t_4) < 0) __PYX_ERR(0, 1047, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_7, __pyx_n_s_assembly_name, __pyx_t_4) < 0) __PYX_ERR(0, 1046, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-  /* "hal/api.pyx":1049
+  /* "hal/api.pyx":1048
  *         object_name=out.object_name,
  *         assembly_name=out.assembly_name,
  *         bitcode_name=out.bitcode_name,             # <<<<<<<<<<<<<<
  *         llvm_assembly_name=out.llvm_assembly_name,
  *         c_header_name=out.c_header_name,
  */
-  __pyx_t_4 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_out.bitcode_name); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1049, __pyx_L1_error)
+  __pyx_t_4 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_out.bitcode_name); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1048, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  if (PyDict_SetItem(__pyx_t_7, __pyx_n_s_bitcode_name, __pyx_t_4) < 0) __PYX_ERR(0, 1047, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_7, __pyx_n_s_bitcode_name, __pyx_t_4) < 0) __PYX_ERR(0, 1046, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-  /* "hal/api.pyx":1050
+  /* "hal/api.pyx":1049
  *         assembly_name=out.assembly_name,
  *         bitcode_name=out.bitcode_name,
  *         llvm_assembly_name=out.llvm_assembly_name,             # <<<<<<<<<<<<<<
  *         c_header_name=out.c_header_name,
  *         c_source_name=out.c_source_name,
  */
-  __pyx_t_4 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_out.llvm_assembly_name); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1050, __pyx_L1_error)
+  __pyx_t_4 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_out.llvm_assembly_name); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1049, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  if (PyDict_SetItem(__pyx_t_7, __pyx_n_s_llvm_assembly_name, __pyx_t_4) < 0) __PYX_ERR(0, 1047, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_7, __pyx_n_s_llvm_assembly_name, __pyx_t_4) < 0) __PYX_ERR(0, 1046, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-  /* "hal/api.pyx":1051
+  /* "hal/api.pyx":1050
  *         bitcode_name=out.bitcode_name,
  *         llvm_assembly_name=out.llvm_assembly_name,
  *         c_header_name=out.c_header_name,             # <<<<<<<<<<<<<<
  *         c_source_name=out.c_source_name,
  *         stmt_name=out.stmt_name,
  */
-  __pyx_t_4 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_out.c_header_name); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1051, __pyx_L1_error)
+  __pyx_t_4 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_out.c_header_name); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1050, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  if (PyDict_SetItem(__pyx_t_7, __pyx_n_s_c_header_name, __pyx_t_4) < 0) __PYX_ERR(0, 1047, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_7, __pyx_n_s_c_header_name, __pyx_t_4) < 0) __PYX_ERR(0, 1046, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-  /* "hal/api.pyx":1052
+  /* "hal/api.pyx":1051
  *         llvm_assembly_name=out.llvm_assembly_name,
  *         c_header_name=out.c_header_name,
  *         c_source_name=out.c_source_name,             # <<<<<<<<<<<<<<
  *         stmt_name=out.stmt_name,
  *         stmt_html_name=out.stmt_html_name,
  */
-  __pyx_t_4 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_out.c_source_name); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1052, __pyx_L1_error)
+  __pyx_t_4 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_out.c_source_name); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1051, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  if (PyDict_SetItem(__pyx_t_7, __pyx_n_s_c_source_name, __pyx_t_4) < 0) __PYX_ERR(0, 1047, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_7, __pyx_n_s_c_source_name, __pyx_t_4) < 0) __PYX_ERR(0, 1046, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-  /* "hal/api.pyx":1053
+  /* "hal/api.pyx":1052
  *         c_header_name=out.c_header_name,
  *         c_source_name=out.c_source_name,
  *         stmt_name=out.stmt_name,             # <<<<<<<<<<<<<<
  *         stmt_html_name=out.stmt_html_name,
  *         static_library_name=out.static_library_name)
  */
-  __pyx_t_4 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_out.stmt_name); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1053, __pyx_L1_error)
+  __pyx_t_4 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_out.stmt_name); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1052, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  if (PyDict_SetItem(__pyx_t_7, __pyx_n_s_stmt_name, __pyx_t_4) < 0) __PYX_ERR(0, 1047, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_7, __pyx_n_s_stmt_name, __pyx_t_4) < 0) __PYX_ERR(0, 1046, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-  /* "hal/api.pyx":1054
+  /* "hal/api.pyx":1053
  *         c_source_name=out.c_source_name,
  *         stmt_name=out.stmt_name,
  *         stmt_html_name=out.stmt_html_name,             # <<<<<<<<<<<<<<
  *         static_library_name=out.static_library_name)
  * 
  */
-  __pyx_t_4 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_out.stmt_html_name); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1054, __pyx_L1_error)
+  __pyx_t_4 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_out.stmt_html_name); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1053, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  if (PyDict_SetItem(__pyx_t_7, __pyx_n_s_stmt_html_name, __pyx_t_4) < 0) __PYX_ERR(0, 1047, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_7, __pyx_n_s_stmt_html_name, __pyx_t_4) < 0) __PYX_ERR(0, 1046, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-  /* "hal/api.pyx":1055
+  /* "hal/api.pyx":1054
  *         stmt_name=out.stmt_name,
  *         stmt_html_name=out.stmt_html_name,
  *         static_library_name=out.static_library_name)             # <<<<<<<<<<<<<<
  * 
  * def running_program_name():
  */
-  __pyx_t_4 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_out.static_library_name); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1055, __pyx_L1_error)
+  __pyx_t_4 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_out.static_library_name); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1054, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  if (PyDict_SetItem(__pyx_t_7, __pyx_n_s_static_library_name, __pyx_t_4) < 0) __PYX_ERR(0, 1047, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_7, __pyx_n_s_static_library_name, __pyx_t_4) < 0) __PYX_ERR(0, 1046, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-  /* "hal/api.pyx":1046
+  /* "hal/api.pyx":1045
  * 
  *     # return a new hal.api.Outputs matching the returned value above:
  *     return Outputs(             # <<<<<<<<<<<<<<
  *         object_name=out.object_name,
  *         assembly_name=out.assembly_name,
  */
-  __pyx_t_4 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_3hal_3api_Outputs), __pyx_empty_tuple, __pyx_t_7); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1046, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_3hal_3api_Outputs), __pyx_empty_tuple, __pyx_t_7); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1045, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
   __pyx_r = __pyx_t_4;
   __pyx_t_4 = 0;
   goto __pyx_L0;
 
-  /* "hal/api.pyx":1017
+  /* "hal/api.pyx":1016
  *     raise ValueError("Either the 'pth' or 'outputs' args must be non-None")
  * 
  * def make_standalone_runtime(Target target=Target.target_from_environment(),             # <<<<<<<<<<<<<<
@@ -21091,7 +21089,7 @@ static PyObject *__pyx_pf_3hal_3api_24make_standalone_runtime(CYTHON_UNUSED PyOb
   return __pyx_r;
 }
 
-/* "hal/api.pyx":1057
+/* "hal/api.pyx":1056
  *         static_library_name=out.static_library_name)
  * 
  * def running_program_name():             # <<<<<<<<<<<<<<
@@ -21120,19 +21118,19 @@ static PyObject *__pyx_pf_3hal_3api_26running_program_name(CYTHON_UNUSED PyObjec
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("running_program_name", 0);
 
-  /* "hal/api.pyx":1059
+  /* "hal/api.pyx":1058
  * def running_program_name():
  *     """ Return the name of the running program as a string. """
  *     return halide_running_program_name().decode('UTF-8')             # <<<<<<<<<<<<<<
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_decode_cpp_string(Halide::Internal::running_program_name(), 0, PY_SSIZE_T_MAX, NULL, NULL, PyUnicode_DecodeUTF8); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1059, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_decode_cpp_string(Halide::Internal::running_program_name(), 0, PY_SSIZE_T_MAX, NULL, NULL, PyUnicode_DecodeUTF8); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1058, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "hal/api.pyx":1057
+  /* "hal/api.pyx":1056
  *         static_library_name=out.static_library_name)
  * 
  * def running_program_name():             # <<<<<<<<<<<<<<
@@ -23190,83 +23188,83 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__36);
   __Pyx_GIVEREF(__pyx_tuple__36);
 
-  /* "hal/api.pyx":916
+  /* "hal/api.pyx":915
  *     # next, check that `arguments` is a mapping type:
  *     if not PyMapping_Check(arguments):
  *         raise ValueError(""""arguments" must be a mapping (dict-ish) type""")             # <<<<<<<<<<<<<<
  * 
  *     # stack-allocate a named module (per the `name` argument),
  */
-  __pyx_tuple__39 = PyTuple_Pack(1, __pyx_kp_s_arguments_must_be_a_mapping_dic); if (unlikely(!__pyx_tuple__39)) __PYX_ERR(0, 916, __pyx_L1_error)
+  __pyx_tuple__39 = PyTuple_Pack(1, __pyx_kp_s_arguments_must_be_a_mapping_dic); if (unlikely(!__pyx_tuple__39)) __PYX_ERR(0, 915, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__39);
   __Pyx_GIVEREF(__pyx_tuple__39);
 
-  /* "hal/api.pyx":954
+  /* "hal/api.pyx":953
  *     # check that we got some stuff:
  *     if len(modules) < 1:
  *         raise ValueError("""link_modules() called without modules to link""")             # <<<<<<<<<<<<<<
  * 
  *     # check the type of all positional arguments:
  */
-  __pyx_tuple__40 = PyTuple_Pack(1, __pyx_kp_s_link_modules_called_without_modu); if (unlikely(!__pyx_tuple__40)) __PYX_ERR(0, 954, __pyx_L1_error)
+  __pyx_tuple__40 = PyTuple_Pack(1, __pyx_kp_s_link_modules_called_without_modu); if (unlikely(!__pyx_tuple__40)) __PYX_ERR(0, 953, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__40);
   __Pyx_GIVEREF(__pyx_tuple__40);
 
-  /* "hal/api.pyx":959
+  /* "hal/api.pyx":958
  *     for module in modules:
  *         if type(module) is not type(Module):
  *             raise TypeError("""All positional args must be hal.api.Module""")             # <<<<<<<<<<<<<<
  * 
  *     for module in modules:
  */
-  __pyx_tuple__41 = PyTuple_Pack(1, __pyx_kp_s_All_positional_args_must_be_hal); if (unlikely(!__pyx_tuple__41)) __PYX_ERR(0, 959, __pyx_L1_error)
+  __pyx_tuple__41 = PyTuple_Pack(1, __pyx_kp_s_All_positional_args_must_be_hal); if (unlikely(!__pyx_tuple__41)) __PYX_ERR(0, 958, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__41);
   __Pyx_GIVEREF(__pyx_tuple__41);
 
-  /* "hal/api.pyx":980
+  /* "hal/api.pyx":979
  *         from os.path import realpath
  *         realpth = realpath(u8str(pth))
  *         if not realpth.lower().endswith('.o'):             # <<<<<<<<<<<<<<
  *             realpth += ".o"
  * 
  */
-  __pyx_tuple__43 = PyTuple_Pack(1, __pyx_kp_s_o); if (unlikely(!__pyx_tuple__43)) __PYX_ERR(0, 980, __pyx_L1_error)
+  __pyx_tuple__43 = PyTuple_Pack(1, __pyx_kp_s_o); if (unlikely(!__pyx_tuple__43)) __PYX_ERR(0, 979, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__43);
   __Pyx_GIVEREF(__pyx_tuple__43);
 
-  /* "hal/api.pyx":1015
+  /* "hal/api.pyx":1014
  *     # OPTION 3: WE GOT NEITHER OF THE ABOVE,
  *     # WHICH MEANS BASICALLY WE CAN DO FUCK-ALL:
  *     raise ValueError("Either the 'pth' or 'outputs' args must be non-None")             # <<<<<<<<<<<<<<
  * 
  * def make_standalone_runtime(Target target=Target.target_from_environment(),
  */
-  __pyx_tuple__44 = PyTuple_Pack(1, __pyx_kp_s_Either_the_pth_or_outputs_args_m); if (unlikely(!__pyx_tuple__44)) __PYX_ERR(0, 1015, __pyx_L1_error)
+  __pyx_tuple__44 = PyTuple_Pack(1, __pyx_kp_s_Either_the_pth_or_outputs_args_m); if (unlikely(!__pyx_tuple__44)) __PYX_ERR(0, 1014, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__44);
   __Pyx_GIVEREF(__pyx_tuple__44);
 
-  /* "hal/api.pyx":1027
+  /* "hal/api.pyx":1026
  *     # Sanity-check the passed-in base-path value:
  *     if pth is None:
  *         raise ValueError("Must specify 'pth'")             # <<<<<<<<<<<<<<
  * 
  *     from os.path import realpath
  */
-  __pyx_tuple__46 = PyTuple_Pack(1, __pyx_kp_s_Must_specify_pth); if (unlikely(!__pyx_tuple__46)) __PYX_ERR(0, 1027, __pyx_L1_error)
+  __pyx_tuple__46 = PyTuple_Pack(1, __pyx_kp_s_Must_specify_pth); if (unlikely(!__pyx_tuple__46)) __PYX_ERR(0, 1026, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__46);
   __Pyx_GIVEREF(__pyx_tuple__46);
 
-  /* "hal/api.pyx":83
+  /* "hal/api.pyx":82
  *     return u8bytes(string_source).decode('UTF-8')
  * 
  * def stringify(instance, fields):             # <<<<<<<<<<<<<<
+ *     """ Custom version of stringify(instance, fields) for use in Cython extensions: """
  *     field_dict = {}
- *     for field in fields:
  */
-  __pyx_tuple__47 = PyTuple_Pack(8, __pyx_n_s_instance, __pyx_n_s_fields, __pyx_n_s_field_dict, __pyx_n_s_field, __pyx_n_s_field_value, __pyx_n_s_field_dict_items, __pyx_n_s_k, __pyx_n_s_v); if (unlikely(!__pyx_tuple__47)) __PYX_ERR(0, 83, __pyx_L1_error)
+  __pyx_tuple__47 = PyTuple_Pack(8, __pyx_n_s_instance, __pyx_n_s_fields, __pyx_n_s_field_dict, __pyx_n_s_field, __pyx_n_s_field_value, __pyx_n_s_field_dict_items, __pyx_n_s_k, __pyx_n_s_v); if (unlikely(!__pyx_tuple__47)) __PYX_ERR(0, 82, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__47);
   __Pyx_GIVEREF(__pyx_tuple__47);
-  __pyx_codeobj__48 = (PyObject*)__Pyx_PyCode_New(2, 0, 8, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__47, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_hal_api_pyx, __pyx_n_s_stringify, 83, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__48)) __PYX_ERR(0, 83, __pyx_L1_error)
+  __pyx_codeobj__48 = (PyObject*)__Pyx_PyCode_New(2, 0, 8, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__47, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_hal_api_pyx, __pyx_n_s_stringify, 82, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__48)) __PYX_ERR(0, 82, __pyx_L1_error)
 
   /* "hal/api.pyx":106
  * 
@@ -23427,62 +23425,62 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GIVEREF(__pyx_tuple__72);
   __pyx_codeobj__73 = (PyObject*)__Pyx_PyCode_New(0, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__72, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_hal_api_pyx, __pyx_n_s_registered_generators, 867, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__73)) __PYX_ERR(0, 867, __pyx_L1_error)
 
-  /* "hal/api.pyx":893
+  /* "hal/api.pyx":892
  *     return base_path
  * 
  * def compute_base_path(object output_dir,             # <<<<<<<<<<<<<<
  *                       object function_name,
  *                       object file_base_name=None):
  */
-  __pyx_tuple__74 = PyTuple_Pack(6, __pyx_n_s_output_dir, __pyx_n_s_function_name, __pyx_n_s_file_base_name, __pyx_n_s_output_dir_string, __pyx_n_s_function_name_string, __pyx_n_s_file_base_name_string); if (unlikely(!__pyx_tuple__74)) __PYX_ERR(0, 893, __pyx_L1_error)
+  __pyx_tuple__74 = PyTuple_Pack(6, __pyx_n_s_output_dir, __pyx_n_s_function_name, __pyx_n_s_file_base_name, __pyx_n_s_output_dir_string, __pyx_n_s_function_name_string, __pyx_n_s_file_base_name_string); if (unlikely(!__pyx_tuple__74)) __PYX_ERR(0, 892, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__74);
   __Pyx_GIVEREF(__pyx_tuple__74);
-  __pyx_codeobj__75 = (PyObject*)__Pyx_PyCode_New(3, 0, 6, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__74, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_hal_api_pyx, __pyx_n_s_compute_base_path, 893, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__75)) __PYX_ERR(0, 893, __pyx_L1_error)
+  __pyx_codeobj__75 = (PyObject*)__Pyx_PyCode_New(3, 0, 6, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__74, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_hal_api_pyx, __pyx_n_s_compute_base_path, 892, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__75)) __PYX_ERR(0, 892, __pyx_L1_error)
 
-  /* "hal/api.pyx":947
+  /* "hal/api.pyx":946
  *     modulevec.push_back(deref(module.__this__))
  * 
  * def link_modules(object module_name, *modules):             # <<<<<<<<<<<<<<
  *     """ Python wrapper for Halide::link_modules() from src/Module.h """
  *     cdef modulevec_t modulevec
  */
-  __pyx_tuple__76 = PyTuple_Pack(5, __pyx_n_s_module_name, __pyx_n_s_modules, __pyx_n_s_modulevec, __pyx_n_s_out, __pyx_n_s_module); if (unlikely(!__pyx_tuple__76)) __PYX_ERR(0, 947, __pyx_L1_error)
+  __pyx_tuple__76 = PyTuple_Pack(5, __pyx_n_s_module_name, __pyx_n_s_modules, __pyx_n_s_modulevec, __pyx_n_s_out, __pyx_n_s_module); if (unlikely(!__pyx_tuple__76)) __PYX_ERR(0, 946, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__76);
   __Pyx_GIVEREF(__pyx_tuple__76);
-  __pyx_codeobj__77 = (PyObject*)__Pyx_PyCode_New(1, 0, 5, 0, CO_OPTIMIZED|CO_NEWLOCALS|CO_VARARGS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__76, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_hal_api_pyx, __pyx_n_s_link_modules, 947, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__77)) __PYX_ERR(0, 947, __pyx_L1_error)
+  __pyx_codeobj__77 = (PyObject*)__Pyx_PyCode_New(1, 0, 5, 0, CO_OPTIMIZED|CO_NEWLOCALS|CO_VARARGS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__76, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_hal_api_pyx, __pyx_n_s_link_modules, 946, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__77)) __PYX_ERR(0, 946, __pyx_L1_error)
 
-  /* "hal/api.pyx":967
+  /* "hal/api.pyx":966
  *     return out
  * 
  * def compile_standalone_runtime(Target target=Target.target_from_environment(),             # <<<<<<<<<<<<<<
  *                                   object pth=None,
  *                              Outputs outputs=None):
  */
-  __pyx_tuple__78 = PyTuple_Pack(6, __pyx_n_s_target, __pyx_n_s_pth, __pyx_n_s_outputs, __pyx_n_s_out, __pyx_n_s_realpth, __pyx_n_s_realpath); if (unlikely(!__pyx_tuple__78)) __PYX_ERR(0, 967, __pyx_L1_error)
+  __pyx_tuple__78 = PyTuple_Pack(6, __pyx_n_s_target, __pyx_n_s_pth, __pyx_n_s_outputs, __pyx_n_s_out, __pyx_n_s_realpth, __pyx_n_s_realpath); if (unlikely(!__pyx_tuple__78)) __PYX_ERR(0, 966, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__78);
   __Pyx_GIVEREF(__pyx_tuple__78);
-  __pyx_codeobj__79 = (PyObject*)__Pyx_PyCode_New(3, 0, 6, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__78, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_hal_api_pyx, __pyx_n_s_compile_standalone_runtime, 967, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__79)) __PYX_ERR(0, 967, __pyx_L1_error)
+  __pyx_codeobj__79 = (PyObject*)__Pyx_PyCode_New(3, 0, 6, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__78, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_hal_api_pyx, __pyx_n_s_compile_standalone_runtime, 966, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__79)) __PYX_ERR(0, 966, __pyx_L1_error)
 
-  /* "hal/api.pyx":1017
+  /* "hal/api.pyx":1016
  *     raise ValueError("Either the 'pth' or 'outputs' args must be non-None")
  * 
  * def make_standalone_runtime(Target target=Target.target_from_environment(),             # <<<<<<<<<<<<<<
  *                             object pth=None,
  *                                  **emitopts):
  */
-  __pyx_tuple__80 = PyTuple_Pack(7, __pyx_n_s_target, __pyx_n_s_pth, __pyx_n_s_emitopts, __pyx_n_s_outputs, __pyx_n_s_out, __pyx_n_s_realpth, __pyx_n_s_realpath); if (unlikely(!__pyx_tuple__80)) __PYX_ERR(0, 1017, __pyx_L1_error)
+  __pyx_tuple__80 = PyTuple_Pack(7, __pyx_n_s_target, __pyx_n_s_pth, __pyx_n_s_emitopts, __pyx_n_s_outputs, __pyx_n_s_out, __pyx_n_s_realpth, __pyx_n_s_realpath); if (unlikely(!__pyx_tuple__80)) __PYX_ERR(0, 1016, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__80);
   __Pyx_GIVEREF(__pyx_tuple__80);
-  __pyx_codeobj__81 = (PyObject*)__Pyx_PyCode_New(2, 0, 7, 0, CO_OPTIMIZED|CO_NEWLOCALS|CO_VARKEYWORDS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__80, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_hal_api_pyx, __pyx_n_s_make_standalone_runtime, 1017, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__81)) __PYX_ERR(0, 1017, __pyx_L1_error)
+  __pyx_codeobj__81 = (PyObject*)__Pyx_PyCode_New(2, 0, 7, 0, CO_OPTIMIZED|CO_NEWLOCALS|CO_VARKEYWORDS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__80, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_hal_api_pyx, __pyx_n_s_make_standalone_runtime, 1016, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__81)) __PYX_ERR(0, 1016, __pyx_L1_error)
 
-  /* "hal/api.pyx":1057
+  /* "hal/api.pyx":1056
  *         static_library_name=out.static_library_name)
  * 
  * def running_program_name():             # <<<<<<<<<<<<<<
  *     """ Return the name of the running program as a string. """
  *     return halide_running_program_name().decode('UTF-8')
  */
-  __pyx_codeobj__82 = (PyObject*)__Pyx_PyCode_New(0, 0, 0, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_hal_api_pyx, __pyx_n_s_running_program_name, 1057, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__82)) __PYX_ERR(0, 1057, __pyx_L1_error)
+  __pyx_codeobj__82 = (PyObject*)__Pyx_PyCode_New(0, 0, 0, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_hal_api_pyx, __pyx_n_s_running_program_name, 1056, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__82)) __PYX_ERR(0, 1056, __pyx_L1_error)
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
@@ -23806,16 +23804,16 @@ if (!__Pyx_RefNanny) {
   if (__Pyx_patch_abc() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
 
-  /* "hal/api.pyx":83
+  /* "hal/api.pyx":82
  *     return u8bytes(string_source).decode('UTF-8')
  * 
  * def stringify(instance, fields):             # <<<<<<<<<<<<<<
+ *     """ Custom version of stringify(instance, fields) for use in Cython extensions: """
  *     field_dict = {}
- *     for field in fields:
  */
-  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_3hal_3api_5stringify, NULL, __pyx_n_s_hal_api); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 83, __pyx_L1_error)
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_3hal_3api_5stringify, NULL, __pyx_n_s_hal_api); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 82, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_stringify, __pyx_t_1) < 0) __PYX_ERR(0, 83, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_stringify, __pyx_t_1) < 0) __PYX_ERR(0, 82, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "hal/api.pyx":106
@@ -24266,100 +24264,100 @@ if (!__Pyx_RefNanny) {
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_registered_generators, __pyx_t_2) < 0) __PYX_ERR(0, 867, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "hal/api.pyx":893
+  /* "hal/api.pyx":892
  *     return base_path
  * 
  * def compute_base_path(object output_dir,             # <<<<<<<<<<<<<<
  *                       object function_name,
  *                       object file_base_name=None):
  */
-  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_3hal_3api_17compute_base_path, NULL, __pyx_n_s_hal_api); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 893, __pyx_L1_error)
+  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_3hal_3api_17compute_base_path, NULL, __pyx_n_s_hal_api); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 892, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_compute_base_path, __pyx_t_2) < 0) __PYX_ERR(0, 893, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_compute_base_path, __pyx_t_2) < 0) __PYX_ERR(0, 892, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "hal/api.pyx":907
+  /* "hal/api.pyx":906
  *                                     file_base_name_string)
  * 
  * cpdef Module get_generator_module(object name, object arguments={}):             # <<<<<<<<<<<<<<
  *     """ Retrieve a Halide::Module, wrapped as hal.api.Module,
  *         corresponding to the registered generator instance (by name). """
  */
-  __pyx_t_2 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 907, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 906, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_k__38 = __pyx_t_2;
   __Pyx_GIVEREF(__pyx_t_2);
   __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 907, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 906, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_k__38 = __pyx_t_2;
   __Pyx_GIVEREF(__pyx_t_2);
   __pyx_t_2 = 0;
 
-  /* "hal/api.pyx":947
+  /* "hal/api.pyx":946
  *     modulevec.push_back(deref(module.__this__))
  * 
  * def link_modules(object module_name, *modules):             # <<<<<<<<<<<<<<
  *     """ Python wrapper for Halide::link_modules() from src/Module.h """
  *     cdef modulevec_t modulevec
  */
-  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_3hal_3api_21link_modules, NULL, __pyx_n_s_hal_api); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 947, __pyx_L1_error)
+  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_3hal_3api_21link_modules, NULL, __pyx_n_s_hal_api); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 946, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_link_modules, __pyx_t_2) < 0) __PYX_ERR(0, 947, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_link_modules, __pyx_t_2) < 0) __PYX_ERR(0, 946, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "hal/api.pyx":967
+  /* "hal/api.pyx":966
  *     return out
  * 
  * def compile_standalone_runtime(Target target=Target.target_from_environment(),             # <<<<<<<<<<<<<<
  *                                   object pth=None,
  *                              Outputs outputs=None):
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_ptype_3hal_3api_Target), __pyx_n_s_target_from_environment); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 967, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_ptype_3hal_3api_Target), __pyx_n_s_target_from_environment); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 966, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 967, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 966, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_3hal_3api_Target))))) __PYX_ERR(0, 967, __pyx_L1_error)
+  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_3hal_3api_Target))))) __PYX_ERR(0, 966, __pyx_L1_error)
   __pyx_k__42 = ((struct __pyx_obj_3hal_3api_Target *)__pyx_t_1);
   __Pyx_GIVEREF(__pyx_t_1);
   __pyx_t_1 = 0;
-  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_3hal_3api_23compile_standalone_runtime, NULL, __pyx_n_s_hal_api); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 967, __pyx_L1_error)
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_3hal_3api_23compile_standalone_runtime, NULL, __pyx_n_s_hal_api); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 966, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_compile_standalone_runtime, __pyx_t_1) < 0) __PYX_ERR(0, 967, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_compile_standalone_runtime, __pyx_t_1) < 0) __PYX_ERR(0, 966, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "hal/api.pyx":1017
+  /* "hal/api.pyx":1016
  *     raise ValueError("Either the 'pth' or 'outputs' args must be non-None")
  * 
  * def make_standalone_runtime(Target target=Target.target_from_environment(),             # <<<<<<<<<<<<<<
  *                             object pth=None,
  *                                  **emitopts):
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_ptype_3hal_3api_Target), __pyx_n_s_target_from_environment); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1017, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_ptype_3hal_3api_Target), __pyx_n_s_target_from_environment); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1016, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1017, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1016, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  if (!(likely(((__pyx_t_2) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_2, __pyx_ptype_3hal_3api_Target))))) __PYX_ERR(0, 1017, __pyx_L1_error)
+  if (!(likely(((__pyx_t_2) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_2, __pyx_ptype_3hal_3api_Target))))) __PYX_ERR(0, 1016, __pyx_L1_error)
   __pyx_k__45 = ((struct __pyx_obj_3hal_3api_Target *)__pyx_t_2);
   __Pyx_GIVEREF(__pyx_t_2);
   __pyx_t_2 = 0;
-  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_3hal_3api_25make_standalone_runtime, NULL, __pyx_n_s_hal_api); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1017, __pyx_L1_error)
+  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_3hal_3api_25make_standalone_runtime, NULL, __pyx_n_s_hal_api); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1016, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_make_standalone_runtime, __pyx_t_2) < 0) __PYX_ERR(0, 1017, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_make_standalone_runtime, __pyx_t_2) < 0) __PYX_ERR(0, 1016, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "hal/api.pyx":1057
+  /* "hal/api.pyx":1056
  *         static_library_name=out.static_library_name)
  * 
  * def running_program_name():             # <<<<<<<<<<<<<<
  *     """ Return the name of the running program as a string. """
  *     return halide_running_program_name().decode('UTF-8')
  */
-  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_3hal_3api_27running_program_name, NULL, __pyx_n_s_hal_api); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1057, __pyx_L1_error)
+  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_3hal_3api_27running_program_name, NULL, __pyx_n_s_hal_api); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1056, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_running_program_name, __pyx_t_2) < 0) __PYX_ERR(0, 1057, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_running_program_name, __pyx_t_2) < 0) __PYX_ERR(0, 1056, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
   /* "hal/api.pyx":1

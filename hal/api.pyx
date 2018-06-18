@@ -62,11 +62,9 @@ from ext.halide.util cimport running_program_name as halide_running_program_name
 from ext.halide.buffer cimport Buffer
 from ext.halide.buffer cimport buffervec_t
 
-from ext.halide.fused cimport stringish_t
-from ext.halide.fused cimport floating_t
-
 
 cpdef bytes u8bytes(object string_source):
+    """ Custom version of u8bytes(…) for use in Cython extensions: """
     if type(string_source) == bytes:
         return string_source
     elif type(string_source) == str:
@@ -78,9 +76,11 @@ cpdef bytes u8bytes(object string_source):
     return bytes(string_source)
 
 cpdef str u8str(object string_source):
+    """ Custom version of u8str(…) for use in Cython extensions: """
     return u8bytes(string_source).decode('UTF-8')
 
 def stringify(instance, fields):
+    """ Custom version of stringify(instance, fields) for use in Cython extensions: """
     field_dict = {}
     for field in fields:
         field_value = getattr(instance, field, b"")
