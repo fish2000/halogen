@@ -868,13 +868,12 @@ cpdef bint validate_target_string(object target_string):
     """ Halide::Target::validate_target_string(s) static method wrapper call. """
     return HalTarget.validate_target_string(<string>u8bytes(target_string))
 
-def registered_generators():
+cpdef set registered_generators():
     """ Enumerate registered generators using Halide::GeneratorRegistry. """
-    out = tuple()
-    names = tuple(GeneratorRegistry.enumerate())
+    cdef set out = set()
+    cdef tuple names = tuple(GeneratorRegistry.enumerate())
     for enumerated_name in names:
-        # out += tuple([enumerated_name])
-        out += (enumerated_name,)
+        out |= { u8str(enumerated_name) }
     return out
 
 cdef string halide_compute_base_path(string& output_dir,
@@ -911,7 +910,7 @@ cpdef Module get_generator_module(object name, object arguments={}):
     """ Retrieve a Halide::Module, wrapped as hal.api.Module,
         corresponding to the registered generator instance (by name). """
     # first, check name against registered generators:
-    if u8bytes(name) not in registered_generators():
+    if u8str(name) not in registered_generators():
         raise ValueError("""can't find a registered generator named "%s" """ % u8str(name))
     
     # next, check that `arguments` is a mapping type:

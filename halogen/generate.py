@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import print_function
+from utils import u8bytes, u8str
 
-valid_emits = frozenset([
+valid_emits = frozenset((
     'assembly',
     'bitcode',
     'cpp', 'cpp_stub',
@@ -10,7 +11,7 @@ valid_emits = frozenset([
     'static_library',
     'stmt',
     'stmt_html'
-])
+))
 
 def preload(library_path, **kwargs):
     """ Load and auto-register generators from a dynamic-link library at a
@@ -57,12 +58,12 @@ def generate(*generators, **arguments):
     
     # ARGUMENT PROCESSING:
     
-    generators = set([str(generator) for generator in generators])
+    generators = set(u8str(generator) for generator in generators)
     verbose = bool(arguments.pop('verbose', config.DEFAULT_VERBOSITY))
-    target_string = bytes(arguments.pop('target', 'host'), encoding="UTF-8")
+    target_string = u8bytes(arguments.pop('target', 'host'))
     generator_names = set(arguments.pop('generator_names', hal.api.registered_generators()))
     output_directory = os.path.abspath(arguments.pop('output_directory', os.path.relpath(os.getcwd())))
-    emits = set(arguments.pop('emit', ['static_library', 'h']))
+    emits = set(arguments.pop('emit', ('static_library', 'h')))
     substitutions = dict(arguments.pop('substitutions', dict()))
     
     # ARGUMENT POST-PROCESS BOUNDS-CHECKS:
@@ -70,7 +71,7 @@ def generate(*generators, **arguments):
     if target_string == b'':
         target_string = b"host"
     elif not hal.api.validate_target_string(target_string):
-        raise ValueError("generation target string %s is invalid" % str(target_string))
+        raise ValueError("generation target string %s is invalid" % u8str(target_string))
     
     if len(generators) < 1:
         raise ValueError(">=1 generator is required")
@@ -80,7 +81,7 @@ def generate(*generators, **arguments):
     
     if not generators.issubset(generator_names):
         # raise ValueError("unknown generator name in %s" % str(generators))
-        raise ValueError("generator name in %s unknown to set: %s" % (str(generator_names - generators),
+        raise ValueError("generator name in %s unknown to set: %s" % (str(generator_names),
                                                                       str(generators)))
     
     if not os.path.isdir(output_directory):
@@ -134,7 +135,7 @@ def generate(*generators, **arguments):
     # The generator loop compiles each named generator:
     for generator in generators:
         # “base_path” and “output” are computed using these API methods:
-        base_path = hal.api.compute_base_path(output_directory, bytes(generator, encoding="UTF-8"), b"")
+        base_path = hal.api.compute_base_path(output_directory, u8bytes(generator), b"")
         output = emit_options.compute_outputs_for_target_and_path(target, base_path)
         
         # This next line was originally to compensate in a bug that only manifested
