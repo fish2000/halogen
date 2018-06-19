@@ -280,13 +280,10 @@ class Generators(object):
 def main():
     
     import tempfile
+    from utils import u8str
     directory = "/Users/fish/Dropbox/halogen/tests/generators"
     destination = Directory(os.path.join(tempfile.gettempdir(), "yodogg"))
     zip_destination = "/tmp/"
-    
-    bsepths = None
-    outputs = None
-    modules = None
     
     with TemporaryDirectory(prefix='yo-dogg-', suffix='') as td:
         
@@ -341,19 +338,29 @@ def main():
                 if DEFAULT_VERBOSITY:
                     print("Zip-archiving from %s to %s..." % (destination.name, tz.name))
                 Directory(destination).zip_archive(str(tz.name))
-                # tz.do_not_destroy()
             
             if DEFAULT_VERBOSITY:
                 print('')
             
             # Run generators, storing output files in $TMP/yodogg
-            bsepths, outputs, modules = generate(*loaded_generators, verbose=DEFAULT_VERBOSITY,
-                                                                     target='host',
-                                                                     emit=('static_library',
-                                                                           'stmt_html',
-                                                                           'h', 'o', 'cpp',
-                                                                           'python_extension'),
-                                                                     output_directory=destination)
+            artifacts = generate(*loaded_generators, verbose=DEFAULT_VERBOSITY,
+                                                     target='host',
+                                                     emit=('static_library',
+                                                           'stmt_html',
+                                                           'h', 'o', 'cpp',
+                                                           'python_extension'),
+                                                     output_directory=destination)
+            
+            # Re-dictify:
+            generated = { artifact[2].name : dict(base_path=artifact[0],
+                                                  outputs=artifact[1],
+                                                  module=artifact[2]) for artifact in artifacts }
+            
+            # TELL ME ABOUT IT.
+            if DEFAULT_VERBOSITY:
+                print("")
+                print("Accreted %s total generation artifacts" % len(generated))
+                print("Module names: %s" % ", ".join(u8str(key) for key in sorted(generated.keys())))
     
     # ... scope exit for Generators `gens` and TemporaryDirectory `td`
 

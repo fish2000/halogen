@@ -27,11 +27,11 @@ namespace {
         public:
             Input<Buffer<uint8_t>> typed_buffer_input{ "typed_buffer_input", 3 };
             // Input<Buffer<>> untyped_buffer_input{ "untyped_buffer_input" };
-            Input<Func> simple_input{ "simple_input", Float(32), 3 };  // require a 3-dimensional Func but leave Type unspecified
-            Input<Func[]> array_input{ "array_input", 3 };  // require a 3-dimensional Func but leave Type and ArraySize unspecified
-            // Note that Input<Func> does not (yet) support Tuples
-            Input<float> float_arg{ "float_arg", 1.0f, 0.0f, 100.0f };
-            Input<int32_t[]> int_arg{ "int_arg", 1 };  // leave ArraySize unspecified
+            Input<Func> simple_input{   "simple_input", Float(32), 3        };  // require a 3-dimensional Func but leave Type unspecified
+            Input<Func[3]> array_input{ "array_input",  Float(32), 3        };  // require a 3-dimensional Func but leave Type and ArraySize unspecified
+                                                                                // Note that Input<Func> does not (yet) support Tuples
+            Input<float> float_arg{     "float_arg",    1.0f, 0.0f, 100.0f  };
+            Input<int32_t[3]> int_arg{  "int_arg",      1                   };  // leave ArraySize unspecified
             
         public:
             Output<Func> simple_output{  "simple_output", Float(32), 3 };
@@ -61,8 +61,6 @@ namespace {
                         intermediate(x, y, c),
                         intermediate(x, y, c) + int_arg[0]);
                 
-                // array_input.resize(static_cast<size_t>(array_input_size));
-                array_input.size();
                 array_output.resize(array_input.size());
                 for (size_t i = 0; i < array_input.size(); ++i) {
                     array_output[i](x, y) = cast<int16_t>(array_input[i](x, y, 0) + int_arg[i]);

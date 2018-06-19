@@ -18,6 +18,9 @@ valid_emits = frozenset((
 # Set the default emit options to False for all:
 emit_defaults = mappingproxy({ "emit_%s" % emit : False for emit in valid_emits })
 
+# These are the default things to emit:
+default_emits = ('static_library', 'h')
+
 def preload(library_path, **kwargs):
     """ Load and auto-register generators from a dynamic-link library at a
         given path. Currently we use ctypes to do this cross-platform-ly.
@@ -69,7 +72,7 @@ def generate(*generators, **arguments):
     target_string = u8bytes(arguments.pop('target', 'host'))
     generator_names = set(arguments.pop('generator_names', hal.api.registered_generators()))
     output_directory = Directory(arguments.pop('output_directory', None))
-    emits = set(arguments.pop('emit', ('static_library', 'h')))
+    emits = set(arguments.pop('emit', default_emits))
     substitutions = dict(arguments.pop('substitutions', {}))
     
     # ARGUMENT POST-PROCESS BOUNDS-CHECKS:
@@ -115,7 +118,7 @@ def generate(*generators, **arguments):
     
     if verbose:
         print("Emit Options:")
-        print(str(emit_options))
+        print(u8str(emit_options))
         print('')
     
     # The “target_string” variable defaults to “host” (see argument processing):
@@ -123,16 +126,14 @@ def generate(*generators, **arguments):
     
     if verbose:
         print("Target:")
-        print(str(target))
+        print(u8str(target))
         print('')
     
-    # These lists will store generator module compilation artifacts:
-    bsepths = list()
-    outputs = list()
-    modules = list()
+    # This list will store generator module compilation artifacts:
+    artifacts = []
     
     if verbose:
-        print('-' * max(terminal_width, 160))
+        print('-' * max(terminal_width, 100))
     
     # The generator loop compiles each named generator:
     for generator in generators:
@@ -146,34 +147,29 @@ def generate(*generators, **arguments):
         output = emit_options.compute_outputs_for_target_and_path(target, base_path)
         
         if verbose:
-            print("BSEPTH: %s" % str(base_path))
-        
-        if verbose:
-            print("OUTPUT: %s" % str(output))
+            print("BSEPTH: %s" % u8str(base_path))
+            print("OUTPUT: %s" % u8str(output))
+            print("TARGET: %s" % u8str(target))
         
         # generator_args.update(arguments)
-        
-        if verbose:
-            print("TARGET: %s" % str(target))
         
         # This API call prepares the generator code module:
         module = hal.api.get_generator_module(generator,
                                               arguments={ 'target': str(target) })
         
         if verbose:
-            print("MODULE: %s (%s)" % (module.name, str(module)))
-            print('-' * max(terminal_width, 160))
+            print("MODULE: %s (%s)" % (u8str(module.name),
+                                       u8str(module)))
+            print('-' * max(terminal_width, 100))
         
         # The compilation call:
         module.compile(output)
         
         # Stow the post-compile values:
-        bsepths.append(base_path)
-        outputs.append(output)
-        modules.append(module)
+        artifacts.append((u8str(base_path), output, module))
     
-    # Return the post-compile value lists for all generators:
-    return bsepths, outputs, modules
+    # Return the post-compile value artifacts for all generators:
+    return artifacts
 
 
 def main():    
