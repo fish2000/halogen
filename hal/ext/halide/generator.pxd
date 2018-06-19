@@ -24,7 +24,10 @@ cdef extern from "Halide.h" namespace "Halide" nogil:
     
     cppclass GeneratorContext:
         GeneratorContext(Target&)
+        GeneratorContext(Target&, bint)
         Target get_target()
+        bint get_auto_schedule()
+        unique_ptr[T] create[T]()
     
     # cppclass JITGeneratorContext(GeneratorContext):
     #     JITGeneratorContext(Target&)
@@ -51,12 +54,14 @@ cdef extern from "Halide.h" namespace "Halide::Internal" nogil:
             bint emit_o
             bint emit_h
             bint emit_cpp
+            bint emit_python_extension
             bint emit_assembly
             bint emit_bitcode
             bint emit_stmt
             bint emit_stmt_html
             bint emit_static_library
             bint emit_cpp_stub
+            bint emit_schedule
             stringmap_t substitutions
             EmitOptions()
         

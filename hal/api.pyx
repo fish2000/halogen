@@ -413,9 +413,11 @@ cdef class Outputs:
                                              .llvm_assembly(arg.llvm_assembly_name) \
                                              .c_header(arg.c_header_name) \
                                              .c_source(arg.c_source_name) \
+                                             .python_extension(arg.python_extension_name) \
                                              .stmt(arg.stmt_name) \
                                              .stmt_html(arg.stmt_html_name) \
-                                             .static_library(arg.static_library_name)
+                                             .static_library(arg.static_library_name) \
+                                             .schedule(arg.schedule_name)
                 return
         
         object_name = kwargs.pop('object_name', '')
@@ -424,9 +426,11 @@ cdef class Outputs:
         llvm_assembly_name = kwargs.pop('llvm_assembly_name', '')
         c_header_name = kwargs.pop('c_header_name', '')
         c_source_name = kwargs.pop('c_source_name', '')
+        python_extension_name = kwargs.pop('python_extension_name', '')
         stmt_name = kwargs.pop('stmt_name', '')
         stmt_html_name = kwargs.pop('stmt_html_name', '')
         static_library_name = kwargs.pop('static_library_name', '')
+        schedule_name = kwargs.pop('schedule_name', '')
         
         self.__this__.object_name = <string>u8bytes(object_name)
         self.__this__.assembly_name = <string>u8bytes(assembly_name)
@@ -434,9 +438,11 @@ cdef class Outputs:
         self.__this__.llvm_assembly_name = <string>u8bytes(llvm_assembly_name)
         self.__this__.c_header_name = <string>u8bytes(c_header_name)
         self.__this__.c_source_name = <string>u8bytes(c_source_name)
+        self.__this__.python_extension_name = <string>u8bytes(python_extension_name)
         self.__this__.stmt_name = <string>u8bytes(stmt_name)
         self.__this__.stmt_html_name = <string>u8bytes(stmt_html_name)
         self.__this__.static_library_name = <string>u8bytes(static_library_name)
+        self.__this__.schedule_name = <string>u8bytes(schedule_name)
     
     property object_name:
         def __get__(Outputs self):
@@ -474,6 +480,12 @@ cdef class Outputs:
         def __set__(Outputs self, object value):
             self.__this__.c_source_name = <string>u8bytes(value)
     
+    property python_extension_name:
+        def __get__(Outputs self):
+            return <string>self.__this__.python_extension_name
+        def __set__(Outputs self, object value):
+            self.__this__.python_extension_name = <string>u8bytes(value)
+    
     property stmt_name:
         def __get__(Outputs self):
             return <string>self.__this__.stmt_name
@@ -491,6 +503,12 @@ cdef class Outputs:
             return <string>self.__this__.static_library_name
         def __set__(Outputs self, object value):
             self.__this__.static_library_name = <string>u8bytes(value)
+    
+    property schedule_name:
+        def __get__(Outputs self):
+            return <string>self.__this__.schedule_name
+        def __set__(Outputs self, object value):
+            self.__this__.schedule_name = <string>u8bytes(value)
     
     def object(Outputs self, object s=None):
         out = Outputs()
@@ -534,6 +552,13 @@ cdef class Outputs:
         out.__this__ = self.__this__.c_source(u8bytes(s))
         return out
     
+    def python_extension(Outputs self, object s=None):
+        out = Outputs()
+        if s is None:
+            s = ''
+        out.__this__ = self.__this__.python_extension(u8bytes(s))
+        return out
+    
     def stmt(Outputs self, object s=None):
         out = Outputs()
         if s is None:
@@ -555,10 +580,18 @@ cdef class Outputs:
         out.__this__ = self.__this__.static_library(u8bytes(s))
         return out
     
+    def schedule(Outputs self, object s=None):
+        out = Outputs()
+        if s is None:
+            s = ''
+        out.__this__ = self.__this__.schedule(u8bytes(s))
+        return out
+    
     def to_string(Outputs self):
         return stringify(self, ("object_name", "assembly_name", "bitcode_name",
                                 "llvm_assembly_name", "c_header_name", "c_source_name",
-                                "stmt_name", "stmt_html_name", "static_library_name"))
+                                "python_extension_name", "stmt_name", "stmt_html_name",
+                                "static_library_name", "schedule_name"))
     
     def __bytes__(Outputs self):
         return self.to_string()
@@ -587,8 +620,10 @@ cdef class EmitOptions:
         'emit_bitcode'          : False,
         'emit_stmt'             : False,
         'emit_stmt_html'        : False,
+        'emit_python_extension' : False,
         'emit_static_library'   : True,
-        'emit_cpp_stub'         : False
+        'emit_cpp_stub'         : False,
+        'emit_schedule'         : False
     }
     
     def __cinit__(EmitOptions self, *args, **kwargs):
@@ -602,22 +637,26 @@ cdef class EmitOptions:
                 self.__this__.emit_bitcode = PyObject_IsTrue(arg.emit_bitcode)
                 self.__this__.emit_stmt = PyObject_IsTrue(arg.emit_stmt)
                 self.__this__.emit_stmt_html = PyObject_IsTrue(arg.emit_stmt_html)
+                self.__this__.emit_python_extension = PyObject_IsTrue(arg.emit_python_extension)
                 self.__this__.emit_static_library = PyObject_IsTrue(arg.emit_static_library)
                 self.__this__.emit_cpp_stub = PyObject_IsTrue(arg.emit_cpp_stub)
+                self.__this__.emit_schedule = PyObject_IsTrue(arg.emit_schedule)
                 for k, v in arg.substitutions.items():
                     self.__this__.substitutions[<string>u8bytes(k)] = <string>u8bytes(v)
                 return
         
-        emit_o = bool(kwargs.pop('emit_o',                              self.emit_defaults['emit_o']))
-        emit_h = bool(kwargs.pop('emit_h',                              self.emit_defaults['emit_h']))
-        emit_cpp = bool(kwargs.pop('emit_cpp',                          self.emit_defaults['emit_cpp']))
-        emit_assembly = bool(kwargs.pop('emit_assembly',                self.emit_defaults['emit_assembly']))
-        emit_bitcode = bool(kwargs.pop('emit_bitcode',                  self.emit_defaults['emit_bitcode']))
-        emit_stmt = bool(kwargs.pop('emit_stmt',                        self.emit_defaults['emit_stmt']))
-        emit_stmt_html = bool(kwargs.pop('emit_stmt_html',              self.emit_defaults['emit_stmt_html']))
-        emit_static_library = bool(kwargs.pop('emit_static_library',    self.emit_defaults['emit_static_library']))
-        emit_cpp_stub = bool(kwargs.pop('emit_cpp_stub',                self.emit_defaults['emit_cpp_stub']))
-        substitutions = kwargs.pop('substitutions',                     {})
+        emit_o = bool(kwargs.pop('emit_o',                                  self.emit_defaults['emit_o']))
+        emit_h = bool(kwargs.pop('emit_h',                                  self.emit_defaults['emit_h']))
+        emit_cpp = bool(kwargs.pop('emit_cpp',                              self.emit_defaults['emit_cpp']))
+        emit_assembly = bool(kwargs.pop('emit_assembly',                    self.emit_defaults['emit_assembly']))
+        emit_bitcode = bool(kwargs.pop('emit_bitcode',                      self.emit_defaults['emit_bitcode']))
+        emit_stmt = bool(kwargs.pop('emit_stmt',                            self.emit_defaults['emit_stmt']))
+        emit_stmt_html = bool(kwargs.pop('emit_stmt_html',                  self.emit_defaults['emit_stmt_html']))
+        emit_python_extension = bool(kwargs.pop('emit_python_extension',    self.emit_defaults['emit_python_extension']))
+        emit_static_library = bool(kwargs.pop('emit_static_library',        self.emit_defaults['emit_static_library']))
+        emit_cpp_stub = bool(kwargs.pop('emit_cpp_stub',                    self.emit_defaults['emit_cpp_stub']))
+        emit_schedule = bool(kwargs.pop('emit_schedule',                    self.emit_defaults['emit_schedule']))
+        substitutions = kwargs.pop('substitutions',                         {})
         
         if not PyMapping_Check(substitutions):
             raise ValueError("substitutions must be a mapping type")
@@ -629,8 +668,10 @@ cdef class EmitOptions:
         self.__this__.emit_bitcode = PyObject_IsTrue(emit_bitcode)
         self.__this__.emit_stmt = PyObject_IsTrue(emit_stmt)
         self.__this__.emit_stmt_html = PyObject_IsTrue(emit_stmt_html)
+        self.__this__.emit_python_extension = PyObject_IsTrue(emit_python_extension)
         self.__this__.emit_static_library = PyObject_IsTrue(emit_static_library)
         self.__this__.emit_cpp_stub = PyObject_IsTrue(emit_cpp_stub)
+        self.__this__.emit_schedule = PyObject_IsTrue(emit_schedule)
         
         for k, v in substitutions.items():
             self.__this__.substitutions[<string>u8bytes(k)] = <string>u8bytes(v)
@@ -677,6 +718,12 @@ cdef class EmitOptions:
         def __set__(EmitOptions self, value):
             self.__this__.emit_stmt_html = PyObject_IsTrue(value)
     
+    property emit_python_extension:
+        def __get__(EmitOptions self):
+            return PyBool_FromLong(self.__this__.emit_python_extension)
+        def __set__(EmitOptions self, value):
+            self.__this__.emit_python_extension = PyObject_IsTrue(value)
+    
     property emit_static_library:
         def __get__(EmitOptions self):
             return PyBool_FromLong(self.__this__.emit_static_library)
@@ -688,6 +735,12 @@ cdef class EmitOptions:
             return PyBool_FromLong(self.__this__.emit_cpp_stub)
         def __set__(EmitOptions self, value):
             self.__this__.emit_cpp_stub = PyObject_IsTrue(value)
+    
+    property emit_schedule:
+        def __get__(EmitOptions self):
+            return PyBool_FromLong(self.__this__.emit_schedule)
+        def __set__(EmitOptions self, value):
+            self.__this__.emit_schedule = PyObject_IsTrue(value)
     
     property substitutions:
         def __get__(EmitOptions self):
@@ -733,6 +786,8 @@ cdef class EmitOptions:
             output_files.c_header_name = base_path_str + self.get_substitution(".h")
         if self.emit_cpp:
             output_files.c_source_name = base_path_str + self.get_substitution(".cpp")
+        if self.emit_python_extension:
+            output_files.stmt_html_name = base_path_str + self.get_substitution(".py.c")
         
         # N.B. Currently the Halide `compute_outputs()` version has no substitution logic
         # for `emit_cpp_stub` -- q.v. Halide/src/Generator.cpp lines 54-96 sub.
@@ -747,6 +802,9 @@ cdef class EmitOptions:
                 output_files.static_library_name = base_path_str + self.get_substitution(".lib")
             else:
                 output_files.static_library_name = base_path_str + self.get_substitution(".a")
+        
+        if self.emit_schedule:
+            output_files.schedule_name = base_path_str + self.get_substitution(".schedule")
         
         return output_files
     

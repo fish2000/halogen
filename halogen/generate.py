@@ -1,17 +1,22 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import print_function
-from utils import u8bytes, u8str
+from types import MappingProxyType as mappingproxy
 
 valid_emits = frozenset((
     'assembly',
     'bitcode',
     'cpp', 'cpp_stub',
     'h', 'o',
+    'python_extension',
     'static_library',
     'stmt',
-    'stmt_html'
+    'stmt_html',
+    'schedule'
 ))
+
+# Set the default emit options to False for all:
+emit_defaults = mappingproxy({ "emit_%s" % emit : False for emit in valid_emits })
 
 def preload(library_path, **kwargs):
     """ Load and auto-register generators from a dynamic-link library at a
@@ -19,9 +24,9 @@ def preload(library_path, **kwargs):
         We also use a memoization cache to avoid loading anything twice.
     """
     import os, ctypes
-    import config
-    from errors import GeneratorError
-    verbose = bool(kwargs.pop('verbose', config.DEFAULT_VERBOSITY))
+    from config import DEFAULT_VERBOSITY
+    from errors import GeneratorLoaderError
+    verbose = bool(kwargs.pop('verbose', DEFAULT_VERBOSITY))
     
     # initialize the memoization cache, if we haven’t already:
     if not hasattr(preload, 'loaded_libraries'):
@@ -29,7 +34,7 @@ def preload(library_path, **kwargs):
     
     # throw if the path is bad:
     if not os.path.exists(library_path):
-        raise GeneratorError("No library exists at %s" % library_path)
+        raise GeneratorLoaderError("No library exists at %s" % library_path)
     
     # normalize the path:
     realpth = os.path.realpath(library_path)
@@ -51,56 +56,53 @@ def preload(library_path, **kwargs):
 def generate(*generators, **arguments):
     """ Invoke hal.api.Module.compile(…) with the proper arguments. This function
         was concieved with replacing GenGen.cpp’s options in mind. """
-    import os
-    import config
     import hal.api
-    from utils import terminal_width
+    from config import DEFAULT_VERBOSITY
+    from errors import GenerationError
+    from filesystem import Directory
+    from utils import terminal_width, u8bytes, u8str
     
     # ARGUMENT PROCESSING:
     
     generators = set(u8str(generator) for generator in generators)
-    verbose = bool(arguments.pop('verbose', config.DEFAULT_VERBOSITY))
+    verbose = bool(arguments.pop('verbose', DEFAULT_VERBOSITY))
     target_string = u8bytes(arguments.pop('target', 'host'))
     generator_names = set(arguments.pop('generator_names', hal.api.registered_generators()))
-    output_directory = os.path.abspath(arguments.pop('output_directory', os.path.relpath(os.getcwd())))
+    output_directory = Directory(arguments.pop('output_directory', None))
     emits = set(arguments.pop('emit', ('static_library', 'h')))
-    substitutions = dict(arguments.pop('substitutions', dict()))
+    substitutions = dict(arguments.pop('substitutions', {}))
     
     # ARGUMENT POST-PROCESS BOUNDS-CHECKS:
     
-    if target_string == b'':
+    if not target_string:
         target_string = b"host"
     elif not hal.api.validate_target_string(target_string):
-        raise ValueError("generation target string %s is invalid" % u8str(target_string))
+        raise GenerationError("generation target string %s is invalid" % u8str(target_string))
     
     if len(generators) < 1:
-        raise ValueError(">=1 generator is required")
+        raise GenerationError(">=1 generator is required")
     
     if len(generator_names) < 1:
-        raise ValueError(">=1 generator name is required")
+        raise GenerationError(">=1 generator name is required")
     
     if not generators.issubset(generator_names):
-        # raise ValueError("unknown generator name in %s" % str(generators))
-        raise ValueError("generator name in %s unknown to set: %s" % (str(generator_names),
-                                                                      str(generators)))
+        # raise GenerationError("unknown generator name in %s" % str(generators))
+        raise GenerationError("generator name in %s unknown to set: %s" % (str(generator_names),
+                                                                           str(generators)))
     
-    if not os.path.isdir(output_directory):
-        os.makedirs(output_directory)
+    if not output_directory.exists:
+        output_directory.makedirs()
     
     if not emits.issubset(valid_emits):
-        raise ValueError("invalid emit in %s" % str(emits))
+        raise GenerationError("invalid emit in %s" % str(emits))
     
     if verbose:
         print("Compiling and running %s generators...\n" % len(generators))
     
-    # Set up the default emit-options settings:
-    emit_dict = dict(
-        emit_static_library=False,
-        emit_o=False, emit_h=False)
-    
     # Set what emits to, er, emit, as per the “emit” keyword argument;
     # These have been rolled into the “emits” set (see argument processing, above);
     # …plus, we’ve already ensured that the set is valid:
+    emit_dict = dict(emit_defaults)
     for emit in emits:
         emit_dict["emit_%s" % emit] = True
     
@@ -134,13 +136,14 @@ def generate(*generators, **arguments):
     
     # The generator loop compiles each named generator:
     for generator in generators:
-        # “base_path” and “output” are computed using these API methods:
-        base_path = hal.api.compute_base_path(output_directory, u8bytes(generator), b"")
-        output = emit_options.compute_outputs_for_target_and_path(target, base_path)
+        # “base_path” (a bytestring) is computed using the `compute_base_path()` API function:
+        base_path = hal.api.compute_base_path(u8bytes(output_directory.name),
+                                              u8bytes(generator))
         
-        # This next line was originally to compensate in a bug that only manifested
-        # itself on my (now long-dead) MacBook Air:
-        # output = outputs.static_library(None)
+        # “output” (an hal.api.Outputs instance) is computed using the eponymously named
+        # API function `compute_outputs_for_target_and_path()` with a hal.api.Target instance
+        # and a base path (q.v. note supra):
+        output = emit_options.compute_outputs_for_target_and_path(target, base_path)
         
         if verbose:
             print("BSEPTH: %s" % str(base_path))
@@ -180,24 +183,25 @@ def main():
     
     # sys.path addenda necessary to load hal.api:
     import hal.api
-    import config, tempfile
+    import tempfile
+    from config import DEFAULT_VERBOSITY
     
     assert str(hal.api.Target()) != 'host'
     
     print(hal.api.registered_generators())
     
     generate('my_first_generator',
-        verbose=config.DEFAULT_VERBOSITY,
+        verbose=DEFAULT_VERBOSITY,
         target='host',
         output_directory=tempfile.gettempdir())
     
     generate('my_second_generator',
-        verbose=config.DEFAULT_VERBOSITY,
+        verbose=DEFAULT_VERBOSITY,
         target='host',
         output_directory=tempfile.gettempdir())
     
     generate('brighten',
-        verbose=config.DEFAULT_VERBOSITY,
+        verbose=DEFAULT_VERBOSITY,
         target='host',
         output_directory=tempfile.gettempdir())
 

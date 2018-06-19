@@ -156,7 +156,6 @@ def print_config(conf):
 
 def test_compile(conf, test_source):
     import sys, os
-    # import tempfile
     import config
     from filesystem import NamedTemporaryFile, TemporaryName
     
@@ -187,9 +186,6 @@ def test_compile(conf, test_source):
             print(output[0], file=sys.stdout)
             print(output[1], file=sys.stderr)
             if os.path.exists(str(adotout)):
-                # another = os.path.basename(mktemp(suffix=".cpp.o", prefix=px))
-                # shutil.copy2(adotout, "%s/%s" % (tempfile.gettempdir(), another))
-                # os.unlink(adotout)
                 return True
             else:
                 print("... BUT THEN WHERE THE FUCK IS MY SHIT?!?!")

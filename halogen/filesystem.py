@@ -262,10 +262,15 @@ class Directory(object):
     dotfile_matcher = re.compile(r"^\.").match
     
     def __init__(self, pth=None):
+        if isinstance(pth, Directory):
+            pth = pth.name
         self.old = os.getcwd()
         self.new = pth or self.old
-        self.will_change = not os.path.samefile(self.old,
-                                                self.new)
+        if os.path.exists(self.new):
+            self.will_change = not os.path.samefile(self.old,
+                                                    self.new)
+        else:
+            self.will_change = False
         self.did_change = False
     
     @property
@@ -298,22 +303,26 @@ class Directory(object):
         searcher = re.compile(regex_str, re.IGNORECASE).search
         return lambda f: searcher(f)
     
+    def realpath(self, pth=None):
+        if not pth:
+            pth = self.name
+        return os.path.realpath(pth)
+    
     def ls(self, pth=os.curdir, suffix=None):
         files = (f for f in scandir(self.realpath(pth)) if not self.dotfile_matcher(f))
         if not suffix:
             return files
         return filter(self.suffix_searcher(suffix), files)
     
-    def realpath(self, pth=None):
-        if not pth:
-            pth = self.name
-        return os.path.realpath(pth)
-    
     def ls_la(self, pth=os.curdir, suffix=None):
         files = scandir(self.realpath(pth))
         if not suffix:
             return files
         return filter(self.suffix_searcher(suffix), files)
+    
+    def makedirs(self, pth=os.curdir):
+        os.makedirs(os.path.abspath(
+                    os.path.join(self.name, pth)))
     
     def walk(self, followlinks=False):
         return walk(self.name, followlinks=followlinks)

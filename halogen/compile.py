@@ -5,13 +5,14 @@ from __future__ import print_function
 import os
 import shutil
 import config
+
 try:
     from scandir import walk
 except ImportError:
     from os import walk
 
 from tempfile import mktemp
-from errors import HalogenError, GeneratorError
+from errors import HalogenError, GeneratorLoaderError
 from generate import preload, generate
 from filesystem import TemporaryName, Directory, TemporaryDirectory, rm_rf
 
@@ -190,7 +191,7 @@ class Generators(object):
             # preload() may also raise GeneratorError
             return preload(self.library, verbose=self.VERBOSE)
         else:
-            raise GeneratorError("can't preload from an uncompiled/unlinked generator")
+            raise GeneratorLoaderError("can't preload from an uncompiled/unlinked generator")
     
     def clear(self):
         for of in self.prelink:
@@ -243,7 +244,9 @@ def main():
     import tempfile
     directory = "/Users/fish/Dropbox/halogen/tests/generators"
     # destination = "/tmp/yodogg"
-    destination = os.path.join(tempfile.gettempdirb(), b"yodogg")
+    # destination = os.path.join(tempfile.gettempdirb(), b"yodogg")
+    destination = Directory(os.path.join(tempfile.gettempdir(), "yodogg"))
+    zip_destination = "/tmp/"
     
     # library = "%s%s" % (destination, config.SHARED_LIBRARY_SUFFIX)
     # archive = "%s%s" % (destination, config.STATIC_LIBRARY_SUFFIX)
@@ -279,7 +282,7 @@ def main():
             
             try:
                 gens.preload_all()
-            except GeneratorError as exc:
+            except GeneratorLoaderError as exc:
                 if DEFAULT_VERBOSITY:
                     print("... FAILED TO LOAD LIBRARIES FROM %s" % gens.library)
                     print("%s" % str(exc))
@@ -298,18 +301,19 @@ def main():
                 print("ARCHIVE: %s" % archive)
             
             # Copy the library and archive files to $TMP/yodogg:
-            if os.path.exists(destination):
+            if destination.exists:
                 if DEFAULT_VERBOSITY:
-                    print("Removing %s..." % destination)
-                rm_rf(destination)
+                    print("Removing %s..." % destination.name)
+                rm_rf(destination.name)
             if DEFAULT_VERBOSITY:
-                print("Copying from %s to %s..." % (td.name, destination))
-            td.copy_all(str(destination))
+                print("Copying from %s to %s..." % (td.name, destination.name))
+            td.copy_all(destination.name)
             
-            with TemporaryName(suffix="zip") as tz:
+            with TemporaryName(suffix="zip", parent=zip_destination) as tz:
                 if DEFAULT_VERBOSITY:
-                    print("Zip-archiving from %s to %s..." % (destination, tz.name))
-                Directory(str(destination)).zip_archive(str(tz.name))
+                    print("Zip-archiving from %s to %s..." % (destination.name, tz.name))
+                Directory(destination).zip_archive(str(tz.name))
+                # tz.do_not_destroy()
             
             if DEFAULT_VERBOSITY:
                 print('')
@@ -317,6 +321,10 @@ def main():
             # Run generators, storing output files in $TMP/yodogg
             bsepths, outputs, modules = generate(*loaded_generators, verbose=DEFAULT_VERBOSITY,
                                                                      target='host',
+                                                                     emit=('static_library',
+                                                                           'stmt_html',
+                                                                           'h', 'o', 'cpp',
+                                                                           'python_extension'),
                                                                      output_directory=destination)
     
     # ... scope exit for Generators `gens` and TemporaryDirectory `td`

@@ -15,6 +15,8 @@ cdef extern from "Halide.h" namespace "Halide" nogil:
         string stmt_name
         string stmt_html_name
         string static_library_name
+        string python_extension_name
+        string schedule_name
         
         Outputs() # default constructor
         
@@ -27,3 +29,5 @@ cdef extern from "Halide.h" namespace "Halide" nogil:
         Outputs stmt(string&)
         Outputs stmt_html(string&)
         Outputs static_library(string&)
+        Outputs python_extension(string&)
+        Outputs schedule(string&)

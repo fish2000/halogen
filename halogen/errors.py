@@ -19,5 +19,15 @@ class FilesystemError(HalogenError):
 
 
 class GeneratorError(HalogenError):
-    """ An error during generation -- as in, running generated code """
+    """ Base class for Halogen generator errors """
+    pass
+
+
+class GeneratorLoaderError(GeneratorError):
+    """ An error during generator loading """
+    pass
+
+
+class GenerationError(GeneratorError):
+    """ An error during generation -- as in, the running of a compiled generator """
     pass
