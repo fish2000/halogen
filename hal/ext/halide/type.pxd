@@ -83,10 +83,10 @@ cdef extern from "Halide.h" nogil:
 
 cdef extern from "Halide.h" namespace "Halide::Type" nogil:
     
-    cdef halide_type_code_t Int = halide_type_int
-    cdef halide_type_code_t UInt = halide_type_uint
-    cdef halide_type_code_t Float = halide_type_float
-    cdef halide_type_code_t Handle = halide_type_handle
+    cdef halide_type_code_t IntCode     "Int" = halide_type_int
+    cdef halide_type_code_t UIntCode    "UInt" = halide_type_uint
+    cdef halide_type_code_t FloatCode   "Float" = halide_type_float
+    cdef halide_type_code_t HandleCode  "Handle" = halide_type_handle
 
 
 cdef extern from "Halide.h" namespace "Halide":

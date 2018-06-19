@@ -19,8 +19,9 @@ from ext.haldol.convert cimport convert as haldol_convert
 from ext.halide.outputs cimport Outputs as HalOutputs
 from ext.halide.module cimport Module as HalModule
 from ext.halide.module cimport LinkageType, LoweredFunc
+# from ext.halide.module cimport External as Linkage_External
+# from ext.halide.module cimport ExternalPlusMetadata as Linkage_ExternalPlusMetadata
 from ext.halide.module cimport Internal as Linkage_Internal
-from ext.halide.module cimport External as Linkage_External
 from ext.halide.module cimport funcvec_t
 from ext.halide.module cimport modulevec_t
 from ext.halide.module cimport link_modules as halide_link_modules
@@ -49,6 +50,8 @@ from ext.halide.target cimport Target as HalTarget
 from ext.halide.target cimport OS, Arch, Feature
 from ext.halide.target cimport Windows as OS_Windows
 from ext.halide.target cimport MinGW as Feature_MinGW
+# from ext.halide.device_api cimport DeviceAPI
+
 from ext.halide.target cimport target_ptr_t
 from ext.halide.target cimport get_host_target as halide_get_host_target
 from ext.halide.target cimport get_target_from_environment as halide_get_target_from_environment

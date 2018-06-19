@@ -18,6 +18,7 @@ cdef extern from "Halide.h" namespace "Halide" nogil:
 cdef extern from "Halide.h" namespace "Halide::LinkageType" nogil:
     
     cdef LinkageType External
+    cdef LinkageType ExternalPlusMetadata
     cdef LinkageType Internal
 
 cdef extern from "Halide.h" namespace "Halide::Internal" nogil:

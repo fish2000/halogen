@@ -20,6 +20,5 @@ cdef extern from "Halide.h" namespace "Halide::Internal" nogil:
     #            extargvec_t = vector[ExternFuncArgument].
     
     string cplusplus_function_mangled_name(string&, stringvec_t&,
-                                           Type,
-                                           extargvec_t&,
+                                           Type,    extargvec_t&,
                                            Target&)

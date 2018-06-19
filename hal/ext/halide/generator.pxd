@@ -5,24 +5,128 @@ from libcpp.string cimport string
 from libcpp.vector cimport vector
 from libcpp.memory cimport unique_ptr
 
+from autoschedule cimport MachineParams
+from buffer cimport Buffer
+from expr cimport Expr
+from externalcode cimport ExternalCode
+from realization cimport Realization
 from target cimport Target, get_target_from_environment
 from type cimport Type, LoopLevel, llevelmap_t
 from module cimport Module, LinkageType
 
+ctypedef vector[Expr]                   exprvec_t
+ctypedef vector[Type]                   typevec_t
 ctypedef vector[string]                 stringvec_t
 ctypedef std_map[string, string]        stringmap_t
+ctypedef std_map[string, Type]          typemap_t
 
 cdef extern from "Halide.h" namespace "Halide::Internal" nogil:
+    
+    cppclass ValueTracker:
+        ValueTracker()
+        ValueTracker(size_t)
+        void track_values(string&, exprvec_t&)
+    
+    string enum_to_string[T](std_map[string, T]&, T&)
+    T enum_from_string[T](std_map[string, T]&, string&)
+    typemap_t& get_halide_type_enum_map()
+    string halide_type_to_enum_string(Type&)
     
     cppclass GeneratorParamBase:
         string name
         GeneratorParamBase(string&)
         GeneratorParamBase(GeneratorParamBase&)
-
-
+    
+    cppclass GeneratorParamImpl[T](GeneratorParamBase):
+        GeneratorParamImpl(string&, T&)
+        T value()
+        # operator T()
+        # operator Expr()
+        void set(bint&)
+        void set(int8_t&)
+        void set(int16_t&)
+        void set(int32_t&)
+        void set(int64_t&)
+        void set(uint8_t&)
+        void set(uint16_t&)
+        void set(uint32_t&)
+        void set(uint64_t&)
+        void set(float&)
+        void set(double&)
+        void set(Target&)
+        void set(MachineParams&)
+        void set(Type&)
+        void set(LoopLevel&)
+    
+    cppclass GeneratorParam_Target[T](GeneratorParamImpl[T]):
+        GeneratorParam_Target(string&, T&)
+        void set_from_string(string&)
+        string get_default_value()
+        string call_to_string(string&)
+        string get_c_type()
+    
+    cppclass GeneratorParam_MachineParams[T](GeneratorParamImpl[T]):
+        GeneratorParam_MachineParams(string&, T&)
+        void set_from_string(string&)
+        string get_default_value()
+        string call_to_string(string&)
+        string get_c_type()
+    
+    cppclass GeneratorParam_LoopLevel(GeneratorParamImpl[LoopLevel]):
+        GeneratorParam_LoopLevel(string&, LoopLevel&)
+        void set(LoopLevel&)
+        void set_from_string(string&)
+        string get_default_value()
+        string call_to_string(string&)
+        string get_c_type()
+        bint is_looplevel_param()
+    
+    cppclass GeneratorParam_Arithmetic[T](GeneratorParamImpl[T]):
+        GeneratorParam_Arithmetic(string&, T&)          # value
+        GeneratorParam_Arithmetic(string&, T&, T&)      # value, min
+        GeneratorParam_Arithmetic(string&, T&, T&, T&)  # value, min, max
+        void set_impl(T&)
+        void set_from_string(string&)
+        string get_default_value()
+        string call_to_string(string&)
+        string get_c_type()
+    
+    cppclass GeneratorParam_Bool[T](GeneratorParam_Arithmetic[T]):
+        GeneratorParam_Bool(string&, T&)
+        void set_from_string(string&)
+        string get_default_value()
+        string call_to_string(string&)
+        string get_c_type()
+    
+    cppclass GeneratorParam_Enum[T](GeneratorParamImpl[T]):
+        GeneratorParam_Enum(string&, T&, std_map[string, T]&)
+        void set(T&)
+        void set_from_string(string&)
+        string get_default_value()
+        string call_to_string(string&)
+        string get_c_type()
+        string get_type_decls()
+    
+    cppclass GeneratorParam_Type[T](GeneratorParam_Enum[T]):
+        GeneratorParam_Type(string&, T&)
+        string call_to_string(string&)
+        string get_c_type()
+        string get_default_value()
+        string get_type_decls()
+    
+    cppclass GeneratorParamImplBase[T]:
+        pass
+    
 cdef extern from "Halide.h" namespace "Halide" nogil:
     
+    cppclass GeneratorParam[T](GeneratorParamImplBase[T]):
+        GeneratorParam(string&, T&)                         # name, value
+        GeneratorParam(string&, T&, T&, T&)                 # name, value, min, max
+        GeneratorParam(string&, T&, std_map[string, T]&)    # name, value, enum map
+        GeneratorParam(string&, string&)                    # name, value
+    
     cppclass GeneratorContext:
+        ctypedef std_map[string, ExternalCode] ExternsMap
         GeneratorContext(Target&)
         GeneratorContext(Target&, bint)
         Target get_target()
@@ -33,19 +137,73 @@ cdef extern from "Halide.h" namespace "Halide" nogil:
     #     JITGeneratorContext(Target&)
     #     Target get_target()
     
-    cppclass GeneratorParam[T](GeneratorParamBase):
-        GeneratorParam(string&, T&)
-        void set(T&)
-        void from_string(string&)
-        string to_string()
+    # cppclass GeneratorParam[T](GeneratorParamBase):
+    #     GeneratorParam(string&, T&)
+    #     void set(T&)
+    #     void from_string(string&)
+    #     string to_string()
     
     cppclass NamesInterface:
         pass
 
 
 ctypedef GeneratorParam[Target]         targetparam_t
+ctypedef vector[int32_t]                signedsizevec_t
 
 cdef extern from "Halide.h" namespace "Halide::Internal" nogil:
+    
+    cppclass IOKind:
+        pass
+    
+cdef extern from "Halide.h" namespace "Halide::Internal::IOKind" nogil:
+    
+    cdef IOKind Scalar
+    cdef IOKind Function
+    cdef IOKind Buffer
+    
+cdef extern from "Halide.h" namespace "Halide::Internal" nogil:
+    
+    cppclass StubInputBuffer[T]: # T = void
+        StubInputBuffer()
+        # StubInputBuffer[T2](Buffer[T2]&)
+    
+    cppclass StubOutputBufferBase:
+        Realization realize(signedsizevec_t)
+        void realize[Dst](Dst)
+    
+    cppclass StubOutputBuffer[T](StubOutputBufferBase): # T = void
+        StubOutputBuffer()
+    
+    cppclass StubInput:
+        # StubInput[T2](StubInputBuffer[T2]&)
+        # StubInput(Func&)
+        StubInput(Expr&)
+    
+    cppclass GIOBase:
+        bint array_size_defined()
+        size_t array_size()
+        bint is_array()
+        string& name()
+        IOKind kind()
+        bint types_defined()
+        typevec_t& types()
+        Type type()
+        bint dims_defined()
+        int dims()
+        # vector[Func]& funcs()
+        exprvec_t& exprs()
+    
+    cppclass GeneratorInputBase(GIOBase):
+        pass
+    
+    cppclass GeneratorInputImpl[T, ValueType](GeneratorInputBase):
+        size_t size()
+        ValueType& operator[](size_t)
+        ValueType& at(size_t)
+        # vector[ValueType].const_iterator begin()
+        # vector[ValueType].const_iterator end()
+    
+    # cppclass GeneratorInput_Buffer[T](GeneratorInputImpl[T, Func])
     
     cppclass GeneratorBase(NamesInterface, GeneratorContext):
         targetparam_t target

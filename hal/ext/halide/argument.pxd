@@ -5,6 +5,7 @@ from libcpp.vector cimport vector
 from libcpp.memory cimport unique_ptr
 
 from buffer cimport Buffer
+from expr cimport Expr
 from type cimport Type
 
 cdef extern from "Halide.h" namespace "Halide::Argument" nogil:
@@ -24,8 +25,10 @@ cdef extern from "Halide.h" namespace "Halide" nogil:
         string name
         Kind kind
         uint8_t dimensions
-        Type type
-        # Expr def, min, max
+        Type argument_type "type"
+        Expr argument_def  "def"
+        Expr argument_min  "min"
+        Expr argument_max  "max"
         
         Argument()
         Argument(string&, Kind, Type&, int)

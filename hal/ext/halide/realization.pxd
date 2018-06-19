@@ -11,7 +11,7 @@ cdef extern from "Halide.h" namespace "Halide" nogil:
     cppclass Realization:
         size_t size()
         Buffer[void]& operator[](size_t)
-        Buffer[T] operator()()
+        Buffer[T] operator()[T]()
         Realization(vector[Buffer[void]]&)
         
         device_sync()

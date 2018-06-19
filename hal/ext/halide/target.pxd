@@ -3,24 +3,9 @@ from libc.stdint cimport *
 from libcpp.string cimport string
 from libcpp.vector cimport vector
 from libcpp.memory cimport unique_ptr
+
+from device_api cimport DeviceAPI
 from type cimport Type
-
-cdef extern from "Halide.h" namespace "Halide::Internal" nogil:
-    
-    cdef cppclass DeviceAPI:
-        pass
-
-cdef extern from "Halide.h" namespace "Halide::Internal::DeviceAPI" nogil:
-    
-    cdef DeviceAPI None
-    cdef DeviceAPI Host
-    cdef DeviceAPI Default_GPU
-    cdef DeviceAPI CUDA
-    cdef DeviceAPI OpenCL
-    cdef DeviceAPI GLSL
-    cdef DeviceAPI OpenGLCompute
-    cdef DeviceAPI Metal
-    cdef DeviceAPI Hexagon
 
 cdef extern from "Halide.h" namespace "Halide::Target" nogil:
     
@@ -117,23 +102,23 @@ cdef extern from "Halide.h" namespace "Halide" nogil:
         
         # static methods:
         @staticmethod
-        bint validate_target_string(string& s)
+        bint validate_target_string(string&)
         
         # instance methods:
-        void set_feature(Feature f, bint value)
-        void set_features(featurevec_t features_to_set, bint value)
-        bint has_feature(Feature f)
-        bint features_any_of(featurevec_t test_features)
-        bint features_all_of(featurevec_t test_features)
+        void set_feature(Feature, bint)
+        void set_features(featurevec_t, bint)
+        bint has_feature(Feature)
+        bint features_any_of(featurevec_t)
+        bint features_all_of(featurevec_t)
         bint has_gpu_feature()
-        Target with_feature(Feature f)
-        Target without_feature(Feature f)
+        Target with_feature(Feature)
+        Target without_feature(Feature)
         
         bint supports_type(Type&)
-        bint supports_device_api(DeviceAPI api)
+        bint supports_device_api(DeviceAPI)
         
-        bint operator==(Target& other)
-        bint operator!=(Target& other)
+        bint operator==(Target&)
+        bint operator!=(Target&)
         string to_string()
         
         int natural_vector_size(Type)
