@@ -3,20 +3,12 @@ from libc.stdint cimport *
 from libcpp.map cimport map as std_map
 from libcpp.string cimport string
 from libcpp.vector cimport vector
+
+from schedule cimport LoopLevel, llevelmap_t
 from runtime cimport halide_type_code_t, halide_type_t
 
 ctypedef vector[string]     stringvec_t
 ctypedef vector[uint8_t]    bytevec_t
-
-cdef extern from "Halide.h" namespace "Halide" nogil:
-    
-    cppclass LoopLevel:
-        # string func_name
-        # string var_name
-        # bint is_rvar
-        # LoopLevel(string&, string&, bint)
-        LoopLevel()
-
 
 cdef extern from "Halide.h" namespace "halide_cplusplus_type_name" nogil:
     
@@ -138,7 +130,6 @@ cdef extern from "Halide.h" namespace "Halide":
     Type Bool(int lanes) except +
     Type Handle(int lanes, halide_handle_cplusplus_type* handle_type) except +
 
-ctypedef std_map[string, LoopLevel]     llevelmap_t
 ctypedef std_map[string, Type]          haltypemap_t
 
 cdef extern from "Halide.h" namespace "Halide::Internal":

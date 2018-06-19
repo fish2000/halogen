@@ -1,5 +1,4 @@
 
-from libc.stdint cimport *
 from libcpp.string cimport string
 
 cdef extern from "Halide.h" namespace "Halide" nogil:

@@ -10,8 +10,9 @@ from buffer cimport Buffer
 from expr cimport Expr
 from externalcode cimport ExternalCode
 from realization cimport Realization
+from schedule cimport LoopLevel, llevelmap_t
 from target cimport Target, get_target_from_environment
-from type cimport Type, LoopLevel, llevelmap_t
+from type cimport Type
 from module cimport Module, LinkageType
 
 ctypedef vector[Expr]                   exprvec_t

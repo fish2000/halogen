@@ -879,94 +879,6 @@ struct __pyx_obj_3hal_3api_Module;
 struct __pyx_obj_3hal_3api___pyx_scope_struct__to_string;
 struct __pyx_obj_3hal_3api___pyx_scope_struct_1_genexpr;
 
-/* "type.pxd":8
- * from runtime cimport halide_type_code_t, halide_type_t
- * 
- * ctypedef vector[string]     stringvec_t             # <<<<<<<<<<<<<<
- * ctypedef vector[uint8_t]    bytevec_t
- * 
- */
-typedef std::vector<std::string>  __pyx_t_3hal_3ext_6halide_4type_stringvec_t;
-
-/* "type.pxd":9
- * 
- * ctypedef vector[string]     stringvec_t
- * ctypedef vector[uint8_t]    bytevec_t             # <<<<<<<<<<<<<<
- * 
- * cdef extern from "Halide.h" namespace "Halide" nogil:
- */
-typedef std::vector<uint8_t>  __pyx_t_3hal_3ext_6halide_4type_bytevec_t;
-
-/* "type.pxd":44
- * 
- * 
- * ctypedef vector[halide_cplusplus_type_name] cppnamevec_t             # <<<<<<<<<<<<<<
- * 
- * cdef extern from "Halide.h" namespace "halide_handle_cplusplus_type" nogil:
- */
-typedef std::vector<halide_cplusplus_type_name>  __pyx_t_3hal_3ext_6halide_4type_cppnamevec_t;
-
-/* "type.pxd":141
- *     Type Handle(int lanes, halide_handle_cplusplus_type* handle_type) except +
- * 
- * ctypedef std_map[string, LoopLevel]     llevelmap_t             # <<<<<<<<<<<<<<
- * ctypedef std_map[string, Type]          haltypemap_t
- * 
- */
-typedef std::map<std::string,Halide::LoopLevel>  __pyx_t_3hal_3ext_6halide_4type_llevelmap_t;
-
-/* "type.pxd":142
- * 
- * ctypedef std_map[string, LoopLevel]     llevelmap_t
- * ctypedef std_map[string, Type]          haltypemap_t             # <<<<<<<<<<<<<<
- * 
- * cdef extern from "Halide.h" namespace "Halide::Internal":
- */
-typedef std::map<std::string,Halide::Type>  __pyx_t_3hal_3ext_6halide_4type_haltypemap_t;
-
-/* "halide/target.pxd":87
- *     cdef Feature FeatureEnd
- * 
- * ctypedef vector[Feature] featurevec_t             # <<<<<<<<<<<<<<
- * 
- * cdef extern from "Halide.h" namespace "Halide" nogil:
- */
-typedef std::vector<Halide::Target::Feature>  __pyx_t_3hal_3ext_6halide_6target_featurevec_t;
-
-/* "halide/target.pxd":135
- *     Feature target_feature_for_device_api(DeviceAPI)
- * 
- * ctypedef unique_ptr[Target] target_ptr_t             # <<<<<<<<<<<<<<
- */
-typedef std::unique_ptr<Halide::Target>  __pyx_t_3hal_3ext_6halide_6target_target_ptr_t;
-
-/* "ext/haldol/convert.pxd":18
- * from ..halide.target cimport OS, Arch, Feature
- * 
- * ctypedef vector[std_string] stringvec_t             # <<<<<<<<<<<<<<
- * ctypedef vector[uint8_t]    bytevec_t
- * ctypedef vector[char]       charvec_t
- */
-typedef std::vector<std::string>  __pyx_t_3hal_3ext_6haldol_7convert_stringvec_t;
-
-/* "ext/haldol/convert.pxd":19
- * 
- * ctypedef vector[std_string] stringvec_t
- * ctypedef vector[uint8_t]    bytevec_t             # <<<<<<<<<<<<<<
- * ctypedef vector[char]       charvec_t
- * 
- */
-typedef std::vector<uint8_t>  __pyx_t_3hal_3ext_6haldol_7convert_bytevec_t;
-
-/* "ext/haldol/convert.pxd":20
- * ctypedef vector[std_string] stringvec_t
- * ctypedef vector[uint8_t]    bytevec_t
- * ctypedef vector[char]       charvec_t             # <<<<<<<<<<<<<<
- * 
- * cdef extern from "haldol/include/detail.hh" namespace "py":
- */
-typedef std::vector<char>  __pyx_t_3hal_3ext_6haldol_7convert_charvec_t;
-
 /* "buffer.pxd":9
  * from intrusiveptr cimport RefCount, IntrusivePtr
  * 
@@ -991,51 +903,6 @@ typedef Halide::Internal::IntrusivePtr<Halide::Internal::BufferContents>  __pyx_
  * ctypedef vector[Buffer[void]] buffervec_t             # <<<<<<<<<<<<<<
  */
 typedef std::vector<Halide::Buffer<void> >  __pyx_t_3hal_3ext_6halide_6buffer_buffervec_t;
-
-/* "ext/halide/module.pxd":31
- *         LoweredArgument(string&, Kind, Type&, uint8_t)
- * 
- * ctypedef vector[LoweredArgument] loweredargvec_t             # <<<<<<<<<<<<<<
- * 
- * cdef extern from "Halide.h" namespace "Halide::Internal" nogil:
- */
-typedef std::vector<Halide::Internal::LoweredArgument>  __pyx_t_3hal_3ext_6halide_6module_loweredargvec_t;
-
-/* "ext/halide/module.pxd":40
- *         LinkageType linkage
- * 
- * ctypedef vector[LoweredFunc] funcvec_t             # <<<<<<<<<<<<<<
- * 
- * cdef extern from "Halide.h" namespace "Halide" nogil:
- */
-typedef std::vector<Halide::Internal::LoweredFunc>  __pyx_t_3hal_3ext_6halide_6module_funcvec_t;
-
-/* "ext/halide/module.pxd":46
- *     cppclass Module
- * 
- * ctypedef vector[Module]             modulevec_t             # <<<<<<<<<<<<<<
- * ctypedef std_map[string, string]    stringmap_t
- * 
- */
-typedef std::vector<Halide::Module>  __pyx_t_3hal_3ext_6halide_6module_modulevec_t;
-
-/* "ext/halide/module.pxd":47
- * 
- * ctypedef vector[Module]             modulevec_t
- * ctypedef std_map[string, string]    stringmap_t             # <<<<<<<<<<<<<<
- * 
- * cdef extern from "Halide.h" namespace "Halide" nogil:
- */
-typedef std::map<std::string,std::string>  __pyx_t_3hal_3ext_6halide_6module_stringmap_t;
-
-/* "ext/halide/module.pxd":82
- * 
- * # ctypedef vector[Module] modulevec_t
- * ctypedef vector[Target] targetvec_t             # <<<<<<<<<<<<<<
- * 
- * cdef extern from "Halide.h" namespace "Halide" nogil:
- */
-typedef std::vector<Halide::Target>  __pyx_t_3hal_3ext_6halide_6module_targetvec_t;
 
 /* "definition.pxd":19
  * 
@@ -1154,6 +1021,166 @@ typedef std::vector<Halide::Internal::Function>  __pyx_t_3hal_3ext_6halide_8func
  */
 typedef std::pair<__pyx_t_3hal_3ext_6halide_8function_functionvec_t,__pyx_t_3hal_3ext_6halide_8function_wrappermap_t>  __pyx_t_3hal_3ext_6halide_8function_deep_copy_result_t;
 
+/* "schedule.pxd":12
+ * from functionptr cimport FunctionContents
+ * 
+ * ctypedef vector[string]     stringvec_t             # <<<<<<<<<<<<<<
+ * ctypedef vector[uint8_t]    bytevec_t
+ * 
+ */
+typedef std::vector<std::string>  __pyx_t_3hal_3ext_6halide_8schedule_stringvec_t;
+
+/* "schedule.pxd":13
+ * 
+ * ctypedef vector[string]     stringvec_t
+ * ctypedef vector[uint8_t]    bytevec_t             # <<<<<<<<<<<<<<
+ * 
+ * cdef extern from "Halide.h" namespace "Halide::Internal" nogil:
+ */
+typedef std::vector<uint8_t>  __pyx_t_3hal_3ext_6halide_8schedule_bytevec_t;
+
+/* "schedule.pxd":51
+ *     cdef PrefetchBoundStrategy NonFaulting
+ * 
+ * ctypedef std_map[string, LoopAlignStrategy] loopalign_map_t             # <<<<<<<<<<<<<<
+ * 
+ * cdef extern from "Halide.h" namespace "Halide" nogil:
+ */
+typedef std::map<std::string,Halide::LoopAlignStrategy>  __pyx_t_3hal_3ext_6halide_8schedule_loopalign_map_t;
+
+/* "schedule.pxd":94
+ *         FuseLoopLevel(LoopLevel&, loopalign_map_t&)
+ * 
+ * ctypedef std_map[string, LoopLevel]     llevelmap_t             # <<<<<<<<<<<<<<
+ * 
+ * cdef extern from "Halide.h" namespace "Halide::Internal" nogil:
+ */
+typedef std::map<std::string,Halide::LoopLevel>  __pyx_t_3hal_3ext_6halide_8schedule_llevelmap_t;
+
+/* "type.pxd":10
+ * from runtime cimport halide_type_code_t, halide_type_t
+ * 
+ * ctypedef vector[string]     stringvec_t             # <<<<<<<<<<<<<<
+ * ctypedef vector[uint8_t]    bytevec_t
+ * 
+ */
+typedef std::vector<std::string>  __pyx_t_3hal_3ext_6halide_4type_stringvec_t;
+
+/* "type.pxd":11
+ * 
+ * ctypedef vector[string]     stringvec_t
+ * ctypedef vector[uint8_t]    bytevec_t             # <<<<<<<<<<<<<<
+ * 
+ * cdef extern from "Halide.h" namespace "halide_cplusplus_type_name" nogil:
+ */
+typedef std::vector<uint8_t>  __pyx_t_3hal_3ext_6halide_4type_bytevec_t;
+
+/* "type.pxd":36
+ * 
+ * 
+ * ctypedef vector[halide_cplusplus_type_name] cppnamevec_t             # <<<<<<<<<<<<<<
+ * 
+ * cdef extern from "Halide.h" namespace "halide_handle_cplusplus_type" nogil:
+ */
+typedef std::vector<halide_cplusplus_type_name>  __pyx_t_3hal_3ext_6halide_4type_cppnamevec_t;
+
+/* "type.pxd":133
+ *     Type Handle(int lanes, halide_handle_cplusplus_type* handle_type) except +
+ * 
+ * ctypedef std_map[string, Type]          haltypemap_t             # <<<<<<<<<<<<<<
+ * 
+ * cdef extern from "Halide.h" namespace "Halide::Internal":
+ */
+typedef std::map<std::string,Halide::Type>  __pyx_t_3hal_3ext_6halide_4type_haltypemap_t;
+
+/* "halide/target.pxd":87
+ *     cdef Feature FeatureEnd
+ * 
+ * ctypedef vector[Feature] featurevec_t             # <<<<<<<<<<<<<<
+ * 
+ * cdef extern from "Halide.h" namespace "Halide" nogil:
+ */
+typedef std::vector<Halide::Target::Feature>  __pyx_t_3hal_3ext_6halide_6target_featurevec_t;
+
+/* "halide/target.pxd":135
+ *     Feature target_feature_for_device_api(DeviceAPI)
+ * 
+ * ctypedef unique_ptr[Target] target_ptr_t             # <<<<<<<<<<<<<<
+ */
+typedef std::unique_ptr<Halide::Target>  __pyx_t_3hal_3ext_6halide_6target_target_ptr_t;
+
+/* "ext/haldol/convert.pxd":18
+ * from ..halide.target cimport OS, Arch, Feature
+ * 
+ * ctypedef vector[std_string] stringvec_t             # <<<<<<<<<<<<<<
+ * ctypedef vector[uint8_t]    bytevec_t
+ * ctypedef vector[char]       charvec_t
+ */
+typedef std::vector<std::string>  __pyx_t_3hal_3ext_6haldol_7convert_stringvec_t;
+
+/* "ext/haldol/convert.pxd":19
+ * 
+ * ctypedef vector[std_string] stringvec_t
+ * ctypedef vector[uint8_t]    bytevec_t             # <<<<<<<<<<<<<<
+ * ctypedef vector[char]       charvec_t
+ * 
+ */
+typedef std::vector<uint8_t>  __pyx_t_3hal_3ext_6haldol_7convert_bytevec_t;
+
+/* "ext/haldol/convert.pxd":20
+ * ctypedef vector[std_string] stringvec_t
+ * ctypedef vector[uint8_t]    bytevec_t
+ * ctypedef vector[char]       charvec_t             # <<<<<<<<<<<<<<
+ * 
+ * cdef extern from "haldol/include/detail.hh" namespace "py":
+ */
+typedef std::vector<char>  __pyx_t_3hal_3ext_6haldol_7convert_charvec_t;
+
+/* "ext/halide/module.pxd":31
+ *         LoweredArgument(string&, Kind, Type&, uint8_t)
+ * 
+ * ctypedef vector[LoweredArgument] loweredargvec_t             # <<<<<<<<<<<<<<
+ * 
+ * cdef extern from "Halide.h" namespace "Halide::Internal" nogil:
+ */
+typedef std::vector<Halide::Internal::LoweredArgument>  __pyx_t_3hal_3ext_6halide_6module_loweredargvec_t;
+
+/* "ext/halide/module.pxd":40
+ *         LinkageType linkage
+ * 
+ * ctypedef vector[LoweredFunc] funcvec_t             # <<<<<<<<<<<<<<
+ * 
+ * cdef extern from "Halide.h" namespace "Halide" nogil:
+ */
+typedef std::vector<Halide::Internal::LoweredFunc>  __pyx_t_3hal_3ext_6halide_6module_funcvec_t;
+
+/* "ext/halide/module.pxd":46
+ *     cppclass Module
+ * 
+ * ctypedef vector[Module]             modulevec_t             # <<<<<<<<<<<<<<
+ * ctypedef std_map[string, string]    stringmap_t
+ * 
+ */
+typedef std::vector<Halide::Module>  __pyx_t_3hal_3ext_6halide_6module_modulevec_t;
+
+/* "ext/halide/module.pxd":47
+ * 
+ * ctypedef vector[Module]             modulevec_t
+ * ctypedef std_map[string, string]    stringmap_t             # <<<<<<<<<<<<<<
+ * 
+ * cdef extern from "Halide.h" namespace "Halide" nogil:
+ */
+typedef std::map<std::string,std::string>  __pyx_t_3hal_3ext_6halide_6module_stringmap_t;
+
+/* "ext/halide/module.pxd":82
+ * 
+ * # ctypedef vector[Module] modulevec_t
+ * ctypedef vector[Target] targetvec_t             # <<<<<<<<<<<<<<
+ * 
+ * cdef extern from "Halide.h" namespace "Halide" nogil:
+ */
+typedef std::vector<Halide::Target>  __pyx_t_3hal_3ext_6halide_6module_targetvec_t;
+
 /* "autoschedule.pxd":10
  * from target cimport Target
  * 
@@ -1172,7 +1199,7 @@ typedef std::vector<uint8_t>  __pyx_t_3hal_3ext_6halide_12autoschedule_bytevec_t
  */
 typedef std::vector<uint8_t>  __pyx_t_3hal_3ext_6halide_12externalcode_bytevec_t;
 
-/* "ext/halide/generator.pxd":17
+/* "ext/halide/generator.pxd":18
  * from module cimport Module, LinkageType
  * 
  * ctypedef vector[Expr]                   exprvec_t             # <<<<<<<<<<<<<<
@@ -1181,7 +1208,7 @@ typedef std::vector<uint8_t>  __pyx_t_3hal_3ext_6halide_12externalcode_bytevec_t
  */
 typedef std::vector<Halide::Expr>  __pyx_t_3hal_3ext_6halide_9generator_exprvec_t;
 
-/* "ext/halide/generator.pxd":18
+/* "ext/halide/generator.pxd":19
  * 
  * ctypedef vector[Expr]                   exprvec_t
  * ctypedef vector[Type]                   typevec_t             # <<<<<<<<<<<<<<
@@ -1190,7 +1217,7 @@ typedef std::vector<Halide::Expr>  __pyx_t_3hal_3ext_6halide_9generator_exprvec_
  */
 typedef std::vector<Halide::Type>  __pyx_t_3hal_3ext_6halide_9generator_typevec_t;
 
-/* "ext/halide/generator.pxd":19
+/* "ext/halide/generator.pxd":20
  * ctypedef vector[Expr]                   exprvec_t
  * ctypedef vector[Type]                   typevec_t
  * ctypedef vector[string]                 stringvec_t             # <<<<<<<<<<<<<<
@@ -1199,7 +1226,7 @@ typedef std::vector<Halide::Type>  __pyx_t_3hal_3ext_6halide_9generator_typevec_
  */
 typedef std::vector<std::string>  __pyx_t_3hal_3ext_6halide_9generator_stringvec_t;
 
-/* "ext/halide/generator.pxd":20
+/* "ext/halide/generator.pxd":21
  * ctypedef vector[Type]                   typevec_t
  * ctypedef vector[string]                 stringvec_t
  * ctypedef std_map[string, string]        stringmap_t             # <<<<<<<<<<<<<<
@@ -1208,7 +1235,7 @@ typedef std::vector<std::string>  __pyx_t_3hal_3ext_6halide_9generator_stringvec
  */
 typedef std::map<std::string,std::string>  __pyx_t_3hal_3ext_6halide_9generator_stringmap_t;
 
-/* "ext/halide/generator.pxd":21
+/* "ext/halide/generator.pxd":22
  * ctypedef vector[string]                 stringvec_t
  * ctypedef std_map[string, string]        stringmap_t
  * ctypedef std_map[string, Type]          typemap_t             # <<<<<<<<<<<<<<
@@ -1217,7 +1244,7 @@ typedef std::map<std::string,std::string>  __pyx_t_3hal_3ext_6halide_9generator_
  */
 typedef std::map<std::string,Halide::Type>  __pyx_t_3hal_3ext_6halide_9generator_typemap_t;
 
-/* "ext/halide/generator.pxd":150
+/* "ext/halide/generator.pxd":151
  * 
  * 
  * ctypedef GeneratorParam[Target]         targetparam_t             # <<<<<<<<<<<<<<
@@ -1226,7 +1253,7 @@ typedef std::map<std::string,Halide::Type>  __pyx_t_3hal_3ext_6halide_9generator
  */
 typedef Halide::GeneratorParam<Halide::Target>  __pyx_t_3hal_3ext_6halide_9generator_targetparam_t;
 
-/* "ext/halide/generator.pxd":151
+/* "ext/halide/generator.pxd":152
  * 
  * ctypedef GeneratorParam[Target]         targetparam_t
  * ctypedef vector[int32_t]                signedsizevec_t             # <<<<<<<<<<<<<<
@@ -1235,7 +1262,7 @@ typedef Halide::GeneratorParam<Halide::Target>  __pyx_t_3hal_3ext_6halide_9gener
  */
 typedef std::vector<int32_t>  __pyx_t_3hal_3ext_6halide_9generator_signedsizevec_t;
 
-/* "ext/halide/generator.pxd":241
+/* "ext/halide/generator.pxd":242
  * 
  * 
  * ctypedef unique_ptr[GeneratorBase]      base_ptr_t             # <<<<<<<<<<<<<<
@@ -1244,7 +1271,7 @@ typedef std::vector<int32_t>  __pyx_t_3hal_3ext_6halide_9generator_signedsizevec
  */
 typedef std::unique_ptr<Halide::Internal::GeneratorBase>  __pyx_t_3hal_3ext_6halide_9generator_base_ptr_t;
 
-/* "ext/halide/generator.pxd":258
+/* "ext/halide/generator.pxd":259
  * 
  * 
  * ctypedef unique_ptr[GeneratorFactory]   factory_ptr_t             # <<<<<<<<<<<<<<
@@ -2193,6 +2220,22 @@ static PyTypeObject *__pyx_ptype_7cpython_4type_type = 0;
 
 /* Module declarations from 'libcpp.map' */
 
+/* Module declarations from 'hal.ext.halide.intrusiveptr' */
+
+/* Module declarations from 'hal.ext.halide.expr' */
+
+/* Module declarations from 'libcpp.pair' */
+
+/* Module declarations from 'hal.ext.halide.buffer' */
+
+/* Module declarations from 'hal.ext.halide.functionptr' */
+
+/* Module declarations from 'hal.ext.halide.definition' */
+
+/* Module declarations from 'hal.ext.halide.function' */
+
+/* Module declarations from 'hal.ext.halide.schedule' */
+
 /* Module declarations from 'hal.ext.libcpp.atomic' */
 
 /* Module declarations from 'hal.ext.halide.runtime' */
@@ -2205,23 +2248,9 @@ static PyTypeObject *__pyx_ptype_7cpython_4type_type = 0;
 
 /* Module declarations from 'hal.ext.halide.outputs' */
 
-/* Module declarations from 'hal.ext.halide.intrusiveptr' */
-
-/* Module declarations from 'hal.ext.halide.expr' */
-
-/* Module declarations from 'hal.ext.halide.buffer' */
-
 /* Module declarations from 'hal.ext.halide.argument' */
 
 /* Module declarations from 'hal.ext.halide.module' */
-
-/* Module declarations from 'libcpp.pair' */
-
-/* Module declarations from 'hal.ext.halide.functionptr' */
-
-/* Module declarations from 'hal.ext.halide.definition' */
-
-/* Module declarations from 'hal.ext.halide.function' */
 
 /* Module declarations from 'hal.ext.halide.autoschedule' */
 
@@ -22838,7 +22867,7 @@ static PyObject *__pyx_pf_3hal_3api_26running_program_name(CYTHON_UNUSED PyObjec
   return __pyx_r;
 }
 
-/* "ext/halide/generator.pxd":287
+/* "ext/halide/generator.pxd":288
  * 
  * 
  * cdef inline base_ptr_t generator_registry_get(string& name,             # <<<<<<<<<<<<<<
@@ -22849,7 +22878,7 @@ static PyObject *__pyx_pf_3hal_3api_26running_program_name(CYTHON_UNUSED PyObjec
 static CYTHON_INLINE __pyx_t_3hal_3ext_6halide_9generator_base_ptr_t __pyx_f_3hal_3ext_6halide_9generator_generator_registry_get(std::string &__pyx_v_name, Halide::Target &__pyx_v_target, CYTHON_UNUSED __pyx_t_3hal_3ext_6halide_9generator_stringmap_t &__pyx_v_args) {
   __pyx_t_3hal_3ext_6halide_9generator_base_ptr_t __pyx_r;
 
-  /* "ext/halide/generator.pxd":290
+  /* "ext/halide/generator.pxd":291
  *                                               Target& target,
  *                                               stringmap_t& args) nogil:
  *     return GeneratorRegistry.create(name, GeneratorContext(target))             # <<<<<<<<<<<<<<
@@ -22859,7 +22888,7 @@ static CYTHON_INLINE __pyx_t_3hal_3ext_6halide_9generator_base_ptr_t __pyx_f_3ha
   __pyx_r = Halide::Internal::GeneratorRegistry::create(__pyx_v_name, Halide::GeneratorContext(__pyx_v_target));
   goto __pyx_L0;
 
-  /* "ext/halide/generator.pxd":287
+  /* "ext/halide/generator.pxd":288
  * 
  * 
  * cdef inline base_ptr_t generator_registry_get(string& name,             # <<<<<<<<<<<<<<
@@ -22872,7 +22901,7 @@ static CYTHON_INLINE __pyx_t_3hal_3ext_6halide_9generator_base_ptr_t __pyx_f_3ha
   return __pyx_r;
 }
 
-/* "ext/halide/generator.pxd":292
+/* "ext/halide/generator.pxd":293
  *     return GeneratorRegistry.create(name, GeneratorContext(target))
  * 
  * cdef inline base_ptr_t generator_registry_create(string& name) nogil:             # <<<<<<<<<<<<<<
@@ -22884,7 +22913,7 @@ static CYTHON_INLINE __pyx_t_3hal_3ext_6halide_9generator_base_ptr_t __pyx_f_3ha
   Halide::Target __pyx_v_t;
   __pyx_t_3hal_3ext_6halide_9generator_base_ptr_t __pyx_r;
 
-  /* "ext/halide/generator.pxd":293
+  /* "ext/halide/generator.pxd":294
  * 
  * cdef inline base_ptr_t generator_registry_create(string& name) nogil:
  *     cdef Target t = get_target_from_environment()             # <<<<<<<<<<<<<<
@@ -22892,7 +22921,7 @@ static CYTHON_INLINE __pyx_t_3hal_3ext_6halide_9generator_base_ptr_t __pyx_f_3ha
  */
   __pyx_v_t = Halide::get_target_from_environment();
 
-  /* "ext/halide/generator.pxd":294
+  /* "ext/halide/generator.pxd":295
  * cdef inline base_ptr_t generator_registry_create(string& name) nogil:
  *     cdef Target t = get_target_from_environment()
  *     return GeneratorRegistry.create(name, GeneratorContext(t))             # <<<<<<<<<<<<<<
@@ -22900,7 +22929,7 @@ static CYTHON_INLINE __pyx_t_3hal_3ext_6halide_9generator_base_ptr_t __pyx_f_3ha
   __pyx_r = Halide::Internal::GeneratorRegistry::create(__pyx_v_name, Halide::GeneratorContext(__pyx_v_t));
   goto __pyx_L0;
 
-  /* "ext/halide/generator.pxd":292
+  /* "ext/halide/generator.pxd":293
  *     return GeneratorRegistry.create(name, GeneratorContext(target))
  * 
  * cdef inline base_ptr_t generator_registry_create(string& name) nogil:             # <<<<<<<<<<<<<<
