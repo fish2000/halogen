@@ -1037,23 +1037,32 @@ typedef std::map<std::string,std::string>  __pyx_t_3hal_3ext_6halide_6module_str
  */
 typedef std::vector<Halide::Target>  __pyx_t_3hal_3ext_6halide_6module_targetvec_t;
 
-/* "definition.pxd":17
- *     cppclass Specialization
+/* "definition.pxd":19
  * 
- * ctypedef IntrusivePtr[DefinitionContents]   DefinitionContentsPtr             # <<<<<<<<<<<<<<
+ * 
+ * ctypedef vector[Expr]                       exprvec_t             # <<<<<<<<<<<<<<
  * ctypedef vector[Specialization]             specialvec_t
+ * ctypedef IntrusivePtr[DefinitionContents]   DefinitionContentsPtr
+ */
+typedef std::vector<Halide::Expr>  __pyx_t_3hal_3ext_6halide_10definition_exprvec_t;
+
+/* "definition.pxd":20
+ * 
+ * ctypedef vector[Expr]                       exprvec_t
+ * ctypedef vector[Specialization]             specialvec_t             # <<<<<<<<<<<<<<
+ * ctypedef IntrusivePtr[DefinitionContents]   DefinitionContentsPtr
  * 
  */
-typedef Halide::Internal::IntrusivePtr<Halide::Internal::DefinitionContents>  __pyx_t_3hal_3ext_6halide_10definition_DefinitionContentsPtr;
+typedef std::vector<Halide::Internal::Specialization>  __pyx_t_3hal_3ext_6halide_10definition_specialvec_t;
 
-/* "definition.pxd":18
- * 
- * ctypedef IntrusivePtr[DefinitionContents]   DefinitionContentsPtr
- * ctypedef vector[Specialization]             specialvec_t             # <<<<<<<<<<<<<<
+/* "definition.pxd":21
+ * ctypedef vector[Expr]                       exprvec_t
+ * ctypedef vector[Specialization]             specialvec_t
+ * ctypedef IntrusivePtr[DefinitionContents]   DefinitionContentsPtr             # <<<<<<<<<<<<<<
  * 
  * cdef extern from "Halide.h" namespace "Halide::Internal" nogil:
  */
-typedef std::vector<Halide::Internal::Specialization>  __pyx_t_3hal_3ext_6halide_10definition_specialvec_t;
+typedef Halide::Internal::IntrusivePtr<Halide::Internal::DefinitionContents>  __pyx_t_3hal_3ext_6halide_10definition_DefinitionContentsPtr;
 
 /* "function.pxd":17
  * from type cimport Type

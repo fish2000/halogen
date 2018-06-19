@@ -3,6 +3,7 @@ from libc.stdint cimport *
 from libcpp.string cimport string
 from libcpp.vector cimport vector
 
+from expr cimport Expr
 from functionptr cimport FunctionContents
 from intrusiveptr cimport IntrusivePtr
 from target cimport Target
@@ -14,17 +15,20 @@ cdef extern from "Halide.h" namespace "Halide::Internal" nogil:
         
     cppclass Specialization
 
-ctypedef IntrusivePtr[DefinitionContents]   DefinitionContentsPtr
+
+ctypedef vector[Expr]                       exprvec_t
 ctypedef vector[Specialization]             specialvec_t
+ctypedef IntrusivePtr[DefinitionContents]   DefinitionContentsPtr
 
 cdef extern from "Halide.h" namespace "Halide::Internal" nogil:
     
     cppclass Definition:
+        # PRIVATE:
         # DefinitionContentsPtr contents
         
         Definition()
         Definition(DefinitionContentsPtr&)
-        # Definition(vector[Expr], vector[Expr], ReductionDomain&, bint)
+        # Definition(exprvec_t, exprvec_t, ReductionDomain&, bint)
         Definition get_copy()
         
         bint same_as(Definition&)
@@ -34,17 +38,17 @@ cdef extern from "Halide.h" namespace "Halide::Internal" nogil:
         # void accept(IRVisitor*)
         # void mutate(IRMutator2*)
         
-        # vector[Expr]& args()
-        # vector[Expr]& values()
-        # Expr& predicate()
-        # vector[Expr] split_predicate()
+        exprvec_t& args()
+        exprvec_t& values()
+        Expr& predicate()
+        exprvec_t split_predicate()
         # StageSchedule& schedule()
         
         specialvec_t& specializations()
-        # Specialization& add_specialization(Expr)
+        Specialization& add_specialization(Expr)
         string source_location()
     
     cppclass Specialization:
-        # Expr condition
+        Expr condition
         Definition definition
         string failure_message
