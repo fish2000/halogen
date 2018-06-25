@@ -150,8 +150,8 @@ class Generators(object):
         self.do_shared = do_shared
         self.do_static = do_static
         self.destination = destination
-        self.library = os.path.join(destination, "%s%s" % (self.prefix, SHARED_LIBRARY_SUFFIX))
-        self.archive = os.path.join(destination, "%s%s" % (self.prefix, STATIC_LIBRARY_SUFFIX))
+        self.library = os.path.join(self.destination, "%s%s" % (self.prefix, SHARED_LIBRARY_SUFFIX))
+        self.archive = os.path.join(self.destination, "%s%s" % (self.prefix, STATIC_LIBRARY_SUFFIX))
         self.directory = Directory(pth=directory)
         self._compiled = False
         self._linked = False

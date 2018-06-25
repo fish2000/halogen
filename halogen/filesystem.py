@@ -18,8 +18,8 @@ from errors import ExecutionError, FilesystemError
 from utils import memoize, u8bytes, u8str, stringify
 
 DEFAULT_PATH = ":".join(filter(os.path.exists, ("/usr/local/bin",
-                                                "/bin",
-                                                "/usr/bin")))
+                                                "/bin",  "/usr/bin",
+                                                "/sbin", "/usr/sbin")))
 
 def script_path():
     """ Return the path to the embedded scripts directory """
@@ -495,8 +495,9 @@ def NamedTemporaryFile(mode='w+b', buffer_size=-1,
         filehandle = _os.fdopen(descriptor, mode, buffer_size)
         return _TemporaryFileWrapper(filehandle, name, delete)
     except BaseException as base_exception:
-        _os.unlink(name)
-        _os.close(descriptor)
+        rm_rf(name)
+        if descriptor > 0:
+            _os.close(descriptor)
         raise FilesystemError(str(base_exception))
 
 

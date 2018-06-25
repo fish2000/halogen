@@ -174,7 +174,7 @@ class ConfigBase(BaseAncestor):
             
             This is accomplished by FieldList, which follows the descriptor protocol and thus
             has __set__() and __get__() methods governing what happens when a FieldList is
-            accessed as an instance attribute, using set logic to sum the names of all the
+            accessed as an instance attribute, uses set logic to sum the names of all the
             relevant ancestor fields with those with which it was defined before returning
             a value.
             
