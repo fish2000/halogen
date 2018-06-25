@@ -8,6 +8,7 @@ from device_api cimport DeviceAPI
 from expr cimport Expr, ForType
 from function cimport Function
 from functionptr cimport FunctionContents
+from varorrvar cimport VarOrRVar
 
 ctypedef vector[string]     stringvec_t
 ctypedef vector[uint8_t]    bytevec_t
@@ -52,13 +53,15 @@ ctypedef std_map[string, LoopAlignStrategy] loopalign_map_t
 
 cdef extern from "Halide.h" namespace "Halide" nogil:
     
+    cppclass Func
+    
     cppclass LoopLevel:
         
         LoopLevel()
-        # LoopLevel(Function&, VarOrRVar, int)
-        # LoopLevel(Function&, VarOrRVar)
-        # LoopLevel(Func&, VarOrRVar, int)
-        # LoopLevel(Func&, VarOrRVar)
+        LoopLevel(Function&, VarOrRVar, int)
+        LoopLevel(Function&, VarOrRVar)
+        LoopLevel(Func&, VarOrRVar, int)
+        LoopLevel(Func&, VarOrRVar)
         
         int stage_index()
         
@@ -70,7 +73,7 @@ cdef extern from "Halide.h" namespace "Halide" nogil:
         void set(LoopLevel&)
         LoopLevel& lock()
         string func()
-        # VarOrRVar var()
+        VarOrRVar var()
         
         bint defined()
         bint is_inlined()

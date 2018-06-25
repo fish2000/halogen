@@ -3,12 +3,13 @@ from libc.stdint cimport *
 from libcpp.map cimport map as std_map
 from libcpp.string cimport string
 from libcpp.vector cimport vector
-from libcpp.memory cimport unique_ptr
+from libcpp.memory cimport unique_ptr, shared_ptr
 
 from autoschedule cimport MachineParams
 from buffer cimport Buffer
 from expr cimport Expr
 from externalcode cimport ExternalCode
+from pipeline cimport Pipeline
 from realization cimport Realization
 from schedule cimport LoopLevel, llevelmap_t
 from target cimport Target, get_target_from_environment
@@ -128,28 +129,34 @@ cdef extern from "Halide.h" namespace "Halide" nogil:
     
     cppclass GeneratorContext:
         ctypedef std_map[string, ExternalCode] ExternsMap
+        ctypedef shared_ptr[ExternsMap] shared_externs_t
         GeneratorContext(Target&)
         GeneratorContext(Target&, bint)
+        GeneratorContext(Target&, bint, MachineParams&)
         Target get_target()
         bint get_auto_schedule()
+        MachineParams get_machine_params()
+        
+        shared_externs_t get_externs_map()
         unique_ptr[T] create[T]()
-    
-    # cppclass JITGeneratorContext(GeneratorContext):
-    #     JITGeneratorContext(Target&)
-    #     Target get_target()
-    
-    # cppclass GeneratorParam[T](GeneratorParamBase):
-    #     GeneratorParam(string&, T&)
-    #     void set(T&)
-    #     void from_string(string&)
-    #     string to_string()
+        unique_ptr[T] apply[T](...)
     
     cppclass NamesInterface:
         pass
 
+cdef extern from "Halide.h" namespace "Halide::Internal" nogil:
+    
+    cppclass StringOrLoopLevel:
+        string string_value
+        LoopLevel loop_level
+        StringOrLoopLevel()
+        StringOrLoopLevel(char*)
+        StringOrLoopLevel(string&)
+        StringOrLoopLevel(LoopLevel&)
 
-ctypedef GeneratorParam[Target]         targetparam_t
-ctypedef vector[int32_t]                signedsizevec_t
+ctypedef std_map[string, StringOrLoopLevel] GeneratorParamsMap
+ctypedef GeneratorParam[Target]             targetparam_t
+ctypedef vector[int32_t]                    signedsizevec_t
 
 cdef extern from "Halide.h" namespace "Halide::Internal" nogil:
     
@@ -207,7 +214,6 @@ cdef extern from "Halide.h" namespace "Halide::Internal" nogil:
     # cppclass GeneratorInput_Buffer[T](GeneratorInputImpl[T, Func])
     
     cppclass GeneratorBase(NamesInterface, GeneratorContext):
-        targetparam_t target
         
         cppclass EmitOptions:
             bint emit_o
@@ -226,20 +232,28 @@ cdef extern from "Halide.h" namespace "Halide::Internal" nogil:
         
         Target get_target()
         
-        void set_generator_param(string&, string&)
-        void set_generator_param_values(stringmap_t&)
+        # void set_generator_param(string&, string&)
+        void set_generator_param_values(GeneratorParamsMap&)
         
-        GeneratorBase& set_generator_param[T](string&, T&)
-        GeneratorBase& set_schedule_param[T](string&, T&)
-        void set_schedule_param_values(stringmap_t&, llevelmap_t&)
+        # GeneratorBase& set_generator_param[T](string&, T&)
+        # GeneratorBase& set_schedule_param[T](string&, T&)
+        # void set_schedule_param_values(stringmap_t&, llevelmap_t&)
+        
         int natural_vector_size(Type)
-        # int natural_vector_size[T]()
+        int natural_vector_size[data_t]()
         
         void emit_cpp_stub(string&)
         Module build_module(string&, LinkageType)
+        
+        void set_inputs(...)
+        Realization realize(signedsizevec_t)
+        # Realization realize(...)
+        void realize(Realization)
+        Pipeline get_pipeline()
 
 
 ctypedef unique_ptr[GeneratorBase]      base_ptr_t
+ctypedef shared_ptr[GeneratorBase]      base_shared_ptr_t
 
 cdef extern from "Halide.h" namespace "Halide::Internal" nogil:
 
@@ -247,13 +261,14 @@ cdef extern from "Halide.h" namespace "Halide::Internal" nogil:
         # base_ptr_t create(GeneratorContext&, stringmap_t&)
         pass
     
-    cppclass GeneratorCreateFunc: # FUNCTOR
-        # std::function<std::unique_ptr<Internal::GeneratorBase>(GeneratorContext const&)>
-        pass
+    # cppclass GeneratorCreateFunc: # FUNCTOR
+    #     # std::function<std::unique_ptr<Internal::GeneratorBase>(GeneratorContext const&)>
+    #     pass
     
     cppclass SimpleGeneratorFactory(GeneratorFactory):
-        SimpleGeneratorFactory(GeneratorCreateFunc, string&)
-        base_ptr_t create(GeneratorContext&, stringmap_t&)
+        # SimpleGeneratorFactory(GeneratorCreateFunc, string&)
+        # base_ptr_t create(GeneratorContext&, stringmap_t&)
+        pass
 
 
 ctypedef unique_ptr[GeneratorFactory]   factory_ptr_t
@@ -263,7 +278,7 @@ cdef extern from "Halide.h" namespace "Halide::Internal" nogil:
     cppclass GeneratorRegistry:
         
         @staticmethod
-        void register_factory(string&, factory_ptr_t)
+        void register_factory(string&, GeneratorFactory)
         
         @staticmethod
         void unregister_factory(string&)
@@ -278,11 +293,65 @@ cdef extern from "Halide.h" namespace "Halide::Internal" nogil:
 cdef extern from "Halide.h" namespace "Halide" nogil:
     
     cppclass Generator[T](GeneratorBase):
+        
         @staticmethod
-        base_ptr_t create(GeneratorContext&)
+        unique_ptr[T] create(GeneratorContext&)
+        
+        @staticmethod
+        unique_ptr[T] create(GeneratorContext&, string&, string&) # registered name,
+                                                                  # stub name
+        void apply(...)
+
+ctypedef vector[vector[StubInput]]  stubinputvecvec_t
+ctypedef vector[StubInput]          stubinputvec_t
+
+cdef extern from "Halide.h" namespace "Halide::Internal" nogil:
     
-    cppclass RegisterGenerator[GeneratorClass]:
-        RegisterGenerator(string&)
+    cppclass RegisterGenerator:
+        RegisterGenerator(char*, GeneratorFactory)
+    
+    cppclass GeneratorStub(NamesInterface):
+        
+        GeneratorStub(GeneratorContext&,
+                      GeneratorFactory)
+        
+        GeneratorStub(GeneratorContext&,
+                      GeneratorFactory,
+                      GeneratorParamsMap&,
+                      stubinputvecvec_t&)
+        
+        # vector[vector[Func]] generate(GeneratorParamsMap&, stubinputvecvec_t&)
+        
+        # Func get_output(string&)
+        T2 get_output_buffer[T2](string&)
+        vector[T2] get_array_output_buffer[T2](string&)
+        # vector[Func] get_array_output(string&)
+        
+        @staticmethod
+        stubinputvec_t to_stub_input_vector(Expr&)
+        
+        # @staticmethod
+        # stubinputvec_t to_stub_input_vector(Func&)
+        
+        @staticmethod
+        stubinputvec_t to_stub_input_vector[T](StubInputBuffer[T]&)
+        
+        @staticmethod
+        stubinputvec_t to_stub_input_vector[T](vector[T]&)
+        
+        cppclass Names:
+            stringvec_t generator_params
+            stringvec_t filter_params
+            stringvec_t inputs
+            stringvec_t outputs
+        
+        Names get_names()
+        
+        base_shared_ptr_t generator
+
+cdef extern from "Halide.h" namespace "halide_register_generator" nogil:
+    cppclass halide_global_ns:
+        pass
 
 
 cdef inline base_ptr_t generator_registry_get(string& name,

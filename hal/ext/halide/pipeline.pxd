@@ -16,6 +16,7 @@ from outputs cimport Outputs
 from realization cimport Realization
 from runtime cimport halide_buffer_t
 from target cimport Target
+from type cimport Type
 
 ctypedef vector[Argument]           argvec_t
 ctypedef vector[Buffer[void]]       buffervec_t
@@ -44,6 +45,8 @@ cdef extern from "Halide.h" namespace "Halide" nogil:
 ctypedef vector[CustomLoweringPass] custompassvec_t
 
 cdef extern from "Halide.h" namespace "Halide" nogil:
+    
+    cppclass Func
     
     cppclass PipelineContents:
         pass
@@ -77,14 +80,14 @@ cdef extern from "Halide.h" namespace "Halide" nogil:
         # vector[JITModule] make_externs_jit_module(Target&, std_map[string, JITExtern]&)
         
         Pipeline()
-        # Pipeline(Func)
-        # Pipeline(vector[Func]&)
-        # vector[Func] outputs()
+        Pipeline(Func)
+        Pipeline(vector[Func]&)
+        vector[Func] outputs()
         
         string auto_schedule(Target&, MachineParams&)
         string auto_schedule(Target&)
         
-        # Func get_func(size_t)
+        Func get_func(size_t)
         
         void compile_to(Outputs&, argvec_t&, string&, Target&)
         void compile_to(Outputs&, argvec_t&, string&)
@@ -174,7 +177,7 @@ cdef extern from "Halide.h" namespace "Halide" nogil:
     cppclass JITExtern:
         
         JITExtern(Pipeline)
-        # JITExtern(Func)
+        JITExtern(Func)
         JITExtern(ExternCFunction&)
         
         Pipeline& pipeline()

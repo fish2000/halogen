@@ -64,7 +64,8 @@ from ext.halide.util cimport running_program_name as halide_running_program_name
 
 from ext.halide.buffer cimport Buffer
 from ext.halide.buffer cimport buffervec_t
-
+from ext.halide.func cimport Stage as HalStage
+from ext.halide.func cimport Func as HalFunc
 
 cpdef bytes u8bytes(object string_source):
     """ Custom version of u8bytes(…) for use in Cython extensions: """
@@ -705,7 +706,7 @@ cdef class EmitOptions:
     
     property emit_bitcode:
         def __get__(EmitOptions self):
-            return self.__this__.emit_bitcode
+            return PyBool_FromLong(self.__this__.emit_bitcode)
         def __set__(EmitOptions self, value):
             self.__this__.emit_bitcode = PyObject_IsTrue(value)
     

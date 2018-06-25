@@ -259,19 +259,22 @@ class Directory(object):
     fields = ('name', 'old', 'new', 'exists',
               'will_change', 'did_change')
     
-    dotfile_matcher = re.compile(r"^\.").match
+    non_dotfile_matcher = re.compile(r"^[^\.]").match
+    zip_suffix = "%s%s" % (os.extsep, "zip")
     
     def __init__(self, pth=None):
         if isinstance(pth, Directory):
             pth = pth.name
         self.old = os.getcwd()
         self.new = pth or self.old
-        if os.path.exists(self.new):
+        if os.path.isdir(self.new):
             self.will_change = not os.path.samefile(self.old,
                                                     self.new)
         else:
             self.will_change = False
         self.did_change = False
+        self.will_change_back = self.will_change
+        self.did_change_back = False
     
     @property
     def name(self):
@@ -286,11 +289,16 @@ class Directory(object):
             os.chdir(self.new)
             self.did_change = os.path.samefile(self.new,
                                                os.getcwd())
+            self.will_change_back = self.did_change
         return self
     
     def __exit__(self, exc_type, exc_val, exc_tb):
-        if self.did_change:
+        if self.will_change_back:
             os.chdir(self.old)
+            self.did_change_back = os.path.samefile(self.old,
+                                                    os.getcwd())
+            if self.did_change_back and exc_type is not None:
+                return True
     
     def suffix_searcher(self, suffix):
         if len(suffix) < 1:
@@ -309,7 +317,8 @@ class Directory(object):
         return os.path.realpath(pth)
     
     def ls(self, pth=os.curdir, suffix=None):
-        files = (f for f in scandir(self.realpath(pth)) if not self.dotfile_matcher(f))
+        files = filter(self.non_dotfile_matcher,
+               scandir(self.realpath(pth)))
         if not suffix:
             return files
         return filter(self.suffix_searcher(suffix), files)
@@ -321,8 +330,8 @@ class Directory(object):
         return filter(self.suffix_searcher(suffix), files)
     
     def makedirs(self, pth=os.curdir):
-        os.makedirs(os.path.abspath(
-                    os.path.join(self.name, pth)))
+        return os.makedirs(os.path.abspath(
+                           os.path.join(self.name, pth)))
     
     def walk(self, followlinks=False):
         return walk(self.name, followlinks=followlinks)
@@ -334,8 +343,8 @@ class Directory(object):
     def zip_archive(self, zpth=None, zmode=None):
         if not zpth:
             raise FilesystemError("Need to specify a zip-archive file path")
-        if not zpth.lower().endswith(".zip"):
-            zpth += ".zip"
+        if not zpth.lower().endswith(self.zip_suffix):
+            zpth += self.zip_suffix
         if os.path.exists(zpth):
             if os.path.isdir(zpth):
                 raise FilesystemError("Can't overwrite a directory: %s" % zpth)
@@ -343,7 +352,7 @@ class Directory(object):
         if not zmode:
             zmode = zipfile.ZIP_DEFLATED
         with TemporaryName(prefix="ziparchive-",
-                           suffix="zip") as ztmp:
+                           suffix=self.zip_suffix[1:]) as ztmp:
             with zipfile.ZipFile(ztmp.name, "w", zmode) as ziphandle:
                 relparent = lambda p: os.path.relpath(p, self.parent())
                 for root, dirs, files in self.walk(followlinks=True):
@@ -450,11 +459,6 @@ class TemporaryDirectory(Directory):
         super(TemporaryDirectory, self).__exit__(exc_type, exc_val, exc_tb)
         if self.exists and self.destroy:
             rm_rf(self.name)
-    
-    def __str__(self):
-        if self.exists:
-            return self.realpath()
-        return self.name
 
 
 def NamedTemporaryFile(mode='w+b', buffer_size=-1,
