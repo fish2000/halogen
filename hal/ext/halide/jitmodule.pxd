@@ -6,21 +6,13 @@ from libcpp.vector cimport vector
 from libcpp.memory cimport unique_ptr
 
 from intrusiveptr cimport IntrusivePtr
+from llvm cimport LLVMModule, LLVMType
 from module cimport Module, LoweredFunc, modulevec_t
 from pipeline cimport ExternCFunction
 from target cimport Target
-from type cimport Type
 
 ctypedef vector[string]         stringvec_t
 ctypedef unique_ptr[Module]     moduleptr_t
-
-# cdef extern from "Halide.h" namespace "llvm" nogil:
-#
-#     cppclass "Module" LLVMModule:
-#         pass
-#
-#     cppclass "Type" LLVMType:
-#         pass
     
 cdef extern from "Halide.h" namespace "Halide::Internal" nogil:
     
@@ -41,9 +33,9 @@ cdef extern from "Halide.h" namespace "Halide::Internal" nogil:
         
         cppclass Symbol:
             void* address
-            # LLVMType* llvm_type
+            LLVMType* llvm_type
             Symbol()
-            # Symbol(void*, LLVMType*)
+            Symbol(void*, LLVMType*)
         
         ctypedef std_map[string, Symbol]    symbolmap_t
         
@@ -77,11 +69,11 @@ cdef extern from "Halide.h" namespace "Halide::Internal" nogil:
     
     cppclass JITSharedRuntime:
         
-        # @staticmethod
-        # jitmodulevec_t get(LLVMModule*, Target&)
+        @staticmethod
+        jitmodulevec_t get(LLVMModule*, Target&)
         
-        # @staticmethod
-        # jitmodulevec_t get(LLVMModule*, Target&, bint create)
+        @staticmethod
+        jitmodulevec_t get(LLVMModule*, Target&, bint create)
         
         @staticmethod
         void init_jit_user_context(JITUserContext&, void*, JITHandlers&)

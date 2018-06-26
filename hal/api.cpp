@@ -1413,8 +1413,23 @@ typedef std::vector<Halide::Internal::StubInput>  __pyx_t_3hal_3ext_6halide_9gen
  */
 typedef std::vector<std::string>  __pyx_t_3hal_3ext_6halide_4util_stringvec_t;
 
+/* "llvm.pxd":13
+ * 
+ * # Import these prefixed typedefs instead:
+ * ctypedef Module     LLVMModule             # <<<<<<<<<<<<<<
+ * ctypedef Type       LLVMType
+ */
+typedef llvm::Module __pyx_t_3hal_3ext_6halide_4llvm_LLVMModule;
+
+/* "llvm.pxd":14
+ * # Import these prefixed typedefs instead:
+ * ctypedef Module     LLVMModule
+ * ctypedef Type       LLVMType             # <<<<<<<<<<<<<<
+ */
+typedef llvm::Type __pyx_t_3hal_3ext_6halide_4llvm_LLVMType;
+
 /* "jitmodule.pxd":14
- * from type cimport Type
+ * from target cimport Target
  * 
  * ctypedef vector[string]         stringvec_t             # <<<<<<<<<<<<<<
  * ctypedef unique_ptr[Module]     moduleptr_t
@@ -1427,11 +1442,11 @@ typedef std::vector<std::string>  __pyx_t_3hal_3ext_6halide_9jitmodule_stringvec
  * ctypedef vector[string]         stringvec_t
  * ctypedef unique_ptr[Module]     moduleptr_t             # <<<<<<<<<<<<<<
  * 
- * # cdef extern from "Halide.h" namespace "llvm" nogil:
+ * cdef extern from "Halide.h" namespace "Halide::Internal" nogil:
  */
 typedef std::unique_ptr<Halide::Module>  __pyx_t_3hal_3ext_6halide_9jitmodule_moduleptr_t;
 
-/* "jitmodule.pxd":33
+/* "jitmodule.pxd":25
  *     cppclass JITModule
  * 
  * ctypedef IntrusivePtr[JITModuleContents]    jitcontentsptr_t             # <<<<<<<<<<<<<<
@@ -1440,7 +1455,7 @@ typedef std::unique_ptr<Halide::Module>  __pyx_t_3hal_3ext_6halide_9jitmodule_mo
  */
 typedef Halide::Internal::IntrusivePtr<Halide::Internal::JITModuleContents>  __pyx_t_3hal_3ext_6halide_9jitmodule_jitcontentsptr_t;
 
-/* "jitmodule.pxd":34
+/* "jitmodule.pxd":26
  * 
  * ctypedef IntrusivePtr[JITModuleContents]    jitcontentsptr_t
  * ctypedef vector[JITModule]                  jitmodulevec_t             # <<<<<<<<<<<<<<
@@ -2570,6 +2585,8 @@ static CYTHON_INLINE __pyx_t_3hal_3ext_6halide_9generator_base_ptr_t __pyx_f_3ha
 /* Module declarations from 'ext.halide.target' */
 
 /* Module declarations from 'hal.ext.halide.util' */
+
+/* Module declarations from 'hal.ext.halide.llvm' */
 
 /* Module declarations from 'hal.ext.halide.jitmodule' */
 
