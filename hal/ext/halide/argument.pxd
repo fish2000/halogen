@@ -32,7 +32,7 @@ cdef extern from "Halide.h" namespace "Halide" nogil:
         
         Argument()
         Argument(string&, Kind, Type&, int)
-        # Argument(Buffer[])
+        # Argument[T](Buffer[T])
         
         bint is_buffer()
         bint is_scalar()

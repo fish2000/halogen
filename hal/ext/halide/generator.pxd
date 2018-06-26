@@ -121,6 +121,8 @@ cdef extern from "Halide.h" namespace "Halide::Internal" nogil:
     
 cdef extern from "Halide.h" namespace "Halide" nogil:
     
+    cppclass Func
+    
     cppclass GeneratorParam[T](GeneratorParamImplBase[T]):
         GeneratorParam(string&, T&)                         # name, value
         GeneratorParam(string&, T&, T&, T&)                 # name, value, min, max
@@ -184,7 +186,7 @@ cdef extern from "Halide.h" namespace "Halide::Internal" nogil:
     
     cppclass StubInput:
         # StubInput[T2](StubInputBuffer[T2]&)
-        # StubInput(Func&)
+        StubInput(Func&)
         StubInput(Expr&)
     
     cppclass GIOBase:
@@ -198,7 +200,7 @@ cdef extern from "Halide.h" namespace "Halide::Internal" nogil:
         Type type()
         bint dims_defined()
         int dims()
-        # vector[Func]& funcs()
+        vector[Func]& funcs()
         exprvec_t& exprs()
     
     cppclass GeneratorInputBase(GIOBase):
@@ -322,16 +324,16 @@ cdef extern from "Halide.h" namespace "Halide::Internal" nogil:
         
         # vector[vector[Func]] generate(GeneratorParamsMap&, stubinputvecvec_t&)
         
-        # Func get_output(string&)
+        Func get_output(string&)
         T2 get_output_buffer[T2](string&)
         vector[T2] get_array_output_buffer[T2](string&)
-        # vector[Func] get_array_output(string&)
+        vector[Func] get_array_output(string&)
         
         @staticmethod
         stubinputvec_t to_stub_input_vector(Expr&)
         
-        # @staticmethod
-        # stubinputvec_t to_stub_input_vector(Func&)
+        @staticmethod
+        stubinputvec_t to_stub_input_vector(Func&)
         
         @staticmethod
         stubinputvec_t to_stub_input_vector[T](StubInputBuffer[T]&)

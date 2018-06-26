@@ -11,6 +11,7 @@ from device_api cimport DeviceAPI
 from expr cimport Expr
 from functionptr cimport FunctionContents, FunctionPtr
 from intrusiveptr cimport IntrusivePtr
+from parameter cimport Parameter
 from target cimport Target
 from type cimport Type
 
@@ -115,7 +116,7 @@ cdef extern from "Halide.h" namespace "Halide::Internal" nogil:
         bint can_be_inlined()
         
         # FuncSchedule& schedule()
-        # vector[Parameter] output_buffers()
+        vector[Parameter] output_buffers()
         # StageSchedule& update_schedule()
         # StageSchedule& update_schedule(int)
         
