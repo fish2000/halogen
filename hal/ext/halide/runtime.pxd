@@ -219,3 +219,25 @@ cdef extern from "HalideBuffer.h" namespace "Halide::Runtime" nogil:
         AllocationHeader* alloc
         atomic[int]* dev_ref_count
         
+        @staticmethod
+        halide_type_t static_halide_type()
+        bint owns_host_memory()
+        
+        ctypedef T ElemType
+        
+        cppclass Dimension:
+            
+            int min()
+            int stride()
+            int extent()
+            int max()
+            
+            cppclass iterator:
+                int val
+                int operator*()
+                bint operator!=(iterator&)
+                iterator& operator++()
+            
+            iterator begin()
+            iterator end()
+            Dimension(halide_dimension_t&)
