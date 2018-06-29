@@ -223,7 +223,7 @@ cdef extern from "HalideBuffer.h" namespace "Halide::Runtime" nogil:
         halide_type_t static_halide_type()
         bint owns_host_memory()
         
-        ctypedef T ElemType
+        # ctypedef T ElemType
         
         cppclass Dimension:
             

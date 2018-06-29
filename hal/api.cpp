@@ -1482,7 +1482,7 @@ typedef Halide::Internal::IntrusivePtr<Halide::Internal::JITModuleContents>  __p
  */
 typedef std::vector<Halide::Internal::JITModule>  __pyx_t_3hal_3ext_6halide_9jitmodule_jitmodulevec_t;
 
-/* "ext/halide/func.pxd":29
+/* "ext/halide/func.pxd":30
  * from varorrvar cimport VarOrRVar, varorvec_t
  * 
  * ctypedef vector[int32_t]                                signed_sizevec_t             # <<<<<<<<<<<<<<
@@ -1491,7 +1491,7 @@ typedef std::vector<Halide::Internal::JITModule>  __pyx_t_3hal_3ext_6halide_9jit
  */
 typedef std::vector<int32_t>  __pyx_t_3hal_3ext_6halide_4func_signed_sizevec_t;
 
-/* "ext/halide/func.pxd":30
+/* "ext/halide/func.pxd":31
  * 
  * ctypedef vector[int32_t]                                signed_sizevec_t
  * ctypedef vector[Argument]                               argvec_t             # <<<<<<<<<<<<<<
@@ -1500,7 +1500,7 @@ typedef std::vector<int32_t>  __pyx_t_3hal_3ext_6halide_4func_signed_sizevec_t;
  */
 typedef std::vector<Halide::Argument>  __pyx_t_3hal_3ext_6halide_4func_argvec_t;
 
-/* "ext/halide/func.pxd":31
+/* "ext/halide/func.pxd":32
  * ctypedef vector[int32_t]                                signed_sizevec_t
  * ctypedef vector[Argument]                               argvec_t
  * ctypedef vector[CustomLoweringPass]                     customloweringpassvec_t             # <<<<<<<<<<<<<<
@@ -1509,7 +1509,7 @@ typedef std::vector<Halide::Argument>  __pyx_t_3hal_3ext_6halide_4func_argvec_t;
  */
 typedef std::vector<Halide::CustomLoweringPass>  __pyx_t_3hal_3ext_6halide_4func_customloweringpassvec_t;
 
-/* "ext/halide/func.pxd":32
+/* "ext/halide/func.pxd":33
  * ctypedef vector[Argument]                               argvec_t
  * ctypedef vector[CustomLoweringPass]                     customloweringpassvec_t
  * ctypedef vector[Expr]                                   exprvec_t             # <<<<<<<<<<<<<<
@@ -1518,7 +1518,7 @@ typedef std::vector<Halide::CustomLoweringPass>  __pyx_t_3hal_3ext_6halide_4func
  */
 typedef std::vector<Halide::Expr>  __pyx_t_3hal_3ext_6halide_4func_exprvec_t;
 
-/* "ext/halide/func.pxd":33
+/* "ext/halide/func.pxd":34
  * ctypedef vector[CustomLoweringPass]                     customloweringpassvec_t
  * ctypedef vector[Expr]                                   exprvec_t
  * ctypedef vector[OutputImageParam]                       outputimagevec_t             # <<<<<<<<<<<<<<
@@ -1527,7 +1527,7 @@ typedef std::vector<Halide::Expr>  __pyx_t_3hal_3ext_6halide_4func_exprvec_t;
  */
 typedef std::vector<Halide::OutputImageParam>  __pyx_t_3hal_3ext_6halide_4func_outputimagevec_t;
 
-/* "ext/halide/func.pxd":34
+/* "ext/halide/func.pxd":35
  * ctypedef vector[Expr]                                   exprvec_t
  * ctypedef vector[OutputImageParam]                       outputimagevec_t
  * ctypedef vector[RVar]                                   rvarvec_t             # <<<<<<<<<<<<<<
@@ -1536,7 +1536,7 @@ typedef std::vector<Halide::OutputImageParam>  __pyx_t_3hal_3ext_6halide_4func_o
  */
 typedef std::vector<Halide::RVar>  __pyx_t_3hal_3ext_6halide_4func_rvarvec_t;
 
-/* "ext/halide/func.pxd":35
+/* "ext/halide/func.pxd":36
  * ctypedef vector[OutputImageParam]                       outputimagevec_t
  * ctypedef vector[RVar]                                   rvarvec_t
  * ctypedef vector[string]                                 stringvec_t             # <<<<<<<<<<<<<<
@@ -1545,7 +1545,7 @@ typedef std::vector<Halide::RVar>  __pyx_t_3hal_3ext_6halide_4func_rvarvec_t;
  */
 typedef std::vector<std::string>  __pyx_t_3hal_3ext_6halide_4func_stringvec_t;
 
-/* "ext/halide/func.pxd":36
+/* "ext/halide/func.pxd":37
  * ctypedef vector[RVar]                                   rvarvec_t
  * ctypedef vector[string]                                 stringvec_t
  * ctypedef vector[Target]                                 targetvec_t             # <<<<<<<<<<<<<<
@@ -1554,7 +1554,7 @@ typedef std::vector<std::string>  __pyx_t_3hal_3ext_6halide_4func_stringvec_t;
  */
 typedef std::vector<Halide::Target>  __pyx_t_3hal_3ext_6halide_4func_targetvec_t;
 
-/* "ext/halide/func.pxd":37
+/* "ext/halide/func.pxd":38
  * ctypedef vector[string]                                 stringvec_t
  * ctypedef vector[Target]                                 targetvec_t
  * ctypedef vector[Type]                                   typevec_t             # <<<<<<<<<<<<<<
@@ -1563,7 +1563,7 @@ typedef std::vector<Halide::Target>  __pyx_t_3hal_3ext_6halide_4func_targetvec_t
  */
 typedef std::vector<Halide::Type>  __pyx_t_3hal_3ext_6halide_4func_typevec_t;
 
-/* "ext/halide/func.pxd":38
+/* "ext/halide/func.pxd":39
  * ctypedef vector[Target]                                 targetvec_t
  * ctypedef vector[Type]                                   typevec_t
  * ctypedef unique_ptr[Module]                             moduleptr_t             # <<<<<<<<<<<<<<
@@ -1572,7 +1572,7 @@ typedef std::vector<Halide::Type>  __pyx_t_3hal_3ext_6halide_4func_typevec_t;
  */
 typedef std::unique_ptr<Halide::Module>  __pyx_t_3hal_3ext_6halide_4func_moduleptr_t;
 
-/* "ext/halide/func.pxd":39
+/* "ext/halide/func.pxd":40
  * ctypedef vector[Type]                                   typevec_t
  * ctypedef unique_ptr[Module]                             moduleptr_t
  * ctypedef vector[pair[VarOrRVar, LoopAlignStrategy]]     varorpairvec_t             # <<<<<<<<<<<<<<
@@ -1581,7 +1581,7 @@ typedef std::unique_ptr<Halide::Module>  __pyx_t_3hal_3ext_6halide_4func_modulep
  */
 typedef std::vector<std::pair<Halide::VarOrRVar,Halide::LoopAlignStrategy> >  __pyx_t_3hal_3ext_6halide_4func_varorpairvec_t;
 
-/* "ext/halide/func.pxd":40
+/* "ext/halide/func.pxd":41
  * ctypedef unique_ptr[Module]                             moduleptr_t
  * ctypedef vector[pair[VarOrRVar, LoopAlignStrategy]]     varorpairvec_t
  * ctypedef vector[pair[RVar, Var]]                        rvarvarpairvec_t             # <<<<<<<<<<<<<<
@@ -1590,7 +1590,7 @@ typedef std::vector<std::pair<Halide::VarOrRVar,Halide::LoopAlignStrategy> >  __
  */
 typedef std::vector<std::pair<Halide::RVar,Halide::Var> >  __pyx_t_3hal_3ext_6halide_4func_rvarvarpairvec_t;
 
-/* "ext/halide/func.pxd":149
+/* "ext/halide/func.pxd":150
  *         string& source_location()
  * 
  * ctypedef Stage ScheduleHandle             # <<<<<<<<<<<<<<
@@ -1599,7 +1599,7 @@ typedef std::vector<std::pair<Halide::RVar,Halide::Var> >  __pyx_t_3hal_3ext_6ha
  */
 typedef Halide::Stage __pyx_t_3hal_3ext_6halide_4func_ScheduleHandle;
 
-/* "ext/halide/func.pxd":150
+/* "ext/halide/func.pxd":151
  * 
  * ctypedef Stage ScheduleHandle
  * ctypedef Pipeline.RealizationArg RealizeArg             # <<<<<<<<<<<<<<
@@ -1608,7 +1608,7 @@ typedef Halide::Stage __pyx_t_3hal_3ext_6halide_4func_ScheduleHandle;
  */
 typedef Halide::Pipeline::RealizationArg __pyx_t_3hal_3ext_6halide_4func_RealizeArg;
 
-/* "ext/halide/func.pxd":151
+/* "ext/halide/func.pxd":152
  * ctypedef Stage ScheduleHandle
  * ctypedef Pipeline.RealizationArg RealizeArg
  * ctypedef vector[Func] funcvec_t             # <<<<<<<<<<<<<<

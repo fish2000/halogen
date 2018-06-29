@@ -17,6 +17,7 @@ from intrusiveptr cimport IntrusivePtr
 from jitmodule cimport JITHandlers
 from module cimport Module, LoweredFunc, modulevec_t
 from outputs cimport Outputs
+from parameter cimport Parameter
 from pipeline cimport ExternCFunction, Pipeline, StmtOutputFormat, CustomLoweringPass
 from rdom cimport RVar, RDom
 from realization cimport Realization
@@ -137,9 +138,9 @@ cdef extern from "Halide.h" namespace "Halide" nogil:
         Stage& prefetch(Func&, VarOrRVar, Expr, PrefetchBoundStrategy)
         Stage& prefetch(Func&, VarOrRVar, Expr) # PrefetchBoundStrategy = GuardWithIf
         Stage& prefetch(Func&, VarOrRVar) # Expr offset = 1, PrefetchBoundStrategy = GuardWithIf
-        # Stage& prefetch(Parameter&, VarOrRVar, Expr, PrefetchBoundStrategy)
-        # Stage& prefetch(Parameter&, VarOrRVar, Expr) # PrefetchBoundStrategy = GuardWithIf
-        # Stage& prefetch(Parameter&, VarOrRVar) # Expr offset = 1, PrefetchBoundStrategy = GuardWithIf
+        Stage& prefetch(Parameter&, VarOrRVar, Expr, PrefetchBoundStrategy)
+        Stage& prefetch(Parameter&, VarOrRVar, Expr) # PrefetchBoundStrategy = GuardWithIf
+        Stage& prefetch(Parameter&, VarOrRVar) # Expr offset = 1, PrefetchBoundStrategy = GuardWithIf
         Stage& prefetch[T](T&, VarOrRVar, Expr, PrefetchBoundStrategy)
         Stage& prefetch[T](T&, VarOrRVar, Expr) # PrefetchBoundStrategy = GuardWithIf
         Stage& prefetch[T](T&, VarOrRVar) # Expr offset = 1, PrefetchBoundStrategy = GuardWithIf
