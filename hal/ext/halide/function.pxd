@@ -19,6 +19,7 @@ ctypedef vector[string]                     stringvec_t
 ctypedef vector[Expr]                       exprvec_t
 ctypedef vector[Type]                       typevec_t
 ctypedef vector[Definition]                 definitionvec_t
+ctypedef vector[Parameter]                  paramvec_t
 ctypedef std_map[string, FunctionPtr]       wrappermap_t
 ctypedef std_map[FunctionPtr, FunctionPtr]  functionptr_map_t
 
@@ -116,7 +117,7 @@ cdef extern from "Halide.h" namespace "Halide::Internal" nogil:
         bint can_be_inlined()
         
         # FuncSchedule& schedule()
-        vector[Parameter] output_buffers()
+        paramvec_t output_buffers()
         # StageSchedule& update_schedule()
         # StageSchedule& update_schedule(int)
         

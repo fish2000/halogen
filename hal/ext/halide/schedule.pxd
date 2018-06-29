@@ -8,6 +8,7 @@ from device_api cimport DeviceAPI
 from expr cimport Expr, ForType
 from function cimport Function
 from functionptr cimport FunctionContents
+from parameter cimport Parameter
 from varorrvar cimport VarOrRVar
 
 ctypedef vector[string]     stringvec_t
@@ -173,6 +174,6 @@ cdef extern from "Halide.h" namespace "Halide::Internal" nogil:
         string var
         Expr offset
         PrefetchBoundStrategy strategy
-        # Parameter param
+        Parameter param
     
     

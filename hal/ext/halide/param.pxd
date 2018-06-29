@@ -4,6 +4,7 @@ from libcpp.string cimport string
 from libcpp.vector cimport vector
 
 from expr cimport Expr
+from parameter cimport Parameter
 from type cimport Type
 
 cdef extern from "Halide.h" namespace "Halide" nogil:
@@ -43,6 +44,6 @@ cdef extern from "Halide.h" namespace "Halide" nogil:
         # operator Expr()
         # operator ExternFuncArgument()
         # operator Argument()
-        # Parameter parameter()
+        Parameter parameter()
     
     cdef Expr user_context_value()

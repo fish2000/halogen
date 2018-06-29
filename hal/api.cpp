@@ -972,7 +972,7 @@ typedef std::vector<Halide::Expr>  __pyx_t_3hal_3ext_6halide_8function_exprvec_t
  * ctypedef vector[Expr]                       exprvec_t
  * ctypedef vector[Type]                       typevec_t             # <<<<<<<<<<<<<<
  * ctypedef vector[Definition]                 definitionvec_t
- * ctypedef std_map[string, FunctionPtr]       wrappermap_t
+ * ctypedef vector[Parameter]                  paramvec_t
  */
 typedef std::vector<Halide::Type>  __pyx_t_3hal_3ext_6halide_8function_typevec_t;
 
@@ -980,22 +980,31 @@ typedef std::vector<Halide::Type>  __pyx_t_3hal_3ext_6halide_8function_typevec_t
  * ctypedef vector[Expr]                       exprvec_t
  * ctypedef vector[Type]                       typevec_t
  * ctypedef vector[Definition]                 definitionvec_t             # <<<<<<<<<<<<<<
+ * ctypedef vector[Parameter]                  paramvec_t
  * ctypedef std_map[string, FunctionPtr]       wrappermap_t
- * ctypedef std_map[FunctionPtr, FunctionPtr]  functionptr_map_t
  */
 typedef std::vector<Halide::Internal::Definition>  __pyx_t_3hal_3ext_6halide_8function_definitionvec_t;
 
 /* "function.pxd":22
  * ctypedef vector[Type]                       typevec_t
  * ctypedef vector[Definition]                 definitionvec_t
+ * ctypedef vector[Parameter]                  paramvec_t             # <<<<<<<<<<<<<<
+ * ctypedef std_map[string, FunctionPtr]       wrappermap_t
+ * ctypedef std_map[FunctionPtr, FunctionPtr]  functionptr_map_t
+ */
+typedef std::vector<Halide::Internal::Parameter>  __pyx_t_3hal_3ext_6halide_8function_paramvec_t;
+
+/* "function.pxd":23
+ * ctypedef vector[Definition]                 definitionvec_t
+ * ctypedef vector[Parameter]                  paramvec_t
  * ctypedef std_map[string, FunctionPtr]       wrappermap_t             # <<<<<<<<<<<<<<
  * ctypedef std_map[FunctionPtr, FunctionPtr]  functionptr_map_t
  * 
  */
 typedef std::map<std::string,Halide::Internal::FunctionPtr>  __pyx_t_3hal_3ext_6halide_8function_wrappermap_t;
 
-/* "function.pxd":23
- * ctypedef vector[Definition]                 definitionvec_t
+/* "function.pxd":24
+ * ctypedef vector[Parameter]                  paramvec_t
  * ctypedef std_map[string, FunctionPtr]       wrappermap_t
  * ctypedef std_map[FunctionPtr, FunctionPtr]  functionptr_map_t             # <<<<<<<<<<<<<<
  * 
@@ -1003,7 +1012,7 @@ typedef std::map<std::string,Halide::Internal::FunctionPtr>  __pyx_t_3hal_3ext_6
  */
 typedef std::map<Halide::Internal::FunctionPtr,Halide::Internal::FunctionPtr>  __pyx_t_3hal_3ext_6halide_8function_functionptr_map_t;
 
-/* "function.pxd":34
+/* "function.pxd":35
  *         ImageParamArg
  * 
  * ctypedef IntrusivePtr[FunctionContents] contents_ptr_t             # <<<<<<<<<<<<<<
@@ -1012,7 +1021,7 @@ typedef std::map<Halide::Internal::FunctionPtr,Halide::Internal::FunctionPtr>  _
  */
 typedef Halide::Internal::IntrusivePtr<Halide::Internal::FunctionContents>  __pyx_t_3hal_3ext_6halide_8function_contents_ptr_t;
 
-/* "function.pxd":65
+/* "function.pxd":66
  *         bint defined()
  * 
  * ctypedef vector[ExternFuncArgument] extargvec_t             # <<<<<<<<<<<<<<
@@ -1021,7 +1030,7 @@ typedef Halide::Internal::IntrusivePtr<Halide::Internal::FunctionContents>  __py
  */
 typedef std::vector<Halide::ExternFuncArgument>  __pyx_t_3hal_3ext_6halide_8function_extargvec_t;
 
-/* "function.pxd":173
+/* "function.pxd":174
  *         bint is_pure_arg(string&)
  * 
  * ctypedef vector[Function]                   functionvec_t             # <<<<<<<<<<<<<<
@@ -1030,7 +1039,7 @@ typedef std::vector<Halide::ExternFuncArgument>  __pyx_t_3hal_3ext_6halide_8func
  */
 typedef std::vector<Halide::Internal::Function>  __pyx_t_3hal_3ext_6halide_8function_functionvec_t;
 
-/* "function.pxd":174
+/* "function.pxd":175
  * 
  * ctypedef vector[Function]                   functionvec_t
  * ctypedef pair[functionvec_t, wrappermap_t]  deep_copy_result_t             # <<<<<<<<<<<<<<
@@ -1048,7 +1057,7 @@ typedef std::pair<__pyx_t_3hal_3ext_6halide_8function_functionvec_t,__pyx_t_3hal
  */
 typedef std::vector<Halide::Var>  __pyx_t_3hal_3ext_6halide_3var_varvec_t;
 
-/* "image.pxd":13
+/* "image.pxd":14
  * from var cimport Var, varvec_t
  * 
  * ctypedef vector[Expr] exprvec_t             # <<<<<<<<<<<<<<
@@ -1073,7 +1082,7 @@ typedef std::vector<std::pair<Halide::Expr,Halide::Expr> >  __pyx_t_3hal_3ext_6h
  */
 typedef std::vector<Halide::VarOrRVar>  __pyx_t_3hal_3ext_6halide_9varorrvar_varorvec_t;
 
-/* "schedule.pxd":13
+/* "schedule.pxd":14
  * from varorrvar cimport VarOrRVar
  * 
  * ctypedef vector[string]     stringvec_t             # <<<<<<<<<<<<<<
@@ -1082,7 +1091,7 @@ typedef std::vector<Halide::VarOrRVar>  __pyx_t_3hal_3ext_6halide_9varorrvar_var
  */
 typedef std::vector<std::string>  __pyx_t_3hal_3ext_6halide_8schedule_stringvec_t;
 
-/* "schedule.pxd":14
+/* "schedule.pxd":15
  * 
  * ctypedef vector[string]     stringvec_t
  * ctypedef vector[uint8_t]    bytevec_t             # <<<<<<<<<<<<<<
@@ -1091,7 +1100,7 @@ typedef std::vector<std::string>  __pyx_t_3hal_3ext_6halide_8schedule_stringvec_
  */
 typedef std::vector<uint8_t>  __pyx_t_3hal_3ext_6halide_8schedule_bytevec_t;
 
-/* "schedule.pxd":52
+/* "schedule.pxd":53
  *     cdef PrefetchBoundStrategy NonFaulting
  * 
  * ctypedef std_map[string, LoopAlignStrategy] loopalign_map_t             # <<<<<<<<<<<<<<
@@ -1100,7 +1109,7 @@ typedef std::vector<uint8_t>  __pyx_t_3hal_3ext_6halide_8schedule_bytevec_t;
  */
 typedef std::map<std::string,Halide::LoopAlignStrategy>  __pyx_t_3hal_3ext_6halide_8schedule_loopalign_map_t;
 
-/* "schedule.pxd":97
+/* "schedule.pxd":98
  *         FuseLoopLevel(LoopLevel&, loopalign_map_t&)
  * 
  * ctypedef std_map[string, LoopLevel]     llevelmap_t             # <<<<<<<<<<<<<<

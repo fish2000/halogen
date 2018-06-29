@@ -7,6 +7,7 @@ from argument cimport Argument
 from buffer cimport Buffer
 from expr cimport Expr
 from function cimport ExternFuncArgument
+from parameter cimport Parameter
 from type cimport Type
 from var cimport Var, varvec_t
 
@@ -35,7 +36,7 @@ cdef extern from "Halide.h" namespace "Halide" nogil:
         Expr height()
         Expr channels()
         
-        # Parameter parameter()
+        Parameter parameter()
         # operator Argument()
         # operator ExternFuncArgument()
     
