@@ -4,23 +4,36 @@ from libcpp.map cimport map as std_map
 from libcpp.string cimport string
 from libcpp.vector cimport vector
 from libcpp.memory cimport unique_ptr, shared_ptr
+from libcpp.pair cimport pair
 
 from autoschedule cimport MachineParams
 from buffer cimport Buffer
+from device_api cimport DeviceAPI
+from dimension cimport Dimension
 from expr cimport Expr
 from externalcode cimport ExternalCode
+from func cimport FuncRef
+# from function cimport Function, NameMangling, ExternFuncArgument, extargvec_t
+from image cimport OutputImageParam, ImageParam
+from module cimport Module, LinkageType
+from parameter cimport Parameter
 from pipeline cimport Pipeline
+from rdom cimport RVar
 from realization cimport Realization
-from schedule cimport LoopLevel, llevelmap_t
+from schedule cimport LoopLevel, llevelmap_t, LoopAlignStrategy, PrefetchBoundStrategy, TailStrategy
 from target cimport Target, get_target_from_environment
 from type cimport Type
-from module cimport Module, LinkageType
+from var cimport Var, varvec_t
+from varorrvar cimport VarOrRVar
 
-ctypedef vector[Expr]                   exprvec_t
-ctypedef vector[Type]                   typevec_t
-ctypedef vector[string]                 stringvec_t
-ctypedef std_map[string, string]        stringmap_t
-ctypedef std_map[string, Type]          typemap_t
+ctypedef vector[Expr]                                   exprvec_t
+ctypedef vector[RVar]                                   rvarvec_t
+ctypedef vector[Type]                                   typevec_t
+ctypedef vector[VarOrRVar]                              varorvec_t
+ctypedef vector[string]                                 stringvec_t
+ctypedef std_map[string, string]                        stringmap_t
+ctypedef std_map[string, Type]                          typemap_t
+ctypedef vector[pair[VarOrRVar, LoopAlignStrategy]]     varorpairvec_t
 
 cdef extern from "Halide.h" namespace "Halide::Internal" nogil:
     
@@ -167,9 +180,9 @@ cdef extern from "Halide.h" namespace "Halide::Internal" nogil:
     
 cdef extern from "Halide.h" namespace "Halide::Internal::IOKind" nogil:
     
-    cdef IOKind Scalar
-    cdef IOKind Function
-    cdef IOKind Buffer
+    cdef IOKind IOScalar    "Scalar"
+    cdef IOKind IOFunction  "Function"
+    cdef IOKind IOBuffer    "Buffer"
     
 cdef extern from "Halide.h" namespace "Halide::Internal" nogil:
     
@@ -213,7 +226,370 @@ cdef extern from "Halide.h" namespace "Halide::Internal" nogil:
         # vector[ValueType].const_iterator begin()
         # vector[ValueType].const_iterator end()
     
-    # cppclass GeneratorInput_Buffer[T](GeneratorInputImpl[T, Func])
+    cppclass GeneratorInput_Buffer[T](GeneratorInputImpl[T, Func]):
+        GeneratorInput_Buffer(string&)
+        GeneratorInput_Buffer(string&, Type&, int)
+        GeneratorInput_Buffer(string&, Type&)
+        GeneratorInput_Buffer(string&, int)
+        
+        Expr operator()(...)
+        Expr operator()(exprvec_t)
+        
+        # operator Func()
+        # operator ExternFuncArgument()
+        GeneratorInput_Buffer[T]& estimate(Var, Expr, Expr)
+        
+        Func func_in "in"()
+        Func func_in "in"(Func)
+        Func func_in "in"(vector[Func]&)
+        
+        # operator ImageParam()
+        size_t size()
+        ImageParam operator[][T2](size_t)
+        ImageParam at[T2](size_t)
+        
+        Dimension dim(int)
+        int host_alignment()
+        OutputImageParam& set_host_alignment()
+        int dimensions()
+        Expr left()
+        Expr right()
+        Expr top()
+        Expr bottom()
+        Expr width()
+        Expr height()
+        Expr channels()
+        void trace_loads()
+        ImageParam& add_trace_tag(string&)
+    
+    cppclass GeneratorInput_Func[T](GeneratorInputImpl[T, Func]):
+        GeneratorInput_Func(string&, Type&, int)
+        GeneratorInput_Func(string&, int)
+        GeneratorInput_Func(string&, Type&)
+        GeneratorInput_Func(string&)
+        GeneratorInput_Func(size_t, string&, Type&, int)
+        GeneratorInput_Func(size_t, string&, int)
+        GeneratorInput_Func(size_t, string&, Type&)
+        GeneratorInput_Func(size_t, string&)
+        
+        Expr operator()(...)
+        Expr operator()(exprvec_t)
+        
+        # operator Func()
+        # operator ExternFuncArgument()
+        GeneratorInput_Func[T]& estimate(Var, Expr, Expr)
+        
+        Func func_in "in"()
+        Func func_in "in"(Func)
+        Func func_in "in"(vector[Func]&)
+        
+        varvec_t args()
+        bint defined()
+        bint has_update_definition()
+        int num_update_definitions()
+        typevec_t& output_types()
+        int outputs()
+        rvarvec_t rvars()
+        exprvec_t& update_args(int)
+        exprvec_t& update_args()
+        Expr update_value(int)
+        Expr update_value()
+        # Tuple update_values(int)
+        # Tuple update_values()
+        Expr value()
+        # Tuple values()
+    
+    cppclass GeneratorInput_Scalar[T](GeneratorInputImpl[T, Expr]):
+        
+        # ctypedef GeneratorInputImpl[T, Expr] Super
+        # ctypedef Super.TBase TBase
+        # ctypedef GeneratorInputImpl[T, Expr].TBase TBase
+        
+        # GeneratorInput_Scalar(string&, TBase&)
+        GeneratorInput_Scalar(string&, T&)
+        GeneratorInput_Scalar(string&)
+        # GeneratorInput_Scalar(size_t, string&, TBase&)
+        GeneratorInput_Scalar(size_t, string&, T&)
+        GeneratorInput_Scalar(size_t, string&)
+        
+        # operator ExternFuncArgument()
+        void set_estimate(T&)
+    
+    cppclass GeneratorInput_Arithmetic[T](GeneratorInput_Scalar[T]):
+        
+        # ctypedef GeneratorInputImpl[T, Expr] Super
+        # ctypedef Super.TBase TBase
+        
+        # GeneratorInput_Arithmetic(string&, TBase&)
+        GeneratorInput_Arithmetic(string&, T&)
+        GeneratorInput_Arithmetic(string&)
+        # GeneratorInput_Arithmetic(size_t, string&, TBase&)
+        GeneratorInput_Arithmetic(size_t, string&, T&)
+        GeneratorInput_Arithmetic(size_t, string&)
+        # GeneratorInput_Arithmetic(string&, TBase&, TBase&, TBase&)
+        # GeneratorInput_Arithmetic(size_t, string&, TBase&, TBase&, TBase&)
+        GeneratorInput_Arithmetic(string&, T&, T&, T&)
+        GeneratorInput_Arithmetic(size_t, string&, T&, T&, T&)
+    
+    cppclass GeneratorInputImplBase[T](GeneratorInputBase):
+        # Declaring the greatest-common-ancestor (if that makes sense)
+        # of the type-union-ish thing that this class actually is in
+        # the Halide header
+        pass
+
+cdef extern from "Halide.h" namespace "Halide" nogil:
+    
+    cppclass GeneratorInput[T](GeneratorInputImplBase[T]):
+        
+        # ctypedef GeneratorInputImplBase[T] Super
+        # ctypedef Super.TBase TBase
+        
+        cppclass IntIfNonScalar:
+            pass
+        
+        GeneratorInput(string&)
+        # GeneratorInput(string&, TBase&)
+        # GeneratorInput(size_t, string&, TBase&)
+        # GeneratorInput(string&, TBase&, TBase&, TBase&)
+        # GeneratorInput(size_t, string&, TBase&, TBase&, TBase&)
+        GeneratorInput(string&, T&)
+        GeneratorInput(size_t, string&, T&)
+        GeneratorInput(string&, T&, T&, T&)
+        GeneratorInput(size_t, string&, T&, T&, T&)
+        GeneratorInput(string&, Type&, int)
+        GeneratorInput(string&, Type&)
+        GeneratorInput(size_t, string&, IntIfNonScalar)
+        GeneratorInput(size_t, string&)
+
+cdef extern from "Halide.h" namespace "Halide::Internal" nogil:
+    
+    cppclass Stage
+    
+    cppclass GeneratorOutputBase(GIOBase):
+        Func& add_trace_tag(string&)
+        Func& align_bounds(Var, Expr, Expr)
+        Func& align_bounds(Var, Expr)
+        Func& align_storage(Var, Expr)
+        varvec_t& args()
+        Func& bound(Var, Expr, Expr)
+        Func& bound_extent(Var, Expr)
+        Func& compute_at(Func, Var)
+        Func& compute_at(Func, RVar)
+        Func& compute_at(LoopLevel)
+        Func& compute_inline()
+        Func& compute_root()
+        Func& compute_with(Stage, VarOrRVar, varorpairvec_t&)
+        Func& compute_with(Stage, VarOrRVar, LoopAlignStrategy)
+        Func& compute_with(Stage, VarOrRVar) # LoopAlignStrategy = Auto
+        Func& compute_with(LoopLevel, varorpairvec_t&)
+        Func& compute_with(LoopLevel, LoopAlignStrategy)
+        Func& compute_with(LoopLevel) # LoopAlignStrategy = Auto
+        # define_extern()
+        bint defined()
+        Func& estimate(Var, Expr, Expr)
+        Func& fold_storage(Var, Expr, bint)
+        Func& fold_storage(Var, Expr)
+        Func& fuse(VarOrRVar, VarOrRVar, VarOrRVar)
+        Func& glsl(Var, Var, Var)
+        Func& gpu_threads(VarOrRVar, DeviceAPI)
+        Func& gpu_threads(VarOrRVar) # DeviceAPI = Default_GPU
+        Func& gpu_threads(VarOrRVar, VarOrRVar, DeviceAPI)
+        Func& gpu_threads(VarOrRVar, VarOrRVar) # DeviceAPI = Default_GPU
+        Func& gpu_threads(VarOrRVar, VarOrRVar, VarOrRVar, DeviceAPI)
+        Func& gpu_threads(VarOrRVar, VarOrRVar, VarOrRVar) # DeviceAPI = Default_GPU
+        Func& gpu_lanes(VarOrRVar, DeviceAPI)
+        Func& gpu_lanes(VarOrRVar) # DeviceAPI = Default_GPU
+        Func& gpu_single_thread(DeviceAPI)
+        Func& gpu_single_thread() # DeviceAPI = Default_GPU
+        Func& gpu_blocks(VarOrRVar, DeviceAPI)
+        Func& gpu_blocks(VarOrRVar) # DeviceAPI = Default_GPU
+        Func& gpu_blocks(VarOrRVar, VarOrRVar, DeviceAPI)
+        Func& gpu_blocks(VarOrRVar, VarOrRVar) # DeviceAPI = Default_GPU
+        Func& gpu_blocks(VarOrRVar, VarOrRVar, VarOrRVar, DeviceAPI)
+        Func& gpu_blocks(VarOrRVar, VarOrRVar, VarOrRVar) # DeviceAPI = Default_GPU
+
+        Func& gpu(VarOrRVar, VarOrRVar, DeviceAPI)
+        Func& gpu(VarOrRVar, VarOrRVar) # DeviceAPI = Default_GPU
+        Func& gpu(VarOrRVar, VarOrRVar, VarOrRVar, VarOrRVar, DeviceAPI)
+        Func& gpu(VarOrRVar, VarOrRVar, VarOrRVar, VarOrRVar) # DeviceAPI = Default_GPU
+        Func& gpu(VarOrRVar, VarOrRVar, VarOrRVar, VarOrRVar, VarOrRVar, VarOrRVar, DeviceAPI)
+        Func& gpu(VarOrRVar, VarOrRVar, VarOrRVar, VarOrRVar, VarOrRVar, VarOrRVar) # DeviceAPI = Default_GPU
+
+        Func& gpu_tile(VarOrRVar, VarOrRVar, VarOrRVar, Expr, TailStrategy, DeviceAPI)
+        Func& gpu_tile(VarOrRVar, VarOrRVar, VarOrRVar, Expr, TailStrategy) # DeviceAPI = Default_GPU
+        Func& gpu_tile(VarOrRVar, VarOrRVar, VarOrRVar, Expr) # TailStrategy = Auto, DeviceAPI = Default_GPU
+        Func& gpu_tile(VarOrRVar, VarOrRVar, Expr, TailStrategy, DeviceAPI)
+        Func& gpu_tile(VarOrRVar, VarOrRVar, Expr, TailStrategy) # DeviceAPI = Default_GPU
+        Func& gpu_tile(VarOrRVar, VarOrRVar, Expr) # TailStrategy = Auto, DeviceAPI = Default_GPU
+        Func& gpu_tile(VarOrRVar, VarOrRVar, VarOrRVar, VarOrRVar, VarOrRVar, VarOrRVar, Expr, Expr, TailStrategy, DeviceAPI)
+        Func& gpu_tile(VarOrRVar, VarOrRVar, VarOrRVar, VarOrRVar, VarOrRVar, VarOrRVar, Expr, Expr, TailStrategy) # DeviceAPI = Default_GPU
+        Func& gpu_tile(VarOrRVar, VarOrRVar, VarOrRVar, VarOrRVar, VarOrRVar, VarOrRVar, Expr, Expr) # TailStrategy = Auto, DeviceAPI = Default_GPU
+        Func& gpu_tile(VarOrRVar, VarOrRVar, VarOrRVar, VarOrRVar, Expr, Expr, TailStrategy, DeviceAPI)
+        Func& gpu_tile(VarOrRVar, VarOrRVar, VarOrRVar, VarOrRVar, Expr, Expr, TailStrategy) # DeviceAPI = Default_GPU
+        Func& gpu_tile(VarOrRVar, VarOrRVar, VarOrRVar, VarOrRVar, Expr, Expr) # TailStrategy = Auto, DeviceAPI = Default_GPU
+        Func& gpu_tile(VarOrRVar, VarOrRVar, VarOrRVar, VarOrRVar, VarOrRVar, VarOrRVar, VarOrRVar, VarOrRVar, VarOrRVar, Expr, Expr, Expr, TailStrategy, DeviceAPI)
+        Func& gpu_tile(VarOrRVar, VarOrRVar, VarOrRVar, VarOrRVar, VarOrRVar, VarOrRVar, VarOrRVar, VarOrRVar, VarOrRVar, Expr, Expr, Expr, TailStrategy) # DeviceAPI = Default_GPU
+        Func& gpu_tile(VarOrRVar, VarOrRVar, VarOrRVar, VarOrRVar, VarOrRVar, VarOrRVar, VarOrRVar, VarOrRVar, VarOrRVar, Expr, Expr, Expr) # TailStrategy = Auto, DeviceAPI = Default_GPU
+        Func& gpu_tile(VarOrRVar, VarOrRVar, VarOrRVar, VarOrRVar, VarOrRVar, VarOrRVar, Expr, Expr, Expr, TailStrategy, DeviceAPI)
+        Func& gpu_tile(VarOrRVar, VarOrRVar, VarOrRVar, VarOrRVar, VarOrRVar, VarOrRVar, Expr, Expr, Expr, TailStrategy) # DeviceAPI = Default_GPU
+        Func& gpu_tile(VarOrRVar, VarOrRVar, VarOrRVar, VarOrRVar, VarOrRVar, VarOrRVar, Expr, Expr, Expr) # TailStrategy = Auto, DeviceAPI = Default_GPU
+        bint has_update_definition()
+        Func& hexagon(VarOrRVar)
+        Func& hexagon()
+        Func func_in "in"(Func&)
+        Func func_in "in"(vector[Func]&)
+        Func func_in "in"()
+        Func& memoize()
+        int num_update_definitions()
+        typevec_t& output_types()
+        int outputs()
+        Func& parallel(VarOrRVar)
+        Func& parallel(VarOrRVar, Expr, TailStrategy)
+        Func& parallel(VarOrRVar, Expr) # TailStrategy = Auto
+        Func& prefetch(Func&, VarOrRVar, Expr, PrefetchBoundStrategy)
+        Func& prefetch(Func&, VarOrRVar, Expr)
+        Func& prefetch(Func&, VarOrRVar)
+        Func& prefetch(Parameter&, VarOrRVar, Expr, PrefetchBoundStrategy)
+        Func& prefetch(Parameter&, VarOrRVar, Expr)
+        Func& prefetch(Parameter&, VarOrRVar)
+        Func& prefetch[T](T&, VarOrRVar, Expr, PrefetchBoundStrategy)
+        Func& prefetch[T](T&, VarOrRVar, Expr)
+        Func& prefetch[T](T&, VarOrRVar)
+        void print_loop_nest()
+        Func& rename(VarOrRVar, VarOrRVar)
+        Func& reorder(varorvec_t&)
+        Func& reorder(VarOrRVar, VarOrRVar, ...)
+        Func& reorder_storage(varvec_t&)
+        rvarvec_t rvars(int)
+        rvarvec_t rvars()
+        Func& serial(VarOrRVar)
+        Func& shader(Var, Var, Var, DeviceAPI)
+        Stage specialize(Expr)
+        void specialize_fail(string&)
+        Func& split(VarOrRVar, VarOrRVar, VarOrRVar, Expr, TailStrategy)
+        Func& split(VarOrRVar, VarOrRVar, VarOrRVar, Expr) # TailStrategy = Auto
+        Func& store_at(Func, Var)
+        Func& store_at(Func, RVar)
+        Func& store_at(LoopLevel)
+        Func& store_root()
+        Func& tile(VarOrRVar, VarOrRVar, VarOrRVar, VarOrRVar, VarOrRVar, VarOrRVar, Expr, Expr, TailStrategy)
+        Func& tile(VarOrRVar, VarOrRVar, VarOrRVar, VarOrRVar, VarOrRVar, VarOrRVar, Expr, Expr) # TailStrategy = Auto
+        Func& tile(VarOrRVar, VarOrRVar, VarOrRVar, VarOrRVar, Expr, Expr, TailStrategy)
+        Func& tile(VarOrRVar, VarOrRVar, VarOrRVar, VarOrRVar, Expr, Expr) # TailStrategy = Auto
+        Func& trace_stores()
+        Func& unroll(VarOrRVar)
+        Func& unroll(VarOrRVar, Expr, TailStrategy)
+        Func& unroll(VarOrRVar, Expr) # TailStrategy = Auto
+        Stage update(int)
+        Stage update()
+        exprvec_t& update_args(int)
+        exprvec_t& update_args()
+        Expr update_value(int)
+        Expr update_value()
+        # Tuple update_values(int)
+        # Tuple update_values()
+        Expr value()
+        # Tuple values()
+        Func& vectorize(VarOrRVar)
+        Func& vectorize(VarOrRVar, Expr, TailStrategy)
+        Func& vectorize(VarOrRVar, Expr) # TailStrategy = Auto
+        Func& vectorize()
+    
+    cppclass GeneratorOutputImpl[T](GeneratorOutputBase):
+        
+        bint is_array()
+        
+        GeneratorOutputImpl(string&, IOKind, typevec_t&, int)
+        
+        FuncRef operator()(...)
+        FuncRef operator()[ExprOrVar](vector[ExprOrVar])
+        
+        # operator Func()
+        # operator Stage()
+        size_t size()
+        Func& operator[](size_t)
+        Func& at(size_t)
+        # vector[Func].const_iterator begin()
+        # vector[Func].const_iterator end()
+        void resize(size_t)
+    
+    cppclass GeneratorOutput_Buffer[T](GeneratorOutputImpl[T]):
+        
+        GeneratorOutput_Buffer[T]& operator=[T2](Buffer[T2]&)
+        GeneratorOutput_Buffer[T]& operator=[T2](StubOutputBuffer[T2]&)
+        GeneratorOutput_Buffer[T]& operator=(Func&)
+        # operator OutputImageParam()
+        
+        Dimension dim(int)
+        int host_alignment()
+        OutputImageParam& set_host_alignment(int)
+        int dimensions()
+        Expr left()
+        Expr right()
+        Expr top()
+        Expr bottom()
+        Expr width()
+        Expr height()
+        Expr channels()
+    
+    cppclass GeneratorOutput_Func[T](GeneratorOutputImpl[T]):
+        
+        GeneratorOutput_Func[T]& operator=(Func&)
+        Func& operator[](size_t)
+        GeneratorOutput_Func[T]& estimate(Var, Expr, Expr)
+    
+    cppclass GeneratorOutput_Func[T](GeneratorOutputImpl[T]):    
+        
+        GeneratorOutput_Arithmetic(string&)
+        GeneratorOutput_Arithmetic(size_t, string&)
+    
+    cppclass GeneratorOutputImplBase[T](GeneratorOutputImpl[T]):
+        # Declaring the greatest-common-ancestor (if that makes sense)
+        # of the type-union-ish thing that this class actually is in
+        # the Halide header
+        pass
+
+cdef extern from "Halide.h" namespace "Halide" nogil:
+    
+    cppclass GeneratorOutput[T](GeneratorOutputImplBase[T]):
+        
+        GeneratorOutput(string&)
+        GeneratorOutput(char*)
+        GeneratorOutput(size_t, string&)
+        GeneratorOutput(string&, int)
+        GeneratorOutput(string&, Type&, int)
+        GeneratorOutput(string&, typevec_t&, int)
+        GeneratorOutput(size_t, string&, int)
+        GeneratorOutput(size_t, string&, Type&, int)
+        GeneratorOutput(size_t, string&, typevec_t&, int)
+        
+        GeneratorOutput[T]& operator=[T2](Buffer[T2]&)
+        GeneratorOutput[T]& operator=[T2](StubOutputBuffer[T2]&)
+        GeneratorOutput[T]& operator=(Func&)
+
+cdef extern from "Halide.h" namespace "Halide::Internal" nogil:
+    
+    T parse_scalar[T](string&)
+    typevec_t parse_halide_type_list(string&)
+    
+    cppclass SyntheticParamType:
+        pass
+
+cdef extern from "Halide.h" namespace "Halide::Internal::SyntheticParamType" nogil:
+    
+    cdef SyntheticParamType SyntheticType       "Type"
+    cdef SyntheticParamType SyntheticDim        "Dim"
+    cdef SyntheticParamType SyntheticArraySize  "ArraySize"
+
+cdef extern from "Halide.h" namespace "Halide::Internal" nogil:
+    
+    cppclass GeneratorParam_Synthetic[T](GeneratorParamImpl[T]):
+        
+        void set_from_string(string&)
+        string get_default_value()
+        string call_to_string(string&)
+        string get_c_type()
+        bint is_synthetic_param()
     
     cppclass GeneratorBase(NamesInterface, GeneratorContext):
         
@@ -237,19 +613,19 @@ cdef extern from "Halide.h" namespace "Halide::Internal" nogil:
         # void set_generator_param(string&, string&)
         void set_generator_param_values(GeneratorParamsMap&)
         
-        # GeneratorBase& set_generator_param[T](string&, T&)
-        # GeneratorBase& set_schedule_param[T](string&, T&)
-        # void set_schedule_param_values(stringmap_t&, llevelmap_t&)
-        
         int natural_vector_size(Type)
         int natural_vector_size[data_t]()
         
         void emit_cpp_stub(string&)
+        
         Module build_module(string&, LinkageType)
+        Module build_module(string&) # LinkageType = ExternalPlusMetadata
+        Module build_module() # function_name = generator_name(),
+                              # LinkageType = ExternalPlusMetadata
         
         void set_inputs(...)
         Realization realize(signedsizevec_t)
-        # Realization realize(...)
+        Realization realize(...)
         void realize(Realization)
         Pipeline get_pipeline()
 
@@ -259,17 +635,12 @@ ctypedef shared_ptr[GeneratorBase]      base_shared_ptr_t
 
 cdef extern from "Halide.h" namespace "Halide::Internal" nogil:
 
-    cppclass GeneratorFactory: # ABSTRACT
-        # base_ptr_t create(GeneratorContext&, stringmap_t&)
-        pass
-    
-    # cppclass GeneratorCreateFunc: # FUNCTOR
-    #     # std::function<std::unique_ptr<Internal::GeneratorBase>(GeneratorContext const&)>
-    #     pass
+    cppclass GeneratorFactory:
+        # In real life, this is defined as a:
+        # std::function<std::unique_ptr<Halide::GeneratorBase>(Halide::GeneratorContext const&)>
+        base_ptr_t operator()(GeneratorContext&)
     
     cppclass SimpleGeneratorFactory(GeneratorFactory):
-        # SimpleGeneratorFactory(GeneratorCreateFunc, string&)
-        # base_ptr_t create(GeneratorContext&, stringmap_t&)
         pass
 
 
@@ -322,7 +693,7 @@ cdef extern from "Halide.h" namespace "Halide::Internal" nogil:
                       GeneratorParamsMap&,
                       stubinputvecvec_t&)
         
-        # vector[vector[Func]] generate(GeneratorParamsMap&, stubinputvecvec_t&)
+        vector[vector[Func]] generate(GeneratorParamsMap&, stubinputvecvec_t&)
         
         Func get_output(string&)
         T2 get_output_buffer[T2](string&)

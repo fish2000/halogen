@@ -172,7 +172,10 @@ def generate(*generators, **arguments):
     return artifacts
 
 
-def main():    
+def main():
+    
+    """ Run the inline tests for the halogen.generate module """
+    
     import sys, os
     sys.path.append(os.path.dirname(os.path.dirname(__file__)))
     sys.path.append(os.path.dirname(__file__))
