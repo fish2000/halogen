@@ -44,16 +44,6 @@ cdef extern from "Halide.h" namespace "Halide::Internal" nogil:
             SmallStack[T]& stack()
             T& value()
         
-            cppclass const_iterator:
-            
-                const_iterator(stringstackmap_t&)
-                const_iterator()
-                bint operator!=(const_iterator&)
-                void operator++()
-                string& name()
-                SmallStack[T]& stack()
-                T& value()
-        
         const_iterator cbegin()
         const_iterator cend()
         
