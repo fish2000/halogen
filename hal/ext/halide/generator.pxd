@@ -180,6 +180,7 @@ cdef extern from "Halide.h" namespace "Halide::Internal" nogil:
     
 cdef extern from "Halide.h" namespace "Halide::Internal::IOKind" nogil:
     
+    # I think all three of these are namespace catastrophes somehow: 
     cdef IOKind IOScalar    "Scalar"
     cdef IOKind IOFunction  "Function"
     cdef IOKind IOBuffer    "Buffer"
