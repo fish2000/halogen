@@ -43,9 +43,6 @@ classifiers = [
     'Programming Language :: C++',
     'License :: OSI Approved :: MIT License']
 
-# api_extension_sources = [os.path.join('hal', 'api.pyx'),
-#                          os.path.join('generators', 'lesson_15_generators.cpp'),
-#                          os.path.join('generators', 'lesson_16_rgb_generate.cpp')]
 api_extension_sources = [os.path.join('hal', 'api.pyx')]
 haldol_source_names = ('detail.cc', 'gil.cc', 'structcode.cc', 'terminal.cc', 'typecode.cc')
 haldol_sources = [os.path.join('haldol', source) for source in haldol_source_names]

@@ -6,6 +6,7 @@ import os
 import sys
 import shutil
 import config
+import tempfile
 
 from tempfile import mktemp
 from config import SHARED_LIBRARY_SUFFIX, STATIC_LIBRARY_SUFFIX, DEFAULT_VERBOSITY
@@ -51,6 +52,7 @@ class Generator(object):
                              source,
                            **kwargs):
         self.VERBOSE = kwargs.pop('verbose', DEFAULT_VERBOSITY)
+        self.intermediate = kwargs.pop('intermediate', None)
         self.conf = conf
         self.destination = destination
         self.source = os.path.realpath(source)
@@ -65,6 +67,9 @@ class Generator(object):
         if self.VERBOSE:
             print("Pre-compiling: %s" % os.path.basename(self.source))
         if not self.compiled:
+            if self.intermediate:
+                if not os.path.isdir(self.intermediate):
+                    raise CompilerError("Non-existent intermediate artifact directory: %s" % self.intermediate)
             if not os.path.isfile(self.source):
                 raise CompilerError("can't find compilation input: %s" % self.source)
             if os.path.exists(self.destination):
@@ -84,7 +89,8 @@ class Generator(object):
             splitbase = os.path.splitext(
                         os.path.basename(self.source))
             self.transient = mktemp(prefix=splitbase[0],
-                                    suffix="%s.o" % splitbase[1])
+                                    suffix="%s.o" % splitbase[1],
+                                    dir=self.intermediate)
             self.result += config.CXX(self.conf,
                                       self.transient,
                                       self.source, verbose=self.VERBOSE)
@@ -136,7 +142,8 @@ class Generators(object):
         for each discovered source file, OK) use a TemporaryName as their output targets -- so
         it's like POOF, no fuss no muss, basically """
     
-    def __init__(self, conf, destination, directory=None, suffix="cpp",
+    def __init__(self, conf, destination, directory=None, intermediate=None,
+                                                          suffix="cpp",
                                                           prefix="yodogg",
                                           do_shared=True, do_static=True,
                                           do_preload=True,
@@ -155,6 +162,9 @@ class Generators(object):
         self.destination = Directory(pth=destination)
         if not self.destination.exists:
             raise CompilerError("Non-existant generator destination: %s" % self.destination.name)
+        self.intermediate = Directory(pth=intermediate or tempfile.gettempdir())
+        if not self.intermediate.exists:
+            self.intermediate.makedirs()
         self.library = os.path.join(self.destination.name, "%s%s" % (self.prefix, SHARED_LIBRARY_SUFFIX))
         self.archive = os.path.join(self.destination.name, "%s%s" % (self.prefix, STATIC_LIBRARY_SUFFIX))
         self.directory = Directory(pth=directory)
@@ -209,15 +219,21 @@ class Generators(object):
         """ Number (int) of compiled but as-of-yet unlinked generators """
         return len(self.prelink)
     
+    @property
+    def object_suffix(self):
+        return u8str("%s%so" % (self.suffix, os.extsep))
+    
     def compile_all(self):
         if self.source_count < 1:
             raise CompilerError("can't find any compilation inputs: %s" % self.directory.name)
         if self.VERBOSE:
             print("Compiling %s generator source files\n" % self.source_count)
         for source in self.sources:
-            with TemporaryName(suffix="%s.o" % self.suffix) as tn:
+            with TemporaryName(suffix=self.object_suffix) as tn:
                 with Generator(self.conf,
                                source=source, destination=tn.name,
+                               intermediate=getattr(self.intermediate, "name",
+                                                str(self.intermediate)),
                                verbose=self.VERBOSE) as gen:
                     if gen.compiled:
                         self.prelink.append(tn.do_not_destroy())
@@ -321,6 +337,12 @@ class Generators(object):
         return generated
     
     def clear(self):
+        """ Delete temporary compilation artifacts: """
+        # if self.VERBOSE:
+        #     print("Cleaning up %s intermediates" % len(list(self.intermediate.ls(
+        #                                                     pth=getattr(self.intermediate, "name",
+        #                                                           u8str(self.intermediate)),
+        #                                                     suffix=self.object_suffix))))
         for of in self.prelink:
             rm_rf(of)
     
@@ -404,7 +426,7 @@ def main():
                 rm_rf(destination.name)
             if DEFAULT_VERBOSITY:
                 print("Copying from %s to %s..." % (td.name, destination.name))
-            td.copy_all(destination.name)
+            td.copy_all(destination)
             
             with TemporaryName(suffix="zip", parent=zip_destination) as tz:
                 if DEFAULT_VERBOSITY:

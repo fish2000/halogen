@@ -627,7 +627,8 @@ cdef class EmitOptions:
         'emit_python_extension' : False,
         'emit_static_library'   : True,
         'emit_cpp_stub'         : False,
-        'emit_schedule'         : False
+        'emit_schedule'         : False,
+        'substitutions'         : {}
     }
     
     def __cinit__(EmitOptions self, *args, **kwargs):
@@ -660,7 +661,7 @@ cdef class EmitOptions:
         emit_static_library = bool(kwargs.pop('emit_static_library',        self.emit_defaults['emit_static_library']))
         emit_cpp_stub = bool(kwargs.pop('emit_cpp_stub',                    self.emit_defaults['emit_cpp_stub']))
         emit_schedule = bool(kwargs.pop('emit_schedule',                    self.emit_defaults['emit_schedule']))
-        substitutions = kwargs.pop('substitutions',                         {})
+        substitutions = kwargs.pop('substitutions',                         self.emit_defaults['substitutions'])
         
         if not PyMapping_Check(substitutions):
             raise ValueError("substitutions must be a mapping type")
@@ -813,7 +814,7 @@ cdef class EmitOptions:
         return output_files
     
     def to_string(EmitOptions self):
-        return stringify(self, tuple(self.emit_defaults.keys()) + ('substitutions',))
+        return stringify(self, self.emit_defaults.keys())
     
     def __bytes__(EmitOptions self):
         return self.to_string()

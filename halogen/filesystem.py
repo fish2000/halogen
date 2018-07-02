@@ -247,6 +247,9 @@ class TemporaryName(object):
             return os.path.realpath(self.name)
         return self.name
     
+    def __bytes__(self):
+        return u8bytes(str(self))
+    
     def __unicode__(self):
         return six.u(str(self))
 
@@ -376,6 +379,9 @@ class Directory(object):
             return self.realpath()
         return self.name
     
+    def __bytes__(self):
+        return u8bytes(str(self))
+    
     def __unicode__(self):
         return six.u(str(self))
 
@@ -438,11 +444,12 @@ class TemporaryDirectory(Directory):
         return self._destroy
     
     def copy_all(self, destination):
-        if os.path.exists(destination):
-            raise FilesystemError("TemporaryDirectory.copy_all() destination existant: %s" % destination)
+        destpth = getattr(destination, 'name', str(destination))
+        if os.path.exists(destpth):
+            raise FilesystemError("TemporaryDirectory.copy_all() destination existant: %s" % destpth)
         if self.exists:
             return shutil.copytree(u8str(self.name),
-                                   u8str(destination))
+                                   u8str(destpth))
         return False
     
     def do_not_destroy(self):

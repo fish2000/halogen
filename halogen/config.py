@@ -858,7 +858,7 @@ class ConfigUnion(ConfigBase):
             very little sense, frankly):
         """
         self.configs = []
-        for config in list(configs):
+        for config in configs:
             if hasattr(config, 'configs'):
                 # extract configs from a ConfigUnion instance:
                 self.configs.extend(config.configs)
