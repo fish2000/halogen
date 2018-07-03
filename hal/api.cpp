@@ -18,7 +18,7 @@
             ]
         ],
         "depends": [
-            "/usr/local/Cellar/python/3.6.5_1/Frameworks/Python.framework/Versions/3.6/include/python3.6m/Python.h",
+            "/usr/local/Cellar/python/3.7.0/Frameworks/Python.framework/Versions/3.7/include/python3.7m/Python.h",
             "haldol/include/detail.hh"
         ],
         "extra_compile_args": [
@@ -36,8 +36,8 @@
             "-lHalide"
         ],
         "include_dirs": [
-            "/usr/local/Cellar/python/3.6.5_1/Frameworks/Python.framework/Versions/3.6/include/python3.6m",
-            "/usr/local/lib/python3.6/site-packages/numpy/core/include",
+            "/usr/local/Cellar/python/3.7.0/Frameworks/Python.framework/Versions/3.7/include/python3.7m",
+            "/usr/local/lib/python3.7/site-packages/numpy/core/include",
             "haldol/include",
             "."
         ],
@@ -1617,8 +1617,8 @@ typedef Halide::GeneratorParam<Halide::Target>  __pyx_t_3hal_3ext_6halide_9gener
  */
 typedef std::vector<int32_t>  __pyx_t_3hal_3ext_6halide_9generator_signedsizevec_t;
 
-/* "ext/halide/generator.pxd":633
- * 
+/* "ext/halide/generator.pxd":183
+ *         pass
  * 
  * ctypedef unique_ptr[GeneratorBase]      base_ptr_t             # <<<<<<<<<<<<<<
  * ctypedef shared_ptr[GeneratorBase]      base_shared_ptr_t
@@ -1626,17 +1626,17 @@ typedef std::vector<int32_t>  __pyx_t_3hal_3ext_6halide_9generator_signedsizevec
  */
 typedef std::unique_ptr<Halide::Internal::GeneratorBase>  __pyx_t_3hal_3ext_6halide_9generator_base_ptr_t;
 
-/* "ext/halide/generator.pxd":634
+/* "ext/halide/generator.pxd":184
  * 
  * ctypedef unique_ptr[GeneratorBase]      base_ptr_t
  * ctypedef shared_ptr[GeneratorBase]      base_shared_ptr_t             # <<<<<<<<<<<<<<
  * 
- * cdef extern from "Halide.h" namespace "Halide::Internal" nogil:
+ * cdef extern from "Halide.h" namespace "Halide::Internal::IOKind" nogil:
  */
 typedef std::shared_ptr<Halide::Internal::GeneratorBase>  __pyx_t_3hal_3ext_6halide_9generator_base_shared_ptr_t;
 
-/* "ext/halide/generator.pxd":647
- * 
+/* "ext/halide/generator.pxd":659
+ *         pass
  * 
  * ctypedef unique_ptr[GeneratorFactory]   factory_ptr_t             # <<<<<<<<<<<<<<
  * 
@@ -1644,7 +1644,7 @@ typedef std::shared_ptr<Halide::Internal::GeneratorBase>  __pyx_t_3hal_3ext_6hal
  */
 typedef std::unique_ptr<Halide::Internal::GeneratorFactory>  __pyx_t_3hal_3ext_6halide_9generator_factory_ptr_t;
 
-/* "ext/halide/generator.pxd":678
+/* "ext/halide/generator.pxd":689
  *         void apply(...)
  * 
  * ctypedef vector[vector[StubInput]]  stubinputvecvec_t             # <<<<<<<<<<<<<<
@@ -1653,7 +1653,7 @@ typedef std::unique_ptr<Halide::Internal::GeneratorFactory>  __pyx_t_3hal_3ext_6
  */
 typedef std::vector<std::vector<Halide::Internal::StubInput> >  __pyx_t_3hal_3ext_6halide_9generator_stubinputvecvec_t;
 
-/* "ext/halide/generator.pxd":679
+/* "ext/halide/generator.pxd":690
  * 
  * ctypedef vector[vector[StubInput]]  stubinputvecvec_t
  * ctypedef vector[StubInput]          stubinputvec_t             # <<<<<<<<<<<<<<
@@ -23269,8 +23269,8 @@ static PyObject *__pyx_pf_3hal_3api_26running_program_name(CYTHON_UNUSED PyObjec
   return __pyx_r;
 }
 
-/* "ext/halide/generator.pxd":730
- * 
+/* "ext/halide/generator.pxd":740
+ *         pass
  * 
  * cdef inline base_ptr_t generator_registry_get(string& name,             # <<<<<<<<<<<<<<
  *                                               Target& target,
@@ -23280,7 +23280,7 @@ static PyObject *__pyx_pf_3hal_3api_26running_program_name(CYTHON_UNUSED PyObjec
 static CYTHON_INLINE __pyx_t_3hal_3ext_6halide_9generator_base_ptr_t __pyx_f_3hal_3ext_6halide_9generator_generator_registry_get(std::string &__pyx_v_name, Halide::Target &__pyx_v_target, CYTHON_UNUSED __pyx_t_3hal_3ext_6halide_9generator_stringmap_t &__pyx_v_args) {
   __pyx_t_3hal_3ext_6halide_9generator_base_ptr_t __pyx_r;
 
-  /* "ext/halide/generator.pxd":733
+  /* "ext/halide/generator.pxd":743
  *                                               Target& target,
  *                                               stringmap_t& args) nogil:
  *     return GeneratorRegistry.create(name, GeneratorContext(target))             # <<<<<<<<<<<<<<
@@ -23290,8 +23290,8 @@ static CYTHON_INLINE __pyx_t_3hal_3ext_6halide_9generator_base_ptr_t __pyx_f_3ha
   __pyx_r = Halide::Internal::GeneratorRegistry::create(__pyx_v_name, Halide::GeneratorContext(__pyx_v_target));
   goto __pyx_L0;
 
-  /* "ext/halide/generator.pxd":730
- * 
+  /* "ext/halide/generator.pxd":740
+ *         pass
  * 
  * cdef inline base_ptr_t generator_registry_get(string& name,             # <<<<<<<<<<<<<<
  *                                               Target& target,
@@ -23303,7 +23303,7 @@ static CYTHON_INLINE __pyx_t_3hal_3ext_6halide_9generator_base_ptr_t __pyx_f_3ha
   return __pyx_r;
 }
 
-/* "ext/halide/generator.pxd":735
+/* "ext/halide/generator.pxd":745
  *     return GeneratorRegistry.create(name, GeneratorContext(target))
  * 
  * cdef inline base_ptr_t generator_registry_create(string& name) nogil:             # <<<<<<<<<<<<<<
@@ -23315,7 +23315,7 @@ static CYTHON_INLINE __pyx_t_3hal_3ext_6halide_9generator_base_ptr_t __pyx_f_3ha
   Halide::Target __pyx_v_t;
   __pyx_t_3hal_3ext_6halide_9generator_base_ptr_t __pyx_r;
 
-  /* "ext/halide/generator.pxd":736
+  /* "ext/halide/generator.pxd":746
  * 
  * cdef inline base_ptr_t generator_registry_create(string& name) nogil:
  *     cdef Target t = get_target_from_environment()             # <<<<<<<<<<<<<<
@@ -23323,7 +23323,7 @@ static CYTHON_INLINE __pyx_t_3hal_3ext_6halide_9generator_base_ptr_t __pyx_f_3ha
  */
   __pyx_v_t = Halide::get_target_from_environment();
 
-  /* "ext/halide/generator.pxd":737
+  /* "ext/halide/generator.pxd":747
  * cdef inline base_ptr_t generator_registry_create(string& name) nogil:
  *     cdef Target t = get_target_from_environment()
  *     return GeneratorRegistry.create(name, GeneratorContext(t))             # <<<<<<<<<<<<<<
@@ -23331,7 +23331,7 @@ static CYTHON_INLINE __pyx_t_3hal_3ext_6halide_9generator_base_ptr_t __pyx_f_3ha
   __pyx_r = Halide::Internal::GeneratorRegistry::create(__pyx_v_name, Halide::GeneratorContext(__pyx_v_t));
   goto __pyx_L0;
 
-  /* "ext/halide/generator.pxd":735
+  /* "ext/halide/generator.pxd":745
  *     return GeneratorRegistry.create(name, GeneratorContext(target))
  * 
  * cdef inline base_ptr_t generator_registry_create(string& name) nogil:             # <<<<<<<<<<<<<<

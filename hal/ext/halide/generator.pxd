@@ -13,7 +13,7 @@ from dimension cimport Dimension
 from expr cimport Expr
 from externalcode cimport ExternalCode
 from func cimport FuncRef
-# from function cimport Function, NameMangling, ExternFuncArgument, extargvec_t
+# from function cimport NameMangling, ExternFuncArgument # used in disabled conversion operators
 from image cimport OutputImageParam, ImageParam
 from module cimport Module, LinkageType
 from parameter cimport Parameter
@@ -175,9 +175,14 @@ ctypedef vector[int32_t]                    signedsizevec_t
 
 cdef extern from "Halide.h" namespace "Halide::Internal" nogil:
     
+    cppclass GeneratorBase # FORWARD!!
+    
     cppclass IOKind:
         pass
-    
+
+ctypedef unique_ptr[GeneratorBase]      base_ptr_t
+ctypedef shared_ptr[GeneratorBase]      base_shared_ptr_t
+
 cdef extern from "Halide.h" namespace "Halide::Internal::IOKind" nogil:
     
     # I think all three of these are namespace catastrophes somehow: 
@@ -186,17 +191,19 @@ cdef extern from "Halide.h" namespace "Halide::Internal::IOKind" nogil:
     cdef IOKind IOBuffer    "Buffer"
     
 cdef extern from "Halide.h" namespace "Halide::Internal" nogil:
-    
+
     cppclass StubInputBuffer[T]: # T = void
         StubInputBuffer()
         # StubInputBuffer[T2](Buffer[T2]&)
     
     cppclass StubOutputBufferBase:
         Realization realize(signedsizevec_t)
+        Realization realize(...)
         void realize[Dst](Dst)
     
     cppclass StubOutputBuffer[T](StubOutputBufferBase): # T = void
         StubOutputBuffer()
+        StubOutputBuffer(Func&, base_shared_ptr_t)
     
     cppclass StubInput:
         # StubInput[T2](StubInputBuffer[T2]&)
@@ -218,14 +225,15 @@ cdef extern from "Halide.h" namespace "Halide::Internal" nogil:
         exprvec_t& exprs()
     
     cppclass GeneratorInputBase(GIOBase):
+        # Everything in this class is protected
         pass
     
     cppclass GeneratorInputImpl[T, ValueType](GeneratorInputBase):
         size_t size()
         ValueType& operator[](size_t)
         ValueType& at(size_t)
-        # vector[ValueType].const_iterator begin()
-        # vector[ValueType].const_iterator end()
+        vector[ValueType].const_iterator begin()
+        vector[ValueType].const_iterator end()
     
     cppclass GeneratorInput_Buffer[T](GeneratorInputImpl[T, Func]):
         GeneratorInput_Buffer(string&)
@@ -236,6 +244,7 @@ cdef extern from "Halide.h" namespace "Halide::Internal" nogil:
         Expr operator()(...)
         Expr operator()(exprvec_t)
         
+        # operator StubInputBuffer[T2]()
         # operator Func()
         # operator ExternFuncArgument()
         GeneratorInput_Buffer[T]& estimate(Var, Expr, Expr)
@@ -248,6 +257,8 @@ cdef extern from "Halide.h" namespace "Halide::Internal" nogil:
         size_t size()
         ImageParam operator[][T2](size_t)
         ImageParam at[T2](size_t)
+        vector[ImageParam].const_iterator begin()
+        vector[ImageParam].const_iterator end()
         
         Dimension dim(int)
         int host_alignment()
@@ -304,7 +315,6 @@ cdef extern from "Halide.h" namespace "Halide::Internal" nogil:
         
         # ctypedef GeneratorInputImpl[T, Expr] Super
         # ctypedef Super.TBase TBase
-        # ctypedef GeneratorInputImpl[T, Expr].TBase TBase
         
         # GeneratorInput_Scalar(string&, TBase&)
         GeneratorInput_Scalar(string&, T&)
@@ -313,6 +323,7 @@ cdef extern from "Halide.h" namespace "Halide::Internal" nogil:
         GeneratorInput_Scalar(size_t, string&, T&)
         GeneratorInput_Scalar(size_t, string&)
         
+        # operator Expr()
         # operator ExternFuncArgument()
         void set_estimate(T&)
     
@@ -346,6 +357,8 @@ cdef extern from "Halide.h" namespace "Halide" nogil:
         # ctypedef Super.TBase TBase
         
         cppclass IntIfNonScalar:
+            # In reality this is a bizarre “using” statement using
+            # lots of STL type-traits to become what it says it is
             pass
         
         GeneratorInput(string&)
@@ -367,6 +380,9 @@ cdef extern from "Halide.h" namespace "Halide::Internal" nogil:
     cppclass Stage
     
     cppclass GeneratorOutputBase(GIOBase):
+        T2 as[T2]()
+        
+        # Forwarded `Func` methods: 
         Func& add_trace_tag(string&)
         Func& align_bounds(Var, Expr, Expr)
         Func& align_bounds(Var, Expr)
@@ -510,8 +526,8 @@ cdef extern from "Halide.h" namespace "Halide::Internal" nogil:
         size_t size()
         Func& operator[](size_t)
         Func& at(size_t)
-        # vector[Func].const_iterator begin()
-        # vector[Func].const_iterator end()
+        vector[Func].const_iterator begin()
+        vector[Func].const_iterator end()
         void resize(size_t)
     
     cppclass GeneratorOutput_Buffer[T](GeneratorOutputImpl[T]):
@@ -521,6 +537,7 @@ cdef extern from "Halide.h" namespace "Halide::Internal" nogil:
         GeneratorOutput_Buffer[T]& operator=(Func&)
         # operator OutputImageParam()
         
+        # Forwarded `OutputImageParam` methods:
         Dimension dim(int)
         int host_alignment()
         OutputImageParam& set_host_alignment(int)
@@ -539,7 +556,7 @@ cdef extern from "Halide.h" namespace "Halide::Internal" nogil:
         Func& operator[](size_t)
         GeneratorOutput_Func[T]& estimate(Var, Expr, Expr)
     
-    cppclass GeneratorOutput_Func[T](GeneratorOutputImpl[T]):    
+    cppclass GeneratorOutput_Arithmetic[T](GeneratorOutputImpl[T]):
         
         GeneratorOutput_Arithmetic(string&)
         GeneratorOutput_Arithmetic(size_t, string&)
@@ -611,7 +628,6 @@ cdef extern from "Halide.h" namespace "Halide::Internal" nogil:
         
         Target get_target()
         
-        # void set_generator_param(string&, string&)
         void set_generator_param_values(GeneratorParamsMap&)
         
         int natural_vector_size(Type)
@@ -630,10 +646,6 @@ cdef extern from "Halide.h" namespace "Halide::Internal" nogil:
         void realize(Realization)
         Pipeline get_pipeline()
 
-
-ctypedef unique_ptr[GeneratorBase]      base_ptr_t
-ctypedef shared_ptr[GeneratorBase]      base_shared_ptr_t
-
 cdef extern from "Halide.h" namespace "Halide::Internal" nogil:
 
     cppclass GeneratorFactory:
@@ -643,7 +655,6 @@ cdef extern from "Halide.h" namespace "Halide::Internal" nogil:
     
     cppclass SimpleGeneratorFactory(GeneratorFactory):
         pass
-
 
 ctypedef unique_ptr[GeneratorFactory]   factory_ptr_t
 
@@ -662,7 +673,6 @@ cdef extern from "Halide.h" namespace "Halide::Internal" nogil:
         
         @staticmethod
         base_ptr_t create(string&, GeneratorContext&)
-
 
 cdef extern from "Halide.h" namespace "Halide" nogil:
     
@@ -726,7 +736,6 @@ cdef extern from "Halide.h" namespace "Halide::Internal" nogil:
 cdef extern from "Halide.h" namespace "halide_register_generator" nogil:
     cppclass halide_global_ns:
         pass
-
 
 cdef inline base_ptr_t generator_registry_get(string& name,
                                               Target& target,
