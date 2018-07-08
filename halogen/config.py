@@ -240,6 +240,9 @@ class ConfigBase(BaseAncestor):
         return os.path.exists(fulldir) and fulldir or None
     
     def to_string(self, field_list=None):
+        """ Stringify the instance, using either a provided list of fields to evaluate,
+            or if none was provided, the iterable-of-strings class variable “fields”.
+        """
         if not field_list:
             field_list = self.__class__.fields
         return stringify(self, field_list)
@@ -293,6 +296,7 @@ class PythonConfig(ConfigBase):
     framework_path = None
     
     def __init__(self, prefix=None):
+        """ Initialize PythonConfig, optionally specifying a system prefix """
         if not prefix:
             prefix = str(sys.prefix)
         self.prefix = prefix
@@ -374,6 +378,7 @@ class BrewedPythonConfig(PythonConfig):
     brew = which("brew")
     
     def __init__(self, brew_name=None):
+        """ Initialize BrewedPythonConfig, optionally naming a homebrew formula """
         if not self.brew:
             raise IOError("Can't find Homebrew “brew” executable")
         if not brew_name:
@@ -408,6 +413,7 @@ class SysConfig(PythonConfig):
     """
     
     def __init__(self):
+        """ Initialize SysConfig, optionally specifying a system path """
         prefix = sysconfig.get_path("data")
         super(SysConfig, self).__init__(prefix=prefix)
     
@@ -480,6 +486,7 @@ class PkgConfig(ConfigBase):
     
     @classmethod
     def load_packages(cls):
+        """ Load all package names from `pkg-config` """
         if not cls.did_load_packages:
             from errors import ExecutionError
             script = which('all-pkgconfig-packages.sh', pathvar=script_path())
@@ -493,13 +500,16 @@ class PkgConfig(ConfigBase):
     
     @classmethod
     def add_package(cls, pkg_name):
+        """ Add a package name to the set of all package names """
         cls.packages |= { pkg_name }
     
     @classmethod
     def check_package(cls, pkg_name):
+        """ Check a package name for validity against the loaded set of names """
         return pkg_name in cls.packages
     
     def __init__(self, pkg_name=None):
+        """ Initialize PkgConfig, optionally naming a package (the default is “python3”) """
         if not pkg_name:
             pkg_name = 'python3'
         self.pkg_name = pkg_name
@@ -567,6 +577,7 @@ class BrewedConfig(ConfigBase):
                         "-O3"))
     
     def __init__(self, brew_name=None):
+        """ Initialize BrewedConfig, optionally naming a formula (the default is “halide”) """
         if not brew_name:
             brew_name = 'halide'
         self.brew_name = brew_name
@@ -621,6 +632,7 @@ class BrewedHalideConfig(BrewedConfig):
                         "-stdlib=libc++")) | BrewedConfig.cflags
     
     def __init__(self):
+        """ Initialize BrewedHalideConfig (constructor takes no arguments) """
         super(BrewedHalideConfig, self).__init__(brew_name=self.library.lower())
     
     def get_libs(self):

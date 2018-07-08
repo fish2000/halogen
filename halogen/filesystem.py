@@ -24,7 +24,7 @@ DEFAULT_PATH = ":".join(filter(os.path.exists, ("/usr/local/bin",
 DEFAULT_ENCODING = 'latin-1'
 
 def script_path():
-    """ Return the path to the embedded scripts directory """
+    """ Return the path to the embedded scripts directory. """
     return os.path.join(
            os.path.dirname(__file__), 'scripts')
 
@@ -36,15 +36,15 @@ def which(binary_name, pathvar=None):
         executables that cannot be found.
     """
     from distutils.spawn import find_executable
-    if not pathvar:
-        pathvar = os.getenv("PATH", DEFAULT_PATH)
-    return find_executable(binary_name, pathvar) or ""
+    if not hasattr(which, 'pathvar'):
+        which.pathvar = os.getenv("PATH", DEFAULT_PATH)
+    return find_executable(binary_name, which.pathvar) or ""
 
 def back_tick(cmd, ret_err=False, as_str=True,
                  raise_err=None,
                    verbose=False):
-    """ Run command `cmd`, return stdout, or stdout, stderr if `ret_err`
-        Roughly equivalent to ``check_output`` in Python 2.7
+    """ Run command `cmd`, return stdout -- or (stdout, stderr) if `ret_err`.
+        Roughly equivalent to ``check_output`` in Python 2.7.
         
         Parameters
         ----------
@@ -57,9 +57,9 @@ def back_tick(cmd, ret_err=False, as_str=True,
             Whether to decode outputs to unicode string on exit.
         raise_err : None or bool, optional
             If True, raise RuntimeError for non-zero return code. If None, set to
-            True when `ret_err` is False, False if `ret_err` is True
+            True when `ret_err` is False, False if `ret_err` is True.
         verbose : bool, optional
-            Whether to spew debug information to stderr
+            Whether to spew debug information to stderr.
         
         Returns
         -------
@@ -72,7 +72,7 @@ def back_tick(cmd, ret_err=False, as_str=True,
         Raises
         ------
         Raises RuntimeError if the executed command returns non-zero exit code
-        and `raise_err` is True
+        and `raise_err` is True.
     """
     import subprocess
     if raise_err is None:
@@ -133,7 +133,7 @@ def TemporaryNamedFile(pth, mode='wb', buffer_size=-1, delete=True):
         Parameters
         ----------
         pth : str / bytes / descriptor / filename-ish
-            File name, path, or descriptor to open
+            File name, path, or descriptor to open.
         mode : str / bytes, optional
             String-like symbolic explication of mode with which to open
             the file -- q.v. ``io.open(…)`` or ``__builtins__.open(…)``
@@ -226,19 +226,25 @@ class TemporaryName(object):
     
     @property
     def name(self):
-        """ The temporary file path (which initially does not exist) """
+        """ The temporary file path (which initially does not exist). """
         return self._name
     
     @property
     def exists(self):
-        """ Whether or not there is an existant file at the temporary file path """
+        """ Whether or not there is anything existant at the temporary file path.
+            
+            Note that this property will be true for directories created therein,
+            as well as FIFOs or /dev entries, or any of the other zany filesystem
+            possibilities you and the POSIX standard can imagine, in addition to
+            regular files.
+        """
         return os.path.exists(self._name)
     
     @property
     def destroy(self):
         """ Whether or not this TemporaryName instance should destroy any file
             that should happen to exist at its temporary file path (as per its
-            “name” attribute) on scope exit
+            “name” attribute) on scope exit.
         """
         return self._destroy
     
@@ -348,12 +354,12 @@ class Directory(object):
     
     @property
     def name(self):
-        """ The instances’ target directory """
+        """ The instances’ target directory path. """
         return self.new
     
     @property
     def exists(self):
-        """ Whether or not the instances’ target directory exists """
+        """ Whether or not the instances’ target path exists as a directory. """
         return os.path.isdir(self.name)
     
     def __enter__(self):
@@ -437,7 +443,7 @@ class Directory(object):
         return filter(self.suffix_searcher(suffix), files)
     
     def subdirectory(self, subdir, whence=None):
-        """ Returns the path to a subdirectory within this Directory instances’ root path """
+        """ Returns the path to a subdirectory beneath the instances’ target path. """
         if not whence:
             whence = self.name
         fulldir = os.path.join(whence, subdir)
@@ -522,17 +528,17 @@ class Directory(object):
 
 class cd(Directory):
     
-    """ Change to a new directory (a new path specification is required) """
-    
     def __init__(self, pth):
+        """ Change to a new directory (a new path specification `pth` is required).
+        """
         super(cd, self).__init__(pth=os.path.realpath(pth))
 
 
 class wd(Directory):
     
-    """ Use the current working directory (no path specification necessary) """
-    
     def __init__(self):
+        """ Initialize a Directory instance for the current working directory.
+        """
         super(wd, self).__init__(pth=None)
 
 
@@ -581,17 +587,17 @@ class TemporaryDirectory(Directory):
     
     @property
     def name(self):
-        """ The temporary directory pathname """
+        """ The temporary directory pathname. """
         return self._name
     
     @property
     def exists(self):
-        """ Whether or not the temporary directory exists """
+        """ Whether or not the temporary directory exists. """
         return os.path.isdir(self._name)
     
     @property
     def destroy(self):
-        """ Whether or not the temporary directory has been marked for manual deletion """
+        """ Whether or not the temporary directory has been marked for manual deletion. """
         return self._destroy
     
     def copy_all(self, destination):
@@ -601,7 +607,8 @@ class TemporaryDirectory(Directory):
             of TemporaryDirectory, `td`, and you want to copy it to `/home/me/myshit`, 
             `/home/me` should already exist but `/home/me/myshit` should not, as the `myshit`
             subdirectory will be created when you invoke `td.copy_all('/home/me/myshit')`.
-            Does that make sense?
+            Does that make sense to you? Try it, you’ll get a FilesystemError if it evidently
+            did not make sense to you.
             
             Internally, this method uses `shutil.copytree(…)` to tell the filesystem what
             to copy where.
@@ -689,7 +696,7 @@ def NamedTemporaryFile(mode='w+b', buffer_size=-1,
 
 def main():
     
-    """ Run the inline tests for the halogen.filesystem module """
+    """ Run the inline tests for the halogen.filesystem module. """
     
     # test “cd” and “cwd”:
     import tempfile, os
