@@ -3,6 +3,12 @@
 from __future__ import print_function
 from types import MappingProxyType as mappingproxy
 
+__all__ = ('valid_emits', 'emit_defaults',
+                          'default_emits',
+           'preload',
+           'generate',
+           'main')
+
 valid_emits = frozenset((
     'assembly',
     'bitcode',

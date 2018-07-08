@@ -4,6 +4,13 @@ from __future__ import print_function
 from functools import wraps
 import six
 
+__all__ = ('get_terminal_size', 'terminal_width',
+                                'terminal_height',
+           'wrap_value', 'Memoizer', 'memoize',
+           'current_umask', 'masked_permissions',
+           'u8bytes', 'u8str', 'stringify',
+           'terminal_print', 'print_config', 'test_compile')
+
 # get_terminal_size(): does what you think it does
 # adapted from this: http://stackoverflow.com/a/566752/298171
 def get_terminal_size(default_LINES=25, default_COLUMNS=80):

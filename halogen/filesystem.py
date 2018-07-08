@@ -17,6 +17,15 @@ from tempfile import mktemp, mkdtemp, gettempprefix
 from errors import ExecutionError, FilesystemError
 from utils import memoize, u8bytes, u8str, stringify
 
+__all__ = ('DEFAULT_PATH', 'DEFAULT_ENCODING',
+           'script_path', 'which', 'back_tick', 'rm_rf',
+           'TemporaryNamedFile',
+           'TemporaryName',
+           'Directory', 'cd', 'wd',
+           'TemporaryDirectory',
+           'NamedTemporaryFile',
+           'main')
+
 DEFAULT_PATH = ":".join(filter(os.path.exists, ("/usr/local/bin",
                                                 "/bin",  "/usr/bin",
                                                 "/sbin", "/usr/sbin")))

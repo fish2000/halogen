@@ -15,6 +15,12 @@ from generate import preload, generate, default_emits
 from filesystem import TemporaryName, Directory, TemporaryDirectory, rm_rf
 from utils import u8str
 
+__all__ = ('CONF',
+           'CompilerError', 'LinkerError', 'ArchiverError',
+           'Generator',
+           'Generators',
+           'main')
+
 CONF = config.ConfigUnion(config.SysConfig(),
                           config.BrewedHalideConfig())
 

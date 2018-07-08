@@ -25,6 +25,20 @@ from functools import wraps
 from filesystem import which, back_tick, script_path
 from utils import stringify, u8bytes
 
+__all__ = ('SHARED_LIBRARY_SUFFIX',
+           'STATIC_LIBRARY_SUFFIX',
+           'DEFAULT_VERBOSITY', 'TOKEN',
+           'ConfigSubBase', 'ConfigBaseMeta', 'ConfigBase',
+           'PythonConfig',
+           'BrewedPythonConfig',
+           'environ_override',
+           'SysConfig', 'PkgConfig', 'BrewedConfig',
+                                     'BrewedHalideConfig',
+                                     'BrewedImreadConfig',
+           'ConfigUnion',
+           'CC', 'CXX', 'LD', 'AR',
+           'main', 'corefoundation_check')
+
 SHARED_LIBRARY_SUFFIX = splitext(find_library("c"))[-1].lower()
 STATIC_LIBRARY_SUFFIX = (SHARED_LIBRARY_SUFFIX == ".dll") and ".lib" or ".a"
 
