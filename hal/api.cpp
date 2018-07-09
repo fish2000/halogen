@@ -8679,11 +8679,11 @@ static int __pyx_pf_3hal_3api_6Target_2__cinit__(struct __pyx_obj_3hal_3api_Targ
   return __pyx_r;
 }
 
-/* "hal/api.pyx":313
- *     property os:
+/* "hal/api.pyx":312
  * 
- *         def __get__(Target self):             # <<<<<<<<<<<<<<
- *             return <int>self.__this__.os
+ *     @property
+ *     def os(Target self):             # <<<<<<<<<<<<<<
+ *         return <int>self.__this__.os
  * 
  */
 
@@ -8706,25 +8706,25 @@ static PyObject *__pyx_pf_3hal_3api_6Target_2os___get__(struct __pyx_obj_3hal_3a
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("__get__", 0);
 
-  /* "hal/api.pyx":314
+  /* "hal/api.pyx":313
+ *     @property
+ *     def os(Target self):
+ *         return <int>self.__this__.os             # <<<<<<<<<<<<<<
  * 
- *         def __get__(Target self):
- *             return <int>self.__this__.os             # <<<<<<<<<<<<<<
- * 
- *         def __set__(Target self, value):
+ *     @os.setter
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_int(((int)__pyx_v_self->__pyx___this__.os)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 314, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int(((int)__pyx_v_self->__pyx___this__.os)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 313, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "hal/api.pyx":313
- *     property os:
+  /* "hal/api.pyx":312
  * 
- *         def __get__(Target self):             # <<<<<<<<<<<<<<
- *             return <int>self.__this__.os
+ *     @property
+ *     def os(Target self):             # <<<<<<<<<<<<<<
+ *         return <int>self.__this__.os
  * 
  */
 
@@ -8740,10 +8740,10 @@ static PyObject *__pyx_pf_3hal_3api_6Target_2os___get__(struct __pyx_obj_3hal_3a
 }
 
 /* "hal/api.pyx":316
- *             return <int>self.__this__.os
  * 
- *         def __set__(Target self, value):             # <<<<<<<<<<<<<<
- *             self.__this__.os = <OS>PyLong_AsLong(value)
+ *     @os.setter
+ *     def os(Target self, value):             # <<<<<<<<<<<<<<
+ *         self.__this__.os = <OS>PyLong_AsLong(value)
  * 
  */
 
@@ -8767,20 +8767,20 @@ static int __pyx_pf_3hal_3api_6Target_2os_2__set__(struct __pyx_obj_3hal_3api_Ta
   __Pyx_RefNannySetupContext("__set__", 0);
 
   /* "hal/api.pyx":317
+ *     @os.setter
+ *     def os(Target self, value):
+ *         self.__this__.os = <OS>PyLong_AsLong(value)             # <<<<<<<<<<<<<<
  * 
- *         def __set__(Target self, value):
- *             self.__this__.os = <OS>PyLong_AsLong(value)             # <<<<<<<<<<<<<<
- * 
- *     property arch:
+ *     @property
  */
   __pyx_t_1 = PyLong_AsLong(__pyx_v_value); if (unlikely(__pyx_t_1 == ((long)-1L) && PyErr_Occurred())) __PYX_ERR(0, 317, __pyx_L1_error)
   __pyx_v_self->__pyx___this__.os = ((Halide::Target::OS)__pyx_t_1);
 
   /* "hal/api.pyx":316
- *             return <int>self.__this__.os
  * 
- *         def __set__(Target self, value):             # <<<<<<<<<<<<<<
- *             self.__this__.os = <OS>PyLong_AsLong(value)
+ *     @os.setter
+ *     def os(Target self, value):             # <<<<<<<<<<<<<<
+ *         self.__this__.os = <OS>PyLong_AsLong(value)
  * 
  */
 
@@ -8795,11 +8795,11 @@ static int __pyx_pf_3hal_3api_6Target_2os_2__set__(struct __pyx_obj_3hal_3api_Ta
   return __pyx_r;
 }
 
-/* "hal/api.pyx":321
- *     property arch:
+/* "hal/api.pyx":320
  * 
- *         def __get__(Target self):             # <<<<<<<<<<<<<<
- *             return <int>self.__this__.arch
+ *     @property
+ *     def arch(Target self):             # <<<<<<<<<<<<<<
+ *         return <int>self.__this__.arch
  * 
  */
 
@@ -8822,25 +8822,25 @@ static PyObject *__pyx_pf_3hal_3api_6Target_4arch___get__(struct __pyx_obj_3hal_
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("__get__", 0);
 
-  /* "hal/api.pyx":322
+  /* "hal/api.pyx":321
+ *     @property
+ *     def arch(Target self):
+ *         return <int>self.__this__.arch             # <<<<<<<<<<<<<<
  * 
- *         def __get__(Target self):
- *             return <int>self.__this__.arch             # <<<<<<<<<<<<<<
- * 
- *         def __set__(Target self, value):
+ *     @arch.setter
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_int(((int)__pyx_v_self->__pyx___this__.arch)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 322, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int(((int)__pyx_v_self->__pyx___this__.arch)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 321, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "hal/api.pyx":321
- *     property arch:
+  /* "hal/api.pyx":320
  * 
- *         def __get__(Target self):             # <<<<<<<<<<<<<<
- *             return <int>self.__this__.arch
+ *     @property
+ *     def arch(Target self):             # <<<<<<<<<<<<<<
+ *         return <int>self.__this__.arch
  * 
  */
 
@@ -8856,10 +8856,10 @@ static PyObject *__pyx_pf_3hal_3api_6Target_4arch___get__(struct __pyx_obj_3hal_
 }
 
 /* "hal/api.pyx":324
- *             return <int>self.__this__.arch
  * 
- *         def __set__(Target self, value):             # <<<<<<<<<<<<<<
- *             self.__this__.arch = <Arch>PyLong_AsLong(value)
+ *     @arch.setter
+ *     def arch(Target self, value):             # <<<<<<<<<<<<<<
+ *         self.__this__.arch = <Arch>PyLong_AsLong(value)
  * 
  */
 
@@ -8883,20 +8883,20 @@ static int __pyx_pf_3hal_3api_6Target_4arch_2__set__(struct __pyx_obj_3hal_3api_
   __Pyx_RefNannySetupContext("__set__", 0);
 
   /* "hal/api.pyx":325
+ *     @arch.setter
+ *     def arch(Target self, value):
+ *         self.__this__.arch = <Arch>PyLong_AsLong(value)             # <<<<<<<<<<<<<<
  * 
- *         def __set__(Target self, value):
- *             self.__this__.arch = <Arch>PyLong_AsLong(value)             # <<<<<<<<<<<<<<
- * 
- *     property bits:
+ *     @property
  */
   __pyx_t_1 = PyLong_AsLong(__pyx_v_value); if (unlikely(__pyx_t_1 == ((long)-1L) && PyErr_Occurred())) __PYX_ERR(0, 325, __pyx_L1_error)
   __pyx_v_self->__pyx___this__.arch = ((Halide::Target::Arch)__pyx_t_1);
 
   /* "hal/api.pyx":324
- *             return <int>self.__this__.arch
  * 
- *         def __set__(Target self, value):             # <<<<<<<<<<<<<<
- *             self.__this__.arch = <Arch>PyLong_AsLong(value)
+ *     @arch.setter
+ *     def arch(Target self, value):             # <<<<<<<<<<<<<<
+ *         self.__this__.arch = <Arch>PyLong_AsLong(value)
  * 
  */
 
@@ -8911,11 +8911,11 @@ static int __pyx_pf_3hal_3api_6Target_4arch_2__set__(struct __pyx_obj_3hal_3api_
   return __pyx_r;
 }
 
-/* "hal/api.pyx":329
- *     property bits:
+/* "hal/api.pyx":328
  * 
- *         def __get__(Target self):             # <<<<<<<<<<<<<<
- *             return <int>self.__this__.bits
+ *     @property
+ *     def bits(Target self):             # <<<<<<<<<<<<<<
+ *         return <int>self.__this__.bits
  * 
  */
 
@@ -8938,25 +8938,25 @@ static PyObject *__pyx_pf_3hal_3api_6Target_4bits___get__(struct __pyx_obj_3hal_
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("__get__", 0);
 
-  /* "hal/api.pyx":330
+  /* "hal/api.pyx":329
+ *     @property
+ *     def bits(Target self):
+ *         return <int>self.__this__.bits             # <<<<<<<<<<<<<<
  * 
- *         def __get__(Target self):
- *             return <int>self.__this__.bits             # <<<<<<<<<<<<<<
- * 
- *         def __set__(Target self, value):
+ *     @bits.setter
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_int(((int)__pyx_v_self->__pyx___this__.bits)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 330, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int(((int)__pyx_v_self->__pyx___this__.bits)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 329, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "hal/api.pyx":329
- *     property bits:
+  /* "hal/api.pyx":328
  * 
- *         def __get__(Target self):             # <<<<<<<<<<<<<<
- *             return <int>self.__this__.bits
+ *     @property
+ *     def bits(Target self):             # <<<<<<<<<<<<<<
+ *         return <int>self.__this__.bits
  * 
  */
 
@@ -8972,10 +8972,10 @@ static PyObject *__pyx_pf_3hal_3api_6Target_4bits___get__(struct __pyx_obj_3hal_
 }
 
 /* "hal/api.pyx":332
- *             return <int>self.__this__.bits
  * 
- *         def __set__(Target self, value):             # <<<<<<<<<<<<<<
- *             self.__this__.bits = <int>PyLong_AsLong(value)
+ *     @bits.setter
+ *     def bits(Target self, value):             # <<<<<<<<<<<<<<
+ *         self.__this__.bits = <int>PyLong_AsLong(value)
  * 
  */
 
@@ -8999,9 +8999,9 @@ static int __pyx_pf_3hal_3api_6Target_4bits_2__set__(struct __pyx_obj_3hal_3api_
   __Pyx_RefNannySetupContext("__set__", 0);
 
   /* "hal/api.pyx":333
- * 
- *         def __set__(Target self, value):
- *             self.__this__.bits = <int>PyLong_AsLong(value)             # <<<<<<<<<<<<<<
+ *     @bits.setter
+ *     def bits(Target self, value):
+ *         self.__this__.bits = <int>PyLong_AsLong(value)             # <<<<<<<<<<<<<<
  * 
  *     def has_gpu_feature(Target self):
  */
@@ -9009,10 +9009,10 @@ static int __pyx_pf_3hal_3api_6Target_4bits_2__set__(struct __pyx_obj_3hal_3api_
   __pyx_v_self->__pyx___this__.bits = ((int)__pyx_t_1);
 
   /* "hal/api.pyx":332
- *             return <int>self.__this__.bits
  * 
- *         def __set__(Target self, value):             # <<<<<<<<<<<<<<
- *             self.__this__.bits = <int>PyLong_AsLong(value)
+ *     @bits.setter
+ *     def bits(Target self, value):             # <<<<<<<<<<<<<<
+ *         self.__this__.bits = <int>PyLong_AsLong(value)
  * 
  */
 
@@ -9028,7 +9028,7 @@ static int __pyx_pf_3hal_3api_6Target_4bits_2__set__(struct __pyx_obj_3hal_3api_
 }
 
 /* "hal/api.pyx":335
- *             self.__this__.bits = <int>PyLong_AsLong(value)
+ *         self.__this__.bits = <int>PyLong_AsLong(value)
  * 
  *     def has_gpu_feature(Target self):             # <<<<<<<<<<<<<<
  *         return self.__this__.has_gpu_feature()
@@ -9070,7 +9070,7 @@ static PyObject *__pyx_pf_3hal_3api_6Target_4has_gpu_feature(struct __pyx_obj_3h
   goto __pyx_L0;
 
   /* "hal/api.pyx":335
- *             self.__this__.bits = <int>PyLong_AsLong(value)
+ *         self.__this__.bits = <int>PyLong_AsLong(value)
  * 
  *     def has_gpu_feature(Target self):             # <<<<<<<<<<<<<<
  *         return self.__this__.has_gpu_feature()

@@ -308,29 +308,29 @@ cdef class Target:
         self.__this__ = HalTarget(target_string)
         # INSERT FEATURE CHECK HERE
     
-    property os:
-        
-        def __get__(Target self):
-            return <int>self.__this__.os
-            
-        def __set__(Target self, value):
-            self.__this__.os = <OS>PyLong_AsLong(value)
-        
-    property arch:
-        
-        def __get__(Target self):
-            return <int>self.__this__.arch
-        
-        def __set__(Target self, value):
-            self.__this__.arch = <Arch>PyLong_AsLong(value)
-        
-    property bits:
-        
-        def __get__(Target self):
-            return <int>self.__this__.bits
-        
-        def __set__(Target self, value):
-            self.__this__.bits = <int>PyLong_AsLong(value)
+    @property
+    def os(Target self):
+        return <int>self.__this__.os
+    
+    @os.setter
+    def os(Target self, value):
+        self.__this__.os = <OS>PyLong_AsLong(value)
+    
+    @property
+    def arch(Target self):
+        return <int>self.__this__.arch
+    
+    @arch.setter
+    def arch(Target self, value):
+        self.__this__.arch = <Arch>PyLong_AsLong(value)
+    
+    @property
+    def bits(Target self):
+        return <int>self.__this__.bits
+    
+    @bits.setter
+    def bits(Target self, value):
+        self.__this__.bits = <int>PyLong_AsLong(value)
     
     def has_gpu_feature(Target self):
         return self.__this__.has_gpu_feature()
