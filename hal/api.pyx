@@ -448,71 +448,82 @@ cdef class Outputs:
         self.__this__.static_library_name = <string>u8bytes(static_library_name)
         self.__this__.schedule_name = <string>u8bytes(schedule_name)
     
-    property object_name:
-        def __get__(Outputs self):
-            return <string>self.__this__.object_name
-        def __set__(Outputs self, object value):
-            self.__this__.object_name = <string>u8bytes(value)
+    @property
+    def object_name(Outputs self):
+        return <string>self.__this__.object_name
+    @object_name.setter
+    def object_name(Outputs self, object value):
+        self.__this__.object_name = <string>u8bytes(value)
     
-    property assembly_name:
-        def __get__(Outputs self):
-            return <string>self.__this__.assembly_name
-        def __set__(Outputs self, object value):
-            self.__this__.assembly_name = <string>u8bytes(value)
+    @property
+    def assembly_name(Outputs self):
+        return <string>self.__this__.assembly_name
+    @assembly_name.setter
+    def assembly_name(Outputs self, object value):
+        self.__this__.assembly_name = <string>u8bytes(value)
     
-    property bitcode_name:
-        def __get__(Outputs self):
-            return <string>self.__this__.bitcode_name
-        def __set__(Outputs self, object value):
-            self.__this__.bitcode_name = <string>u8bytes(value)
+    @property
+    def bitcode_name(Outputs self):
+        return <string>self.__this__.bitcode_name
+    @bitcode_name.setter
+    def bitcode_name(Outputs self, object value):
+        self.__this__.bitcode_name = <string>u8bytes(value)
     
-    property llvm_assembly_name:
-        def __get__(Outputs self):
-            return <string>self.__this__.llvm_assembly_name
-        def __set__(Outputs self, object value):
-            self.__this__.llvm_assembly_name = <string>u8bytes(value)
+    @property
+    def llvm_assembly_name(Outputs self):
+        return <string>self.__this__.llvm_assembly_name
+    @llvm_assembly_name.setter
+    def llvm_assembly_name(Outputs self, object value):
+        self.__this__.llvm_assembly_name = <string>u8bytes(value)
     
-    property c_header_name:
-        def __get__(Outputs self):
-            return <string>self.__this__.c_header_name
-        def __set__(Outputs self, object value):
-            self.__this__.c_header_name = <string>u8bytes(value)
+    @property
+    def c_header_name(Outputs self):
+        return <string>self.__this__.c_header_name
+    @c_header_name.setter
+    def c_header_name(Outputs self, object value):
+        self.__this__.c_header_name = <string>u8bytes(value)
     
-    property c_source_name:
-        def __get__(Outputs self):
-            return <string>self.__this__.c_source_name
-        def __set__(Outputs self, object value):
-            self.__this__.c_source_name = <string>u8bytes(value)
+    @property
+    def c_source_name(Outputs self):
+        return <string>self.__this__.c_source_name
+    @c_source_name.setter
+    def c_source_name(Outputs self, object value):
+        self.__this__.c_source_name = <string>u8bytes(value)
     
-    property python_extension_name:
-        def __get__(Outputs self):
-            return <string>self.__this__.python_extension_name
-        def __set__(Outputs self, object value):
-            self.__this__.python_extension_name = <string>u8bytes(value)
+    @property
+    def python_extension_name(Outputs self):
+        return <string>self.__this__.python_extension_name
+    @python_extension_name.setter
+    def python_extension_name(Outputs self, object value):
+        self.__this__.python_extension_name = <string>u8bytes(value)
     
-    property stmt_name:
-        def __get__(Outputs self):
-            return <string>self.__this__.stmt_name
-        def __set__(Outputs self, object value):
-            self.__this__.stmt_name = <string>u8bytes(value)
+    @property
+    def stmt_name(Outputs self):
+        return <string>self.__this__.stmt_name
+    @stmt_name.setter
+    def stmt_name(Outputs self, object value):
+        self.__this__.stmt_name = <string>u8bytes(value)
     
-    property stmt_html_name:
-        def __get__(Outputs self):
-            return <string>self.__this__.stmt_html_name
-        def __set__(Outputs self, object value):
-            self.__this__.stmt_html_name = <string>u8bytes(value)
+    @property
+    def stmt_html_name(Outputs self):
+        return <string>self.__this__.stmt_html_name
+    @stmt_html_name.setter
+    def stmt_html_name(Outputs self, object value):
+        self.__this__.stmt_html_name = <string>u8bytes(value)
     
-    property static_library_name:
-        def __get__(Outputs self):
-            return <string>self.__this__.static_library_name
-        def __set__(Outputs self, object value):
-            self.__this__.static_library_name = <string>u8bytes(value)
+    @property
+    def static_library_name(Outputs self):
+        return <string>self.__this__.static_library_name
+    @static_library_name.setter
+    def static_library_name(Outputs self, object value):
+        self.__this__.static_library_name = <string>u8bytes(value)
     
-    property schedule_name:
-        def __get__(Outputs self):
-            return <string>self.__this__.schedule_name
-        def __set__(Outputs self, object value):
-            self.__this__.schedule_name = <string>u8bytes(value)
+    @property
+    def schedule_name(Outputs self):
+        return <string>self.__this__.schedule_name
+    @schedule_name.setter
+    def schedule_name(Outputs self, object value):
+        self.__this__.schedule_name = <string>u8bytes(value)
     
     def object(Outputs self, object s=None):
         out = Outputs()
@@ -681,81 +692,93 @@ cdef class EmitOptions:
         for k, v in substitutions.items():
             self.__this__.substitutions[<string>u8bytes(k)] = <string>u8bytes(v)
     
-    property emit_o:
-        def __get__(EmitOptions self):
-            return PyBool_FromLong(self.__this__.emit_o)
-        def __set__(EmitOptions self, value):
-            self.__this__.emit_o = PyObject_IsTrue(value)
+    @property
+    def emit_o(EmitOptions self):
+        return PyBool_FromLong(self.__this__.emit_o)
+    @emit_o.setter
+    def emit_o(EmitOptions self, value):
+        self.__this__.emit_o = PyObject_IsTrue(value)
     
-    property emit_h:
-        def __get__(EmitOptions self):
-            return PyBool_FromLong(self.__this__.emit_h)
-        def __set__(EmitOptions self, value):
-            self.__this__.emit_h = PyObject_IsTrue(value)
+    @property
+    def emit_h(EmitOptions self):
+        return PyBool_FromLong(self.__this__.emit_h)
+    @emit_h.setter
+    def emit_h(EmitOptions self, value):
+        self.__this__.emit_h = PyObject_IsTrue(value)
     
-    property emit_cpp:
-        def __get__(EmitOptions self):
-            return PyBool_FromLong(self.__this__.emit_cpp)
-        def __set__(EmitOptions self, value):
-            self.__this__.emit_cpp = PyObject_IsTrue(value)
+    @property
+    def emit_cpp(EmitOptions self):
+        return PyBool_FromLong(self.__this__.emit_cpp)
+    @emit_cpp.setter
+    def emit_cpp(EmitOptions self, value):
+        self.__this__.emit_cpp = PyObject_IsTrue(value)
     
-    property emit_assembly:
-        def __get__(EmitOptions self):
-            return PyBool_FromLong(self.__this__.emit_assembly)
-        def __set__(EmitOptions self, value):
-            self.__this__.emit_assembly = PyObject_IsTrue(value)
+    @property
+    def emit_assembly(EmitOptions self):
+        return PyBool_FromLong(self.__this__.emit_assembly)
+    @emit_assembly.setter
+    def emit_assembly(EmitOptions self, value):
+        self.__this__.emit_assembly = PyObject_IsTrue(value)
     
-    property emit_bitcode:
-        def __get__(EmitOptions self):
-            return PyBool_FromLong(self.__this__.emit_bitcode)
-        def __set__(EmitOptions self, value):
-            self.__this__.emit_bitcode = PyObject_IsTrue(value)
+    @property
+    def emit_bitcode(EmitOptions self):
+        return PyBool_FromLong(self.__this__.emit_bitcode)
+    @emit_bitcode.setter
+    def emit_bitcode(EmitOptions self, value):
+        self.__this__.emit_bitcode = PyObject_IsTrue(value)
     
-    property emit_stmt:
-        def __get__(EmitOptions self):
-            return PyBool_FromLong(self.__this__.emit_stmt)
-        def __set__(EmitOptions self, value):
-            self.__this__.emit_stmt = PyObject_IsTrue(value)
+    @property
+    def emit_stmt(EmitOptions self):
+        return PyBool_FromLong(self.__this__.emit_stmt)
+    @emit_stmt.setter
+    def emit_stmt(EmitOptions self, value):
+        self.__this__.emit_stmt = PyObject_IsTrue(value)
     
-    property emit_stmt_html:
-        def __get__(EmitOptions self):
-            return PyBool_FromLong(self.__this__.emit_stmt_html)
-        def __set__(EmitOptions self, value):
-            self.__this__.emit_stmt_html = PyObject_IsTrue(value)
+    @property
+    def emit_stmt_html(EmitOptions self):
+        return PyBool_FromLong(self.__this__.emit_stmt_html)
+    @emit_stmt_html.setter
+    def emit_stmt_html(EmitOptions self, value):
+        self.__this__.emit_stmt_html = PyObject_IsTrue(value)
     
-    property emit_python_extension:
-        def __get__(EmitOptions self):
-            return PyBool_FromLong(self.__this__.emit_python_extension)
-        def __set__(EmitOptions self, value):
-            self.__this__.emit_python_extension = PyObject_IsTrue(value)
+    @property
+    def emit_python_extension(EmitOptions self):
+        return PyBool_FromLong(self.__this__.emit_python_extension)
+    @emit_python_extension.setter
+    def emit_python_extension(EmitOptions self, value):
+        self.__this__.emit_python_extension = PyObject_IsTrue(value)
     
-    property emit_static_library:
-        def __get__(EmitOptions self):
-            return PyBool_FromLong(self.__this__.emit_static_library)
-        def __set__(EmitOptions self, value):
-            self.__this__.emit_static_library = PyObject_IsTrue(value)
+    @property
+    def emit_static_library(EmitOptions self):
+        return PyBool_FromLong(self.__this__.emit_static_library)
+    @emit_static_library.setter
+    def emit_static_library(EmitOptions self, value):
+        self.__this__.emit_static_library = PyObject_IsTrue(value)
     
-    property emit_cpp_stub:
-        def __get__(EmitOptions self):
-            return PyBool_FromLong(self.__this__.emit_cpp_stub)
-        def __set__(EmitOptions self, value):
-            self.__this__.emit_cpp_stub = PyObject_IsTrue(value)
+    @property
+    def emit_cpp_stub(EmitOptions self):
+        return PyBool_FromLong(self.__this__.emit_cpp_stub)
+    @emit_cpp_stub.setter
+    def emit_cpp_stub(EmitOptions self, value):
+        self.__this__.emit_cpp_stub = PyObject_IsTrue(value)
     
-    property emit_schedule:
-        def __get__(EmitOptions self):
-            return PyBool_FromLong(self.__this__.emit_schedule)
-        def __set__(EmitOptions self, value):
-            self.__this__.emit_schedule = PyObject_IsTrue(value)
+    @property
+    def emit_schedule(EmitOptions self):
+        return PyBool_FromLong(self.__this__.emit_schedule)
+    @emit_schedule.setter
+    def emit_schedule(EmitOptions self, value):
+        self.__this__.emit_schedule = PyObject_IsTrue(value)
     
-    property substitutions:
-        def __get__(EmitOptions self):
-            return dict(self.__this__.substitutions)
-        def __set__(EmitOptions self, object value):
-            if not PyMapping_Check(value):
-                raise ValueError("substitutions must be a mapping type")
-            self.__this__.substitutions = stringmap_t()
-            for k, v in dict(value).items():
-                self.__this__.substitutions[<string>u8bytes(k)] = <string>u8bytes(v)
+    @property
+    def substitutions(EmitOptions self):
+        return dict(self.__this__.substitutions)
+    @substitutions.setter
+    def substitutions(EmitOptions self, object value):
+        if not PyMapping_Check(value):
+            raise ValueError("substitutions must be a mapping type")
+        self.__this__.substitutions = stringmap_t()
+        for k, v in dict(value).items():
+            self.__this__.substitutions[<string>u8bytes(k)] = <string>u8bytes(v)
     
     def get_substitution(EmitOptions self, object default):
         return u8bytes(dict(self.__this__.substitutions).get(u8bytes(default),
