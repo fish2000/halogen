@@ -532,8 +532,10 @@ class SysConfig(PythonConfig):
                             environ_override('LIBS'))
     
     def get_cflags(self):
-        return "-I%s %s" % (self.include(),
-                            environ_override('CFLAGS'))
+        out = "-I%s %s %s" % (self.include(),
+                              environ_override('CFLAGS'),
+                              environ_override('CXXFLAGS'))
+        return out.rstrip()
     
     def get_ldflags(self):
         ldstring = ""
@@ -674,6 +676,7 @@ class NumpyConfig(ConfigBase):
                 if not k in self.info:
                     self.info[k] = set()
                 self.info[k] |= set(v)
+        self.info['include_dirs'] |= { self.get_numpy_include_directory() }
         self.macros.define('NPY_NO_DEPRECATED_API',     'NPY_1_7_API_VERSION')
         self.macros.define('PY_ARRAY_UNIQUE_SYMBOL'     'YO_DOGG_I_HEARD_YOU_LIKE_UNIQUE_SYMBOLS')
     
