@@ -687,17 +687,20 @@ class NumpyConfig(ConfigBase):
         return self.subdirectory("lib")
     
     def get_includes(self):
-        return " ".join("-I%s" % include_dir for include_dir in sorted(self.info['include_dirs']))
+        return " ".join("-I%s" % include_dir for include_dir \
+                            in sorted(self.info['include_dirs']))
     
     def get_libs(self):
-        return " ".join("-l%s" % library for library in sorted(self.info['libraries']))
+        return " ".join("-l%s" % library for library \
+                        in sorted(self.info['libraries']))
     
     def get_cflags(self):
         return "%s %s" % (self.get_includes(),
                           self.macros.to_string())
     
     def get_ldflags(self):
-        return "%s %s" % (" ".join("-L%s" % library_dir for library_dir in sorted(self.info['library_dirs'])),
+        return "%s %s" % (" ".join("-L%s" % library_dir for library_dir \
+                                       in sorted(self.info['library_dirs'])),
                           self.get_libs())
 
 class BrewedConfig(ConfigBase):
