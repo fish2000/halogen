@@ -364,7 +364,7 @@ class Generators(object):
             the returned `std::vector<std::string>` into a Python set of Python strings. That is,
             if the instance of `halogen.compile.Generators` has previously successfully ran its
             compilation phase, its link-dynamic phase, and its preload phase -- if not, it’ll
-            just toss back an empty tuple without making any calls into Halide whatsoever.
+            just toss back an empty set without making any calls into Halide whatsoever.
         """
         if self.preloaded:
             import hal.api
