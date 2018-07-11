@@ -23,7 +23,7 @@ from os.path import splitext
 from ctypes.util import find_library
 from functools import wraps
 from filesystem import which, back_tick, script_path
-from utils import stringify, u8bytes
+from utils import stringify, u8bytes, u8str
 
 __all__ = ('SHARED_LIBRARY_SUFFIX',
            'STATIC_LIBRARY_SUFFIX',
@@ -273,6 +273,79 @@ class ConfigBase(BaseAncestor):
     def __unicode__(self):
         return six.u(repr(self))
 
+
+class Macro(object):
+    
+    __slots__ = ('name', 'definition')
+    
+    def __init__(self, name, definition=None):
+        self.name = name
+        self.definition = definition
+    
+    def to_string(self):
+        if self.definition is not None:
+            return "-D%s=%s" % (u8str(self.name),
+                                u8str(self.definition))
+        return "-D%s" % u8str(self.name)
+    
+    def to_tuple(self):
+        if self.definition is not None:
+            return (u8str(self.name),
+                    u8str(self.definition))
+        return (u8str(self.name), '')
+    
+    def __repr__(self):
+        return stringify(self, self.__class__.__slots__)
+    
+    def __str__(self):
+        return self.to_string()
+    
+    def __bytes__(self):
+        return u8bytes(self.to_string())
+    
+    def __unicode__(self):
+        return six.u(self.to_string())
+
+
+class Macros(dict):
+    
+    def define(self, name, definition=None):
+        if name in self:
+            raise ValueError("Macro %s already defined: %s" % (name, self[name]))
+        self[name] = definition
+        return Macro(name, definition)
+    
+    def undefine(self, name, **kwargs):
+        if name in self:
+            del self[name]
+    
+    def add(self, macro):
+        return self.define(macro.name,
+                           macro.definition)
+    
+    def defined_as(self, name):
+        if name not in self:
+            return None
+        return Macro(name, self[name])
+    
+    def to_tuple(self):
+        out = tuple()
+        for k, v in self.items():
+            out += ((k, v),)
+        return out
+    
+    def to_string(self):
+        return " ".join(Macro(k, v).to_string() for k, v in self.items())
+    
+    def __str__(self):
+        return self.to_string()
+    
+    def __bytes__(self):
+        return u8bytes(self.to_string())
+    
+    def __unicode__(self):
+        return six.u(self.to_string())
+    
 
 class PythonConfig(ConfigBase):
     
@@ -571,6 +644,65 @@ class PkgConfig(ConfigBase):
                                                     self.pkg_name),
                                                     ret_err=False)
 
+
+class NumpyConfig(ConfigBase):
+    
+    subpackages = ('npymath', 'mlib')
+    
+    fields = ConfigBase.FieldList('subpackages',
+                                  'info',
+                                  'get_numpy_include_directory',
+                                  'include', 'lib', dir_fields=False)
+    
+    @classmethod
+    def get_numpy_include_directory(cls):
+        if not hasattr(cls, 'include_path'):
+            import numpy
+            cls.include_path = numpy.get_include()
+        return cls.include_path
+    
+    def __init__(self):
+        """ Prefix is likely /…/numpy/core """
+        # self.info = {
+        #     'include_dirs'  :   set(),
+        #     'library_dirs'  :   set(),
+        #     'libraries'     :   set(),
+        #     'define_macros' :   set()
+        # }
+        self.info = {}
+        self.macros = Macros()
+        super(NumpyConfig, self).__init__(prefix=os.path.dirname(
+                                                 self.get_numpy_include_directory()))
+        import numpy.distutils
+        for package in self.subpackages:
+            infodict = numpy.distutils.misc_util.get_info(package)
+            for k, v in infodict.items():
+                if not k in self.info:
+                    self.info[k] = set()
+                self.info[k] |= set(v)
+        self.macros.define('NPY_NO_DEPRECATED_API',     'NPY_1_7_API_VERSION')
+        self.macros.define('PY_ARRAY_UNIQUE_SYMBOL'     'YO_DOGG_I_HEARD_YOU_LIKE_UNIQUE_SYMBOLS')
+    
+    def include(self):
+        return self.subdirectory("include")
+    
+    def lib(self):
+        return self.subdirectory("lib")
+    
+    def get_includes(self):
+        return " ".join("-I%s" % include_dir for include_dir in sorted(self.info['include_dirs']))
+    
+    def get_libs(self):
+        return " ".join("-l%s" % library for library in sorted(self.info['libraries']))
+    
+    def get_cflags(self):
+        # return " ".join("-D%s" % macro for macro in sorted(self.info['define_macros']))
+        return "%s %s" % (self.get_includes(),
+                          self.macros.to_string())
+    
+    def get_ldflags(self):
+        return "%s %s" % (" ".join("-L%s" % library_dir for library_dir in sorted(self.info['library_dirs'])),
+                          self.get_libs())
 
 class BrewedConfig(ConfigBase):
     
