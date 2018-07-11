@@ -369,7 +369,7 @@ class Generators(object):
         if self.preloaded:
             import hal.api
             return hal.api.registered_generators()
-        return tuple()
+        return set()
     
     def run(self, target='host', emit=default_emits, substitutions=None):
         """ Use the halogen.compile.Generators.run(…) method to run generators.
