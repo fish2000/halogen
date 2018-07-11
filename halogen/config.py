@@ -650,7 +650,7 @@ class NumpyConfig(ConfigBase):
     subpackages = ('npymath', 'mlib')
     
     fields = ConfigBase.FieldList('subpackages',
-                                  'info',
+                                  'info', 'macros',
                                   'get_numpy_include_directory',
                                   'include', 'lib', dir_fields=False)
     
@@ -663,12 +663,6 @@ class NumpyConfig(ConfigBase):
     
     def __init__(self):
         """ Prefix is likely /…/numpy/core """
-        # self.info = {
-        #     'include_dirs'  :   set(),
-        #     'library_dirs'  :   set(),
-        #     'libraries'     :   set(),
-        #     'define_macros' :   set()
-        # }
         self.info = {}
         self.macros = Macros()
         super(NumpyConfig, self).__init__(prefix=os.path.dirname(
