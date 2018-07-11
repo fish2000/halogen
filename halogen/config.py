@@ -667,9 +667,8 @@ class NumpyConfig(ConfigBase):
         """ Prefix is likely /…/numpy/core """
         self.info = {}
         self.macros = Macros()
-        super(NumpyConfig, self).__init__(prefix=os.path.dirname(
-                                                 self.get_numpy_include_directory()))
-        import numpy.distutils
+        self.prefix = os.path.dirname(self.get_numpy_include_directory())
+        import numpy.distutils, numpy.version
         for package in self.subpackages:
             infodict = numpy.distutils.misc_util.get_info(package)
             for k, v in infodict.items():
@@ -677,8 +676,9 @@ class NumpyConfig(ConfigBase):
                     self.info[k] = set()
                 self.info[k] |= set(v)
         self.info['include_dirs'] |= { self.get_numpy_include_directory() }
+        self.macros.define('NUMPY_VERSION',             '\\"%s\\"' % numpy.version.version)
         self.macros.define('NPY_NO_DEPRECATED_API',     'NPY_1_7_API_VERSION')
-        self.macros.define('PY_ARRAY_UNIQUE_SYMBOL'     'YO_DOGG_I_HEARD_YOU_LIKE_UNIQUE_SYMBOLS')
+        self.macros.define('PY_ARRAY_UNIQUE_SYMBOL',    'YO_DOGG_I_HEARD_YOU_LIKE_UNIQUE_SYMBOLS')
     
     def include(self):
         return self.subdirectory("include")
@@ -693,7 +693,6 @@ class NumpyConfig(ConfigBase):
         return " ".join("-l%s" % library for library in sorted(self.info['libraries']))
     
     def get_cflags(self):
-        # return " ".join("-D%s" % macro for macro in sorted(self.info['define_macros']))
         return "%s %s" % (self.get_includes(),
                           self.macros.to_string())
     
@@ -1193,12 +1192,14 @@ def main():
     pythonConfig = PythonConfig()
     sysConfig = SysConfig()
     pkgConfig = PkgConfig()
+    numpyConfig = NumpyConfig()
     
     configUnionOne = ConfigUnion(sysConfig)
     configUnion = ConfigUnion(brewedHalideConfig, sysConfig)
     configUnionAll = ConfigUnion(brewedHalideConfig, sysConfig,
                                  brewedPythonConfig, pythonConfig,
-                                                     pkgConfig)
+                                                     pkgConfig,
+                                                     numpyConfig)
     
     
     """ Test basic config methods: """
@@ -1219,6 +1220,12 @@ def main():
     print("TESTING: PkgConfig ...")
     print("")
     print_config(pkgConfig)
+    
+    print("=" * terminal_width)
+    print("")
+    print("TESTING: NumpyConfig ...")
+    print("")
+    print_config(numpyConfig)
     
     print("=" * terminal_width)
     print("")
@@ -1247,7 +1254,7 @@ def main():
     print("=" * terminal_width)
     print("")
     print("TESTING: ConfigUnion<BrewedHalideConfig, SysConfig,")
-    print("                     BrewedPythonConfig, PythonConfig, PkgConfig> ...")
+    print("                     BrewedPythonConfig, PythonConfig, PkgConfig, NumpyConfig> ...")
     print("")
     print_config(configUnionAll)
     
