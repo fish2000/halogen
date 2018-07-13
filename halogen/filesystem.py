@@ -593,6 +593,7 @@ class TemporaryDirectory(Directory):
         self.parent = parent
         super(TemporaryDirectory, self).__init__(self._name)
         self.will_change = self.will_change and change
+        self.will_change_back = self.will_change and change
     
     @property
     def name(self):
