@@ -47,7 +47,7 @@ def which(binary_name, pathvar=None):
     from distutils.spawn import find_executable
     if not hasattr(which, 'pathvar'):
         which.pathvar = os.getenv("PATH", DEFAULT_PATH)
-    return find_executable(binary_name, which.pathvar) or ""
+    return find_executable(binary_name, pathvar or which.pathvar) or ""
 
 def back_tick(cmd, ret_err=False, as_str=True,
                  raise_err=None,
