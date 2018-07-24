@@ -356,18 +356,6 @@ class Macros(dict):
         return self.add(Macro(name,
                               definition,
                               undefine=undefine))
-        # macro = Macro(name, definition, undefine=undefine)
-        # return self.add(macro)
-        # undefine = False
-        # if not definition:
-        #     undefine = self.undefine(name)
-        # elif Macro.is_string_zero(definition):
-        #     undefine = self.undefine(name)
-        #     definition = None
-        # else:
-        #     self[name] = definition
-        # return Macro(name, definition, undefine=undefine)
-        # return macro
     
     def undefine(self, name, **kwargs):
         return self.add(Macro(name, undefine=True))
@@ -381,8 +369,6 @@ class Macros(dict):
             # macro is an undef macro:
             self[name] = '0'
         return macro
-        # return self.define(macro.name,
-        #                    macro.definition)
     
     def delete(self, name, **kwargs):
         if name in self:
