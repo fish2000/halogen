@@ -21,6 +21,7 @@ except ImportError:
 from abc import ABC, ABCMeta, abstractmethod
 from os.path import splitext
 from ctypes.util import find_library
+from collections import defaultdict
 from functools import wraps
 from filesystem import which, back_tick, script_path
 from utils import stringify, u8bytes, u8str
@@ -667,15 +668,13 @@ class NumpyConfig(ConfigBase):
     
     def __init__(self):
         """ Prefix is likely /…/numpy/core """
-        self.info = {}
+        self.info = defaultdict(set)
         self.macros = Macros()
         self.prefix = os.path.dirname(self.get_numpy_include_directory())
         import numpy.distutils, numpy.version
         for package in self.subpackages:
             infodict = numpy.distutils.misc_util.get_info(package)
             for k, v in infodict.items():
-                if not k in self.info:
-                    self.info[k] = set()
                 self.info[k] |= set(v)
         self.info['include_dirs'] |= { self.get_numpy_include_directory() }
         self.macros.define('NUMPY_VERSION',             '\\"%s\\"' % numpy.version.version)
