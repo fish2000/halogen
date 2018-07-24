@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from __future__ import print_function
+from __future__ import print_function, unicode_literals
 
 import os
 import re
@@ -24,7 +24,7 @@ from ctypes.util import find_library
 from collections import defaultdict
 from functools import wraps
 from filesystem import which, back_tick, script_path
-from utils import stringify, u8bytes, u8str
+from utils import is_string, stringify, u8bytes, u8str
 
 __all__ = ('SHARED_LIBRARY_SUFFIX',
            'STATIC_LIBRARY_SUFFIX',
@@ -277,8 +277,6 @@ class ConfigBase(BaseAncestor):
         return six.u(repr(self))
 
 
-is_string = lambda thing: isinstance(thing, six.string_types)
-
 class Macro(object):
     
     __slots__ = ('name', 'definition', 'undefine')
@@ -286,6 +284,7 @@ class Macro(object):
     @staticmethod
     def is_string_zero(putative):
         """ Predicate function for checking for stringified zero-value integers """
+        # N.B. `is_string(…)` is a lambda imported from halogen.utils:
         if not is_string(putative):
             return False
         intdef = 0
@@ -350,6 +349,7 @@ class Macro(object):
         """ An instance of Macro is considered Falsey if undefined, Truthy if not. """
         return not self.undefine
 
+
 class Macros(dict):
     
     def define(self, name, definition=None, undefine=False):
@@ -398,7 +398,7 @@ class Macros(dict):
     
     def __unicode__(self):
         return six.u(self.to_string())
-    
+
 
 class PythonConfig(ConfigBase):
     

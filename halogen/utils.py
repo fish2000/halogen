@@ -6,6 +6,7 @@ import six
 
 __all__ = ('get_terminal_size', 'terminal_width',
                                 'terminal_height',
+                                'string_types', 'is_string',
            'wrap_value', 'Memoizer', 'memoize',
            'current_umask', 'masked_permissions',
            'u8bytes', 'u8str', 'stringify',
@@ -38,6 +39,13 @@ def get_terminal_size(default_LINES=25, default_COLUMNS=80):
     return int(cr[1]), int(cr[0])
 
 terminal_width, terminal_height = get_terminal_size()
+
+string_types = (type(''),
+                type(b''),
+                type(r''),
+                type(u'')) + six.string_types
+
+is_string = lambda thing: isinstance(thing, string_types)
 
 def wrap_value(value):
     return lambda *args, **kwargs: value
