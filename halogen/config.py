@@ -277,25 +277,62 @@ class ConfigBase(BaseAncestor):
         return six.u(repr(self))
 
 
+is_string = lambda thing: isinstance(thing, six.string_types)
+
 class Macro(object):
     
-    __slots__ = ('name', 'definition')
+    __slots__ = ('name', 'definition', 'undefine')
     
-    def __init__(self, name, definition=None):
+    @staticmethod
+    def is_string_zero(putative):
+        """ Predicate function for checking for stringified zero-value integers """
+        if not is_string(putative):
+            return False
+        intdef = 0
+        try:
+            intdef += int(putative, base=10)
+        except ValueError:
+            return False
+        return intdef == 0
+    
+    def __init__(self, name, definition=None,
+                             undefine=False):
+        """ Initialize a new Macro instance, specifiying a name, a definition (optionally),
+            and a boolean flag (optionally) indicating that the macro is “undefined” --
+            that is to say, that it is a so-called “undef macro”.
+        """
+        if not name:
+            raise ValueError("Macro() requires a valid name")
+        string_zero = self.is_string_zero(definition)
         self.name = name
-        self.definition = definition
+        self.definition = (not string_zero or None) and definition
+        self.undefine = string_zero or undefine
     
     def to_string(self):
+        """ Stringify the macro instance as a GCC- or Clang-compatible command-line switch,
+            e.g. “-DMACRO_NAME=Some_Macro_Value” -- or just “-DMACRO_NAME” or “-UMACRO_NAME”,
+            if applicable.
+        """
+        if self.undefine:
+            return "-U%s" % u8str(self.name)
         if self.definition is not None:
             return "-D%s=%s" % (u8str(self.name),
                                 u8str(self.definition))
         return "-D%s" % u8str(self.name)
     
     def to_tuple(self):
+        """ Tuple-ize the macro instance -- return a tuple in the form (name, value)
+            as per the macro’s contents. The returned tuple always has a value field;
+            in the case of undefined macros, the value is '0' -- stringified zero --
+            and in the case of macros lacking definition values, the value is '1' --
+            stringified one.
+        """
+        if self.undefine:
+            return (u8str(self.name), '0')
         if self.definition is not None:
             return (u8str(self.name),
                     u8str(self.definition))
-        return (u8str(self.name), '')
+        return (u8str(self.name), '1')
     
     def __repr__(self):
         return stringify(self, self.__class__.__slots__)
@@ -308,34 +345,61 @@ class Macro(object):
     
     def __unicode__(self):
         return six.u(self.to_string())
-
+    
+    def __bool__(self):
+        """ An instance of Macro is considered Falsey if undefined, Truthy if not. """
+        return not self.undefine
 
 class Macros(dict):
     
-    def define(self, name, definition=None):
-        if name in self:
-            raise ValueError("Macro %s already defined: %s" % (name, self[name]))
-        self[name] = definition
-        return Macro(name, definition)
+    def define(self, name, definition=None, undefine=False):
+        return self.add(Macro(name,
+                              definition,
+                              undefine=undefine))
+        # macro = Macro(name, definition, undefine=undefine)
+        # return self.add(macro)
+        # undefine = False
+        # if not definition:
+        #     undefine = self.undefine(name)
+        # elif Macro.is_string_zero(definition):
+        #     undefine = self.undefine(name)
+        #     definition = None
+        # else:
+        #     self[name] = definition
+        # return Macro(name, definition, undefine=undefine)
+        # return macro
     
     def undefine(self, name, **kwargs):
-        if name in self:
-            del self[name]
+        return self.add(Macro(name, undefine=True))
     
     def add(self, macro):
-        return self.define(macro.name,
-                           macro.definition)
+        name = macro.name
+        if bool(macro):
+            # macro is defined:
+            self[name] = macro.definition
+        else:
+            # macro is an undef macro:
+            self[name] = '0'
+        return macro
+        # return self.define(macro.name,
+        #                    macro.definition)
     
-    def defined_as(self, name):
+    def delete(self, name, **kwargs):
+        if name in self:
+            del self[name]
+            return True
+        return False
+    
+    def definition_for(self, name):
         if name not in self:
-            return None
+            return Macro(name, undefine=True)
         return Macro(name, self[name])
     
     def to_tuple(self):
-        out = tuple()
+        out = []
         for k, v in self.items():
-            out += ((k, v),)
-        return out
+            out.append(Macro(k, v).to_tuple())
+        return tuple(out)
     
     def to_string(self):
         return " ".join(Macro(k, v).to_string() for k, v in self.items())
@@ -655,8 +719,8 @@ class NumpyConfig(ConfigBase):
     subpackages = ('npymath', 'mlib')
     
     fields = ConfigBase.FieldList('subpackages',
-                                  'info', 'macros',
                                   'get_numpy_include_directory',
+                                  'info', 'macros',
                                   'include', 'lib', dir_fields=False)
     
     @classmethod
@@ -677,6 +741,9 @@ class NumpyConfig(ConfigBase):
             for k, v in infodict.items():
                 self.info[k] |= set(v)
         self.info['include_dirs'] |= { self.get_numpy_include_directory() }
+        for macro_tuple in self.info['define_macros']:
+            self.macros.define(*macro_tuple)
+        self.macros.define('NUMPY')
         self.macros.define('NUMPY_VERSION',             '\\"%s\\"' % numpy.version.version)
         self.macros.define('NPY_NO_DEPRECATED_API',     'NPY_1_7_API_VERSION')
         self.macros.define('PY_ARRAY_UNIQUE_SYMBOL',    'YO_DOGG_I_HEARD_YOU_LIKE_UNIQUE_SYMBOLS')
@@ -696,13 +763,17 @@ class NumpyConfig(ConfigBase):
                         in sorted(self.info['libraries']))
     
     def get_cflags(self):
-        return "%s %s" % (self.get_includes(),
-                          self.macros.to_string())
+        out = "%s %s %s" % (self.macros.to_string(),
+                            self.get_includes(),
+            " ".join(sorted(self.info['extra_compile_args'])))
+        return out.strip()
     
     def get_ldflags(self):
-        return "%s %s" % (" ".join("-L%s" % library_dir for library_dir \
-                                       in sorted(self.info['library_dirs'])),
-                          self.get_libs())
+        out = "%s %s %s" % (" ".join("-L%s" % library_dir for library_dir \
+                                         in sorted(self.info['library_dirs'])),
+                                                   self.get_libs(),
+                                   " ".join(sorted(self.info['extra_link_args'])))
+        return out.strip()
 
 class BrewedConfig(ConfigBase):
     
