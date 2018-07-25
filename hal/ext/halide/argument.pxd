@@ -4,9 +4,9 @@ from libcpp.string cimport string
 from libcpp.vector cimport vector
 from libcpp.memory cimport unique_ptr
 
-from buffer cimport Buffer
+from buffers cimport Buffer
 from expr cimport Expr
-from type cimport Type
+from types cimport Type
 
 cdef extern from "Halide.h" namespace "Halide::Argument" nogil:
 

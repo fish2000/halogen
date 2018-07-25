@@ -3,7 +3,7 @@ from libc.stdint cimport *
 from libcpp.string cimport string
 
 from intrusiveptr cimport RefCount, IntrusivePtr
-from type cimport Type
+from types cimport Type
 
 cdef extern from "Halide.h" namespace "Halide::Internal" nogil:
     

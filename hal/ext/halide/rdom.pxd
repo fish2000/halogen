@@ -4,7 +4,7 @@ from libcpp.string cimport string
 from libcpp.vector cimport vector
 from libcpp.pair cimport pair
 
-from buffer cimport Buffer
+from buffers cimport Buffer
 from expr cimport Expr
 from image cimport OutputImageParam
 

@@ -5,7 +5,7 @@ from libcpp.string cimport string
 from libcpp.vector cimport vector
 from libcpp.pair cimport pair
 
-from buffer cimport Buffer
+from buffers cimport Buffer
 from definition cimport Definition
 from device_api cimport DeviceAPI
 from expr cimport Expr
@@ -13,7 +13,7 @@ from functionptr cimport FunctionContents, FunctionPtr
 from intrusiveptr cimport IntrusivePtr
 from parameter cimport Parameter
 from target cimport Target
-from type cimport Type
+from types cimport Type
 
 ctypedef vector[string]                     stringvec_t
 ctypedef vector[Expr]                       exprvec_t

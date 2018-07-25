@@ -1,6 +1,7 @@
 
 from libc.stdint cimport *
 from libcpp.vector cimport vector
+
 from intrusiveptr cimport IntrusivePtr
 
 cdef extern from "Halide.h" namespace "Halide::Internal" nogil:

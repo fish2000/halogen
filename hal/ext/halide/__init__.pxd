@@ -1,6 +1,6 @@
 
-# from ext.halide.buffer cimport Buffer, VoidBuffer
-# from ext.halide.buffer cimport buffervec_t
+# from ext.halide.buffers cimport Buffer, VoidBuffer
+# from ext.halide.buffers cimport buffervec_t
 #
 # from ext.halide.outputs cimport Outputs as HalOutputs
 # from ext.halide.module cimport Module as HalModule

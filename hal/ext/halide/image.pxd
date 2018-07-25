@@ -4,11 +4,11 @@ from libcpp.string cimport string
 from libcpp.vector cimport vector
 
 from argument cimport Argument
-from buffer cimport Buffer
+from buffers cimport Buffer
 from expr cimport Expr
 from function cimport ExternFuncArgument
 from parameter cimport Parameter
-from type cimport Type
+from types cimport Type
 from var cimport Var, varvec_t
 
 ctypedef vector[Expr] exprvec_t

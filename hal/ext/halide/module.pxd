@@ -5,14 +5,14 @@ from libcpp.vector cimport vector
 from libcpp.map cimport map as std_map
 
 from argument cimport Argument, Kind
-from buffer cimport Buffer, buffervec_t
+from buffers cimport Buffer, buffervec_t
 from expr cimport Expr, Stmt
 from externalcode cimport ExternalCode
 from function cimport NameMangling
 from modulusremainder cimport ModulusRemainder
 from outputs cimport Outputs
 from target cimport Target
-from type cimport Type
+from types cimport Type
 
 cdef extern from "Halide.h" namespace "Halide" nogil:
     

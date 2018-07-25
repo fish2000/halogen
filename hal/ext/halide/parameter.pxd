@@ -3,11 +3,11 @@ from libc.stdint cimport *
 from libcpp.string cimport string
 from libcpp.vector cimport vector
 
-from buffer cimport Buffer
+from buffers cimport Buffer
 from expr cimport Expr
 # from image cimport OutputImageParam
 from runtime cimport halide_scalar_value_t, halide_buffer_t
-from type cimport Type
+from types cimport Type
 
 ctypedef vector[Expr] exprvec_t
 ctypedef Buffer[void] VoidBuffer

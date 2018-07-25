@@ -2,9 +2,10 @@
 from libc.stdint cimport *
 from libcpp.string cimport string
 from libcpp.vector cimport vector
-from type cimport Type
-from target cimport Target
+
 from function cimport extargvec_t
+from target cimport Target
+from types cimport Type
 
 ctypedef vector[string] stringvec_t
 

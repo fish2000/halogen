@@ -37,15 +37,15 @@ from ext.halide.generator cimport base_ptr_t
 from ext.halide.generator cimport generator_registry_get as halide_generator_registry_get
 from ext.halide.generator cimport generator_registry_create as halide_generator_registry_create
 
-from ext.halide.type cimport Type as HalType
-from ext.halide.type cimport Int as HalType_Int
-from ext.halide.type cimport UInt as HalType_UInt
-from ext.halide.type cimport Float as HalType_Float
-from ext.halide.type cimport Bool as HalType_Bool
-from ext.halide.type cimport Handle as HalType_Handle
-from ext.halide.type cimport halide_type_to_c_source
-from ext.halide.type cimport halide_type_to_c_type
-from ext.halide.type cimport halide_type_to_enum_string
+from ext.halide.types cimport Type as HalType
+from ext.halide.types cimport Int as HalType_Int
+from ext.halide.types cimport UInt as HalType_UInt
+from ext.halide.types cimport Float as HalType_Float
+from ext.halide.types cimport Bool as HalType_Bool
+from ext.halide.types cimport Handle as HalType_Handle
+from ext.halide.types cimport halide_type_to_c_source
+from ext.halide.types cimport halide_type_to_c_type
+from ext.halide.types cimport halide_type_to_enum_string
 
 from ext.halide.target cimport Target as HalTarget
 from ext.halide.target cimport OS, Arch, Feature
@@ -66,8 +66,8 @@ from ext.halide.util cimport running_program_name as halide_running_program_name
 from ext.halide.func cimport Stage as HalStage
 from ext.halide.func cimport Func as HalFunc
 
-from ext.halide.buffer cimport Buffer, VoidBuffer
-from ext.halide.buffer cimport buffervec_t
+from ext.halide.buffers cimport Buffer, VoidBuffer
+from ext.halide.buffers cimport buffervec_t
 
 
 cpdef bytes u8bytes(object string_source):

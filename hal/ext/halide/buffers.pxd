@@ -6,7 +6,7 @@ from libcpp.vector cimport vector
 from expr cimport Expr
 from intrusiveptr cimport RefCount, IntrusivePtr
 from runtime cimport halide_dimension_t, halide_type_t, halide_buffer_t, buffer_t
-from type cimport Type
+from types cimport Type
 
 ctypedef vector[Expr]   exprvec_t
 ctypedef vector[int]    intvec_t

@@ -7,7 +7,7 @@ from libcpp.pair cimport pair
 from libcpp.memory cimport unique_ptr
 
 from argument cimport Argument
-from buffer cimport Buffer
+from buffers cimport Buffer
 from definition cimport Definition
 from device_api cimport DeviceAPI
 from expr cimport Expr
@@ -23,7 +23,7 @@ from rdom cimport RVar, RDom
 from realization cimport Realization
 from schedule cimport LoopLevel, LoopAlignStrategy, TailStrategy, PrefetchBoundStrategy
 from target cimport Target
-from type cimport Type
+from types cimport Type
 from var cimport Var, varvec_t
 from varorrvar cimport VarOrRVar, varorvec_t
 

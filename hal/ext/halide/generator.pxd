@@ -7,7 +7,7 @@ from libcpp.memory cimport unique_ptr, shared_ptr
 from libcpp.pair cimport pair
 
 from autoschedule cimport MachineParams
-from buffer cimport Buffer
+from buffers cimport Buffer
 from device_api cimport DeviceAPI
 from dimension cimport Dimension
 from expr cimport Expr
@@ -22,7 +22,7 @@ from rdom cimport RVar
 from realization cimport Realization
 from schedule cimport LoopLevel, llevelmap_t, LoopAlignStrategy, PrefetchBoundStrategy, TailStrategy
 from target cimport Target, get_target_from_environment
-from type cimport Type
+from types cimport Type
 from var cimport Var, varvec_t
 from varorrvar cimport VarOrRVar
 

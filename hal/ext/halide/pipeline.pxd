@@ -7,7 +7,7 @@ from libcpp.memory cimport unique_ptr
 
 from argument cimport Argument
 from autoschedule cimport MachineParams
-from buffer cimport Buffer
+from buffers cimport Buffer
 from expr cimport Stmt
 from intrusiveptr cimport IntrusivePtr
 from module cimport Module, LinkageType
@@ -16,7 +16,7 @@ from outputs cimport Outputs
 from realization cimport Realization
 from runtime cimport halide_buffer_t
 from target cimport Target
-from type cimport Type
+from types cimport Type
 
 ctypedef vector[Argument]           argvec_t
 ctypedef vector[Buffer[void]]       buffervec_t

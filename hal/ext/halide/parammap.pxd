@@ -3,7 +3,7 @@ from libc.stdint cimport *
 from libcpp.string cimport string
 from libcpp.vector cimport vector
 
-from buffer cimport Buffer
+from buffers cimport Buffer
 from image cimport ImageParam
 from param cimport Param
 from parameter cimport Parameter

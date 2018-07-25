@@ -5,7 +5,7 @@ from libcpp.vector cimport vector
 from libcpp.memory cimport unique_ptr
 
 from device_api cimport DeviceAPI
-from type cimport Type
+from types cimport Type
 
 cdef extern from "Halide.h" namespace "Halide::Target" nogil:
     
