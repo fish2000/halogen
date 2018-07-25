@@ -47,10 +47,18 @@ api_extension_sources = [os.path.join('hal', 'api.pyx')]
 haldol_source_names = ('detail.cc', 'gil.cc', 'structcode.cc', 'terminal.cc', 'typecode.cc')
 haldol_sources = [os.path.join('haldol', source) for source in haldol_source_names]
 
+hal_base_path = os.path.abspath(os.path.dirname(
+                                os.path.join('hal', 'ext')))
+
 include_dirs = [
     get_python_inc(plat_specific=1),
     numpy.get_include(),
-    os.path.join('haldol', 'include'),
+    hal_base_path,
+    os.path.join(hal_base_path, 'ext'),
+    os.path.join(hal_base_path, 'ext', 'haldol'),
+    os.path.join(hal_base_path, 'ext', 'halide'),
+    os.path.join(hal_base_path, 'ext', 'libcpp'),
+    os.path.abspath(os.path.join('haldol', 'include')),
     os.path.curdir]
 
 define_macros = []

@@ -10,6 +10,7 @@ from runtime cimport halide_scalar_value_t, halide_buffer_t
 from type cimport Type
 
 ctypedef vector[Expr] exprvec_t
+ctypedef Buffer[void] VoidBuffer
 
 cdef extern from "Halide.h" namespace "Halide::Internal" nogil:
     
@@ -38,9 +39,11 @@ cdef extern from "Halide.h" namespace "Halide::Internal" nogil:
         void set_scalar[T](T)
         void set_scalar(Type&, halide_scalar_value_t)
         
-        Buffer[void] buffer()
+        # Buffer[void] buffer()
+        VoidBuffer buffer()
         halide_buffer_t* raw_buffer()
-        void set_buffer(Buffer[void])
+        # void set_buffer(Buffer[void])
+        void set_buffer(VoidBuffer)
         void* scalar_address()
         
         bint same_as(Parameter&)
