@@ -136,7 +136,7 @@ class ConfigBaseMeta(ABCMeta):
         ConfigBase (q.v. class definition sub.)
     """
     
-    def __new__(cls, name, bases, attributes):
+    def __new__(metacls, name, bases, attributes, **kwargs):
         if not 'base_fields' in attributes:
             attributes['base_fields'] = tuple()
         base_fields = set(attributes['base_fields'])
@@ -147,7 +147,10 @@ class ConfigBaseMeta(ABCMeta):
                 base_fields |= frozenset(base.fields)
         attributes['base_fields'] = tuple(sorted(base_fields))
         ConfigSubBase.base_field_cache[name] = tuple(sorted(base_fields))
-        outcls = ABCMeta.__new__(cls, name, bases, attributes)
+        outcls = super(ConfigBaseMeta, metacls).__new__(metacls, name,
+                                                                 bases,
+                                                                 attributes,
+                                                               **kwargs)
         ConfigSubBase.register(outcls)
         return outcls
 
@@ -261,14 +264,14 @@ class ConfigBase(BaseAncestor):
             or if none was provided, the iterable-of-strings class variable “fields”.
         """
         if not field_list:
-            field_list = self.__class__.fields
+            field_list = type(self).fields
         return stringify(self, field_list)
     
     def __repr__(self):
-        return stringify(self, self.__class__.fields)
+        return stringify(self, type(self).fields)
     
     def __str__(self):
-        return stringify(self, self.__class__.fields)
+        return stringify(self, type(self).fields)
     
     def __bytes__(self):
         return u8bytes(repr(self))
@@ -279,11 +282,14 @@ class ConfigBase(BaseAncestor):
 
 class Macro(object):
     
+    STRING_ZERO = '0'
+    STRING_ONE  = '1'
+    
     __slots__ = ('name', 'definition', 'undefine')
     
     @staticmethod
-    def is_string_zero(putative):
-        """ Predicate function for checking for stringified zero-value integers """
+    def is_string_value(putative, value=0):
+        """ Predicate function for checking for the values of stringified integers """
         # N.B. `is_string(…)` is a lambda imported from halogen.utils:
         if not is_string(putative):
             return False
@@ -292,7 +298,7 @@ class Macro(object):
             intdef += int(putative, base=10)
         except ValueError:
             return False
-        return intdef == 0
+        return intdef == int(value)
     
     def __init__(self, name, definition=None,
                              undefine=False):
@@ -302,22 +308,24 @@ class Macro(object):
         """
         if not name:
             raise ValueError("Macro() requires a valid name")
-        string_zero = self.is_string_zero(definition)
+        string_zero = self.is_string_value(definition)
+        string_one = self.is_string_value(definition, value=1)
+        string_something = string_zero or string_one
         self.name = name
-        self.definition = (not string_zero or None) and definition
+        self.definition = (not string_something or None) and definition
         self.undefine = string_zero or undefine
     
     def to_string(self):
         """ Stringify the macro instance as a GCC- or Clang-compatible command-line switch,
-            e.g. “-DMACRO_NAME=Some_Macro_Value” -- or just “-DMACRO_NAME” or “-UMACRO_NAME”,
+            e.g. “DMACRO_NAME=Some_Macro_Value” -- or just “DMACRO_NAME” or “UMACRO_NAME”,
             if applicable.
         """
         if self.undefine:
-            return "-U%s" % u8str(self.name)
+            return "U%s" % u8str(self.name)
         if self.definition is not None:
-            return "-D%s=%s" % (u8str(self.name),
-                                u8str(self.definition))
-        return "-D%s" % u8str(self.name)
+            return "D%s=%s" % (u8str(self.name),
+                               u8str(self.definition))
+        return "D%s" % u8str(self.name)
     
     def to_tuple(self):
         """ Tuple-ize the macro instance -- return a tuple in the form (name, value)
@@ -327,14 +335,16 @@ class Macro(object):
             stringified one.
         """
         if self.undefine:
-            return (u8str(self.name), '0')
+            return (u8str(self.name),
+                          self.STRING_ZERO)
         if self.definition is not None:
             return (u8str(self.name),
                     u8str(self.definition))
-        return (u8str(self.name), '1')
+        return (u8str(self.name),
+                      self.STRING_ONE)
     
     def __repr__(self):
-        return stringify(self, self.__class__.__slots__)
+        return stringify(self, type(self).__slots__)
     
     def __str__(self):
         return self.to_string()
@@ -364,10 +374,10 @@ class Macros(dict):
         name = macro.name
         if bool(macro):
             # macro is defined:
-            self[name] = macro.definition
+            self[name] = macro.definition or Macro.STRING_ONE
         else:
             # macro is an undef macro:
-            self[name] = '0'
+            self[name] = Macro.STRING_ZERO
         return macro
     
     def delete(self, name, **kwargs):
@@ -388,7 +398,9 @@ class Macros(dict):
         return tuple(out)
     
     def to_string(self):
-        return " ".join(Macro(k, v).to_string() for k, v in self.items())
+        return "%s%s" % (TOKEN,
+                         TOKEN.join(Macro(k, v).to_string() \
+                                      for k, v in self.items()).strip())
     
     def __str__(self):
         return self.to_string()
@@ -597,7 +609,7 @@ class SysConfig(PythonConfig):
                    environ_override('LIBDEST'))
         for pth in libpths:
             if os.path.exists(pth):
-                ldstring += " -L%s" % pth
+                ldstring += "%sL%s" % (TOKEN, pth)
         out = "%s -l%s %s" % (ldstring.lstrip(),
                               self.library_name,
                               environ_override('LIBS'))
@@ -615,9 +627,9 @@ class PkgConfig(ConfigBase):
                                   'pkg_name', dir_fields=True)
     
     # List of cflags to use with all pkg-config-based classes:
-    cflags = frozenset(("-funroll-loops",
-                        "-mtune=native",
-                        "-O3"))
+    cflags = frozenset(("funroll-loops",
+                        "mtune=native",
+                        "O3"))
     
     # Location of the `pkg-config` binary:
     pkgconfig = which('pkg-config')
@@ -689,10 +701,11 @@ class PkgConfig(ConfigBase):
                                                                              ret_err=False)
     
     def get_cflags(self):
-        return "%s %s" % (" ".join(self.cflags),
-                          back_tick("%s %s --cflags" % (self.pkgconfig,
-                                                        self.pkg_name),
-                                                        ret_err=False))
+        out = "%s%s %s" % (TOKEN, TOKEN.join(self.cflags),
+                                  back_tick("%s %s --cflags" % (self.pkgconfig,
+                                                                self.pkg_name),
+                                                                ret_err=False))
+        return out.strip()
     
     def get_ldflags(self):
         return back_tick("%s %s --libs --static" % (self.pkgconfig,
@@ -775,9 +788,9 @@ class BrewedConfig(ConfigBase):
     brew = which('brew')
     
     # List of cflags to use with all Homebrew-based config classes:
-    cflags = frozenset(("-funroll-loops",
-                        "-mtune=native",
-                        "-O3"))
+    cflags = frozenset(("funroll-loops",
+                        "mtune=native",
+                        "O3"))
     
     def __init__(self, brew_name=None):
         """ Initialize BrewedConfig, optionally naming a formula (the default is “halide”) """
@@ -812,7 +825,10 @@ class BrewedConfig(ConfigBase):
         return ""
     
     def get_cflags(self):
-        return "-I%s %s" % (self.include(), " ".join(self.cflags))
+        out = "%s%s %s" % (TOKEN,
+                           TOKEN.join(self.cflags),
+                                      self.get_includes())
+        return out.strip()
     
     def get_ldflags(self):
         return "-L%s" % self.lib()
@@ -830,9 +846,9 @@ class BrewedHalideConfig(BrewedConfig):
     library = "Halide"
     
     # List of Halide-specific cflags to use:
-    cflags = frozenset(("-fno-rtti",
-                        "-std=c++1z",
-                        "-stdlib=libc++")) | BrewedConfig.cflags
+    cflags = frozenset(("fno-rtti",
+                        "std=c++1z",
+                        "stdlib=libc++")) | BrewedConfig.cflags
     
     def __init__(self):
         """ Initialize BrewedHalideConfig (constructor takes no arguments) """
@@ -1065,21 +1081,23 @@ class ConfigUnion(ConfigBase):
             raise AttributeError("ConfigUnion requires 1+ config instances")
         elif length == 1:
             return list(configs)[0]
-        return super(ConfigUnion, cls).__new__(cls)
+        instance = super(ConfigUnion, cls).__new__(cls)
+        instance.configs = []
+        return instance
     
     def __init__(self, *configs):
         """ Initialize a ConfigUnion instance with one or more config
             object instances, as needed (although using only one makes
             very little sense, frankly):
         """
-        self.configs = []
-        for config in configs:
-            if hasattr(config, 'configs'):
-                # extract configs from a ConfigUnion instance:
-                self.configs.extend(config.configs)
-            else:
-                # append the (non-ConfigUnion) config:
-                self.configs.append(config)
+        if hasattr(self, 'configs'):
+            for config in configs:
+                if hasattr(config, 'configs'):
+                    # extract configs from a ConfigUnion instance:
+                    self.configs.extend(config.configs)
+                else:
+                    # append the (non-ConfigUnion) config:
+                    self.configs.append(config)
     
     def __len__(self):
         """ The length of a ConfigUnion instance is equal to how many sub-configs it has """
@@ -1091,7 +1109,7 @@ class ConfigUnion(ConfigBase):
     
     def sub_config_types(self):
         """ Return a set of the class names for all sub-configs of this ConfigUnion instance """
-        return { config.__class__.__name__ for config in self.configs }
+        return { type(config).__name__ for config in self.configs }
     
     @union_of(name='includes')
     def get_includes(self, includes):
