@@ -16,9 +16,6 @@ from cpython.object cimport PyObject_IsTrue
 
 # from ext.haldol.convert cimport convert as haldol_convert
 # from ext.halide cimport *
-# from ext.halide.parameter cimport Parameter as HalParameter
-# from ext.halide.image cimport OutputImageParam as HalOutputImageParam
-# from ext.halide.image cimport ImageParam as HalImageParam
 
 from ext.halide.function cimport ExternFuncArgument as HalExternFuncArgument
 from ext.halide.function cimport NameMangling as HalNameMangling
