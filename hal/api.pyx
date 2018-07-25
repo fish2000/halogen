@@ -17,6 +17,9 @@ from cpython.object cimport PyObject_IsTrue
 # from ext.haldol.convert cimport convert as haldol_convert
 # from ext.halide cimport *
 
+from ext.halide.buffers cimport Buffer, VoidBuffer
+from ext.halide.buffers cimport buffervec_t
+
 from ext.halide.outputs cimport Outputs as HalOutputs
 from ext.halide.module cimport Module as HalModule
 from ext.halide.module cimport LinkageType, LoweredFunc
@@ -65,9 +68,6 @@ from ext.halide.util cimport running_program_name as halide_running_program_name
 
 from ext.halide.func cimport Stage as HalStage
 from ext.halide.func cimport Func as HalFunc
-
-from ext.halide.buffers cimport Buffer, VoidBuffer
-from ext.halide.buffers cimport buffervec_t
 
 
 cpdef bytes u8bytes(object string_source):
