@@ -21,7 +21,7 @@ ctypedef IntrusivePtr[BufferContents] buffercontents_ptr_t
 
 cdef extern from "Halide.h" namespace "Halide" nogil:
     
-    cppclass Buffer[T]:
+    cdef cppclass Buffer[T]:
         ctypedef T ElemType
         Buffer()
         # Buffer[T2](Buffer[T2]&)

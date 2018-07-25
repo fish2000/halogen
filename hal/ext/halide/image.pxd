@@ -3,11 +3,11 @@ from libc.stdint cimport *
 from libcpp.string cimport string
 from libcpp.vector cimport vector
 
-from argument cimport Argument
+# from argument cimport Argument
 from buffers cimport Buffer
 from expr cimport Expr
-from function cimport ExternFuncArgument
-from parameter cimport Parameter
+# from function cimport ExternFuncArgument
+# from parameter cimport Parameter
 from types cimport Type
 from var cimport Var, varvec_t
 
@@ -36,7 +36,7 @@ cdef extern from "Halide.h" namespace "Halide" nogil:
         Expr height()
         Expr channels()
         
-        Parameter parameter()
+        # Parameter parameter()
         # operator Argument()
         # operator ExternFuncArgument()
     

@@ -5,7 +5,7 @@ from libcpp.string cimport string
 from libcpp.vector cimport vector
 from libcpp.pair cimport pair
 
-from buffers cimport Buffer
+# from buffers cimport Buffer
 from definition cimport Definition
 from device_api cimport DeviceAPI
 from expr cimport Expr
@@ -40,7 +40,7 @@ cdef extern from "Halide.h" namespace "Halide" nogil:
         
         ArgType arg_type
         FunctionPtr func
-        Buffer[void] buffer
+        # Buffer[void] buffer
         Expr expr
         
         # YO DOGG: need constructors for:
