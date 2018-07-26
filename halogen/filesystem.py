@@ -384,9 +384,7 @@ class Directory(object):
             os.chdir(self.old)
             self.did_change_back = os.path.samefile(self.old,
                                                     os.getcwd())
-            if self.did_change_back and exc_type is not None:
-                return True
-            return False
+            return self.did_change_back and exc_type is not None
         return True
     
     def suffix_searcher(self, suffix):
