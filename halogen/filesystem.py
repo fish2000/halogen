@@ -297,10 +297,10 @@ class TemporaryName(object):
     
     def to_string(self):
         """ Stringify the TemporaryName instance. """
-        return stringify(self, self.__class__.fields)
+        return stringify(self, type(self).fields)
     
     def __repr__(self):
-        return stringify(self, self.__class__.fields)
+        return stringify(self, type(self).fields)
     
     def __str__(self):
         if self.exists:
@@ -518,10 +518,10 @@ class Directory(object):
     
     def to_string(self):
         """ Stringify the Directory instance. """
-        return stringify(self, self.__class__.fields)
+        return stringify(self, type(self).fields)
     
     def __repr__(self):
-        return stringify(self, self.__class__.fields)
+        return stringify(self, type(self).fields)
     
     def __str__(self):
         if self.exists:

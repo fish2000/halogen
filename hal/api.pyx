@@ -17,8 +17,8 @@ from cpython.object cimport PyObject_IsTrue
 # from ext.haldol.convert cimport convert as haldol_convert
 # from ext.halide cimport *
 
-from ext.halide.function cimport ExternFuncArgument as HalExternFuncArgument
-from ext.halide.function cimport NameMangling as HalNameMangling
+# from ext.halide.function cimport ExternFuncArgument as HalExternFuncArgument
+# from ext.halide.function cimport NameMangling as HalNameMangling
 from ext.halide.function cimport Function as HalFunction
 
 from ext.halide.outputs cimport Outputs as HalOutputs
