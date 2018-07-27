@@ -256,6 +256,8 @@ class ConfigBase(BaseAncestor):
         """ Returns the path to a subdirectory within this Config instances’ prefix """
         if not whence:
             whence = getattr(self, '_prefix', sys.prefix)
+        if hasattr(subdir, 'name'):
+            subdir = subdir.name
         fulldir = os.path.join(whence, subdir)
         return os.path.exists(fulldir) and fulldir or None
     

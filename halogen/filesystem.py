@@ -497,21 +497,35 @@ class Directory(object):
             return files
         return filter(self.suffix_searcher(suffix), files)
     
-    def subdirectory(self, subdir, whence=None):
-        """ Returns the path to a subdirectory beneath the instances’ target path. """
+    def subpath(self, subpth, whence=None, requisite=False):
+        """ Returns the path to a subpath beneath the instances’ target path. """
         if not whence:
             whence = self.name
         else:
             if hasattr(whence, 'name'):
                 whence = whence.name
-        if hasattr(subdir, 'name'):
-            subdir = subdir.name
-        fulldir = os.path.join(whence, subdir)
-        return os.path.exists(fulldir) and fulldir or None
+        if hasattr(subpth, 'name'):
+            subpth = subpth.name
+        fullpth = os.path.join(whence, subpth)
+        return (os.path.exists(fullpth) or not requisite) and fullpth or None
+    
+    def subdirectory(self, subdir, whence=None):
+        """ Returns the path to a subpath beneath the instances’ target path --
+            much like subpath(…) -- but wrapped in a new Directory instance.
+        """
+        pth = self.subpath(subdir, whence, requisite=False)
+        if os.path.isfile(pth):
+            raise FilesystemError("file exists at subdirectory path: %s" % pth)
+        if os.path.islink(pth):
+            raise FilesystemError("symlink exists at subdirectory path: %s" % pth)
+        if os.path.ismount(pth):
+            raise FilesystemError("mountpoint exists at subdirectory path: %s" % pth)
+        cls = type(self)
+        return cls(pth=pth)
     
     def makedirs(self, pth=os.curdir):
-        """ Creates any parts of the target directory path that don’t already exist, á la
-            the `mkdir -p` shell command.
+        """ Creates any parts of the target directory path that don’t already exist,
+            á la the `mkdir -p` shell command.
         """
         if hasattr(pth, 'name'):
             pth = pth.name
@@ -525,7 +539,7 @@ class Directory(object):
         return walk(self.name, followlinks=followlinks)
     
     def parent(self):
-        """ Sugar for calling os.path.abspath(os.path.join(self, name, os.pardir))
+        """ Sugar for calling os.path.abspath(os.path.join(self.name, os.pardir))
             which, if you are still curious, gets you the parent directory of the
             instances’ target directory.
         """

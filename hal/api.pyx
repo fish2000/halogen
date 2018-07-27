@@ -919,15 +919,15 @@ cdef class Module:
             out.__this__.reset(new HalModule(m))
         return out
     
-    cdef buffervec_t get_buffers(Module self):
+    cdef buffervec_t get_buffers(Module self) nogil:
         cdef buffervec_t out = deref(self.__this__).buffers()
         return out
     
-    cdef funcvec_t get_functions(Module self):
+    cdef funcvec_t get_functions(Module self) nogil:
         cdef funcvec_t out = deref(self.__this__).functions()
         return out
     
-    cdef modulevec_t get_submodules(Module self):
+    cdef modulevec_t get_submodules(Module self) nogil:
         cdef modulevec_t out = deref(self.__this__).submodules()
         return out
     
@@ -938,8 +938,6 @@ cdef class Module:
         while it != modulevec.end():
             out.append(Module.with_instance(deref(it)))
             incr(it)
-        # for idx, m in enumerate(modulevec):
-        #     out += Module.with_instance(m.__this__)
         return tuple(out)
     
     def append(Module self, other):
@@ -1036,18 +1034,18 @@ cpdef set registered_generators():
 
 cdef string halide_compute_base_path(string& output_dir,
                                      string& function_name,
-                                     string& file_base_name):
+                                     string& file_base_name) nogil:
     cdef stringvec_t namespaces
     cdef string simple_name = halide_extract_namespaces(function_name, namespaces)
     cdef string base_path
-    if output_dir.back() == b'/':
+    if output_dir.back() == '/':
         base_path = output_dir
     else:
-        base_path = output_dir + b'/'
+        base_path = output_dir.append('/')
     if file_base_name.empty():
-        base_path += simple_name
+        base_path.append(simple_name)
     else:
-        base_path += file_base_name
+        base_path.append(file_base_name)
     return base_path
 
 def compute_base_path(object output_dir,

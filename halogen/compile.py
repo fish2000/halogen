@@ -72,37 +72,42 @@ class Generator(object):
     
     def precompile(self):
         """ Validate the compilation source and destination file paths: """
+        if self.compiled:
+            return True
         if self.VERBOSE:
             print("Pre-compiling: %s" % os.path.basename(self.source))
-        if not self.compiled:
-            if self.intermediate:
-                if not os.path.isdir(self.intermediate):
-                    raise CompilerError("Non-existent intermediate artifact directory: %s" % self.intermediate)
-            if not os.path.isfile(self.source):
-                raise CompilerError("can't find compilation input: %s" % self.source)
-            if os.path.exists(self.destination):
-                if os.path.isdir(self.destination):
-                    raise CompilerError("can't replace a directory with compilation output: %s" % self.destination)
-                raise CompilerError("can't overwrite with compilation output: %s" % self.destination)
+        if self.intermediate:
+            if not os.path.isdir(self.intermediate):
+                raise CompilerError("Non-existent intermediate artifact directory: %s" % self.intermediate)
+        if not os.path.isfile(self.source):
+            raise CompilerError("can't find compilation input: %s" % self.source)
+        if hasattr(self, 'transient'):
+            if os.path.isfile(self.transient):
+                rm_rf(self.transient)
+        if os.path.exists(self.destination):
+            if os.path.isdir(self.destination):
+                raise CompilerError("can't replace a directory with compilation output: %s" % self.destination)
+            raise CompilerError("can't overwrite with compilation output: %s" % self.destination)
         return True
     
     def compile(self):
         """ Execute the CXX compilation command, using our stored config instance,
             our validated source file, and a temporary output file name:
         """
-        if not self.compiled:
-            splitbase = os.path.splitext(
-                        os.path.basename(self.source))
-            self.transient = mktemp(prefix=splitbase[0],
-                                    suffix="%s%so" % (splitbase[1], os.extsep),
-                                    dir=self.intermediate)
-            if self.VERBOSE:
-                print("Compiling: %s to %s" % (os.path.basename(self.source),
-                                               os.path.basename(self.transient)))
-                print("")
-            self.result += config.CXX(self.conf,
-                                      self.transient,
-                                      self.source, verbose=self.VERBOSE)
+        if self.compiled:
+            return True
+        splitbase = os.path.splitext(
+                    os.path.basename(self.source))
+        self.transient = mktemp(prefix=splitbase[0],
+                                suffix="%s%so" % (splitbase[1], os.extsep),
+                                dir=self.intermediate)
+        if self.VERBOSE:
+            print("Compiling: %s to %s" % (os.path.basename(self.source),
+                                           os.path.basename(self.transient)))
+            print("")
+        self.result += config.CXX(self.conf,
+                                  self.transient,
+                                  self.source, verbose=self.VERBOSE)
         return True
     
     def postcompile(self):
@@ -110,6 +115,8 @@ class Generator(object):
             or failure, raising exceptions as needed and copying the compilation
             output to the validated destination path if all is well:
         """
+        if self.compiled:
+            return True
         if self.VERBOSE:
             print("Post-compiling: %s" % os.path.basename(self.transient))
         if (not self.compiled) and (len(self.result) > 0): # apres-compilation
@@ -157,6 +164,8 @@ class Generators(object):
                                           do_shared=True, do_static=True,
                                           do_preload=True,
                                         **kwargs):
+        if not conf:
+            raise CompilerError("A config-ish instance is required")
         if not suffix:
             suffix = "cpp"
         if not prefix:
@@ -172,14 +181,14 @@ class Generators(object):
         self.destination = Directory(pth=destination)
         if not self.destination.exists:
             raise CompilerError("Non-existant generator destination: %s" % self.destination.name)
-        self.intermediate = Directory(pth=intermediate or tempfile.gettempdir())
-        if not self.intermediate.exists:
-            self.intermediate.makedirs()
-        self.library = os.path.join(self.destination.name, "%s%s" % (self.prefix, SHARED_LIBRARY_SUFFIX))
-        self.archive = os.path.join(self.destination.name, "%s%s" % (self.prefix, STATIC_LIBRARY_SUFFIX))
+        self.library = self.destination.subpath("%s%s" % (self.prefix, SHARED_LIBRARY_SUFFIX))
+        self.archive = self.destination.subpath("%s%s" % (self.prefix, STATIC_LIBRARY_SUFFIX))
         self.directory = Directory(pth=directory)
         if not self.directory.exists:
             raise CompilerError("Non-existant generator source directory: %s" % self.directory.name)
+        self.intermediate = Directory(pth=intermediate or tempfile.gettempdir())
+        if not self.intermediate.exists:
+            self.intermediate.makedirs()
         self._compiled = False
         self._linked = False
         self._archived = False
@@ -190,7 +199,7 @@ class Generators(object):
         self.archive_result = tuple()
         self.preload_result = None
         if self.VERBOSE:
-            print(u"Scanning %s for “%s” files" % (self.directory.name, self.suffix))
+            print("Scanning %s for “%s” files" % (self.directory.name, self.suffix))
         for path, dirs, files in self.directory.walk(followlinks=True):
             for df in files:
                 if df.lower().endswith(self.suffix):
@@ -303,8 +312,6 @@ class Generators(object):
                                       self.library,
                                      *self.prelink, verbose=self.VERBOSE)
         if len(self.link_result) > 0: # apres-link
-            # if len(self.link_result[1]) > 0: # failure
-            #     raise LinkerError(self.link_result[1])
             self._linked = os.path.isfile(self.library)
         if not self.linked:
             if len(self.link_result[1]) > 0: # failure
@@ -340,8 +347,6 @@ class Generators(object):
                                          self.archive,
                                         *self.prelink, verbose=self.VERBOSE)
         if len(self.archive_result) > 0: # apres-arch
-            # if len(self.archive_result[1]) > 0: # failure
-            #     raise ArchiverError(self.archive_result[1])
             self._archived = os.path.isfile(self.archive)
         if not self.archived:
             if len(self.archive_result[1]) > 0: # failure
@@ -529,8 +534,6 @@ def main():
                 #                       directory=directory,
                 #                       maximum=2, verbose=DEFAULT_VERBOSITY) as gens:
                 
-                # library = os.path.join(td.name, "%s%s" % ('yodogg', SHARED_LIBRARY_SUFFIX))
-                # archive = os.path.join(td.name, "%s%s" % ('yodogg', STATIC_LIBRARY_SUFFIX))
                 library = gens.library
                 archive = gens.archive
                 
