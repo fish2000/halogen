@@ -141,11 +141,11 @@ def back_tick(command,  as_str=True,
             print("NONZERO RETURN STATUS: {}".format(returncode),
                                                 file=sys.stderr)
             print("",                           file=sys.stderr)
-        if output:
+        if output.strip():
             print("OUTPUT:",                            file=sys.stdout)
             print("`{}`".format(u8str(output).strip()), file=sys.stdout)
             print("",                                   file=sys.stdout)
-        if errors:
+        if errors.strip():
             print("ERRORS:",                            file=sys.stderr)
             print("`{}`".format(u8str(errors).strip()), file=sys.stderr)
             print("",                                   file=sys.stderr)

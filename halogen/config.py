@@ -90,6 +90,12 @@ class ConfigSubBase(SubBaseAncestor):
     @abstractmethod
     def prefix(self): pass
     
+    # Name get method:
+    
+    @property
+    @abstractmethod
+    def name(self): pass
+    
     # The subdirectory method is used throughout
     # all Config subclasses:
     
@@ -251,6 +257,11 @@ class ConfigBase(BaseAncestor):
     def prefix(self):
         if hasattr(self, '_prefix'):
             del self._prefix
+    
+    @property
+    def name(self):
+        """ The name of the Config instance. This defaults to the name of its class. """
+        return type(self).__name__
     
     def subdirectory(self, subdir, whence=None):
         """ Returns the path to a subdirectory within this Config instances’ prefix """
@@ -692,6 +703,15 @@ class PkgConfig(ConfigBase):
     def share(self):
         return self.subdirectory("share")
     
+    @property
+    def name(self):
+        """ The name of the Config instance. In this case, it is the name of the class,
+            along with the value of the “pkg_name” instance variable, specifying the name
+            of the `pkg-config` package with whose data the instance was initialized.
+        """
+        return "%s(pkg_name=%s)" % (type(self).__name__,
+                                         self.pkg_name)
+    
     def get_includes(self):
         return back_tick("%s %s --cflags-only-I" % (self.pkgconfig,
                                                     self.pkg_name),
@@ -820,6 +840,15 @@ class BrewedConfig(ConfigBase):
     def share(self):
         return self.subdirectory("share")
     
+    @property
+    def name(self):
+        """ The name of the Config instance. In this case, it is the name of the class,
+            along with the value of the “brew_name” instance variable, specifying the
+            name of the Homebrew formula with whose data the instance was initialized.
+        """
+        return "%s(brew_name=%s)" % (type(self).__name__,
+                                          self.brew_name)
+    
     def get_includes(self):
         return "-I%s" % self.include()
     
@@ -855,6 +884,11 @@ class BrewedHalideConfig(BrewedConfig):
         """ Initialize BrewedHalideConfig (constructor takes no arguments) """
         super(BrewedHalideConfig, self).__init__(brew_name=self.library.lower())
     
+    @property
+    def name(self):
+        """ The name of the Config instance. This defaults to the name of its class. """
+        return type(self).__name__
+    
     def get_libs(self):
         return "-l%s" % self.library
     
@@ -882,6 +916,11 @@ class BrewedImreadConfig(BrewedConfig):
         self.config_command = which('imread-config')
         cmd = '%s --prefix' % self.config_command
         self.prefix = back_tick(cmd, ret_err=False)
+    
+    @property
+    def name(self):
+        """ The name of the Config instance. This defaults to the name of its class. """
+        return type(self).__name__
     
     def get_includes(self):
         return back_tick("%s --includes" % self.config_command,
@@ -1101,16 +1140,31 @@ class ConfigUnion(ConfigBase):
                     self.configs.append(config)
     
     def __len__(self):
-        """ The length of a ConfigUnion instance is equal to how many sub-configs it has """
+        """ The length of a ConfigUnion instance is equal to the number of its sub-configs """
         return len(self.configs)
     
     def __getitem__(self, key):
-        """ Return a sub-config from the ConfigUnion instance via subscripting """
+        """ Access one of the ConfigUnion instances’ sub-configs via subscript """
         return self.configs[key]
     
     def sub_config_types(self):
-        """ Return a set of the class names for all sub-configs of this ConfigUnion instance """
-        return { type(config).__name__ for config in self.configs }
+        """ Retrieve a set with all instance names for the ConfigUnion instances’ sub-configs """
+        return { config.name for config in self.configs }
+    
+    @property
+    def name(self):
+        """ The name of the Config instance. In this case, it is the class name, followed
+            by a bracketed list of the types (in C++ template-type-parameter style) of all
+            of this ConfigUnion instances’ sub-config instances -- or rather, it is a
+            bracketed list of the *names* of those sub-config instances (e.g. the
+            `instance.name` property) which is often, but not always only, that instances’
+            class name. Like, q.v. config-class name property definitions supra., dogg.
+            
+            Internally, this property calls ConfigUnion.sub_config_types(self) to furnish
+            itself with the sub-config type list.
+        """
+        return "%s<%s>" % (type(self).__name__,
+               ", ".join(sorted(self.sub_config_types())))
     
     @union_of(name='includes')
     def get_includes(self, includes):
@@ -1280,78 +1334,20 @@ def main():
     
     """ Test basic config methods: """
     
-    print("")
-    print("TESTING: BrewedHalideConfig ...")
-    print("")
     print_config(brewedHalideConfig)
-    
-    print("=" * terminal_width)
-    print("")
-    print("TESTING: SysConfig ...")
-    print("")
     print_config(sysConfig)
-    
-    print("=" * terminal_width)
-    print("")
-    print("TESTING: PkgConfig ...")
-    print("")
     print_config(pkgConfig)
-    
-    print("=" * terminal_width)
-    print("")
-    print("TESTING: NumpyConfig ...")
-    print("")
     print_config(numpyConfig)
-    
-    print("=" * terminal_width)
-    print("")
-    print("TESTING: BrewedPythonConfig ...")
-    print("")
     print_config(brewedPythonConfig)
-    
-    print("=" * terminal_width)
-    print("")
-    print("TESTING: PythonConfig ...")
-    print("")
     print_config(pythonConfig)
-    
-    print("=" * terminal_width)
-    print("")
-    print("TESTING: ConfigUnion<SysConfig> ...")
-    print("")
     print_config(configUnionOne)
-    
-    print("=" * terminal_width)
-    print("")
-    print("TESTING: ConfigUnion<BrewedHalideConfig, SysConfig> ...")
-    print("")
     print_config(configUnion)
-    
-    print("=" * terminal_width)
-    print("")
-    print("TESTING: ConfigUnion<BrewedHalideConfig, SysConfig,")
-    print("                     BrewedPythonConfig, PythonConfig, PkgConfig, NumpyConfig> ...")
-    print("")
     print_config(configUnionAll)
     
     """ Test compilation with different configs: """
     
-    print("=" * terminal_width)
-    print("")
-    print("TEST COMPILATION: CXX(brewedHalideConfig, <out>, <in>) ...")
-    print("")
     test_compile(brewedHalideConfig, test_generator_source)
-
-    print("=" * terminal_width)
-    print("")
-    print("TEST COMPILATION: CXX(configUnion, <out>, <in>) ...")
-    print("")
     test_compile(configUnion, test_generator_source)
-
-    print("=" * terminal_width)
-    print("")
-    print("TEST COMPILATION: CXX(configUnionAll, <out>, <in>) ...")
-    print("")
     test_compile(configUnionAll, test_generator_source)
     
     """  Reveal the cached field-value dictionary: """
@@ -1363,7 +1359,7 @@ def main():
     
 
 def corefoundation_check():
-    from utils import print_config, terminal_width
+    from utils import print_config
     from utils import test_compile
     try:
         from Foundation import NSBundle
@@ -1386,17 +1382,7 @@ def corefoundation_check():
     pyConfig = PythonConfig(prefix)
     configUnion = ConfigUnion(brewedHalideConfig, pyConfig)
     
-    print("=" * terminal_width)
-    print("")
-    print("TESTING: ConfigUnion with PythonConfig PyObjC prefix %s ... " % prefix)
-    print("                                              bundle path %s ... " % bundlepath)
-    print("")
     print_config(configUnion)
-    
-    print("=" * terminal_width)
-    print("")
-    print("TEST COMPILATION: CXX(configUnion, <out>, <in>) ...")
-    print("")
     test_compile(configUnion, test_generator_source)
 
 if __name__ == '__main__':

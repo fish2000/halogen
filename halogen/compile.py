@@ -68,7 +68,7 @@ class Generator(object):
         self.result = tuple()
         if self.VERBOSE:
             print("")
-            print("Initializing generator: %s" % os.path.basename(self.source))
+            print("Initialized generator: %s" % os.path.basename(self.source))
     
     def precompile(self):
         """ Validate the compilation source and destination file paths: """
@@ -189,6 +189,7 @@ class Generators(object):
         self.intermediate = Directory(pth=intermediate or tempfile.gettempdir())
         if not self.intermediate.exists:
             self.intermediate.makedirs()
+        self._precompiled = False
         self._compiled = False
         self._linked = False
         self._archived = False
@@ -199,20 +200,16 @@ class Generators(object):
         self.archive_result = tuple()
         self.preload_result = None
         if self.VERBOSE:
-            print("Scanning %s for “%s” files" % (self.directory.name, self.suffix))
-        for path, dirs, files in self.directory.walk(followlinks=True):
-            for df in files:
-                if df.lower().endswith(self.suffix):
-                    self.sources.append(os.path.realpath(
-                                        os.path.join(path, df)))
-        if self.VERBOSE:
-            if self.source_count < self.MAXIMUM:
-                print("Using %s found generator sources\n" % self.source_count)
-                self.MAXIMUM = self.source_count
-            else:
-                print("Using %s of %s generator sources found\n" % (self.MAXIMUM,
-                                                                    self.source_count))
-                self.sources = list(self.sources[:self.MAXIMUM])
+            print("")
+            print("Initialized generator suite:")
+            print("* Using source: %s" % self.directory.name)
+            print("* With targets: %s" % self.destination.name)
+            print("* Intermediate: %s" % self.intermediate.name)
+    
+    @property
+    def precompiled(self):
+        """ Have all generator sources been gathered? """
+        return self._precompiled
     
     @property
     def compiled(self):
@@ -257,6 +254,38 @@ class Generators(object):
         """
         return u8str("%s%so" % (self.suffix, os.extsep))
     
+    def precompile(self):
+        """ Walk the path of the specified source directory, gathering all C++ generator
+            source files that match the suffix furnished in the constructor, and storing
+            the full filesystem paths of these files in the `self.sources` list of strings.
+            
+            This function returns a boolean indicating success or failure; gathering one or
+            more source files is considered success, and finding no matches is a failure.
+        """
+        if self.precompiled:
+            return True
+        if self.VERBOSE:
+            print("Scanning %s for “%s” files" % (self.directory.name,
+                                                  self.suffix))
+        for path, dirs, files in self.directory.walk(followlinks=True):
+            for df in files:
+                if df.lower().endswith(self.suffix):
+                    self.sources.append(os.path.realpath(
+                                        os.path.join(path, df)))
+        if self.source_count < self.MAXIMUM:
+            if self.VERBOSE:
+                print("Using %s found generator sources\n" % self.source_count)
+            self.MAXIMUM = self.source_count
+        else:
+            if self.VERBOSE:
+                print("Using %s of %s generator sources found\n" % (self.MAXIMUM,
+                                                                    self.source_count))
+            self.sources = list(self.sources[:self.MAXIMUM])
+        # return self.source_count
+        if self.source_count > 0:
+            self._precompiled = True
+        return self.precompiled
+    
     def compile_all(self):
         """ Attempt to compile all of the generator source files we discovered while walking
             the directory with which we were initialized.
@@ -267,6 +296,8 @@ class Generators(object):
             and False if not -- in many such cases, one of the many sub-operations can and will
             throw an exception (q.v. halogen.errors supra).
         """
+        if self.compiled:
+            return True
         if self.source_count < 1:
             raise CompilerError("can't find any compilation inputs: %s" % self.directory.name)
         if self.VERBOSE:
@@ -298,6 +329,8 @@ class Generators(object):
                 kind of crazy miracle, and/or someone giving me a Windows machine and a ton
                 of spare time… you never know but I dunno
         """
+        if self.linked:
+            return True
         if not self.compiled:
             raise LinkerError("can't link before compilation: %s" % self.directory.name)
         if self.prelink_count < 1:
@@ -333,6 +366,8 @@ class Generators(object):
                 kind of crazy miracle, and/or someone giving me a Windows machine and a ton
                 of spare time… you never know but I dunno
         """
+        if self.archived:
+            return True
         if not self.compiled:
             raise ArchiverError("can't archive before compilation: %s" % self.directory.name)
         if self.prelink_count < 1:
@@ -458,8 +493,12 @@ class Generators(object):
             rm_rf(of)
     
     def __enter__(self):
+        # 0: start as you mean to go on:
+        self.precompile()
+        
         # 1: COMPILE ALL THE THINGS
-        self.compile_all()
+        if self.precompiled:
+            self.compile_all()
         
         # 2: link dynamically
         if self.compiled and self.do_shared:
@@ -537,12 +576,14 @@ def main():
                 library = gens.library
                 archive = gens.archive
                 
+                precompiled = gens.precompiled and "YES" or "no"
                 compiled = gens.compiled and "YES" or "no"
                 linked = gens.linked and "YES" or "no"
                 archived = gens.archived and "YES" or "no"
                 preloaded = gens.preloaded and "YES" or "no"
                 
                 print("")
+                print("IS IT PRECOMPILED? -- %s" % precompiled)
                 print("IS IT COMPILED? -- %s" % compiled)
                 print("IS IT LINKED? -- %s" % linked)
                 print("IS IT ARCHIVED? -- %s" % archived)

@@ -138,6 +138,12 @@ def terminal_print(message, color='red', asterisk='*'):
         message=message)))
 
 def print_config(conf):
+    
+    print("=" * terminal_width)
+    print("")
+    print("TESTING: %s …" % conf.name)
+    print("")
+    
     print("INCLUDES:")
     print("")
     print(conf.get_includes())
@@ -176,6 +182,11 @@ def test_compile(conf, test_source):
     
     output = tuple()
     px = "yodogg-"
+    
+    print("=" * terminal_width)
+    print("")
+    print("TEST COMPILATION: CXX(%s, <out>, <in>) ..." % conf.name)
+    print("")
     
     with NamedTemporaryFile(suffix="cpp", prefix=px) as tf:
         tf.file.write(test_source)
