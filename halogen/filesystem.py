@@ -497,6 +497,11 @@ class Directory(object):
             return files
         return filter(self.suffix_searcher(suffix), files)
     
+    @classmethod
+    def directory_class(cls, pth=None):
+        """ Factory method for instances of this class: """
+        return cls(pth=pth)
+    
     def subpath(self, subpth, whence=None, requisite=False):
         """ Returns the path to a subpath beneath the instances’ target path. """
         if not whence:
@@ -520,8 +525,7 @@ class Directory(object):
             raise FilesystemError("symlink exists at subdirectory path: %s" % pth)
         if os.path.ismount(pth):
             raise FilesystemError("mountpoint exists at subdirectory path: %s" % pth)
-        cls = type(self)
-        return cls(pth=pth)
+        return self.directory_class(pth)
     
     def makedirs(self, pth=os.curdir):
         """ Creates any parts of the target directory path that don’t already exist,
@@ -708,6 +712,11 @@ class TemporaryDirectory(Directory):
         """
         self._destroy = False
         return self.name
+    
+    @classmethod
+    def directory_class(cls, pth=None):
+        """ Redirect call to ancestor class: """
+        return Directory(pth=pth)
     
     def __enter__(self):
         if not self.exists:

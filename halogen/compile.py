@@ -59,6 +59,12 @@ class Generator(object):
     def __init__(self, conf, destination,
                              source,
                            **kwargs):
+        if not conf:
+            CompilerError("A config-ish instance is required")
+        if not destination:
+            CompilerError("A destination directory is required")
+        if not source:
+            CompilerError("A C++ generator source file is required")
         self.VERBOSE = kwargs.pop('verbose', DEFAULT_VERBOSITY)
         self.intermediate = kwargs.pop('intermediate', None)
         self.conf = conf
@@ -68,7 +74,13 @@ class Generator(object):
         self.result = tuple()
         if self.VERBOSE:
             print("")
-            print("Initialized generator: %s" % os.path.basename(self.source))
+            print("Initialized C++ file compilation manager")
+            print("* Config class: %s" % self.conf.name)
+            print("* Source filename: %s" % os.path.basename(self.source))
+            print("* Output filepath: %s" % self.destination)
+            if self.intermediate:
+                print("* Intermediate: %s" % self.intermediate)
+            print("")
     
     def precompile(self):
         """ Validate the compilation source and destination file paths: """
@@ -201,10 +213,12 @@ class Generators(object):
         self.preload_result = None
         if self.VERBOSE:
             print("")
-            print("Initialized generator suite:")
+            print("Initialized Halide generator compile/load/run suite:")
+            print("* Config class: %s" % self.conf.name)
             print("* Using source: %s" % self.directory.name)
             print("* With targets: %s" % self.destination.name)
             print("* Intermediate: %s" % self.intermediate.name)
+            print("")
     
     @property
     def precompiled(self):
@@ -281,7 +295,6 @@ class Generators(object):
                 print("Using %s of %s generator sources found\n" % (self.MAXIMUM,
                                                                     self.source_count))
             self.sources = list(self.sources[:self.MAXIMUM])
-        # return self.source_count
         if self.source_count > 0:
             self._precompiled = True
         return self.precompiled
@@ -298,6 +311,8 @@ class Generators(object):
         """
         if self.compiled:
             return True
+        if not self.precompiled:
+            raise CompilerError("can't compile before precompilation: %s" % self.directory.name)
         if self.source_count < 1:
             raise CompilerError("can't find any compilation inputs: %s" % self.directory.name)
         if self.VERBOSE:
@@ -445,12 +460,16 @@ class Generators(object):
             specifically the Generator Registry (q.v. `loaded_generators()` method docstring, supra).
         """
         # Check self-status:
+        if not self.precompiled:
+            raise GenerationError("Can’t run() before first precompiling, compiling, dynamic-linking, and preloading")
         if not self.compiled:
             raise GenerationError("Can’t run() before first compiling, dynamic-linking, and preloading")
         if not self.linked:
             raise GenerationError("Can’t run() before first dynamic-linking and preloading")
         if not self.preloaded:
             raise GenerationError("Can’t run() before first preloading")
+        if self.loaded_count < 1:
+            raise GenerationError("Can’t run() without one or more loaded generators")
         
         # Check args:
         if not target:
@@ -543,9 +562,14 @@ def main():
         if not td.exists:
             print("TemporaryDirectory DOES NOT EXIST")
         
-        gens = Generators(CONF, destination=td.name,
+        # intermediate =
+        # if not intermediate.exists:
+        #     print("Intermediate subdirectory of temporary directory DOES NOT EXIST")
+        
+        gens = Generators(CONF, destination=td,
                                 directory=directory,
-                                maximum=2, verbose=DEFAULT_VERBOSITY)
+                                intermediate=td.subdirectory(".intermediate"),
+                                maximum=255, verbose=DEFAULT_VERBOSITY)
         
         stack = ExitStack()
         try:
@@ -553,6 +577,7 @@ def main():
             stack.enter_context(gens)
         except CompilerError as exc:
             print_exception(exc)
+            gens.precompile() and gens.compile()
         except LinkerError as exc:
             print_exception(exc)
             if gens.compiled and gens.do_static:
@@ -569,9 +594,6 @@ def main():
             print_exception(exc)
         else:
             with stack:
-                # with Generators(CONF, destination=td.name,
-                #                       directory=directory,
-                #                       maximum=2, verbose=DEFAULT_VERBOSITY) as gens:
                 
                 library = gens.library
                 archive = gens.archive
@@ -598,7 +620,7 @@ def main():
                 if os.path.isfile(archive):
                     print("ARCHIVE FILE EXISTS")
                 
-                td.do_not_destroy()
+                # td.do_not_destroy()
                 # loaded_generators = gens.loaded_generators()
                 
                 if DEFAULT_VERBOSITY:
