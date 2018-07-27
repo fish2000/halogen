@@ -60,11 +60,11 @@ class Generator(object):
                              source,
                            **kwargs):
         if not conf:
-            CompilerError("A config-ish instance is required")
+            raise CompilerError("A config-ish instance is required")
         if not destination:
-            CompilerError("A destination directory is required")
+            raise CompilerError("A destination directory is required")
         if not source:
-            CompilerError("A C++ generator source file is required")
+            raise CompilerError("A C++ generator source file is required")
         self.VERBOSE = kwargs.pop('verbose', DEFAULT_VERBOSITY)
         self.intermediate = kwargs.pop('intermediate', None)
         self.conf = conf
