@@ -43,7 +43,7 @@ def preload(library_path, **kwargs):
     
     # throw if the path is bad:
     if not os.path.exists(library_path):
-        raise GeneratorLoaderError("No library exists at %s" % library_path)
+        raise GeneratorLoaderError("preload(): No library exists at %s" % library_path)
     
     # normalize the path:
     realpth = os.path.realpath(library_path)
@@ -51,7 +51,7 @@ def preload(library_path, **kwargs):
     # return existant handle, because we already loaded that:
     if realpth in preload.loaded_libraries:
         if verbose:
-            print("Library %s previously loaded" % realpth)
+            print("preload(): Library %s previously loaded" % realpth)
         return preload.loaded_libraries[realpth]
     
     # so far, I have no use for the object returned by LoadLibrary:
@@ -59,7 +59,7 @@ def preload(library_path, **kwargs):
     
     # return the new and freshly loaded handle
     if verbose:
-        print("Library %s loaded afresh" % realpth)
+        print("preload(): Library %s loaded afresh" % realpth)
     return preload.loaded_libraries[realpth]
 
 def generate(*generators, **arguments):
@@ -95,7 +95,6 @@ def generate(*generators, **arguments):
         raise GenerationError(">=1 generator name is required")
     
     if not generators.issubset(generator_names):
-        # raise GenerationError("unknown generator name in %s" % str(generators))
         raise GenerationError("generator name in %s unknown to set: %s" % (str(generator_names),
                                                                            str(generators)))
     
@@ -106,10 +105,11 @@ def generate(*generators, **arguments):
         raise GenerationError("invalid emit in %s" % str(emits))
     
     if verbose:
-        print("Compiling and running %s generators...\n" % len(generators))
+        print("")
+        print("generate(): Preparing %s generator modules to emit data...\n" % len(generators))
     
     # Set what emits to, er, emit, as per the “emit” keyword argument;
-    # These have been rolled into the “emits” set (see argument processing, above);
+    # These have been rolled into the “emits” set (q.v. argument processing supra.);
     # …plus, we’ve already ensured that the set is valid:
     emit_dict = dict(emit_defaults)
     for emit in emits:
@@ -123,17 +123,17 @@ def generate(*generators, **arguments):
     emit_options = hal.api.EmitOptions(**emit_dict)
     
     if verbose:
-        print("Emit Options:")
+        print("generate(): Emit Options:")
         print(u8str(emit_options))
-        print('')
+        print("")
     
-    # The “target_string” variable defaults to “host” (see argument processing):
+    # The “target_string” variable defaults to “host” (q.v. argument processing supra.):
     target = hal.api.Target(target_string=target_string)
     
     if verbose:
-        print("Target:")
+        print("generate(): Target:")
         print(u8str(target))
-        print('')
+        print("")
     
     # This list will store generator module compilation artifacts:
     artifacts = []
@@ -143,21 +143,20 @@ def generate(*generators, **arguments):
     
     # The generator loop compiles each named generator:
     for generator in generators:
+        
         # “base_path” (a bytestring) is computed using the `compute_base_path()` API function:
         base_path = hal.api.compute_base_path(u8bytes(output_directory.name),
                                               u8bytes(generator))
         
         # “output” (an hal.api.Outputs instance) is computed using the eponymously named
         # API function `compute_outputs_for_target_and_path()` with a hal.api.Target instance
-        # and a base path (q.v. note supra):
+        # and a base path (q.v. note supra.):
         output = emit_options.compute_outputs_for_target_and_path(target, base_path)
         
         if verbose:
             print("BSEPTH: %s" % u8str(base_path))
             print("OUTPUT: %s" % u8str(output))
             print("TARGET: %s" % u8str(target))
-        
-        # generator_args.update(arguments)
         
         # This API call prepares the generator code module:
         module = hal.api.get_generator_module(generator,
@@ -168,10 +167,11 @@ def generate(*generators, **arguments):
                                        u8str(module)))
             print('-' * max(terminal_width, 100))
         
-        # The compilation call:
+        # The module-compilation call:
         module.compile(output)
         
-        # Stow the post-compile values:
+        # Stow the post-compile base path (a string), outputs (an instance of
+        # hal.api.Outputs) and the module instance itself:
         artifacts.append((u8str(base_path), output, module))
     
     # Return the post-compile value artifacts for all generators:

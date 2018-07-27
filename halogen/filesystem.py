@@ -6,6 +6,7 @@ import os
 import re
 import shutil
 import zipfile
+import sys
 import six
 
 try:
@@ -13,7 +14,7 @@ try:
 except ImportError:
     from os import scandir, walk
 
-from tempfile import mktemp, mkdtemp, gettempprefix
+from tempfile import mktemp, mkdtemp, gettempprefix, gettempdir
 from errors import ExecutionError, FilesystemError
 from utils import memoize, u8bytes, u8str, stringify
 
@@ -31,6 +32,7 @@ DEFAULT_PATH = ":".join(filter(os.path.exists, ("/usr/local/bin",
                                                 "/sbin", "/usr/sbin")))
 
 DEFAULT_ENCODING = 'latin-1'
+DEFAULT_TIMEOUT = 60 # seconds
 
 def script_path():
     """ Return the path to the embedded scripts directory. """
@@ -49,68 +51,111 @@ def which(binary_name, pathvar=None):
         which.pathvar = os.getenv("PATH", DEFAULT_PATH)
     return find_executable(binary_name, pathvar or which.pathvar) or ""
 
-def back_tick(cmd, ret_err=False, as_str=True,
-                 raise_err=None,
-                   verbose=False):
-    """ Run command `cmd`, return stdout -- or (stdout, stderr) if `ret_err`.
+def back_tick(command,  as_str=True,
+                       ret_err=False,
+                     raise_err=None,
+                   **kwargs):
+    """ Run command `command`, return stdout -- or (stdout, stderr) if `ret_err`.
         Roughly equivalent to ``check_output`` in Python 2.7.
         
         Parameters
         ----------
-        cmd : sequence
-            command to execute
-        ret_err : bool, optional
-            If True, return stderr in addition to stdout.  If False, just return
-            stdout
+        command : str / list / tuple
+            Command to execute. Can be passed as a single string (e.g "ls -la")
+            or a tuple or list composed of the commands’ individual tokens (like
+            ["ls", "-la"]).
         as_str : bool, optional
-            Whether to decode outputs to unicode string on exit.
+            Whether or not the values returned from ``proc.communicate()`` should
+            be unicode-decoded as bytestrings (using the specified encoding, which
+            defaults to Latin-1) before `back_tick(…)` returns. Default is True.
+        ret_err : bool, optional
+            If True, the return value is (stdout, stderr). If False, it is stdout.
+            In either case `stdout` and `stderr` are strings containing output
+            from the commands’ execution. Default is False.
         raise_err : None or bool, optional
-            If True, raise RuntimeError for non-zero return code. If None, set to
-            True when `ret_err` is False, False if `ret_err` is True.
+            If True, raise halogen.errors.ExecutionError for non-zero return code.
+            If None, it is set to True if `ret_err` is False,
+                                  False if `ret_err` is True.
+            Default is None (exception-raising behavior depends on the `ret_err`
+            value).
+        timeout : int, optional
+            Number of seconds to wait for the executed command to complete before
+            forcibly killing the subprocess. Default is 60.
         verbose : bool, optional
-            Whether to spew debug information to stderr.
+            Whether or not debug information should be spewed to `sys.stderr`.
+            Default is False.
+        encoding : str, optional
+            The name of the encoding to use when decoding the command output per
+            the `as_str` value. Default is “latin-1”.
         
         Returns
         -------
-        out : str or tuple
+        out : str / tuple
             If `ret_err` is False, return stripped string containing stdout from
-            `cmd`.  If `ret_err` is True, return tuple of (stdout, stderr) where
+            `command`.  If `ret_err` is True, return tuple of (stdout, stderr) where
             ``stdout`` is the stripped stdout, and ``stderr`` is the stripped
             stderr.
         
         Raises
         ------
-        Raises RuntimeError if the executed command returns non-zero exit code
-        and `raise_err` is True.
+        A `halogen.errors.ExecutionError` will raise if the executed command returns
+        with any non-zero exit status, and the `raise_err` option is True.
+        
     """
-    import subprocess
-    if raise_err is None:
-        raise_err = False if ret_err else True
-    cmd_is_seq = isinstance(cmd, (list, tuple))
-    proc = subprocess.Popen(cmd, stdout=subprocess.PIPE,
-                                 stderr=subprocess.PIPE,
-                                 shell=not cmd_is_seq)
-    out, err = proc.communicate()
-    retcode = proc.returncode
-    cmd_str = ' '.join(cmd) if cmd_is_seq else cmd
+    # Step 1: Prepare for battle:
+    import subprocess, shlex
+    verbose = bool(kwargs.pop('verbose',  False))
+    timeout =  int(kwargs.pop('timeout',  DEFAULT_TIMEOUT))
+    encoding = str(kwargs.pop('encoding', DEFAULT_ENCODING))
+    raise_err = raise_err is not None and raise_err or bool(not ret_err)
+    issequence = isinstance(command, (list, tuple))
+    command_str = issequence and " ".join(command) or u8str(command).strip()
+    # Step 2: DO IT DOUG:
+    if not issequence:
+        command = shlex.split(command)
     if verbose:
-        print("EXECUTING: `%s`\n" % cmd_str)
-    if retcode is None:
-        proc.terminate()
-        raise ExecutionError(cmd_str + ' process did not terminate')
-    if raise_err and retcode != 0:
-        raise ExecutionError('`{}` returned code {} with error: {}'.format(
-                               cmd_str, retcode,
-                               err.decode(DEFAULT_ENCODING)))
-    out = out.strip()
-    if as_str:
-        out = out.decode(DEFAULT_ENCODING)
-    if not ret_err:
-        return out
-    err = err.strip()
-    if as_str:
-        err = err.decode(DEFAULT_ENCODING)
-    return out, err
+        print("EXECUTING:", file=sys.stdout)
+        print("`{}`".format(command_str),
+                            file=sys.stdout)
+        print("",           file=sys.stdout)
+    process = subprocess.Popen(command, stdout=subprocess.PIPE,
+                                        stderr=subprocess.PIPE,
+                                         shell=False)
+    try:
+        output, errors = process.communicate(timeout=timeout)
+    except subprocess.TimeoutExpired:
+        process.kill()
+        output, errors = process.communicate(timeout=None)
+    returncode = process.returncode
+    # Step 3: Analyze the return code:
+    if returncode is None:
+        process.terminate()
+        raise ExecutionError('`{}` terminated without exiting cleanly'.format(command_str))
+    if raise_err and returncode != 0:
+        raise ExecutionError('`{}` exited with status {}, error: “{}”'.format(command_str,
+                                   returncode,
+                                   u8str(errors).strip()))
+    # Step 4: Tidy the output and return it:
+    if verbose:
+        if returncode != 0:
+            print("NONZERO RETURN STATUS: {}".format(returncode),
+                                                file=sys.stderr)
+            print("",                           file=sys.stderr)
+        if output:
+            print("OUTPUT:",                            file=sys.stdout)
+            print("`{}`".format(u8str(output).strip()), file=sys.stdout)
+            print("",                                   file=sys.stdout)
+        if errors:
+            print("ERRORS:",                            file=sys.stderr)
+            print("`{}`".format(u8str(errors).strip()), file=sys.stderr)
+            print("",                                   file=sys.stderr)
+    output = output.strip()
+    if ret_err:
+        errors = errors.strip()
+        return (as_str and output.decode(encoding) or output), \
+               (as_str and errors.decode(encoding) or errors)
+    return (as_str and output.decode(encoding) or output)
+
 
 def rm_rf(pth):
     """ rm_rf() does what `rm -rf` does, so for the love of fuck, BE CAREFUL WITH IT. """
@@ -125,7 +170,7 @@ def rm_rf(pth):
                 for tf in files:
                     os.unlink(os.path.join(path, tf))
                 subdirs.extend([os.path.join(path, td) for td in dirs])
-            for subdir in subdirs:
+            for subdir in reversed(subdirs):
                 os.rmdir(subdir)
             os.rmdir(pth)
         return True
@@ -165,7 +210,7 @@ def TemporaryNamedFile(pth, mode='wb', buffer_size=-1, delete=True):
         
         Raises
         ------
-            a filesystem.FilesystemError, corresponding to any errors
+            A `halogen.filesystem.FilesystemError`, corresponding to any errors
             that may be raised its own internal calls to ``os.open(…)`` and
             ``os.fdopen(…)``
         
@@ -274,6 +319,8 @@ class TemporaryName(object):
         """ Copy the file (if one exists) at the instances’ file path
             to a new destination.
         """
+        if hasattr(destination, 'name'):
+            destination = destination.name
         if self.exists:
             return shutil.copy2(self.name, destination)
         return False
@@ -379,13 +426,14 @@ class Directory(object):
             self.will_change_back = self.did_change
         return self
     
-    def __exit__(self, exc_type, exc_val, exc_tb):
+    def __exit__(self, exc_type=None, exc_val=None, exc_tb=None):
+        # N.B. return False to throw, True to supress:
         if self.will_change_back and os.path.isdir(self.old):
             os.chdir(self.old)
             self.did_change_back = os.path.samefile(self.old,
                                                     os.getcwd())
-            return self.did_change_back and exc_type is not None
-        return True
+            return self.did_change_back and exc_type is None
+        return False
     
     def suffix_searcher(self, suffix):
         """ Return a boolean function that will search for the given
@@ -453,6 +501,11 @@ class Directory(object):
         """ Returns the path to a subdirectory beneath the instances’ target path. """
         if not whence:
             whence = self.name
+        else:
+            if hasattr(whence, 'name'):
+                whence = whence.name
+        if hasattr(subdir, 'name'):
+            subdir = subdir.name
         fulldir = os.path.join(whence, subdir)
         return os.path.exists(fulldir) and fulldir or None
     
@@ -590,8 +643,8 @@ class TemporaryDirectory(Directory):
         self.suffix = suffix
         self.parent = parent
         super(TemporaryDirectory, self).__init__(self._name)
-        self.will_change = self.will_change and change
-        self.will_change_back = self.will_change and change
+        self.will_change = bool(self.will_change and change)
+        self.will_change_back = bool(self.will_change and change)
     
     @property
     def name(self):
@@ -624,12 +677,12 @@ class TemporaryDirectory(Directory):
             The destination path may be specified using a string-like, or with a Directory
             object.
         """
-        destpth = getattr(destination, 'name', str(destination))
-        if os.path.exists(destpth):
-            raise FilesystemError("TemporaryDirectory.copy_all() destination existant: %s" % destpth)
+        whereto = Directory(pth=destination)
+        if whereto.exists:
+            raise FilesystemError("TemporaryDirectory.copy_all() destination exists: %s" % whereto.name)
         if self.exists:
             return shutil.copytree(u8str(self.name),
-                                   u8str(destpth))
+                                   u8str(whereto.name))
         return False
     
     def do_not_destroy(self):
@@ -648,7 +701,7 @@ class TemporaryDirectory(Directory):
         super(TemporaryDirectory, self).__enter__()
         return self
     
-    def __exit__(self, exc_type, exc_val, exc_tb):
+    def __exit__(self, exc_type=None, exc_val=None, exc_tb=None):
         out = super(TemporaryDirectory, self).__exit__(exc_type, exc_val, exc_tb)
         if self.exists and self.destroy:
             out = rm_rf(self.name) and out
@@ -667,14 +720,9 @@ def NamedTemporaryFile(mode='w+b', buffer_size=-1,
     
     from tempfile import _bin_openflags, _text_openflags,   \
                          _mkstemp_inner, _os,               \
-                         _TemporaryFileWrapper,             \
-                         gettempdir
+                         _TemporaryFileWrapper
     
-    if directory is None:
-        directory = gettempdir()
-    else:
-        if hasattr(directory, 'name'):
-            directory = directory.name
+    parent = Directory(pth=directory or gettempdir())
     
     if suffix:
         if not suffix.startswith(os.extsep):
@@ -689,9 +737,9 @@ def NamedTemporaryFile(mode='w+b', buffer_size=-1,
     if _os.name == 'nt' and delete:
         flags |= _os.O_TEMPORARY
     
-    (descriptor, name) = _mkstemp_inner(directory, prefix,
-                                                   suffix, flags,
-                                           u8bytes(suffix))
+    (descriptor, name) = _mkstemp_inner(parent.name, prefix,
+                                                     suffix, flags,
+                                             u8bytes(suffix))
     try:
         filehandle = _os.fdopen(descriptor, mode, buffer_size)
         return _TemporaryFileWrapper(filehandle, name, delete)
@@ -707,7 +755,6 @@ def main():
     """ Run the inline tests for the halogen.filesystem module. """
     
     # test “cd” and “cwd”:
-    import tempfile, os
     initial = os.getcwd()
     
     with wd() as cwd:
@@ -722,11 +769,11 @@ def main():
         print("* Working-directory object tests completed OK")
         print("")
     
-    with cd(tempfile.gettempdir()) as tmp:
+    with cd(gettempdir()) as tmp:
         print("* Testing directory-change object: %s" % tmp.name)
-        assert os.path.samefile(os.getcwd(),            tempfile.gettempdir())
+        assert os.path.samefile(os.getcwd(),            gettempdir())
         assert os.path.samefile(os.getcwd(),            tmp.new)
-        assert os.path.samefile(tempfile.gettempdir(),  tmp.new)
+        assert os.path.samefile(gettempdir(),           tmp.new)
         assert not os.path.samefile(os.getcwd(),        initial)
         assert not os.path.samefile(tmp.new,            initial)
         assert os.path.samefile(tmp.old,                initial)

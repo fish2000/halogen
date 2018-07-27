@@ -4,6 +4,7 @@
 import cython
 cimport cython
 from cython.operator cimport dereference as deref
+from cython.operator cimport preincrement as incr
 
 from libc.stdint cimport *
 from libcpp.string cimport string
@@ -101,7 +102,7 @@ def stringify(instance, fields):
     for k, v in field_dict.items():
         field_dict_items.append(b'''%s="%s"''' % (u8bytes(k),
                                                   u8bytes(v)))
-    return b"%s(%s) @ %s" % (u8bytes(instance.__class__.__name__),
+    return b"%s(%s) @ %s" % (u8bytes(type(instance).__name__),
                              b", ".join(field_dict_items),
                              u8bytes(hex(id(instance))))
 
@@ -894,6 +895,14 @@ cdef class Module:
     def name(Module self):
         return deref(self.__this__).name()
     
+    @property
+    def auto_schedule(Module self):
+        return deref(self.__this__).auto_schedule()
+    
+    @property
+    def any_strict_float(Module self):
+        return bool(deref(self.__this__).any_strict_float())
+    
     def get_target(Module self):
         out = Target()
         out.__this__ = deref(self.__this__).target()
@@ -904,19 +913,43 @@ cdef class Module:
         return self.get_target()
     
     @staticmethod
-    cdef Module with_instance(HalModule& m):
+    cdef Module with_instance(const HalModule& m):
         cdef Module out = Module()
         with nogil:
             out.__this__.reset(new HalModule(m))
         return out
     
-    cdef buffervec_t buffers(Module self):
+    cdef buffervec_t get_buffers(Module self):
         cdef buffervec_t out = deref(self.__this__).buffers()
         return out
     
-    cdef funcvec_t functions(Module self):
+    cdef funcvec_t get_functions(Module self):
         cdef funcvec_t out = deref(self.__this__).functions()
         return out
+    
+    cdef modulevec_t get_submodules(Module self):
+        cdef modulevec_t out = deref(self.__this__).submodules()
+        return out
+    
+    def submodules(Module self):
+        cdef modulevec_t modulevec = deref(self.__this__).submodules()
+        out = []
+        it = modulevec.begin()
+        while it != modulevec.end():
+            out.append(Module.with_instance(deref(it)))
+            incr(it)
+        # for idx, m in enumerate(modulevec):
+        #     out += Module.with_instance(m.__this__)
+        return tuple(out)
+    
+    def append(Module self, other):
+        # Eventually this’ll cover the other Halide::Module::append(…) overloads:
+        # Halide::Buffer<void>, Halide::LoweredFunc, and Halide::ExternalCode --
+        # which those (at time of writing) do not yet have wrapper cdef-class types:
+        cdef Module mother
+        if type(other) == type(self):
+            mother = <Module>other
+            deref(self.__this__).append(deref(mother.__this__))
     
     cdef void replace_instance(Module self, HalModule&& m) nogil:
         self.__this__.reset(new HalModule(m))
@@ -924,12 +957,44 @@ cdef class Module:
     def compile(Module self, Outputs outputs):
         deref(self.__this__).compile(<HalOutputs>outputs.__this__)
     
+    def resolve_submodules(Module self):
+        return Module.with_instance(
+            deref(self.__this__).resolve_submodules())
+    
+    def get_metadata(Module self):
+        cdef stringmap_t metadata_map = deref(self.__this__).get_metadata_name_map()
+        return dict(metadata_map)
+    
+    def remap_metadatum_by_name(Module self, object name, object to_name):
+        cdef string name_string = <string>u8bytes(name)
+        cdef string to_name_string = <string>u8bytes(to_name)
+        deref(self.__this__).remap_metadata_name(name_string,
+                                              to_name_string)
+        cdef stringmap_t metadata_map = deref(self.__this__).get_metadata_name_map()
+        return dict(metadata_map)
+    
     def to_string(Module self):
         cdef string name = <string>deref(self.__this__).name()
         cdef string targ = <string>deref(self.__this__).target().to_string()
-        field_values = (b""" name="%s" """ % name,
-                        b""" target="%s" """ % targ)
-        return b"%s(%s) @ %s" % (u8bytes(self.__class__.__name__),
+        cdef string auto_schedule = <string>deref(self.__this__).auto_schedule()
+        cdef stringmap_t metadata_map = deref(self.__this__).get_metadata_name_map()
+        cdef string any_strict_float
+        any_strict_float_boolean = bool(deref(self.__this__).any_strict_float())
+        field_values = (b""" name="%s" """               % name,
+                        b""" target="%s" """             % targ)
+        if any_strict_float_boolean: # only print if true:
+            any_strict_float = any_strict_float_boolean and b"True" or b"False"
+            field_values += (b""" any_strict_float=%s """   % any_strict_float,)
+        if auto_schedule.size() > 0: # only print if there’s something:
+            field_values += (b""" auto_schedule="%s" """ % auto_schedule,)
+        if metadata_map.size() > 0: # only print if there’s something:
+            metadata_dict = dict(metadata_map)
+            # metadata_str = b", ".join(b"%s : “%s”" % (k, v) \
+            #                                       for k, v in metadata_dict.items())
+            # ... right now the keys and values look to be exactly the same always, sooo:
+            metadata_str = b", ".join(b"%s" % k for k in metadata_dict.keys())
+            field_values += (b""" metadata={ %s } """ % metadata_str,)
+        return b"%s(%s) @ %s" % (u8bytes(type(self).__name__),
                                  b", ".join(field_value.strip() for field_value in field_values),
                                  u8bytes(hex(id(self))))
     
@@ -1086,7 +1151,7 @@ def compile_standalone_runtime(Target target=Target.target_from_environment(),
     elif outputs is not None:
         # confirm the type of the “outputs” object:
         if not Outputs.check(outputs):
-            raise TypeError("type(outputs) must be Outputs, not %s" % outputs.__class__.__name__)
+            raise TypeError("type(outputs) must be Outputs, not %s" % type(outputs).__name__)
         
         # make the actual call, returning another native Options object:
         with nogil:

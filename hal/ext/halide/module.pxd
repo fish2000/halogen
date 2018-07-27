@@ -98,7 +98,7 @@ cdef extern from "Halide.h" namespace "Halide" nogil:
         Module resolve_submodules()
         
         void remap_metadata_name(string&, string&) # from, to
-        stringmap_t get_metadata_name_map
+        stringmap_t get_metadata_name_map()
 
 ctypedef vector[Target] targetvec_t
 

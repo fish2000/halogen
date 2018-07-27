@@ -15,11 +15,13 @@ from generate import preload, generate, default_emits
 from filesystem import TemporaryName, Directory, TemporaryDirectory, rm_rf
 from utils import u8str
 
-__all__ = ('CONF',
+__all__ = ('CONF', 'DEFAULT_MAXIMUM_GENERATOR_COUNT',
            'CompilerError', 'LinkerError', 'ArchiverError',
            'Generator',
            'Generators',
            'main')
+
+DEFAULT_MAXIMUM_GENERATOR_COUNT = 1024
 
 CONF = config.ConfigUnion(config.SysConfig(),
                           config.BrewedHalideConfig())
@@ -88,15 +90,16 @@ class Generator(object):
         """ Execute the CXX compilation command, using our stored config instance,
             our validated source file, and a temporary output file name:
         """
-        if self.VERBOSE:
-            print("Compiling: %s" % os.path.basename(self.source))
-            print("")
         if not self.compiled:
             splitbase = os.path.splitext(
                         os.path.basename(self.source))
             self.transient = mktemp(prefix=splitbase[0],
                                     suffix="%s%so" % (splitbase[1], os.extsep),
                                     dir=self.intermediate)
+            if self.VERBOSE:
+                print("Compiling: %s to %s" % (os.path.basename(self.source),
+                                               os.path.basename(self.transient)))
+                print("")
             self.result += config.CXX(self.conf,
                                       self.transient,
                                       self.source, verbose=self.VERBOSE)
@@ -108,7 +111,7 @@ class Generator(object):
             output to the validated destination path if all is well:
         """
         if self.VERBOSE:
-            print("Post-compiling: %s" % os.path.basename(self.source))
+            print("Post-compiling: %s" % os.path.basename(self.transient))
         if (not self.compiled) and (len(self.result) > 0): # apres-compilation
             if len(self.result[1]) > 0: # failure
                 raise CompilerError(self.result[1])
@@ -126,7 +129,7 @@ class Generator(object):
     def clear(self):
         """ Delete temporary compilation artifacts: """
         if self.VERBOSE:
-            print("Cleaning up: %s" % os.path.basename(self.source))
+            print("Cleaning up: %s" % os.path.basename(self.transient))
         rm_rf(self.transient)
     
     def __enter__(self):
@@ -158,7 +161,8 @@ class Generators(object):
             suffix = "cpp"
         if not prefix:
             prefix = "yodogg"
-        self.VERBOSE = kwargs.pop('verbose', DEFAULT_VERBOSITY)
+        self.MAXIMUM =  int(kwargs.pop('maximum', DEFAULT_MAXIMUM_GENERATOR_COUNT))
+        self.VERBOSE = bool(kwargs.pop('verbose', DEFAULT_VERBOSITY))
         self.conf = conf
         self.suffix = suffix
         self.prefix = prefix
@@ -193,7 +197,13 @@ class Generators(object):
                     self.sources.append(os.path.realpath(
                                         os.path.join(path, df)))
         if self.VERBOSE:
-            print("Found %s generator sources\n" % len(self.sources))
+            if self.source_count < self.MAXIMUM:
+                print("Using %s found generator sources\n" % self.source_count)
+                self.MAXIMUM = self.source_count
+            else:
+                print("Using %s of %s generator sources found\n" % (self.MAXIMUM,
+                                                                    self.source_count))
+                self.sources = list(self.sources[:self.MAXIMUM])
     
     @property
     def compiled(self):
@@ -286,15 +296,20 @@ class Generators(object):
         if os.path.exists(self.library):
             raise LinkerError("can't overwrite linker output: %s" % self.library)
         if self.VERBOSE:
+            print("")
             print("Linking %s generators as %s\n" % (self.prelink_count,
                                     os.path.basename(self.library)))
         self.link_result += config.LD(self.conf,
                                       self.library,
                                      *self.prelink, verbose=self.VERBOSE)
         if len(self.link_result) > 0: # apres-link
+            # if len(self.link_result[1]) > 0: # failure
+            #     raise LinkerError(self.link_result[1])
+            self._linked = os.path.isfile(self.library)
+        if not self.linked:
             if len(self.link_result[1]) > 0: # failure
                 raise LinkerError(self.link_result[1])
-            self._linked = os.path.isfile(self.library)
+            raise LinkerError("Dynamic-link library file wasn’t created: %s" % self.library)
         return self.linked
     
     def arch(self):
@@ -318,15 +333,20 @@ class Generators(object):
         if os.path.exists(self.archive):
             raise ArchiverError("can't overwrite archiver output: %s" % self.archive)
         if self.VERBOSE:
+            print("")
             print("Archiving %s generators as %s\n" % (self.prelink_count,
                                       os.path.basename(self.archive)))
         self.archive_result += config.AR(self.conf,
                                          self.archive,
                                         *self.prelink, verbose=self.VERBOSE)
         if len(self.archive_result) > 0: # apres-arch
+            # if len(self.archive_result[1]) > 0: # failure
+            #     raise ArchiverError(self.archive_result[1])
+            self._archived = os.path.isfile(self.archive)
+        if not self.archived:
             if len(self.archive_result[1]) > 0: # failure
                 raise ArchiverError(self.archive_result[1])
-            self._archived = os.path.isfile(self.archive)
+            raise ArchiverError("Static library archive file wasn’t created: %s" % self.archive)
         return self.archived
     
     def preload_all(self):
@@ -370,6 +390,11 @@ class Generators(object):
             import hal.api
             return hal.api.registered_generators()
         return set()
+    
+    @property
+    def loaded_count(self):
+        """ Number (int) of dynamic-link-loaded generator modules currently available """
+        return len(self.loaded_generators())
     
     def run(self, target='host', emit=default_emits, substitutions=None):
         """ Use the halogen.compile.Generators.run(…) method to run generators.
@@ -449,72 +474,120 @@ class Generators(object):
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.clear()
 
+def print_exception(exc):
+    trace_output = """ 
+        • EXCEPTION:    %s
+        • MESSAGE:     “%s”
+    """ % (str(type(exc).__name__),
+           str(exc))
+    print(trace_output, file=sys.stderr)
 
 def main():
     
     """ Run the inline tests for the halogen.compile module """
     
     import tempfile
+    from contextlib import ExitStack
     from pprint import pprint
+    
     directory = Directory(pth="/Users/fish/Dropbox/halogen/tests/generators")
     destination = Directory(pth=os.path.join(tempfile.gettempdir(), "yodogg"))
     zip_destination = "/tmp/"
     
     with TemporaryDirectory(prefix='yo-dogg-', suffix='') as td:
         
-        with Generators(CONF, destination=td.name,
-                              directory=directory,
-                              verbose=DEFAULT_VERBOSITY) as gens:
-            
-            library = os.path.join(td.name, "%s%s" % ('yodogg', SHARED_LIBRARY_SUFFIX))
-            archive = os.path.join(td.name, "%s%s" % ('yodogg', STATIC_LIBRARY_SUFFIX))
-            
-            compiled = gens.compiled and "YES" or "no"
-            linked = gens.linked and "YES" or "no"
-            archived = gens.archived and "YES" or "no"
-            preloaded = gens.preloaded and "YES" or "no"
-            
-            print("IS IT COMPILED? -- %s" % compiled)
-            print("IS IT LINKED? -- %s" % linked)
-            print("IS IT ARCHIVED? -- %s" % archived)
-            print("IS IT PRELOADED? -- %s" % preloaded)
-            print("")
-            
-            loaded_generators = gens.loaded_generators()
-            
-            if DEFAULT_VERBOSITY:
-                print("... SUCCESSFULLY LOADED LIBRARIES FROM %s" % gens.library)
-                print("... THERE ARE %s GENERATORS LOADED FROM THAT LIBRARY, DOGG" % len(loaded_generators))
-            
-            if os.path.isfile(library):
+        if not td.exists:
+            print("TemporaryDirectory DOES NOT EXIST")
+        
+        gens = Generators(CONF, destination=td.name,
+                                directory=directory,
+                                maximum=2, verbose=DEFAULT_VERBOSITY)
+        
+        stack = ExitStack()
+        try:
+            # Calls Generators.__enter__(self=gens)
+            stack.enter_context(gens)
+        except CompilerError as exc:
+            print_exception(exc)
+        except LinkerError as exc:
+            print_exception(exc)
+            if gens.compiled and gens.do_static:
+                gens.arch()
+        except ArchiverError as exc:
+            print_exception(exc)
+            if gens.compiled and gens.do_shared:
+                gens.link()
+            if gens.linked and gens.do_preload:
+                gens.preload_all()
+        except GeneratorLoaderError as exc:
+            print_exception(exc)
+        except GenerationError as exc:
+            print_exception(exc)
+        else:
+            with stack:
+                # with Generators(CONF, destination=td.name,
+                #                       directory=directory,
+                #                       maximum=2, verbose=DEFAULT_VERBOSITY) as gens:
+                
+                # library = os.path.join(td.name, "%s%s" % ('yodogg', SHARED_LIBRARY_SUFFIX))
+                # archive = os.path.join(td.name, "%s%s" % ('yodogg', STATIC_LIBRARY_SUFFIX))
+                library = gens.library
+                archive = gens.archive
+                
+                compiled = gens.compiled and "YES" or "no"
+                linked = gens.linked and "YES" or "no"
+                archived = gens.archived and "YES" or "no"
+                preloaded = gens.preloaded and "YES" or "no"
+                
+                print("")
+                print("IS IT COMPILED? -- %s" % compiled)
+                print("IS IT LINKED? -- %s" % linked)
+                print("IS IT ARCHIVED? -- %s" % archived)
+                print("IS IT PRELOADED? -- %s" % preloaded)
+                print("")
+                
                 print("LIBRARY: %s" % library)
-            if os.path.isfile(archive):
+                if os.path.isfile(library):
+                    print("LIBRARY FILE EXISTS")
+                
                 print("ARCHIVE: %s" % archive)
-            
-            # Run generators:
-            generated = gens.run(emit=('static_library',
-                                       'stmt_html',
-                                       'h', 'o',
-                                       'cpp',
-                                       'python_extension'))
-            
-            print('')
-            pprint(generated, indent=4)
-            print('')
-            
-            # Copy the library and archive files to $TMP/yodogg:
-            if destination.exists:
+                if os.path.isfile(archive):
+                    print("ARCHIVE FILE EXISTS")
+                
+                td.do_not_destroy()
+                # loaded_generators = gens.loaded_generators()
+                
                 if DEFAULT_VERBOSITY:
-                    print("Removing %s..." % destination.name)
-                rm_rf(destination.name)
-            if DEFAULT_VERBOSITY:
-                print("Copying from %s to %s..." % (td.name, destination.name))
-            td.copy_all(destination)
-            
-            with TemporaryName(suffix="zip", parent=zip_destination) as tz:
+                    if gens.loaded_count > 0:
+                        print("... SUCCESSFULLY LOADED GENERATORS FROM LIBRARY %s" % gens.library)
+                        print("... THERE ARE %s GENERATORS LOADED FROM THAT LIBRARY, DOGG" % gens.loaded_count)
+                    else:
+                        print("... NO GENERATORS COULD BE LOADED FROM LIBRARY %s" % gens.library)
+                
+                # Run generators:
+                generated = gens.run(emit=('static_library',
+                                           'stmt_html',
+                                           'h', 'o',
+                                           'cpp',
+                                           'python_extension'))
+                
+                print('')
+                pprint(generated, indent=4)
+                print('')
+                
+                # Copy the library and archive files to $TMP/yodogg:
+                if destination.exists:
+                    if DEFAULT_VERBOSITY:
+                        print("Removing %s..." % destination.name)
+                    rm_rf(destination.name)
                 if DEFAULT_VERBOSITY:
-                    print("Zip-archiving from %s to %s..." % (destination.name, tz.name))
-                Directory(destination).zip_archive(str(tz.name))
+                    print("Copying from %s to %s..." % (td.name, destination.name))
+                td.copy_all(destination)
+                
+                with TemporaryName(suffix="zip", parent=zip_destination) as tz:
+                    if DEFAULT_VERBOSITY:
+                        print("Zip-archiving from %s to %s..." % (destination.name, tz.name))
+                    Directory(destination).zip_archive(str(tz.name))
     
     # ... scope exit for Generators `gens` and TemporaryDirectory `td`
 

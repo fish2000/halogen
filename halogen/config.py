@@ -846,8 +846,7 @@ class BrewedHalideConfig(BrewedConfig):
     library = "Halide"
     
     # List of Halide-specific cflags to use:
-    cflags = frozenset(("fno-rtti",
-                        "std=c++1z",
+    cflags = frozenset(("std=c++1z",
                         "stdlib=libc++")) | BrewedConfig.cflags
     
     def __init__(self):
@@ -1149,7 +1148,6 @@ def CC(conf, outfile, infile, verbose=DEFAULT_VERBOSITY):
     return back_tick("%s %s -c %s -o %s" % (environ_override('CC'),
                                             conf.get_cflags(),
                                             infile, outfile), ret_err=True,
-                                                              raise_err=True,
                                                               verbose=verbose)
 
 def CXX(conf, outfile, infile, verbose=DEFAULT_VERBOSITY):
@@ -1158,7 +1156,6 @@ def CXX(conf, outfile, infile, verbose=DEFAULT_VERBOSITY):
     return back_tick("%s %s -c %s -o %s" % (environ_override('CXX'),
                                             conf.get_cflags(),
                                             infile, outfile), ret_err=True,
-                                                              raise_err=True,
                                                               verbose=verbose)
 
 def LD(conf, outfile, *infiles, **kwargs):
@@ -1167,7 +1164,6 @@ def LD(conf, outfile, *infiles, **kwargs):
     return back_tick("%s %s %s -o %s" % (environ_override('LDCXXSHARED'),
                                          conf.get_ldflags(),
                                          " ".join(infiles), outfile), ret_err=True,
-                                                                      raise_err=True,
                                                                       verbose=kwargs.pop('verbose', DEFAULT_VERBOSITY))
 
 def AR(conf, outfile, *infiles, **kwargs):
@@ -1181,7 +1177,6 @@ def AR(conf, outfile, *infiles, **kwargs):
     return back_tick("%s %s %s %s" % (environ_override('AR'),
                                       "%ss" % environ_override('ARFLAGS'),
                                       outfile, " ".join(infiles)), ret_err=True,
-                                                                   raise_err=True,
                                                                    verbose=kwargs.pop('verbose', DEFAULT_VERBOSITY))
 
 test_generator_source = b"""
