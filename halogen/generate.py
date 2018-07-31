@@ -6,8 +6,7 @@ from types import MappingProxyType as mappingproxy
 __all__ = ('valid_emits', 'emit_defaults',
                           'default_emits',
            'preload',
-           'generate',
-           'main')
+           'generate')
 
 valid_emits = frozenset((
     'assembly',
@@ -178,7 +177,7 @@ def generate(*generators, **arguments):
     return artifacts
 
 
-def main():
+def test():
     
     """ Run the inline tests for the halogen.generate module """
     
@@ -211,4 +210,4 @@ def main():
         output_directory=tempfile.gettempdir())
 
 if __name__ == '__main__':
-    main()
+    test()

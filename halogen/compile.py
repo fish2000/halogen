@@ -18,8 +18,7 @@ from utils import u8str
 __all__ = ('CONF', 'DEFAULT_MAXIMUM_GENERATOR_COUNT',
            'CompilerError', 'LinkerError', 'ArchiverError',
            'Generator',
-           'Generators',
-           'main')
+           'Generators')
 
 DEFAULT_MAXIMUM_GENERATOR_COUNT = 1024
 
@@ -545,7 +544,7 @@ def print_exception(exc):
            str(exc))
     print(trace_output, file=sys.stderr)
 
-def main():
+def test():
     
     """ Run the inline tests for the halogen.compile module """
     
@@ -557,23 +556,25 @@ def main():
     destination = Directory(pth=os.path.join(tempfile.gettempdir(), "yodogg"))
     zip_destination = "/tmp/"
     
-    with TemporaryDirectory(prefix='yo-dogg-', suffix='') as td:
+    with TemporaryDirectory(prefix='yo-dogg-') as td:
         
         if not td.exists:
             print("TemporaryDirectory DOES NOT EXIST")
         
-        # intermediate =
-        # if not intermediate.exists:
-        #     print("Intermediate subdirectory of temporary directory DOES NOT EXIST")
+        # We use a contextlib.ExitStack instance to separate out the construction
+        # of the halogen.compile.Generators instance (q.v. immediately below) and
+        # the call to __enter__ (q.v. right after that) so as to trap any and all
+        # exceptions that may be thrown individually in either the constructor call
+        # -- e.g. Generators.__init__ -- or Generators.__enter__ …
         
-        gens = Generators(CONF, destination=td,
-                                directory=directory,
+        stack = ExitStack()
+        gens = Generators(CONF, directory=directory,
+                                destination=td,
                                 intermediate=td.subdirectory(".intermediate"),
                                 maximum=255, verbose=DEFAULT_VERBOSITY)
         
-        stack = ExitStack()
         try:
-            # Calls Generators.__enter__(self=gens)
+            # Calls Generators.__enter__(self=gens):
             stack.enter_context(gens)
         except CompilerError as exc:
             print_exception(exc)
@@ -593,10 +594,7 @@ def main():
         except GenerationError as exc:
             print_exception(exc)
         else:
-            with stack:
-                
-                library = gens.library
-                archive = gens.archive
+            with stack: # Exiting this scope calls Generators.__exit__(self=gens):
                 
                 precompiled = gens.precompiled and "YES" or "no"
                 compiled = gens.compiled and "YES" or "no"
@@ -612,12 +610,12 @@ def main():
                 print("IS IT PRELOADED? -- %s" % preloaded)
                 print("")
                 
-                print("LIBRARY: %s" % library)
-                if os.path.isfile(library):
+                print("LIBRARY: %s" % gens.library)
+                if os.path.isfile(gens.library):
                     print("LIBRARY FILE EXISTS")
                 
-                print("ARCHIVE: %s" % archive)
-                if os.path.isfile(archive):
+                print("ARCHIVE: %s" % gens.archive)
+                if os.path.isfile(gens.archive):
                     print("ARCHIVE FILE EXISTS")
                 
                 # td.do_not_destroy()
@@ -644,7 +642,7 @@ def main():
                 # Copy the library and archive files to $TMP/yodogg:
                 if destination.exists:
                     if DEFAULT_VERBOSITY:
-                        print("Removing %s..." % destination.name)
+                        print("Removing destination: %s..." % destination.name)
                     rm_rf(destination.name)
                 if DEFAULT_VERBOSITY:
                     print("Copying from %s to %s..." % (td.name, destination.name))
@@ -654,8 +652,14 @@ def main():
                     if DEFAULT_VERBOSITY:
                         print("Zip-archiving from %s to %s..." % (destination.name, tz.name))
                     Directory(destination).zip_archive(str(tz.name))
+                
+                if destination.exists:
+                    if DEFAULT_VERBOSITY:
+                        print("Removing destination: %s..." % destination.name)
+                    rm_rf(destination.name)
+                
     
     # ... scope exit for Generators `gens` and TemporaryDirectory `td`
 
 if __name__ == '__main__':
-    main()
+    test()

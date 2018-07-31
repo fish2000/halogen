@@ -39,8 +39,7 @@ __all__ = ('SHARED_LIBRARY_SUFFIX',
                                      'BrewedHalideConfig',
                                      'BrewedImreadConfig',
            'ConfigUnion',
-           'CC', 'CXX', 'LD', 'AR',
-           'main', 'corefoundation_check')
+           'CC', 'CXX', 'LD', 'AR')
 
 SHARED_LIBRARY_SUFFIX = splitext(find_library("c"))[-1].lower()
 STATIC_LIBRARY_SUFFIX = (SHARED_LIBRARY_SUFFIX == ".dll") and ".lib" or ".a"
@@ -1313,7 +1312,7 @@ def print_cache():
     from pprint import pprint
     pprint(ConfigBase.base_field_cache, indent=4)
 
-def main():
+def test():
     from utils import print_config, terminal_width
     from utils import test_compile
     
@@ -1386,7 +1385,7 @@ def corefoundation_check():
     test_compile(configUnion, test_generator_source)
 
 if __name__ == '__main__':
-    main()
+    test()
     try:
         import objc
     except ImportError:

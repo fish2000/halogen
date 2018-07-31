@@ -25,8 +25,7 @@ __all__ = ('DEFAULT_PATH', 'DEFAULT_ENCODING', 'DEFAULT_TIMEOUT',
            'suffix_searcher',
            'Directory', 'cd', 'wd',
            'TemporaryDirectory',
-           'NamedTemporaryFile',
-           'main')
+           'NamedTemporaryFile')
 
 DEFAULT_PATH = ":".join(filter(os.path.exists, ("/usr/local/bin",
                                                 "/bin",  "/usr/bin",
@@ -481,9 +480,9 @@ class Directory(object):
             Specify an optional “suffix” parameter to filter the list by a
             particular file suffix (leading dots unnecessary but unharmful).
         """
-        files = (str(direntry.path) \
-                 for direntry in filter(Directory.non_dotfile_matcher,
-                                scandir(self.realpath(pth or self.name))))
+        files = (str(direntry.name) \
+                 for direntry in filter(type(self).non_dotfile_matcher,
+                                     scandir(self.realpath(pth))))
         if not suffix:
             return files
         return filter(suffix_searcher(suffix), files)
@@ -502,8 +501,8 @@ class Directory(object):
             commands I ever learned, and it reads better than `ls_a()` which
             I think looks awkward and goofy.)
         """
-        files = (str(direntry.path) \
-                 for direntry in scandir(self.realpath(pth or self.name)))
+        files = (str(direntry.name) \
+                 for direntry in scandir(self.realpath(pth)))
         if not suffix:
             return files
         return filter(suffix_searcher(suffix), files)
@@ -539,8 +538,13 @@ class Directory(object):
         """
         if hasattr(pth, 'name'):
             pth = pth.name
-        return os.makedirs(os.path.abspath(
-                           os.path.join(self.name, pth)))
+        try:
+            os.makedirs(os.path.abspath(
+                        os.path.join(self.name, pth)),
+                        exist_ok=False)
+        except OSError as os_error:
+            raise FilesystemError(str(os_error))
+        return self
     
     def walk(self, followlinks=False):
         """ Sugar for calling X.walk(self.name), where X is either `scandir` (in the
@@ -551,10 +555,35 @@ class Directory(object):
     def parent(self):
         """ Sugar for calling os.path.abspath(os.path.join(self.name, os.pardir))
             which, if you are still curious, gets you the parent directory of the
-            instances’ target directory.
+            instances’ target directory, wrapped in a Directory instance.
         """
-        return os.path.abspath(
-               os.path.join(self.name, os.pardir))
+        return self.directory_class(os.path.abspath(
+                                    os.path.join(self.name,
+                                                 os.pardir)))
+    
+    def copy_all(self, destination):
+        """ Copy the entire temporary directory tree, all contents included, to a new
+            destination path. The destination must not already exist, and `copy_all(…)`
+            will not overwrite existant directories. Like, if you have yourself an instance
+            of Directory, `directory`, and you want to copy it to `/home/me/myshit`, `/home/me`
+            should already exist but `/home/me/myshit` should not, as the `myshit` subdirectory
+            will be created when you invoke `directory.copy_all('/home/me/myshit')`.
+            
+            Does that make sense to you? Try it, you’ll get a FilesystemError if it evidently
+            did not make sense to you.
+            
+            The destination path may be specified using a string-like, or with a Directory
+            object. Internally, this method uses `shutil.copytree(…)` to tell the filesystem
+            what to copy where.
+        """
+        whereto = self.directory_class(pth=destination)
+        if whereto.exists or os.path.isfile(whereto.name) \
+                          or os.path.islink(whereto.name):
+            raise FilesystemError("Directory.copy_all() destination exists: %s" % whereto.name)
+        if self.exists:
+            return shutil.copytree(u8str(self.name),
+                                   u8str(whereto.name))
+        return False
     
     def zip_archive(self, zpth=None, zmode=None):
         """ Recursively descends through the target directory and zip-archives it
@@ -580,7 +609,7 @@ class Directory(object):
         with TemporaryName(prefix="ziparchive-",
                            suffix=self.zip_suffix[1:]) as ztmp:
             with zipfile.ZipFile(ztmp.name, "w", zmode) as ziphandle:
-                relparent = lambda p: os.path.relpath(p, self.parent())
+                relparent = lambda p: os.path.relpath(p, self.parent().name)
                 for root, dirs, files in self.walk(followlinks=True):
                     ziphandle.write(root, relparent(root)) # add directory
                     for filename in files:
@@ -673,9 +702,9 @@ class TemporaryDirectory(Directory):
             parent = parent.name
         self._name = mkdtemp(prefix=prefix, suffix=suffix, dir=parent)
         self._destroy = True
+        self._parent = parent
         self.prefix = prefix
         self.suffix = suffix
-        self.parent = parent
         super(TemporaryDirectory, self).__init__(self._name)
         self.will_change = bool(self.will_change and change)
         self.will_change_back = bool(self.will_change and change)
@@ -700,28 +729,12 @@ class TemporaryDirectory(Directory):
         """ Redirect call to ancestor class """
         return Directory(pth=pth)
     
-    def copy_all(self, destination):
-        """ Copy the entire temporary directory tree, all contents included, to a new
-            destination path. The destination must not already exist, and `copy_all(…)`
-            will not overwrite existant directories. Like, if you have yourself an instance
-            of TemporaryDirectory, `td`, and you want to copy it to `/home/me/myshit`, 
-            `/home/me` should already exist but `/home/me/myshit` should not, as the `myshit`
-            subdirectory will be created when you invoke `td.copy_all('/home/me/myshit')`.
-            Does that make sense to you? Try it, you’ll get a FilesystemError if it evidently
-            did not make sense to you.
-            
-            Internally, this method uses `shutil.copytree(…)` to tell the filesystem what
-            to copy where.
-            
-            The destination path may be specified using a string-like, or with a Directory
-            object.
+    def destroy_all(self):
+        """ Delete the directory pointed to by the TemporaryDirectory instance, and
+            everything it contains. USE WITH CAUTION.
         """
-        whereto = self.directory_class(pth=destination)
-        if whereto.exists:
-            raise FilesystemError("TemporaryDirectory.copy_all() destination exists: %s" % whereto.name)
         if self.exists:
-            return shutil.copytree(u8str(self.name),
-                                   u8str(whereto.name))
+            return rm_rf(self.name)
         return False
     
     def do_not_destroy(self):
@@ -743,7 +756,7 @@ class TemporaryDirectory(Directory):
     def __exit__(self, exc_type=None, exc_val=None, exc_tb=None):
         out = super(TemporaryDirectory, self).__exit__(exc_type, exc_val, exc_tb)
         if self.exists and self.destroy:
-            out = rm_rf(self.name) and out
+            out = self.destroy_all() and out
         return out
 
 
@@ -789,7 +802,7 @@ def NamedTemporaryFile(mode='w+b', buffer_size=-1,
         raise FilesystemError(str(base_exception))
 
 
-def main():
+def test():
     
     """ Run the inline tests for the halogen.filesystem module. """
     
@@ -798,11 +811,11 @@ def main():
     
     initial = os.getcwd()
     
-    with TemporaryName() as tfn:
+    with TemporaryName(prefix="test-temporaryname-") as tfn:
         print("* Testing TemporaryName file object: %s" % tfn.name)
         assert os.path.samefile(os.getcwd(),            initial)
         assert gettempdir() in tfn.name
-        assert tfn.prefix == "yo-dogg-"
+        assert tfn.prefix == "test-temporaryname-"
         assert tfn.suffix == ".tmp"
         assert not tfn.parent
         assert tfn.prefix in tfn.name
@@ -820,6 +833,7 @@ def main():
         assert os.path.samefile(cwd.new,                initial)
         assert os.path.samefile(cwd.old,                initial)
         assert not cwd.subdirectory('yodogg').exists
+        # assert cwd.subdirectory('yodogg').makedirs().exists
         assert not cwd.will_change
         assert not cwd.did_change
         assert not cwd.will_change_back
@@ -837,7 +851,8 @@ def main():
         assert not os.path.samefile(os.getcwd(),        initial)
         assert not os.path.samefile(tmp.new,            initial)
         assert os.path.samefile(tmp.old,                initial)
-        assert not tmp.subdirectory('yodogg').exists
+        # assert not tmp.subdirectory('yodogg').exists
+        # assert tmp.subdirectory('yodogg').makedirs().exists
         assert tmp.will_change
         assert tmp.did_change
         assert tmp.will_change_back
@@ -856,17 +871,21 @@ def main():
         assert initial not in ttd.new
         assert initial in ttd.old
         assert not ttd.subdirectory('yodogg').exists
+        assert ttd.subdirectory('yodogg').makedirs().exists
         assert ttd.prefix == "test-temporarydirectory-"
         assert not ttd.suffix
-        assert not ttd.parent
+        assert not ttd._parent
         assert ttd.prefix in ttd.name
+        assert ttd.destroy
         assert ttd.will_change
         assert ttd.did_change
         assert ttd.will_change_back
         assert not ttd.did_change_back
         assert type(ttd.directory_class(ttd.new)) == Directory
+        p = ttd.parent()
+        assert os.path.samefile(str(p), gettempdir())
         print("* TemporaryDirectory object tests completed OK")
         print("")
 
 if __name__ == '__main__':
-    main()
+    test()
