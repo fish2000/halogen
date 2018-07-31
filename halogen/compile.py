@@ -319,7 +319,7 @@ class Generators(object):
         if self.source_count < 1:
             raise CompilerError("can't find any compilation inputs: %s" % self.directory.name)
         if self.VERBOSE:
-            print("Compiling %s generator source files\n" % self.source_count)
+            print("Compiling %s generator source files" % self.source_count)
         for source in self.sources:
             with TemporaryName(suffix=self.object_suffix) as tn:
                 with Generator(self.conf,
@@ -329,6 +329,8 @@ class Generators(object):
                                verbose=self.VERBOSE) as gen:
                     if gen.compiled:
                         self.prelink.append(tn.do_not_destroy())
+        if self.VERBOSE:
+            print("")
         if self.source_count == self.prelink_count:
             self._compiled = True
         return self.compiled
@@ -356,9 +358,10 @@ class Generators(object):
         if os.path.exists(self.library):
             raise LinkerError("can't overwrite linker output: %s" % self.library)
         if self.VERBOSE:
+            # print("")
+            print("Linking %s generators as %s" % (self.prelink_count,
+                                  os.path.basename(self.library)))
             print("")
-            print("Linking %s generators as %s\n" % (self.prelink_count,
-                                    os.path.basename(self.library)))
         self.link_result += config.LD(self.conf,
                                       self.library,
                                      *self.prelink, verbose=self.VERBOSE)
@@ -393,9 +396,10 @@ class Generators(object):
         if os.path.exists(self.archive):
             raise ArchiverError("can't overwrite archiver output: %s" % self.archive)
         if self.VERBOSE:
+            # print("")
+            print("Archiving %s generators as %s" % (self.prelink_count,
+                                    os.path.basename(self.archive)))
             print("")
-            print("Archiving %s generators as %s\n" % (self.prelink_count,
-                                      os.path.basename(self.archive)))
         self.archive_result += config.AR(self.conf,
                                          self.archive,
                                         *self.prelink, verbose=self.VERBOSE)
@@ -582,17 +586,17 @@ def test():
             stack.enter_context(gens)
         except CompilerError as exc:
             print_exception(exc)
-            gens.precompile() and gens.compile()
+            # gens.precompile() and gens.compile()
         except LinkerError as exc:
             print_exception(exc)
-            if gens.compiled and gens.do_static:
-                gens.arch()
+            # if gens.compiled and gens.do_static:
+            #     gens.arch()
         except ArchiverError as exc:
             print_exception(exc)
-            if gens.compiled and gens.do_shared:
-                gens.link()
-            if gens.linked and gens.do_preload:
-                gens.preload_all()
+            # if gens.compiled and gens.do_shared:
+            #     gens.link()
+            # if gens.linked and gens.do_preload:
+            #     gens.preload_all()
         except GeneratorLoaderError as exc:
             print_exception(exc)
         except GenerationError as exc:

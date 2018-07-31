@@ -4,8 +4,6 @@ from __future__ import print_function
 
 import os
 import re
-import shutil
-import zipfile
 import sys
 import six
 
@@ -137,14 +135,17 @@ def back_tick(command,  as_str=True,
     # Step 4: Tidy the output and return it:
     if verbose:
         if returncode != 0:
+            print("")
             print("NONZERO RETURN STATUS: {}".format(returncode),
                                                 file=sys.stderr)
             print("",                           file=sys.stderr)
         if output.strip():
+            print("")
             print("OUTPUT:",                            file=sys.stdout)
             print("`{}`".format(u8str(output).strip()), file=sys.stdout)
             print("",                                   file=sys.stdout)
         if errors.strip():
+            print("")
             print("ERRORS:",                            file=sys.stderr)
             print("`{}`".format(u8str(errors).strip()), file=sys.stderr)
             print("",                                   file=sys.stderr)
@@ -161,7 +162,7 @@ def rm_rf(pth):
     if hasattr(pth, 'name'):
         pth = pth.name
     try:
-        if os.path.isfile(pth):
+        if os.path.isfile(pth) or os.path.islink(pth):
             os.unlink(pth)
         elif os.path.isdir(pth):
             subdirs = []
@@ -318,6 +319,7 @@ class TemporaryName(object):
         """ Copy the file (if one exists) at the instances’ file path
             to a new destination.
         """
+        import shutil
         if hasattr(destination, 'name'):
             destination = destination.name
         if self.exists:
@@ -379,8 +381,10 @@ def suffix_searcher(suffix):
     else:
         regex_str += r"\%s%s$" % (os.extsep, suffix)
     searcher = re.compile(regex_str, re.IGNORECASE).search
-    return lambda searching_for: searcher(searching_for)
+    return lambda searching_for: bool(searcher(searching_for))
 
+non_dotfile_match = re.compile(r"^[^\.]").match
+non_dotfile_matcher = lambda p: non_dotfile_match(p.name)
 
 class Directory(object):
     
@@ -391,9 +395,6 @@ class Directory(object):
               'will_change',        'did_change',
               'will_change_back',   'did_change_back')
     
-    non_dotfile_matcher_re = re.compile(r"^[^\.]").match
-    non_dotfile_matcher = lambda p: Directory.non_dotfile_matcher_re(p.name)
-    # non_dotfile_matcher = lambda p: re.compile(r"^[^\.]").match(p.name)
     zip_suffix = "%szip" % os.extsep
     
     def __init__(self, pth=None):
@@ -466,10 +467,9 @@ class Directory(object):
     def realpath(self, pth=None):
         """ Sugar for calling os.path.realpath(self.name) """
         if not pth:
-            pth = self.name
-        else:
-            if hasattr(pth, 'name'):
-                pth = pth.name
+            pth = self
+        if hasattr(pth, 'name'):
+            pth = pth.name
         return os.path.realpath(pth)
     
     def ls(self, pth=None, suffix=None):
@@ -481,8 +481,8 @@ class Directory(object):
             particular file suffix (leading dots unnecessary but unharmful).
         """
         files = (str(direntry.name) \
-                 for direntry in filter(type(self).non_dotfile_matcher,
-                                     scandir(self.realpath(pth))))
+                 for direntry in filter(non_dotfile_matcher,
+                                scandir(self.realpath(pth))))
         if not suffix:
             return files
         return filter(suffix_searcher(suffix), files)
@@ -509,13 +509,12 @@ class Directory(object):
     
     def subpath(self, subpth, whence=None, requisite=False):
         """ Returns the path to a subpath beneath the instances’ target path. """
-        if not whence:
-            whence = self.name
-        else:
-            if hasattr(whence, 'name'):
-                whence = whence.name
         if hasattr(subpth, 'name'):
             subpth = subpth.name
+        if not whence:
+            whence = self
+        if hasattr(whence, 'name'):
+            whence = whence.name
         fullpth = os.path.join(whence, subpth)
         return (os.path.exists(fullpth) or not requisite) and fullpth or None
     
@@ -576,6 +575,7 @@ class Directory(object):
             object. Internally, this method uses `shutil.copytree(…)` to tell the filesystem
             what to copy where.
         """
+        import shutil
         whereto = self.directory_class(pth=destination)
         if whereto.exists or os.path.isfile(whereto.name) \
                           or os.path.islink(whereto.name):
@@ -593,11 +593,11 @@ class Directory(object):
             as per the constants found in the `zipfile` module; the default value
             is `zipfile.ZIP_DEFLATED`.
         """
+        import zipfile
         if not zpth:
             raise FilesystemError("Need to specify a zip-archive file path")
-        else:
-            if hasattr(zpth, 'name'):
-                zpth = zpth.name
+        if hasattr(zpth, 'name'):
+            zpth = zpth.name
         if not zpth.lower().endswith(self.zip_suffix):
             zpth += self.zip_suffix
         if os.path.exists(zpth):
@@ -755,7 +755,7 @@ class TemporaryDirectory(Directory):
     
     def __exit__(self, exc_type=None, exc_val=None, exc_tb=None):
         out = super(TemporaryDirectory, self).__exit__(exc_type, exc_val, exc_tb)
-        if self.exists and self.destroy:
+        if self.destroy:
             out = self.destroy_all() and out
         return out
 

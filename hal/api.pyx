@@ -37,6 +37,8 @@ from ext.halide.module cimport halide_compile_standalone_runtime_with_outputs
 from ext.halide.generator cimport GeneratorBase
 from ext.halide.generator cimport GeneratorRegistry
 from ext.halide.generator cimport GeneratorContext
+from ext.halide.generator cimport GeneratorParamsMap
+from ext.halide.generator cimport StringOrLoopLevel
 from ext.halide.generator cimport stringmap_t
 from ext.halide.generator cimport base_ptr_t
 from ext.halide.generator cimport generator_registry_get as halide_generator_registry_get
@@ -1073,28 +1075,45 @@ cpdef Module get_generator_module(object name, object arguments={}):
     if not PyMapping_Check(arguments):
         raise ValueError(""""arguments" must be a mapping (dict-ish) type""")
     
-    # stack-allocate a named module (per the `name` argument),
+    # Stack-allocate std::strings for the generator name and target,
+    # a unique pointer (for holding a Halide::Target instance),
     # a unique pointer (for holding a Halide::GeneratorBase instance), and
-    # a std::map<std::string, std::string> (to pass along arguments to Halide):
-    cdef stringmap_t argmap
+    # a std::map<std::string, Halide::StringOrLoopLevel> (to pass along arguments to Halide):
+    cdef string generator_name
+    cdef string generator_target
+    cdef GeneratorParamsMap argmap
     cdef base_ptr_t generator_instance
+    cdef target_ptr_t generator_target_ptr
+    
+    # Create a new named hal.api.Module object to return, per the “name” argument:
     out = Module(name=name)
     
-    # Heap-allocate a Target object (from either the environment or
-    # as per the argument dict) held in a unique pointer:
-    generator_target = u8bytes(arguments.get('target', Target.target_from_environment().to_string()))
-    cdef target_ptr_t generator_target_ptr
-    generator_target_ptr.reset(new HalTarget(<string>generator_target))
+    # Convert the Python string value of “name” to a std::string and assign to “generator_name”:
+    generator_name = <string>u8bytes(name)
+    generator_target = <string>u8bytes(arguments.pop('target',
+                                               Target.target_from_environment().to_string()))
     
     # Copy arguments from the Python dict to the STL map:
     for k, v in arguments.items():
-        argmap[<string>u8bytes(k)] = <string>u8bytes(v)
+        argmap[<string>u8bytes(k)] = StringOrLoopLevel(<string>u8bytes(v))
     
-    # Actually get an instance of the named generator:
-    generator_instance = halide_generator_registry_get(u8bytes(name), deref(generator_target_ptr), argmap)
-    
-    # “Modulize” and return the generator instance (which that is a Halide thing, modulization):
-    out.replace_instance(<HalModule>deref(generator_instance).build_module(u8bytes(name), Linkage_Internal))
+    with nogil:
+        # Heap-allocate a Target object (from either the environment or
+        # as per the argument dict) held in a unique pointer:
+        generator_target_ptr.reset(
+            new HalTarget(generator_target))
+        
+        # Actually get an instance of the named generator:
+        generator_instance = halide_generator_registry_get(generator_name,
+                                                     deref(generator_target_ptr))
+        
+        # Set the generator instances’ argument param values:
+        deref(generator_instance).set_generator_param_values(argmap)
+        
+        # “Modulize” and return the generator instance (which that is a Halide thing, modulization):
+        out.replace_instance(
+            <HalModule>deref(generator_instance).build_module(generator_name,
+                                                              Linkage_Internal))
     
     # return the newly built module:
     return out

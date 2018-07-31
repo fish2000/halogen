@@ -1,4 +1,7 @@
 
+from cython.operator cimport dereference as deref
+from cython.operator cimport preincrement as incr
+
 from libc.stdint cimport *
 from libcpp.map cimport map as std_map
 from libcpp.string cimport string
@@ -738,8 +741,7 @@ cdef extern from "Halide.h" namespace "halide_register_generator" nogil:
         pass
 
 cdef inline base_ptr_t generator_registry_get(string& name,
-                                              Target& target,
-                                              stringmap_t& args) nogil:
+                                              Target& target) nogil:
     return GeneratorRegistry.create(name, GeneratorContext(target))
 
 cdef inline base_ptr_t generator_registry_create(string& name) nogil:
