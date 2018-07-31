@@ -393,7 +393,8 @@ class Directory(object):
               'will_change',        'did_change',
               'will_change_back',   'did_change_back')
     
-    non_dotfile_matcher = re.compile(r"^[^\.]").match
+    non_dotfile_matcher_re = re.compile(r"^[^\.]").match
+    non_dotfile_matcher = lambda p: Directory.non_dotfile_matcher_re(p.name)
     zip_suffix = "%szip" % os.extsep
     
     def __init__(self, pth=None):
@@ -472,7 +473,7 @@ class Directory(object):
                 pth = pth.name
         return os.path.realpath(pth)
     
-    def ls(self, pth=os.curdir, suffix=None):
+    def ls(self, pth=None, suffix=None):
         """ List files -- defaults to the process’ current working directory.
             As per the UNIX custom, files whose name begins with a dot are
             omitted.
@@ -480,13 +481,14 @@ class Directory(object):
             Specify an optional “suffix” parameter to filter the list by a
             particular file suffix (leading dots unnecessary but unharmful).
         """
-        files = filter(self.non_dotfile_matcher,
-               scandir(self.realpath(pth)))
+        files = (str(direntry.path) \
+                 for direntry in filter(Directory.non_dotfile_matcher,
+                                scandir(self.realpath(pth or self.name))))
         if not suffix:
             return files
         return filter(suffix_searcher(suffix), files)
     
-    def ls_la(self, pth=os.curdir, suffix=None):
+    def ls_la(self, pth=None, suffix=None):
         """ List all files, including files whose name starts with a dot.
             The default is to use the process’ current working directory.
             
@@ -500,7 +502,8 @@ class Directory(object):
             commands I ever learned, and it reads better than `ls_a()` which
             I think looks awkward and goofy.)
         """
-        files = scandir(self.realpath(pth))
+        files = (str(direntry.path) \
+                 for direntry in scandir(self.realpath(pth or self.name)))
         if not suffix:
             return files
         return filter(suffix_searcher(suffix), files)
@@ -822,6 +825,7 @@ def main():
         assert not cwd.will_change_back
         assert not cwd.did_change_back
         assert type(cwd.directory_class(cwd.new)) == Directory
+        # print(", ".join(list(cwd.ls())))
         print("* Working-directory object tests completed OK")
         print("")
     
