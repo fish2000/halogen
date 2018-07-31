@@ -18,10 +18,11 @@ from tempfile import mktemp, mkdtemp, gettempprefix, gettempdir
 from errors import ExecutionError, FilesystemError
 from utils import memoize, u8bytes, u8str, stringify
 
-__all__ = ('DEFAULT_PATH', 'DEFAULT_ENCODING',
+__all__ = ('DEFAULT_PATH', 'DEFAULT_ENCODING', 'DEFAULT_TIMEOUT',
            'script_path', 'which', 'back_tick', 'rm_rf',
            'TemporaryNamedFile',
            'TemporaryName',
+           'suffix_searcher',
            'Directory', 'cd', 'wd',
            'TemporaryDirectory',
            'NamedTemporaryFile',
@@ -361,6 +362,28 @@ class TemporaryName(object):
         return six.u(str(self))
 
 
+def suffix_searcher(suffix):
+    """ Return a boolean function that will search for the given
+        file suffix in strings with which it is called, returning
+        True when they are found and False when they aren’t.
+        
+        Useful in filter(…) calls and comprehensions, e.g.:
+        
+        >>> plists = filter(suffix_searcher('plist'), os.listdir())
+        >>> mmsuffix = suffix_searcher('mm')
+        >>> objcpp = (f for f in os.listdir() where mmsuffix(f))
+    """
+    if len(suffix) < 1:
+        return lambda searching_for: True
+    regex_str = r""
+    if suffix.startswith(os.extsep):
+        regex_str += r"\%s$" % suffix
+    else:
+        regex_str += r"\%s%s$" % (os.extsep, suffix)
+    searcher = re.compile(regex_str, re.IGNORECASE).search
+    return lambda searching_for: searcher(searching_for)
+
+
 class Directory(object):
     
     """ A context-managed directory: change in on enter, change back out
@@ -418,6 +441,11 @@ class Directory(object):
         """ Whether or not the instances’ target path exists as a directory. """
         return os.path.isdir(self.name)
     
+    @classmethod
+    def directory_class(cls, pth=None):
+        """ Factory method for instances of this class: """
+        return cls(pth=pth)
+    
     def __enter__(self):
         if self.will_change and self.exists:
             os.chdir(self.new)
@@ -434,26 +462,6 @@ class Directory(object):
                                                     os.getcwd())
             return self.did_change_back and exc_type is None
         return False
-    
-    def suffix_searcher(self, suffix):
-        """ Return a boolean function that will search for the given
-            file suffix in strings with which it is called, returning
-            True when they are found and False when they aren’t.
-            
-            Useful in filter(…) calls and comprehensions, e.g.
-            
-            >>> plists = filter(d.suffix_searcher('plist'), os.listdir())
-            >>> objcpp = (f for f in os.listdir() where d.suffix_searcher('mm')(f))
-        """
-        if len(suffix) < 1:
-            return lambda searching_for: True
-        regex_str = r""
-        if suffix.startswith(os.extsep):
-            regex_str += r"\%s$" % suffix
-        else:
-            regex_str += r"\%s%s$" % (os.extsep, suffix)
-        searcher = re.compile(regex_str, re.IGNORECASE).search
-        return lambda searching_for: searcher(searching_for)
     
     def realpath(self, pth=None):
         """ Sugar for calling os.path.realpath(self.name) """
@@ -476,7 +484,7 @@ class Directory(object):
                scandir(self.realpath(pth)))
         if not suffix:
             return files
-        return filter(self.suffix_searcher(suffix), files)
+        return filter(suffix_searcher(suffix), files)
     
     def ls_la(self, pth=os.curdir, suffix=None):
         """ List all files, including files whose name starts with a dot.
@@ -495,12 +503,7 @@ class Directory(object):
         files = scandir(self.realpath(pth))
         if not suffix:
             return files
-        return filter(self.suffix_searcher(suffix), files)
-    
-    @classmethod
-    def directory_class(cls, pth=None):
-        """ Factory method for instances of this class: """
-        return cls(pth=pth)
+        return filter(suffix_searcher(suffix), files)
     
     def subpath(self, subpth, whence=None, requisite=False):
         """ Returns the path to a subpath beneath the instances’ target path. """
@@ -610,6 +613,11 @@ class cd(Directory):
         """ Change to a new directory (a new path specification `pth` is required).
         """
         super(cd, self).__init__(pth=os.path.realpath(pth))
+    
+    @classmethod
+    def directory_class(cls, pth=None):
+        """ Redirect call to ancestor class """
+        return Directory(pth=pth)
 
 
 class wd(Directory):
@@ -618,6 +626,11 @@ class wd(Directory):
         """ Initialize a Directory instance for the current working directory.
         """
         super(wd, self).__init__(pth=None)
+    
+    @classmethod
+    def directory_class(cls, pth=None):
+        """ Redirect call to ancestor class """
+        return Directory(pth=pth)
 
 
 class TemporaryDirectory(Directory):
@@ -679,6 +692,11 @@ class TemporaryDirectory(Directory):
         """ Whether or not the temporary directory has been marked for manual deletion. """
         return self._destroy
     
+    @classmethod
+    def directory_class(cls, pth=None):
+        """ Redirect call to ancestor class """
+        return Directory(pth=pth)
+    
     def copy_all(self, destination):
         """ Copy the entire temporary directory tree, all contents included, to a new
             destination path. The destination must not already exist, and `copy_all(…)`
@@ -695,7 +713,7 @@ class TemporaryDirectory(Directory):
             The destination path may be specified using a string-like, or with a Directory
             object.
         """
-        whereto = Directory(pth=destination)
+        whereto = self.directory_class(pth=destination)
         if whereto.exists:
             raise FilesystemError("TemporaryDirectory.copy_all() destination exists: %s" % whereto.name)
         if self.exists:
@@ -712,11 +730,6 @@ class TemporaryDirectory(Directory):
         """
         self._destroy = False
         return self.name
-    
-    @classmethod
-    def directory_class(cls, pth=None):
-        """ Redirect call to ancestor class: """
-        return Directory(pth=pth)
     
     def __enter__(self):
         if not self.exists:
@@ -777,8 +790,24 @@ def main():
     
     """ Run the inline tests for the halogen.filesystem module. """
     
-    # test “cd” and “cwd”:
+    # Simple inline tests for “TemporaryName”, “cd” and “cwd”,
+    # and “TemporaryDirectory”:
+    
     initial = os.getcwd()
+    
+    with TemporaryName() as tfn:
+        print("* Testing TemporaryName file object: %s" % tfn.name)
+        assert os.path.samefile(os.getcwd(),            initial)
+        assert gettempdir() in tfn.name
+        assert tfn.prefix == "yo-dogg-"
+        assert tfn.suffix == ".tmp"
+        assert not tfn.parent
+        assert tfn.prefix in tfn.name
+        assert tfn.suffix in tfn.name
+        assert tfn.destroy
+        assert not tfn.exists
+        print("* TemporaryName file object tests completed OK")
+        print("")
     
     with wd() as cwd:
         print("* Testing working-directory object: %s" % cwd.name)
@@ -787,8 +816,12 @@ def main():
         assert os.path.samefile(cwd.new,                cwd.old)
         assert os.path.samefile(cwd.new,                initial)
         assert os.path.samefile(cwd.old,                initial)
+        assert not cwd.subdirectory('yodogg').exists
         assert not cwd.will_change
         assert not cwd.did_change
+        assert not cwd.will_change_back
+        assert not cwd.did_change_back
+        assert type(cwd.directory_class(cwd.new)) == Directory
         print("* Working-directory object tests completed OK")
         print("")
     
@@ -800,11 +833,36 @@ def main():
         assert not os.path.samefile(os.getcwd(),        initial)
         assert not os.path.samefile(tmp.new,            initial)
         assert os.path.samefile(tmp.old,                initial)
+        assert not tmp.subdirectory('yodogg').exists
         assert tmp.will_change
         assert tmp.did_change
+        assert tmp.will_change_back
+        assert not tmp.did_change_back
+        assert type(tmp.directory_class(tmp.new)) == Directory
         print("* Directory-change object tests completed OK")
         print("")
     
+    with TemporaryDirectory(prefix="test-temporarydirectory-") as ttd:
+        print("* Testing TemporaryDirectory object: %s" % ttd.name)
+        # assert os.path.commonpath((os.getcwd(), gettempdir())) == gettempdir()
+        # print(os.path.commonpath((os.getcwd(), gettempdir())))
+        assert gettempdir() in ttd.name
+        assert gettempdir() in ttd.new
+        assert initial not in ttd.name
+        assert initial not in ttd.new
+        assert initial in ttd.old
+        assert not ttd.subdirectory('yodogg').exists
+        assert ttd.prefix == "test-temporarydirectory-"
+        assert not ttd.suffix
+        assert not ttd.parent
+        assert ttd.prefix in ttd.name
+        assert ttd.will_change
+        assert ttd.did_change
+        assert ttd.will_change_back
+        assert not ttd.did_change_back
+        assert type(ttd.directory_class(ttd.new)) == Directory
+        print("* TemporaryDirectory object tests completed OK")
+        print("")
 
 if __name__ == '__main__':
     main()
