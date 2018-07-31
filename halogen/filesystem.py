@@ -53,8 +53,7 @@ def which(binary_name, pathvar=None):
 
 def back_tick(command,  as_str=True,
                        ret_err=False,
-                     raise_err=None,
-                   **kwargs):
+                     raise_err=None, **kwargs):
     """ Run command `command`, return stdout -- or (stdout, stderr) if `ret_err`.
         Roughly equivalent to ``check_output`` in Python 2.7.
         
@@ -394,6 +393,7 @@ class Directory(object):
     
     non_dotfile_matcher_re = re.compile(r"^[^\.]").match
     non_dotfile_matcher = lambda p: Directory.non_dotfile_matcher_re(p.name)
+    # non_dotfile_matcher = lambda p: re.compile(r"^[^\.]").match(p.name)
     zip_suffix = "%szip" % os.extsep
     
     def __init__(self, pth=None):

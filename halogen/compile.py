@@ -64,8 +64,8 @@ class Generator(object):
             raise CompilerError("A destination directory is required")
         if not source:
             raise CompilerError("A C++ generator source file is required")
-        self.VERBOSE = kwargs.pop('verbose', DEFAULT_VERBOSITY)
-        self.intermediate = kwargs.pop('intermediate', None)
+        self.VERBOSE = bool(kwargs.pop('verbose', DEFAULT_VERBOSITY))
+        self.intermediate = str(kwargs.pop('intermediate', None))
         self.conf = conf
         self.destination = destination
         self.source = os.path.realpath(source)
@@ -74,11 +74,11 @@ class Generator(object):
         if self.VERBOSE:
             print("")
             print("Initialized C++ file compilation manager")
-            print("* Config class: %s" % self.conf.name)
+            print("*    Config class: %s" % self.conf.name)
             print("* Source filename: %s" % os.path.basename(self.source))
             print("* Output filepath: %s" % self.destination)
             if self.intermediate:
-                print("* Intermediate: %s" % self.intermediate)
+                print("*    Intermediate: %s" % self.intermediate)
             print("")
     
     def precompile(self):
@@ -216,6 +216,10 @@ class Generators(object):
             print("* Config class: %s" % self.conf.name)
             print("* Using source: %s" % self.directory.name)
             print("* With targets: %s" % self.destination.name)
+            if do_shared:
+                print("*      Library: %s" % self.library)
+            if do_static:
+                print("*      Archive: %s" % self.archive)
             print("* Intermediate: %s" % self.intermediate.name)
             print("")
     
@@ -571,7 +575,7 @@ def test():
         gens = Generators(CONF, directory=directory,
                                 destination=td,
                                 intermediate=td.subdirectory(".intermediate"),
-                                maximum=255, verbose=DEFAULT_VERBOSITY)
+                                maximum=2, verbose=DEFAULT_VERBOSITY)
         
         try:
             # Calls Generators.__enter__(self=gens):
@@ -653,7 +657,19 @@ def test():
                         print("Zip-archiving from %s to %s..." % (destination.name, tz.name))
                     Directory(destination).zip_archive(str(tz.name))
                 
+                if gens.intermediate.exists:
+                    if DEFAULT_VERBOSITY:
+                        print("Listing files at intermediate: %s..." % gens.intermediate.name)
+                    intermediate_list = list(gens.intermediate.subpath(listentry) \
+                                             for listentry in gens.intermediate.ls())
+                    pprint(intermediate_list, indent=4)
+                
                 if destination.exists:
+                    if DEFAULT_VERBOSITY:
+                        print("Listing files at destination: %s..." % destination.name)
+                    destination_list = list(destination.subpath(listentry) \
+                                            for listentry in destination.ls())
+                    pprint(destination_list, indent=4)
                     if DEFAULT_VERBOSITY:
                         print("Removing destination: %s..." % destination.name)
                     rm_rf(destination.name)
