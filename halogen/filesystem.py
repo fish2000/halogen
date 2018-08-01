@@ -283,6 +283,16 @@ class TemporaryName(object):
         return self._name
     
     @property
+    def basename(self):
+        """ The basename (aka the filename) of the temporary file path. """
+        return os.path.basename(self.name)
+    
+    @property
+    def dirname(self):
+        """ The dirname (aka the enclosing directory) of the temporary file. """
+        return os.path.dirname(self.name)
+    
+    @property
     def exists(self):
         """ Whether or not there is anything existant at the temporary file path.
             
@@ -313,6 +323,13 @@ class TemporaryName(object):
             for example.
         """
         return TemporaryNamedFile(self.do_not_destroy())
+    
+    def split(self):
+        """ Return (dirname, basename) e.g. for /yo/dogg/i/heard/youlike,
+            you get back ("/yo/dogg/i/heard", "youlike")
+        """
+        # return self.dirname, self.basename
+        return os.path.split(self.name)
     
     def copy(self, destination):
         """ Copy the file (if one exists) at the instances’ file path
@@ -412,6 +429,19 @@ class Directory(object):
         return self.prepared and self.new or self.target
     
     @property
+    def basename(self):
+        """ The basename (aka the directory name) of the target directory. """
+        return os.path.basename(self.name)
+    
+    @property
+    def dirname(self):
+        """ The dirname (aka the enclosing directory) of target directory,
+            wrapped in a new Directory instance.
+        """
+        # return self.directory_class(pth=os.path.dirname(self.name))
+        return self.parent()
+    
+    @property
     def exists(self):
         """ Whether or not the instances’ target path exists as a directory. """
         return os.path.isdir(self.name)
@@ -427,6 +457,13 @@ class Directory(object):
     def directory_class(cls, pth=None):
         """ Factory method for instances of this class: """
         return cls(pth=pth)
+    
+    def split(self):
+        """ Return (dirname, basename) e.g. for /yo/dogg/i/heard/youlike,
+            you get back (Directory("/yo/dogg/i/heard"), "youlike")
+        """
+        # return self.dirname, self.basename
+        return os.path.split(self.name)
     
     def ctx_initialize(self):
         """ Restores the instance to the freshly-allocated state -- with one

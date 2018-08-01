@@ -229,54 +229,62 @@ def terminal_print(message, color='red', asterisk='*'):
         message=message)))
 
 def print_config(conf):
+    """ Print debug information for a halogen.config.ConfigBase subclass """
     
-    print("=" * terminal_width)
+    width, height = get_terminal_size()
+    
+    print("=" * width)
     # print("")
     print("CONFIG: %s" % conf.name)
     print("PREFIX: %s" % conf.prefix)
     print("")
-    print("-" * terminal_width)
+    print("-" * width)
     
     print("INCLUDES:")
     print("")
     print(conf.get_includes())
     print("")
-    print("-" * terminal_width)
+    print("-" * width)
     
     print("LIBS:")
     print("")
     print(conf.get_libs())
     print("")
-    print("-" * terminal_width)
+    print("-" * width)
     
     print("CFLAGS:")
     print("")
     print(conf.get_cflags())
     print("")
-    print("-" * terminal_width)
+    print("-" * width)
     
     print("LDFLAGS:")
     print("")
     print(conf.get_ldflags())
     print("")
-    print("-" * terminal_width)
+    print("-" * width)
     
     print("stringification:")
     print("")
     print(str(conf))
     print("")
-    # print("-" * terminal_width)
+    # print("-" * width)
     
 
 def test_compile(conf, test_source):
+    """ Test-compile some inline C++ source, using the options provided
+        by a given halogen.config.ConfigBase subclass instance.
+    """
+    
     import sys, os
     import config
     from filesystem import NamedTemporaryFile, TemporaryName
     
+    width, height = get_terminal_size()
     output = tuple()
     px = "yodogg-"
     
-    print("=" * terminal_width)
+    print("=" * width)
     print("")
     print("TESTING COMPILATION: config.CXX(%s, <out>, <in>) ..." % conf.name)
     print("")
@@ -293,7 +301,7 @@ def test_compile(conf, test_source):
                                        infile=tf.name,
                                        verbose=True)
             
-            print("-" * terminal_width)
+            print("-" * width)
             
             if len(output[1]) > 0:
                 # failure

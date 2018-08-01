@@ -240,10 +240,10 @@ class ConfigBase(BaseAncestor):
     
     @prefix.setter
     def prefix(self, value):
-        pd = Directory(value)
-        if not pd.exists:
-            raise ValueError("prefix path does not exist: %s" % pd)
-        self._prefix = pd
+        prefixd = Directory(value)
+        if not prefixd.exists:
+            raise ValueError("prefix path does not exist: %s" % prefixd)
+        self._prefix = prefixd
     
     @prefix.deleter
     def prefix(self):
@@ -418,12 +418,13 @@ class PythonConfig(ConfigBase):
         `python-config` tool (associated with the running Python interpreter).
     """
     
-    # 'Headers', 'Resources', 'framework'
+    # 'Headers', 'Resources', 'framework', 'Frameworks',
     
     fields = ConfigBase.FieldList('pyconfig', 'pyconfigpath',
                                   'library_name', 'library_file', 'header_file',
-                                  'framework_name', 'framework_path',
-                                  'Frameworks',
+                                  'framework_name',
+                                  'framework_path',
+                                  # 'Frameworks',
                                    dir_fields=False)
     
     # Name of the `python-config` binary (nearly always just `python-config`):
@@ -475,34 +476,50 @@ class PythonConfig(ConfigBase):
         if not self.framework_path:
             # from prefix, search depth-first up (linear):
             if self.framework_name in self.prefix.name:
-                head = self.prefix.name
+                head = self.prefix
                 tail = "yo dogg" # something not false-y
                 while tail:
-                    head, tail = os.path.split(head)
+                    head, tail = self.prefix.split()
                     if tail == self.framework_name:
-                        self.framework_path = head
+                        self.framework_path = Directory(head)
                         return self.framework_path
             # from prefix, search depth-first down (likely exponential):
             for path, dirs, files in self.prefix.walk(followlinks=True):
                 if self.framework_name in dirs:
-                    self.framework_path = path
+                    self.framework_path = Directory(path)
                     return self.framework_path
             # give up, using a sensible default:
-            self.framework_path = self.subdirectory('Frameworks')
+            self.framework_path = Directory(self.subdirectory('Frameworks'))
         return self.framework_path
     
     def Headers(self):
+        if not self.framework_path:
+            if not os.path.exists(
+                self.Frameworks().subpath(
+                self.framework_name)):
+                return None
         return self.subdirectory('Headers',
-                                  whence=os.path.join(self.framework_path,
-                                                      self.framework_name))
+                                  whence=self.framework_path.subpath(
+                                         self.framework_name))
     
     def Resources(self):
+        if not self.framework_path:
+            if not os.path.exists(
+                self.Frameworks().subpath(
+                self.framework_name)):
+                return None
         return self.subdirectory('Resources',
-                                  whence=os.path.join(self.framework_path,
-                                                      self.framework_name))
+                                  whence=self.framework_path.subpath(
+                                         self.framework_name))
     
     def framework(self):
-        return self.subdirectory(self.framework_name, self.framework_path)
+        if not self.framework_path:
+            if not os.path.exists(
+                self.Frameworks().subpath(
+                self.framework_name)):
+                return None
+        return self.framework_path.subpath(
+               self.framework_name)
     
     def get_includes(self):
         return back_tick("%s --includes" % self.pyconfigpath)
@@ -742,7 +759,7 @@ class NumpyConfig(ConfigBase):
         """ Prefix is likely /…/numpy/core """
         self.info = defaultdict(set)
         self.macros = Macros()
-        self.prefix = os.path.dirname(self.get_numpy_include_directory().name)
+        self.prefix = self.get_numpy_include_directory().parent().name
         import numpy.distutils, numpy.version
         for package in self.subpackages:
             infodict = numpy.distutils.misc_util.get_info(package)
@@ -1301,8 +1318,10 @@ def print_cache():
     pprint(ConfigBase.base_field_cache, indent=4)
 
 def test():
-    from utils import print_config, terminal_width
+    from utils import print_config, get_terminal_size
     from utils import test_compile
+    
+    width, height = get_terminal_size()
     
     brewedHalideConfig = BrewedHalideConfig()
     brewedPythonConfig = BrewedPythonConfig()
@@ -1338,7 +1357,7 @@ def test():
     test_compile(configUnionAll, test_generator_source)
     
     """  Reveal the cached field-value dictionary: """
-    print("=" * terminal_width)
+    print("=" * width)
     print("")
     print("PRINTING: ConfigBase.base_field_cache -- dict<str> ...")
     print("")
@@ -1374,7 +1393,7 @@ def corefoundation_check():
     test_compile(configUnion, test_generator_source)
 
 if __name__ == '__main__':
-    # test()
+    test()
     try:
         import objc
     except ImportError:
