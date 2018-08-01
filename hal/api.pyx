@@ -1088,7 +1088,9 @@ cpdef Module get_generator_module(object name, object arguments={}):
     # Create a new named hal.api.Module object to return, per the “name” argument:
     out = Module(name=name)
     
-    # Convert the Python string value of “name” to a std::string and assign to “generator_name”:
+    # Convert the Python string value of “name” to a std::string and assign to “generator_name”,
+    # and do the same with the potential value arguments['target'] -- defaulting to the string
+    # value of hal.api.Target.target_from_environment():
     generator_name = <string>u8bytes(name)
     generator_target = <string>u8bytes(arguments.pop('target',
                                                Target.target_from_environment().to_string()))
@@ -1121,10 +1123,11 @@ cpdef Module get_generator_module(object name, object arguments={}):
 cdef void f_insert_into(Module module, modulevec_t& modulevec) nogil:
     modulevec.push_back(deref(module.__this__))
 
-def link_modules(object module_name, *modules):
+def link_modules(module_name, *modules):
     """ Python wrapper for Halide::link_modules() from src/Module.h """
     cdef modulevec_t modulevec
-    cdef Module out = Module(name=u8bytes(module_name))
+    cdef string name = <string>u8bytes(module_name)
+    cdef Module out = Module(name=module_name)
     
     # check that we got some stuff:
     if len(modules) < 1:
@@ -1132,13 +1135,14 @@ def link_modules(object module_name, *modules):
     
     # check the type of all positional arguments:
     for module in modules:
-        if type(module) is not type(Module):
+        if type(module) != Module:
             raise TypeError("""All positional args must be hal.api.Module""")
-    
-    for module in modules:
         f_insert_into(module, modulevec)
     
-    out.replace_instance(<HalModule>halide_link_modules(u8bytes(module_name), modulevec))
+    with nogil:
+        out.replace_instance(
+            <HalModule>halide_link_modules(name, modulevec))
+    
     return out
 
 def compile_standalone_runtime(Target target=Target.target_from_environment(),
