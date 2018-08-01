@@ -713,8 +713,8 @@ class PkgConfig(ConfigBase):
             along with the value of the “pkg_name” instance variable, specifying the name
             of the `pkg-config` package with whose data the instance was initialized.
         """
-        return "%s(pkg_name=%s)" % (type(self).__name__,
-                                         self.pkg_name)
+        return "%s(pkg_name=“%s”)" % (type(self).__name__,
+                                           self.pkg_name)
     
     def get_includes(self):
         return back_tick("%s %s --cflags-only-I" % (self.pkgconfig,
@@ -759,7 +759,7 @@ class NumpyConfig(ConfigBase):
         """ Prefix is likely /…/numpy/core """
         self.info = defaultdict(set)
         self.macros = Macros()
-        self.prefix = self.get_numpy_include_directory().parent().name
+        self.prefix = self.get_numpy_include_directory().parent()
         import numpy.distutils, numpy.version
         for package in self.subpackages:
             infodict = numpy.distutils.misc_util.get_info(package)
@@ -850,8 +850,8 @@ class BrewedConfig(ConfigBase):
             along with the value of the “brew_name” instance variable, specifying the
             name of the Homebrew formula with whose data the instance was initialized.
         """
-        return "%s(brew_name=%s)" % (type(self).__name__,
-                                          self.brew_name)
+        return "%s(brew_name=“%s”)" % (type(self).__name__,
+                                            self.brew_name)
     
     def get_includes(self):
         return "-I%s" % self.include()
@@ -912,12 +912,14 @@ class BrewedImreadConfig(BrewedConfig):
     # Name of the libimread library (sans “lib” prefix and file extension):
     library = "imread"
     
+    # Name of, and path to, the `imread-config` utility:
+    config_command = which('imread-config')
+    
     def __init__(self, brew_name=None):
         """ Complete override of BrewedConfig’s __init__ method: """
         if not brew_name:
             brew_name = 'libimread'
         self.brew_name = brew_name
-        self.config_command = which('imread-config')
         cmd = '%s --prefix' % self.config_command
         self.prefix = back_tick(cmd, ret_err=False)
     
@@ -1318,8 +1320,7 @@ def print_cache():
     pprint(ConfigBase.base_field_cache, indent=4)
 
 def test():
-    from utils import print_config, get_terminal_size
-    from utils import test_compile
+    from utils import print_config, test_compile, get_terminal_size
     
     width, height = get_terminal_size()
     
@@ -1362,11 +1363,12 @@ def test():
     print("PRINTING: ConfigBase.base_field_cache -- dict<str> ...")
     print("")
     print_cache()
-    
+    print("")
+
 
 def corefoundation_check():
-    from utils import print_config
-    from utils import test_compile
+    from utils import print_config, test_compile
+    
     try:
         from Foundation import NSBundle
         from CoreFoundation import (CFBundleGetAllBundles,

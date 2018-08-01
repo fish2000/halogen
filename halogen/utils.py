@@ -18,7 +18,7 @@ __all__ = ('get_terminal_size', 'terminal_width',
 
 # get_terminal_size(): does what you think it does
 # adapted from this: http://stackoverflow.com/a/566752/298171
-def get_terminal_size(default_LINES=25, default_COLUMNS=80):
+def get_terminal_size(default_LINES=25, default_COLUMNS=120):
     """ Get the width and height of the terminal window in characters """
     import os
     env = os.environ
@@ -234,7 +234,7 @@ def print_config(conf):
     width, height = get_terminal_size()
     
     print("=" * width)
-    # print("")
+    print("")
     print("CONFIG: %s" % conf.name)
     print("PREFIX: %s" % conf.prefix)
     print("")
@@ -310,18 +310,23 @@ def test_compile(conf, test_source):
                 stderr = u8str(output[1]).strip()
                 if stdout:
                     print("STDOUT: %s" % stdout, file=sys.stdout)
+                    print("")
                 if stderr:
                     print("STDERR: %s" % stderr, file=sys.stderr)
+                    print("")
                 return False
             
             # success!
             print("COMPILATION TOTALLY WORKED!")
+            print("")
             stdout = u8str(output[0]).strip()
             stderr = u8str(output[1]).strip()
             if stdout:
                 print("STDOUT: %s" % stdout, file=sys.stdout)
+                print("")
             if stderr:
                 print("STDERR: %s" % stderr, file=sys.stderr)
+                print("")
             if os.path.exists(str(adotout)):
                 return True
             else:

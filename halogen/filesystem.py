@@ -328,7 +328,6 @@ class TemporaryName(object):
         """ Return (dirname, basename) e.g. for /yo/dogg/i/heard/youlike,
             you get back ("/yo/dogg/i/heard", "youlike")
         """
-        # return self.dirname, self.basename
         return os.path.split(self.name)
     
     def copy(self, destination):
@@ -438,7 +437,6 @@ class Directory(object):
         """ The dirname (aka the enclosing directory) of target directory,
             wrapped in a new Directory instance.
         """
-        # return self.directory_class(pth=os.path.dirname(self.name))
         return self.parent()
     
     @property
@@ -462,8 +460,7 @@ class Directory(object):
         """ Return (dirname, basename) e.g. for /yo/dogg/i/heard/youlike,
             you get back (Directory("/yo/dogg/i/heard"), "youlike")
         """
-        # return self.dirname, self.basename
-        return os.path.split(self.name)
+        return self.dirname, self.basename
     
     def ctx_initialize(self):
         """ Restores the instance to the freshly-allocated state -- with one
