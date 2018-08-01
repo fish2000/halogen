@@ -105,7 +105,8 @@ def generate(*generators, **arguments):
     
     if verbose:
         print("")
-        print("generate(): Preparing %s generator modules to emit data...\n" % len(generators))
+        print("generate(): Preparing %s generator modules to emit data …" % len(generators))
+        print("")
     
     # Set what emits to, er, emit, as per the “emit” keyword argument;
     # These have been rolled into the “emits” set (q.v. argument processing supra.);

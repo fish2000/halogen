@@ -26,10 +26,10 @@ CONF = config.ConfigUnion(config.SysConfig(),
                           config.BrewedHalideConfig())
 
 # What we need to load hal.api:
-    
+
 sys.path.append(os.path.dirname(
                 os.path.dirname(__file__)))
-sys.path.append(os.path.dirname(__file__))
+# sys.path.append(os.path.dirname(__file__))
 
 # A few bespoke errors ... because yes on the occasions I do indulge myself,
 # my version of a real TREAT-YO-SELF bender is: exception subclasses. It is true.
@@ -191,12 +191,12 @@ class Generators(object):
         self.do_preload = do_shared and do_preload
         self.destination = Directory(pth=destination)
         if not self.destination.exists:
-            raise CompilerError("Non-existant generator destination: %s" % self.destination.name)
+            raise CompilerError("Non-existant generator destination: %s" % self.destination)
         self.library = self.destination.subpath("%s%s" % (self.prefix, SHARED_LIBRARY_SUFFIX))
         self.archive = self.destination.subpath("%s%s" % (self.prefix, STATIC_LIBRARY_SUFFIX))
         self.directory = Directory(pth=directory)
         if not self.directory.exists:
-            raise CompilerError("Non-existant generator source directory: %s" % self.directory.name)
+            raise CompilerError("Non-existant generator source directory: %s" % self.directory)
         self.intermediate = Directory(pth=intermediate or tempfile.gettempdir())
         if not self.intermediate.exists:
             self.intermediate.makedirs()
@@ -214,13 +214,13 @@ class Generators(object):
             print("")
             print("Initialized Halide generator compile/load/run suite:")
             print("* Config class: %s" % self.conf.name)
-            print("* Using source: %s" % self.directory.name)
-            print("* With targets: %s" % self.destination.name)
+            print("* Using source: %s" % self.directory)
+            print("* With targets: %s" % self.destination)
             if do_shared:
                 print("*      Library: %s" % self.library)
             if do_static:
                 print("*      Archive: %s" % self.archive)
-            print("* Intermediate: %s" % self.intermediate.name)
+            print("* Intermediate: %s" % self.intermediate)
             print("")
     
     @property
@@ -282,7 +282,7 @@ class Generators(object):
         if self.precompiled:
             return True
         if self.VERBOSE:
-            print("Scanning %s for “%s” files" % (self.directory.name,
+            print("Scanning %s for “%s” files" % (self.directory,
                                                   self.suffix))
         for path, dirs, files in self.directory.walk(followlinks=True):
             for df in files:
@@ -291,12 +291,14 @@ class Generators(object):
                                         os.path.join(path, df)))
         if self.source_count < self.MAXIMUM:
             if self.VERBOSE:
-                print("Using %s found generator sources\n" % self.source_count)
+                print("Using %s found generator sources" % self.source_count)
+                print("")
             self.MAXIMUM = self.source_count
         else:
             if self.VERBOSE:
-                print("Using %s of %s generator sources found\n" % (self.MAXIMUM,
-                                                                    self.source_count))
+                print("Using %s of %s generator sources found" % (self.MAXIMUM,
+                                                                  self.source_count))
+                print("")
             self.sources = list(self.sources[:self.MAXIMUM])
         if self.source_count > 0:
             self._precompiled = True
@@ -315,9 +317,9 @@ class Generators(object):
         if self.compiled:
             return True
         if not self.precompiled:
-            raise CompilerError("can't compile before precompilation: %s" % self.directory.name)
+            raise CompilerError("can't compile before precompilation: %s" % self.directory)
         if self.source_count < 1:
-            raise CompilerError("can't find any compilation inputs: %s" % self.directory.name)
+            raise CompilerError("can't find any compilation inputs: %s" % self.directory)
         if self.VERBOSE:
             print("Compiling %s generator source files" % self.source_count)
         for source in self.sources:
@@ -352,9 +354,9 @@ class Generators(object):
         if self.linked:
             return True
         if not self.compiled:
-            raise LinkerError("can't link before compilation: %s" % self.directory.name)
+            raise LinkerError("can't link before compilation: %s" % self.directory)
         if self.prelink_count < 1:
-            raise LinkerError("no files available for linker: %s" % self.directory.name)
+            raise LinkerError("no files available for linker: %s" % self.directory)
         if os.path.exists(self.library):
             raise LinkerError("can't overwrite linker output: %s" % self.library)
         if self.VERBOSE:
@@ -390,9 +392,9 @@ class Generators(object):
         if self.archived:
             return True
         if not self.compiled:
-            raise ArchiverError("can't archive before compilation: %s" % self.directory.name)
+            raise ArchiverError("can't archive before compilation: %s" % self.directory)
         if self.prelink_count < 1:
-            raise ArchiverError("no files available for archiver: %s" % self.directory.name)
+            raise ArchiverError("no files available for archiver: %s" % self.directory)
         if os.path.exists(self.archive):
             raise ArchiverError("can't overwrite archiver output: %s" % self.archive)
         if self.VERBOSE:
@@ -562,12 +564,13 @@ def test():
     
     directory = Directory(pth="/Users/fish/Dropbox/halogen/tests/generators")
     destination = Directory(pth=os.path.join(tempfile.gettempdir(), "yodogg"))
-    zip_destination = "/tmp/"
+    zip_destination = os.path.realpath("/tmp")
     
     with TemporaryDirectory(prefix='yo-dogg-') as td:
         
         if not td.exists:
-            print("TemporaryDirectory DOES NOT EXIST")
+            print("X> TemporaryDirectory DOES NOT EXIST:")
+            print("X> %s" % td)
         
         # We use a contextlib.ExitStack instance to separate out the construction
         # of the halogen.compile.Generators instance (q.v. immediately below) and
@@ -619,11 +622,13 @@ def test():
                 print("")
                 
                 print("LIBRARY: %s" % gens.library)
-                if os.path.isfile(gens.library):
+                # if os.path.isfile(gens.library):
+                if gens.linked:
                     print("LIBRARY FILE EXISTS")
                 
                 print("ARCHIVE: %s" % gens.archive)
-                if os.path.isfile(gens.archive):
+                # if os.path.isfile(gens.archive):
+                if gens.archived:
                     print("ARCHIVE FILE EXISTS")
                 
                 # td.do_not_destroy()
@@ -650,33 +655,41 @@ def test():
                 # Copy the library and archive files to $TMP/yodogg:
                 if destination.exists:
                     if DEFAULT_VERBOSITY:
-                        print("Removing destination: %s..." % destination.name)
-                    rm_rf(destination.name)
+                        print("Removing destination: %s …" % destination)
+                    rm_rf(destination)
+                
                 if DEFAULT_VERBOSITY:
-                    print("Copying from %s to %s..." % (td.name, destination.name))
+                    print("Copying from %s to %s …" % (td, destination))
                 td.copy_all(destination)
                 
                 with TemporaryName(suffix="zip", parent=zip_destination) as tz:
                     if DEFAULT_VERBOSITY:
-                        print("Zip-archiving from %s to %s..." % (destination.name, tz.name))
-                    Directory(destination).zip_archive(str(tz.name))
+                        print("Zip-archiving destination contents to zipfile: %s …" % tz)
+                    # Directory(destination).zip_archive(str(tz.name))
+                    destination.zip_archive(tz)
                 
                 if gens.intermediate.exists:
                     if DEFAULT_VERBOSITY:
-                        print("Listing files at intermediate: %s..." % gens.intermediate.name)
+                        print("Listing files at intermediate: %s …" % gens.intermediate)
                     intermediate_list = list(gens.intermediate.subpath(listentry) \
                                              for listentry in gens.intermediate.ls())
                     pprint(intermediate_list, indent=4)
+                else:
+                    print("X> Intermediate directory DOES NOT EXIST")
+                    print("X> %s" % gens.intermediate)
                 
                 if destination.exists:
                     if DEFAULT_VERBOSITY:
-                        print("Listing files at destination: %s..." % destination.name)
+                        print("Listing files at destination: %s …" % destination)
                     destination_list = list(destination.subpath(listentry) \
                                             for listentry in destination.ls())
                     pprint(destination_list, indent=4)
                     if DEFAULT_VERBOSITY:
-                        print("Removing destination: %s..." % destination.name)
-                    rm_rf(destination.name)
+                        print("Removing destination: %s …" % destination)
+                    rm_rf(destination)
+                else:
+                    print("X> Destination directory DOES NOT EXIST")
+                    print("X> %s" % destination)
                 
     
     # ... scope exit for Generators `gens` and TemporaryDirectory `td`

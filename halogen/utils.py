@@ -6,11 +6,15 @@ import six
 
 __all__ = ('get_terminal_size', 'terminal_width',
                                 'terminal_height',
-                                'string_types', 'is_string',
            'wrap_value', 'Memoizer', 'memoize',
            'current_umask', 'masked_permissions',
-           'u8bytes', 'u8str', 'stringify',
-           'terminal_print', 'print_config', 'test_compile')
+           'append_paths', 'remove_paths',
+           'string_types', 'is_string', 'stringify',
+                                        'u8bytes',
+                                        'u8str',
+           'suffix_searcher',
+           'terminal_print', 'print_config',
+                             'test_compile')
 
 # get_terminal_size(): does what you think it does
 # adapted from this: http://stackoverflow.com/a/566752/298171
@@ -99,6 +103,67 @@ def current_umask():
 def masked_permissions(perms=0o666):
     return perms & ~current_umask()
 
+def append_paths(*putatives):
+    """ Mutate `sys.path` by appending one or more new paths --
+        all of which are checked for both nonexistence and presence
+        within the existing `sys.path` list via inode lookup, and
+        which those failing such checks are summarily excluded.
+    """
+    import sys, os
+    out = {}
+    if len(putatives) < 1:
+        return out
+    paths = set(sys.path)
+    append_paths.oldsyspath = tuple(sys.path)
+    for pth in putatives:
+        if hasattr(pth, 'name'):
+            pth = pth.name
+        if not os.path.exists(pth):
+            out[pth] = False
+            continue
+        # if pth in paths:
+        #     out[pth] = False
+        #     continue
+        for p in paths:
+            if os.path.samefile(p, pth):
+                out[pth] = False
+                continue
+        sys.path.append(pth)
+        out[pth] = True
+        continue
+    return out
+
+append_paths.oldsyspath = tuple()
+
+def remove_paths(*putatives):
+    """ Mutate `sys.path` by removing one or more new paths --
+        all of which are checked for presence within the existing
+        `sys.path` list via inode lookup before being marked for
+        removal, which that (the removal) is done atomically.
+    """
+    import sys, os
+    out = {}
+    if len(putatives) < 1:
+        return out
+    removals = set()
+    paths = set(sys.path)
+    for pth in putatives:
+        if hasattr(pth, 'name'):
+            pth = pth.name
+        for p in paths:
+            if os.path.samefile(p, pth):
+                out[pth] = True
+                removals |= { p }
+                continue
+        out[pth] = False
+        continue
+    paths -= removals
+    remove_paths.oldsyspath = tuple(sys.path)
+    sys.path = list(paths)
+    return out
+
+remove_paths.oldsyspath = tuple()
+
 def u8bytes(string_source):
     if type(string_source) == bytes:
         return string_source
@@ -106,6 +171,10 @@ def u8bytes(string_source):
         return bytes(string_source, encoding='UTF-8')
     elif isinstance(string_source, six.string_types):
         return bytes(string_source, encoding='UTF-8')
+    elif type(string_source) == bool:
+        return string_source and b'True' or b'False'
+    elif string_source is None:
+        return b'None'
     return bytes(string_source)
 
 def u8str(string_source):
@@ -125,6 +194,28 @@ def stringify(instance, fields):
                             ", ".join(field_dict_items),
                             hex(id(instance)))
 
+def suffix_searcher(suffix):
+    """ Return a boolean function that will search for the given
+        file suffix in strings with which it is called, returning
+        True when they are found and False when they aren’t.
+        
+        Useful in filter(…) calls and comprehensions, e.g.:
+        
+        >>> plists = filter(suffix_searcher('plist'), os.listdir())
+        >>> mmsuffix = suffix_searcher('mm')
+        >>> objcpp = (f for f in os.listdir() where mmsuffix(f))
+    """
+    import re, os
+    if len(suffix) < 1:
+        return lambda searching_for: True
+    regex_str = r""
+    if suffix.startswith(os.extsep):
+        regex_str += r"\%s$" % suffix
+    else:
+        regex_str += r"\%s%s$" % (os.extsep, suffix)
+    searcher = re.compile(regex_str, re.IGNORECASE).search
+    return lambda searching_for: bool(searcher(searching_for))
+
 def terminal_print(message, color='red', asterisk='*'):
     """ Print a string to the terminal, centered and bookended with asterisks """
     from clint.textui.colored import red
@@ -140,9 +231,11 @@ def terminal_print(message, color='red', asterisk='*'):
 def print_config(conf):
     
     print("=" * terminal_width)
+    # print("")
+    print("CONFIG: %s" % conf.name)
+    print("PREFIX: %s" % conf.prefix)
     print("")
-    print("TESTING: %s …" % conf.name)
-    print("")
+    print("-" * terminal_width)
     
     print("INCLUDES:")
     print("")
@@ -185,7 +278,7 @@ def test_compile(conf, test_source):
     
     print("=" * terminal_width)
     print("")
-    print("TEST COMPILATION: CXX(%s, <out>, <in>) ..." % conf.name)
+    print("TESTING COMPILATION: config.CXX(%s, <out>, <in>) ..." % conf.name)
     print("")
     
     with NamedTemporaryFile(suffix="cpp", prefix=px) as tf:
@@ -196,21 +289,31 @@ def test_compile(conf, test_source):
             print("C++ SOURCE: %s" % tf.name)
             print("C++ TARGET: %s" % adotout.name)
             
-            output += config.CXX(conf, adotout.name, tf.name, verbose=True)
+            output += config.CXX(conf, outfile=adotout.name,
+                                       infile=tf.name,
+                                       verbose=True)
             
             print("-" * terminal_width)
             
             if len(output[1]) > 0:
                 # failure
                 print("COMPILATION FAILED:")
-                print(output[0], file=sys.stdout)
-                print(output[1], file=sys.stderr)
+                stdout = u8str(output[0]).strip()
+                stderr = u8str(output[1]).strip()
+                if stdout:
+                    print("STDOUT: %s" % stdout, file=sys.stdout)
+                if stderr:
+                    print("STDERR: %s" % stderr, file=sys.stderr)
                 return False
             
             # success!
             print("COMPILATION TOTALLY WORKED!")
-            print(output[0], file=sys.stdout)
-            print(output[1], file=sys.stderr)
+            stdout = u8str(output[0]).strip()
+            stderr = u8str(output[1]).strip()
+            if stdout:
+                print("STDOUT: %s" % stdout, file=sys.stdout)
+            if stderr:
+                print("STDERR: %s" % stderr, file=sys.stderr)
             if os.path.exists(str(adotout)):
                 return True
             else:

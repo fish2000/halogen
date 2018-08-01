@@ -9,11 +9,6 @@ import sysconfig
 import six
 
 try:
-    from scandir import walk
-except ImportError:
-    from os import walk
-
-try:
     from functools import reduce
 except ImportError:
     pass
@@ -23,7 +18,7 @@ from os.path import splitext
 from ctypes.util import find_library
 from collections import defaultdict
 from functools import wraps
-from filesystem import which, back_tick, script_path
+from filesystem import which, back_tick, script_path, Directory
 from utils import is_string, stringify, u8bytes, u8str
 
 __all__ = ('SHARED_LIBRARY_SUFFIX',
@@ -152,12 +147,12 @@ class ConfigBaseMeta(ABCMeta):
                 base_fields |= frozenset(base.fields)
         attributes['base_fields'] = tuple(sorted(base_fields))
         ConfigSubBase.base_field_cache[name] = tuple(sorted(base_fields))
-        outcls = super(ConfigBaseMeta, metacls).__new__(metacls, name,
-                                                                 bases,
-                                                                 attributes,
-                                                               **kwargs)
-        ConfigSubBase.register(outcls)
-        return outcls
+        cls = super(ConfigBaseMeta, metacls).__new__(metacls, name,
+                                                              bases,
+                                                              attributes,
+                                                            **kwargs)
+        ConfigSubBase.register(cls)
+        return cls
 
 
 BaseAncestor = six.with_metaclass(ConfigBaseMeta, ConfigSubBase)
@@ -211,14 +206,15 @@ class ConfigBase(BaseAncestor):
                                       'exclude_fields',
                                       'include_dir_fields')
         
-        def __init__(self, *more_fields, **kwargs):
-            self.include_dir_fields = kwargs.pop('dir_fields', False)
-            self.exclude_fields = frozenset(kwargs.pop('exclude', tuple()))
-            self.more_fields = frozenset(more_fields)
+        def store(self, *fields):
+            self.stored_fields = self.more_fields = frozenset(fields)
             if self.include_dir_fields:
-                self.stored_fields = self.more_fields | frozenset(ConfigBase.dir_fields)
-            else:
-                self.stored_fields = self.more_fields
+                self.stored_fields |= frozenset(ConfigBase.dir_fields)
+        
+        def __init__(self, *more_fields, **kwargs):
+            self.include_dir_fields = bool(kwargs.pop('dir_fields', False))
+            self.exclude_fields = frozenset(kwargs.pop('exclude', tuple()))
+            self.store(*more_fields)
         
         def __get__(self, instance, cls=None):
             if cls is None:
@@ -229,12 +225,8 @@ class ConfigBase(BaseAncestor):
             out -= self.exclude_fields
             return tuple(sorted(out))
         
-        def __set__(self, instance, value):
-            self.more_fields = frozenset(value)
-            if self.include_dir_fields:
-                self.stored_fields = self.more_fields | frozenset(ConfigBase.dir_fields)
-            else:
-                self.stored_fields = self.more_fields
+        def __set__(self, instance, iterable):
+            self.store(*iterable)
         
         def __delete__(self, instance):
             raise AttributeError("Can't delete a FieldList attribute")
@@ -243,14 +235,15 @@ class ConfigBase(BaseAncestor):
     def prefix(self):
         """ The path to the Python installation prefix """
         if not hasattr(self, '_prefix'):
-            self._prefix = sys.prefix
+            self._prefix = Directory(sys.prefix)
         return getattr(self, '_prefix')
     
     @prefix.setter
     def prefix(self, value):
-        if not os.path.exists(value):
-            raise ValueError("prefix path does not exist: %s" % value)
-        self._prefix = value
+        pd = Directory(value)
+        if not pd.exists:
+            raise ValueError("prefix path does not exist: %s" % pd)
+        self._prefix = pd
     
     @prefix.deleter
     def prefix(self):
@@ -264,12 +257,7 @@ class ConfigBase(BaseAncestor):
     
     def subdirectory(self, subdir, whence=None):
         """ Returns the path to a subdirectory within this Config instances’ prefix """
-        if not whence:
-            whence = getattr(self, '_prefix', sys.prefix)
-        if hasattr(subdir, 'name'):
-            subdir = subdir.name
-        fulldir = os.path.join(whence, subdir)
-        return os.path.exists(fulldir) and fulldir or None
+        return self.prefix.subpath(subdir, whence, requisite=True)
     
     def to_string(self, field_list=None):
         """ Stringify the instance, using either a provided list of fields to evaluate,
@@ -486,8 +474,8 @@ class PythonConfig(ConfigBase):
     def Frameworks(self):
         if not self.framework_path:
             # from prefix, search depth-first up (linear):
-            if self.framework_name in self.prefix:
-                head = self.prefix
+            if self.framework_name in self.prefix.name:
+                head = self.prefix.name
                 tail = "yo dogg" # something not false-y
                 while tail:
                     head, tail = os.path.split(head)
@@ -495,7 +483,7 @@ class PythonConfig(ConfigBase):
                         self.framework_path = head
                         return self.framework_path
             # from prefix, search depth-first down (likely exponential):
-            for path, dirs, files in walk(self.prefix, followlinks=True):
+            for path, dirs, files in self.prefix.walk(followlinks=True):
                 if self.framework_name in dirs:
                     self.framework_path = path
                     return self.framework_path
@@ -553,13 +541,13 @@ class BrewedPythonConfig(PythonConfig):
         super(BrewedPythonConfig, self).__init__(prefix=prefix)
     
     def include(self):
-        for path, dirs, files in walk(self.prefix, followlinks=True):
+        for path, dirs, files in self.prefix.walk(followlinks=True):
             if self.header_file in files:
                 return path
         return super(BrewedPythonConfig, self).include()
     
     def lib(self):
-        for path, dirs, files in walk(self.prefix, followlinks=True):
+        for path, dirs, files in self.prefix.walk(followlinks=True):
             if self.library_file in files:
                 return path
         return super(BrewedPythonConfig, self).lib()
@@ -747,20 +735,20 @@ class NumpyConfig(ConfigBase):
     def get_numpy_include_directory(cls):
         if not hasattr(cls, 'include_path'):
             import numpy
-            cls.include_path = numpy.get_include()
+            cls.include_path = Directory(pth=numpy.get_include())
         return cls.include_path
     
     def __init__(self):
         """ Prefix is likely /…/numpy/core """
         self.info = defaultdict(set)
         self.macros = Macros()
-        self.prefix = os.path.dirname(self.get_numpy_include_directory())
+        self.prefix = os.path.dirname(self.get_numpy_include_directory().name)
         import numpy.distutils, numpy.version
         for package in self.subpackages:
             infodict = numpy.distutils.misc_util.get_info(package)
             for k, v in infodict.items():
                 self.info[k] |= set(v)
-        self.info['include_dirs'] |= { self.get_numpy_include_directory() }
+        self.info['include_dirs'] |= { self.get_numpy_include_directory().name }
         for macro_tuple in self.info['define_macros']:
             self.macros.define(*macro_tuple)
         self.macros.define('NUMPY')
@@ -959,10 +947,10 @@ class ConfigUnion(ConfigBase):
             
             class ConfigUnion(ConfigBase):
             
-                @union_of('includes')           # function name without "get_" prefix;
-                def get_includes(self, out):    # function definition, specifying `out` set;
-                    return out                  # transform the `out` set, if necessary,
-                                                # and return it
+                @union_of('libs')                   # function name without "get_" prefix;
+                def get_includes(self, libs):       # function definition, naming an input set;
+                    return libs & self.otherstuff   # transform the input set, if necessary,
+                                                    # and return it
         """
         
         __slots__ = ('name',)
@@ -975,8 +963,8 @@ class ConfigUnion(ConfigBase):
         
         def __call__(self, base_function):
             """ Process the decorated method, passed in as `base_function` --
-                The `base_function` call should process the populated `out` set of flags,
-                returning them modified or not. """
+                The `base_function` call should process the populated input set of flags
+                and return a set (either a modified version of the input set, or not). """
             # N.B. the curly-brace expression below is a set comprehension:
             @wraps(base_function)
             def getter(this):
@@ -1028,11 +1016,11 @@ class ConfigUnion(ConfigBase):
                                    '4')) # 4 is technically a fake
     
     # Regular expression to match fake optimization flags e.g. -O8, -O785 etc.
-    optimization_flag_matcher = re.compile("^O(\d+)$")
+    optimization_flag_matcher = re.compile("^O(\d+)$").match
     
     # Regular expression to match diretory flags e.g. -I/usr/include, -L/usr/lib etc.
     # Adapted from example at https://stackoverflow.com/a/33021907/298171
-    directory_flag_matcher = re.compile(r"^[IL]((?:[^/]*/)*)(.*)$")
+    directory_flag_matcher = re.compile(r"^[IL]((?:[^/]*/)*)(.*)$").match
     
     # Ordered list of all possible C++ standard flags --
     # adapted from Clang’s LangStandards.def, https://git.io/vSRX9
@@ -1047,7 +1035,7 @@ class ConfigUnion(ConfigBase):
             in order to search-engine optimize for the Google searches
             of Breitbart and InfoWars readers (who love that shit).
         """
-        match_func = cls.optimization_flag_matcher.match
+        match_func = cls.optimization_flag_matcher
         opt_set = cls.optimization.set
         return frozenset(
             filter(lambda flag: bool(match_func(flag)) and \
@@ -1057,7 +1045,7 @@ class ConfigUnion(ConfigBase):
     def nonexistent_path_flags(cls, flags):
         """ Filter out include- or lib-path flags pointing to directories
             that do not actually exist, from a set of flags: """
-        match_func = cls.directory_flag_matcher.match
+        match_func = cls.directory_flag_matcher
         check_func = os.path.exists
         return frozenset(
             filter(lambda flag: bool(match_func(flag)) and \
@@ -1074,7 +1062,7 @@ class ConfigUnion(ConfigBase):
         if len(optflags) < 1:
             return flags - cls.fake_optimization_flags(flags)
         
-        # Find the optflag with the highest index into cls.optimization_flags:
+        # Find the optflag with the highest index into cls.optimization.flags:
         flags_index = reduce(lambda x, y: max(x, y),
                           map(lambda flag: cls.optimization.index(flag),
                               optflags))
@@ -1098,7 +1086,7 @@ class ConfigUnion(ConfigBase):
         if len(stdflags) < 1:
             return flags
         
-        # Find the stdflag with the highest index into cls.cxx_standard_flags:
+        # Find the stdflag with the highest index into cls.cxx_standard.flags:
         flags_index = reduce(lambda x, y: max(x, y),
                           map(lambda flag: cls.cxx_standard.index(flag),
                               stdflags))
@@ -1374,8 +1362,9 @@ def corefoundation_check():
     python_bundle_set = set(filter(is_python_bundle, CFBundleGetAllBundles()))
     python_bundle = python_bundle_set.pop()
     nsbundle = NSBundle.alloc().initWithURL_(CFBundleCopyBundleURL(python_bundle))
-    bundlepath = str(nsbundle.bundlePath())
-    prefix = os.path.dirname(os.path.dirname(bundlepath))
+    bundlepath = Directory(nsbundle.bundlePath())
+    # prefix = os.path.dirname(os.path.dirname(bundlepath))
+    prefix = bundlepath.parent().parent()
     
     brewedHalideConfig = BrewedHalideConfig()
     pyConfig = PythonConfig(prefix)
@@ -1385,7 +1374,7 @@ def corefoundation_check():
     test_compile(configUnion, test_generator_source)
 
 if __name__ == '__main__':
-    test()
+    # test()
     try:
         import objc
     except ImportError:

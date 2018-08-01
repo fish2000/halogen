@@ -14,13 +14,12 @@ except ImportError:
 
 from tempfile import mktemp, mkdtemp, gettempprefix, gettempdir
 from errors import ExecutionError, FilesystemError
-from utils import memoize, u8bytes, u8str, stringify
+from utils import memoize, u8bytes, u8str, stringify, suffix_searcher
 
 __all__ = ('DEFAULT_PATH', 'DEFAULT_ENCODING', 'DEFAULT_TIMEOUT',
            'script_path', 'which', 'back_tick', 'rm_rf',
            'TemporaryNamedFile',
            'TemporaryName',
-           'suffix_searcher',
            'Directory', 'cd', 'wd',
            'TemporaryDirectory',
            'NamedTemporaryFile')
@@ -139,12 +138,12 @@ def back_tick(command,  as_str=True,
             print("NONZERO RETURN STATUS: {}".format(returncode),
                                                 file=sys.stderr)
             print("",                           file=sys.stderr)
-        if output.strip():
+        if len(u8str(output).strip()) > 0:
             print("")
             print("OUTPUT:",                            file=sys.stdout)
             print("`{}`".format(u8str(output).strip()), file=sys.stdout)
             print("",                                   file=sys.stdout)
-        if errors.strip():
+        if len(u8str(errors.strip())) > 0:
             print("")
             print("ERRORS:",                            file=sys.stderr)
             print("`{}`".format(u8str(errors).strip()), file=sys.stderr)
@@ -361,28 +360,6 @@ class TemporaryName(object):
     def __unicode__(self):
         return six.u(str(self))
 
-
-def suffix_searcher(suffix):
-    """ Return a boolean function that will search for the given
-        file suffix in strings with which it is called, returning
-        True when they are found and False when they aren’t.
-        
-        Useful in filter(…) calls and comprehensions, e.g.:
-        
-        >>> plists = filter(suffix_searcher('plist'), os.listdir())
-        >>> mmsuffix = suffix_searcher('mm')
-        >>> objcpp = (f for f in os.listdir() where mmsuffix(f))
-    """
-    if len(suffix) < 1:
-        return lambda searching_for: True
-    regex_str = r""
-    if suffix.startswith(os.extsep):
-        regex_str += r"\%s$" % suffix
-    else:
-        regex_str += r"\%s%s$" % (os.extsep, suffix)
-    searcher = re.compile(regex_str, re.IGNORECASE).search
-    return lambda searching_for: bool(searcher(searching_for))
-
 non_dotfile_match = re.compile(r"^[^\.]").match
 non_dotfile_matcher = lambda p: non_dotfile_match(p.name)
 
@@ -396,6 +373,11 @@ class Directory(object):
               'will_change_back',   'did_change_back')
     
     zip_suffix = "%szip" % os.extsep
+    
+    def __new__(cls, pth=None, **kwargs):
+        instance = super(Directory, cls).__new__(cls)
+        instance.ctx_initialize()
+        return instance
     
     def __init__(self, pth=None):
         """ Initialize a new Directory object.
@@ -421,8 +403,101 @@ class Directory(object):
         """
         if hasattr(pth, 'name'):
             pth = pth.name
-        self.old = os.getcwd()
-        self.new = pth or self.old
+        self.target = pth
+        self.ctx_set_targets()
+    
+    @property
+    def name(self):
+        """ The instances’ target directory path. """
+        return self.prepared and self.new or self.target
+    
+    @property
+    def exists(self):
+        """ Whether or not the instances’ target path exists as a directory. """
+        return os.path.isdir(self.name)
+    
+    @property
+    def prepared(self):
+        """ Whether or not the instance has been internally prepared for use
+            (q.v. `ctx_initialize()` help sub.) and is in a valid state.
+        """
+        return hasattr(self, 'new')
+    
+    @classmethod
+    def directory_class(cls, pth=None):
+        """ Factory method for instances of this class: """
+        return cls(pth=pth)
+    
+    def ctx_initialize(self):
+        """ Restores the instance to the freshly-allocated state -- with one
+            notable exception: if it had been previously prepared (through a
+            call to `instance.ctx_prepare()`) and thus has a “new” attribute
+            filled in with a target path, `ctx_initialize()` will preserve
+            the contents of that attribute in the value of the `self.target` 
+            instance member.
+        
+            The call deletes all other instance attributes from the internal
+            mapping of the instance in question, leaving it in a state ready
+            for either context-managed reëntry, or for reuse in an unmanaged
+            fashion *provided* one firstly calls `instance.ctx_set_targets()`
+            or `instance.ctx_prepare()` in order to reconfigure (the minimal
+            subset of, or the full complement of) the member-variable values
+            needed by the internal workings of a Directory instance.
+        """
+        if hasattr(self, 'new'):
+            self.target = self.new
+            del self.new
+        if hasattr(self, 'old'):
+            del self.old
+        if hasattr(self, 'will_change'):
+            del self.will_change
+        if hasattr(self, 'will_change_back'):
+            del self.will_change_back
+        if hasattr(self, 'did_change'):
+            del self.did_change
+        if hasattr(self, 'did_change_back'):
+            del self.did_change_back
+    
+    def ctx_set_targets(self, old=None):
+        """ Sets the “self.old” and “self.new” instance variable values,
+            using the value of `self.target` and an (optional) string-like
+            argument to use as the value for “self.old”.
+            
+            One shouldn’t generally call this or have a need to call this --
+            although one can manually invoke `instance.ctx_set_targets(…)`
+            to reconfigure a Directory instance to use it again after it has
+            been re-initialized after a call to `instance.ctx_initialize()`
+            (q.v. `ctx_initialize()` help supra.) in cases where it isn’t
+            going to be used as part of a managed context; that is to say,
+            outside of a `with` statement.
+        
+            (Within a `with` statement, the call issued upon scope entry to
+            `Directory.__enter__(self)` will internally make a call to
+            `Directory.ctx_prepare(self)` (q.v. doctext help sub.) which
+            that will call `Directory.ctx_set_targets(self, …)` itself.)
+        """
+        self.old = old or self.target
+        self.new = self.target or self.old
+    
+    def ctx_prepare(self):
+        """ Prepares the member values of the Directory instance according
+            to a requisite `self.target` directory-path value; the primary
+            logic performed by this function determines whether or not it
+            is necessary to switch the process working directory while the
+            Directory instance is actively being used as a context manager
+            in the scope of a `while` block.
+            
+            The reason this is done herein is to minimize the number of
+            calls to potentially expensive system-call-wrapping functions
+            such as `os.getcwd()`, `os.path.samefile(…)`, and especially
+            `os.chdir(…)` -- which the use of the latter affects the state
+            of the process issuing the call in a global fashion, and can
+            cause invincibly undebuggable behavioral oddities to crop up
+            in a variety of circumstances. 
+        """
+        self.ctx_set_targets(old=os.getcwd())
+        if hasattr(self, 'target'):
+            del self.target
         if os.path.isdir(self.new):
             self.will_change = not os.path.samefile(self.old,
                                                     self.new)
@@ -432,22 +507,8 @@ class Directory(object):
         self.will_change_back = self.will_change
         self.did_change_back = False
     
-    @property
-    def name(self):
-        """ The instances’ target directory path. """
-        return self.new
-    
-    @property
-    def exists(self):
-        """ Whether or not the instances’ target path exists as a directory. """
-        return os.path.isdir(self.name)
-    
-    @classmethod
-    def directory_class(cls, pth=None):
-        """ Factory method for instances of this class: """
-        return cls(pth=pth)
-    
     def __enter__(self):
+        self.ctx_prepare()
         if self.will_change and self.exists:
             os.chdir(self.new)
             self.did_change = os.path.samefile(self.new,
@@ -459,9 +520,14 @@ class Directory(object):
         # N.B. return False to throw, True to supress:
         if self.will_change_back and os.path.isdir(self.old):
             os.chdir(self.old)
+            backto = os.getcwd()
             self.did_change_back = os.path.samefile(self.old,
-                                                    os.getcwd())
-            return self.did_change_back and exc_type is None
+                                                    backto)
+            if self.did_change_back:
+                self.ctx_initialize()            # return to pristine state
+                if exc_type is None:
+                    self.ctx_set_targets(backto) # minimally reconfigure
+                return True
         return False
     
     def realpath(self, pth=None):
@@ -706,8 +772,8 @@ class TemporaryDirectory(Directory):
         self.prefix = prefix
         self.suffix = suffix
         super(TemporaryDirectory, self).__init__(self._name)
-        self.will_change = bool(self.will_change and change)
-        self.will_change_back = bool(self.will_change and change)
+        self.will_change = bool(getattr(self, 'will_change', True) and change)
+        self.will_change_back = bool(getattr(self, 'will_change', True) and change)
     
     @property
     def name(self):
