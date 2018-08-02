@@ -2,11 +2,12 @@
 
 from __future__ import print_function
 
+import abc
 import collections
 import os
 import re
-import sys
 import six
+import sys
 
 try:
     from scandir import scandir, walk
@@ -249,7 +250,32 @@ def TemporaryNamedFile(pth, mode='wb', buffer_size=-1, delete=True):
         raise FilesystemError(str(base_exception))
 
 
-class TypeLocker(type):
+class TypeLocker(abc.ABCMeta):
+    
+    """ halogen.filesystem.TypeLocker is a metaclass that does two things
+        with the types for whom it is designated as meta:
+        
+        1) It keeps an index of those types in a dictionary member of
+           the `TypeLocker` metaclass itself; and
+        
+        2) During class creation – the call to `TypeLocker.__new__(…)` –
+           it installs a class method called “directory(…)” that will,
+           when invoked, always return a new Directory instance that has
+           been initialized with the one provided argument “pth” (if one
+           was passed).
+        
+        … The point of this is to allow any of the classes throughout the
+        halogen.filesystem module, regardless of where they are defined or
+        from whom they inherit, to make use of cheaply-constructed Directory
+        instances wherever convenient.
+        
+        Because the “directory(…)” method installed by TypeLocker performs
+        a lazy-lookup of the Directory class, using its own type index dict,
+        the order of definition does not matter i.e. the TemporaryName class
+        (q.v. definition immediately sub.) can use Directories despite being
+        its definition occuring before Directory – in fact TemporaryName is
+        itself utilized within at least one Directory method – sans issue.
+    """
     
     types = {}
     
@@ -271,10 +297,11 @@ class TypeLocker(type):
                                                           dict(attributes),
                                                         **kwargs)
         metacls.types[name] = cls
+        os.PathLike.register(cls)
         return cls
 
 
-TemporaryNameAncestor = six.with_metaclass(TypeLocker, object)
+TemporaryNameAncestor = six.with_metaclass(TypeLocker, os.PathLike)
 class TemporaryName(TemporaryNameAncestor):
     
     """ This is like NamedTemporaryFile without any of the actual stuff;
@@ -414,7 +441,7 @@ class TemporaryName(TemporaryNameAncestor):
 non_dotfile_match = re.compile(r"^[^\.]").match
 non_dotfile_matcher = lambda p: non_dotfile_match(p.name)
 
-DirectoryAncestor = six.with_metaclass(TypeLocker, object)
+DirectoryAncestor = six.with_metaclass(TypeLocker, os.PathLike)
 class Directory(DirectoryAncestor):
     
     """ A context-managed directory: change in on enter, change back out
