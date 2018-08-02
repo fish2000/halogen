@@ -76,15 +76,18 @@ def back_tick(command,  as_str=True,
                                   False if `ret_err` is True.
             Default is None (exception-raising behavior depends on the `ret_err`
             value).
-        timeout : int, optional
-            Number of seconds to wait for the executed command to complete before
-            forcibly killing the subprocess. Default is 60.
-        verbose : bool, optional
-            Whether or not debug information should be spewed to `sys.stderr`.
-            Default is False.
         encoding : str, optional
             The name of the encoding to use when decoding the command output per
             the `as_str` value. Default is “latin-1”.
+        directory : str / Directory / path-like, optional
+            The directory in which to execute the command. Default is None (in
+            which case the process working directory, unchanged, will be used).
+        verbose : bool, optional
+            Whether or not debug information should be spewed to `sys.stderr`.
+            Default is False.
+        timeout : int, optional
+            Number of seconds to wait for the executed command to complete before
+            forcibly killing the subprocess. Default is 60.
         
         Returns
         -------
@@ -108,6 +111,7 @@ def back_tick(command,  as_str=True,
     raise_err = raise_err is not None and raise_err or bool(not ret_err)
     issequence = isinstance(command, (list, tuple))
     command_str = issequence and " ".join(command) or u8str(command).strip()
+    directory = 'directory' in kwargs and os.fspath(kwargs.pop('directory')) or None
     # Step 2: DO IT DOUG:
     if not issequence:
         command = shlex.split(command)
@@ -118,6 +122,7 @@ def back_tick(command,  as_str=True,
         print("",           file=sys.stdout)
     process = subprocess.Popen(command, stdout=subprocess.PIPE,
                                         stderr=subprocess.PIPE,
+                                           cwd=directory,
                                          shell=False)
     try:
         output, errors = process.communicate(timeout=timeout)
@@ -160,8 +165,9 @@ def back_tick(command,  as_str=True,
 
 def rm_rf(pth):
     """ rm_rf() does what `rm -rf` does, so for the love of fuck, BE CAREFUL WITH IT. """
-    if hasattr(pth, 'name'):
-        pth = pth.name
+    if not pth:
+        raise ExecutionError("Can’t rm -rf without something to rm arr-effedly")
+    pth = os.fspath(pth)
     try:
         if os.path.isfile(pth) or os.path.islink(pth):
             os.unlink(pth)
@@ -230,9 +236,7 @@ def TemporaryNamedFile(pth, mode='wb', buffer_size=-1, delete=True):
     
     descriptor = 0
     filehandle = None
-    
-    if hasattr(pth, 'name'):
-        pth = pth.name
+    pth = os.fspath(pth)
     
     try:
         descriptor = _os.open(pth, flags)
@@ -297,8 +301,8 @@ class TemporaryName(TemporaryNameAncestor):
             suffix = "%stmp" % os.extsep
         if not parent:
             parent = kwargs.pop('dir', None)
-        if hasattr(parent, 'name'):
-            parent = parent.name
+        if parent:
+            parent = os.fspath(parent)
         self._name = mktemp(prefix=prefix, suffix=suffix, dir=parent)
         self._destroy = True
         self.prefix = prefix
@@ -362,11 +366,11 @@ class TemporaryName(TemporaryNameAncestor):
         """ Copy the file (if one exists) at the instances’ file path
             to a new destination.
         """
+        if not destination:
+            raise FilesystemError("Copying requires a somewhere to which to copy")
         import shutil
-        if hasattr(destination, 'name'):
-            destination = destination.name
         if self.exists:
-            return shutil.copy2(self.name, destination)
+            return shutil.copy2(self.name, os.fspath(destination))
         return False
     
     def do_not_destroy(self):
@@ -400,6 +404,9 @@ class TemporaryName(TemporaryNameAncestor):
     
     def __bytes__(self):
         return u8bytes(str(self))
+    
+    def __fspath__(self):
+        return str(self)
     
     def __unicode__(self):
         return six.u(str(self))
@@ -446,9 +453,7 @@ class Directory(DirectoryAncestor):
             initializing itself with the current working directory as its target,
             and fundamentally avoids issuing any directory-change calls.
         """
-        if hasattr(pth, 'name'):
-            pth = pth.name
-        self.target = pth
+        self.target = pth and os.fspath(pth) or None
         self.ctx_set_targets()
     
     @property
@@ -591,10 +596,8 @@ class Directory(DirectoryAncestor):
     def realpath(self, pth=None):
         """ Sugar for calling os.path.realpath(self.name) """
         if not pth:
-            pth = self
-        if hasattr(pth, 'name'):
-            pth = pth.name
-        return os.path.realpath(pth)
+            pth = self.name
+        return os.path.realpath(os.fspath(pth))
     
     def ls(self, pth=None, suffix=None):
         """ List files -- defaults to the process’ current working directory.
@@ -633,13 +636,8 @@ class Directory(DirectoryAncestor):
     
     def subpath(self, subpth, whence=None, requisite=False):
         """ Returns the path to a subpath beneath the instances’ target path. """
-        if hasattr(subpth, 'name'):
-            subpth = subpth.name
-        if not whence:
-            whence = self
-        if hasattr(whence, 'name'):
-            whence = whence.name
-        fullpth = os.path.join(whence, subpth)
+        fullpth = os.path.join(os.fspath(whence or self.name),
+                               os.fspath(subpth))
         return (os.path.exists(fullpth) or not requisite) and fullpth or None
     
     def subdirectory(self, subdir, whence=None):
@@ -659,8 +657,9 @@ class Directory(DirectoryAncestor):
         """ Creates any parts of the target directory path that don’t already exist,
             á la the `mkdir -p` shell command.
         """
-        if hasattr(pth, 'name'):
-            pth = pth.name
+        # if hasattr(pth, 'name'):
+        #     pth = pth.name
+        pth = os.fspath(pth)
         try:
             os.makedirs(os.path.abspath(
                         os.path.join(self.name, pth)),
@@ -720,8 +719,7 @@ class Directory(DirectoryAncestor):
         import zipfile
         if not zpth:
             raise FilesystemError("Need to specify a zip-archive file path")
-        if hasattr(zpth, 'name'):
-            zpth = zpth.name
+        zpth = os.fspath(zpth)
         if not zpth.lower().endswith(self.zip_suffix):
             zpth += self.zip_suffix
         if os.path.exists(zpth):
@@ -758,6 +756,9 @@ class Directory(DirectoryAncestor):
     
     def __bytes__(self):
         return u8bytes(str(self))
+    
+    def __fspath__(self):
+        return str(self)
     
     def __unicode__(self):
         return six.u(str(self))
@@ -812,8 +813,8 @@ class TemporaryDirectory(Directory):
                 suffix = "%s%s" % (os.extsep, suffix)
         if not parent:
             parent = kwargs.pop('dir', None)
-        if hasattr(parent, 'name'):
-            parent = parent.name
+        if parent:
+            parent = os.fspath(parent)
         self._name = mkdtemp(prefix=prefix, suffix=suffix, dir=parent)
         self._destroy = True
         self._parent = parent
@@ -934,8 +935,11 @@ def test():
         assert not tfn.parent
         assert tfn.prefix in tfn.name
         assert tfn.suffix in tfn.name
+        assert tfn.prefix in os.fspath(tfn)
+        assert tfn.suffix in os.fspath(tfn)
         assert tfn.destroy
         assert not tfn.exists
+        assert not os.path.isfile(os.fspath(tfn))
         print("* TemporaryName file object tests completed OK")
         print("")
     
@@ -943,9 +947,13 @@ def test():
         print("* Testing working-directory object: %s" % cwd.name)
         assert os.path.samefile(os.getcwd(),            cwd.new)
         assert os.path.samefile(os.getcwd(),            cwd.old)
+        assert os.path.samefile(os.getcwd(),            os.fspath(cwd))
         assert os.path.samefile(cwd.new,                cwd.old)
         assert os.path.samefile(cwd.new,                initial)
         assert os.path.samefile(cwd.old,                initial)
+        assert os.path.samefile(cwd.new,                os.fspath(cwd))
+        assert os.path.samefile(cwd.old,                os.fspath(cwd))
+        assert os.path.samefile(os.fspath(cwd),         initial)
         assert not cwd.subdirectory('yodogg').exists
         # assert cwd.subdirectory('yodogg').makedirs().exists
         assert not cwd.will_change
@@ -953,6 +961,7 @@ def test():
         assert not cwd.will_change_back
         assert not cwd.did_change_back
         assert type(cwd.directory(cwd.new)) == Directory
+        assert os.path.isdir(os.fspath(cwd))
         # print(", ".join(list(cwd.ls())))
         print("* Working-directory object tests completed OK")
         print("")
@@ -962,8 +971,11 @@ def test():
         assert os.path.samefile(os.getcwd(),            gettempdir())
         assert os.path.samefile(os.getcwd(),            tmp.new)
         assert os.path.samefile(gettempdir(),           tmp.new)
+        assert os.path.samefile(os.getcwd(),            os.fspath(tmp))
+        assert os.path.samefile(gettempdir(),           os.fspath(tmp))
         assert not os.path.samefile(os.getcwd(),        initial)
         assert not os.path.samefile(tmp.new,            initial)
+        assert not os.path.samefile(os.fspath(tmp),     initial)
         assert os.path.samefile(tmp.old,                initial)
         # assert not tmp.subdirectory('yodogg').exists
         # assert tmp.subdirectory('yodogg').makedirs().exists
@@ -972,6 +984,7 @@ def test():
         assert tmp.will_change_back
         assert not tmp.did_change_back
         assert type(tmp.directory(tmp.new)) == Directory
+        assert os.path.isdir(os.fspath(tmp))
         print("* Directory-change object tests completed OK")
         print("")
     
@@ -981,8 +994,10 @@ def test():
         # print(os.path.commonpath((os.getcwd(), gettempdir())))
         assert gettempdir() in ttd.name
         assert gettempdir() in ttd.new
+        assert gettempdir() in os.fspath(ttd)
         assert initial not in ttd.name
         assert initial not in ttd.new
+        assert initial not in os.fspath(ttd)
         assert initial in ttd.old
         assert not ttd.subdirectory('yodogg').exists
         assert ttd.subdirectory('yodogg').makedirs().exists
@@ -997,7 +1012,9 @@ def test():
         assert not ttd.did_change_back
         assert type(ttd.directory(ttd.new)) == Directory
         p = ttd.parent()
-        assert os.path.samefile(str(p), gettempdir())
+        assert os.path.samefile(os.fspath(p), gettempdir())
+        assert os.path.isdir(os.fspath(ttd))
+        assert os.path.isdir(os.fspath(p))
         print("* TemporaryDirectory object tests completed OK")
         print("")
 

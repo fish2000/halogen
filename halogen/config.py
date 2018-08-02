@@ -96,6 +96,23 @@ class ConfigSubBase(SubBaseAncestor):
     @abstractmethod
     def subdirectory(self, subdir, whence=None): pass
     
+    # These four methods prepare command strings,
+    # using the result(s) from calling one or more
+    # of the get_* methods (q.v. prototypes sub.)
+    # to compose their arguments:
+    
+    @abstractmethod
+    def cc_flag_string(self): pass
+    
+    @abstractmethod
+    def cxx_flag_string(self): pass
+    
+    @abstractmethod
+    def ld_flag_string(self): pass
+    
+    @abstractmethod
+    def ar_flag_string(self): pass
+    
     # Stringification and representation methods:
     
     @abstractmethod
@@ -128,23 +145,6 @@ class ConfigSubBase(SubBaseAncestor):
     
     @abstractmethod
     def get_ldflags(self): pass
-    
-    # These four methods prepare command strings,
-    # using the result(s) from calling one or more
-    # of the above get_* methods to compose their
-    # arguments:
-    
-    @abstractmethod
-    def cc_flag_string(self): pass
-    
-    @abstractmethod
-    def cxx_flag_string(self): pass
-    
-    @abstractmethod
-    def ld_flag_string(self): pass
-    
-    @abstractmethod
-    def ar_flag_string(self): pass
 
 
 class ConfigBaseMeta(ABCMeta):
@@ -494,7 +494,7 @@ class PythonConfig(ConfigBase):
     def __init__(self, prefix=None):
         """ Initialize PythonConfig, optionally specifying a system prefix """
         if not prefix:
-            prefix = str(sys.prefix)
+            prefix = Directory(sys.prefix)
         self.prefix = prefix
     
     def bin(self):
@@ -610,18 +610,25 @@ class BrewedPythonConfig(PythonConfig):
 
 class SysConfig(PythonConfig):
     
-    fields = ConfigBase.FieldList('Frameworks',
-                                  'Headers',
-                                  'Resources', dir_fields=True)
+    fields = ConfigBase.FieldList('Frameworks', 'Headers',
+                                                'Resources',
+                                                'with_openssl', dir_fields=True)
     
-    """ A config class that provides its values using the Python `sysconfig` module
-        (with fallback calls to PythonConfig, and environment variable overrides).
+    """ A config class that provides its values using the Python `sysconfig` module,
+        with fallback calls to PythonConfig, and environment variable overrides
+        for all `sysconfig` variables in use; the option to include the `sysconfig`
+        OpenSSL compile and link flags is available via the “with_openssl” boolean
+        parameter to the constructor.
     """
     
-    def __init__(self):
-        """ Initialize SysConfig, optionally specifying a system path """
-        prefix = sysconfig.get_path("data")
-        super(SysConfig, self).__init__(prefix=prefix)
+    def __init__(self, with_openssl=False):
+        """ Initialize SysConfig, passing the `data` path as the prefix up the chain
+            of inheritance. Specify the optional “with_openssl” parameter as True
+            to obtain a SysConfig instance that will include the OpenSSL compile and
+            link flags in its output.
+        """
+        self.with_openssl = with_openssl
+        super(SysConfig, self).__init__(prefix=sysconfig.get_path("data"))
     
     def bin(self):
         return sysconfig.get_path("scripts")
@@ -652,11 +659,13 @@ class SysConfig(PythonConfig):
                             'Resources')
     
     def get_includes(self):
-        if sysconfig.get_path("include") == \
+        out = "-I%s" % sysconfig.get_path("include")
+        if sysconfig.get_path("include") != \
            sysconfig.get_path("platinclude"):
-            return "-I%s" % sysconfig.get_path("include")
-        return "-I%s -I%s" % (sysconfig.get_path("include"),
-                              sysconfig.get_path("platinclude"))
+            out += " -I%s" % sysconfig.get_path("platinclude")
+        if self.with_openssl:
+            out += " " + environ_override('OPENSSL_INCLUDES')
+        return out.strip()
     
     def get_libs(self):
         out = "-l%s %s %s" % (self.library_name,
@@ -664,6 +673,8 @@ class SysConfig(PythonConfig):
                               environ_override('SYSLIBS'))
         if not environ_override('PYTHONFRAMEWORK'):
             out += " " + environ_override('LINKFORSHARED')
+        if self.with_openssl:
+            out += " " + environ_override('OPENSSL_LIBS')
         return out.strip()
     
     def get_cflags(self):
@@ -673,6 +684,8 @@ class SysConfig(PythonConfig):
         if sysconfig.get_path("include") != \
            sysconfig.get_path("platinclude"):
             out = "-I%s %s" % (sysconfig.get_path("platinclude"), out)
+        if self.with_openssl:
+            out += " " + environ_override('OPENSSL_INCLUDES')
         return out.strip()
     
     def get_ldflags(self):
@@ -683,12 +696,16 @@ class SysConfig(PythonConfig):
         for pth in libpths:
             if os.path.exists(pth):
                 ldstring += "%sL%s" % (TOKEN, pth)
+        if self.with_openssl:
+            ldstring += " " + environ_override('OPENSSL_LDFLAGS')
         out = "%s -l%s %s %s" % (ldstring.lstrip(),
                                  self.library_name,
                                  environ_override('LIBS'),
                                  environ_override('SYSLIBS'))
         if not environ_override('PYTHONFRAMEWORK'):
             out += " " + environ_override('LINKFORSHARED')
+        if self.with_openssl:
+            out += " " + environ_override('OPENSSL_LIBS')
         return out.strip()
 
 
@@ -816,6 +833,7 @@ class NumpyConfig(ConfigBase):
     
     def __init__(self):
         """ Prefix is likely /…/numpy/core """
+        from shlex import quote
         self.info = defaultdict(set)
         self.macros = Macros()
         self.prefix = self.get_numpy_include_directory().parent()
@@ -824,11 +842,11 @@ class NumpyConfig(ConfigBase):
             infodict = numpy.distutils.misc_util.get_info(package)
             for k, v in infodict.items():
                 self.info[k] |= set(v)
-        self.info['include_dirs'] |= { self.get_numpy_include_directory().name }
+        self.info['include_dirs'] |= { os.fspath(self.get_numpy_include_directory()) }
         for macro_tuple in self.info['define_macros']:
             self.macros.define(*macro_tuple)
         self.macros.define('NUMPY')
-        self.macros.define('NUMPY_VERSION',            f'\\"{numpy.version.version}\\"')
+        self.macros.define('NUMPY_VERSION',            f'\\"{quote(numpy.version.version)}\\"')
         self.macros.define('NPY_NO_DEPRECATED_API',     'NPY_1_7_API_VERSION')
         self.macros.define('PY_ARRAY_UNIQUE_SYMBOL',    'YO_DOGG_I_HEARD_YOU_LIKE_UNIQUE_SYMBOLS')
     
@@ -1386,7 +1404,7 @@ def test():
     pkgConfig = PkgConfig()
     numpyConfig = NumpyConfig()
     
-    configUnionOne = ConfigUnion(sysConfig)
+    configUnionOne = ConfigUnion(SysConfig(with_openssl=True))
     configUnion = ConfigUnion(brewedHalideConfig, sysConfig)
     configUnionAll = ConfigUnion(brewedHalideConfig, sysConfig,
                                  brewedPythonConfig, pythonConfig,

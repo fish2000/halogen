@@ -64,6 +64,7 @@ def preload(library_path, **kwargs):
 def generate(*generators, **arguments):
     """ Invoke halogen.api.Module.compile(…) with the proper arguments. This function
         was concieved with replacing GenGen.cpp’s options in mind. """
+    import os
     import api
     from config import DEFAULT_VERBOSITY
     from errors import GenerationError
@@ -145,7 +146,8 @@ def generate(*generators, **arguments):
     for generator in generators:
         
         # “base_path” (a bytestring) is computed using the `compute_base_path()` API function:
-        base_path = api.compute_base_path(u8bytes(output_directory.name),
+        base_path = api.compute_base_path(u8bytes(
+                                        os.fspath(output_directory)),
                                           u8bytes(generator))
         
         # “output” (an instance of halogen.api.Outputs) is computed using the eponymously named
@@ -187,13 +189,13 @@ def test():
     sys.path.append(os.path.dirname(__file__))
     
     # sys.path addenda necessary to load halogen.api:
-    import halogen.api
+    import api
     import tempfile
     from config import DEFAULT_VERBOSITY
     
-    assert str(halogen.api.Target()) != 'host'
+    assert str(api.Target()) != 'host'
     
-    print(halogen.api.registered_generators())
+    print(api.registered_generators())
     
     generate('my_first_generator',
         verbose=DEFAULT_VERBOSITY,

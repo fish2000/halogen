@@ -65,7 +65,7 @@ class Generator(object):
         if not source:
             raise CompilerError("A C++ generator source file is required")
         self.VERBOSE = bool(kwargs.pop('verbose', DEFAULT_VERBOSITY))
-        self.intermediate = str(kwargs.pop('intermediate', None))
+        self.intermediate = os.fspath(kwargs.pop('intermediate', None))
         self.conf = conf
         self.destination = destination
         self.source = os.path.realpath(source)
@@ -327,9 +327,9 @@ class Generators(object):
         for source in self.sources:
             with TemporaryName(suffix=self.object_suffix) as tn:
                 with Generator(self.conf,
-                               source=source, destination=tn.name,
-                               intermediate=getattr(self.intermediate, "name",
-                                                str(self.intermediate)),
+                               source=source,
+                               destination=os.fspath(tn),
+                               intermediate=os.fspath(self.intermediate),
                                verbose=self.VERBOSE) as gen:
                     if gen.compiled:
                         self.prelink.append(tn.do_not_destroy())
