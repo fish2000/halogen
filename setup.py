@@ -43,21 +43,21 @@ classifiers = [
     'Programming Language :: C++',
     'License :: OSI Approved :: MIT License']
 
-api_extension_sources = [os.path.join('hal', 'api.pyx')]
+api_extension_sources = [os.path.join('halogen', 'api.pyx')]
 haldol_source_names = ('detail.cc', 'gil.cc', 'structcode.cc', 'terminal.cc', 'typecode.cc')
 haldol_sources = [os.path.join('haldol', source) for source in haldol_source_names]
 
-hal_base_path = os.path.abspath(os.path.dirname(
-                                os.path.join('hal', 'ext')))
+halogen_base_path = os.path.abspath(os.path.dirname(
+                                    os.path.join('halogen', 'ext')))
 
 include_dirs = [
     get_python_inc(plat_specific=1),
     numpy.get_include(),
-    hal_base_path,
-    # os.path.join(hal_base_path, 'ext'),
-    # os.path.join(hal_base_path, 'ext', 'haldol'),
-    # os.path.join(hal_base_path, 'ext', 'halide'),
-    # os.path.join(hal_base_path, 'ext', 'libcpp'),
+    halogen_base_path,
+    os.path.join(halogen_base_path, 'ext'),
+    # os.path.join(halogen_base_path, 'ext', 'haldol'),
+    # os.path.join(halogen_base_path, 'ext', 'halide'),
+    # os.path.join(halogen_base_path, 'ext', 'libcpp'),
     os.path.abspath(os.path.join('haldol', 'include')),
     os.path.curdir]
 
@@ -82,14 +82,14 @@ setup(name='halide-halogen',
     url='http://github.com/fish2000/halogen',
     packages=find_packages(),
     package_dir={
-        'hal'       : 'hal',
+        # 'hal'       : 'hal',
         'haldol'    : 'haldol',
         'halogen'   : 'halogen'
     },
     package_data=dict(),
     test_suite='nose.collector',
     ext_modules=cythonize([
-        Extension('hal.api',
+        Extension('halogen.api',
             api_extension_sources + haldol_sources,
             language="c++",
             include_dirs=include_dirs,

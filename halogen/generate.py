@@ -62,9 +62,9 @@ def preload(library_path, **kwargs):
     return preload.loaded_libraries[realpth]
 
 def generate(*generators, **arguments):
-    """ Invoke hal.api.Module.compile(…) with the proper arguments. This function
+    """ Invoke halogen.api.Module.compile(…) with the proper arguments. This function
         was concieved with replacing GenGen.cpp’s options in mind. """
-    import hal.api
+    import api
     from config import DEFAULT_VERBOSITY
     from errors import GenerationError
     from filesystem import Directory
@@ -75,7 +75,7 @@ def generate(*generators, **arguments):
     generators = set(u8str(generator) for generator in generators)
     verbose = bool(arguments.pop('verbose', DEFAULT_VERBOSITY))
     target_string = u8bytes(arguments.pop('target', 'host'))
-    generator_names = set(arguments.pop('generator_names', hal.api.registered_generators()))
+    generator_names = set(arguments.pop('generator_names', api.registered_generators()))
     output_directory = Directory(arguments.pop('output_directory', None))
     emits = set(arguments.pop('emit', default_emits))
     substitutions = dict(arguments.pop('substitutions', {}))
@@ -84,7 +84,7 @@ def generate(*generators, **arguments):
     
     if not target_string:
         target_string = b"host"
-    elif not hal.api.validate_target_string(target_string):
+    elif not api.validate_target_string(target_string):
         raise GenerationError("generation target string %s is invalid" % u8str(target_string))
     
     if len(generators) < 1:
@@ -120,7 +120,7 @@ def generate(*generators, **arguments):
     emit_dict['substitutions'] = substitutions
     
     # Actually create the EmitOptions object from “emit_dict”:
-    emit_options = hal.api.EmitOptions(**emit_dict)
+    emit_options = api.EmitOptions(**emit_dict)
     
     if verbose:
         print("generate(): Emit Options:")
@@ -128,7 +128,7 @@ def generate(*generators, **arguments):
         print("")
     
     # The “target_string” variable defaults to “host” (q.v. argument processing supra.):
-    target = hal.api.Target(target_string=target_string)
+    target = api.Target(target_string=target_string)
     
     if verbose:
         print("generate(): Target:")
@@ -145,11 +145,11 @@ def generate(*generators, **arguments):
     for generator in generators:
         
         # “base_path” (a bytestring) is computed using the `compute_base_path()` API function:
-        base_path = hal.api.compute_base_path(u8bytes(output_directory.name),
-                                              u8bytes(generator))
+        base_path = api.compute_base_path(u8bytes(output_directory.name),
+                                          u8bytes(generator))
         
-        # “output” (an hal.api.Outputs instance) is computed using the eponymously named
-        # API function `compute_outputs_for_target_and_path()` with a hal.api.Target instance
+        # “output” (an instance of halogen.api.Outputs) is computed using the eponymously named
+        # API function `compute_outputs_for_target_and_path()` with a halogen.api.Target instance
         # and a base path (q.v. note supra.):
         output = emit_options.compute_outputs_for_target_and_path(target, base_path)
         
@@ -159,8 +159,8 @@ def generate(*generators, **arguments):
             print("TARGET: %s" % u8str(target))
         
         # This API call prepares the generator code module:
-        module = hal.api.get_generator_module(generator,
-                                              arguments={ 'target': str(target) })
+        module = api.get_generator_module(generator,
+                                          arguments={ 'target': str(target) })
         
         if verbose:
             print("MODULE: %s (%s)" % (u8str(module.name),
@@ -171,7 +171,7 @@ def generate(*generators, **arguments):
         module.compile(output)
         
         # Stow the post-compile base path (a string), outputs (an instance of
-        # hal.api.Outputs) and the module instance itself:
+        # halogen.api.Outputs) and the module instance itself:
         artifacts.append((u8str(base_path), output, module))
     
     # Return the post-compile value artifacts for all generators:
@@ -186,14 +186,14 @@ def test():
     sys.path.append(os.path.dirname(os.path.dirname(__file__)))
     sys.path.append(os.path.dirname(__file__))
     
-    # sys.path addenda necessary to load hal.api:
-    import hal.api
+    # sys.path addenda necessary to load halogen.api:
+    import halogen.api
     import tempfile
     from config import DEFAULT_VERBOSITY
     
-    assert str(hal.api.Target()) != 'host'
+    assert str(halogen.api.Target()) != 'host'
     
-    print(hal.api.registered_generators())
+    print(halogen.api.registered_generators())
     
     generate('my_first_generator',
         verbose=DEFAULT_VERBOSITY,

@@ -25,11 +25,11 @@ DEFAULT_MAXIMUM_GENERATOR_COUNT = 1024
 CONF = config.ConfigUnion(config.SysConfig(),
                           config.BrewedHalideConfig())
 
-# What we need to load hal.api:
+# What we need to load halogen.api:
 
 sys.path.append(os.path.dirname(
                 os.path.dirname(__file__)))
-# sys.path.append(os.path.dirname(__file__))
+sys.path.append(os.path.dirname(__file__))
 
 # A few bespoke errors ... because yes on the occasions I do indulge myself,
 # my version of a real TREAT-YO-SELF bender is: exception subclasses. It is true.
@@ -430,6 +430,10 @@ class Generators(object):
         if self.preloaded:
             return self.preload_result
         if self.compiled and self.linked:
+            if self.VERBOSE:
+                # print("")
+                print("Preloading generators from %s" % self.library)
+                # print("")
             try:
                 self.preload_result = preload(self.library, verbose=self.VERBOSE)
             except GeneratorLoaderError as preload_error:
@@ -443,7 +447,7 @@ class Generators(object):
         """ Return a tuple containing the names of all successfully loaded and currently available
             generator modules.
             
-            This `loaded_generators()` method calls `hal.api.registered_generators()`, which
+            This `loaded_generators()` method calls `halogen.api.registered_generators()`, which
             uses Cython’s C++ bridge to call `Halide::GeneratorRegistry::enumerate()` and convert
             the returned `std::vector<std::string>` into a Python set of Python strings. That is,
             if the instance of `halogen.compile.Generators` has previously successfully ran its
@@ -451,8 +455,8 @@ class Generators(object):
             just toss back an empty set without making any calls into Halide whatsoever.
         """
         if self.preloaded:
-            import hal.api
-            return hal.api.registered_generators()
+            import api
+            return api.registered_generators()
         return set()
     
     @property
@@ -562,6 +566,12 @@ def test():
     from contextlib import ExitStack
     from pprint import pprint
     
+    sys.path.append(os.path.dirname(
+                    os.path.dirname(__file__)))
+    sys.path.append(os.path.dirname(__file__))
+    
+    import api
+    
     directory = Directory(pth="/Users/fish/Dropbox/halogen/tests/generators")
     destination = Directory(pth=os.path.join(tempfile.gettempdir(), "yodogg"))
     zip_destination = os.path.realpath("/tmp")
@@ -622,14 +632,14 @@ def test():
                 print("")
                 
                 print("LIBRARY: %s" % gens.library)
-                # if os.path.isfile(gens.library):
-                if gens.linked:
+                if gens.linked and os.path.exists(gens.library):
                     print("LIBRARY FILE EXISTS")
                 
                 print("ARCHIVE: %s" % gens.archive)
-                # if os.path.isfile(gens.archive):
-                if gens.archived:
+                if gens.archived and os.path.exists(gens.archive):
                     print("ARCHIVE FILE EXISTS")
+                
+                print("REGISTERED GENERATORS: %s" % api.registered_generators())
                 
                 # td.do_not_destroy()
                 # loaded_generators = gens.loaded_generators()
@@ -690,7 +700,8 @@ def test():
                 else:
                     print("X> Destination directory DOES NOT EXIST")
                     print("X> %s" % destination)
-                
+            
+            stack.pop()
     
     # ... scope exit for Generators `gens` and TemporaryDirectory `td`
 

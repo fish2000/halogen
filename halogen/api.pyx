@@ -15,9 +15,6 @@ from cpython.long cimport PyLong_AsLong
 from cpython.mapping cimport PyMapping_Check
 from cpython.object cimport PyObject_IsTrue
 
-# from ext.haldol.convert cimport convert as haldol_convert
-# from ext.halide cimport *
-
 # from ext.halide.function cimport ExternFuncArgument as HalExternFuncArgument
 # from ext.halide.function cimport NameMangling as HalNameMangling
 from ext.halide.function cimport Function as HalFunction
@@ -1065,7 +1062,7 @@ def compute_base_path(object output_dir,
                                     file_base_name_string)
 
 cpdef Module get_generator_module(object name, object arguments={}):
-    """ Retrieve a Halide::Module, wrapped as hal.api.Module,
+    """ Retrieve a Halide::Module, wrapped as halogen.api.Module,
         corresponding to the registered generator instance (by name). """
     # first, check name against registered generators:
     if u8str(name) not in registered_generators():
@@ -1085,12 +1082,12 @@ cpdef Module get_generator_module(object name, object arguments={}):
     cdef base_ptr_t generator_instance
     cdef target_ptr_t generator_target_ptr
     
-    # Create a new named hal.api.Module object to return, per the “name” argument:
+    # Create a new named halogen.api.Module object to return, per the “name” argument:
     out = Module(name=name)
     
     # Convert the Python string value of “name” to a std::string and assign to “generator_name”,
     # and do the same with the potential value arguments['target'] -- defaulting to the string
-    # value of hal.api.Target.target_from_environment():
+    # value of halogen.api.Target.target_from_environment():
     generator_name = <string>u8bytes(name)
     generator_target = <string>u8bytes(arguments.pop('target',
                                                Target.target_from_environment().to_string()))
@@ -1136,7 +1133,7 @@ def link_modules(module_name, *modules):
     # check the type of all positional arguments:
     for module in modules:
         if type(module) != Module:
-            raise TypeError("""All positional args must be hal.api.Module""")
+            raise TypeError("""All positional args must be halogen.api.Module""")
         f_insert_into(module, modulevec)
     
     with nogil:
@@ -1179,7 +1176,7 @@ def compile_standalone_runtime(Target target=Target.target_from_environment(),
             out = halide_compile_standalone_runtime_with_outputs(<HalOutputs>outputs.__this__,
                                                                  <HalTarget>target.__this__)
         
-        # return a new hal.api.Outputs matching the returned value above:
+        # return a new halogen.api.Outputs matching the returned value above:
         return Outputs(
             object_name=out.object_name,
             assembly_name=out.assembly_name,
@@ -1210,7 +1207,7 @@ def make_standalone_runtime(Target target=Target.target_from_environment(),
     from os.path import realpath
     realpth = realpath(u8str(pth))
     
-    # Compute the outputs using hal.api.EmitOptions -- the EmitOptions defaults
+    # Compute the outputs using halogen.api.EmitOptions -- the EmitOptions defaults
     # will render object files, headers, and archives (.o, .h, .a) --
     # plus, additional emit options can be specified as keyword arguments --
     # HOWEVER, Halide::compile_standalone_runtime() in Module.cpp recreates
@@ -1223,7 +1220,7 @@ def make_standalone_runtime(Target target=Target.target_from_environment(),
         out = halide_compile_standalone_runtime_with_outputs(<HalOutputs>outputs.__this__,
                                                              <HalTarget>target.__this__)
     
-    # return a new hal.api.Outputs matching the returned value above:
+    # return a new halogen.api.Outputs matching the returned value above:
     return Outputs(
         object_name=out.object_name,
         assembly_name=out.assembly_name,
