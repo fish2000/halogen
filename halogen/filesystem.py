@@ -277,6 +277,7 @@ class TypeLocker(abc.ABCMeta):
         itself utilized within at least one Directory method – sans issue.
     """
     
+    # The metaclass-internal dictionary of generated classes:
     types = {}
     
     @classmethod
@@ -289,6 +290,7 @@ class TypeLocker(abc.ABCMeta):
             class method, lazily returning an instance of the
             halogen.filesystem.Directory(…) class, per arguments:
         """
+        # Always replace the “directory” method anew:
         attributes['directory'] = classmethod(
                                       lambda cls, pth=None: \
                                       metacls.types['Directory'](pth=pth))
@@ -433,7 +435,7 @@ class TemporaryName(TemporaryNameAncestor):
         return u8bytes(str(self))
     
     def __fspath__(self):
-        return str(self)
+        return str(self.name)
     
     def __unicode__(self):
         return six.u(str(self))
@@ -785,7 +787,7 @@ class Directory(DirectoryAncestor):
         return u8bytes(str(self))
     
     def __fspath__(self):
-        return str(self)
+        return str(self.name)
     
     def __unicode__(self):
         return six.u(str(self))
