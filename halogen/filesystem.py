@@ -2,6 +2,7 @@
 
 from __future__ import print_function
 
+import collections
 import os
 import re
 import sys
@@ -12,6 +13,7 @@ try:
 except ImportError:
     from os import scandir, walk
 
+from functools import wraps
 from tempfile import mktemp, mkdtemp, gettempprefix, gettempdir
 from errors import ExecutionError, FilesystemError
 from utils import memoize, u8bytes, u8str, stringify, suffix_searcher
@@ -134,17 +136,17 @@ def back_tick(command,  as_str=True,
     # Step 4: Tidy the output and return it:
     if verbose:
         if returncode != 0:
-            print("")
+            print("",                           file=sys.stderr)
             print("NONZERO RETURN STATUS: {}".format(returncode),
                                                 file=sys.stderr)
             print("",                           file=sys.stderr)
-        if len(u8str(output).strip()) > 0:
+        if len(u8str(output.strip())) > 0:
             print("")
             print("OUTPUT:",                            file=sys.stdout)
             print("`{}`".format(u8str(output).strip()), file=sys.stdout)
             print("",                                   file=sys.stdout)
         if len(u8str(errors.strip())) > 0:
-            print("")
+            print("",                                   file=sys.stderr)
             print("ERRORS:",                            file=sys.stderr)
             print("`{}`".format(u8str(errors).strip()), file=sys.stderr)
             print("",                                   file=sys.stderr)
@@ -243,7 +245,33 @@ def TemporaryNamedFile(pth, mode='wb', buffer_size=-1, delete=True):
         raise FilesystemError(str(base_exception))
 
 
-class TemporaryName(object):
+class TypeLocker(type):
+    
+    types = {}
+    
+    @classmethod
+    def __prepare__(metacls, name, bases, **kwargs):
+        """ Maintain declaration order in class members: """
+        return collections.OrderedDict()
+    
+    def __new__(metacls, name, bases, attributes, **kwargs):
+        """ All classes are initialized with a “directory(…)”
+            class method, lazily returning an instance of the
+            halogen.filesystem.Directory(…) class, per arguments:
+        """
+        attributes['directory'] = classmethod(
+                                      lambda cls, pth=None: \
+                                      metacls.types['Directory'](pth=pth))
+        cls = super(TypeLocker, metacls).__new__(metacls, name,
+                                                          bases,
+                                                          dict(attributes),
+                                                        **kwargs)
+        metacls.types[name] = cls
+        return cls
+
+
+TemporaryNameAncestor = six.with_metaclass(TypeLocker, object)
+class TemporaryName(TemporaryNameAncestor):
     
     """ This is like NamedTemporaryFile without any of the actual stuff;
         it just makes a file name -- YOU have to make shit happen with it.
@@ -290,7 +318,7 @@ class TemporaryName(object):
     @property
     def dirname(self):
         """ The dirname (aka the enclosing directory) of the temporary file. """
-        return os.path.dirname(self.name)
+        return self.directory(pth=os.path.dirname(self.name))
     
     @property
     def exists(self):
@@ -379,7 +407,8 @@ class TemporaryName(object):
 non_dotfile_match = re.compile(r"^[^\.]").match
 non_dotfile_matcher = lambda p: non_dotfile_match(p.name)
 
-class Directory(object):
+DirectoryAncestor = six.with_metaclass(TypeLocker, object)
+class Directory(DirectoryAncestor):
     
     """ A context-managed directory: change in on enter, change back out
         on exit. Plus a few convenience functions for listing and whatnot. """
@@ -425,7 +454,8 @@ class Directory(object):
     @property
     def name(self):
         """ The instances’ target directory path. """
-        return self.prepared and self.new or self.target
+        return getattr(self, 'new', None) or \
+               getattr(self, 'target')
     
     @property
     def basename(self):
@@ -450,11 +480,6 @@ class Directory(object):
             (q.v. `ctx_initialize()` help sub.) and is in a valid state.
         """
         return hasattr(self, 'new')
-    
-    @classmethod
-    def directory_class(cls, pth=None):
-        """ Factory method for instances of this class: """
-        return cls(pth=pth)
     
     def split(self):
         """ Return (dirname, basename) e.g. for /yo/dogg/i/heard/youlike,
@@ -628,7 +653,7 @@ class Directory(object):
             raise FilesystemError("symlink exists at subdirectory path: %s" % pth)
         if os.path.ismount(pth):
             raise FilesystemError("mountpoint exists at subdirectory path: %s" % pth)
-        return self.directory_class(pth)
+        return self.directory(pth)
     
     def makedirs(self, pth=os.curdir):
         """ Creates any parts of the target directory path that don’t already exist,
@@ -655,9 +680,9 @@ class Directory(object):
             which, if you are still curious, gets you the parent directory of the
             instances’ target directory, wrapped in a Directory instance.
         """
-        return self.directory_class(os.path.abspath(
-                                    os.path.join(self.name,
-                                                 os.pardir)))
+        return self.directory(os.path.abspath(
+                              os.path.join(self.name,
+                                           os.pardir)))
     
     def copy_all(self, destination):
         """ Copy the entire temporary directory tree, all contents included, to a new
@@ -675,7 +700,7 @@ class Directory(object):
             what to copy where.
         """
         import shutil
-        whereto = self.directory_class(pth=destination)
+        whereto = self.directory(pth=destination)
         if whereto.exists or os.path.isfile(whereto.name) \
                           or os.path.islink(whereto.name):
             raise FilesystemError("Directory.copy_all() destination exists: %s" % whereto.name)
@@ -744,11 +769,6 @@ class cd(Directory):
         """ Change to a new directory (a new path specification `pth` is required).
         """
         super(cd, self).__init__(pth=os.path.realpath(pth))
-    
-    @classmethod
-    def directory_class(cls, pth=None):
-        """ Redirect call to ancestor class """
-        return Directory(pth=pth)
 
 
 class wd(Directory):
@@ -757,11 +777,6 @@ class wd(Directory):
         """ Initialize a Directory instance for the current working directory.
         """
         super(wd, self).__init__(pth=None)
-    
-    @classmethod
-    def directory_class(cls, pth=None):
-        """ Redirect call to ancestor class """
-        return Directory(pth=pth)
 
 
 class TemporaryDirectory(Directory):
@@ -804,9 +819,8 @@ class TemporaryDirectory(Directory):
         self._parent = parent
         self.prefix = prefix
         self.suffix = suffix
+        self.change = change
         super(TemporaryDirectory, self).__init__(self._name)
-        self.will_change = bool(getattr(self, 'will_change', True) and change)
-        self.will_change_back = bool(getattr(self, 'will_change', True) and change)
     
     @property
     def name(self):
@@ -823,10 +837,11 @@ class TemporaryDirectory(Directory):
         """ Whether or not the temporary directory has been marked for manual deletion. """
         return self._destroy
     
-    @classmethod
-    def directory_class(cls, pth=None):
-        """ Redirect call to ancestor class """
-        return Directory(pth=pth)
+    @wraps(Directory.ctx_prepare)
+    def ctx_prepare(self):
+        super(TemporaryDirectory, self).ctx_prepare()
+        self.will_change = bool(self.will_change and self.change)
+        self.will_change_back = bool(self.will_change and self.change)
     
     def destroy_all(self):
         """ Delete the directory pointed to by the TemporaryDirectory instance, and
@@ -937,7 +952,7 @@ def test():
         assert not cwd.did_change
         assert not cwd.will_change_back
         assert not cwd.did_change_back
-        assert type(cwd.directory_class(cwd.new)) == Directory
+        assert type(cwd.directory(cwd.new)) == Directory
         # print(", ".join(list(cwd.ls())))
         print("* Working-directory object tests completed OK")
         print("")
@@ -956,7 +971,7 @@ def test():
         assert tmp.did_change
         assert tmp.will_change_back
         assert not tmp.did_change_back
-        assert type(tmp.directory_class(tmp.new)) == Directory
+        assert type(tmp.directory(tmp.new)) == Directory
         print("* Directory-change object tests completed OK")
         print("")
     
@@ -980,7 +995,7 @@ def test():
         assert ttd.did_change
         assert ttd.will_change_back
         assert not ttd.did_change_back
-        assert type(ttd.directory_class(ttd.new)) == Directory
+        assert type(ttd.directory(ttd.new)) == Directory
         p = ttd.parent()
         assert os.path.samefile(str(p), gettempdir())
         print("* TemporaryDirectory object tests completed OK")

@@ -128,6 +128,23 @@ class ConfigSubBase(SubBaseAncestor):
     
     @abstractmethod
     def get_ldflags(self): pass
+    
+    # These four methods prepare command strings,
+    # using the result(s) from calling one or more
+    # of the above get_* methods to compose their
+    # arguments:
+    
+    @abstractmethod
+    def cc_flag_string(self): pass
+    
+    @abstractmethod
+    def cxx_flag_string(self): pass
+    
+    @abstractmethod
+    def ld_flag_string(self): pass
+    
+    @abstractmethod
+    def ar_flag_string(self): pass
 
 
 class ConfigBaseMeta(ABCMeta):
@@ -154,6 +171,9 @@ class ConfigBaseMeta(ABCMeta):
         ConfigSubBase.register(cls)
         return cls
 
+def environ_override(name):
+    return os.environ.get(name,
+            sysconfig.get_config_var(name) or '')
 
 BaseAncestor = six.with_metaclass(ConfigBaseMeta, ConfigSubBase)
 class ConfigBase(BaseAncestor):
@@ -256,8 +276,29 @@ class ConfigBase(BaseAncestor):
         return type(self).__name__
     
     def subdirectory(self, subdir, whence=None):
-        """ Returns the path to a subdirectory within this Config instances’ prefix """
+        """ Return the path to a subdirectory within this Config instances’ prefix """
         return self.prefix.subpath(subdir, whence, requisite=True)
+    
+    def cc_flag_string(self):
+        """ Get the string template for the command executing the C compiler
+        """
+        return             f"{environ_override('CC')} {self.get_cflags()} -c %s -o %s"
+    
+    def cxx_flag_string(self):
+        """ Get the string template for the command executing the C++ compiler
+        """
+        return            f"{environ_override('CXX')} {self.get_cflags()} -c %s -o %s"
+    
+    def ld_flag_string(self):
+        """ Get the string template for the command executing the dynamic linker
+        """
+        return      f"{environ_override('LDCXXSHARED')} {self.get_ldflags()} %s -o %s"
+    
+    def ar_flag_string(self):
+        """ Get the string template for the command executing the archiver
+            (née the “static linker”)
+        """
+        return        f"{environ_override('AR')} {environ_override('ARFLAGS')}s %s %s"
     
     def to_string(self, field_list=None):
         """ Stringify the instance, using either a provided list of fields to evaluate,
@@ -566,9 +607,6 @@ class BrewedPythonConfig(PythonConfig):
         return super(BrewedPythonConfig, self).lib()
 
 
-def environ_override(name):
-    return os.environ.get(name, sysconfig.get_config_var(name) or '')
-
 class SysConfig(PythonConfig):
     
     fields = ConfigBase.FieldList('Frameworks',
@@ -775,7 +813,7 @@ class NumpyConfig(ConfigBase):
         for macro_tuple in self.info['define_macros']:
             self.macros.define(*macro_tuple)
         self.macros.define('NUMPY')
-        self.macros.define('NUMPY_VERSION',             '\\"%s\\"' % numpy.version.version)
+        self.macros.define('NUMPY_VERSION',            f'\\"{numpy.version.version}\\"')
         self.macros.define('NPY_NO_DEPRECATED_API',     'NPY_1_7_API_VERSION')
         self.macros.define('PY_ARRAY_UNIQUE_SYMBOL',    'YO_DOGG_I_HEARD_YOU_LIKE_UNIQUE_SYMBOLS')
     
@@ -1213,26 +1251,23 @@ class ConfigUnion(ConfigBase):
 def CC(conf, outfile, infile, verbose=DEFAULT_VERBOSITY):
     """ Execute the C compiler, as named in the `CC` environment variable,
         falling back to the compiler specified in Python `sysconfig`: """
-    return back_tick("%s %s -c %s -o %s" % (environ_override('CC'),
-                                            conf.get_cflags(),
-                                            infile, outfile), ret_err=True,
-                                                              verbose=verbose)
+    return back_tick(conf.cc_flag_string() % (infile, outfile),
+                     ret_err=True,
+                     verbose=verbose)
 
 def CXX(conf, outfile, infile, verbose=DEFAULT_VERBOSITY):
     """ Execute the C++ compiler, as named in the `CXX` environment variable,
         falling back to the compiler specified in Python `sysconfig`: """
-    return back_tick("%s %s -c %s -o %s" % (environ_override('CXX'),
-                                            conf.get_cflags(),
-                                            infile, outfile), ret_err=True,
-                                                              verbose=verbose)
+    return back_tick(conf.cxx_flag_string() % (infile, outfile),
+                     ret_err=True,
+                     verbose=verbose)
 
 def LD(conf, outfile, *infiles, **kwargs):
     """ Execute the dynamic linker, as named in the `LDCXXSHARED` environment variable,
         falling back to the linker specified in Python `sysconfig`: """
-    return back_tick("%s %s %s -o %s" % (environ_override('LDCXXSHARED'),
-                                         conf.get_ldflags(),
-                                         " ".join(infiles), outfile), ret_err=True,
-                                                                      verbose=kwargs.pop('verbose', DEFAULT_VERBOSITY))
+    return back_tick(conf.ld_flag_string() % (" ".join(infiles), outfile),
+                     ret_err=True,
+                     verbose=kwargs.pop('verbose', DEFAULT_VERBOSITY))
 
 def AR(conf, outfile, *infiles, **kwargs):
     """ Execute the library archiver, as named in the `AR` environment variable,
@@ -1242,10 +1277,9 @@ def AR(conf, outfile, *infiles, **kwargs):
     #   b) it has to manually amend 'ARFLAGS' it would seem
     #       b)[1] ... most configuration-getting pc-configgish flag tools
     #                 could not give less fucks about 'ARFLAGS', and so.
-    return back_tick("%s %s %s %s" % (environ_override('AR'),
-                                      "%ss" % environ_override('ARFLAGS'),
-                                      outfile, " ".join(infiles)), ret_err=True,
-                                                                   verbose=kwargs.pop('verbose', DEFAULT_VERBOSITY))
+    return back_tick(conf.ar_flag_string() % (outfile, " ".join(infiles)),
+                     ret_err=True,
+                     verbose=kwargs.pop('verbose', DEFAULT_VERBOSITY))
 
 test_generator_source = b"""
 #include "Halide.h"

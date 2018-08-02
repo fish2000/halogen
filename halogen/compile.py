@@ -600,6 +600,9 @@ def test():
                                 intermediate=td.subdirectory(".intermediate"),
                                 maximum=2, verbose=DEFAULT_VERBOSITY)
         
+        # Preserve compilation artifacts:
+        # td.do_not_destroy()
+        
         try:
             # Calls Generators.__enter__(self=gens):
             stack.enter_context(gens)
@@ -647,7 +650,6 @@ def test():
                 
                 print("REGISTERED GENERATORS: %s" % api.registered_generators())
                 
-                # td.do_not_destroy()
                 # loaded_generators = gens.loaded_generators()
                 
                 if DEFAULT_VERBOSITY:
