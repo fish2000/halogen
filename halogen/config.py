@@ -474,8 +474,9 @@ class PythonConfig(ConfigBase):
     pyconfigpath = which(pyconfig)
     
     # The semver-ish name of this Python installation:
-    library_name = "python%i.%i" % (sys.version_info.major,
-                                    sys.version_info.minor)
+    library_name = "python%i.%i%s" % (sys.version_info.major,
+                                      sys.version_info.minor,
+                                      sys.abiflags)
     
     # The actual filename for this Python installations’ shared library:
     library_file = "lib%s%s" % (library_name,
@@ -651,17 +652,28 @@ class SysConfig(PythonConfig):
                             'Resources')
     
     def get_includes(self):
-        return "-I%s" % self.include()
+        if sysconfig.get_path("include") == \
+           sysconfig.get_path("platinclude"):
+            return "-I%s" % sysconfig.get_path("include")
+        return "-I%s -I%s" % (sysconfig.get_path("include"),
+                              sysconfig.get_path("platinclude"))
     
     def get_libs(self):
-        return "-l%s %s" % (self.library_name,
-                            environ_override('LIBS'))
+        out = "-l%s %s %s" % (self.library_name,
+                              environ_override('LIBS'),
+                              environ_override('SYSLIBS'))
+        if not environ_override('PYTHONFRAMEWORK'):
+            out += " " + environ_override('LINKFORSHARED')
+        return out.strip()
     
     def get_cflags(self):
-        out = "-I%s %s %s" % (self.include(),
+        out = "-I%s %s %s" % (sysconfig.get_path("include"),
                               environ_override('CFLAGS'),
                               environ_override('CXXFLAGS'))
-        return out.rstrip()
+        if sysconfig.get_path("include") != \
+           sysconfig.get_path("platinclude"):
+            out = "-I%s %s" % (sysconfig.get_path("platinclude"), out)
+        return out.strip()
     
     def get_ldflags(self):
         ldstring = ""
@@ -671,10 +683,13 @@ class SysConfig(PythonConfig):
         for pth in libpths:
             if os.path.exists(pth):
                 ldstring += "%sL%s" % (TOKEN, pth)
-        out = "%s -l%s %s" % (ldstring.lstrip(),
-                              self.library_name,
-                              environ_override('LIBS'))
-        return out.lstrip()
+        out = "%s -l%s %s %s" % (ldstring.lstrip(),
+                                 self.library_name,
+                                 environ_override('LIBS'),
+                                 environ_override('SYSLIBS'))
+        if not environ_override('PYTHONFRAMEWORK'):
+            out += " " + environ_override('LINKFORSHARED')
+        return out.strip()
 
 
 class PkgConfig(ConfigBase):

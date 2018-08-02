@@ -5,12 +5,15 @@ import cython
 cimport cython
 from cython.operator cimport dereference as deref
 from cython.operator cimport preincrement as incr
+from cython.operator cimport address as addressof
 
 from libc.stdint cimport *
+from libcpp.cast cimport static_cast
 from libcpp.string cimport string
 from libcpp.memory cimport unique_ptr
 
 from cpython.bool cimport PyBool_FromLong
+from cpython.int cimport PyInt_FromLong, PyInt_AsLong
 from cpython.long cimport PyLong_AsLong
 from cpython.mapping cimport PyMapping_Check
 from cpython.object cimport PyObject_IsTrue
@@ -84,6 +87,14 @@ cpdef bytes u8bytes(object string_source):
         return bytes(string_source, encoding='UTF-8')
     elif type(string_source) == bool:
         return string_source and b'True' or b'False'
+    elif type(string_source) == int:
+        return bytes(str(string_source), encoding='UTF-8')
+    elif type(string_source) == long:
+        return bytes(str(string_source), encoding='UTF-8')
+    # elif type(string_source) == OS:
+    #     return bytes(str(<int>string_source), encoding='UTF-8')
+    # elif type(string_source) == Arch:
+    #     return bytes(str(<int>string_source), encoding='UTF-8')
     return bytes(string_source)
 
 cpdef str u8str(object string_source):
@@ -317,33 +328,33 @@ cdef class Target:
     
     @property
     def os(Target self):
-        return <int>self.__this__.os
+        return PyInt_FromLong(<long>(self.__this__.os))
     
     @os.setter
     def os(Target self, value):
-        self.__this__.os = <OS>PyLong_AsLong(value)
+        self.__this__.os = <OS>PyInt_AsLong(int(value))
     
     @property
     def arch(Target self):
-        return <int>self.__this__.arch
+        return PyInt_FromLong(<long>(self.__this__.arch))
     
     @arch.setter
     def arch(Target self, value):
-        self.__this__.arch = <Arch>PyLong_AsLong(value)
+        self.__this__.arch = <Arch>PyInt_AsLong(int(value))
     
     @property
     def bits(Target self):
-        return <int>self.__this__.bits
+        return PyInt_FromLong(self.__this__.bits)
     
     @bits.setter
     def bits(Target self, value):
-        self.__this__.bits = <int>PyLong_AsLong(value)
+        self.__this__.bits = <int>PyInt_AsLong(int(value))
     
     def has_gpu_feature(Target self):
         return self.__this__.has_gpu_feature()
     
     def has_feature(Target self, feature):
-        return self.__this__.has_feature(<Feature>PyLong_AsLong(feature))
+        return self.__this__.has_feature(<Feature>PyInt_AsLong(int(feature)))
     
     def includes_halide_runtime(Target self):
         try:
