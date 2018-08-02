@@ -418,13 +418,14 @@ class PythonConfig(ConfigBase):
         `python-config` tool (associated with the running Python interpreter).
     """
     
-    # 'Headers', 'Resources', 'framework', 'Frameworks',
+    # 'Frameworks', 'Headers', 'Resources', 'framework'
     
     fields = ConfigBase.FieldList('pyconfig', 'pyconfigpath',
                                   'library_name', 'library_file', 'header_file',
                                   'framework_name',
                                   'framework_path',
                                   # 'Frameworks',
+                                  # 'Headers', 'Resources',
                                    dir_fields=False)
     
     # Name of the `python-config` binary (nearly always just `python-config`):
@@ -472,54 +473,49 @@ class PythonConfig(ConfigBase):
     def share(self):
         return self.subdirectory("share")
     
-    def Frameworks(self):
+    @property
+    def framework(self):
         if not self.framework_path:
             # from prefix, search depth-first up (linear):
             if self.framework_name in self.prefix.name:
-                head = self.prefix
+                head = self.prefix.name
                 tail = "yo dogg" # something not false-y
                 while tail:
-                    head, tail = self.prefix.split()
+                    # head, tail = self.prefix.split()
+                    head, tail = os.path.split(self.prefix.name)
                     if tail == self.framework_name:
-                        self.framework_path = Directory(head)
+                        # self.framework_path = Directory(head)
+                        self.framework_path = head
                         return self.framework_path
             # from prefix, search depth-first down (likely exponential):
             for path, dirs, files in self.prefix.walk(followlinks=True):
                 if self.framework_name in dirs:
-                    self.framework_path = Directory(path)
+                    # self.framework_path = Directory(path)
+                    self.framework_path = path
                     return self.framework_path
             # give up, using a sensible default:
-            self.framework_path = Directory(self.subdirectory('Frameworks'))
+            # self.framework_path = Directory(self.subdirectory('Frameworks'))
+            self.framework_path = self.subdirectory('Frameworks')
         return self.framework_path
     
+    def Frameworks(self):
+        return self.framework
+    
     def Headers(self):
-        if not self.framework_path:
-            if not os.path.exists(
-                self.Frameworks().subpath(
-                self.framework_name)):
-                return None
-        return self.subdirectory('Headers',
-                                  whence=self.framework_path.subpath(
-                                         self.framework_name))
-    
+        return os.path.join(self.framework,
+                            self.framework_name,
+                            'Versions',
+                            '%s%s%s' % (sys.version_info.major, os.extsep,
+                                        sys.version_info.minor),
+                            'Headers')
+
     def Resources(self):
-        if not self.framework_path:
-            if not os.path.exists(
-                self.Frameworks().subpath(
-                self.framework_name)):
-                return None
-        return self.subdirectory('Resources',
-                                  whence=self.framework_path.subpath(
-                                         self.framework_name))
-    
-    def framework(self):
-        if not self.framework_path:
-            if not os.path.exists(
-                self.Frameworks().subpath(
-                self.framework_name)):
-                return None
-        return self.framework_path.subpath(
-               self.framework_name)
+        return os.path.join(self.framework,
+                            self.framework_name,
+                            'Versions',
+                            '%s%s%s' % (sys.version_info.major, os.extsep,
+                                        sys.version_info.minor),
+                            'Resources')
     
     def get_includes(self):
         return back_tick("%s --includes" % self.pyconfigpath)
@@ -575,7 +571,9 @@ def environ_override(name):
 
 class SysConfig(PythonConfig):
     
-    fields = ConfigBase.FieldList(dir_fields=True)
+    fields = ConfigBase.FieldList('Frameworks',
+                                  'Headers',
+                                  'Resources', dir_fields=True)
     
     """ A config class that provides its values using the Python `sysconfig` module
         (with fallback calls to PythonConfig, and environment variable overrides).
@@ -599,12 +597,20 @@ class SysConfig(PythonConfig):
         return environ_override('PYTHONFRAMEWORKPREFIX')
     
     def Headers(self):
-        return self.subdirectory('Headers',
-                                  whence=environ_override('PYTHONFRAMEWORKINSTALLDIR'))
+        return os.path.join(environ_override('PYTHONFRAMEWORKPREFIX'),
+                            self.framework_name,
+                            'Versions',
+                            '%s%s%s' % (sys.version_info.major, os.extsep,
+                                        sys.version_info.minor),
+                            'Headers')
     
     def Resources(self):
-        return self.subdirectory('Resources',
-                                  whence=environ_override('PYTHONFRAMEWORKINSTALLDIR'))
+        return os.path.join(environ_override('PYTHONFRAMEWORKPREFIX'),
+                            self.framework_name,
+                            'Versions',
+                            '%s%s%s' % (sys.version_info.major, os.extsep,
+                                        sys.version_info.minor),
+                            'Resources')
     
     def get_includes(self):
         return "-I%s" % self.include()

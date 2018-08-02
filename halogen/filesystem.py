@@ -558,10 +558,9 @@ class Directory(object):
             self.did_change_back = os.path.samefile(self.old,
                                                     backto)
             if self.did_change_back:
-                self.ctx_initialize()            # return to pristine state
-                if exc_type is None:
-                    self.ctx_set_targets(backto) # minimally reconfigure
-                return True
+                self.ctx_initialize()        # return to pristine state
+                self.ctx_set_targets(backto) # minimally reconfigure
+                return exc_type is None
         return False
     
     def realpath(self, pth=None):

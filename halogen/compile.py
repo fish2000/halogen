@@ -148,7 +148,7 @@ class Generator(object):
         """ Delete temporary compilation artifacts: """
         if self.VERBOSE:
             print("Cleaning up: %s" % os.path.basename(self.transient))
-        rm_rf(self.transient)
+        return rm_rf(self.transient)
     
     def __enter__(self):
         self.precompile()
@@ -156,8 +156,10 @@ class Generator(object):
         self.postcompile()
         return self
     
-    def __exit__(self, exc_type, exc_val, exc_tb):
+    def __exit__(self, exc_type=None, exc_val=None, exc_tb=None):
+        # N.B. return False to throw, True to supress:
         self.clear()
+        return exc_type is None
 
 
 class Generators(object):
@@ -516,13 +518,15 @@ class Generators(object):
     
     def clear(self):
         """ Delete temporary compilation artifacts: """
+        out = True
         # if self.VERBOSE:
         #     print("Cleaning up %s intermediates" % len(list(self.intermediate.ls(
         #                                                     pth=getattr(self.intermediate, "name",
         #                                                           u8str(self.intermediate)),
         #                                                     suffix=self.object_suffix))))
         for of in self.prelink:
-            rm_rf(of)
+            out &= rm_rf(of)
+        return out
     
     def __enter__(self):
         # 0: start as you mean to go on:
@@ -547,8 +551,10 @@ class Generators(object):
         # 5: return self
         return self
     
-    def __exit__(self, exc_type, exc_val, exc_tb):
+    def __exit__(self, exc_type=None, exc_val=None, exc_tb=None):
+        # N.B. return False to throw, True to supress:
         self.clear()
+        return exc_type is None
 
 def print_exception(exc):
     trace_output = """ 
@@ -568,7 +574,7 @@ def test():
     
     sys.path.append(os.path.dirname(
                     os.path.dirname(__file__)))
-    sys.path.append(os.path.dirname(__file__))
+    # sys.path.append(os.path.dirname(__file__))
     
     import api
     
@@ -701,7 +707,7 @@ def test():
                     print("X> Destination directory DOES NOT EXIST")
                     print("X> %s" % destination)
             
-            stack.pop()
+            # stack.pop()
     
     # ... scope exit for Generators `gens` and TemporaryDirectory `td`
 
