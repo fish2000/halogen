@@ -94,14 +94,14 @@ def back_tick(command,  as_str=True,
         -------
         out : str / tuple
             If `ret_err` is False, return stripped string containing stdout from
-            `command`.  If `ret_err` is True, return tuple of (stdout, stderr) where
-            ``stdout`` is the stripped stdout, and ``stderr`` is the stripped
-            stderr.
+            `command`.  If `ret_err` is True, return tuple of (stdout, stderr)
+            where ``stdout`` is the stripped stdout, and ``stderr`` is the
+            stripped stderr.
         
         Raises
         ------
-        A `halogen.errors.ExecutionError` will raise if the executed command returns
-        with any non-zero exit status, and the `raise_err` option is True.
+        A `halogen.errors.ExecutionError` will raise if the executed command
+        returns with any non-zero exit status, and `raise_err` is True.
         
     """
     # Step 1: Prepare for battle:
@@ -165,9 +165,12 @@ def back_tick(command,  as_str=True,
 
 
 def rm_rf(pth):
-    """ rm_rf() does what `rm -rf` does, so for the love of fuck, BE CAREFUL WITH IT. """
+    """ rm_rf() does what `rm -rf` does – so, for the love of fuck,
+        BE FUCKING CAREFUL WITH IT.
+    """
     if not pth:
-        raise ExecutionError("Can’t rm -rf without something to rm arr-effedly")
+        raise ExecutionError(
+            "Can’t rm -rf without something to rm arr-effedly")
     pth = os.fspath(pth)
     try:
         if os.path.isfile(pth) or os.path.islink(pth):
@@ -310,7 +313,8 @@ class TemporaryName(TemporaryNameAncestor):
         it just makes a file name -- YOU have to make shit happen with it.
         But: should you cause such scatalogical events to transpire, this
         class (when invoked as a context manager) will clean it up for you.
-        Unless you say not to. Really it's your call dogg I could give AF """
+        Unless you say not to. Really it's your call dogg I could give AF
+    """
     
     fields = ('name', 'exists',
               'destroy', 'prefix', 'suffix', 'parent')
@@ -377,11 +381,11 @@ class TemporaryName(TemporaryNameAncestor):
         """ Access a TemporaryNamedFile instance, opened and ready to read and write,
             for this TemporaryName instances’ temporary file path.
             
-            Accessing this property delegates the responsibility for destroying the
-            TemporaryName file contents to the TemporaryNamedFile object -- saving
-            the TemporaryNamedFile in, like, a variable somewhere and then letting
-            the original TemporaryName go out of scope will keep the file alive,
-            for example.
+            Accessing this property delegates the responsibility for destroying
+            the TemporaryName file contents to the TemporaryNamedFile object --
+            saving the TemporaryNamedFile in, like, a variable somewhere and then
+            letting the original TemporaryName go out of scope will keep the file
+            alive and unclosed, for example.
         """
         return TemporaryNamedFile(self.do_not_destroy())
     
@@ -396,7 +400,7 @@ class TemporaryName(TemporaryNameAncestor):
             to a new destination.
         """
         if not destination:
-            raise FilesystemError("Copying requires a somewhere to which to copy")
+            raise FilesystemError("Copying requires a place to which to copy")
         import shutil
         if self.exists:
             return shutil.copy2(self.name, os.fspath(destination))
@@ -406,8 +410,8 @@ class TemporaryName(TemporaryNameAncestor):
         """ Mark this TemporaryName instance as one that should not be automatically
             destroyed upon the scope exit for the instance.
             
-            This function returns the temporary file path, and may be called more than
-            once without further side effects.
+            This function returns the temporary file path, and may be called more
+            than once without further side effects.
         """
         self._destroy = False
         return self.name
@@ -447,7 +451,8 @@ DirectoryAncestor = six.with_metaclass(TypeLocker, os.PathLike)
 class Directory(DirectoryAncestor):
     
     """ A context-managed directory: change in on enter, change back out
-        on exit. Plus a few convenience functions for listing and whatnot. """
+        on exit. Plus a few convenience functions for listing and whatnot.
+    """
     
     fields = ('name', 'old', 'new', 'exists',
               'will_change',        'did_change',
@@ -470,9 +475,9 @@ class Directory(DirectoryAncestor):
             to `os.path.samefile(…)`).
             
             The “pth” parameter is optional, in which case the instance uses the
-            process working directory as its target, and no change-of-directory calls
-            will be issued. Values for “pth” can be string-like, or existing Directory
-            instances -- either will work.
+            process working directory as its target, and no change-of-directory
+            calls will be issued. Values for “pth” can be string-like, or existing
+            Directory instances -- either will work.
             
             There are two decendant classes of Directory (q.v. definitions below)
             that enforce stipulations for the “pth” parameter: the `cd` class 
@@ -493,13 +498,15 @@ class Directory(DirectoryAncestor):
     
     @property
     def basename(self):
-        """ The basename (aka the directory name) of the target directory. """
+        """ The basename (aka the name of the directory, like as opposed to the
+            entire fucking absolute path) of the target directory.
+        """
         return os.path.basename(self.name)
     
     @property
     def dirname(self):
-        """ The dirname (aka the enclosing directory) of target directory,
-            wrapped in a new Directory instance.
+        """ The dirname (aka the path of the enclosing directory) of the target
+            directory, wrapped in a new Directory instance.
         """
         return self.parent()
     
@@ -516,8 +523,9 @@ class Directory(DirectoryAncestor):
         return hasattr(self, 'new')
     
     def split(self):
-        """ Return (dirname, basename) e.g. for /yo/dogg/i/heard/youlike,
-            you get back (Directory("/yo/dogg/i/heard"), "youlike")
+        """ Return a two-tuple containing `(dirname, basename)` – like e.g.
+            for `/yo/dogg/i/heard/youlike`, your return value will be like
+            `(Directory("/yo/dogg/i/heard"), "youlike")`
         """
         return self.dirname, self.basename
     
@@ -528,7 +536,7 @@ class Directory(DirectoryAncestor):
             filled in with a target path, `ctx_initialize()` will preserve
             the contents of that attribute in the value of the `self.target` 
             instance member.
-        
+            
             The call deletes all other instance attributes from the internal
             mapping of the instance in question, leaving it in a state ready
             for either context-managed reëntry, or for reuse in an unmanaged
@@ -563,7 +571,7 @@ class Directory(DirectoryAncestor):
             (q.v. `ctx_initialize()` help supra.) in cases where it isn’t
             going to be used as part of a managed context; that is to say,
             outside of a `with` statement.
-        
+            
             (Within a `with` statement, the call issued upon scope entry to
             `Directory.__enter__(self)` will internally make a call to
             `Directory.ctx_prepare(self)` (q.v. doctext help sub.) which
@@ -664,14 +672,14 @@ class Directory(DirectoryAncestor):
         return filter(suffix_searcher(suffix), files)
     
     def subpath(self, subpth, whence=None, requisite=False):
-        """ Returns the path to a subpath beneath the instances’ target path. """
+        """ Returns the path to a subpath of the instances’ target path. """
         fullpth = os.path.join(os.fspath(whence or self.name),
                                os.fspath(subpth))
         return (os.path.exists(fullpth) or not requisite) and fullpth or None
     
     def subdirectory(self, subdir, whence=None):
-        """ Returns the path to a subpath beneath the instances’ target path --
-            much like subpath(…) -- but wrapped in a new Directory instance.
+        """ Returns the path to a subpath of the instances’ target path --
+            much like Directory.subpath(…) -- as an instance of Directory.
         """
         pth = self.subpath(subdir, whence, requisite=False)
         if os.path.isfile(pth):
@@ -683,67 +691,70 @@ class Directory(DirectoryAncestor):
         return self.directory(pth)
     
     def makedirs(self, pth=os.curdir):
-        """ Creates any parts of the target directory path that don’t already exist,
-            á la the `mkdir -p` shell command.
+        """ Creates any parts of the target directory path that don’t
+            already exist, á la the `mkdir -p` shell command.
         """
-        # if hasattr(pth, 'name'):
-        #     pth = pth.name
-        pth = os.fspath(pth)
         try:
             os.makedirs(os.path.abspath(
-                        os.path.join(self.name, pth)),
+                        os.path.join(self.name,
+                        os.fspath(pth or os.curdir))),
                         exist_ok=False)
         except OSError as os_error:
             raise FilesystemError(str(os_error))
         return self
     
     def walk(self, followlinks=False):
-        """ Sugar for calling X.walk(self.name), where X is either `scandir` (in the
-            case of python 2.7) or `os` (for python 3 and up).
+        """ Sugar for calling X.walk(self.name), where X is either
+            `scandir` (in the case of python 2.7) or `os` (for
+            python 3 and thereafter).
         """
         return walk(self.name, followlinks=followlinks)
     
     def parent(self):
-        """ Sugar for calling os.path.abspath(os.path.join(self.name, os.pardir))
-            which, if you are still curious, gets you the parent directory of the
-            instances’ target directory, wrapped in a Directory instance.
+        """ Sugar for `os.path.abspath(os.path.join(self.name, os.pardir))`
+            which, if you are curious, gets you the parent directory of
+            the instances’ target directory, wrapped in a Directory
+            instance.
         """
         return self.directory(os.path.abspath(
                               os.path.join(self.name,
                                            os.pardir)))
     
     def copy_all(self, destination):
-        """ Copy the entire temporary directory tree, all contents included, to a new
-            destination path. The destination must not already exist, and `copy_all(…)`
-            will not overwrite existant directories. Like, if you have yourself an instance
-            of Directory, `directory`, and you want to copy it to `/home/me/myshit`, `/home/me`
-            should already exist but `/home/me/myshit` should not, as the `myshit` subdirectory
-            will be created when you invoke `directory.copy_all('/home/me/myshit')`.
+        """ Copy the entire temporary directory tree, all contents
+            included, to a new destination path. The destination must not
+            already exist, and `copy_all(…)` will not overwrite existant
+            directories. Like, if you have yourself an instance of Directory,
+            `directory`, and you want to copy it to `/home/me/myshit`,
+            `/home/me` should already exist but `/home/me/myshit` should not,
+            as the `myshit` subdirectory will be created when you invoke the
+            `directory.copy_all('/home/me/myshit')` call.
             
-            Does that make sense to you? Try it, you’ll get a FilesystemError if it evidently
-            did not make sense to you.
+            Does that make sense to you? Try it, you’ll get a FilesystemError
+            if it evidently did not make sense to you.
             
-            The destination path may be specified using a string-like, or with a Directory
-            object. Internally, this method uses `shutil.copytree(…)` to tell the filesystem
-            what to copy where.
+            The destination path may be specified using a string-like, or
+            with a Directory object. Internally, this method uses
+            `shutil.copytree(…)` to tell the filesystem what to copy where.
         """
         import shutil
         whereto = self.directory(pth=destination)
         if whereto.exists or os.path.isfile(whereto.name) \
                           or os.path.islink(whereto.name):
-            raise FilesystemError("Directory.copy_all() destination exists: %s" % whereto.name)
+            raise FilesystemError(
+                "copy_all() destination exists: %s" % whereto.name)
         if self.exists:
             return shutil.copytree(u8str(self.name),
                                    u8str(whereto.name))
         return False
     
     def zip_archive(self, zpth=None, zmode=None):
-        """ Recursively descends through the target directory and zip-archives it
-            to a zipfile at the specified path.
+        """ Recursively descends through the target directory, stowing all
+            that it finds into a zipfile at the specified path.
             
-            Use the optional “zmode” parameter to specify the compression algorithm,
-            as per the constants found in the `zipfile` module; the default value
-            is `zipfile.ZIP_DEFLATED`.
+            Use the optional “zmode” parameter to specify the compression
+            algorithm, as per the constants found in the `zipfile` module;
+            the default value is `zipfile.ZIP_DEFLATED`.
         """
         import zipfile
         if not zpth:
@@ -760,7 +771,7 @@ class Directory(DirectoryAncestor):
         with TemporaryName(prefix="ziparchive-",
                            suffix=self.zip_suffix[1:]) as ztmp:
             with zipfile.ZipFile(ztmp.name, "w", zmode) as ziphandle:
-                relparent = lambda p: os.path.relpath(p, self.parent().name)
+                relparent = lambda p: os.path.relpath(p, os.fspath(self.parent()))
                 for root, dirs, files in self.walk(followlinks=True):
                     ziphandle.write(root, relparent(root)) # add directory
                     for filename in files:
@@ -796,9 +807,9 @@ class Directory(DirectoryAncestor):
 class cd(Directory):
     
     def __init__(self, pth):
-        """ Change to a new directory (a new path specification `pth` is required).
+        """ Change to a new directory (the target path `pth` must be specifieds).
         """
-        super(cd, self).__init__(pth=os.path.realpath(pth))
+        super(cd, self).__init__(pth)
 
 
 class wd(Directory):
@@ -814,8 +825,9 @@ class TemporaryDirectory(Directory):
     """ It's funny how this code looks, like, 99 percent exactly like the above
         TemporaryName class -- shit just works out that way. But this actually
         creates the directory in question; much like filesystem::TemporaryDirectory
-        from libimread, this class wraps tempfile.mkdtemp() and can be used as a
-        context manager (the C++ orig used RAII). """
+        from libimread, this class wraps tempfile.mkdtemp() and can be used as
+        a context manager (the C++ orig used RAII).
+    """
     
     fields = ('name', 'old', 'new', 'exists',
               'destroy', 'prefix',  'suffix', 'parent',
@@ -864,7 +876,10 @@ class TemporaryDirectory(Directory):
     
     @property
     def destroy(self):
-        """ Whether or not the temporary directory has been marked for manual deletion. """
+        """ Whether or not the TemporaryDirectory instance has been marked
+            for automatic deletion upon scope exit (q.v __exit__(…) method
+            definition sub.)
+        """
         return self._destroy
     
     @wraps(Directory.ctx_prepare)
@@ -874,26 +889,27 @@ class TemporaryDirectory(Directory):
         self.will_change_back = bool(self.will_change and self.change)
     
     def destroy_all(self):
-        """ Delete the directory pointed to by the TemporaryDirectory instance, and
-            everything it contains. USE WITH CAUTION.
+        """ Delete the directory pointed to by the TemporaryDirectory
+            instance, and everything it contains. USE WITH CAUTION.
         """
         if self.exists:
             return rm_rf(self.name)
         return False
     
     def do_not_destroy(self):
-        """ Mark this TemporaryDirectory instance as one that should not be automatically
-            destroyed upon the scope exit for the instance.
+        """ Mark this TemporaryDirectory instance as one that should not
+            be automatically destroyed upon the scope exit for the instance.
             
-            This function returns the temporary directory path, and may be called more than
-            once without further side effects.
+            This function returns the temporary directory path, and may
+            be called more than once without further side effects.
         """
         self._destroy = False
         return self.name
     
     def __enter__(self):
         if not self.exists:
-            raise FilesystemError("TemporaryDirectory “%s” wasn’t created correctly" % self.name)
+            raise FilesystemError(
+                "TemporaryDirectory “%s” failed to exist" % self.name)
         super(TemporaryDirectory, self).__enter__()
         return self
     
@@ -909,9 +925,10 @@ def NamedTemporaryFile(mode='w+b', buffer_size=-1,
                        directory=None,
                        delete=True):
     
-    """ Variation on tempfile.NamedTemporaryFile(…), such that suffixes are passed
-        WITHOUT specifying the period in front (versus the standard library version
-        which makes you pass suffixes WITH the fucking period, ugh).
+    """ Variation on tempfile.NamedTemporaryFile(…), such that suffixes
+        are passed WITHOUT specifying the period in front (versus the
+        standard library version which makes you pass suffixes WITH
+        the fucking period, ugh).
     """
     
     from tempfile import _bin_openflags, _text_openflags,   \
