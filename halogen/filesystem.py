@@ -815,6 +815,16 @@ class Directory(DirectoryAncestor):
     def __fspath__(self):
         return self.name
     
+    def __contains__(self, filename):
+        name = os.fspath(filename).lower()
+        for direntry in scandir(self.realpath()):
+            if name == direntry.name.lower():
+                return True
+        return False
+    
+    def __call__(self, *args, **kwargs):
+        return self
+    
     def __unicode__(self):
         return six.u(str(self))
 
@@ -1032,6 +1042,7 @@ def test():
         assert tfn.destroy
         assert not tfn.exists
         assert not os.path.isfile(os.fspath(tfn))
+        assert not tfn.name in tfn.dirname
         print("* TemporaryName file object tests completed OK")
         print("")
     
@@ -1077,6 +1088,7 @@ def test():
         assert not tmp.did_change_back
         assert type(tmp.directory(tmp.new)) == Directory
         assert os.path.isdir(os.fspath(tmp))
+        assert tmp.basename in tmp.dirname
         print("* Directory-change object tests completed OK")
         print("")
     
@@ -1093,6 +1105,7 @@ def test():
         assert initial in ttd.old
         assert not ttd.subdirectory('yodogg').exists
         assert ttd.subdirectory('yodogg').makedirs().exists
+        assert 'yodogg' in ttd
         assert ttd.prefix == "test-temporarydirectory-"
         assert not ttd.suffix
         assert not ttd._parent
@@ -1107,6 +1120,8 @@ def test():
         assert os.path.samefile(os.fspath(p), gettempdir())
         assert os.path.isdir(os.fspath(ttd))
         assert os.path.isdir(os.fspath(p))
+        assert ttd.basename in p
+        assert ttd.basename in ttd.dirname
         print("* TemporaryDirectory object tests completed OK")
         print("")
 

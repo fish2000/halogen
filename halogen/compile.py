@@ -7,7 +7,7 @@ import sys
 import config
 
 from tempfile import mktemp
-from compiledb import CDBBase
+from compiledb import CDBJsonFile
 from config import SHARED_LIBRARY_SUFFIX, STATIC_LIBRARY_SUFFIX, DEFAULT_VERBOSITY
 from errors import HalogenError, GeneratorLoaderError, GenerationError
 from generate import preload, generate, default_emits
@@ -72,6 +72,7 @@ class Generator(object):
         self.intermediate = 'intermediate' in kwargs and os.fspath(kwargs.pop('intermediate')) or None
         self.source = os.path.realpath(os.fspath(source))
         self._compiled = False
+        self._destroy = True
         self.result = tuple()
         if self.VERBOSE:
             print("")
@@ -155,11 +156,28 @@ class Generator(object):
         """ Has the generator successfully been compiled? """
         return self._compiled
     
+    @property
+    def destroy(self):
+        return self._destroy
+    
+    def do_not_destroy(self):
+        """ Mark this Generator instance as one that should not automatically
+            clean up its intermediate artifacts upon scope exit.
+            
+            This function returns the temporary file path, and may be called more
+            than once without further side effects.
+        """
+        if self.compiled:
+            self._destroy = False
+            return self.transient
+        return None
+    
     def clear(self):
         """ Delete temporary compilation artifacts: """
-        if self.VERBOSE:
-            print(f"Cleaning up: {os.path.basename(self.transient)}")
-        return rm_rf(self.transient)
+        if self.destroy:
+            if self.VERBOSE:
+                print(f"Cleaning up: {os.path.basename(self.transient)}")
+            return rm_rf(self.transient)
     
     def __enter__(self):
         self.precompile()
@@ -197,13 +215,13 @@ class Generators(object):
             prefix = "yodogg"
         self.MAXIMUM =  int(kwargs.pop('maximum', DEFAULT_MAXIMUM_GENERATOR_COUNT))
         self.VERBOSE = bool(kwargs.pop('verbose', DEFAULT_VERBOSITY))
-        self.cdb = use_cdb and CDBBase() or None
         self.conf = conf
         self.suffix = suffix
         self.prefix = prefix
         self.do_shared = do_shared
         self.do_static = do_static
         self.do_preload = do_shared and do_preload
+        self.use_cdb = use_cdb
         self.destination = Directory(pth=destination)
         if not self.destination.exists:
             raise CompilerError(f"Non-existant generator destination: {self.destination}")
@@ -215,8 +233,11 @@ class Generators(object):
         self.intermediate = Intermediate(pth=intermediate)
         if not self.intermediate.exists:
             self.intermediate.makedirs()
+        cdb = kwargs.pop('cdb', None)
+        self.cdb = self.use_cdb and (cdb or CDBJsonFile(directory=self.intermediate)) or None
         self._precompiled = False
         self._compiled = False
+        self._postcompiled = False
         self._linked = False
         self._archived = False
         self._preloaded = False
@@ -235,6 +256,8 @@ class Generators(object):
                 print(f"*      Library: {self.library}")
             if do_static:
                 print(f"*      Archive: {self.archive}")
+            if use_cdb:
+                print(f"*   Compile DB: {repr(self.cdb)}")
             print(f"* Intermediate: {self.intermediate}")
             print("")
     
@@ -247,6 +270,11 @@ class Generators(object):
     def compiled(self):
         """ Have all generators successfully been compiled? """
         return self._compiled
+    
+    @property
+    def postcompiled(self):
+        """ Has the compilation database (if any) been written? """
+        return self._postcompiled
     
     @property
     def linked(self):
@@ -285,6 +313,12 @@ class Generators(object):
             or whatever.
         """
         return u8str(f"{self.suffix}{os.extsep}o")
+    
+    @property
+    def compilation_database(self):
+        if self.use_cdb:
+            return self.cdb.name
+        return None
     
     def precompile(self):
         """ Walk the path of the specified source directory, gathering all C++ generator
@@ -344,12 +378,40 @@ class Generators(object):
                                intermediate=os.fspath(self.intermediate),
                                verbose=self.VERBOSE) as gen:
                     if gen.compiled:
+                        gen.do_not_destroy()
                         self.prelink.append(tn.do_not_destroy())
         if self.VERBOSE:
             print("")
         if self.source_count == self.prelink_count:
             self._compiled = True
         return self.compiled
+    
+    def postcompile(self):
+        """ If compilation has previously been successful, the `postcompile()` method will,
+            if the `use_cdb` initializatiion option was True, attempt to write out a compilation
+            database JSON file, using either the internal `self.cdb` compilation database
+            instance, or, optionally, a compilation database of the users’ choosing, passed in
+            at initialization as `cdb`.
+            
+            For more on the subject, q.v. http://clang.llvm.org/docs/JSONCompilationDatabase.html,
+            the CompDB project at https://github.com/Sarcasm/compdb, or the source of the module
+            `halogen.compiledb` supra.
+        """
+        if self.postcompiled:
+            return True
+        if not self.compiled:
+            raise CompilerError(f"can't postcompile before compilation: {self.directory}")
+        if self.prelink_count < 1:
+            raise CompilerError(f"couldn't find any compilation outputs: {self.directory}")
+        if self.VERBOSE:
+            print(f"Writing {self.cdb.length} compilation database entries")
+        self.cdb.write()
+        if self.VERBOSE:
+            print("")
+        if self.compilation_database:
+            if os.path.isfile(self.compilation_database):
+                self._postcompiled = True
+        return self.postcompiled
     
     def link(self):
         """ If compilation has previously been successful, the `link()` method will attempt
@@ -542,19 +604,23 @@ class Generators(object):
         if self.precompiled:
             self.compile_all()
         
-        # 2: link dynamically
+        # 2: Write out compilation database:
+        if self.compiled and self.use_cdb:
+            self.postcompile()
+        
+        # 3: link dynamically
         if self.compiled and self.do_shared:
             self.link()
         
-        # 3: link statically (née 'archive')
+        # 4: link statically (née 'archive')
         if self.compiled and self.do_static:
             self.arch()
         
-        # 4: preload dynamic-linked output:
+        # 5: preload dynamic-linked output:
         if self.linked and self.do_preload:
             self.preload_all()
         
-        # 5: return self
+        # 6: return self
         return self
     
     def __exit__(self, exc_type=None, exc_val=None, exc_tb=None):
@@ -635,6 +701,7 @@ def test():
                 
                 precompiled = gens.precompiled and "YES" or "no"
                 compiled = gens.compiled and "YES" or "no"
+                postcompiled = gens.postcompiled and "YES" or "no"
                 linked = gens.linked and "YES" or "no"
                 archived = gens.archived and "YES" or "no"
                 preloaded = gens.preloaded and "YES" or "no"
@@ -642,6 +709,7 @@ def test():
                 print("")
                 print(f"IS IT PRECOMPILED? -- {precompiled}")
                 print(f"IS IT COMPILED? -- {compiled}")
+                print(f"IS IT POSTCOMPILED? -- {postcompiled}")
                 print(f"IS IT LINKED? -- {linked}")
                 print(f"IS IT ARCHIVED? -- {archived}")
                 print(f"IS IT PRELOADED? -- {preloaded}")
@@ -693,6 +761,9 @@ def test():
                     destination.zip_archive(tz)
                 
                 if gens.intermediate.exists:
+                    if CDBJsonFile.in_directory(gens.intermediate):
+                        if DEFAULT_VERBOSITY:
+                            print(f"Found compilation DB file “{CDBJsonFile.filename}” in intermediate: {gens.intermediate}")
                     if DEFAULT_VERBOSITY:
                         print(f"Listing files at intermediate: {gens.intermediate} …")
                     intermediate_list = list(gens.intermediate.subpath(listentry) \

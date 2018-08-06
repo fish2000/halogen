@@ -8,7 +8,11 @@ import six
 
 from abc import ABC, ABCMeta, abstractmethod
 from errors import CDBError
+from filesystem import TemporaryName, Directory
 from utils import stringify, u8bytes, u8str
+
+__all__ = ('CDBSubBase', 'CDBBase',
+                         'CDBJsonFile')
 
 SubBaseAncestor = six.with_metaclass(ABCMeta, ABC)
 class CDBSubBase(SubBaseAncestor):
@@ -73,7 +77,7 @@ class CDBBase(CDBSubBase):
         return len(self.entries)
     
     def __len__(self):
-        return len(self.entries)
+        return self.length
     
     def __getitem__(self, key):
         try:
@@ -105,6 +109,55 @@ class CDBBase(CDBSubBase):
         return True
 
 CDBSubBase.register(CDBBase)
+
+class CDBJsonFile(CDBBase):
+    
+    fields = ('filename', 'length', 'exists')
+    filename = f'compilation_database{os.extsep}json'
+    
+    @classmethod
+    def in_directory(cls, directory):
+        return cls.filename in Directory(pth=directory)
+    
+    def __init__(self, directory=None):
+        super(CDBJsonFile, self).__init__()
+        if not directory:
+            directory = os.getcwd()
+        self.directory = Directory(pth=directory)
+        self.target = self.directory.subpath(self.filename)
+    
+    @property
+    def name(self):
+        return self.target
+    
+    @property
+    def exists(self):
+        return os.path.isfile(self.name)
+    
+    def write(self):
+        splitname = os.path.splitext(self.filename)
+        with TemporaryName(prefix=splitname[0],
+                           suffix=splitname[1][1:]) as tn:
+            with open(tn.name, mode='w') as handle:
+                handle.write(str(self))
+            if os.path.isfile(self.target):
+                os.unlink(self.target)
+            tn.copy(self.target)
+    
+    def __enter__(self):
+        return self
+    
+    def __exit__(self, exc_type=None,
+                       exc_val=None,
+                       exc_tb=None):
+        self.write()
+    
+    def to_string(self):
+        return stringify(self, type(self).fields)
+    
+    def __repr__(self):
+        return stringify(self, type(self).fields)
+    
 
 del SubBaseAncestor
 

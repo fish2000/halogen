@@ -18,6 +18,7 @@ from os.path import splitext
 from ctypes.util import find_library
 from collections import defaultdict
 from functools import wraps
+from compiledb import CDBSubBase
 from errors import ConfigurationError, ConfigCommandError
 from filesystem import which, back_tick, script_path, Directory
 from utils import is_string, stringify, u8bytes, u8str
@@ -1249,7 +1250,7 @@ def CC(conf, outfile, infile, **kwargs):
     """
     cdb = kwargs.pop('cdb', None)
     command = conf.cc_flag_string() % (infile, outfile)
-    if cdb:
+    if isinstance(cdb, CDBSubBase):
         cdb.push(infile, command, directory=kwargs.pop('directory', None),
                                   destination=outfile)
     return back_tick(command,
@@ -1262,7 +1263,7 @@ def CXX(conf, outfile, infile, **kwargs):
     """
     cdb = kwargs.pop('cdb', None)
     command = conf.cxx_flag_string() % (infile, outfile)
-    if cdb:
+    if isinstance(cdb, CDBSubBase):
         cdb.push(infile, command, directory=kwargs.pop('directory', None),
                                   destination=outfile)
     return back_tick(command,
@@ -1374,7 +1375,7 @@ def print_cache():
     pprint(ConfigBase.base_field_cache, indent=4)
 
 def test():
-    # from utils import print_config
+    from utils import print_config
     from utils import test_compile, get_terminal_size
     
     width, height = get_terminal_size()
@@ -1386,7 +1387,7 @@ def test():
     pkgConfig = PkgConfig()
     numpyConfig = NumpyConfig()
     
-    # configUnionOne = ConfigUnion(SysConfig(with_openssl=True))
+    configUnionOne = ConfigUnion(SysConfig(with_openssl=True))
     configUnion = ConfigUnion(brewedHalideConfig, sysConfig)
     configUnionAll = ConfigUnion(brewedHalideConfig, sysConfig,
                                  brewedPythonConfig, pythonConfig,
@@ -1396,15 +1397,15 @@ def test():
     
     """ Test basic config methods: """
     
-    # print_config(brewedHalideConfig)
-    # print_config(sysConfig)
-    # print_config(pkgConfig)
-    # print_config(numpyConfig)
-    # print_config(brewedPythonConfig)
-    # print_config(pythonConfig)
-    # print_config(configUnionOne)
-    # print_config(configUnion)
-    # print_config(configUnionAll)
+    print_config(brewedHalideConfig)
+    print_config(sysConfig)
+    print_config(pkgConfig)
+    print_config(numpyConfig)
+    print_config(brewedPythonConfig)
+    print_config(pythonConfig)
+    print_config(configUnionOne)
+    print_config(configUnion)
+    print_config(configUnionAll)
     
     """ Test compilation with different configs: """
     
@@ -1414,12 +1415,12 @@ def test():
     
     """  Reveal the cached field-value dictionary: """
     
-    # print("=" * width)
-    # print("")
-    # print("PRINTING: ConfigBase.base_field_cache -- dict<str> ...")
-    # print("")
-    # print_cache()
-    # print("")
+    print("=" * width)
+    print("")
+    print("PRINTING: ConfigBase.base_field_cache -- dict<str> ...")
+    print("")
+    print_cache()
+    print("")
 
 
 def corefoundation_check():
@@ -1458,4 +1459,4 @@ if __name__ == '__main__':
         print("SKIPPING: PyObjC-based CoreFoundation test (PyObjC not installed)")
     else:
         objc # SHUT UP, PYFLAKES!
-        # corefoundation_check()
+        corefoundation_check()
