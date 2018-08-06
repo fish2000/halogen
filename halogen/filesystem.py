@@ -955,7 +955,8 @@ class Intermediate(TemporaryDirectory, Directory):
         """
         if pth:
             return Directory(pth=pth)
-        return TemporaryDirectory(prefix=f"{cls.__name__}-")
+        return TemporaryDirectory(prefix=f"{cls.__name__}-",
+                                  change=False)
     
     def __init__(self, pth=None):
         """ The initializer explicitly does nothing, as it will always be called
@@ -978,7 +979,7 @@ def NamedTemporaryFile(mode='w+b', buffer_size=-1,
                          _mkstemp_inner, _os,               \
                          _TemporaryFileWrapper
     
-    parent = Intermediate(pth=directory)
+    parent = Directory(pth=directory or gettempdir())
     
     if suffix:
         if not suffix.startswith(os.extsep):
@@ -1004,6 +1005,9 @@ def NamedTemporaryFile(mode='w+b', buffer_size=-1,
         if descriptor > 0:
             _os.close(descriptor)
         raise FilesystemError(str(base_exception))
+
+del TemporaryNameAncestor
+del DirectoryAncestor
 
 def test():
     

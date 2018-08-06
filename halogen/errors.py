@@ -18,6 +18,16 @@ class FilesystemError(HalogenError):
     pass
 
 
+class ConfigurationError(HalogenError):
+    """ An error that occurred in the course of self-configuring """
+    pass
+
+
+class ConfigCommandError(HalogenError, IOError):
+    """ An error that occurred during configuring, while running a command """
+    pass
+
+
 class GeneratorError(HalogenError):
     """ Base class for Halogen generator errors """
     pass

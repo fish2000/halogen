@@ -4,9 +4,9 @@ from __future__ import print_function
 
 import os
 import re
+import six
 import sys
 import sysconfig
-import six
 
 try:
     from functools import reduce
@@ -18,17 +18,17 @@ from os.path import splitext
 from ctypes.util import find_library
 from collections import defaultdict
 from functools import wraps
+from errors import ConfigurationError, ConfigCommandError
 from filesystem import which, back_tick, script_path, Directory
 from utils import is_string, stringify, u8bytes, u8str
 
-__all__ = ('SHARED_LIBRARY_SUFFIX',
-           'STATIC_LIBRARY_SUFFIX',
-           'DEFAULT_VERBOSITY', 'TOKEN',
-           'ConfigSubBase', 'ConfigBaseMeta', 'ConfigBase',
-           'Macro', 'Macros',
-           'PythonConfig',
-           'BrewedPythonConfig',
+__all__ = ('SHARED_LIBRARY_SUFFIX', 'STATIC_LIBRARY_SUFFIX',
+           'DEFAULT_VERBOSITY',
+           'ConfigSubBase', 'ConfigBaseMeta',
            'environ_override',
+           'ConfigBase',
+           'Macro', 'Macros',
+           'PythonConfig', 'BrewedPythonConfig',
            'SysConfig', 'PkgConfig', 'NumpyConfig',
                                      'BrewedConfig',
                                      'BrewedHalideConfig',
@@ -348,7 +348,7 @@ class Macro(object):
             that is to say, that it is a so-called “undef macro”.
         """
         if not name:
-            raise ValueError("Macro() requires a valid name")
+            raise ConfigurationError("Macro() requires a valid name")
         string_zero = self.is_string_value(definition)
         string_one = self.is_string_value(definition, value=1)
         string_something = string_zero or string_one
@@ -472,14 +472,14 @@ class PythonConfig(ConfigBase):
     pyconfig = "python-config"
     pyconfigpath = which(pyconfig)
     
+    # String of python major-minor version e.g. "2.7", "3.7" etc.
+    python_version = f"{sys.version_info.major}{os.extsep}{sys.version_info.minor}"
+    
     # The semver-ish name of this Python installation:
-    library_name = "python%i.%i%s" % (sys.version_info.major,
-                                      sys.version_info.minor,
-                                      sys.abiflags)
+    library_name = f"python{python_version}{sys.abiflags}"
     
     # The actual filename for this Python installations’ shared library:
-    library_file = "lib%s%s" % (library_name,
-                                SHARED_LIBRARY_SUFFIX)
+    library_file = f"lib{library_name}{SHARED_LIBRARY_SUFFIX}"
     
     # The actual filename for this Python installations’ base header:
     header_file = 'Python.h'
@@ -544,31 +544,25 @@ class PythonConfig(ConfigBase):
     
     def Headers(self):
         return os.path.join(self.framework,
-                            self.framework_name,
-                            'Versions',
-                            '%i%s%i' % (sys.version_info.major, os.extsep,
-                                        sys.version_info.minor),
-                            'Headers')
+                            self.framework_name, 'Versions',
+                            self.python_version, 'Headers')
 
     def Resources(self):
         return os.path.join(self.framework,
-                            self.framework_name,
-                            'Versions',
-                            '%i%s%i' % (sys.version_info.major, os.extsep,
-                                        sys.version_info.minor),
-                            'Resources')
+                            self.framework_name, 'Versions',
+                            self.python_version, 'Resources')
     
     def get_includes(self):
-        return back_tick("%s --includes" % self.pyconfigpath)
+        return back_tick(f"{self.pyconfigpath} --includes")
     
     def get_libs(self):
-        return back_tick("%s --libs" % self.pyconfigpath)
+        return back_tick(f"{self.pyconfigpath} --libs")
     
     def get_cflags(self):
-        return back_tick("%s --cflags" % self.pyconfigpath)
+        return back_tick(f"{self.pyconfigpath} --cflags")
     
     def get_ldflags(self):
-        return back_tick("%s --ldflags" % self.pyconfigpath)
+        return back_tick(f"{self.pyconfigpath} --ldflags")
 
 
 class BrewedPythonConfig(PythonConfig):
@@ -586,12 +580,11 @@ class BrewedPythonConfig(PythonConfig):
     def __init__(self, brew_name=None):
         """ Initialize BrewedPythonConfig, optionally naming a homebrew formula """
         if not self.brew:
-            raise IOError("Can't find Homebrew “brew” executable")
+            raise ConfigCommandError("Can't find Homebrew “brew” executable")
         if not brew_name:
             brew_name = 'python'
         self.brew_name = brew_name
-        cmd = "%s --prefix %s" % (self.brew, self.brew_name)
-        prefix = back_tick(cmd, ret_err=False)
+        prefix = back_tick(f"{self.brew} --prefix {self.brew_name}", ret_err=False)
         super(BrewedPythonConfig, self).__init__(prefix=prefix)
     
     def include(self):
@@ -643,50 +636,39 @@ class SysConfig(PythonConfig):
     
     def Headers(self):
         return os.path.join(environ_override('PYTHONFRAMEWORKPREFIX'),
-                            self.framework_name,
-                            'Versions',
-                            '%i%s%i' % (sys.version_info.major, os.extsep,
-                                        sys.version_info.minor),
-                            'Headers')
+                            self.framework_name, 'Versions',
+                            self.python_version, 'Headers')
     
     def Resources(self):
         return os.path.join(environ_override('PYTHONFRAMEWORKPREFIX'),
-                            self.framework_name,
-                            'Versions',
-                            '%i%s%i' % (sys.version_info.major, os.extsep,
-                                        sys.version_info.minor),
-                            'Resources')
+                            self.framework_name, 'Versions',
+                            self.python_version, 'Resources')
     
     def get_includes(self):
-        out = "-I%s" % sysconfig.get_path("include")
+        out = f"-I{sysconfig.get_path('include')}"
         if sysconfig.get_path("include") != \
            sysconfig.get_path("platinclude"):
-            out += " -I%s" % sysconfig.get_path("platinclude")
+            out += f" -I{sysconfig.get_path('platinclude')}"
             out = out.strip()
         if self.with_openssl:
-            out += " " + environ_override('OPENSSL_INCLUDES')
+            out += f" {environ_override('OPENSSL_INCLUDES')}"
         return out.strip()
     
     def get_libs(self):
-        out = "-l%s %s %s" % (self.library_name,
-                              environ_override('LIBS'),
-                              environ_override('SYSLIBS'))
-        out = out.strip()
+        out = f"-l{self.library_name} {environ_override('LIBS')} {environ_override('SYSLIBS')}"
         if not environ_override('PYTHONFRAMEWORK'):
-            out += " " + environ_override('LINKFORSHARED')
+            out += f" {environ_override('LINKFORSHARED')}".strip()
         if self.with_openssl:
-            out += " " + environ_override('OPENSSL_LIBS')
+            out += f" {environ_override('OPENSSL_LIBS')}".strip()
         return out.strip()
     
     def get_cflags(self):
-        out = "-I%s %s %s" % (sysconfig.get_path("include"),
-                              environ_override('CFLAGS'),
-                              environ_override('CXXFLAGS'))
+        out = f"-I{sysconfig.get_path('include')} {environ_override('CFLAGS')} {environ_override('CXXFLAGS')}".strip()
         if sysconfig.get_path("include") != \
            sysconfig.get_path("platinclude"):
-            out = "-I%s %s" % (sysconfig.get_path("platinclude"), out.strip())
+            out = f"-I{sysconfig.get_path('platinclude')} {out.strip()}".strip()
         if self.with_openssl:
-            out += " " + environ_override('OPENSSL_INCLUDES')
+            out += f" {environ_override('OPENSSL_INCLUDES')}"
         return out.strip()
     
     def get_ldflags(self):
@@ -696,17 +678,14 @@ class SysConfig(PythonConfig):
                    environ_override('LIBDEST'))
         for pth in libpths:
             if os.path.exists(pth):
-                ldstring += "%sL%s" % (TOKEN, pth)
+                ldstring += f"{TOKEN}L{pth}"
         if self.with_openssl:
-            ldstring += " " + environ_override('OPENSSL_LDFLAGS')
-        out = "%s -l%s %s %s" % (ldstring.strip(),
-                                 self.library_name,
-                                 environ_override('LIBS'),
-                                 environ_override('SYSLIBS'))
+            ldstring += f" {environ_override('OPENSSL_LDFLAGS')}"
+        out = f"{ldstring.strip()} -l{self.library_name} {environ_override('LIBS')} {environ_override('SYSLIBS')}"
         if not environ_override('PYTHONFRAMEWORK'):
-            out += " " + environ_override('LINKFORSHARED')
+            out += f" {environ_override('LINKFORSHARED')}"
         if self.with_openssl:
-            out += " " + environ_override('OPENSSL_LIBS')
+            out += f" {environ_override('OPENSSL_LIBS')}"
         return out.strip()
 
 
@@ -762,9 +741,7 @@ class PkgConfig(ConfigBase):
             pkg_name = 'python3'
         self.pkg_name = pkg_name
         self.add_package(pkg_name)
-        self.prefix = back_tick("%s %s --variable=prefix" % (self.pkgconfig,
-                                                             self.pkg_name),
-                                                             ret_err=False)
+        self.prefix = back_tick(f"{self.pkgconfig} {self.pkg_name} --variable=prefix", ret_err=False)
     
     def bin(self):
         return self.subdirectory("bin")
@@ -790,30 +767,24 @@ class PkgConfig(ConfigBase):
             along with the value of the “pkg_name” instance variable, specifying the name
             of the `pkg-config` package with whose data the instance was initialized.
         """
-        return "%s(pkg_name=“%s”)" % (type(self).__name__,
-                                           self.pkg_name)
+        return f"{type(self).__name__}(pkg_name=“{self.pkg_name}”)"
     
     def get_includes(self):
-        return back_tick("%s %s --cflags-only-I" % (self.pkgconfig,
-                                                    self.pkg_name),
-                                                    ret_err=False)
+        return back_tick(f"{self.pkgconfig} {self.pkg_name} --cflags-only-I",
+                         ret_err=False)
     
     def get_libs(self):
-        return back_tick("%s %s --libs-only-l --libs-only-other --static" % (self.pkgconfig,
-                                                                             self.pkg_name),
-                                                                             ret_err=False)
+        return back_tick(f"{self.pkgconfig} {self.pkg_name} --libs-only-l --libs-only-other --static",
+                         ret_err=False)
     
     def get_cflags(self):
-        out = "%s%s %s" % (TOKEN, TOKEN.join(self.cflags),
-                                  back_tick("%s %s --cflags" % (self.pkgconfig,
-                                                                self.pkg_name),
-                                                                ret_err=False))
-        return out.strip()
+        pc_cflags = back_tick(f"{self.pkgconfig} {self.pkg_name} --cflags",
+                              ret_err=False)
+        return f"{TOKEN}{TOKEN.join(self.cflags)} {pc_cflags}".strip()
     
     def get_ldflags(self):
-        return back_tick("%s %s --libs --static" % (self.pkgconfig,
-                                                    self.pkg_name),
-                                                    ret_err=False)
+        return back_tick(f"{self.pkgconfig} {self.pkg_name} --libs --static",
+                         ret_err=False)
 
 
 class NumpyConfig(ConfigBase):
@@ -858,25 +829,25 @@ class NumpyConfig(ConfigBase):
         return self.subdirectory("lib")
     
     def get_includes(self):
-        return " ".join("-I%s" % include_dir for include_dir \
-                            in sorted(self.info['include_dirs']))
+        return " ".join(f"-I{include_dir}" for include_dir \
+                          in sorted(self.info['include_dirs']))
     
     def get_libs(self):
-        return " ".join("-l%s" % library for library \
-                        in sorted(self.info['libraries']))
+        return " ".join(f"-l{library}" for library \
+                      in sorted(self.info['libraries']))
     
     def get_cflags(self):
-        out = "%s %s %s" % (self.macros.to_string(),
-                            self.get_includes(),
-            " ".join(sorted(self.info['extra_compile_args'])))
-        return out.strip()
+        macros = self.macros.to_string()
+        includes = self.get_includes()
+        extra_compile_args = " ".join(sorted(self.info['extra_compile_args']))
+        return f"{macros} {includes} {extra_compile_args}".strip()
     
     def get_ldflags(self):
-        out = "%s %s %s" % (" ".join("-L%s" % library_dir for library_dir \
-                                         in sorted(self.info['library_dirs'])),
-                                                   self.get_libs(),
-                                   " ".join(sorted(self.info['extra_link_args'])))
-        return out.strip()
+        linkdirs = " ".join(f"-L{library_dir}" for library_dir \
+                              in sorted(self.info['library_dirs']))
+        libs = self.get_libs()
+        extra_link_args = " ".join(sorted(self.info['extra_link_args']))
+        return f"{linkdirs} {libs} {extra_link_args}".strip()
 
 class BrewedConfig(ConfigBase):
     
@@ -901,8 +872,8 @@ class BrewedConfig(ConfigBase):
         if not brew_name:
             brew_name = 'halide'
         self.brew_name = brew_name
-        cmd = '%s --prefix %s' % (self.brew, self.brew_name)
-        self.prefix = back_tick(cmd, ret_err=False)
+        self.prefix = back_tick(f"{self.brew} --prefix {self.brew_name}",
+                                ret_err=False)
     
     def bin(self):
         return self.subdirectory("bin")
@@ -928,23 +899,19 @@ class BrewedConfig(ConfigBase):
             along with the value of the “brew_name” instance variable, specifying the
             name of the Homebrew formula with whose data the instance was initialized.
         """
-        return "%s(brew_name=“%s”)" % (type(self).__name__,
-                                            self.brew_name)
+        return f"{type(self).__name__}(brew_name=“{self.brew_name}”)"
     
     def get_includes(self):
-        return "-I%s" % self.include()
+        return f"-I{self.include()}"
     
     def get_libs(self):
         return ""
     
     def get_cflags(self):
-        out = "%s%s %s" % (TOKEN.lstrip(),
-                           TOKEN.join(self.cflags),
-                                      self.get_includes())
-        return out.strip()
+        return f"{TOKEN}{TOKEN.join(self.cflags)} {self.get_includes()}".strip()
     
     def get_ldflags(self):
-        return "-L%s" % self.lib()
+        return f"-L{self.lib()}"
 
 
 class BrewedHalideConfig(BrewedConfig):
@@ -972,10 +939,10 @@ class BrewedHalideConfig(BrewedConfig):
         return type(self).__name__
     
     def get_libs(self):
-        return "-l%s" % self.library
+        return f"-l{self.library}"
     
     def get_ldflags(self):
-        return "-L%s -l%s" % (self.lib(), self.library)
+        return f"-L{self.lib()} -l{self.library}"
 
 
 class BrewedImreadConfig(BrewedConfig):
@@ -985,21 +952,19 @@ class BrewedImreadConfig(BrewedConfig):
     """
     
     fields = ConfigBase.FieldList('library',
-                                  'config_command', dir_fields=True)
+                                  'imread_config', dir_fields=True)
     
-    # Name of the libimread library (sans “lib” prefix and file extension):
+    # Name of the libimread library (sans “lib” prefix and file extension)
+    # and the name of the corresponding Homebrew formula:
     library = "imread"
+    brew_name = 'libimread'
     
     # Name of, and path to, the `imread-config` utility:
-    config_command = which('imread-config')
+    imread_config = which('imread-config')
     
-    def __init__(self, brew_name=None):
+    def __init__(self):
         """ Complete override of BrewedConfig’s __init__ method: """
-        if not brew_name:
-            brew_name = 'libimread'
-        self.brew_name = brew_name
-        cmd = '%s --prefix' % self.config_command
-        self.prefix = back_tick(cmd, ret_err=False)
+        self.prefix = back_tick(f"{self.imread_config} --prefix", ret_err=False)
     
     @property
     def name(self):
@@ -1007,20 +972,16 @@ class BrewedImreadConfig(BrewedConfig):
         return type(self).__name__
     
     def get_includes(self):
-        return back_tick("%s --includes" % self.config_command,
-                                           ret_err=False)
+        return back_tick(f"{self.imread_config} --includes", ret_err=False)
     
     def get_libs(self):
-        return back_tick("%s --libs" % self.config_command,
-                                       ret_err=False)
+        return back_tick(f"{self.imread_config} --libs", ret_err=False)
     
     def get_cflags(self):
-        return back_tick("%s --cflags" % self.config_command,
-                                         ret_err=False)
+        return back_tick(f"{self.imread_config} --cflags", ret_err=False)
     
     def get_ldflags(self):
-        return back_tick("%s --ldflags" % self.config_command,
-                                          ret_err=False)
+        return back_tick(f"{self.imread_config} --ldflags", ret_err=False)
 
 
 class ConfigUnion(ConfigBase):
@@ -1056,7 +1017,7 @@ class ConfigUnion(ConfigBase):
             """ Initialize the @union_of decorator, stashing the name of the function
                 to call upon those config-class instances wrapped by the ConfigUnion
                 instance in question. """
-            self.name = "get_%s" % str(name)
+            self.name = f"get_{str(name)}"
         
         def __call__(self, base_function):
             """ Process the decorated method, passed in as `base_function` --
@@ -1068,7 +1029,7 @@ class ConfigUnion(ConfigBase):
                 out = set()
                 for config in this.configs:
                     function_to_call = getattr(config, self.name)
-                    out |= { flag.strip() for flag in (" %s" % function_to_call()).split(TOKEN) }
+                    out |= { flag.strip() for flag in f" {function_to_call()}".split(TOKEN) }
                 return (TOKEN.join(sorted(base_function(this, out)))).strip()
             return getter
     
@@ -1076,7 +1037,7 @@ class ConfigUnion(ConfigBase):
         
         """ A sugary-sweet class for stowing a set of flags whose order is significant. """
         
-        joiner = ",%s" % TOKEN
+        joiner = f",{TOKEN}"
         __slots__ = ('flags', 'set')
         
         def __init__(self, template, flaglist):
@@ -1096,10 +1057,10 @@ class ConfigUnion(ConfigBase):
             return self.flags.index(value)
         
         def __repr__(self):
-            return "[%s%s ]" % (TOKEN, self.joiner.join(self.flags))
+            return f"[{TOKEN}{self.joiner.join(self.flags)} ]"
         
         def __str__(self):
-            return "[%s%s ]" % (TOKEN, self.joiner.join(self.flags))
+            return f"[{TOKEN}{self.joiner.join(self.flags)} ]"
         
         def __bytes__(self):
             return u8bytes(repr(self))
@@ -1247,8 +1208,8 @@ class ConfigUnion(ConfigBase):
             Internally, this property calls ConfigUnion.sub_config_types(self) to furnish
             itself with the sub-config type list.
         """
-        return "%s<%s>" % (type(self).__name__,
-               ", ".join(sorted(self.sub_config_types())))
+        typelist = ", ".join(sorted(self.sub_config_types()))
+        return f"{type(self).__name__}<{typelist}>"
     
     @union_of(name='includes')
     def get_includes(self, includes):
@@ -1314,6 +1275,9 @@ def AR(conf, outfile, *infiles, **kwargs):
     return back_tick(conf.ar_flag_string() % (outfile, " ".join(infiles)),
                      ret_err=True,
                      verbose=kwargs.pop('verbose', DEFAULT_VERBOSITY))
+
+del SubBaseAncestor
+del BaseAncestor
 
 test_generator_source = b"""
 #include "Halide.h"
