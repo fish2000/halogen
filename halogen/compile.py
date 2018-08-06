@@ -7,6 +7,7 @@ import sys
 import config
 
 from tempfile import mktemp
+from compiledb import CDBBase
 from config import SHARED_LIBRARY_SUFFIX, STATIC_LIBRARY_SUFFIX, DEFAULT_VERBOSITY
 from errors import HalogenError, GeneratorLoaderError, GenerationError
 from generate import preload, generate, default_emits
@@ -65,6 +66,7 @@ class Generator(object):
         if not source:
             raise CompilerError("A C++ generator source file is required")
         self.VERBOSE = bool(kwargs.pop('verbose', DEFAULT_VERBOSITY))
+        self.cdb = kwargs.pop('cdb', None)
         self.conf = conf
         self.destination = os.fspath(destination)
         self.intermediate = 'intermediate' in kwargs and os.fspath(kwargs.pop('intermediate')) or None
@@ -77,6 +79,8 @@ class Generator(object):
             print(f"*    Config class: {self.conf.name}")
             print(f"* Source filename: {os.path.basename(self.source)}")
             print(f"* Output filepath: {self.destination}")
+            if self.cdb:
+                print(f"*  Compilation DB: {repr(self.cdb)}")
             if self.intermediate:
                 print(f"*    Intermediate: {self.intermediate}")
             print("")
@@ -122,6 +126,8 @@ class Generator(object):
             self.result += config.CXX(self.conf,
                                       self.transient,
                                       sourcebase,
+                                      cdb=self.cdb,
+                                      directory=cwd.name,
                                       verbose=self.VERBOSE)
         return True
     
@@ -179,6 +185,7 @@ class Generators(object):
     def __init__(self, conf, destination, directory=None, intermediate=None,
                                                           suffix="cpp",
                                                           prefix="yodogg",
+                                                          use_cdb=True,
                                           do_shared=True, do_static=True,
                                           do_preload=True,
                                         **kwargs):
@@ -190,6 +197,7 @@ class Generators(object):
             prefix = "yodogg"
         self.MAXIMUM =  int(kwargs.pop('maximum', DEFAULT_MAXIMUM_GENERATOR_COUNT))
         self.VERBOSE = bool(kwargs.pop('verbose', DEFAULT_VERBOSITY))
+        self.cdb = use_cdb and CDBBase() or None
         self.conf = conf
         self.suffix = suffix
         self.prefix = prefix
@@ -330,6 +338,7 @@ class Generators(object):
         for source in self.sources:
             with TemporaryName(suffix=self.object_suffix) as tn:
                 with Generator(self.conf,
+                               cdb=self.cdb,
                                source=source,
                                destination=os.fspath(tn),
                                intermediate=os.fspath(self.intermediate),

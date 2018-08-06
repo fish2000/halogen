@@ -68,6 +68,10 @@ class CDBBase(CDBSubBase):
             out.append(v)
         return out
     
+    @property
+    def length(self):
+        return len(self.entries)
+    
     def __len__(self):
         return len(self.entries)
     
@@ -83,10 +87,10 @@ class CDBBase(CDBSubBase):
         raise KeyError(f"not found: {key}")
     
     def to_string(self):
-        return stringify(self, ('entries',))
+        return stringify(self, ('length',))
     
     def __repr__(self):
-        return stringify(self, ('entries',))
+        return stringify(self, ('length',))
     
     def __str__(self):
         return u8str(json.dumps(self.rollout()))
