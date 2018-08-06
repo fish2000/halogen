@@ -441,6 +441,17 @@ class TemporaryName(TemporaryNameAncestor):
     def __fspath__(self):
         return self._name
     
+    def __eq__(self, other):
+        return os.path.samefile(self._name,
+                                os.fspath(other))
+    
+    def __ne__(self, other):
+        return not os.path.samefile(self._name,
+                                    os.fspath(other))
+    
+    def __hash__(self):
+        return hash((self._name, self.exists))
+    
     def __unicode__(self):
         return six.u(str(self))
 
@@ -822,6 +833,17 @@ class Directory(DirectoryAncestor):
                 return True
         return False
     
+    def __eq__(self, other):
+        return os.path.samefile(self.name,
+                                os.fspath(other))
+    
+    def __ne__(self, other):
+        return not os.path.samefile(self.name,
+                                    os.fspath(other))
+    
+    def __hash__(self):
+        return hash((self.name, self.exists))
+    
     def __call__(self, *args, **kwargs):
         return self
     
@@ -1042,7 +1064,7 @@ def test():
         assert tfn.destroy
         assert not tfn.exists
         assert not os.path.isfile(os.fspath(tfn))
-        assert not tfn.name in tfn.dirname
+        assert not tfn.basename in tfn.dirname
         print("* TemporaryName file object tests completed OK")
         print("")
     
@@ -1065,6 +1087,8 @@ def test():
         assert not cwd.did_change_back
         assert type(cwd.directory(cwd.new)) == Directory
         assert os.path.isdir(os.fspath(cwd))
+        assert not 'yodogg' in cwd
+        assert cwd.basename in cwd.dirname
         # print(", ".join(list(cwd.ls())))
         print("* Working-directory object tests completed OK")
         print("")
@@ -1122,6 +1146,7 @@ def test():
         assert os.path.isdir(os.fspath(p))
         assert ttd.basename in p
         assert ttd.basename in ttd.dirname
+        assert ttd.dirname == p
         print("* TemporaryDirectory object tests completed OK")
         print("")
 

@@ -671,7 +671,9 @@ def test():
         gens = Generators(CONF, directory=directory,
                                 destination=td,
                                 intermediate=td.subdirectory(".intermediate"),
-                                maximum=2, verbose=DEFAULT_VERBOSITY)
+                                maximum=2,
+                                use_cdb=True,
+                                verbose=DEFAULT_VERBOSITY)
         
         # Preserve compilation artifacts:
         # td.do_not_destroy()

@@ -157,7 +157,8 @@ class CDBJsonFile(CDBBase):
     
     def __repr__(self):
         return stringify(self, type(self).fields)
-    
+
+CDBSubBase.register(CDBJsonFile)
 
 del SubBaseAncestor
 
