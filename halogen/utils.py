@@ -276,15 +276,17 @@ def test_compile(conf, test_source):
     
     import sys, os
     import config
+    from compiledb import CDBBase
     from filesystem import NamedTemporaryFile, TemporaryName
     
     width, height = get_terminal_size()
     output = tuple()
     px = "yodogg-"
+    cdb = CDBBase()
     
     print("=" * width)
     print("")
-    print(f"TESTING COMPILATION: config.CXX({conf.name}, <out>, <in>) ...")
+    print(f"TESTING COMPILATION: config.CXX({conf.name}, <out>, <in>, cdb=CDBBase()) ...")
     print("")
     
     with NamedTemporaryFile(suffix="cpp", prefix=px) as tf:
@@ -297,6 +299,7 @@ def test_compile(conf, test_source):
             
             output += config.CXX(conf, outfile=adotout.name,
                                        infile=tf.name,
+                                       cdb=cdb,
                                        verbose=True)
             
             print("-" * width)
@@ -317,8 +320,11 @@ def test_compile(conf, test_source):
             # success!
             print("COMPILATION TOTALLY WORKED!")
             print("")
+            cdb_json = str(cdb)
             stdout = u8str(output[0]).strip()
             stderr = u8str(output[1]).strip()
+            if cdb_json:
+                print(f"   CDB: {cdb_json}", file=sys.stdout)
             if stdout:
                 print(f"STDOUT: {stdout}", file=sys.stdout)
                 print("")

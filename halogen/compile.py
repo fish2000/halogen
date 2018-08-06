@@ -10,7 +10,9 @@ from tempfile import mktemp
 from config import SHARED_LIBRARY_SUFFIX, STATIC_LIBRARY_SUFFIX, DEFAULT_VERBOSITY
 from errors import HalogenError, GeneratorLoaderError, GenerationError
 from generate import preload, generate, default_emits
-from filesystem import rm_rf, TemporaryName, Directory, TemporaryDirectory, Intermediate
+from filesystem import rm_rf, TemporaryName
+from filesystem import Directory, cd
+from filesystem import TemporaryDirectory, Intermediate
 from utils import u8str
 
 __all__ = ('CONF', 'DEFAULT_MAXIMUM_GENERATOR_COUNT',
@@ -105,17 +107,22 @@ class Generator(object):
         """
         if self.compiled:
             return True
-        splitbase = os.path.splitext(
-                    os.path.basename(self.source))
+        sourcebase = os.path.basename(self.source)
+        dirname = os.path.dirname(self.source)
+        splitbase = os.path.splitext(sourcebase)
         self.transient = mktemp(prefix=splitbase[0],
                                 suffix=f"{splitbase[1]}{os.extsep}o",
                                 dir=self.intermediate)
         if self.VERBOSE:
-            print(f"Compiling: {os.path.basename(self.source)} to {os.path.basename(self.transient)}")
+            print(f"Compiling: {sourcebase} to {os.path.basename(self.transient)}")
             print("")
-        self.result += config.CXX(self.conf,
-                                  self.transient,
-                                  self.source, verbose=self.VERBOSE)
+        with cd(dirname) as cwd:
+            assert os.path.samefile(os.fspath(cwd),
+                                    os.getcwd())
+            self.result += config.CXX(self.conf,
+                                      self.transient,
+                                      sourcebase,
+                                      verbose=self.VERBOSE)
         return True
     
     def postcompile(self):

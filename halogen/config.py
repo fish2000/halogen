@@ -1243,36 +1243,50 @@ class ConfigUnion(ConfigBase):
         return out
 
 
-def CC(conf, outfile, infile, verbose=DEFAULT_VERBOSITY):
+def CC(conf, outfile, infile, **kwargs):
     """ Execute the C compiler, as named in the `CC` environment variable,
-        falling back to the compiler specified in Python `sysconfig`: """
-    return back_tick(conf.cc_flag_string() % (infile, outfile),
+        falling back to the compiler specified in Python `sysconfig`:
+    """
+    cdb = kwargs.pop('cdb', None)
+    command = conf.cc_flag_string() % (infile, outfile)
+    if cdb:
+        cdb.push(infile, command, kwargs.pop('directory', None))
+    return back_tick(command,
                      ret_err=True,
-                     verbose=verbose)
+                     verbose=kwargs.pop('verbose', DEFAULT_VERBOSITY))
 
-def CXX(conf, outfile, infile, verbose=DEFAULT_VERBOSITY):
+def CXX(conf, outfile, infile, **kwargs):
     """ Execute the C++ compiler, as named in the `CXX` environment variable,
-        falling back to the compiler specified in Python `sysconfig`: """
-    return back_tick(conf.cxx_flag_string() % (infile, outfile),
+        falling back to the compiler specified in Python `sysconfig`:
+    """
+    cdb = kwargs.pop('cdb', None)
+    command = conf.cxx_flag_string() % (infile, outfile)
+    if cdb:
+        cdb.push(infile, command, kwargs.pop('directory', None))
+    return back_tick(command,
                      ret_err=True,
-                     verbose=verbose)
+                     verbose=kwargs.pop('verbose', DEFAULT_VERBOSITY))
 
 def LD(conf, outfile, *infiles, **kwargs):
     """ Execute the dynamic linker, as named in the `LDCXXSHARED` environment variable,
-        falling back to the linker specified in Python `sysconfig`: """
-    return back_tick(conf.ld_flag_string() % (" ".join(infiles), outfile),
+        falling back to the linker specified in Python `sysconfig`:
+    """
+    command = conf.ld_flag_string() % (" ".join(infiles), outfile)
+    return back_tick(command,
                      ret_err=True,
                      verbose=kwargs.pop('verbose', DEFAULT_VERBOSITY))
 
 def AR(conf, outfile, *infiles, **kwargs):
     """ Execute the library archiver, as named in the `AR` environment variable,
-        falling back to the library archiver specified in Python `sysconfig`: """
+        falling back to the library archiver specified in Python `sysconfig`:
+    """
     # This function is the ugly duckling here because:
     #   a) it does not use the `conf` arg at all, and
     #   b) it has to manually amend 'ARFLAGS' it would seem
     #       b)[1] ... most configuration-getting pc-configgish flag tools
     #                 could not give less fucks about 'ARFLAGS', and so.
-    return back_tick(conf.ar_flag_string() % (outfile, " ".join(infiles)),
+    command = conf.ar_flag_string() % (outfile, " ".join(infiles))
+    return back_tick(command,
                      ret_err=True,
                      verbose=kwargs.pop('verbose', DEFAULT_VERBOSITY))
 
@@ -1358,7 +1372,8 @@ def print_cache():
     pprint(ConfigBase.base_field_cache, indent=4)
 
 def test():
-    from utils import print_config, test_compile, get_terminal_size
+    # from utils import print_config
+    from utils import test_compile, get_terminal_size
     
     width, height = get_terminal_size()
     
@@ -1369,7 +1384,7 @@ def test():
     pkgConfig = PkgConfig()
     numpyConfig = NumpyConfig()
     
-    configUnionOne = ConfigUnion(SysConfig(with_openssl=True))
+    # configUnionOne = ConfigUnion(SysConfig(with_openssl=True))
     configUnion = ConfigUnion(brewedHalideConfig, sysConfig)
     configUnionAll = ConfigUnion(brewedHalideConfig, sysConfig,
                                  brewedPythonConfig, pythonConfig,
@@ -1379,15 +1394,15 @@ def test():
     
     """ Test basic config methods: """
     
-    print_config(brewedHalideConfig)
-    print_config(sysConfig)
-    print_config(pkgConfig)
-    print_config(numpyConfig)
-    print_config(brewedPythonConfig)
-    print_config(pythonConfig)
-    print_config(configUnionOne)
-    print_config(configUnion)
-    print_config(configUnionAll)
+    # print_config(brewedHalideConfig)
+    # print_config(sysConfig)
+    # print_config(pkgConfig)
+    # print_config(numpyConfig)
+    # print_config(brewedPythonConfig)
+    # print_config(pythonConfig)
+    # print_config(configUnionOne)
+    # print_config(configUnion)
+    # print_config(configUnionAll)
     
     """ Test compilation with different configs: """
     
@@ -1396,12 +1411,13 @@ def test():
     test_compile(configUnionAll, test_generator_source)
     
     """  Reveal the cached field-value dictionary: """
-    print("=" * width)
-    print("")
-    print("PRINTING: ConfigBase.base_field_cache -- dict<str> ...")
-    print("")
-    print_cache()
-    print("")
+    
+    # print("=" * width)
+    # print("")
+    # print("PRINTING: ConfigBase.base_field_cache -- dict<str> ...")
+    # print("")
+    # print_cache()
+    # print("")
 
 
 def corefoundation_check():
@@ -1440,4 +1456,4 @@ if __name__ == '__main__':
         print("SKIPPING: PyObjC-based CoreFoundation test (PyObjC not installed)")
     else:
         objc # SHUT UP, PYFLAKES!
-        corefoundation_check()
+        # corefoundation_check()
