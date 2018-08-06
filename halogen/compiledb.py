@@ -7,6 +7,7 @@ import os
 import six
 
 from abc import ABC, ABCMeta, abstractmethod
+from errors import CDBError
 from utils import stringify, u8bytes, u8str
 
 SubBaseAncestor = six.with_metaclass(ABCMeta, ABC)
@@ -44,19 +45,28 @@ class CDBSubBase(SubBaseAncestor):
 class CDBBase(CDBSubBase):
     
     def __init__(self):
-        self.entries = []
+        self.entries = {}
     
     def push(self, source, command, directory=None,
                                     destination=None):
+        if not source:
+            raise CDBError("a file source is required per entry")
         entry = {
             'directory' : directory or os.getcwd(),
-            'command'   : u8str(command)
-        }
-        entry.update({
+            'command'   : u8str(command),
             'file'      : source
-        })
-        self.entries.append(entry)
-        print(f"entries: {self.entries}")
+        }
+        if destination:
+            entry.update({
+                'output'    : destination
+            })
+        self.entries[source] = entry
+    
+    def rollout(self):
+        out = []
+        for k, v in self.entries.items():
+            out.append(v)
+        return out
     
     def __len__(self):
         return len(self.entries)
@@ -79,10 +89,10 @@ class CDBBase(CDBSubBase):
         return stringify(self, ('entries',))
     
     def __str__(self):
-        return u8str(json.dumps(self.entries))
+        return u8str(json.dumps(self.rollout()))
     
     def __bytes__(self):
-        return u8bytes(json.dumps(self.entries))
+        return u8bytes(json.dumps(self.rollout()))
     
     def __unicode__(self):
         return six.u(str(self))

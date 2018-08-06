@@ -325,6 +325,7 @@ def test_compile(conf, test_source):
             stderr = u8str(output[1]).strip()
             if cdb_json:
                 print(f"   CDB: {cdb_json}", file=sys.stdout)
+                print("")
             if stdout:
                 print(f"STDOUT: {stdout}", file=sys.stdout)
                 print("")

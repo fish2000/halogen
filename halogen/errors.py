@@ -41,3 +41,8 @@ class GeneratorLoaderError(GeneratorError):
 class GenerationError(GeneratorError):
     """ An error during generation -- as in, the running of a compiled generator """
     pass
+
+
+class CDBError(HalogenError):
+    """ A problem with a compilation database """
+    pass

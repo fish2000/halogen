@@ -1250,7 +1250,8 @@ def CC(conf, outfile, infile, **kwargs):
     cdb = kwargs.pop('cdb', None)
     command = conf.cc_flag_string() % (infile, outfile)
     if cdb:
-        cdb.push(infile, command, kwargs.pop('directory', None))
+        cdb.push(infile, command, directory=kwargs.pop('directory', None),
+                                  destination=outfile)
     return back_tick(command,
                      ret_err=True,
                      verbose=kwargs.pop('verbose', DEFAULT_VERBOSITY))
@@ -1262,7 +1263,8 @@ def CXX(conf, outfile, infile, **kwargs):
     cdb = kwargs.pop('cdb', None)
     command = conf.cxx_flag_string() % (infile, outfile)
     if cdb:
-        cdb.push(infile, command, kwargs.pop('directory', None))
+        cdb.push(infile, command, directory=kwargs.pop('directory', None),
+                                  destination=outfile)
     return back_tick(command,
                      ret_err=True,
                      verbose=kwargs.pop('verbose', DEFAULT_VERBOSITY))
