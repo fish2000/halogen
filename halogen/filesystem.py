@@ -19,12 +19,13 @@ from tempfile import mktemp, mkdtemp, gettempprefix, gettempdir
 from errors import ExecutionError, FilesystemError
 from utils import memoize, u8bytes, u8str, stringify, suffix_searcher
 
-__all__ = ('DEFAULT_PATH', 'DEFAULT_ENCODING', 'DEFAULT_TIMEOUT',
+__all__ = ('DEFAULT_PATH',
+           'DEFAULT_ENCODING',
+           'DEFAULT_TIMEOUT',
            'script_path', 'which', 'back_tick', 'rm_rf',
-           'TemporaryNamedFile',
            'TemporaryName',
            'Directory', 'cd', 'wd',
-           'TemporaryDirectory',
+           'TemporaryDirectory', 'Intermediate',
            'NamedTemporaryFile')
 
 DEFAULT_PATH = ":".join(filter(os.path.exists, ("/usr/local/bin",
@@ -162,7 +163,6 @@ def back_tick(command,  as_str=True,
         return (as_str and output.decode(encoding) or output), \
                (as_str and errors.decode(encoding) or errors)
     return (as_str and output.decode(encoding) or output)
-
 
 def rm_rf(pth):
     """ rm_rf() does what `rm -rf` does – so, for the love of fuck,
@@ -329,9 +329,9 @@ class TemporaryName(TemporaryNameAncestor):
         """
         if suffix:
             if not suffix.startswith(os.extsep):
-                suffix = "%s%s" % (os.extsep, suffix)
+                suffix = f"{os.extsep}{suffix}"
         else:
-            suffix = "%stmp" % os.extsep
+            suffix = f"{os.extsep}tmp"
         if not parent:
             parent = kwargs.pop('dir', None)
         if parent:
@@ -350,12 +350,12 @@ class TemporaryName(TemporaryNameAncestor):
     @property
     def basename(self):
         """ The basename (aka the filename) of the temporary file path. """
-        return os.path.basename(self.name)
+        return os.path.basename(self._name)
     
     @property
     def dirname(self):
         """ The dirname (aka the enclosing directory) of the temporary file. """
-        return self.directory(pth=os.path.dirname(self.name))
+        return self.directory(pth=os.path.dirname(self._name))
     
     @property
     def exists(self):
@@ -391,9 +391,9 @@ class TemporaryName(TemporaryNameAncestor):
     
     def split(self):
         """ Return (dirname, basename) e.g. for /yo/dogg/i/heard/youlike,
-            you get back ("/yo/dogg/i/heard", "youlike")
+            you get back (Directory("/yo/dogg/i/heard"), "youlike")
         """
-        return os.path.split(self.name)
+        return self.dirname, self.basename
     
     def copy(self, destination):
         """ Copy the file (if one exists) at the instances’ file path
@@ -414,7 +414,7 @@ class TemporaryName(TemporaryNameAncestor):
             than once without further side effects.
         """
         self._destroy = False
-        return self.name
+        return self._name
     
     def __enter__(self):
         return self
@@ -432,14 +432,14 @@ class TemporaryName(TemporaryNameAncestor):
     
     def __str__(self):
         if self.exists:
-            return os.path.realpath(self.name)
-        return self.name
+            return os.path.realpath(self._name)
+        return self._name
     
     def __bytes__(self):
         return u8bytes(str(self))
     
     def __fspath__(self):
-        return str(self.name)
+        return self._name
     
     def __unicode__(self):
         return six.u(str(self))
@@ -458,12 +458,12 @@ class Directory(DirectoryAncestor):
               'will_change',        'did_change',
               'will_change_back',   'did_change_back')
     
-    zip_suffix = "%szip" % os.extsep
+    zip_suffix = f"{os.extsep}zip"
     
-    def __new__(cls, pth=None, **kwargs):
-        instance = super(Directory, cls).__new__(cls)
-        instance.ctx_initialize()
-        return instance
+    # def __new__(cls, pth=None, **kwargs):
+    #     instance = super(Directory, cls).__new__(cls)
+    #     instance.ctx_initialize()
+    #     return instance
     
     def __init__(self, pth=None):
         """ Initialize a new Directory object.
@@ -487,7 +487,10 @@ class Directory(DirectoryAncestor):
             initializing itself with the current working directory as its target,
             and fundamentally avoids issuing any directory-change calls.
         """
-        self.target = pth and os.fspath(pth) or None
+        if pth is not None:
+            self.target = u8str(os.fspath(pth))
+        else:
+            self.target = os.getcwd()
         self.ctx_set_targets()
     
     @property
@@ -546,7 +549,7 @@ class Directory(DirectoryAncestor):
             needed by the internal workings of a Directory instance.
         """
         if hasattr(self, 'new'):
-            self.target = self.new
+            self.target = u8str(self.new)
             del self.new
         if hasattr(self, 'old'):
             del self.old
@@ -558,6 +561,7 @@ class Directory(DirectoryAncestor):
             del self.did_change
         if hasattr(self, 'did_change_back'):
             del self.did_change_back
+        return self
     
     def ctx_set_targets(self, old=None):
         """ Sets the “self.old” and “self.new” instance variable values,
@@ -577,8 +581,15 @@ class Directory(DirectoryAncestor):
             `Directory.ctx_prepare(self)` (q.v. doctext help sub.) which
             that will call `Directory.ctx_set_targets(self, …)` itself.)
         """
-        self.old = old or self.target
-        self.new = self.target or self.old
+        if not hasattr(self, 'target'):
+            if old is not None:
+                setattr(self, 'old', old)
+                setattr(self, 'new', old)
+            return self
+        setattr(self, 'old', old or getattr(self, 'target'))
+        setattr(self, 'new', getattr(self, 'target',
+                             getattr(self, 'old')))
+        return self
     
     def ctx_prepare(self):
         """ Prepares the member values of the Directory instance according
@@ -607,6 +618,7 @@ class Directory(DirectoryAncestor):
         self.did_change = False
         self.will_change_back = self.will_change
         self.did_change_back = False
+        return self
     
     def __enter__(self):
         self.ctx_prepare()
@@ -625,16 +637,16 @@ class Directory(DirectoryAncestor):
             self.did_change_back = os.path.samefile(self.old,
                                                     backto)
             if self.did_change_back:
-                self.ctx_initialize()        # return to pristine state
-                self.ctx_set_targets(backto) # minimally reconfigure
+                # return to pristine state, and minimally reconfigure:
+                self.ctx_initialize().ctx_set_targets(backto)
                 return exc_type is None
         return False
     
     def realpath(self, pth=None):
         """ Sugar for calling os.path.realpath(self.name) """
-        if not pth:
-            pth = self.name
-        return os.path.realpath(os.fspath(pth))
+        return u8str(
+            os.path.realpath(
+            os.fspath(pth or self.name)))
     
     def ls(self, pth=None, suffix=None):
         """ List files -- defaults to the process’ current working directory.
@@ -683,14 +695,14 @@ class Directory(DirectoryAncestor):
         """
         pth = self.subpath(subdir, whence, requisite=False)
         if os.path.isfile(pth):
-            raise FilesystemError("file exists at subdirectory path: %s" % pth)
+            raise FilesystemError(f"file exists at subdirectory path: {pth}")
         if os.path.islink(pth):
-            raise FilesystemError("symlink exists at subdirectory path: %s" % pth)
+            raise FilesystemError(f"symlink exists at subdirectory path: {pth}")
         if os.path.ismount(pth):
-            raise FilesystemError("mountpoint exists at subdirectory path: %s" % pth)
+            raise FilesystemError(f"mountpoint exists at subdirectory path: {pth}")
         return self.directory(pth)
     
-    def makedirs(self, pth=os.curdir):
+    def makedirs(self, pth=None):
         """ Creates any parts of the target directory path that don’t
             already exist, á la the `mkdir -p` shell command.
         """
@@ -742,10 +754,9 @@ class Directory(DirectoryAncestor):
         if whereto.exists or os.path.isfile(whereto.name) \
                           or os.path.islink(whereto.name):
             raise FilesystemError(
-                "copy_all() destination exists: %s" % whereto.name)
+                f"copy_all() destination exists: {whereto.name}")
         if self.exists:
-            return shutil.copytree(u8str(self.name),
-                                   u8str(whereto.name))
+            return shutil.copytree(self.name, whereto.name)
         return False
     
     def zip_archive(self, zpth=None, zmode=None):
@@ -764,7 +775,7 @@ class Directory(DirectoryAncestor):
             zpth += self.zip_suffix
         if os.path.exists(zpth):
             if os.path.isdir(zpth):
-                raise FilesystemError("Can't overwrite a directory: %s" % zpth)
+                raise FilesystemError(f"Can't overwrite a directory: {zpth}")
             raise FilesystemError("File path for zip-archive already exists")
         if not zmode:
             zmode = zipfile.ZIP_DEFLATED
@@ -782,6 +793,10 @@ class Directory(DirectoryAncestor):
             ztmp.copy(zpth)
         return self.realpath(zpth)
     
+    def close(self):
+        """ Stub method -- always returns True: """
+        return True
+    
     def to_string(self):
         """ Stringify the Directory instance. """
         return stringify(self, type(self).fields)
@@ -798,7 +813,7 @@ class Directory(DirectoryAncestor):
         return u8bytes(str(self))
     
     def __fspath__(self):
-        return str(self.name)
+        return self.name
     
     def __unicode__(self):
         return six.u(str(self))
@@ -807,7 +822,7 @@ class Directory(DirectoryAncestor):
 class cd(Directory):
     
     def __init__(self, pth):
-        """ Change to a new directory (the target path `pth` must be specifieds).
+        """ Change to a new directory (the target path `pth` must be specified).
         """
         super(cd, self).__init__(pth)
 
@@ -851,7 +866,7 @@ class TemporaryDirectory(Directory):
         """
         if suffix:
             if not suffix.startswith(os.extsep):
-                suffix = "%s%s" % (os.extsep, suffix)
+                suffix = f"{os.extsep}{suffix}"
         if not parent:
             parent = kwargs.pop('dir', None)
         if parent:
@@ -884,17 +899,19 @@ class TemporaryDirectory(Directory):
     
     @wraps(Directory.ctx_prepare)
     def ctx_prepare(self):
-        super(TemporaryDirectory, self).ctx_prepare()
-        self.will_change = bool(self.will_change and self.change)
-        self.will_change_back = bool(self.will_change and self.change)
+        change = super(TemporaryDirectory, self).ctx_prepare().change
+        self.will_change = bool(self.will_change and change)
+        self.will_change_back = bool(self.will_change and change)
+        return self
     
-    def destroy_all(self):
+    def close(self):
         """ Delete the directory pointed to by the TemporaryDirectory
             instance, and everything it contains. USE WITH CAUTION.
         """
+        out = super(TemporaryDirectory, self).close()
         if self.exists:
-            return rm_rf(self.name)
-        return False
+            return rm_rf(self.name) and out
+        return out
     
     def do_not_destroy(self):
         """ Mark this TemporaryDirectory instance as one that should not
@@ -908,17 +925,43 @@ class TemporaryDirectory(Directory):
     
     def __enter__(self):
         if not self.exists:
-            raise FilesystemError(
-                "TemporaryDirectory “%s” failed to exist" % self.name)
+            self.makedirs()
         super(TemporaryDirectory, self).__enter__()
         return self
     
     def __exit__(self, exc_type=None, exc_val=None, exc_tb=None):
         out = super(TemporaryDirectory, self).__exit__(exc_type, exc_val, exc_tb)
         if self.destroy:
-            out = self.destroy_all() and out
+            out = self.close() and out
         return out
 
+
+class Intermediate(TemporaryDirectory, Directory):
+    
+    """ halogen.filesystem.Intermediate isn’t a class, per se – rather, it is a
+        class factory proxy that normally constructs a new Directory instance
+        in leu of itself, except for when it it is constructed without a `pth`
+        argument, in which case, it falls back to the construction of a new
+        TemporaryDirectory instance instead.
+        
+        It is called `Intermediate` because it is used to initialize a directory
+        in halogen.compile.Generators known as the “intermediate directory,” for
+        more on why or what that is, q.v. that class definition sub.
+    """
+    
+    def __new__(cls, pth=None):
+        """ The constructor simply delegates to the creation of either a new
+            Directory or a new TemporaryDirectory.
+        """
+        if pth:
+            return Directory(pth=pth)
+        return TemporaryDirectory(prefix=f"{cls.__name__}-")
+    
+    def __init__(self, pth=None):
+        """ The initializer explicitly does nothing, as it will always be called
+            on an already-initialized instance of some other class.
+        """
+        pass
 
 def NamedTemporaryFile(mode='w+b', buffer_size=-1,
                        suffix="tmp", prefix=gettempprefix(),
@@ -935,13 +978,13 @@ def NamedTemporaryFile(mode='w+b', buffer_size=-1,
                          _mkstemp_inner, _os,               \
                          _TemporaryFileWrapper
     
-    parent = Directory(pth=directory or gettempdir())
+    parent = Intermediate(pth=directory)
     
     if suffix:
         if not suffix.startswith(os.extsep):
-            suffix = "%s%s" % (os.extsep, suffix)
+            suffix = f"{os.extsep}{suffix}"
     else:
-        suffix = "%stmp" % os.extsep
+        suffix = f"{os.extsep}tmp"
     
     if 'b' in mode:
         flags = _bin_openflags
@@ -962,7 +1005,6 @@ def NamedTemporaryFile(mode='w+b', buffer_size=-1,
             _os.close(descriptor)
         raise FilesystemError(str(base_exception))
 
-
 def test():
     
     """ Run the inline tests for the halogen.filesystem module. """
@@ -973,7 +1015,7 @@ def test():
     initial = os.getcwd()
     
     with TemporaryName(prefix="test-temporaryname-") as tfn:
-        print("* Testing TemporaryName file object: %s" % tfn.name)
+        print(f"* Testing TemporaryName file instance: {tfn.name}")
         assert os.path.samefile(os.getcwd(),            initial)
         assert gettempdir() in tfn.name
         assert tfn.prefix == "test-temporaryname-"
@@ -990,7 +1032,7 @@ def test():
         print("")
     
     with wd() as cwd:
-        print("* Testing working-directory object: %s" % cwd.name)
+        print(f"* Testing working-directory instance: {cwd.name}")
         assert os.path.samefile(os.getcwd(),            cwd.new)
         assert os.path.samefile(os.getcwd(),            cwd.old)
         assert os.path.samefile(os.getcwd(),            os.fspath(cwd))
@@ -1013,7 +1055,7 @@ def test():
         print("")
     
     with cd(gettempdir()) as tmp:
-        print("* Testing directory-change object: %s" % tmp.name)
+        print(f"* Testing directory-change instance: {tmp.name}")
         assert os.path.samefile(os.getcwd(),            gettempdir())
         assert os.path.samefile(os.getcwd(),            tmp.new)
         assert os.path.samefile(gettempdir(),           tmp.new)
@@ -1035,7 +1077,7 @@ def test():
         print("")
     
     with TemporaryDirectory(prefix="test-temporarydirectory-") as ttd:
-        print("* Testing TemporaryDirectory object: %s" % ttd.name)
+        print(f"* Testing TemporaryDirectory instance: {ttd.name}")
         # assert os.path.commonpath((os.getcwd(), gettempdir())) == gettempdir()
         # print(os.path.commonpath((os.getcwd(), gettempdir())))
         assert gettempdir() in ttd.name

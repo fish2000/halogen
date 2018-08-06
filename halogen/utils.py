@@ -189,10 +189,9 @@ def stringify(instance, fields):
             field_dict.update({ str(field) : field_value })
     field_dict_items = []
     for k, v in field_dict.items():
-        field_dict_items.append('''%s="%s"''' % (k, v))
-    return "%s(%s) @ %s" % (instance.__class__.__name__,
-                            ", ".join(field_dict_items),
-                            hex(id(instance)))
+        field_dict_items.append(f'''{k}="{v}"''')
+    field_dict_string = ", ".join(field_dict_items)
+    return f"{instance.__class__.__name__}({field_dict_string}) @ {hex(id(instance))}"
 
 def suffix_searcher(suffix):
     """ Return a boolean function that will search for the given
@@ -210,9 +209,9 @@ def suffix_searcher(suffix):
         return lambda searching_for: True
     regex_str = r""
     if suffix.startswith(os.extsep):
-        regex_str += r"\%s$" % suffix
+        regex_str += rf"\{suffix}$"
     else:
-        regex_str += r"\%s%s$" % (os.extsep, suffix)
+        regex_str += rf"\{os.extsep}{suffix}$"
     searcher = re.compile(regex_str, re.IGNORECASE).search
     return lambda searching_for: bool(searcher(searching_for))
 
@@ -221,12 +220,11 @@ def terminal_print(message, color='red', asterisk='*'):
     from clint.textui.colored import red
     from clint.textui import colored
     colorizer = getattr(colored, color.lower(), red)
-    message = " %s " % message.strip()
+    message = f" {message.strip()} "
     asterisks = (terminal_width / 2) - (len(message) / 2)
-    print(colorizer("""%(aa)s%(message)s%(ab)s""" % dict(
-        aa=asterisk[0] * asterisks,
-        ab=asterisk[0] * (asterisks + 0 - (len(message) % 2)),
-        message=message)))
+    aa = asterisk[0] * asterisks
+    ab = asterisk[0] * (asterisks + 0 - (len(message) % 2))
+    print(colorizer(f"{aa}{message}{ab}"))
 
 def print_config(conf):
     """ Print debug information for a halogen.config.ConfigBase subclass """
@@ -235,8 +233,8 @@ def print_config(conf):
     
     print("=" * width)
     print("")
-    print("CONFIG: %s" % conf.name)
-    print("PREFIX: %s" % conf.prefix)
+    print(f"CONFIG: {conf.name}")
+    print(f"PREFIX: {conf.prefix}")
     print("")
     print("-" * width)
     
@@ -286,7 +284,7 @@ def test_compile(conf, test_source):
     
     print("=" * width)
     print("")
-    print("TESTING COMPILATION: config.CXX(%s, <out>, <in>) ..." % conf.name)
+    print(f"TESTING COMPILATION: config.CXX({conf.name}, <out>, <in>) ...")
     print("")
     
     with NamedTemporaryFile(suffix="cpp", prefix=px) as tf:
@@ -294,8 +292,8 @@ def test_compile(conf, test_source):
         tf.file.flush()
         
         with TemporaryName(suffix="cpp.o", prefix=px) as adotout:
-            print("C++ SOURCE: %s" % tf.name)
-            print("C++ TARGET: %s" % adotout.name)
+            print(f"C++ SOURCE: {tf.name}")
+            print(f"C++ TARGET: {adotout.name}")
             
             output += config.CXX(conf, outfile=adotout.name,
                                        infile=tf.name,
@@ -309,10 +307,10 @@ def test_compile(conf, test_source):
                 stdout = u8str(output[0]).strip()
                 stderr = u8str(output[1]).strip()
                 if stdout:
-                    print("STDOUT: %s" % stdout, file=sys.stdout)
+                    print(f"STDOUT: {stdout}", file=sys.stdout)
                     print("")
                 if stderr:
-                    print("STDERR: %s" % stderr, file=sys.stderr)
+                    print(f"STDERR: {stderr}", file=sys.stderr)
                     print("")
                 return False
             
@@ -322,10 +320,10 @@ def test_compile(conf, test_source):
             stdout = u8str(output[0]).strip()
             stderr = u8str(output[1]).strip()
             if stdout:
-                print("STDOUT: %s" % stdout, file=sys.stdout)
+                print(f"STDOUT: {stdout}", file=sys.stdout)
                 print("")
             if stderr:
-                print("STDERR: %s" % stderr, file=sys.stderr)
+                print(f"STDERR: {stderr}", file=sys.stderr)
                 print("")
             if os.path.exists(str(adotout)):
                 return True

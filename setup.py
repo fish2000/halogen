@@ -19,7 +19,7 @@ except ImportError:
     numpy = FakeNumpy()
     print("NUMPY NOT FOUND (using shim)")
 else:
-    print("import: module %s found" % numpy.__name__)
+    print(f"import: module {numpy.__name__} found")
 
 # VERSION & METADATA
 __version__ = "<undefined>"

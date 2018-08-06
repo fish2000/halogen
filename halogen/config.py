@@ -262,7 +262,7 @@ class ConfigBase(BaseAncestor):
     def prefix(self, value):
         prefixd = Directory(value)
         if not prefixd.exists:
-            raise ValueError("prefix path does not exist: %s" % prefixd)
+            raise ValueError(f"prefix path does not exist: {prefixd}")
         self._prefix = prefixd
     
     @prefix.deleter
@@ -362,11 +362,10 @@ class Macro(object):
             if applicable.
         """
         if self.undefine:
-            return "U%s" % u8str(self.name)
+            return f"U{u8str(self.name)}"
         if self.definition is not None:
-            return "D%s=%s" % (u8str(self.name),
-                               u8str(self.definition))
-        return "D%s" % u8str(self.name)
+            return f"D{u8str(self.name)}={u8str(self.definition)}"
+        return f"D{u8str(self.name)}"
     
     def to_tuple(self):
         """ Tuple-ize the macro instance -- return a tuple in the form (name, value)
@@ -439,9 +438,9 @@ class Macros(dict):
         return tuple(out)
     
     def to_string(self):
-        return "%s%s" % (TOKEN,
-                         TOKEN.join(Macro(k, v).to_string() \
-                                      for k, v in self.items()).strip())
+        stringified = TOKEN.join(Macro(k, v).to_string() \
+                                   for k, v in self.items()).strip()
+        return f"{TOKEN.lstrip()}{stringified}"
     
     def __str__(self):
         return self.to_string()
@@ -547,7 +546,7 @@ class PythonConfig(ConfigBase):
         return os.path.join(self.framework,
                             self.framework_name,
                             'Versions',
-                            '%s%s%s' % (sys.version_info.major, os.extsep,
+                            '%i%s%i' % (sys.version_info.major, os.extsep,
                                         sys.version_info.minor),
                             'Headers')
 
@@ -555,7 +554,7 @@ class PythonConfig(ConfigBase):
         return os.path.join(self.framework,
                             self.framework_name,
                             'Versions',
-                            '%s%s%s' % (sys.version_info.major, os.extsep,
+                            '%i%s%i' % (sys.version_info.major, os.extsep,
                                         sys.version_info.minor),
                             'Resources')
     
@@ -646,7 +645,7 @@ class SysConfig(PythonConfig):
         return os.path.join(environ_override('PYTHONFRAMEWORKPREFIX'),
                             self.framework_name,
                             'Versions',
-                            '%s%s%s' % (sys.version_info.major, os.extsep,
+                            '%i%s%i' % (sys.version_info.major, os.extsep,
                                         sys.version_info.minor),
                             'Headers')
     
@@ -654,7 +653,7 @@ class SysConfig(PythonConfig):
         return os.path.join(environ_override('PYTHONFRAMEWORKPREFIX'),
                             self.framework_name,
                             'Versions',
-                            '%s%s%s' % (sys.version_info.major, os.extsep,
+                            '%i%s%i' % (sys.version_info.major, os.extsep,
                                         sys.version_info.minor),
                             'Resources')
     
@@ -663,6 +662,7 @@ class SysConfig(PythonConfig):
         if sysconfig.get_path("include") != \
            sysconfig.get_path("platinclude"):
             out += " -I%s" % sysconfig.get_path("platinclude")
+            out = out.strip()
         if self.with_openssl:
             out += " " + environ_override('OPENSSL_INCLUDES')
         return out.strip()
@@ -671,6 +671,7 @@ class SysConfig(PythonConfig):
         out = "-l%s %s %s" % (self.library_name,
                               environ_override('LIBS'),
                               environ_override('SYSLIBS'))
+        out = out.strip()
         if not environ_override('PYTHONFRAMEWORK'):
             out += " " + environ_override('LINKFORSHARED')
         if self.with_openssl:
@@ -683,7 +684,7 @@ class SysConfig(PythonConfig):
                               environ_override('CXXFLAGS'))
         if sysconfig.get_path("include") != \
            sysconfig.get_path("platinclude"):
-            out = "-I%s %s" % (sysconfig.get_path("platinclude"), out)
+            out = "-I%s %s" % (sysconfig.get_path("platinclude"), out.strip())
         if self.with_openssl:
             out += " " + environ_override('OPENSSL_INCLUDES')
         return out.strip()
@@ -698,7 +699,7 @@ class SysConfig(PythonConfig):
                 ldstring += "%sL%s" % (TOKEN, pth)
         if self.with_openssl:
             ldstring += " " + environ_override('OPENSSL_LDFLAGS')
-        out = "%s -l%s %s %s" % (ldstring.lstrip(),
+        out = "%s -l%s %s %s" % (ldstring.strip(),
                                  self.library_name,
                                  environ_override('LIBS'),
                                  environ_override('SYSLIBS'))
@@ -937,7 +938,7 @@ class BrewedConfig(ConfigBase):
         return ""
     
     def get_cflags(self):
-        out = "%s%s %s" % (TOKEN,
+        out = "%s%s %s" % (TOKEN.lstrip(),
                            TOKEN.join(self.cflags),
                                       self.get_includes())
         return out.strip()
@@ -1075,7 +1076,7 @@ class ConfigUnion(ConfigBase):
         
         """ A sugary-sweet class for stowing a set of flags whose order is significant. """
         
-        joiner = ", %s" % TOKEN.lstrip()
+        joiner = ",%s" % TOKEN
         __slots__ = ('flags', 'set')
         
         def __init__(self, template, flaglist):

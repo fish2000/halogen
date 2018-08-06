@@ -21,7 +21,7 @@ valid_emits = frozenset((
 ))
 
 # Set the default emit options to False for all:
-emit_defaults = mappingproxy({ "emit_%s" % emit : False for emit in valid_emits })
+emit_defaults = mappingproxy({ f"emit_{emit}" : False for emit in valid_emits })
 
 # These are the default things to emit:
 default_emits = ('static_library', 'h')
@@ -42,7 +42,7 @@ def preload(library_path, **kwargs):
     
     # throw if the path is bad:
     if not os.path.exists(library_path):
-        raise GeneratorLoaderError("preload(): No library exists at %s" % library_path)
+        raise GeneratorLoaderError(f"preload(): No library exists at {library_path}")
     
     # normalize the path:
     realpth = os.path.realpath(library_path)
@@ -50,7 +50,7 @@ def preload(library_path, **kwargs):
     # return existant handle, because we already loaded that:
     if realpth in preload.loaded_libraries:
         if verbose:
-            print("preload(): Library %s previously loaded" % realpth)
+            print(f"preload(): Library {realpth} previously loaded")
         return preload.loaded_libraries[realpth]
     
     # so far, I have no use for the object returned by LoadLibrary:
@@ -58,7 +58,7 @@ def preload(library_path, **kwargs):
     
     # return the new and freshly loaded handle
     if verbose:
-        print("preload(): Library %s loaded afresh" % realpth)
+        print(f"preload(): Library {realpth} loaded afresh")
     return preload.loaded_libraries[realpth]
 
 def generate(*generators, **arguments):
@@ -86,7 +86,7 @@ def generate(*generators, **arguments):
     if not target_string:
         target_string = b"host"
     elif not api.validate_target_string(target_string):
-        raise GenerationError("generation target string %s is invalid" % u8str(target_string))
+        raise GenerationError(f"generation target string {u8str(target_string)} is invalid")
     
     if len(generators) < 1:
         raise GenerationError(">=1 generator is required")
@@ -95,18 +95,17 @@ def generate(*generators, **arguments):
         raise GenerationError(">=1 generator name is required")
     
     if not generators.issubset(generator_names):
-        raise GenerationError("generator name in %s unknown to set: %s" % (str(generator_names),
-                                                                           str(generators)))
+        raise GenerationError(f"generator name in {str(generator_names)} unknown to set: {str(generators)}")
     
     if not output_directory.exists:
         output_directory.makedirs()
     
     if not emits.issubset(valid_emits):
-        raise GenerationError("invalid emit in %s" % str(emits))
+        raise GenerationError(f"invalid emit in {str(emits)}")
     
     if verbose:
         print("")
-        print("generate(): Preparing %s generator modules to emit data …" % len(generators))
+        print(f"generate(): Preparing {len(generators)} generator modules to emit data …")
         print("")
     
     # Set what emits to, er, emit, as per the “emit” keyword argument;
@@ -114,7 +113,7 @@ def generate(*generators, **arguments):
     # …plus, we’ve already ensured that the set is valid:
     emit_dict = dict(emit_defaults)
     for emit in emits:
-        emit_dict["emit_%s" % emit] = True
+        emit_dict[f"emit_{emit}"] = True
     
     # The “substitutions” keyword to the EmitOptions constructor is special;
     # It’s just a dict, passed forward during argument processing:
@@ -156,17 +155,16 @@ def generate(*generators, **arguments):
         output = emit_options.compute_outputs_for_target_and_path(target, base_path)
         
         if verbose:
-            print("BSEPTH: %s" % u8str(base_path))
-            print("OUTPUT: %s" % u8str(output))
-            print("TARGET: %s" % u8str(target))
+            print(f"BSEPTH: {u8str(base_path)}")
+            print(f"OUTPUT: {u8str(output)}")
+            print(f"TARGET: {u8str(target)}")
         
         # This API call prepares the generator code module:
         module = api.get_generator_module(generator,
                                           arguments={ 'target': str(target) })
         
         if verbose:
-            print("MODULE: %s (%s)" % (u8str(module.name),
-                                       u8str(module)))
+            print(f"MODULE: {u8str(module.name)} ({u8str(module)})")
             print('-' * max(terminal_width, 100))
         
         # The module-compilation call:
