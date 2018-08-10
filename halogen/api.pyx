@@ -963,7 +963,11 @@ cdef class Module:
         self.__this__.reset(new HalModule(m))
     
     def compile(Module self, Outputs outputs):
-        deref(self.__this__).compile(<HalOutputs>outputs.__this__)
+        cdef HalModule* this = self.__this__.get()
+        cdef HalOutputs outs = <HalOutputs>outputs.__this__
+        with nogil:
+            this.compile(outs)
+        return self
     
     def resolve_submodules(Module self):
         return Module.with_instance(
