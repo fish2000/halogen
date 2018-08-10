@@ -115,7 +115,7 @@ class Generator(object):
         sourcebase = os.path.basename(self.source)
         dirname = os.path.dirname(self.source)
         splitbase = os.path.splitext(sourcebase)
-        suffix = os.path.splitext(self.destination)[1] # f"{splitbase[1]}{os.extsep}o"
+        suffix = os.path.splitext(self.destination)[1]
         self.transient = mktemp(prefix=splitbase[0],
                                 suffix=suffix,
                                 dir=self.intermediate)
@@ -124,7 +124,6 @@ class Generator(object):
             print("")
         with cd(dirname) as cwd:
             # assert os.path.samefile(os.fspath(cwd), os.getcwd())
-            # os.path.relpath(self.transient, start=os.fspath(cwd))
             self.result += config.CXX(self.conf, self.transient,
                                                  sourcebase,
                                                  cdb=self.cdb,
