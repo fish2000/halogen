@@ -117,7 +117,7 @@ class Generator(object):
         suffix = os.path.splitext(self.destination)[1]
         self.transient = temporary(prefix=splitbase[0],
                                    suffix=suffix,
-                                   dir=self.intermediate)
+                                   parent=self.intermediate)
         if self.VERBOSE:
             print(f"Compiling: {sourcebase} to {os.path.basename(self.transient)}")
             print("")
