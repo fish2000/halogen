@@ -338,9 +338,9 @@ class TemporaryName(TemporaryNameAncestor):
             parent = os.fspath(parent)
         self._name = mktemp(prefix=prefix, suffix=suffix, dir=parent)
         self._destroy = True
+        self._parent = parent
         self.prefix = prefix
         self.suffix = suffix
-        self.parent = parent
     
     @property
     def name(self):
@@ -355,7 +355,7 @@ class TemporaryName(TemporaryNameAncestor):
     @property
     def dirname(self):
         """ The dirname (aka the enclosing directory) of the temporary file. """
-        return self.directory(pth=os.path.dirname(self._name))
+        return self.parent()
     
     @property
     def exists(self):
@@ -416,12 +416,29 @@ class TemporaryName(TemporaryNameAncestor):
         self._destroy = False
         return self._name
     
+    def parent(self):
+        """ Sugar for `os.path.abspath(os.path.join(self.name, os.pardir))`
+            which, if you are curious, gets you the parent directory of
+            the instances’ target filename, wrapped in a Directory
+            instance.
+        """
+        return self.directory(os.path.abspath(
+                              os.path.join(self.name,
+                                           os.pardir)))
+    
+    def close(self):
+        """ Destroys any existing file at this instances’ file path. """
+        if self.exists:
+            return rm_rf(self._name)
+        return False
+    
     def __enter__(self):
         return self
     
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        if self.exists and self.destroy:
-            rm_rf(self._name)
+    def __exit__(self, exc_type=None, exc_val=None, exc_tb=None):
+        if self.destroy:
+            self.close()
+        return exc_type is None
     
     def to_string(self):
         """ Stringify the TemporaryName instance. """
@@ -1061,6 +1078,8 @@ def test():
     # and “TemporaryDirectory”:
     
     initial = os.getcwd()
+    tfp = None
+    tdp = None
     
     with TemporaryName(prefix="test-temporaryname-") as tfn:
         print(f"* Testing TemporaryName file instance: {tfn.name}")
@@ -1068,17 +1087,30 @@ def test():
         assert gettempdir() in tfn.name
         assert tfn.prefix == "test-temporaryname-"
         assert tfn.suffix == ".tmp"
-        assert not tfn.parent
+        assert not tfn._parent
         assert tfn.prefix in tfn.name
         assert tfn.suffix in tfn.name
         assert tfn.prefix in os.fspath(tfn)
         assert tfn.suffix in os.fspath(tfn)
         assert tfn.destroy
+        assert type(tfn.directory(os.path.basename(tfn.name))) == Directory
+        p = tfn.parent()
+        assert os.path.samefile(os.fspath(p), gettempdir())
         assert not tfn.exists
         assert not os.path.isfile(os.fspath(tfn))
         assert not tfn.basename in tfn.dirname
+        assert not tfn.basename in p
+        with open(os.fspath(tfn), mode="w") as handle:
+            handle.write("yo dogg")
+        assert tfn.exists
+        assert os.path.isfile(os.fspath(tfn))
+        assert tfn.basename in tfn.dirname
+        assert tfn.basename in p
+        tfp = tfn.name
         print("* TemporaryName file object tests completed OK")
         print("")
+    
+    assert not os.path.exists(tfp)
     
     with wd() as cwd:
         print(f"* Testing working-directory instance: {cwd.name}")
@@ -1146,6 +1178,7 @@ def test():
         assert not ttd.suffix
         assert not ttd._parent
         assert ttd.prefix in ttd.name
+        assert ttd.exists
         assert ttd.destroy
         assert ttd.will_change
         assert ttd.did_change
@@ -1159,8 +1192,11 @@ def test():
         assert ttd.basename in p
         assert ttd.basename in ttd.dirname
         assert ttd.dirname == p
+        tdp = Directory(ttd)
         print("* TemporaryDirectory object tests completed OK")
         print("")
+    
+    assert not tdp.exists
 
 if __name__ == '__main__':
     test()

@@ -58,7 +58,7 @@ class CDBBase(CDBSubBase):
         if not source:
             raise CDBError("a file source is required per entry")
         entry = {
-            'directory'     : directory or os.getcwd(),
+            'directory'     : os.fspath(directory or os.getcwd()),
             'command'       : u8str(command),
             'file'          : source
         }

@@ -115,19 +115,20 @@ class Generator(object):
         sourcebase = os.path.basename(self.source)
         dirname = os.path.dirname(self.source)
         splitbase = os.path.splitext(sourcebase)
+        suffix = os.path.splitext(self.destination)[1] # f"{splitbase[1]}{os.extsep}o"
         self.transient = mktemp(prefix=splitbase[0],
-                                suffix=f"{splitbase[1]}{os.extsep}o",
+                                suffix=suffix,
                                 dir=self.intermediate)
         if self.VERBOSE:
             print(f"Compiling: {sourcebase} to {os.path.basename(self.transient)}")
             print("")
         with cd(dirname) as cwd:
-            assert os.path.samefile(os.fspath(cwd), os.getcwd())
-            self.result += config.CXX(self.conf, os.path.relpath(self.transient,
-                                                                 start=os.fspath(cwd)),
+            # assert os.path.samefile(os.fspath(cwd), os.getcwd())
+            # os.path.relpath(self.transient, start=os.fspath(cwd))
+            self.result += config.CXX(self.conf, self.transient,
                                                  sourcebase,
                                                  cdb=self.cdb,
-                                                 directory=os.fspath(cwd),
+                                                 directory=cwd,
                                                  verbose=self.VERBOSE)
         return True
     
@@ -140,7 +141,9 @@ class Generator(object):
         if self.compiled:
             return True
         if self.VERBOSE:
-            print(f"Post-compiling: {os.path.basename(self.transient)}")
+            transbase = os.path.basename(self.transient)
+            destbase = os.path.basename(self.destination)
+            print(f"Post-compiling: {transbase} to {destbase}")
         if (not self.compiled) and (len(self.result) > 0): # apres-compilation
             if len(self.result[1]) > 0: # failure
                 raise CompilerError(self.result[1])
@@ -369,13 +372,16 @@ class Generators(object):
         if self.VERBOSE:
             print(f"Compiling {self.source_count} generator source files")
         for source in self.sources:
-            with TemporaryName(suffix=self.object_suffix) as tn:
-                with Generator(self.conf,
-                               cdb=self.cdb,
-                               source=source,
-                               destination=os.fspath(tn),
-                               intermediate=os.fspath(self.intermediate),
-                               verbose=self.VERBOSE) as gen:
+            # dirname = os.path.dirname(source)
+            sourcebase = os.path.basename(source)
+            splitbase = os.path.splitext(sourcebase)
+            with TemporaryName(prefix=splitbase[0],
+                               suffix=self.object_suffix) as tn:
+                with Generator(self.conf, cdb=self.cdb,
+                                          source=source,
+                                          destination=os.fspath(tn),
+                                          intermediate=os.fspath(self.intermediate),
+                                          verbose=self.VERBOSE) as gen:
                     if gen.compiled:
                         gen.do_not_destroy()
                         self.prelink.append(tn.do_not_destroy())
