@@ -15,7 +15,7 @@ except ImportError:
     from os import scandir, walk
 
 from functools import wraps
-from tempfile import mktemp, mkdtemp, gettempprefix, gettempdir
+from tempfile import mkdtemp, gettempprefix, gettempdir
 from errors import ExecutionError, FilesystemError
 from utils import memoize, u8bytes, u8str, stringify, suffix_searcher
 
@@ -189,6 +189,29 @@ def rm_rf(pth):
         pass
     return False
 
+def temporary(suffix=None, prefix=None, parent=None, **kwargs):
+    """ Wrapper around `tempfile.mktemp()` that allows full overriding of the
+        prefix and suffix by the caller -- that is to say, no random elements
+        are used in the returned filename if both a prefix and a suffix are
+        supplied.
+        
+        To avoid problems, the function will throw a FilesystemError if it is
+        called with arguments that result in the computation of a filename
+        that already exists.
+    """
+    from tempfile import mktemp
+    directory = os.fspath(kwargs.pop('dir', parent) or gettempdir())
+    tempmade = mktemp(prefix=prefix, suffix=suffix, dir=directory)
+    tempsplit = os.path.splitext(os.path.basename(tempmade))
+    if not suffix:
+        suffix = tempsplit[1][1:]
+    if not prefix or kwargs.pop('randomized_prefix', False):
+        prefix = tempsplit[0]
+    fullpth = os.path.join(directory, f"{prefix}{suffix}")
+    if os.path.exists(fullpth):
+        raise FilesystemError(f"temporary(): file exists: {fullpth}")
+    return fullpth
+
 @memoize
 def TemporaryNamedFile(pth, mode='wb', buffer_size=-1, delete=True):
     
@@ -336,7 +359,7 @@ class TemporaryName(TemporaryNameAncestor):
             parent = kwargs.pop('dir', None)
         if parent:
             parent = os.fspath(parent)
-        self._name = mktemp(prefix=prefix, suffix=suffix, dir=parent)
+        self._name = temporary(prefix=prefix, suffix=suffix, dir=parent)
         self._destroy = True
         self._parent = parent
         self.prefix = prefix
@@ -1081,11 +1104,11 @@ def test():
     tfp = None
     tdp = None
     
-    with TemporaryName(prefix="test-temporaryname-") as tfn:
+    with TemporaryName(prefix="test-temporaryname") as tfn:
         print(f"* Testing TemporaryName file instance: {tfn.name}")
         assert os.path.samefile(os.getcwd(),            initial)
         assert gettempdir() in tfn.name
-        assert tfn.prefix == "test-temporaryname-"
+        assert tfn.prefix == "test-temporaryname"
         assert tfn.suffix == ".tmp"
         assert not tfn._parent
         assert tfn.prefix in tfn.name

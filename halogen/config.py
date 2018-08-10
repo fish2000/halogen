@@ -305,7 +305,10 @@ class ConfigBase(BaseAncestor):
         """ Get the string template for the command executing the archiver
             (née the “static linker”)
         """
-        return        f"{environ_override('AR')} {environ_override('ARFLAGS')}s %s %s"
+        arflags = environ_override('ARFLAGS')
+        if 's' not in arflags:
+            arflags += 's'
+        return        f"{environ_override('AR')} {arflags} %s %s"
     
     def to_string(self, field_list=None):
         """ Stringify the instance, using either a provided list of fields to evaluate,

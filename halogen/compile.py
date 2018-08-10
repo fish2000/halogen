@@ -6,12 +6,11 @@ import os
 import sys
 import config
 
-from tempfile import mktemp
 from compiledb import CDBJsonFile
 from config import SHARED_LIBRARY_SUFFIX, STATIC_LIBRARY_SUFFIX, DEFAULT_VERBOSITY
 from errors import HalogenError, GeneratorLoaderError, GenerationError
 from generate import preload, generate, default_emits
-from filesystem import rm_rf, TemporaryName
+from filesystem import rm_rf, temporary, TemporaryName
 from filesystem import Directory, cd
 from filesystem import TemporaryDirectory, Intermediate
 from utils import u8str
@@ -116,9 +115,9 @@ class Generator(object):
         dirname = os.path.dirname(self.source)
         splitbase = os.path.splitext(sourcebase)
         suffix = os.path.splitext(self.destination)[1]
-        self.transient = mktemp(prefix=splitbase[0],
-                                suffix=suffix,
-                                dir=self.intermediate)
+        self.transient = temporary(prefix=splitbase[0],
+                                   suffix=suffix,
+                                   dir=self.intermediate)
         if self.VERBOSE:
             print(f"Compiling: {sourcebase} to {os.path.basename(self.transient)}")
             print("")
