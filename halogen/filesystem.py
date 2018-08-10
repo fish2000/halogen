@@ -343,7 +343,9 @@ class TemporaryName(TemporaryNameAncestor):
     fields = ('name', 'exists',
               'destroy', 'prefix', 'suffix', 'parent')
     
-    def __init__(self, prefix=None, suffix="tmp", parent=None, **kwargs):
+    def __init__(self, prefix=None, suffix="tmp",
+                       parent=None,
+                     **kwargs):
         """ Initialize a new TemporaryName object.
             
             All parameters are optional; you may specify “prefix”, “suffix”,
@@ -1127,20 +1129,29 @@ def test():
         assert type(tfn.directory(os.path.basename(tfn.name))) == Directory
         p = tfn.parent()
         assert os.path.samefile(os.fspath(p), gettempdir())
+        # The next four asserts will be “not” asserts while
+        # the TemporaryName has not been written to:
         assert not tfn.exists
         assert not os.path.isfile(os.fspath(tfn))
         assert not tfn.basename in tfn.dirname
         assert not tfn.basename in p
+        # Here we write something to the TemporaryName:
         with open(os.fspath(tfn), mode="w") as handle:
             handle.write("yo dogg")
+        # Now we repeat the above four asserts,
+        # as positive assertions:
         assert tfn.exists
         assert os.path.isfile(os.fspath(tfn))
         assert tfn.basename in tfn.dirname
         assert tfn.basename in p
+        # Stash the TemporaryName’s path to later assert
+        # that it no longer exists - that it has been correctly
+        # deleted on scope exit:
         tfp = tfn.name
         print("* TemporaryName file object tests completed OK")
         print("")
     
+    # Confirm that the TemporaryName has been deleted:
     assert not os.path.exists(tfp)
     
     with wd() as cwd:
@@ -1223,10 +1234,14 @@ def test():
         assert ttd.basename in p
         assert ttd.basename in ttd.dirname
         assert ttd.dirname == p
+        # Stash the TemporaryDirectory’s path as a Directory
+        # instance, to later assert that it no longer exists –
+        # that it has been correctly deleted on scope exit:
         tdp = Directory(ttd)
         print("* TemporaryDirectory object tests completed OK")
         print("")
     
+    # Confirm that the TemporaryDirectory has been deleted:
     assert not tdp.exists
 
 if __name__ == '__main__':
