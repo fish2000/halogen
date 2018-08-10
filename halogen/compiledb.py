@@ -8,7 +8,7 @@ import six
 
 from abc import ABC, ABCMeta, abstractmethod
 from errors import CDBError
-from filesystem import TemporaryName, Directory
+from filesystem import rm_rf, TemporaryName, Directory
 from utils import stringify, u8bytes, u8str
 
 __all__ = ('CDBSubBase', 'CDBBase',
@@ -48,17 +48,19 @@ class CDBSubBase(SubBaseAncestor):
 
 class CDBBase(CDBSubBase):
     
+    fields = ('length',)
+    
     def __init__(self):
-        self.entries = {}
+        self.clear()
     
     def push(self, source, command, directory=None,
                                     destination=None):
         if not source:
             raise CDBError("a file source is required per entry")
         entry = {
-            'directory' : directory or os.getcwd(),
-            'command'   : u8str(command),
-            'file'      : source
+            'directory'     : directory or os.getcwd(),
+            'command'       : u8str(command),
+            'file'          : source
         }
         if destination:
             entry.update({
@@ -76,6 +78,10 @@ class CDBBase(CDBSubBase):
     def length(self):
         return len(self.entries)
     
+    def clear(self):
+        self.entries = {}
+        return self
+    
     def __len__(self):
         return self.length
     
@@ -91,10 +97,10 @@ class CDBBase(CDBSubBase):
         raise KeyError(f"not found: {key}")
     
     def to_string(self):
-        return stringify(self, ('length',))
+        return stringify(self, type(self).fields)
     
     def __repr__(self):
-        return stringify(self, ('length',))
+        return stringify(self, type(self).fields)
     
     def __str__(self):
         return u8str(json.dumps(self.rollout()))
@@ -114,6 +120,7 @@ class CDBJsonFile(CDBBase):
     
     fields = ('filename', 'length', 'exists')
     filename = f'compilation_database{os.extsep}json'
+    splitname = os.path.splitext(filename)
     
     @classmethod
     def in_directory(cls, directory):
@@ -125,6 +132,8 @@ class CDBJsonFile(CDBBase):
             directory = os.getcwd()
         self.directory = Directory(pth=directory)
         self.target = self.directory.subpath(self.filename)
+        self.read_from = None
+        self.written_to = None
     
     @property
     def name(self):
@@ -134,29 +143,55 @@ class CDBJsonFile(CDBBase):
     def exists(self):
         return os.path.isfile(self.name)
     
-    def write(self):
-        splitname = os.path.splitext(self.filename)
-        with TemporaryName(prefix=splitname[0],
-                           suffix=splitname[1][1:]) as tn:
+    def read(self, pth=None):
+        readpth = pth or self.target
+        if not readpth:
+            raise CDBError("no path value from which to read")
+        readpth = os.fspath(readpth)
+        if not os.path.exists(readpth):
+            raise CDBError("no file from which to read")
+        with open(readpth, mode="r") as handle:
+            try:
+                cdblist = json.load(handle)
+            except json.JSONDecodeError as json_error:
+                raise CDBError(str(json_error))
+            else:
+                for cdbentry in cdblist:
+                    key = cdbentry.get('file')
+                    self.entries[key] = dict(cdbentry)
+        self.read_from = readpth
+        return self
+    
+    def write(self, pth=None):
+        with TemporaryName(prefix=self.splitname[0],
+                           suffix=self.splitname[1][1:]) as tn:
             with open(tn.name, mode='w') as handle:
                 handle.write(str(self))
-            if os.path.isfile(self.target):
-                os.unlink(self.target)
-            tn.copy(self.target)
+            if pth is None:
+                if self.exists:
+                    rm_rf(self.name)
+                tn.copy(self.name)
+                self.written_to = self.name
+            else:
+                writepth = os.fspath(pth)
+                if os.path.isdir(writepth):
+                    raise CDBError("can't overwrite a directory")
+                if os.path.isfile(writepth) or \
+                   os.path.islink(writepth):
+                    rm_rf(writepth)
+                tn.copy(writepth)
+                self.written_to = writepth
+        return self
     
     def __enter__(self):
+        if os.path.isfile(self.target):
+            self.read()
         return self
     
     def __exit__(self, exc_type=None,
                        exc_val=None,
                        exc_tb=None):
         self.write()
-    
-    def to_string(self):
-        return stringify(self, type(self).fields)
-    
-    def __repr__(self):
-        return stringify(self, type(self).fields)
 
 CDBSubBase.register(CDBJsonFile)
 

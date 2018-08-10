@@ -275,9 +275,9 @@ class TypeLocker(abc.ABCMeta):
         Because the “directory(…)” method installed by TypeLocker performs
         a lazy-lookup of the Directory class, using its own type index dict,
         the order of definition does not matter i.e. the TemporaryName class
-        (q.v. definition immediately sub.) can use Directories despite being
-        its definition occuring before Directory – in fact TemporaryName is
-        itself utilized within at least one Directory method – sans issue.
+        (q.v. definition immediately sub.) can use Directories despite its
+        definition occuring before Directory – in fact TemporaryName itself
+        is utilized within at least one Directory method – sans any issues.
     """
     
     # The metaclass-internal dictionary of generated classes:
@@ -826,12 +826,26 @@ class Directory(DirectoryAncestor):
     def __fspath__(self):
         return self.name
     
+    def __iter__(self):
+        return scandir(self.realpath())
+    
+    def __len__(self):
+        return len(list(self))
+    
+    def __getitem__(self, filename):
+        pth = self.subpath(filename, requisite=True)
+        if not pth:
+            raise IndexError(
+                f"file not found: {os.fspath(filename)}")
+        return pth
+    
     def __contains__(self, filename):
-        name = os.fspath(filename).lower()
-        for direntry in scandir(self.realpath()):
-            if name == direntry.name.lower():
-                return True
-        return False
+        return self.subpath(filename, requisite=True) is not None
+        # name = os.fspath(filename).lower()
+        # for direntry in self:
+        #     if name == direntry.name.lower():
+        #         return True
+        # return False
     
     def __eq__(self, other):
         return os.path.samefile(self.name,

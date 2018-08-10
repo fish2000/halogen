@@ -1194,7 +1194,7 @@ class ConfigUnion(ConfigBase):
         return self.configs[key]
     
     def sub_config_types(self):
-        """ Retrieve a set with all instance names for the ConfigUnion instances’ sub-configs """
+        """ Retrieve a set of the names of this ConfigUnion instances’ sub-configs """
         return { config.name for config in self.configs }
     
     @property
@@ -1435,9 +1435,11 @@ def corefoundation_check():
         print("CoreFoundation module not found, skipping PyObjC test")
         return
     
-    is_python_bundle = lambda bundle: CFBundleGetValueForInfoDictionaryKey(bundle, 'CFBundleIdentifier') == u'org.python.python'
-    # python_bundle_set = set(filter(is_python_bundle, CFBundleGetAllBundles())) - { CFBundleGetMainBundle() }
+    FUNC_NAME_WTF = CFBundleGetValueForInfoDictionaryKey
+    bundle_id = u'org.python.python'
+    is_python_bundle = lambda bundle: FUNC_NAME_WTF(bundle, 'CFBundleIdentifier') == bundle_id
     python_bundle_set = set(filter(is_python_bundle, CFBundleGetAllBundles()))
+    # python_bundle_set -= { CFBundleGetMainBundle() }
     python_bundle = python_bundle_set.pop()
     nsbundle = NSBundle.alloc().initWithURL_(CFBundleCopyBundleURL(python_bundle))
     bundlepath = Directory(nsbundle.bundlePath())

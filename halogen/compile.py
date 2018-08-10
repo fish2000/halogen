@@ -122,14 +122,13 @@ class Generator(object):
             print(f"Compiling: {sourcebase} to {os.path.basename(self.transient)}")
             print("")
         with cd(dirname) as cwd:
-            assert os.path.samefile(os.fspath(cwd),
-                                    os.getcwd())
-            self.result += config.CXX(self.conf,
-                                      self.transient,
-                                      sourcebase,
-                                      cdb=self.cdb,
-                                      directory=cwd.name,
-                                      verbose=self.VERBOSE)
+            assert os.path.samefile(os.fspath(cwd), os.getcwd())
+            self.result += config.CXX(self.conf, os.path.relpath(self.transient,
+                                                                 start=os.fspath(cwd)),
+                                                 sourcebase,
+                                                 cdb=self.cdb,
+                                                 directory=os.fspath(cwd),
+                                                 verbose=self.VERBOSE)
         return True
     
     def postcompile(self):
@@ -216,8 +215,8 @@ class Generators(object):
         self.MAXIMUM =  int(kwargs.pop('maximum', DEFAULT_MAXIMUM_GENERATOR_COUNT))
         self.VERBOSE = bool(kwargs.pop('verbose', DEFAULT_VERBOSITY))
         self.conf = conf
-        self.suffix = suffix
         self.prefix = prefix
+        self.suffix = suffix.lower()
         self.do_shared = do_shared
         self.do_static = do_static
         self.do_preload = do_shared and do_preload
@@ -765,8 +764,13 @@ def test():
                 if gens.intermediate.exists:
                     if CDBJsonFile.in_directory(gens.intermediate):
                         if DEFAULT_VERBOSITY:
-                            print(f"Found compilation DB file “{CDBJsonFile.filename}” in intermediate: {gens.intermediate}")
+                            print("")
+                            print(f"Found compilation DB file “{CDBJsonFile.filename}” in intermediate: {gens.intermediate}:")
+                            with CDBJsonFile(directory=gens.intermediate) as cdb:
+                                # print(cdb.entries)
+                                pprint(cdb.entries, indent=4)
                     if DEFAULT_VERBOSITY:
+                        print("")
                         print(f"Listing files at intermediate: {gens.intermediate} …")
                     intermediate_list = list(gens.intermediate.subpath(listentry) \
                                              for listentry in gens.intermediate.ls())
@@ -777,6 +781,7 @@ def test():
                 
                 if destination.exists:
                     if DEFAULT_VERBOSITY:
+                        print("")
                         print(f"Listing files at destination: {destination} …")
                     destination_list = list(destination.subpath(listentry) \
                                             for listentry in destination.ls())
