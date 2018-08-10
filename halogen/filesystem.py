@@ -826,6 +826,9 @@ class Directory(DirectoryAncestor):
     def __fspath__(self):
         return self.name
     
+    def __bool__(self):
+        return True
+    
     def __iter__(self):
         return scandir(self.realpath())
     
@@ -841,11 +844,6 @@ class Directory(DirectoryAncestor):
     
     def __contains__(self, filename):
         return self.subpath(filename, requisite=True) is not None
-        # name = os.fspath(filename).lower()
-        # for direntry in self:
-        #     if name == direntry.name.lower():
-        #         return True
-        # return False
     
     def __eq__(self, other):
         return os.path.samefile(self.name,
