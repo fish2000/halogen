@@ -59,9 +59,10 @@ class ConfigSubBase(SubBaseAncestor):
         are defined below) or, say, use that instance in the construction of a working
         ConfigUnion instance, or what have you.
         
-        (In fact, you may be able to get away with only implementing `get_cflags()` and
-        `get_ldflags()` – those are the only methods explicitly called by CC/CXX/LD;
-        AR doesn’t even use its config-instance parameter at the moment.)
+        (In fact, you may be able to get away with only implementing `cc_flag_string()`,
+        `cxx_flag_string()`, and `get_ldflags()` – those are the only methods explicitly
+        called by CC/CXX/LD; AR doesn’t even use its config-instance parameter at the
+        time of writing.)
         
         You don’t strictly need to inherit from ConfigSubBase – in fact, that is unwise;
         I recommend inheriting from ConfigBase (q.v. class definition sub.) as that will
@@ -91,13 +92,13 @@ class ConfigSubBase(SubBaseAncestor):
     @abstractmethod
     def name(self): pass
     
-    # The subdirectory method is used throughout
-    # all Config subclasses:
+    # The `subdirectory` method is used throughout
+    # many Config-ish classes:
     
     @abstractmethod
     def subdirectory(self, subdir, whence=None): pass
     
-    # These four methods prepare command strings,
+    # These four methods prepare the command strings,
     # using the result(s) from calling one or more
     # of the get_* methods (q.v. prototypes sub.)
     # to compose their arguments:
@@ -132,7 +133,7 @@ class ConfigSubBase(SubBaseAncestor):
     def __unicode__(self): pass
     
     # These four get_* methods make up the bare-bones
-    # requirement for what a Config subclass needs
+    # requirement for what a Config-ish class needs
     # to provide:
     
     @abstractmethod
@@ -173,6 +174,11 @@ class ConfigBaseMeta(ABCMeta):
         return cls
 
 def environ_override(name):
+    """ environ_override(name) returns either the environment variable
+        named “name” or, failing to find that, the configuration variable
+        from the `sysconfig` module named “name.” This allows environment
+        variables to seamlessly override `sysconfig` variables.
+    """
     return os.environ.get(name,
             sysconfig.get_config_var(name) or '')
 
@@ -1045,8 +1051,8 @@ class ConfigUnion(ConfigBase):
             self.flags = [template % flag for flag in flaglist]
             self.set = frozenset(self.flags)
         
-        def __contains__(self, rhs):
-            return rhs in self.set
+        def __contains__(self, lhs):
+            return lhs in self.set
         
         def __len__(self):
             return len(self.set)
