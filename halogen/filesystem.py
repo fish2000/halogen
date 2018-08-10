@@ -206,7 +206,7 @@ def temporary(suffix=None, prefix=None, parent=None, **kwargs):
     tempsplit = os.path.splitext(os.path.basename(tempmade))
     if not suffix:
         suffix = tempsplit[1][1:]
-    if not prefix or kwargs.pop('randomized_prefix', False):
+    if not prefix or kwargs.pop('randomized', False):
         prefix = tempsplit[0]
     fullpth = os.path.join(directory, f"{prefix}{suffix}")
     if os.path.exists(fullpth):
@@ -343,7 +343,7 @@ class TemporaryName(TemporaryNameAncestor):
     fields = ('name', 'exists',
               'destroy', 'prefix', 'suffix', 'parent')
     
-    def __init__(self, prefix="yo-dogg-", suffix="tmp", parent=None, **kwargs):
+    def __init__(self, prefix=None, suffix="tmp", parent=None, **kwargs):
         """ Initialize a new TemporaryName object.
             
             All parameters are optional; you may specify “prefix”, “suffix”,
@@ -351,6 +351,10 @@ class TemporaryName(TemporaryNameAncestor):
             as per `tempfile.mktemp(…)`. Suffixes may omit the leading period
             without confusing things. 
         """
+        randomized = kwargs.pop('randomized', False)
+        if not prefix:
+            prefix = "yo-dogg-"
+            randomized = True
         if suffix:
             if not suffix.startswith(os.extsep):
                 suffix = f"{os.extsep}{suffix}"
@@ -360,7 +364,9 @@ class TemporaryName(TemporaryNameAncestor):
             parent = kwargs.pop('dir', None)
         if parent:
             parent = os.fspath(parent)
-        self._name = temporary(prefix=prefix, suffix=suffix, dir=parent)
+        self._name = temporary(prefix=prefix, suffix=suffix,
+                                              parent=parent,
+                                              randomized=randomized)
         self._destroy = True
         self._parent = parent
         self.prefix = prefix
@@ -1105,11 +1111,12 @@ def test():
     tfp = None
     tdp = None
     
-    with TemporaryName(prefix="test-temporaryname") as tfn:
+    with TemporaryName(prefix="test-temporaryname-",
+                       randomized=True) as tfn:
         print(f"* Testing TemporaryName file instance: {tfn.name}")
         assert os.path.samefile(os.getcwd(),            initial)
         assert gettempdir() in tfn.name
-        assert tfn.prefix == "test-temporaryname"
+        assert tfn.prefix == "test-temporaryname-"
         assert tfn.suffix == ".tmp"
         assert not tfn._parent
         assert tfn.prefix in tfn.name
