@@ -73,20 +73,15 @@ def generate(*generators, **arguments):
     
     # ARGUMENT PROCESSING:
     
-    generators = set(u8str(generator) for generator in generators)
-    verbose = bool(arguments.pop('verbose', DEFAULT_VERBOSITY))
-    target_string = u8bytes(arguments.pop('target', 'host'))
+    generators = { u8str(generator) for generator in generators }
     generator_names = set(arguments.pop('generator_names', api.registered_generators()))
-    output_directory = Directory(arguments.pop('output_directory', None))
+    output_directory = Directory(pth=arguments.pop('output_directory', None))
+    target = api.Target(target_string=u8bytes(arguments.pop('target', 'host')))
     emits = set(arguments.pop('emit', default_emits))
     substitutions = dict(arguments.pop('substitutions', {}))
+    verbose = bool(arguments.pop('verbose', DEFAULT_VERBOSITY))
     
     # ARGUMENT POST-PROCESS BOUNDS-CHECKS:
-    
-    if not target_string:
-        target_string = b"host"
-    elif not api.validate_target_string(target_string):
-        raise GenerationError(f"generation target string {u8str(target_string)} is invalid")
     
     if len(generators) < 1:
         raise GenerationError(">=1 generator is required")
@@ -123,16 +118,9 @@ def generate(*generators, **arguments):
     emit_options = api.EmitOptions(**emit_dict)
     
     if verbose:
+        print(f"generate(): Target: {u8str(target)}")
         print("generate(): Emit Options:")
         print(u8str(emit_options))
-        print("")
-    
-    # The “target_string” variable defaults to “host” (q.v. argument processing supra.):
-    target = api.Target(target_string=target_string)
-    
-    if verbose:
-        print("generate(): Target:")
-        print(u8str(target))
         print("")
     
     # This list will store generator module compilation artifacts:
@@ -157,7 +145,6 @@ def generate(*generators, **arguments):
         if verbose:
             print(f"BSEPTH: {u8str(base_path)}")
             print(f"OUTPUT: {u8str(output)}")
-            print(f"TARGET: {u8str(target)}")
         
         # This API call prepares the generator code module:
         module = api.get_generator_module(generator,
