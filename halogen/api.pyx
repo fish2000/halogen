@@ -81,14 +81,12 @@ cpdef bytes u8bytes(object string_source):
     """ Custom version of u8bytes(…) for use in Cython extensions: """
     if type(string_source) == bytes:
         return string_source
-    elif type(string_source) == str:
+    elif type(string_source) in (str, unicode):
         return bytes(string_source, encoding='UTF-8')
-    elif type(string_source) == unicode:
-        return bytes(string_source, encoding='UTF-8')
-    elif type(string_source) == bool:
-        return string_source and b'True' or b'False'
     elif type(string_source) in (int, long, float):
         return bytes(str(string_source), encoding='UTF-8')
+    elif type(string_source) == bool:
+        return string_source and b'True' or b'False'
     # elif type(string_source) == OS:
     #     return bytes(str(<int>string_source), encoding='UTF-8')
     # elif type(string_source) == Arch:
