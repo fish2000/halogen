@@ -171,6 +171,8 @@ def u8bytes(string_source):
         return bytes(string_source, encoding='UTF-8')
     elif isinstance(string_source, six.string_types):
         return bytes(string_source, encoding='UTF-8')
+    elif isinstance(string_source, (int, float)):
+        return bytes(str(string_source), encoding='UTF-8')
     elif type(string_source) == bool:
         return string_source and b'True' or b'False'
     elif string_source is None:

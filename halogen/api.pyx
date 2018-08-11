@@ -91,6 +91,8 @@ cpdef bytes u8bytes(object string_source):
         return bytes(str(string_source), encoding='UTF-8')
     elif type(string_source) == long:
         return bytes(str(string_source), encoding='UTF-8')
+    elif type(string_source) == float:
+        return bytes(str(string_source), encoding='UTF-8')
     # elif type(string_source) == OS:
     #     return bytes(str(<int>string_source), encoding='UTF-8')
     # elif type(string_source) == Arch:
