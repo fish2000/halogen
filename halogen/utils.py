@@ -164,23 +164,23 @@ def remove_paths(*putatives):
 
 remove_paths.oldsyspath = tuple()
 
-def u8bytes(string_source):
-    if type(string_source) == bytes:
-        return string_source
-    elif type(string_source) == str:
-        return bytes(string_source, encoding='UTF-8')
-    elif isinstance(string_source, six.string_types):
-        return bytes(string_source, encoding='UTF-8')
-    elif isinstance(string_source, (int, float)):
-        return bytes(str(string_source), encoding='UTF-8')
-    elif type(string_source) == bool:
-        return string_source and b'True' or b'False'
-    elif string_source is None:
+def u8bytes(source):
+    if type(source) == bytes:
+        return source
+    elif type(source) == str:
+        return bytes(source, encoding='UTF-8')
+    elif isinstance(source, six.string_types):
+        return bytes(source, encoding='UTF-8')
+    elif isinstance(source, (int, float)):
+        return bytes(str(source), encoding='UTF-8')
+    elif type(source) == bool:
+        return source and b'True' or b'False'
+    elif source is None:
         return b'None'
-    return bytes(string_source)
+    return bytes(source)
 
-def u8str(string_source):
-    return u8bytes(string_source).decode('UTF-8')
+def u8str(source):
+    return u8bytes(source).decode('UTF-8')
 
 def stringify(instance, fields):
     field_dict = {}

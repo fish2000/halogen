@@ -77,33 +77,38 @@ from ext.halide.buffers cimport Buffer
 from ext.halide.buffers cimport buffervec_t
 
 
-cpdef bytes u8bytes(object string_source):
-    """ Custom version of u8bytes(…) for use in Cython extensions: """
-    if type(string_source) == bytes:
-        return string_source
-    elif type(string_source) in (str, unicode):
-        return bytes(string_source, encoding='UTF-8')
-    elif type(string_source) in (int, long, float):
-        return bytes(str(string_source), encoding='UTF-8')
-    elif hasattr(string_source, '__bytes__'):
-        return bytes(string_source)
-    elif hasattr(string_source, '__str__'):
-        return bytes(str(string_source), encoding='UTF-8')
-    elif hasattr(string_source, '__unicode__'):
-        return bytes(unicode(string_source), encoding='UTF-8')
-    elif type(string_source) == bool:
-        return string_source and b'True' or b'False'
-    # elif type(string_source) == OS:
-    #     return bytes(str(<int>string_source), encoding='UTF-8')
-    # elif type(string_source) == Arch:
-    #     return bytes(str(<int>string_source), encoding='UTF-8')
-    elif string_source is None:
-        return b'None'
-    return bytes(string_source)
+cdef bytes u8encode(object source):
+    return bytes(source, encoding='UTF-8')
 
-cpdef str u8str(object string_source):
+cpdef bytes u8bytes(object source):
+    """ Custom version of u8bytes(…) for use in Cython extensions: """
+    if type(source) == bytes:
+        return source
+    elif type(source) in (str, unicode):
+        return u8encode(source)
+    elif type(source) in (int, long, float):
+        return u8encode(str(source))
+    elif type(source) == bool:
+        return source and b'True' or b'False'
+    # elif type(source) == OS:
+    #     return bytes(str(<int>source), encoding='UTF-8')
+    # elif type(source) == Arch:
+    #     return bytes(str(<int>source), encoding='UTF-8')
+    if source is None:
+        return b'None'
+    if hasattr(source, '__fspath__'):
+        return u8encode(source.__fspath__())
+    elif hasattr(source, '__str__'):
+        return u8encode(str(source))
+    elif hasattr(source, '__bytes__'):
+        return bytes(source)
+    elif hasattr(source, '__unicode__'):
+        return u8encode(unicode(source))
+    return bytes(source)
+
+cpdef str u8str(object source):
     """ Custom version of u8str(…) for use in Cython extensions: """
-    return u8bytes(string_source).decode('UTF-8')
+    return u8bytes(source).decode('UTF-8')
 
 def stringify(instance, fields):
     """ Custom version of stringify(instance, fields) for use in Cython extensions: """
