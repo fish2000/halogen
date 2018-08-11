@@ -93,6 +93,8 @@ cpdef bytes u8bytes(object string_source):
     #     return bytes(str(<int>string_source), encoding='UTF-8')
     # elif type(string_source) == Arch:
     #     return bytes(str(<int>string_source), encoding='UTF-8')
+    elif string_source is None:
+        return b'None'
     return bytes(string_source)
 
 cpdef str u8str(object string_source):
