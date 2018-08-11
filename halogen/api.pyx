@@ -880,8 +880,8 @@ cdef class Module:
         cdef HalTarget htarg
         for arg in args:
             if type(arg) == type(self):
-                htarg = HalTarget(<string>arg.target().to_string())
-                self.__this__.reset(new HalModule(<string>arg.name(), <HalTarget>htarg))
+                htarg = HalTarget(<string>arg.get_target().to_string())
+                self.__this__.reset(new HalModule(<string>arg.name, <HalTarget>htarg))
                 if self.__this__.get():
                     return
     
