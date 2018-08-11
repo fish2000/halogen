@@ -975,7 +975,7 @@ cdef class Module:
     cdef void replace_instance(Module self, HalModule&& m) nogil:
         self.__this__.reset(new HalModule(m))
     
-    def compile(Module self not None, Outputs outputs):
+    def compile(Module self not None, Outputs outputs not None):
         cdef HalModule* this = self.__this__.get()
         cdef HalOutputs outs = <HalOutputs>outputs.__this__
         with nogil:

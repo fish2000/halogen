@@ -21185,7 +21185,7 @@ static void __pyx_f_7halogen_3api_6Module_replace_instance(struct __pyx_obj_7hal
  *     cdef void replace_instance(Module self, HalModule&& m) nogil:
  *         self.__this__.reset(new HalModule(m))             # <<<<<<<<<<<<<<
  * 
- *     def compile(Module self not None, Outputs outputs):
+ *     def compile(Module self not None, Outputs outputs not None):
  */
   __pyx_v_self->__pyx___this__.reset(new Halide::Module(__pyx_v_m));
 
@@ -21203,7 +21203,7 @@ static void __pyx_f_7halogen_3api_6Module_replace_instance(struct __pyx_obj_7hal
 /* "halogen/api.pyx":978
  *         self.__this__.reset(new HalModule(m))
  * 
- *     def compile(Module self not None, Outputs outputs):             # <<<<<<<<<<<<<<
+ *     def compile(Module self not None, Outputs outputs not None):             # <<<<<<<<<<<<<<
  *         cdef HalModule* this = self.__this__.get()
  *         cdef HalOutputs outs = <HalOutputs>outputs.__this__
  */
@@ -21218,7 +21218,7 @@ static PyObject *__pyx_pw_7halogen_3api_6Module_13compile(PyObject *__pyx_v_self
   if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
     PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 978, __pyx_L1_error)
   }
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_outputs), __pyx_ptype_7halogen_3api_Outputs, 1, "outputs", 0))) __PYX_ERR(0, 978, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_outputs), __pyx_ptype_7halogen_3api_Outputs, 0, "outputs", 0))) __PYX_ERR(0, 978, __pyx_L1_error)
   __pyx_r = __pyx_pf_7halogen_3api_6Module_12compile(((struct __pyx_obj_7halogen_3api_Module *)__pyx_v_self), ((struct __pyx_obj_7halogen_3api_Outputs *)__pyx_v_outputs));
 
   /* function exit code */
@@ -21239,7 +21239,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_12compile(struct __pyx_obj_7halo
 
   /* "halogen/api.pyx":979
  * 
- *     def compile(Module self not None, Outputs outputs):
+ *     def compile(Module self not None, Outputs outputs not None):
  *         cdef HalModule* this = self.__this__.get()             # <<<<<<<<<<<<<<
  *         cdef HalOutputs outs = <HalOutputs>outputs.__this__
  *         with nogil:
@@ -21247,7 +21247,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_12compile(struct __pyx_obj_7halo
   __pyx_v_this = __pyx_v_self->__pyx___this__.get();
 
   /* "halogen/api.pyx":980
- *     def compile(Module self not None, Outputs outputs):
+ *     def compile(Module self not None, Outputs outputs not None):
  *         cdef HalModule* this = self.__this__.get()
  *         cdef HalOutputs outs = <HalOutputs>outputs.__this__             # <<<<<<<<<<<<<<
  *         with nogil:
@@ -21314,7 +21314,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_12compile(struct __pyx_obj_7halo
   /* "halogen/api.pyx":978
  *         self.__this__.reset(new HalModule(m))
  * 
- *     def compile(Module self not None, Outputs outputs):             # <<<<<<<<<<<<<<
+ *     def compile(Module self not None, Outputs outputs not None):             # <<<<<<<<<<<<<<
  *         cdef HalModule* this = self.__this__.get()
  *         cdef HalOutputs outs = <HalOutputs>outputs.__this__
  */
