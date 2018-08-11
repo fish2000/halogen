@@ -87,11 +87,7 @@ cpdef bytes u8bytes(object string_source):
         return bytes(string_source, encoding='UTF-8')
     elif type(string_source) == bool:
         return string_source and b'True' or b'False'
-    elif type(string_source) == int:
-        return bytes(str(string_source), encoding='UTF-8')
-    elif type(string_source) == long:
-        return bytes(str(string_source), encoding='UTF-8')
-    elif type(string_source) == float:
+    elif type(string_source) in (int, long, float):
         return bytes(str(string_source), encoding='UTF-8')
     # elif type(string_source) == OS:
     #     return bytes(str(<int>string_source), encoding='UTF-8')
