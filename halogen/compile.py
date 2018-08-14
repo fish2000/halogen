@@ -68,8 +68,8 @@ class Generator(object):
         self.cdb = kwargs.pop('cdb', None)
         self.conf = conf
         self.destination = os.fspath(destination)
-        self.intermediate = 'intermediate' in kwargs and os.fspath(kwargs.pop('intermediate')) or None
         self.source = os.path.realpath(os.fspath(source))
+        self.intermediate = 'intermediate' in kwargs and os.fspath(kwargs.pop('intermediate')) or None
         self._compiled = False
         self._destroy = True
         self.result = tuple()
