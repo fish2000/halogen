@@ -887,7 +887,7 @@ class Directory(DirectoryAncestor):
     def __getitem__(self, filename):
         pth = self.subpath(filename, requisite=True)
         if not pth:
-            raise IndexError(
+            raise KeyError(
                 f"file not found: {os.fspath(filename)}")
         return pth
     
@@ -1004,7 +1004,7 @@ class TemporaryDirectory(Directory):
         out = super(TemporaryDirectory, self).close()
         if self.exists:
             return rm_rf(self.name) and out
-        return out
+        return False
     
     def do_not_destroy(self):
         """ Mark this TemporaryDirectory instance as one that should not
@@ -1025,7 +1025,7 @@ class TemporaryDirectory(Directory):
     def __exit__(self, exc_type=None, exc_val=None, exc_tb=None):
         out = super(TemporaryDirectory, self).__exit__(exc_type, exc_val, exc_tb)
         if self.destroy:
-            out = self.close() and out
+            out &= self.close()
         return out
 
 

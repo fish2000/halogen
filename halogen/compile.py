@@ -641,7 +641,7 @@ def print_exception(exc):
     """
     print(trace_output, file=sys.stderr)
 
-def test():
+def test(MAXIMUM_GENERATORS=2):
     
     """ Run the inline tests for the halogen.compile module """
     
@@ -674,9 +674,9 @@ def test():
         gens = Generators(CONF, directory=directory,
                                 destination=td,
                                 intermediate=td.subdirectory(".intermediate"),
-                                maximum=2,
-                                use_cdb=True,
-                                verbose=DEFAULT_VERBOSITY)
+                                maximum=MAXIMUM_GENERATORS,
+                                verbose=DEFAULT_VERBOSITY,
+                                use_cdb=True)
         
         # Preserve compilation artifacts:
         # td.do_not_destroy()

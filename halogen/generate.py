@@ -138,8 +138,8 @@ def generate(*generators, **arguments):
                                           u8bytes(generator))
         
         # “output” (an instance of halogen.api.Outputs) is computed using the eponymously named
-        # API function `compute_outputs_for_target_and_path()` with a halogen.api.Target instance
-        # and a base path (q.v. note supra.):
+        # halogen.api.EmitOptions method `compute_outputs_for_target_and_path()` with an instance
+        # of halogen.api.Target and a base path bytestring (q.v. note supra.):
         output = emit_options.compute_outputs_for_target_and_path(target, base_path)
         
         if verbose:
@@ -148,7 +148,7 @@ def generate(*generators, **arguments):
         
         # This API call prepares the generator code module:
         module = api.get_generator_module(generator,
-                                          arguments={ 'target': str(target) })
+                                          arguments={ 'target': target })
         
         if verbose:
             print(f"MODULE: {u8str(module.name)} ({u8str(module)})")

@@ -1011,12 +1011,12 @@ class ConfigUnion(ConfigBase):
     class union_of(object):
         
         """ Decorator class to abstract the entrails of a ConfigUnion.get_something() function,
-            used with function stubs, like so:
+            used with function stubs, e.g. like so:
             
             class ConfigUnion(ConfigBase):
             
                 @union_of('libs')                   # function name without "get_" prefix;
-                def get_includes(self, libs):       # function definition, naming an input set;
+                def get_libs(self, libs):           # function definition, naming an input set;
                     return libs & self.otherstuff   # transform the input set, if necessary,
                                                     # and return it
         """
@@ -1054,8 +1054,8 @@ class ConfigUnion(ConfigBase):
             self.flags = [template % flag for flag in flaglist]
             self.set = frozenset(self.flags)
         
-        def __contains__(self, lhs):
-            return lhs in self.set
+        def __contains__(self, key):
+            return key in self.set
         
         def __len__(self):
             return len(self.set)
@@ -1205,6 +1205,12 @@ class ConfigUnion(ConfigBase):
     def sub_config_types(self):
         """ Retrieve a set of the names of this ConfigUnion instances’ sub-configs """
         return { config.name for config in self.configs }
+    
+    def __contains__(self, key):
+        """ Determine if a config type is contained within this ConfigUnion instance """
+        if hasattr(key, 'name'):
+            key = key.name
+        return key in self.sub_config_types()
     
     @property
     def name(self):
@@ -1381,13 +1387,20 @@ HALIDE_REGISTER_GENERATOR(Brighten, brighten);
 
 def print_cache():
     from pprint import pprint
+    from utils import get_terminal_size
+    
+    width, _ = get_terminal_size()
+    
+    print("=" * width)
+    print("")
+    print("PRINTING: ConfigBase.base_field_cache -- dict<str> ...")
+    print("")
     pprint(ConfigBase.base_field_cache, indent=4)
+    print("")
 
 def test():
     from utils import print_config
-    from utils import test_compile, get_terminal_size
-    
-    width, height = get_terminal_size()
+    from utils import test_compile
     
     brewedHalideConfig = BrewedHalideConfig()
     brewedPythonConfig = BrewedPythonConfig()
@@ -1424,17 +1437,10 @@ def test():
     
     """  Reveal the cached field-value dictionary: """
     
-    print("=" * width)
-    print("")
-    print("PRINTING: ConfigBase.base_field_cache -- dict<str> ...")
-    print("")
     print_cache()
-    print("")
 
 
 def corefoundation_check():
-    from utils import print_config, test_compile
-    
     try:
         from Foundation import NSBundle
         from CoreFoundation import (CFBundleGetAllBundles,
@@ -1443,6 +1449,9 @@ def corefoundation_check():
     except ImportError:
         print("CoreFoundation module not found, skipping PyObjC test")
         return
+    
+    from utils import print_config
+    from utils import test_compile
     
     FUNC_NAME_WTF = CFBundleGetValueForInfoDictionaryKey
     bundle_id = u'org.python.python'

@@ -6,16 +6,16 @@ import cython
 cimport cython
 from cython.operator cimport dereference as deref
 from cython.operator cimport preincrement as incr
-from cython.operator cimport address as addressof
+# from cython.operator cimport address as addressof
 
 from libc.stdint cimport *
-from libcpp.cast cimport static_cast
+# from libcpp.cast cimport static_cast
 from libcpp.string cimport string
 from libcpp.memory cimport unique_ptr
 
 from cpython.bool cimport PyBool_FromLong
 from cpython.int cimport PyInt_FromLong, PyInt_AsLong
-from cpython.long cimport PyLong_AsLong
+# from cpython.long cimport PyLong_AsLong
 from cpython.mapping cimport PyMapping_Check
 from cpython.object cimport PyObject_IsTrue
 
@@ -126,9 +126,9 @@ def stringify(object instance not None, object fields not None):
     for k, v in field_dict.items():
         field_dict_items.append(b'''%s="%s"''' % (u8bytes(k),
                                                   u8bytes(v)))
-    return b"%s(%s) @ %s" % (u8bytes(type(instance).__name__),
+    return b"%s(%s) @ %s" % (u8encode(type(instance).__name__),
                              b", ".join(field_dict_items),
-                             u8bytes(hex(id(instance))))
+                             u8encode(hex(id(instance))))
 
 
 @cython.freelist(32)
@@ -325,13 +325,13 @@ cdef class Target:
         HalTarget __this__
     
     @staticmethod
-    def validate_target_string(object target_string):
+    def validate_target_string(object target_string not None):
         return HalTarget.validate_target_string(<string>u8bytes(target_string))
     
     def __cinit__(Target self not None, *args, **kwargs):
         cdef string target_string = b'host'
         if 'target_string' in kwargs:
-            target_string = <string>u8bytes(kwargs.get('target_string', b"host"))
+            target_string = <string>u8bytes(kwargs.get('target_string', target_string))
         elif len(args) > 0:
             target_string = <string>u8bytes(args[0])
         if not HalTarget.validate_target_string(target_string):
@@ -399,7 +399,9 @@ cdef class Target:
     def __repr__(Target self not None):
         return stringify(self, ('os', 'arch', 'bits')).decode('UTF-8')
     
-    def __richcmp__(Target self not None, Target other, int op):
+    def __richcmp__(Target self not None,
+                    Target other not None,
+                    int op):
         if op == 2: # ==
             return bool(<HalTarget>self.__this__ == <HalTarget>other.__this__)
         elif op == 3: # !=
@@ -483,56 +485,56 @@ cdef class Outputs:
     def object_name(Outputs self not None):
         return <string>self.__this__.object_name
     @object_name.setter
-    def object_name(Outputs self not None, object value):
+    def object_name(Outputs self not None, object value not None):
         self.__this__.object_name = <string>u8bytes(value)
     
     @property
     def assembly_name(Outputs self not None):
         return <string>self.__this__.assembly_name
     @assembly_name.setter
-    def assembly_name(Outputs self not None, object value):
+    def assembly_name(Outputs self not None, object value not None):
         self.__this__.assembly_name = <string>u8bytes(value)
     
     @property
     def bitcode_name(Outputs self not None):
         return <string>self.__this__.bitcode_name
     @bitcode_name.setter
-    def bitcode_name(Outputs self not None, object value):
+    def bitcode_name(Outputs self not None, object value not None):
         self.__this__.bitcode_name = <string>u8bytes(value)
     
     @property
     def llvm_assembly_name(Outputs self not None):
         return <string>self.__this__.llvm_assembly_name
     @llvm_assembly_name.setter
-    def llvm_assembly_name(Outputs self not None, object value):
+    def llvm_assembly_name(Outputs self not None, object value not None):
         self.__this__.llvm_assembly_name = <string>u8bytes(value)
     
     @property
     def c_header_name(Outputs self not None):
         return <string>self.__this__.c_header_name
     @c_header_name.setter
-    def c_header_name(Outputs self not None, object value):
+    def c_header_name(Outputs self not None, object value not None):
         self.__this__.c_header_name = <string>u8bytes(value)
     
     @property
     def c_source_name(Outputs self not None):
         return <string>self.__this__.c_source_name
     @c_source_name.setter
-    def c_source_name(Outputs self not None, object value):
+    def c_source_name(Outputs self not None, object value not None):
         self.__this__.c_source_name = <string>u8bytes(value)
     
     @property
     def python_extension_name(Outputs self not None):
         return <string>self.__this__.python_extension_name
     @python_extension_name.setter
-    def python_extension_name(Outputs self not None, object value):
+    def python_extension_name(Outputs self not None, object value not None):
         self.__this__.python_extension_name = <string>u8bytes(value)
     
     @property
     def stmt_name(Outputs self not None):
         return <string>self.__this__.stmt_name
     @stmt_name.setter
-    def stmt_name(Outputs self not None, object value):
+    def stmt_name(Outputs self not None, object value not None):
         self.__this__.stmt_name = <string>u8bytes(value)
     
     @property
@@ -546,14 +548,14 @@ cdef class Outputs:
     def static_library_name(Outputs self not None):
         return <string>self.__this__.static_library_name
     @static_library_name.setter
-    def static_library_name(Outputs self not None, object value):
+    def static_library_name(Outputs self not None, object value not None):
         self.__this__.static_library_name = <string>u8bytes(value)
     
     @property
     def schedule_name(Outputs self not None):
         return <string>self.__this__.schedule_name
     @schedule_name.setter
-    def schedule_name(Outputs self not None, object value):
+    def schedule_name(Outputs self not None, object value not None):
         self.__this__.schedule_name = <string>u8bytes(value)
     
     def object(Outputs self not None, object s=None):
@@ -727,84 +729,84 @@ cdef class EmitOptions:
     def emit_o(EmitOptions self not None):
         return PyBool_FromLong(self.__this__.emit_o)
     @emit_o.setter
-    def emit_o(EmitOptions self not None, value):
+    def emit_o(EmitOptions self not None, value not None):
         self.__this__.emit_o = PyObject_IsTrue(value)
     
     @property
     def emit_h(EmitOptions self not None):
         return PyBool_FromLong(self.__this__.emit_h)
     @emit_h.setter
-    def emit_h(EmitOptions self not None, value):
+    def emit_h(EmitOptions self not None, value not None):
         self.__this__.emit_h = PyObject_IsTrue(value)
     
     @property
     def emit_cpp(EmitOptions self not None):
         return PyBool_FromLong(self.__this__.emit_cpp)
     @emit_cpp.setter
-    def emit_cpp(EmitOptions self not None, value):
+    def emit_cpp(EmitOptions self not None, value not None):
         self.__this__.emit_cpp = PyObject_IsTrue(value)
     
     @property
     def emit_assembly(EmitOptions self not None):
         return PyBool_FromLong(self.__this__.emit_assembly)
     @emit_assembly.setter
-    def emit_assembly(EmitOptions self not None, value):
+    def emit_assembly(EmitOptions self not None, value not None):
         self.__this__.emit_assembly = PyObject_IsTrue(value)
     
     @property
     def emit_bitcode(EmitOptions self not None):
         return PyBool_FromLong(self.__this__.emit_bitcode)
     @emit_bitcode.setter
-    def emit_bitcode(EmitOptions self not None, value):
+    def emit_bitcode(EmitOptions self not None, value not None):
         self.__this__.emit_bitcode = PyObject_IsTrue(value)
     
     @property
     def emit_stmt(EmitOptions self not None):
         return PyBool_FromLong(self.__this__.emit_stmt)
     @emit_stmt.setter
-    def emit_stmt(EmitOptions self not None, value):
+    def emit_stmt(EmitOptions self not None, value not None):
         self.__this__.emit_stmt = PyObject_IsTrue(value)
     
     @property
     def emit_stmt_html(EmitOptions self not None):
         return PyBool_FromLong(self.__this__.emit_stmt_html)
     @emit_stmt_html.setter
-    def emit_stmt_html(EmitOptions self not None, value):
+    def emit_stmt_html(EmitOptions self not None, value not None):
         self.__this__.emit_stmt_html = PyObject_IsTrue(value)
     
     @property
     def emit_python_extension(EmitOptions self not None):
         return PyBool_FromLong(self.__this__.emit_python_extension)
     @emit_python_extension.setter
-    def emit_python_extension(EmitOptions self not None, value):
+    def emit_python_extension(EmitOptions self not None, value not None):
         self.__this__.emit_python_extension = PyObject_IsTrue(value)
     
     @property
     def emit_static_library(EmitOptions self not None):
         return PyBool_FromLong(self.__this__.emit_static_library)
     @emit_static_library.setter
-    def emit_static_library(EmitOptions self not None, value):
+    def emit_static_library(EmitOptions self not None, value not None):
         self.__this__.emit_static_library = PyObject_IsTrue(value)
     
     @property
     def emit_cpp_stub(EmitOptions self not None):
         return PyBool_FromLong(self.__this__.emit_cpp_stub)
     @emit_cpp_stub.setter
-    def emit_cpp_stub(EmitOptions self not None, value):
+    def emit_cpp_stub(EmitOptions self not None, value not None):
         self.__this__.emit_cpp_stub = PyObject_IsTrue(value)
     
     @property
     def emit_schedule(EmitOptions self not None):
         return PyBool_FromLong(self.__this__.emit_schedule)
     @emit_schedule.setter
-    def emit_schedule(EmitOptions self not None, value):
+    def emit_schedule(EmitOptions self not None, value not None):
         self.__this__.emit_schedule = PyObject_IsTrue(value)
     
     @property
     def substitutions(EmitOptions self not None):
         return dict(self.__this__.substitutions)
     @substitutions.setter
-    def substitutions(EmitOptions self not None, object value):
+    def substitutions(EmitOptions self not None, object value not None):
         if not PyMapping_Check(value):
             raise ValueError("substitutions must be a mapping type")
         self.__this__.substitutions = stringmap_t()
@@ -815,7 +817,9 @@ cdef class EmitOptions:
         return u8bytes(dict(self.__this__.substitutions).get(u8bytes(default),
                                                              u8bytes(default)))
     
-    def compute_outputs_for_target_and_path(EmitOptions self not None, Target target, object base_path):
+    def compute_outputs_for_target_and_path(EmitOptions self not None,
+                                            Target target=Target(),
+                                            object base_path=""):
         """ A reimplementation of `compute_outputs()`, private to Halide’s Generator.cpp """
         
         # This is a reimplementation of the C++ orig --
