@@ -993,8 +993,7 @@ class TemporaryDirectory(Directory):
     @wraps(Directory.ctx_prepare)
     def ctx_prepare(self):
         change = super(TemporaryDirectory, self).ctx_prepare().change
-        self.will_change = bool(self.will_change and change)
-        self.will_change_back = bool(self.will_change and change)
+        self.will_change = self.will_change_back = bool(self.will_change and change)
         return self
     
     def close(self):

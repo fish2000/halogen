@@ -16,7 +16,7 @@ except ImportError:
 from abc import ABC, ABCMeta, abstractmethod
 from os.path import splitext
 from ctypes.util import find_library
-from collections import defaultdict
+from collections import defaultdict as DefaultDict
 from functools import wraps
 from compiledb import CDBSubBase
 from errors import ConfigurationError, ConfigCommandError
@@ -797,6 +797,24 @@ class PkgConfig(ConfigBase):
                          ret_err=False)
 
 
+class OCDSet(set):
+    
+    """ A set that obsessively – you might even say compulsively – sorts
+        itself out, whenever presenting the data it stewards through the
+        itertor protocol.
+    """
+    
+    def __iter__(self):
+        """ Wrap the instance of `set_iterator` – returned from calling 
+            `set.__iter__()` – using a call to the `sorted(…)` built-in
+            iterator instance wrapper; subsequently this freshly-wrapped 
+            “Chipotle-style” iterator-function-instance wrap is returned
+            and, one would hope, summarily ingested and enjoyed.
+        """
+        seterator = super(OCDSet, self).__iter__()
+        return iter(sorted(seterator))
+
+
 class NumpyConfig(ConfigBase):
     
     subpackages = ('npymath', 'mlib')
@@ -816,7 +834,7 @@ class NumpyConfig(ConfigBase):
     def __init__(self):
         """ Prefix is likely /…/numpy/core """
         from shlex import quote
-        self.info = defaultdict(set)
+        self.info = DefaultDict(OCDSet)
         self.macros = Macros()
         self.prefix = self.get_numpy_include_directory().parent()
         import numpy.distutils, numpy.version
@@ -840,23 +858,23 @@ class NumpyConfig(ConfigBase):
     
     def get_includes(self):
         return " ".join(f"-I{include_dir}" for include_dir \
-                          in sorted(self.info['include_dirs']))
+                                 in self.info['include_dirs'])
     
     def get_libs(self):
         return " ".join(f"-l{library}" for library \
-                      in sorted(self.info['libraries']))
+                             in self.info['libraries'])
     
     def get_cflags(self):
         macros = self.macros.to_string()
         includes = self.get_includes()
-        extra_compile_args = " ".join(sorted(self.info['extra_compile_args']))
+        extra_compile_args = " ".join(self.info['extra_compile_args'])
         return f"{macros} {includes} {extra_compile_args}".strip()
     
     def get_ldflags(self):
         linkdirs = " ".join(f"-L{library_dir}" for library_dir \
-                              in sorted(self.info['library_dirs']))
+                                     in self.info['library_dirs'])
         libs = self.get_libs()
-        extra_link_args = " ".join(sorted(self.info['extra_link_args']))
+        extra_link_args = " ".join(self.info['extra_link_args'])
         return f"{linkdirs} {libs} {extra_link_args}".strip()
 
 class BrewedConfig(ConfigBase):
