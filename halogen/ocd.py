@@ -46,7 +46,7 @@ class OCDType(type):
     prefix: str = "OCD"
     
     # The metaclass-internal dictionary of generated classes:
-    types: tx.Dict[str, type] = {}
+    types: tx.Dict[str, type] = collections.OrderedDict()
     
     class OCDMixin(object):
         
@@ -91,10 +91,11 @@ class OCDType(type):
             if not getattr(key, '__class__', None) == type:
                 raise TypeError("OCDType is a templated type, "
                                 "it must be specialized using a Python typevar "
-                               f"(not {type(key)})")
+                               f"(not a {type(key)})")
         if not hasattr(key, '__iter__'):
             raise TypeError("OCDType is a templated type, "
-                            "it must be specialized on an iterable Python type")
+                            "it must be specialized on an iterable Python type "
+                           f"(not a {type(key)})")
         
         # Save any passed clsname:
         

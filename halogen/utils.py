@@ -275,7 +275,7 @@ def print_cache(BaseClass: type, cache_instance_name: str):
     instance = getattr(BaseClass, cache_instance_name)
     qualname = f"{BaseClass.__name__}.{cache_instance_name}"
     entrycnt = len(instance)
-    dicttype = type(instance)
+    dicttype = type(instance).__name__
     
     width, _ = get_terminal_size()
     
