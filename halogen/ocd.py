@@ -139,6 +139,16 @@ class OCDType(type):
         # General question: should I do those two methods, “__str__”
         # and “__repr__”, with like __mro__ tricks or something, instead?
         
+        # Using a factory -- a callable that returns an instance of the type,
+        # á la “__new__” -- allows the wrapping of types like numpy.ndarray,
+        # like so:
+        #   
+        #   OCDNumpyArray = OCDType[numpy.ndarray, 'OCDNumpyArray',
+        #                           numpy.array]
+        #   
+        # … where “numpy.array(…)” is the factory function returning instances
+        # of “numpy.ndarray”:
+        
         if callable(factory):
             attributes.update({
                    '__new__' : lambda cls, *args, **kw: factory(*args, **kw)
