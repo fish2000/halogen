@@ -60,6 +60,9 @@ is_string = lambda thing: isinstance(thing, string_types)
 def tuplize(*items) -> tuple:
     return tuple(item for item in items if item is not None)
 
+def listify(*items) -> list:
+    return list(item for item in items if item is not None)
+
 def wrap_value(value):
     return lambda *args, **kwargs: value
 
@@ -359,7 +362,7 @@ def test_compile(conf, test_source):
             print(f" ≠ C++ TARGET: {adotout.name}")
             print("")
             
-            output += config.CXX(conf, outfile=adotout.name,
+            output += config.CXX(conf, outfile=os.fspath(adotout),
                                        infile=tf.name,
                                        cdb=cdb,
                                        verbose=True)
@@ -394,7 +397,7 @@ def test_compile(conf, test_source):
             if stderr:
                 print(f" » STDERR: {stderr}", file=sys.stderr)
                 print("")
-            if os.path.exists(str(adotout)):
+            if adotout.exists:
                 return True
             else:
                 print("... BUT THEN WHERE THE FUCK IS MY SHIT?!?!")
