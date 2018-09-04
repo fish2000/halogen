@@ -28,7 +28,7 @@ class OCDType(type):
         whole shmörgasbord of doodads and geegaws that would allow the twaddling
         and fine-tuning of all of those sort parameters.) It was written as a
         generalization of this one extremely stupidly simple class called OCDSet
-        which extended the `set` builtin to intercept the output iterator and\
+        which extended the `set` builtin to intercept the output iterator and
         wrap it in a `sorted(…)`.
         
         But why use something dead-simple and functional, when you can spend a
@@ -119,18 +119,18 @@ class OCDType(type):
         # returning them:
         
         attributes = {
-            '__covariant__'  :   key,
-            '__name__'       :   clsname,
-            '__iter__'       :   lambda self: iter(sorted(key.__iter__(self))),
-            '__repr__'       :   metacls.OCDMixin.__repr__,
-            '__str__'        :   metacls.OCDMixin.__str__,
+             '__covariant__' : key,
+                  '__name__' : clsname,
+                  '__iter__' : lambda self: iter(sorted(key.__iter__(self))),
+                  '__repr__' : metacls.OCDMixin.__repr__,
+                   '__str__' : metacls.OCDMixin.__str__,
             
             # q.v. inline notes to the Python 3 `typing` module
             # supra: https://git.io/fAsNO
             
-            '__args__'       :   tuplize(key, clsnamearg, factory),
-            '__parameters__' :   tuplize(key, clsnamearg, factory),
-            '__origin__'     :   metacls
+                  '__args__' : tuplize(key, clsnamearg, factory),
+            '__parameters__' : tuplize(key, clsnamearg, factory),
+                '__origin__' : metacls
         }
         
         # General question: should I do those two methods, “__str__”
@@ -138,7 +138,7 @@ class OCDType(type):
         
         if callable(factory):
             attributes.update({
-                '__new__'    :   lambda cls, *args, **kw: factory(*args, **kw)
+                   '__new__' : lambda cls, *args, **kw: factory(*args, **kw)
             })
         
         # Create the new class, as one does in the override of a
@@ -154,11 +154,11 @@ class OCDType(type):
         return cls
     
     @classmethod
-    def __prepare__(metacls, name, bases, **kwargs):
+    def __prepare__(metacls, name, bases, **kwargs) -> tx.Dict:
         """ Maintain declaration order in class members: """
         return collections.OrderedDict()
     
-    def __new__(metacls, name, bases, attributes, **kwargs):
+    def __new__(metacls, name, bases, attributes, **kwargs) -> type:
         """ When used as a metaclass, OCDType will insert a specialization
             of the class for which it has been chosen as a metaclass as its
             immediate base ancestor, and then create a new class based
@@ -189,15 +189,17 @@ class OCDType(type):
                                                         dict(attributes),
                                                       **kwargs)
     
-    @property
-    @classmethod
-    def typenames(metacls) -> tx.List[str]:
-        return sorted(metacls.types.keys())
+    @staticmethod
+    def typenames() -> tx.List[str]:
+        return sorted(OCDType.types.keys())
     
-    @property
-    @classmethod
-    def typecachesize(metacls) -> int:
-        return len(metacls.types)
+    @staticmethod
+    def typecachesize() -> int:
+        return len(OCDType.types)
+    
+    @staticmethod
+    def _type_for_name(typename: str) -> tx.Optional[type]:
+        return OCDType.types.get(typename, None)
 
 ###
 ### SPECIALIZATIONS OF OCDType:
