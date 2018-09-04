@@ -2,13 +2,14 @@
 
 from __future__ import print_function
 from types import MappingProxyType as mappingproxy
+from ocd import OCDFrozenSet
 
 __all__ = ('valid_emits', 'emit_defaults',
                           'default_emits',
            'preload',
            'generate')
 
-valid_emits = frozenset((
+valid_emits = OCDFrozenSet((
     'assembly',
     'bitcode',
     'cpp', 'cpp_stub',
@@ -74,10 +75,10 @@ def generate(*generators, **arguments):
     # ARGUMENT PROCESSING:
     
     generators = { u8str(generator) for generator in generators }
-    generator_names = set(arguments.pop('generator_names', api.registered_generators()))
+    generator_names = OCDFrozenSet(arguments.pop('generator_names', api.registered_generators()))
     output_directory = Directory(pth=arguments.pop('output_directory', None))
     target = api.Target(target_string=u8bytes(arguments.pop('target', 'host')))
-    emits = set(arguments.pop('emit', default_emits))
+    emits = OCDFrozenSet(arguments.pop('emit', default_emits))
     substitutions = dict(arguments.pop('substitutions', {}))
     verbose = bool(arguments.pop('verbose', DEFAULT_VERBOSITY))
     
