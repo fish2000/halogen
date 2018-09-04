@@ -90,3 +90,6 @@ ENV/
 
 # Mac finder
 .DS_Store
+
+# MyPy
+.mypy_cache/

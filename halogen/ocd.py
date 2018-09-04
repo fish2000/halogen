@@ -82,10 +82,11 @@ class OCDType(type):
             raise KeyError("OCDType is a templated type, "
                            "it requires a Python type on which to specialize")
         if type(key) == tuple:
-            if len(key) == 2:
-                key, clsname = key
-            elif len(key) == 3:
-                key, clsname, factory = key
+            tup: tx.Tuple = tx.cast(tx.Tuple, key)
+            if len(tup) == 2:
+                key, clsname = tup
+            elif len(tup) == 3:
+                key, clsname, factory = tup
         if type(key) != type:
             if not getattr(key, '__class__', None) == type:
                 raise TypeError("OCDType is a templated type, "
@@ -102,7 +103,7 @@ class OCDType(type):
         # Compute the name for the new class:
         
         if not clsname:
-            name = capwords(key.__name__)
+            name: str = capwords(key.__name__)
             clsname = f"{metacls.prefix}{name}"
         elif not clsname.startswith(metacls.prefix):
             clsname = f"{metacls.prefix}{clsname}"
@@ -117,11 +118,12 @@ class OCDType(type):
         # and install an `__iter__()` method that delegates to the covariant
         # implementation and wraps the results in a `sorted()` iterator before
         # returning them:
+        it: tx.Iterable = tx.cast(tx.Iterable, key)
         
         attributes = {
              '__covariant__' : key,
                   '__name__' : clsname,
-                  '__iter__' : lambda self: iter(sorted(key.__iter__(self))),
+                  '__iter__' : lambda self: iter(sorted(it.__iter__(self))),
                   '__repr__' : metacls.OCDMixin.__repr__,
                    '__str__' : metacls.OCDMixin.__str__,
             

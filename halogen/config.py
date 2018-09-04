@@ -335,10 +335,10 @@ class ConfigBase(BaseAncestor):
 
 class Macro(object):
     
+    __slots__ = ('name', 'definition', 'undefine')
+    
     STRING_ZERO = '0'
     STRING_ONE  = '1'
-    
-    __slots__ = ('name', 'definition', 'undefine')
     
     @staticmethod
     def is_string_value(putative, value=0):
@@ -463,6 +463,21 @@ class Macros(dict):
     def __unicode__(self):
         return six.u(self.to_string())
 
+FRAMEWORK_RE_STR = r"""(^.*)(?:^|/)(\w+).framework(?:/(?:Versions/([^/]+)/)?\2)?$"""
+FRAMEWORK_RE = None
+
+def infoForFramework(filename):
+    """ Originally from PyObjC: http://bit.ly/2MPVbuz
+        … returns (location, name, version) or None
+    """
+    global FRAMEWORK_RE
+    if FRAMEWORK_RE is None:
+        import re
+        FRAMEWORK_RE = re.compile(FRAMEWORK_RE_STR)
+    is_framework = FRAMEWORK_RE.findall(filename)
+    if not is_framework:
+        return None
+    return is_framework[-1]
 
 class PythonConfig(ConfigBase):
     
@@ -1067,7 +1082,7 @@ class ConfigUnion(ConfigBase):
             return iter(self.flags)
         
         def __len__(self):
-            return len(self.set)
+            return len(self.flags)
         
         def __getitem__(self, key):
             return self.flags[key]
@@ -1114,7 +1129,7 @@ class ConfigUnion(ConfigBase):
         """
         match_func = cls.optimization_flag_matcher
         opt_set = cls.optimization.set
-        return frozenset(
+        return OCDFrozenSet(
             filter(lambda flag: bool(match_func(flag)) and \
                                     (flag not in opt_set), flags))
     
@@ -1124,7 +1139,7 @@ class ConfigUnion(ConfigBase):
             that do not actually exist, from a set of flags: """
         match_func = cls.directory_flag_matcher
         check_func = os.path.exists
-        return frozenset(
+        return OCDFrozenSet(
             filter(lambda flag: bool(match_func(flag)) and \
                                     (not check_func(flag[1:])), flags))
     
@@ -1213,7 +1228,7 @@ class ConfigUnion(ConfigBase):
     
     def sub_config_types(self):
         """ Retrieve a set of the names of this ConfigUnion instances’ sub-configs """
-        return OCDSet( config.name for config in self.configs )
+        return OCDFrozenSet( config.name for config in self.configs )
     
     def __contains__(self, key):
         """ Determine if a config type is contained within this ConfigUnion instance """
