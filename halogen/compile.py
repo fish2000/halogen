@@ -40,6 +40,10 @@ class CompilerError(IOError, HalogenError):
     """ A boo-boo during compilation """
     pass
 
+class CompileDatabaseError(IOError, HalogenError):
+    """ A WTF when compilation-databasing """
+    pass
+
 class LinkerError(IOError, HalogenError):
     """ A link-time owie freakout """
     pass
@@ -404,9 +408,9 @@ class Generators(object):
         if self.postcompiled:
             return True
         if not self.compiled:
-            raise CompilerError(f"can't postcompile before compilation: {self.directory}")
+            raise CompileDatabaseError(f"can't postcompile before compilation: {self.directory}")
         if self.prelink_count < 1:
-            raise CompilerError(f"couldn't find any compilation outputs: {self.directory}")
+            raise CompileDatabaseError(f"couldn't find any compilation outputs: {self.directory}")
         if self.VERBOSE:
             print(f"Writing {self.cdb.length} compilation database entries")
         self.cdb.write()
@@ -686,6 +690,9 @@ def test(MAXIMUM_GENERATORS=2):
             # Calls Generators.__enter__(self=gens):
             stack.enter_context(gens)
         except CompilerError as exc:
+            print_exception(exc)
+            # gens.precompile() and gens.compile()
+        except CompileDatabaseError as exc:
             print_exception(exc)
             # gens.precompile() and gens.compile()
         except LinkerError as exc:

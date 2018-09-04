@@ -14,7 +14,8 @@ __all__ = ('get_terminal_size', 'terminal_width',
                                         'u8bytes',
                                         'u8str',
            'suffix_searcher',
-           'terminal_print', 'print_config',
+           'terminal_print', 'print_cache',
+                             'print_config',
                              'test_compile')
 
 # get_terminal_size(): does what you think it does
@@ -53,7 +54,7 @@ string_types = (type(''),
 
 is_string = lambda thing: isinstance(thing, string_types)
 
-def tuplize(*items):
+def tuplize(*items) -> tuple:
     return tuple(list(items))
 
 def wrap_value(value):
@@ -169,7 +170,7 @@ def remove_paths(*putatives):
 
 remove_paths.oldsyspath = tuple()
 
-def u8bytes(source):
+def u8bytes(source) -> bytes:
     if type(source) == bytes:
         return source
     elif type(source) == str:
@@ -184,7 +185,7 @@ def u8bytes(source):
         return b'None'
     return bytes(source)
 
-def u8str(source):
+def u8str(source) -> str:
     return u8bytes(source).decode('UTF-8')
 
 def stringify(instance, fields):
@@ -226,12 +227,35 @@ def terminal_print(message: str, color: str='red', asterisk: str='*'):
     """ Print a string to the terminal, centered and bookended with asterisks """
     from clint.textui.colored import red
     from clint.textui import colored
+    
     colorizer = getattr(colored, color.lower(), red)
     message = f" {message.strip()} "
+    
     asterisks = (terminal_width / 2) - (len(message) / 2)
     aa = asterisk[0] * asterisks
     ab = asterisk[0] * (asterisks + 0 - (len(message) % 2))
+    
     print(colorizer(f"{aa}{message}{ab}"))
+
+def print_cache(BaseClass: type, cache_instance_name: str):
+    """ Pretty-print the contents of a cached metaclass variable """
+    from pprint import pprint
+    
+    instance = getattr(BaseClass, cache_instance_name)
+    qualname = f"{BaseClass.__name__}.{cache_instance_name}"
+    entrycnt = len(instance)
+    dicttype = type(instance)
+    
+    width, _ = get_terminal_size()
+    
+    print("=" * width)
+    print("")
+    print(f" • DUMPING METACLASS CACHE « {qualname}: {dicttype} »")
+    print(f" • CACHE DICT CONTAINS {entrycnt} ENTRIES{entrycnt > 0 and ':' or ''}")
+    if entrycnt > 0:
+        print("")
+        pprint(instance, indent=4)
+    print("")
 
 def print_config(conf):
     """ Print debug information for a halogen.config.ConfigBase subclass """
@@ -274,13 +298,11 @@ def print_config(conf):
     print(str(conf))
     print("")
     # print("-" * width)
-    
 
 def test_compile(conf, test_source):
     """ Test-compile some inline C++ source, using the options provided
         by a given halogen.config.ConfigBase subclass instance.
     """
-    
     import sys, os
     import config
     from compiledb import CDBBase

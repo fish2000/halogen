@@ -861,6 +861,7 @@ class NumpyConfig(ConfigBase):
         extra_link_args = " ".join(self.info['extra_link_args'])
         return f"{linkdirs} {libs} {extra_link_args}".strip()
 
+
 class BrewedConfig(ConfigBase):
     
     """ A config class that provides its values through calls to the Mac Homebrew
@@ -1395,7 +1396,7 @@ HALIDE_REGISTER_GENERATOR(Brighten, brighten);
 def test():
     from utils import print_config
     from utils import test_compile
-    from ocd import print_cache
+    from utils import print_cache
     
     brewedHalideConfig = BrewedHalideConfig()
     brewedPythonConfig = BrewedPythonConfig()

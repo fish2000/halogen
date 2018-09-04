@@ -7,10 +7,8 @@ from utils import tuplize
 
 __all__ = ('OCDType',
            'OCDSet', 'OCDFrozenSet',
-           'OCDTuple', 'OCDList',
-           'print_cache')
+           'OCDTuple', 'OCDList')
 
-# ND = tx.TypeVar('ND', bound=numpy.ndarray)
 TypeFactory = tx.Callable[..., tx.Any]
 
 class OCDType(type):
@@ -159,30 +157,9 @@ OCDFrozenSet  = OCDType[frozenset, 'OCDFrozenSet']
 OCDTuple      = OCDType[tuple]
 OCDList       = OCDType[list]
 
-def print_cache(BaseClass: type,
-                cache_instance_name: str):
-    from pprint import pprint
-    from utils import get_terminal_size
-    
-    instance = getattr(BaseClass, cache_instance_name)
-    qualname = f"{BaseClass.__name__}.{cache_instance_name}"
-    entrycnt = len(instance)
-    dicttype = type(instance)
-    
-    width, _ = get_terminal_size()
-    
-    print("=" * width)
-    print("")
-    print(f" • DUMPING METACLASS CACHE « {qualname}: {dicttype} »")
-    print(f" • CACHE DICT CONTAINS {entrycnt} ENTRIES{entrycnt > 0 and ':' or ''}")
-    if entrycnt > 0:
-        print("")
-        pprint(instance, indent=4)
-    print("")
 
 def test():
-    # from utils import print_config
-    # from utils import test_compile
+    from utils import print_cache
     
     import array
     OCDArray      = OCDType[array.array]
@@ -201,7 +178,6 @@ def test():
     """ 1. Reveal the cached OCDType specializations: """
     
     print_cache(OCDType, 'types')
-    
 
 if __name__ == '__main__':
     test()
