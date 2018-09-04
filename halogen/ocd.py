@@ -87,6 +87,9 @@ class OCDType(type):
                 key, clsname = tup
             elif len(tup) == 3:
                 key, clsname, factory = tup
+            elif len(tup) > 3:
+                raise KeyError("Too many arguments passed to OCDType template "
+                               "specialization: {tup}")
         if type(key) != type:
             if not getattr(key, '__class__', None) == type:
                 raise TypeError("OCDType is a templated type, "
