@@ -99,7 +99,7 @@ class OCDType(type):
         
         # Save any passed clsname:
         
-        clsnamearg: str = clsname and str(clsname) or None
+        clsnamearg: tx.Optional[str] = clsname and str(clsname) or None
         
         # Compute the name for the new class:
         
