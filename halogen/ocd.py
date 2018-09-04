@@ -99,7 +99,7 @@ class OCDType(type):
         
         # Save any passed clsname:
         
-        clsnamearg = clsname and str(clsname) or None
+        clsnamearg: str = clsname and str(clsname) or None
         
         # Compute the name for the new class:
         
