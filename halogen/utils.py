@@ -3,6 +3,8 @@
 from __future__ import print_function, unicode_literals
 from functools import wraps
 import six
+import sys
+import typing as tx
 
 __all__ = ('get_terminal_size', 'terminal_width',
                                 'terminal_height',
@@ -28,7 +30,8 @@ def get_terminal_size(default_LINES: int=25, default_COLUMNS: int=120):
     def ioctl_GWINSZ(fd):
         try:
             import fcntl, termios, struct
-            cr = struct.unpack('hh', fcntl.ioctl(fd, termios.TIOCGWINSZ, '1234'))
+            cr = struct.unpack('hh',
+                   fcntl.ioctl(fd, termios.TIOCGWINSZ, '1234'))
         except:
             return
         return cr
@@ -55,7 +58,7 @@ string_types = (type(''),
 is_string = lambda thing: isinstance(thing, string_types)
 
 def tuplize(*items) -> tuple:
-    return tuple(list(items))
+    return tuple(item for item in items if item is not None)
 
 def wrap_value(value):
     return lambda *args, **kwargs: value
@@ -110,12 +113,12 @@ def masked_permissions(perms=0o666):
     return perms & ~current_umask()
 
 def append_paths(*putatives):
-    """ Mutate `sys.path` by appending one or more new paths --
-        all of which are checked for both nonexistence and presence
-        within the existing `sys.path` list via inode lookup, and
-        which those failing such checks are summarily excluded.
+    """ Mutate `sys.path` by appending one or more new paths -- all of which
+        are checked for both nonexistence and presence within the existing
+        `sys.path` list via inode lookup, and which those failing such checks
+        are summarily excluded.
     """
-    import sys, os
+    import os
     out = {}
     if len(putatives) < 1:
         return out
@@ -142,12 +145,12 @@ def append_paths(*putatives):
 append_paths.oldsyspath = tuple()
 
 def remove_paths(*putatives):
-    """ Mutate `sys.path` by removing one or more new paths --
-        all of which are checked for presence within the existing
-        `sys.path` list via inode lookup before being marked for
-        removal, which that (the removal) is done atomically.
+    """ Mutate `sys.path` by removing one or more existing paths --
+        all of which are checked for presence within the existing `sys.path`
+        list via inode lookup before being marked for removal, which that
+        (the removal) is done atomically.
     """
-    import sys, os
+    import os
     out = {}
     if len(putatives) < 1:
         return out
@@ -170,25 +173,49 @@ def remove_paths(*putatives):
 
 remove_paths.oldsyspath = tuple()
 
-def u8bytes(source) -> bytes:
+def u8encode(source: tx.Any) -> bytes:
+    """ Encode a source as bytes using the UTF-8 codec """
+    return bytes(source, encoding='UTF-8')
+
+def u8bytes(source: tx.Any) -> bytes:
+    """ Encode a source as bytes using the UTF-8 codec, guaranteeing a
+        proper return value without raising an error
+    """
     if type(source) == bytes:
         return source
     elif type(source) == str:
-        return bytes(source, encoding='UTF-8')
+        return u8encode(source)
     elif isinstance(source, six.string_types):
-        return bytes(source, encoding='UTF-8')
+        return u8encode(source)
     elif isinstance(source, (int, float)):
-        return bytes(str(source), encoding='UTF-8')
+        return u8encode(str(source))
     elif type(source) == bool:
         return source and b'True' or b'False'
     elif source is None:
         return b'None'
     return bytes(source)
 
-def u8str(source) -> str:
+def u8str(source: tx.Any) -> str:
+    """ Encode a source as a Python string, guaranteeing a proper return
+        value without raising an error
+    """
     return u8bytes(source).decode('UTF-8')
 
 def stringify(instance, fields):
+    """ Stringify an object instance, using an iterable field list to
+        extract and render its values, and printing them along with the 
+        typename of the instance and its memory address -- yielding a
+        repr-style string of the format:
+        
+            TypeName(fieldname="val", otherfieldname="otherval") @ 0x0FE
+        
+        The `stringify(…)` function is of use in `__str__()` and `__repr__()`
+        definitions, E.G. something like:
+        
+            def __repr__(self):
+                return stringify(self, type(self).__slots__)
+        
+    """
     field_dict = {}
     for field in fields:
         field_value = getattr(instance, field, "")
@@ -198,8 +225,10 @@ def stringify(instance, fields):
     field_dict_items = []
     for k, v in field_dict.items():
         field_dict_items.append(f'''{k}="{v}"''')
+    typename = type(instance).__name__
     field_dict_string = ", ".join(field_dict_items)
-    return f"{instance.__class__.__name__}({field_dict_string}) @ {hex(id(instance))}"
+    hex_id = hex(id(instance))
+    return f"{typename}({field_dict_string}) @ {hex_id}"
 
 def suffix_searcher(suffix):
     """ Return a boolean function that will search for the given
@@ -223,8 +252,10 @@ def suffix_searcher(suffix):
     searcher = re.compile(regex_str, re.IGNORECASE).search
     return lambda searching_for: bool(searcher(searching_for))
 
-def terminal_print(message: str, color: str='red', asterisk: str='*'):
-    """ Print a string to the terminal, centered and bookended with asterisks """
+def terminal_print(message: str, handle: tx.Any=sys.stdout,
+                   color: str='red', asterisk: str='*'):
+    """ Print a string to the terminal, centered and bookended with asterisks
+    """
     from clint.textui.colored import red
     from clint.textui import colored
     
@@ -235,7 +266,7 @@ def terminal_print(message: str, color: str='red', asterisk: str='*'):
     aa = asterisk[0] * asterisks
     ab = asterisk[0] * (asterisks + 0 - (len(message) % 2))
     
-    print(colorizer(f"{aa}{message}{ab}"))
+    print(colorizer(f"{aa}{message}{ab}"), file=handle)
 
 def print_cache(BaseClass: type, cache_instance_name: str):
     """ Pretty-print the contents of a cached metaclass variable """
@@ -251,7 +282,7 @@ def print_cache(BaseClass: type, cache_instance_name: str):
     print("=" * width)
     print("")
     print(f" • DUMPING METACLASS CACHE « {qualname}: {dicttype} »")
-    print(f" • CACHE DICT CONTAINS {entrycnt} ENTRIES{entrycnt > 0 and ':' or ''}")
+    print(f" • CACHE DICT HAS {entrycnt} ENTRIES{entrycnt > 0 and ':' or ''}")
     if entrycnt > 0:
         print("")
         pprint(instance, indent=4)
@@ -303,7 +334,7 @@ def test_compile(conf, test_source):
     """ Test-compile some inline C++ source, using the options provided
         by a given halogen.config.ConfigBase subclass instance.
     """
-    import sys, os
+    import os
     import config
     from compiledb import CDBBase
     from filesystem import NamedTemporaryFile, TemporaryName
@@ -315,7 +346,8 @@ def test_compile(conf, test_source):
     
     print("=" * width)
     print("")
-    print(f" • TESTING COMPILATION: config.CXX({conf.name}, <out>, <in>, cdb=CDBBase()) ...")
+    print(f" • TESTING COMPILATION: config.CXX({conf.name}, "
+           "<out>, <in>, cdb=CDBBase()) ...")
     print("")
     
     with NamedTemporaryFile(suffix="cpp", prefix=px) as tf:
@@ -325,6 +357,7 @@ def test_compile(conf, test_source):
         with TemporaryName(suffix="cpp.o", prefix=px) as adotout:
             print(f" ≠ C++ SOURCE: {tf.name}")
             print(f" ≠ C++ TARGET: {adotout.name}")
+            print("")
             
             output += config.CXX(conf, outfile=adotout.name,
                                        infile=tf.name,
