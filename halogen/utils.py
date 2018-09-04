@@ -6,6 +6,7 @@ import six
 
 __all__ = ('get_terminal_size', 'terminal_width',
                                 'terminal_height',
+           'tuplize',
            'wrap_value', 'Memoizer', 'memoize',
            'current_umask', 'masked_permissions',
            'append_paths', 'remove_paths',
@@ -18,7 +19,8 @@ __all__ = ('get_terminal_size', 'terminal_width',
 
 # get_terminal_size(): does what you think it does
 # adapted from this: http://stackoverflow.com/a/566752/298171
-def get_terminal_size(default_LINES=25, default_COLUMNS=120):
+
+def get_terminal_size(default_LINES: int=25, default_COLUMNS: int=120):
     """ Get the width and height of the terminal window in characters """
     import os
     env = os.environ
@@ -50,6 +52,9 @@ string_types = (type(''),
                 type(u'')) + six.string_types
 
 is_string = lambda thing: isinstance(thing, string_types)
+
+def tuplize(*items):
+    return tuple(list(items))
 
 def wrap_value(value):
     return lambda *args, **kwargs: value
@@ -217,7 +222,7 @@ def suffix_searcher(suffix):
     searcher = re.compile(regex_str, re.IGNORECASE).search
     return lambda searching_for: bool(searcher(searching_for))
 
-def terminal_print(message, color='red', asterisk='*'):
+def terminal_print(message: str, color: str='red', asterisk: str='*'):
     """ Print a string to the terminal, centered and bookended with asterisks """
     from clint.textui.colored import red
     from clint.textui import colored
@@ -235,36 +240,36 @@ def print_config(conf):
     
     print("=" * width)
     print("")
-    print(f"CONFIG: {conf.name}")
-    print(f"PREFIX: {conf.prefix}")
+    print(f" • CONFIG: {conf.name}")
+    print(f" • PREFIX: {conf.prefix}")
     print("")
     print("-" * width)
     
-    print("INCLUDES:")
+    print(" • INCLUDES:")
     print("")
     print(conf.get_includes())
     print("")
     print("-" * width)
     
-    print("LIBS:")
+    print(" • LIBS:")
     print("")
     print(conf.get_libs())
     print("")
     print("-" * width)
     
-    print("CFLAGS:")
+    print(" • CFLAGS:")
     print("")
     print(conf.get_cflags())
     print("")
     print("-" * width)
     
-    print("LDFLAGS:")
+    print(" • LDFLAGS:")
     print("")
     print(conf.get_ldflags())
     print("")
     print("-" * width)
     
-    print("stringification:")
+    print(" » stringification:")
     print("")
     print(str(conf))
     print("")
@@ -288,7 +293,7 @@ def test_compile(conf, test_source):
     
     print("=" * width)
     print("")
-    print(f"TESTING COMPILATION: config.CXX({conf.name}, <out>, <in>, cdb=CDBBase()) ...")
+    print(f" • TESTING COMPILATION: config.CXX({conf.name}, <out>, <in>, cdb=CDBBase()) ...")
     print("")
     
     with NamedTemporaryFile(suffix="cpp", prefix=px) as tf:
@@ -296,8 +301,8 @@ def test_compile(conf, test_source):
         tf.file.flush()
         
         with TemporaryName(suffix="cpp.o", prefix=px) as adotout:
-            print(f"C++ SOURCE: {tf.name}")
-            print(f"C++ TARGET: {adotout.name}")
+            print(f" ≠ C++ SOURCE: {tf.name}")
+            print(f" ≠ C++ TARGET: {adotout.name}")
             
             output += config.CXX(conf, outfile=adotout.name,
                                        infile=tf.name,
@@ -308,7 +313,7 @@ def test_compile(conf, test_source):
             
             if len(output[1]) > 0:
                 # failure
-                print("COMPILATION FAILED:")
+                print(" * COMPILATION FAILED:")
                 stdout = u8str(output[0]).strip()
                 stderr = u8str(output[1]).strip()
                 if stdout:
@@ -320,7 +325,7 @@ def test_compile(conf, test_source):
                 return False
             
             # success!
-            print("COMPILATION TOTALLY WORKED!")
+            print(" • COMPILATION TOTALLY WORKED!")
             print("")
             cdb_json = str(cdb)
             stdout = u8str(output[0]).strip()
@@ -329,10 +334,10 @@ def test_compile(conf, test_source):
                 print(f"   CDB: {cdb_json}", file=sys.stdout)
                 print("")
             if stdout:
-                print(f"STDOUT: {stdout}", file=sys.stdout)
+                print(f" » STDOUT: {stdout}", file=sys.stdout)
                 print("")
             if stderr:
-                print(f"STDERR: {stderr}", file=sys.stderr)
+                print(f" » STDERR: {stderr}", file=sys.stderr)
                 print("")
             if os.path.exists(str(adotout)):
                 return True

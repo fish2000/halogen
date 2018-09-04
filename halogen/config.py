@@ -7,6 +7,7 @@ import re
 import six
 import sys
 import sysconfig
+import typing as tx
 
 try:
     from functools import reduce
@@ -18,17 +19,18 @@ from os.path import splitext
 from ctypes.util import find_library
 from collections import defaultdict as DefaultDict
 from functools import wraps
+
 from compiledb import CDBSubBase
 from errors import ConfigurationError, ConfigCommandError
 from filesystem import which, back_tick, script_path, Directory
+from ocd import OCDSet, OCDFrozenSet
 from utils import is_string, stringify, u8bytes, u8str
 
 __all__ = ('SHARED_LIBRARY_SUFFIX', 'STATIC_LIBRARY_SUFFIX',
            'DEFAULT_VERBOSITY',
-           'ConfigSubBase', 'ConfigBaseMeta',
-           'environ_override',
-           'ConfigBase',
-           'Macro', 'Macros',
+           'ConfigSubBase',
+           'ConfigBaseMeta', 'environ_override',
+           'ConfigBase', 'Macro', 'Macros',
            'PythonConfig', 'BrewedPythonConfig',
            'SysConfig', 'PkgConfig', 'NumpyConfig',
                                      'BrewedConfig',
@@ -70,7 +72,7 @@ class ConfigSubBase(SubBaseAncestor):
         the “subdirectory()” method, and other stuff you can read about below.
     """
     
-    base_field_cache = {}
+    base_field_cache: tx.Dict[str, tx.Tuple[str]] = {}
     
     # Prefix get/set/delete methods:
     
@@ -155,17 +157,17 @@ class ConfigBaseMeta(ABCMeta):
         ConfigBase (q.v. class definition sub.)
     """
     
-    def __new__(metacls, name, bases, attributes, **kwargs):
+    def __new__(metacls, name, bases, attributes, **kwargs) -> type:
         if not 'base_fields' in attributes:
             attributes['base_fields'] = tuple()
-        base_fields = set(attributes['base_fields'])
+        base_fields = OCDSet(attributes['base_fields'])
         for base in bases:
             if hasattr(base, 'base_fields'):
-                base_fields |= frozenset(base.base_fields)
+                base_fields |= OCDFrozenSet(base.base_fields)
             if hasattr(base, 'fields'):
-                base_fields |= frozenset(base.fields)
-        attributes['base_fields'] = tuple(sorted(base_fields))
-        ConfigSubBase.base_field_cache[name] = tuple(sorted(base_fields))
+                base_fields |= OCDFrozenSet(base.fields)
+        attributes['base_fields'] = tuple(base_fields)
+        ConfigSubBase.base_field_cache[name] = tuple(base_fields)
         cls = super(ConfigBaseMeta, metacls).__new__(metacls, name,
                                                               bases,
                                                               attributes,
@@ -234,23 +236,23 @@ class ConfigBase(BaseAncestor):
                                       'include_dir_fields')
         
         def store(self, *fields):
-            self.stored_fields = self.more_fields = frozenset(fields)
+            self.stored_fields = self.more_fields = OCDFrozenSet(fields)
             if self.include_dir_fields:
-                self.stored_fields |= frozenset(ConfigBase.dir_fields)
+                self.stored_fields |= OCDFrozenSet(ConfigBase.dir_fields)
         
         def __init__(self, *more_fields, **kwargs):
             self.include_dir_fields = bool(kwargs.pop('dir_fields', False))
-            self.exclude_fields = frozenset(kwargs.pop('exclude', tuple()))
+            self.exclude_fields = OCDFrozenSet(kwargs.pop('exclude', tuple()))
             self.store(*more_fields)
         
         def __get__(self, instance, cls=None):
             if cls is None:
                 cls = type(instance)
-            out = set(self.stored_fields)
+            out = OCDSet(self.stored_fields)
             if hasattr(cls, 'base_fields'):
-                out |= frozenset(cls.base_fields)
+                out |= OCDFrozenSet(cls.base_fields)
             out -= self.exclude_fields
-            return tuple(sorted(out))
+            return tuple(out)
         
         def __set__(self, instance, iterable):
             self.store(*iterable)
@@ -710,15 +712,15 @@ class PkgConfig(ConfigBase):
                                   'pkg_name', dir_fields=True)
     
     # List of cflags to use with all pkg-config-based classes:
-    cflags = frozenset(("funroll-loops",
-                        "mtune=native",
-                        "O3"))
+    cflags = OCDFrozenSet(("funroll-loops",
+                           "mtune=native",
+                           "O3"))
     
     # Location of the `pkg-config` binary:
     pkgconfig = which('pkg-config')
     
     # Cache of complete package list:
-    packages = set()
+    packages = OCDSet()
     did_load_packages = False
     
     @classmethod
@@ -728,7 +730,7 @@ class PkgConfig(ConfigBase):
             from errors import ExecutionError
             script = which('all-pkgconfig-packages.sh', pathvar=script_path())
             try:
-                cls.packages |= frozenset(back_tick(script).split('\n'))
+                cls.packages |= OCDFrozenSet(back_tick(script).split('\n'))
             except ExecutionError:
                 cls.did_load_packages = False
             else:
@@ -795,24 +797,6 @@ class PkgConfig(ConfigBase):
     def get_ldflags(self):
         return back_tick(f"{self.pkgconfig} {self.pkg_name} --libs --static",
                          ret_err=False)
-
-
-class OCDSet(set):
-    
-    """ A set that obsessively – you might even say compulsively – sorts
-        itself out, whenever presenting the data it stewards through the
-        itertor protocol.
-    """
-    
-    def __iter__(self):
-        """ Wrap the instance of `set_iterator` – returned from calling 
-            `set.__iter__()` – using a call to the `sorted(…)` built-in
-            iterator instance wrapper; subsequently this freshly-wrapped 
-            “Chipotle-style” iterator-function-instance wrap is returned
-            and, one would hope, summarily ingested and enjoyed.
-        """
-        seterator = super(OCDSet, self).__iter__()
-        return iter(sorted(seterator))
 
 
 class NumpyConfig(ConfigBase):
@@ -891,9 +875,9 @@ class BrewedConfig(ConfigBase):
     brew = which('brew')
     
     # List of cflags to use with all Homebrew-based config classes:
-    cflags = frozenset(("funroll-loops",
-                        "mtune=native",
-                        "O3"))
+    cflags = OCDFrozenSet(("funroll-loops",
+                           "mtune=native",
+                           "O3"))
     
     def __init__(self, brew_name=None):
         """ Initialize BrewedConfig, optionally naming a formula (the default is “halide”) """
@@ -954,8 +938,8 @@ class BrewedHalideConfig(BrewedConfig):
     library = "Halide"
     
     # List of Halide-specific cflags to use:
-    cflags = frozenset(("std=c++1z",
-                        "stdlib=libc++")) | BrewedConfig.cflags
+    cflags = OCDFrozenSet(("std=c++1z",
+                           "stdlib=libc++")) | BrewedConfig.cflags
     
     def __init__(self):
         """ Initialize BrewedHalideConfig (constructor takes no arguments) """
@@ -1054,7 +1038,7 @@ class ConfigUnion(ConfigBase):
             # N.B. the curly-brace expression below is a set comprehension:
             @wraps(base_function)
             def getter(this):
-                out = set()
+                out = OCDSet()
                 for config in this.configs:
                     function_to_call = getattr(config, self.name)
                     out |= { flag.strip() for flag in f" {function_to_call()}".split(TOKEN) }
@@ -1070,10 +1054,16 @@ class ConfigUnion(ConfigBase):
         
         def __init__(self, template, flaglist):
             self.flags = [template % flag for flag in flaglist]
-            self.set = frozenset(self.flags)
+            self.set = OCDFrozenSet(self.flags)
         
         def __contains__(self, key):
             return key in self.set
+        
+        def __bool__(self):
+            return True
+        
+        def __iter__(self):
+            return iter(self.flags)
         
         def __len__(self):
             return len(self.set)
@@ -1222,13 +1212,11 @@ class ConfigUnion(ConfigBase):
     
     def sub_config_types(self):
         """ Retrieve a set of the names of this ConfigUnion instances’ sub-configs """
-        return { config.name for config in self.configs }
+        return OCDSet( config.name for config in self.configs )
     
     def __contains__(self, key):
         """ Determine if a config type is contained within this ConfigUnion instance """
-        if hasattr(key, 'name'):
-            key = key.name
-        return key in self.sub_config_types()
+        return getattr(key, 'name', key) in self.sub_config_types()
     
     @property
     def name(self):
@@ -1242,7 +1230,7 @@ class ConfigUnion(ConfigBase):
             Internally, this property calls ConfigUnion.sub_config_types(self) to furnish
             itself with the sub-config type list.
         """
-        typelist = ", ".join(sorted(self.sub_config_types()))
+        typelist = ", ".join(self.sub_config_types())
         return f"{type(self).__name__}<{typelist}>"
     
     @union_of(name='includes')
@@ -1403,22 +1391,11 @@ class Brighten : public Halide::Generator<Brighten> {
 HALIDE_REGISTER_GENERATOR(Brighten, brighten);
 """
 
-def print_cache():
-    from pprint import pprint
-    from utils import get_terminal_size
-    
-    width, _ = get_terminal_size()
-    
-    print("=" * width)
-    print("")
-    print("PRINTING: ConfigBase.base_field_cache -- dict<str> ...")
-    print("")
-    pprint(ConfigBase.base_field_cache, indent=4)
-    print("")
 
 def test():
     from utils import print_config
     from utils import test_compile
+    from ocd import print_cache
     
     brewedHalideConfig = BrewedHalideConfig()
     brewedPythonConfig = BrewedPythonConfig()
@@ -1434,8 +1411,7 @@ def test():
                                                      pkgConfig,
                                                      numpyConfig)
     
-    
-    """ Test basic config methods: """
+    """ 1. Test basic config methods: """
     
     print_config(brewedHalideConfig)
     print_config(sysConfig)
@@ -1447,15 +1423,15 @@ def test():
     print_config(configUnion)
     print_config(configUnionAll)
     
-    """ Test compilation with different configs: """
+    """ 2. Test compilation with different configs: """
     
     test_compile(brewedHalideConfig, test_generator_source)
     test_compile(configUnion, test_generator_source)
     test_compile(configUnionAll, test_generator_source)
     
-    """  Reveal the cached field-value dictionary: """
+    """ 3. Reveal the cached field-value dictionary: """
     
-    print_cache()
+    print_cache(ConfigBase, 'base_field_cache')
 
 
 def corefoundation_check():
@@ -1486,7 +1462,12 @@ def corefoundation_check():
     pyConfig = PythonConfig(prefix)
     configUnion = ConfigUnion(brewedHalideConfig, pyConfig)
     
+    """ 5. Dump the ConfigUnion instance used in the CoreFoundation test: """
+    
     print_config(configUnion)
+    
+    """ 6. Test compilation with the one-off CoreFoundation-specific ConfigUnion: """
+    
     test_compile(configUnion, test_generator_source)
 
 if __name__ == '__main__':

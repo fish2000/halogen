@@ -13,6 +13,7 @@ from generate import preload, generate, default_emits
 from filesystem import rm_rf, temporary, TemporaryName
 from filesystem import Directory, cd
 from filesystem import TemporaryDirectory, Intermediate
+from ocd import OCDList
 from utils import u8str
 
 __all__ = ('CONF', 'DEFAULT_MAXIMUM_GENERATOR_COUNT',
@@ -241,8 +242,8 @@ class Generators(object):
         self._linked = False
         self._archived = False
         self._preloaded = False
-        self.sources = []
-        self.prelink = []
+        self.sources = OCDList()
+        self.prelink = OCDList()
         self.link_result = tuple()
         self.archive_result = tuple()
         self.preload_result = None
@@ -346,7 +347,7 @@ class Generators(object):
             if self.VERBOSE:
                 print(f"Using {self.MAXIMUM} of {self.source_count} generator sources found")
                 print("")
-            self.sources = list(self.sources[:self.MAXIMUM])
+            self.sources = OCDList(self.sources[:self.MAXIMUM])
         if self.source_count > 0:
             self._precompiled = True
         return self.precompiled
@@ -771,13 +772,12 @@ def test(MAXIMUM_GENERATORS=2):
                             print("")
                             print(f"Found compilation DB file “{CDBJsonFile.filename}” in intermediate: {gens.intermediate}:")
                             with CDBJsonFile(directory=gens.intermediate) as cdb:
-                                # print(cdb.entries)
                                 pprint(cdb.entries, indent=4)
                     if DEFAULT_VERBOSITY:
                         print("")
                         print(f"Listing files at intermediate: {gens.intermediate} …")
-                    intermediate_list = list(gens.intermediate.subpath(listentry) \
-                                             for listentry in gens.intermediate.ls())
+                    intermediate_list = OCDList(gens.intermediate.subpath(listentry) \
+                                                for listentry in gens.intermediate.ls())
                     pprint(intermediate_list, indent=4)
                 else:
                     print("X> Intermediate directory DOES NOT EXIST")
@@ -787,8 +787,8 @@ def test(MAXIMUM_GENERATORS=2):
                     if DEFAULT_VERBOSITY:
                         print("")
                         print(f"Listing files at destination: {destination} …")
-                    destination_list = list(destination.subpath(listentry) \
-                                            for listentry in destination.ls())
+                    destination_list = OCDList(destination.subpath(listentry) \
+                                               for listentry in destination.ls())
                     pprint(destination_list, indent=4)
                     if DEFAULT_VERBOSITY:
                         print(f"Removing destination: {destination} …")
