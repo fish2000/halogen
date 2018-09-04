@@ -210,10 +210,11 @@ class OCDType(type):
 OCDSet        = OCDType[set]
 OCDFrozenSet  = OCDType[frozenset, 'OCDFrozenSet']
 OCDTuple      = OCDType[tuple]
-# OCDList       = OCDType[list]
 
-class OCDList(list, metaclass=OCDType, subbasename='OCDList'):
+class OCDListType(list, metaclass=OCDType, subbasename='OCDList'):
     pass
+
+OCDList       = OCDType[list] # this emits the cached type from above
 
 
 def test():
