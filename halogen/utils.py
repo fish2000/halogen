@@ -352,6 +352,7 @@ def test_compile(conf, test_source, print_cdb=False):
     from filesystem import NamedTemporaryFile, TemporaryName
     
     width, _ = get_terminal_size()
+    bytelength = len(test_source)
     output = tuple()
     px = "yodogg-"
     cdb = CDBBase()
@@ -362,12 +363,17 @@ def test_compile(conf, test_source, print_cdb=False):
            "<out>, <in>, cdb=CDBBase()) ...")
     print("")
     
-    with NamedTemporaryFile(suffix="cpp", prefix=px) as tf:
+    with NamedTemporaryFile(suffix="cpp",
+                            prefix=px) as tf:
+        
         tf.file.write(test_source)
         tf.file.flush()
         
-        with TemporaryName(suffix="cpp.o", prefix=px) as adotout:
-            print(f" ≠ C++ SOURCE: {tf.name}")
+        with TemporaryName(suffix="cpp.o",
+                           prefix=px,
+                           randomized=True) as adotout:
+            
+            print(f" ≠ C++ SOURCE: {tf.name} ({bytelength}b)")
             print(f" ≠ C++ TARGET: {adotout.name}")
             print("")
             

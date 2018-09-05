@@ -666,7 +666,7 @@ def print_exception(exc):
     """
     print(trace_output, file=sys.stderr)
 
-def test(MAXIMUM_GENERATORS=2):
+def test(MAXIMUM_GENERATORS=255):
     
     """ Run the inline tests for the halogen.compile module """
     

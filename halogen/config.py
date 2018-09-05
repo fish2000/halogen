@@ -1391,85 +1391,11 @@ def AR(conf, outfile, *infiles, **kwargs):
 del SubBaseAncestor
 del BaseAncestor
 
-test_generator_source = b"""
-#include "Halide.h"
-using namespace Halide;
-
-class Brighten : public Halide::Generator<Brighten> {
-        
-    public:
-        enum class Layout { Planar, Interleaved, Either, Specialized };
-        
-    public:
-        Input<Buffer<uint8_t>> input{     "input",    3 };
-        GeneratorParam<Layout> layout{    "layout",        Layout::Planar,
-                                    {{    "planar",        Layout::Planar },
-                                     {    "interleaved",   Layout::Interleaved },
-                                     {    "either",        Layout::Either },
-                                     {    "specialized",   Layout::Specialized }}};
-    
-    public:
-        Input<uint8_t> offset{            "offset"      };
-        Output<Buffer<uint8_t>> brighter{ "brighter", 3 };
-        Var x, y, c;
-    
-    public:
-        void generate() {
-            // Define the Func.
-            brighter(x, y, c) = input(x, y, c) + offset;
-            
-            // Schedule it.
-            brighter.vectorize(x, 16);
-            
-            if (layout == Layout::Planar) {
-            } else if (layout == Layout::Interleaved) {
-                input
-                    .dim(0).set_stride(3)
-                    .dim(2).set_stride(1);
-                
-                brighter
-                    .dim(0).set_stride(3)
-                    .dim(2).set_stride(1);
-                
-                input.dim(2).set_bounds(0, 3);
-                brighter.dim(2).set_bounds(0, 3);
-                brighter.reorder(c, x, y).unroll(c);
-            } else if (layout == Layout::Either) {
-                input.dim(0).set_stride(Expr());
-                brighter.dim(0).set_stride(Expr());
-            } else if (layout == Layout::Specialized) {
-                input.dim(0).set_stride(Expr());
-                brighter.dim(0).set_stride(Expr());
-                
-                Expr input_is_planar =
-                    (input.dim(0).stride() == 1);
-                Expr input_is_interleaved =
-                    (input.dim(0).stride() == 3 &&
-                     input.dim(2).stride() == 1 &&
-                     input.dim(2).extent() == 3);
-                
-                Expr output_is_planar =
-                    (brighter.dim(0).stride() == 1);
-                Expr output_is_interleaved =
-                    (brighter.dim(0).stride() == 3 &&
-                     brighter.dim(2).stride() == 1 &&
-                     brighter.dim(2).extent() == 3);
-                
-                brighter.specialize(input_is_planar && output_is_planar);
-                brighter.specialize(input_is_interleaved && output_is_interleaved)
-                    .reorder(c, x, y).unroll(c);
-            }
-        }
-};
-
-HALIDE_REGISTER_GENERATOR(Brighten, brighten);
-"""
-
-
 def test():
     from utils import print_config
     from utils import test_compile
     from utils import print_cache
+    import test_generators
     
     brewedHalideConfig = BrewedHalideConfig()
     brewedPythonConfig = BrewedPythonConfig()
@@ -1507,9 +1433,13 @@ def test():
     
     """ 2. Test compilation with different configs: """
     
-    test_compile(brewedHalideConfig, test_generator_source)
-    test_compile(configUnionSetWrap, test_generator_source)
-    test_compile(configUnionAll, test_generator_source)
+    test_compile(brewedHalideConfig, test_generators.brighten_source)
+    test_compile(configUnionSetWrap, test_generators.brighten_source)
+    test_compile(configUnionAll,     test_generators.brighten_source)
+    
+    test_compile(brewedHalideConfig, test_generators.autoscheduler_source)
+    test_compile(configUnionSetWrap, test_generators.autoscheduler_source)
+    test_compile(configUnionAll,     test_generators.autoscheduler_source)
     
     """ 3. Reveal the cached field-value dictionary: """
     
@@ -1529,6 +1459,7 @@ def corefoundation_check():
     
     from utils import print_config
     from utils import test_compile
+    import test_generators
     
     FUNC_NAME_WTF = CFBundleGetValueForInfoDictionaryKey
     bundle_id = u'org.python.python'
@@ -1551,7 +1482,8 @@ def corefoundation_check():
     
     """ 6. Test compilation with the one-off CoreFoundation-specific ConfigUnion: """
     
-    test_compile(configUnion, test_generator_source)
+    test_compile(configUnion, test_generators.brighten_source)
+    test_compile(configUnion, test_generators.autoscheduler_source)
 
 if __name__ == '__main__':
     test()

@@ -204,12 +204,12 @@ def temporary(suffix=None, prefix=None, parent=None, **kwargs):
     """
     from tempfile import mktemp, gettempdir
     directory = os.fspath(kwargs.pop('dir', parent) or gettempdir())
-    tempmade = mktemp(prefix=prefix, suffix=suffix, dir=directory)
+    tempmade = mktemp(prefix=str(prefix), suffix=str(suffix), dir=directory)
     tempsplit = os.path.splitext(os.path.basename(tempmade))
     if not suffix:
         suffix = tempsplit[1][1:]
     if not prefix or kwargs.pop('randomized', False):
-        prefix = tempsplit[0]
+        prefix = os.path.splitext(tempsplit[0])[0] # WTF, HAX!
     fullpth = os.path.join(directory, f"{prefix}{suffix}")
     if os.path.exists(fullpth):
         raise FilesystemError(f"temporary(): file exists: {fullpth}")
