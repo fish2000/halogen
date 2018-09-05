@@ -802,7 +802,7 @@ def test(MAXIMUM_GENERATORS=255):
                     intermediate_list = OCDList(gens.intermediate.subpath(listentry) \
                                                 for listentry in gens.intermediate.ls())
                     pprint(listify(*intermediate_list), indent=4,
-                                                    width=terminal_width)
+                                                        width=terminal_width)
                 else:
                     print("X> Intermediate directory DOES NOT EXIST")
                     print(f"X> {gens.intermediate}")
@@ -814,7 +814,7 @@ def test(MAXIMUM_GENERATORS=255):
                     destination_list = OCDList(destination.subpath(listentry) \
                                                for listentry in destination.ls())
                     pprint(listify(*destination_list), indent=4,
-                                                   width=terminal_width)
+                                                       width=terminal_width)
                     if DEFAULT_VERBOSITY:
                         print(f"Removing destination: {destination} …")
                     rm_rf(destination)
