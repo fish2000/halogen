@@ -2,7 +2,9 @@
 
 from __future__ import print_function
 
+import abc
 import collections
+import collections.abc
 import typing as tx
 
 from utils import tuplize
@@ -13,7 +15,7 @@ __all__ = ('OCDType',
 
 TypeFactory = tx.Callable[..., tx.Any]
 
-class OCDType(type):
+class OCDType(abc.ABCMeta):
     
     """ OCDType is a templated Python type.
     
@@ -42,11 +44,12 @@ class OCDType(type):
     """
     
     # The metaclass-internal name prefix, used to name generated
-    # classes, á la Objective-C naming prefixes:
+    # types, á la Objective-C naming prefixes:
     prefix: str = "OCD"
     
-    # The metaclass-internal dictionary of generated classes:
-    types: tx.Dict[str, type] = collections.OrderedDict()
+    # The metaclass-internal dictionaries of all generated types:
+    types:    tx.Dict[str, type] = collections.OrderedDict()
+    subtypes: tx.Dict[str, type] = collections.OrderedDict()
     
     class OCDMixin(object):
         
@@ -91,10 +94,9 @@ class OCDType(type):
                 raise KeyError("Too many arguments passed to OCDType template "
                                "specialization: {tup}")
         if type(key) != type:
-            if not getattr(key, '__class__', None) == type:
-                raise TypeError("OCDType is a templated type, "
-                                "it must be specialized using a Python typevar "
-                               f"(not a {type(key)})")
+            raise TypeError("OCDType is a templated type, "
+                            "it must be specialized using a Python typevar "
+                           f"(not a {type(key)})")
         if not hasattr(key, '__iter__'):
             raise TypeError("OCDType is a templated type, "
                             "it must be specialized on an iterable Python type "
@@ -110,7 +112,8 @@ class OCDType(type):
             name: str = capwords(key.__name__)
             clsname = f"{metacls.prefix}{name}"
         elif not clsname.startswith(metacls.prefix):
-            clsname = f"{metacls.prefix}{clsname}"
+            name: str = capwords(clsname)
+            clsname = f"{metacls.prefix}{name}"
         
         # If the class name already exists in the metaclass type dictionary,
         # return it without creating a new class:
@@ -167,6 +170,7 @@ class OCDType(type):
                                               attributes,
                                             **kwargs)
         metacls.types[clsname] = cls
+        collections.abc.Iterable.register(cls)
         return cls
     
     @classmethod
@@ -181,12 +185,13 @@ class OCDType(type):
             on that specialization for forwarding to Python’s class-creation
             apparatus:
         """
-        # Refer to the immediate subbase for the name and factory:
-        if len(bases) > 0:
-            subbase = bases[0]
-        else:
-            subbase = object
-        subbasename = kwargs.pop('subbasename', f"{name}SubBase")
+        subbase = object
+        for basecls in bases:
+            if issubclass(basecls, (tx.Iterable,
+                                    tx.Iterator)):
+                subbase = basecls
+                break
+        subname = kwargs.pop('subname', None)
         factory = kwargs.pop('factory', None)
         
         # Create the base ancestor with a direct call to “__class_getitem__(…)”
@@ -194,28 +199,18 @@ class OCDType(type):
         # defaults to “object”, this call will raise a TypeError, as it requires
         # an iterable operand:
         base = metacls.__class_getitem__(subbase,
-                                         subbasename,
+                                         subname,
                                          factory,
                                        **kwargs)
         
         # The return value of type.__new__(…), called with the amended
         # inheritance-chain values, is what we pass off to Python:
-        return super(OCDType, metacls).__new__(metacls, name,
-                                                        tuplize(base, *bases),
-                                                        dict(attributes),
-                                                      **kwargs)
-    
-    @staticmethod
-    def typenames() -> tx.List[str]:
-        return sorted(OCDType.types.keys())
-    
-    @staticmethod
-    def typecachesize() -> int:
-        return len(OCDType.types)
-    
-    @staticmethod
-    def _type_for_name(typename: str) -> tx.Optional[type]:
-        return OCDType.types.get(typename, None)
+        cls = super(OCDType, metacls).__new__(metacls, name,
+                                                       tuplize(base),
+                                                       dict(attributes),
+                                                     **kwargs)
+        metacls.subtypes[name] = cls
+        return cls
 
 ###
 ### SPECIALIZATIONS OF OCDType:
@@ -225,7 +220,7 @@ OCDSet        = OCDType[set]
 OCDFrozenSet  = OCDType[frozenset, 'OCDFrozenSet']
 OCDTuple      = OCDType[tuple]
 
-class OCDListType(list, metaclass=OCDType, subbasename='OCDList'):
+class SortedList(list, metaclass=OCDType):
     pass
 
 OCDList       = OCDType[list] # this emits the cached type from above
@@ -251,6 +246,7 @@ def test():
     """ 1. Reveal the cached OCDType specializations: """
     
     print_cache(OCDType, 'types')
+    print_cache(OCDType, 'subtypes')
 
 if __name__ == '__main__':
     test()
