@@ -1128,7 +1128,7 @@ class ConfigUnion(ConfigBase):
         
         def __init__(self, template, flaglist):
             self.flags = [template % flag for flag in flaglist]
-            self.set = OCDFrozenSet(self.flags)
+            self.set = frozenset(self.flags)
         
         def __contains__(self, key):
             return key in self.set
