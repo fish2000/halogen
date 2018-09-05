@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import print_function, unicode_literals
-from functools import wraps
+
 import six
 import sys
 import typing as tx
+
+from functools import wraps
 
 __all__ = ('get_terminal_size', 'terminal_width',
                                 'terminal_height',
@@ -25,28 +27,34 @@ __all__ = ('get_terminal_size', 'terminal_width',
 
 def get_terminal_size(default_LINES: int=25, default_COLUMNS: int=120):
     """ Get the width and height of the terminal window in characters """
-    import os
-    env = os.environ
-    def ioctl_GWINSZ(fd):
-        try:
-            import fcntl, termios, struct
-            cr = struct.unpack('hh',
-                   fcntl.ioctl(fd, termios.TIOCGWINSZ, '1234'))
-        except:
-            return
-        return cr
-    cr = ioctl_GWINSZ(0) or ioctl_GWINSZ(1) or ioctl_GWINSZ(2)
-    if not cr:
-        try:
-            fd = os.open(os.ctermid(), os.O_RDONLY)
-            cr = ioctl_GWINSZ(fd)
-            os.close(fd)
-        except:
-            pass
-    if not cr:
-        cr = (env.get('LINES',   default_LINES),
-              env.get('COLUMNS', default_COLUMNS))
-    return int(cr[1]), int(cr[0])
+    if hasattr(get_terminal_size, 'size_cache'):
+        return get_terminal_size.size_cache[0], \
+               get_terminal_size.size_cache[1]
+    else:
+        import os
+        env = os.environ
+        def ioctl_GWINSZ(fd):
+            try:
+                import fcntl, termios, struct
+                cr = struct.unpack('hh',
+                       fcntl.ioctl(fd, termios.TIOCGWINSZ, '1234'))
+            except:
+                return
+            return cr
+        cr = ioctl_GWINSZ(0) or ioctl_GWINSZ(1) or ioctl_GWINSZ(2)
+        if not cr:
+            try:
+                fd = os.open(os.ctermid(), os.O_RDONLY)
+                cr = ioctl_GWINSZ(fd)
+                os.close(fd)
+            except:
+                pass
+        if not cr:
+            cr = (env.get('LINES',   default_LINES),
+                  env.get('COLUMNS', default_COLUMNS))
+        get_terminal_size.size_cache = (int(cr[1]), int(cr[0]))
+    return get_terminal_size.size_cache[0], \
+           get_terminal_size.size_cache[1]
 
 terminal_width, terminal_height = get_terminal_size()
 
@@ -288,13 +296,14 @@ def print_cache(BaseClass: type, cache_instance_name: str):
     print(f" • CACHE DICT HAS {entrycnt} ENTRIES{entrycnt > 0 and ':' or ''}")
     if entrycnt > 0:
         print("")
-        pprint(instance, indent=4)
+        pprint(instance, indent=4,
+                         width=width)
     print("")
 
 def print_config(conf):
     """ Print debug information for a halogen.config.ConfigBase subclass """
     
-    width, height = get_terminal_size()
+    width, _ = get_terminal_size()
     
     print("=" * width)
     print("")
@@ -333,7 +342,7 @@ def print_config(conf):
     print("")
     # print("-" * width)
 
-def test_compile(conf, test_source):
+def test_compile(conf, test_source, print_cdb=False):
     """ Test-compile some inline C++ source, using the options provided
         by a given halogen.config.ConfigBase subclass instance.
     """
@@ -342,7 +351,7 @@ def test_compile(conf, test_source):
     from compiledb import CDBBase
     from filesystem import NamedTemporaryFile, TemporaryName
     
-    width, height = get_terminal_size()
+    width, _ = get_terminal_size()
     output = tuple()
     px = "yodogg-"
     cdb = CDBBase()
@@ -388,7 +397,7 @@ def test_compile(conf, test_source):
             cdb_json = str(cdb)
             stdout = u8str(output[0]).strip()
             stderr = u8str(output[1]).strip()
-            if cdb_json:
+            if cdb_json and print_cdb:
                 print(f"   CDB: {cdb_json}", file=sys.stdout)
                 print("")
             if stdout:

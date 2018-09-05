@@ -9,12 +9,12 @@ import config
 from compiledb import CDBJsonFile
 from config import SHARED_LIBRARY_SUFFIX, STATIC_LIBRARY_SUFFIX, DEFAULT_VERBOSITY
 from errors import HalogenError, GeneratorLoaderError, GenerationError
-from generate import preload, generate, default_emits
+from generate import default_emits, valid_emits, generate, preload
 from filesystem import rm_rf, temporary, TemporaryName
 from filesystem import Directory, cd
 from filesystem import TemporaryDirectory, Intermediate
-from ocd import OCDList
-from utils import u8str
+from ocd import OCDFrozenSet, OCDList
+from utils import is_string, listify, tuplize, u8str
 
 __all__ = ('CONF', 'DEFAULT_MAXIMUM_GENERATOR_COUNT',
            'CompilerError', 'LinkerError', 'ArchiverError',
@@ -25,12 +25,6 @@ DEFAULT_MAXIMUM_GENERATOR_COUNT = 1024
 
 CONF = config.ConfigUnion(config.SysConfig(),
                           config.BrewedHalideConfig())
-
-# What we need to load halogen.api:
-
-sys.path.append(os.path.dirname(
-                os.path.dirname(__file__)))
-sys.path.append(os.path.dirname(__file__))
 
 # A few bespoke errors ... because yes on the occasions I do indulge myself,
 # my version of a real TREAT-YO-SELF bender is: exception subclasses. It is true.
@@ -127,7 +121,6 @@ class Generator(object):
             print(f"Compiling: {sourcebase} to {os.path.basename(self.transient)}")
             print("")
         with cd(dirname) as cwd:
-            # assert os.path.samefile(os.fspath(cwd), os.getcwd())
             self.result += config.CXX(self.conf, self.transient,
                                                  sourcebase,
                                                  cdb=self.cdb,
@@ -203,7 +196,19 @@ class Generators(object):
         shared-object library. As a context manager, all of the intermediate Generator instances
         created during compilation (because that is how it works dogg, like by using a Generator
         for each discovered source file, OK) use a TemporaryName as their output targets -- so
-        it's like POOF, no fuss no muss, basically """
+        it's like POOF, no fuss no muss, basically
+    """
+    
+    emits = {
+         'default' : OCDFrozenSet(default_emits),
+         'minimal' : OCDFrozenSet(default_emits),
+        'expanded' : OCDFrozenSet(('static_library',
+                                   'stmt_html',
+                                   'h', 'o',
+                                   'cpp',
+                                   'python_extension')),
+            'all' : valid_emits
+    }
     
     def __init__(self, conf, destination, directory=None, intermediate=None,
                                                           suffix="cpp",
@@ -375,7 +380,6 @@ class Generators(object):
         if self.VERBOSE:
             print(f"Compiling {self.source_count} generator source files")
         for source in self.sources:
-            # dirname = os.path.dirname(source)
             sourcebase = os.path.basename(source)
             splitbase = os.path.splitext(sourcebase)
             with TemporaryName(prefix=splitbase[0],
@@ -538,15 +542,15 @@ class Generators(object):
         """
         if self.preloaded:
             import api
-            return api.registered_generators()
-        return set()
+            return OCDFrozenSet(api.registered_generators())
+        return OCDFrozenSet()
     
     @property
     def loaded_count(self):
         """ Number (int) of dynamic-link-loaded generator modules currently available """
         return len(self.loaded_generators())
     
-    def run(self, target='host', emit=default_emits, substitutions=None):
+    def run(self, target=None, emit=None, substitutions=None):
         """ Use the halogen.compile.Generators.run(…) method to run generators.
             
             All generator code that this instance knows about must have been previously compiled,
@@ -568,18 +572,34 @@ class Generators(object):
         
         # Check args:
         if not target:
-            raise GenerationError("Target required when calling Generators::run(…)")
-        if not emit:
-            raise GenerationError("Values required for “emit” when calling Generators::run(…)")
-        if len(emit) < 1:
-            raise GenerationError("Values required for “emit” when calling Generators::run(…)")
+            target = 'host'
+        
         if not substitutions:
             substitutions = {}
+        
+        emits = type(self).emits
+        if not emit:
+            emit = tuplize(*emits['default'])
+        elif is_string(emit):
+            emit = u8str(emit)
+            if emit in emits:
+                emit = tuplize(*emits.get(emit))
+            else:
+                possibles = ", ".join(OCDList(emits.keys()))
+                raise GenerationError("String value for “emit” when calling Generators::run(…) "
+                                     f"must be one of: {possibles}")
+        else:
+            emit = tuplize(*emit)
+        
+        if len(emit) < 1:
+            possibles = ", ".join(emits['all'])
+            raise GenerationError("Iterable value for “emit” when calling Generators::run(…) must contain "
+                                 f"one or more valid emit options (one of: {possibles})")
         
         # Run generators, storing output files in $TMP/yodogg
         artifacts = generate(*self.loaded_generators(), verbose=self.VERBOSE,
                                                         target=target,
-                                                        emit=tuple(emit),
+                                                        emit=emit,
                                                         output_directory=self.destination,
                                                         substitutions=substitutions)
         
@@ -590,7 +610,7 @@ class Generators(object):
         
         # TELL ME ABOUT IT.
         if self.VERBOSE:
-            module_names = ", ".join(u8str(key) for key in sorted(generated.keys()))
+            module_names = ", ".join(u8str(key) for key in OCDList(generated.keys()))
             print(f"run(): Accreted {len(generated)} total generation artifacts")
             print(f"run(): Module names: {module_names}")
         
@@ -652,11 +672,8 @@ def test(MAXIMUM_GENERATORS=2):
     
     import tempfile
     from contextlib import ExitStack
+    from utils import terminal_width
     from pprint import pprint
-    
-    sys.path.append(os.path.dirname(
-                    os.path.dirname(__file__)))
-    
     import api
     
     directory = Directory(pth="/Users/fish/Dropbox/halogen/tests/generators")
@@ -676,6 +693,7 @@ def test(MAXIMUM_GENERATORS=2):
         # -- e.g. Generators.__init__ -- or Generators.__enter__ …
         
         stack = ExitStack()
+        
         gens = Generators(CONF, directory=directory,
                                 destination=td,
                                 intermediate=td.subdirectory(".intermediate"),
@@ -748,14 +766,11 @@ def test(MAXIMUM_GENERATORS=2):
                         print(f"... NO GENERATORS COULD BE LOADED FROM LIBRARY {gens.library}")
                 
                 # Run generators:
-                generated = gens.run(emit=('static_library',
-                                           'stmt_html',
-                                           'h', 'o',
-                                           'cpp',
-                                           'python_extension'))
+                generated = gens.run(emit='expanded')
                 
                 print('')
-                pprint(generated, indent=4)
+                pprint(generated, indent=4,
+                                  width=terminal_width)
                 print('')
                 
                 # Copy the library and archive files to $TMP/yodogg:
@@ -779,13 +794,15 @@ def test(MAXIMUM_GENERATORS=2):
                             print("")
                             print(f"Found compilation DB file “{CDBJsonFile.filename}” in intermediate: {gens.intermediate}:")
                             with CDBJsonFile(directory=gens.intermediate) as cdb:
-                                pprint(cdb.entries, indent=4)
+                                pprint(cdb.entries, indent=4,
+                                                    width=terminal_width)
                     if DEFAULT_VERBOSITY:
                         print("")
                         print(f"Listing files at intermediate: {gens.intermediate} …")
                     intermediate_list = OCDList(gens.intermediate.subpath(listentry) \
                                                 for listentry in gens.intermediate.ls())
-                    pprint(intermediate_list, indent=4)
+                    pprint(listify(*intermediate_list), indent=4,
+                                                    width=terminal_width)
                 else:
                     print("X> Intermediate directory DOES NOT EXIST")
                     print(f"X> {gens.intermediate}")
@@ -796,7 +813,8 @@ def test(MAXIMUM_GENERATORS=2):
                         print(f"Listing files at destination: {destination} …")
                     destination_list = OCDList(destination.subpath(listentry) \
                                                for listentry in destination.ls())
-                    pprint(destination_list, indent=4)
+                    pprint(listify(*destination_list), indent=4,
+                                                   width=terminal_width)
                     if DEFAULT_VERBOSITY:
                         print(f"Removing destination: {destination} …")
                     rm_rf(destination)

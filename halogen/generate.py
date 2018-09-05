@@ -170,11 +170,6 @@ def test():
     
     """ Run the inline tests for the halogen.generate module """
     
-    import sys, os
-    sys.path.append(os.path.dirname(os.path.dirname(__file__)))
-    sys.path.append(os.path.dirname(__file__))
-    
-    # sys.path addenda necessary to load halogen.api:
     import api
     import tempfile
     from config import DEFAULT_VERBOSITY

@@ -3,7 +3,6 @@
 from __future__ import print_function
 
 import abc
-import collections
 import os
 import re
 import six
@@ -15,9 +14,11 @@ except ImportError:
     from os import scandir, walk
 
 from functools import wraps
-from tempfile import mkdtemp, gettempprefix, gettempdir
+from tempfile import gettempprefix
+from tempfile import _TemporaryFileWrapper as TemporaryFileWrapperBase
+
 from errors import ExecutionError, FilesystemError
-from utils import memoize, u8bytes, u8str, stringify, suffix_searcher
+from utils import memoize, stringify, suffix_searcher, u8bytes, u8str
 
 __all__ = ('DEFAULT_PATH',
            'DEFAULT_ENCODING',
@@ -200,7 +201,7 @@ def temporary(suffix=None, prefix=None, parent=None, **kwargs):
         called with arguments that result in the computation of a filename
         that already exists.
     """
-    from tempfile import mktemp
+    from tempfile import mktemp, gettempdir
     directory = os.fspath(kwargs.pop('dir', parent) or gettempdir())
     tempmade = mktemp(prefix=prefix, suffix=suffix, dir=directory)
     tempsplit = os.path.splitext(os.path.basename(tempmade))
@@ -212,69 +213,6 @@ def temporary(suffix=None, prefix=None, parent=None, **kwargs):
     if os.path.exists(fullpth):
         raise FilesystemError(f"temporary(): file exists: {fullpth}")
     return fullpth
-
-@memoize
-def TemporaryNamedFile(pth, mode='wb', buffer_size=-1, delete=True):
-    
-    """ Variation on ``tempfile.NamedTemporaryFile(…)``, for use within
-        `filesystem.TemporaryName()` – q.v. class definition sub.
-        
-        Parameters
-        ----------
-        pth : str / bytes / descriptor / filename-ish
-            File name, path, or descriptor to open.
-        mode : str / bytes, optional
-            String-like symbolic explication of mode with which to open
-            the file -- q.v. ``io.open(…)`` or ``__builtins__.open(…)``
-            supra.
-        buffer_size : int, optional
-            Integer indicating buffer size to use during file reading
-            and/or writing. Default value is -1 (which indicates that
-            reads and writes should be unbuffered).
-        delete : bool, optional
-            Boolean value indicating whether to delete the wrapped
-            file upon scope exit or interpreter shutdown (whichever
-            happens first). Default is True.
-        
-        Returns
-        -------
-            A ``tempfile._TemporaryFileWrapper`` object, initialized
-            and ready to be used, as per its counterpart(s),
-            ``tempfile.NamedTemporaryFile``, and
-            `filesystem.NamedTemporaryFile`.
-        
-        Raises
-        ------
-            A `halogen.filesystem.FilesystemError`, corresponding to any errors
-            that may be raised its own internal calls to ``os.open(…)`` and
-            ``os.fdopen(…)``
-        
-    """
-    
-    from tempfile import _bin_openflags,                    \
-                         _text_openflags,                   \
-                         _TemporaryFileWrapper, _os
-    
-    if 'b' in mode:
-        flags = _bin_openflags
-    else:
-        flags = _text_openflags
-    if _os.name == 'nt' and delete:
-        flags |= _os.O_TEMPORARY
-    
-    descriptor = 0
-    filehandle = None
-    pth = os.fspath(pth)
-    
-    try:
-        descriptor = _os.open(pth, flags)
-        filehandle = _os.fdopen(descriptor, mode, buffer_size)
-        return _TemporaryFileWrapper(filehandle, pth, delete)
-    except BaseException as base_exception:
-        rm_rf(pth)
-        if descriptor > 0:
-            _os.close(descriptor)
-        raise FilesystemError(str(base_exception))
 
 
 class TypeLocker(abc.ABCMeta):
@@ -310,6 +248,7 @@ class TypeLocker(abc.ABCMeta):
     @classmethod
     def __prepare__(metacls, name, bases, **kwargs):
         """ Maintain declaration order in class members: """
+        import collections
         return collections.OrderedDict()
     
     def __new__(metacls, name, bases, attributes, **kwargs):
@@ -329,6 +268,74 @@ class TypeLocker(abc.ABCMeta):
         os.PathLike.register(cls)
         return cls
 
+TemporaryFileWrapperAncestor = six.with_metaclass(TypeLocker,
+                                                  TemporaryFileWrapperBase,
+                                                  os.PathLike)
+
+class TemporaryFileWrapper(TemporaryFileWrapperAncestor):
+    
+    def __fspath__(self):
+        return self.name
+
+@memoize
+def TemporaryNamedFile(tpth, mode='wb', buffer_size=-1, delete=True):
+    
+    """ Variation on ``tempfile.NamedTemporaryFile(…)``, for use within
+        `filesystem.TemporaryName()` – q.v. class definition sub.
+        
+        Parameters
+        ----------
+        pth : str / bytes / descriptor / filename-ish
+            File name, path, or descriptor to open.
+        mode : str / bytes, optional
+            String-like symbolic explication of mode with which to open
+            the file -- q.v. ``io.open(…)`` or ``__builtins__.open(…)``
+            supra.
+        buffer_size : int, optional
+            Integer indicating buffer size to use during file reading
+            and/or writing. Default value is -1 (which indicates that
+            reads and writes should be unbuffered).
+        delete : bool, optional
+            Boolean value indicating whether to delete the wrapped
+            file upon scope exit or interpreter shutdown (whichever
+            happens first). Default is True.
+        
+        Returns
+        -------
+            A ``halogen.filesystem.TemporaryFileWrapper`` object,
+            initialized and ready to be used, as per its counterpart(s),
+            ``tempfile.NamedTemporaryFile``, and
+            `filesystem.NamedTemporaryFile`.
+        
+        Raises
+        ------
+            A `halogen.filesystem.FilesystemError`, corresponding to any errors
+            that may be raised its own internal calls to ``os.open(…)`` and
+            ``os.fdopen(…)``
+        
+    """
+    from tempfile import _bin_openflags, _text_openflags
+    
+    if 'b' in mode:
+        flags = _bin_openflags
+    else:
+        flags = _text_openflags
+    if os.name == 'nt' and delete:
+        flags |= os.O_TEMPORARY
+    
+    descriptor = 0
+    filehandle = None
+    tpth = os.fspath(tpth)
+    
+    try:
+        descriptor = os.open(tpth, flags)
+        filehandle = os.fdopen(descriptor, mode, buffer_size)
+        return TemporaryFileWrapper(filehandle, tpth, delete)
+    except BaseException as base_exception:
+        rm_rf(tpth)
+        if descriptor > 0:
+            os.close(descriptor)
+        raise FilesystemError(str(base_exception))
 
 TemporaryNameAncestor = six.with_metaclass(TypeLocker, os.PathLike)
 class TemporaryName(TemporaryNameAncestor):
@@ -957,6 +964,7 @@ class TemporaryDirectory(Directory):
             process working directory will be changed to the newly created
             temporary directory; it defaults to `True`.
         """
+        from tempfile import mkdtemp
         if suffix:
             if not suffix.startswith(os.extsep):
                 suffix = f"{os.extsep}{suffix}"
@@ -1066,10 +1074,9 @@ def NamedTemporaryFile(mode='w+b', buffer_size=-1,
         standard library version which makes you pass suffixes WITH
         the fucking period, ugh).
     """
-    
-    from tempfile import _bin_openflags, _text_openflags,   \
-                         _mkstemp_inner, _os,               \
-                         _TemporaryFileWrapper
+    from tempfile import (gettempdir, _bin_openflags,
+                                      _text_openflags,
+                                      _mkstemp_inner)
     
     parent = Directory(pth=directory or gettempdir())
     
@@ -1083,21 +1090,23 @@ def NamedTemporaryFile(mode='w+b', buffer_size=-1,
         flags = _bin_openflags
     else:
         flags = _text_openflags
-    if _os.name == 'nt' and delete:
-        flags |= _os.O_TEMPORARY
+    if os.name == 'nt' and delete:
+        flags |= os.O_TEMPORARY
     
     (descriptor, name) = _mkstemp_inner(parent.name, prefix,
                                                      suffix, flags,
                                              u8bytes(suffix))
     try:
-        filehandle = _os.fdopen(descriptor, mode, buffer_size)
-        return _TemporaryFileWrapper(filehandle, name, delete)
+        filehandle = os.fdopen(descriptor, mode, buffer_size)
+        return TemporaryFileWrapper(filehandle, name, delete)
     except BaseException as base_exception:
         rm_rf(name)
         if descriptor > 0:
-            _os.close(descriptor)
+            os.close(descriptor)
         raise FilesystemError(str(base_exception))
 
+del TemporaryFileWrapperBase
+del TemporaryFileWrapperAncestor
 del TemporaryNameAncestor
 del DirectoryAncestor
 
@@ -1107,6 +1116,7 @@ def test():
     
     # Simple inline tests for “TemporaryName”, “cd” and “cwd”,
     # and “TemporaryDirectory”:
+    from tempfile import gettempdir
     
     initial = os.getcwd()
     tfp = None

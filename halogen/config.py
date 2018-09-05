@@ -15,9 +15,9 @@ except ImportError:
     pass
 
 from abc import ABC, ABCMeta, abstractmethod
-from os.path import splitext
-from ctypes.util import find_library
 from collections import defaultdict as DefaultDict
+from collections import OrderedDict
+from ctypes.util import find_library
 from functools import wraps
 
 from compiledb import CDBSubBase
@@ -39,7 +39,7 @@ __all__ = ('SHARED_LIBRARY_SUFFIX', 'STATIC_LIBRARY_SUFFIX',
            'ConfigUnion',
            'CC', 'CXX', 'LD', 'AR')
 
-SHARED_LIBRARY_SUFFIX = splitext(find_library("c"))[-1].lower()
+SHARED_LIBRARY_SUFFIX = os.path.splitext(find_library("c"))[-1].lower()
 STATIC_LIBRARY_SUFFIX = (SHARED_LIBRARY_SUFFIX == ".dll") and ".lib" or ".a"
 
 DEFAULT_VERBOSITY = True
@@ -72,7 +72,8 @@ class ConfigSubBase(SubBaseAncestor):
         the “subdirectory()” method, and other stuff you can read about below.
     """
     
-    base_field_cache: tx.Dict[str, tx.Tuple[str]] = {}
+    base_field_cache: tx.Dict[str, tx.Tuple[str]] = OrderedDict()
+    field_cache:      tx.Dict[str, tx.Tuple[str]] = OrderedDict()
     
     # Prefix get/set/delete methods:
     
@@ -163,9 +164,9 @@ class ConfigBaseMeta(ABCMeta):
         base_fields = OCDSet(attributes['base_fields'])
         for base in bases:
             if hasattr(base, 'base_fields'):
-                base_fields |= OCDFrozenSet(base.base_fields)
+                base_fields |= frozenset(base.base_fields)
             if hasattr(base, 'fields'):
-                base_fields |= OCDFrozenSet(base.fields)
+                base_fields |= frozenset(base.fields)
         attributes['base_fields'] = tuple(base_fields)
         ConfigSubBase.base_field_cache[name] = tuple(base_fields)
         cls = super(ConfigBaseMeta, metacls).__new__(metacls, name,
@@ -173,6 +174,7 @@ class ConfigBaseMeta(ABCMeta):
                                                               attributes,
                                                             **kwargs)
         ConfigSubBase.register(cls)
+        ConfigSubBase.field_cache[name] = getattr(cls, 'fields', tuple())
         return cls
 
 def environ_override(name):
@@ -236,13 +238,14 @@ class ConfigBase(BaseAncestor):
                                       'include_dir_fields')
         
         def store(self, *fields):
-            self.stored_fields = self.more_fields = OCDFrozenSet(fields)
+            self.stored_fields = frozenset(fields)
+            self.more_fields = frozenset(fields)
             if self.include_dir_fields:
-                self.stored_fields |= OCDFrozenSet(ConfigBase.dir_fields)
+                self.stored_fields |= frozenset(ConfigBase.dir_fields)
         
         def __init__(self, *more_fields, **kwargs):
             self.include_dir_fields = bool(kwargs.pop('dir_fields', False))
-            self.exclude_fields = OCDFrozenSet(kwargs.pop('exclude', tuple()))
+            self.exclude_fields = frozenset(kwargs.pop('exclude', tuple()))
             self.store(*more_fields)
         
         def __get__(self, instance, cls=None):
@@ -250,7 +253,7 @@ class ConfigBase(BaseAncestor):
                 cls = type(instance)
             out = OCDSet(self.stored_fields)
             if hasattr(cls, 'base_fields'):
-                out |= OCDFrozenSet(cls.base_fields)
+                out |= frozenset(cls.base_fields)
             out -= self.exclude_fields
             return tuple(out)
         
@@ -289,19 +292,19 @@ class ConfigBase(BaseAncestor):
         return self.prefix.subpath(subdir, whence, requisite=True)
     
     def cc_flag_string(self):
-        """ Get the string template for the command executing the C compiler
-        """
-        return             f"{environ_override('CC')} {self.get_cflags()} -c %s -o %s"
+        """ Get the string template for the C compiler command """
+        cflags = self.get_cflags()
+        return           f"{environ_override('CC')} {cflags} -c %s -o %s"
     
     def cxx_flag_string(self):
-        """ Get the string template for the command executing the C++ compiler
-        """
-        return            f"{environ_override('CXX')} {self.get_cflags()} -c %s -o %s"
+        """ Get the string template for the C++ compiler command """
+        cflags = self.get_cflags()
+        return          f"{environ_override('CXX')} {cflags} -c %s -o %s"
     
     def ld_flag_string(self):
-        """ Get the string template for the command executing the dynamic linker
-        """
-        return      f"{environ_override('LDCXXSHARED')} {self.get_ldflags()} %s -o %s"
+        """ Get the string template for the dynamic linker command """
+        ldflags = self.get_ldflags()
+        return   f"{environ_override('LDCXXSHARED')} {ldflags} %s -o %s"
     
     def ar_flag_string(self):
         """ Get the string template for the command executing the archiver
@@ -310,7 +313,7 @@ class ConfigBase(BaseAncestor):
         arflags = environ_override('ARFLAGS')
         if 's' not in arflags:
             arflags += 's'
-        return        f"{environ_override('AR')} {arflags} %s %s"
+        return              f"{environ_override('AR')} {arflags} %s %s"
     
     def to_string(self, field_list=None):
         """ Stringify the instance, using either a provided list of fields to evaluate,
@@ -331,6 +334,61 @@ class ConfigBase(BaseAncestor):
     
     def __unicode__(self):
         return six.u(repr(self))
+
+
+class SetWrap(ConfigBase):
+    
+    fields = ConfigBase.FieldList('sub_config_type', 'includes_set',
+                                                     'libs_set',
+                                                     'cflags_set',
+                                                     'ldflags_set', exclude=['prefix'],
+                                                                    dir_fields=False)
+    def __init__(self, config):
+        if not isinstance(config, (ConfigBase, ConfigSubBase)):
+            raise TypeError("OCDSetWrap.__init__(…) requires a ConfigBase or ConfigSubBase argument")
+        self.config = config
+        self.prefix = config.prefix
+    
+    def sub_config_type(self):
+        return self.config.name
+    
+    @property
+    def name(self):
+        """ The name of the Config instance. In this case, it is the typename
+            of the config class, followed by the name property of the wrapped
+            config instance (which defaults to the name of its class).
+        """
+        typename = type(self).__name__
+        wrappedname = self.sub_config_type()
+        return f"{typename}<{wrappedname}>"
+    
+    def get_includes(self):
+        return self.config.get_includes()
+    
+    def get_libs(self):
+        return self.config.get_libs()
+    
+    def get_cflags(self):
+        return self.config.get_cflags()
+    
+    def get_ldflags(self):
+        return self.config.get_ldflags()
+    
+    def includes_set(self):
+        includes = self.get_includes()
+        return { flag.strip() for flag in f" {includes}".split(TOKEN) if len(flag.strip()) }
+    
+    def libs_set(self):
+        libs = self.get_libs()
+        return { flag.strip() for flag in f" {libs}".split(TOKEN) if len(flag.strip()) }
+    
+    def cflags_set(self):
+        cflags = self.get_cflags()
+        return { flag.strip() for flag in f" {cflags}".split(TOKEN) if len(flag.strip()) }
+    
+    def ldflags_set(self):
+        ldflags = self.get_ldflags()
+        return { flag.strip() for flag in f" {ldflags}".split(TOKEN) if len(flag.strip()) }
 
 
 class Macro(object):
@@ -840,7 +898,7 @@ class NumpyConfig(ConfigBase):
         for package in self.subpackages:
             infodict = numpy.distutils.misc_util.get_info(package)
             for k, v in infodict.items():
-                self.info[k] |= set(v)
+                self.info[k] |= frozenset(v)
         self.info['include_dirs'] |= { os.fspath(self.get_numpy_include_directory()) }
         for macro_tuple in self.info['define_macros']:
             self.macros.define(*macro_tuple)
@@ -1420,6 +1478,9 @@ def test():
     pkgConfig = PkgConfig()
     numpyConfig = NumpyConfig()
     
+    sysConfigSetWrap = SetWrap(sysConfig)
+    numpyConfigSetWrap = SetWrap(numpyConfig)
+    
     configUnionOne = ConfigUnion(SysConfig(with_openssl=True))
     configUnion = ConfigUnion(brewedHalideConfig, sysConfig)
     configUnionAll = ConfigUnion(brewedHalideConfig, sysConfig,
@@ -1427,27 +1488,33 @@ def test():
                                                      pkgConfig,
                                                      numpyConfig)
     
+    configUnionSetWrap = SetWrap(configUnion)
+    
     """ 1. Test basic config methods: """
     
     print_config(brewedHalideConfig)
     print_config(sysConfig)
+    print_config(sysConfigSetWrap)
     print_config(pkgConfig)
     print_config(numpyConfig)
+    print_config(numpyConfigSetWrap)
     print_config(brewedPythonConfig)
     print_config(pythonConfig)
     print_config(configUnionOne)
     print_config(configUnion)
+    print_config(configUnionSetWrap)
     print_config(configUnionAll)
     
     """ 2. Test compilation with different configs: """
     
     test_compile(brewedHalideConfig, test_generator_source)
-    test_compile(configUnion, test_generator_source)
+    test_compile(configUnionSetWrap, test_generator_source)
     test_compile(configUnionAll, test_generator_source)
     
     """ 3. Reveal the cached field-value dictionary: """
     
     print_cache(ConfigBase, 'base_field_cache')
+    print_cache(ConfigBase, 'field_cache')
 
 
 def corefoundation_check():

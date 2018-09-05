@@ -157,7 +157,8 @@ class OCDType(abc.ABCMeta):
         
         if callable(factory):
             attributes.update({
-                   '__new__' : lambda cls, *args, **kw: factory(*args, **kw)
+                   '__new__' : lambda cls, *args, **kw: factory(*args, **kw),
+               '__factory__' : staticmethod(factory)
             })
         
         # Create the new class, as one does in the override of a
@@ -166,11 +167,12 @@ class OCDType(abc.ABCMeta):
         
         cls = super(OCDType, metacls).__new__(metacls,
                                               clsname,
-                                      tuplize(metacls.OCDMixin, key),
-                                              attributes,
+                                              tuplize(key,
+                                                      collections.abc.Iterable,
+                                                      metacls.OCDMixin),
+                                              dict(attributes),
                                             **kwargs)
         metacls.types[clsname] = cls
-        collections.abc.Iterable.register(cls)
         return cls
     
     @classmethod
@@ -191,6 +193,7 @@ class OCDType(abc.ABCMeta):
                                     tx.Iterator)):
                 subbase = basecls
                 break
+        # others = tuplize(other for other in bases if other != subbase)
         subname = kwargs.pop('subname', None)
         factory = kwargs.pop('factory', None)
         
@@ -227,7 +230,11 @@ OCDList       = OCDType[list] # this emits the cached type from above
 
 
 def test():
+    """ Inline tests for OCDType and friends """
+    
     from utils import print_cache
+    
+    """ 0. Set up some specializations and subtypes for testing: """
     
     import array
     OCDArray      = OCDType[array.array]
@@ -236,16 +243,43 @@ def test():
     OCDNumpyArray = OCDType[numpy.ndarray, 'OCDNumpyArray',
                             numpy.array]
     
+    class SortedMatrix(numpy.matrix, metaclass=OCDType,
+                                     subname='OCDMatrix',
+                                     factory=numpy.asmatrix): pass
+    
     ocd_settttts = OCDType[set]
+    
+    """ 1. Assert-check properties of specializations and subtypes: """
+    
     assert ocd_settttts == OCDSet
+    assert ocd_settttts.__name__ == 'OCDSet'
+    assert ocd_settttts.__base__ == set
+    assert not hasattr(ocd_settttts, '__factory__')
     
-    assert OCDArray('i', range(10)).__len__()
-    assert numpy.array([[0, 1, 2], [0, 1, 2], [0, 1, 2]]).__len__()
-    assert OCDNumpyArray([[0, 1, 2], [0, 1, 2], [0, 1, 2]]).__len__()
+    assert OCDNumpyArray.__name__ == 'OCDNumpyArray'
+    assert OCDNumpyArray.__base__ == numpy.ndarray
+    assert OCDNumpyArray.__bases__ == tuplize(numpy.ndarray,
+                                              collections.abc.Iterable,
+                                              OCDType.OCDMixin)
+    assert OCDNumpyArray.__factory__ == numpy.array
     
-    """ 1. Reveal the cached OCDType specializations: """
+    assert SortedMatrix.__base__ == OCDType[numpy.matrix]
+    assert SortedMatrix.__base__.__name__ == 'OCDMatrix'
+    assert SortedMatrix.__base__.__base__ == numpy.matrixlib.defmatrix.matrix
+    assert SortedMatrix.__base__.__factory__ == numpy.asmatrix
+    
+    assert OCDArray('i', range(10)).__len__() == 10
+    assert numpy.array([[0, 1, 2], [0, 1, 2], [0, 1, 2]]).__len__() == 3
+    assert OCDNumpyArray([[0, 1, 2], [0, 1, 2], [0, 1, 2]]).__len__() == 3
+    assert SortedMatrix([[0, 1, 2], [0, 1, 2], [0, 1, 2]]).__len__() == 3
+    assert SortedMatrix(OCDNumpyArray([[0, 1, 2], [0, 1, 2], [0, 1, 2]])).__len__() == 3
+    
+    """ 2. Reveal the cached OCDType specializations: """
     
     print_cache(OCDType, 'types')
+    
+    """ 3. Reveal the cached OCDType subtypes: """
+    
     print_cache(OCDType, 'subtypes')
 
 if __name__ == '__main__':
