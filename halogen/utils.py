@@ -22,6 +22,8 @@ __all__ = ('get_terminal_size', 'terminal_width',
                              'print_config',
                              'test_compile')
 
+__dir__ = lambda: list(__all__)
+
 # get_terminal_size(): does what you think it does
 # adapted from this: http://stackoverflow.com/a/566752/298171
 

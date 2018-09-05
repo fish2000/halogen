@@ -9,6 +9,8 @@ __all__ = ('valid_emits', 'emit_defaults',
            'preload',
            'generate')
 
+__dir__ = lambda: list(__all__)
+
 valid_emits = OCDFrozenSet((
     'assembly',
     'bitcode',

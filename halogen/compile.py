@@ -21,6 +21,8 @@ __all__ = ('CONF', 'DEFAULT_MAXIMUM_GENERATOR_COUNT',
            'Generator',
            'Generators')
 
+__dir__ = lambda: list(__all__)
+
 DEFAULT_MAXIMUM_GENERATOR_COUNT = 1024
 
 CONF = config.ConfigUnion(config.SysConfig(),

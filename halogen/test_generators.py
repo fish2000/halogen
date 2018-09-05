@@ -3,6 +3,7 @@
 from __future__ import print_function
 
 __all__ = ('brighten_source', 'autoscheduler_source')
+__dir__ = lambda: list(__all__)
 
 brighten_source = b"""
 #include "Halide.h"

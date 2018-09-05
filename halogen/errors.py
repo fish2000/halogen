@@ -2,6 +2,13 @@
 
 from __future__ import print_function
 
+__all__ = ('HalogenError',
+           'ExecutionError', 'FilesystemError',
+           'ConfigurationError', 'ConfigCommandError',
+           'GeneratorError', 'GeneratorLoaderError', 'GenerationError',
+           'CDBError')
+
+__dir__ = lambda: list(__all__)
 
 class HalogenError(Exception):
     """ Base class for Halogen errors """

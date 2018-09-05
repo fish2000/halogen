@@ -39,6 +39,8 @@ __all__ = ('SHARED_LIBRARY_SUFFIX', 'STATIC_LIBRARY_SUFFIX',
            'ConfigUnion',
            'CC', 'CXX', 'LD', 'AR')
 
+__dir__ = lambda: list(__all__)
+
 SHARED_LIBRARY_SUFFIX = os.path.splitext(find_library("c"))[-1].lower()
 STATIC_LIBRARY_SUFFIX = (SHARED_LIBRARY_SUFFIX == ".dll") and ".lib" or ".a"
 

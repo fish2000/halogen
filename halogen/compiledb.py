@@ -14,6 +14,8 @@ from utils import stringify, u8bytes, u8str
 __all__ = ('CDBSubBase', 'CDBBase',
                          'CDBJsonFile')
 
+__dir__ = lambda: list(__all__)
+
 SubBaseAncestor = six.with_metaclass(ABCMeta, ABC)
 class CDBSubBase(SubBaseAncestor):
     

@@ -15,13 +15,13 @@ except ImportError:
     from os import scandir, walk
 
 from functools import wraps
-from tempfile import gettempprefix
 from tempfile import _TemporaryFileWrapper as TemporaryFileWrapperBase
 
 from errors import ExecutionError, FilesystemError
 from utils import memoize, stringify, suffix_searcher, u8bytes, u8str
 
 __all__ = ('DEFAULT_PATH',
+           'DEFAULT_PREFIX',
            'DEFAULT_ENCODING',
            'DEFAULT_TIMEOUT',
            'script_path', 'which', 'back_tick',
@@ -31,12 +31,15 @@ __all__ = ('DEFAULT_PATH',
            'TemporaryDirectory', 'Intermediate',
            'NamedTemporaryFile')
 
+__dir__ = lambda: list(__all__)
+
 DEFAULT_PATH = ":".join(filter(os.path.exists, ("/usr/local/bin",
                                                 "/bin",  "/usr/bin",
                                                 "/sbin", "/usr/sbin")))
 
 DEFAULT_ENCODING = 'latin-1'
 DEFAULT_TIMEOUT = 60 # seconds
+DEFAULT_PREFIX = "yo-dogg-"
 
 def script_path():
     """ Return the path to the embedded scripts directory. """
@@ -204,12 +207,12 @@ def temporary(suffix=None, prefix=None, parent=None, **kwargs):
     """
     from tempfile import mktemp, gettempdir
     directory = os.fspath(kwargs.pop('dir', parent) or gettempdir())
-    tempmade = mktemp(prefix=str(prefix), suffix=str(suffix), dir=directory)
+    tempmade = mktemp(prefix=prefix, suffix=suffix, dir=directory)
     tempsplit = os.path.splitext(os.path.basename(tempmade))
     if not suffix:
         suffix = tempsplit[1][1:]
     if not prefix or kwargs.pop('randomized', False):
-        prefix = os.path.splitext(tempsplit[0])[0] # WTF, HAX!
+        prefix, _ = os.path.splitext(tempsplit[0]) # WTF, HAX!
     fullpth = os.path.join(directory, f"{prefix}{suffix}")
     if os.path.exists(fullpth):
         raise FilesystemError(f"temporary(): file exists: {fullpth}")
@@ -380,7 +383,7 @@ class TemporaryName(TemporaryNameAncestor):
         """
         randomized = kwargs.pop('randomized', False)
         if not prefix:
-            prefix = "yo-dogg-"
+            prefix = DEFAULT_PREFIX
             randomized = True
         if suffix:
             if not suffix.startswith(os.extsep):
@@ -1083,7 +1086,7 @@ class Intermediate(TemporaryDirectory, Directory):
         pass
 
 def NamedTemporaryFile(mode='w+b', buffer_size=-1,
-                       suffix="tmp", prefix=gettempprefix(),
+                       suffix="tmp", prefix=DEFAULT_PREFIX,
                        directory=None,
                        delete=True):
     

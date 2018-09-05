@@ -13,6 +13,8 @@ __all__ = ('OCDType',
            'OCDSet', 'OCDFrozenSet',
            'OCDTuple', 'OCDList')
 
+__dir__ = lambda: list(__all__)
+
 TypeFactory = tx.Callable[..., tx.Any]
 
 class OCDType(abc.ABCMeta):
