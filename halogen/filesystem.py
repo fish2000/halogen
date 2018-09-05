@@ -3,6 +3,7 @@
 from __future__ import print_function
 
 import abc
+import collections
 import os
 import re
 import six
@@ -243,12 +244,11 @@ class TypeLocker(abc.ABCMeta):
     """
     
     # The metaclass-internal dictionary of generated classes:
-    types = {}
+    types = collections.OrderedDict()
     
     @classmethod
     def __prepare__(metacls, name, bases, **kwargs):
         """ Maintain declaration order in class members: """
-        import collections
         return collections.OrderedDict()
     
     def __new__(metacls, name, bases, attributes, **kwargs):
@@ -273,19 +273,33 @@ TemporaryFileWrapperAncestor = six.with_metaclass(TypeLocker,
                                                   os.PathLike)
 
 class TemporaryFileWrapper(TemporaryFileWrapperAncestor):
+    """ Local subclass of `tempfile._TemporaryFileWrapper`.
+        
+        We inherit from both `tempfile._TemporaryFileWrapper` and
+        the `os.PathLike` abstract base class -- the latter requires
+        that we implement an __fspath__(…) method (q.v. implementation,
+        sub.) -- and we also have specified the `filesystem.TypeLocker`
+        metaclass, q.v. metaclass __new__(…) implementation supra.)
+        to cache its type and register it as an os.PathLike subclass.
+        
+        … Basically a better deal than the original ancestor, like
+        all-around. Plus it does not have a name prefixed with an
+        underscore, which if it’s not your implementation dogg that
+        can be a bit lexically irritating.
+    """
     
     def __fspath__(self):
         return self.name
 
 @memoize
-def TemporaryNamedFile(tpth, mode='wb', buffer_size=-1, delete=True):
+def TemporaryNamedFile(tempth, mode='wb', buffer_size=-1, delete=True):
     
     """ Variation on ``tempfile.NamedTemporaryFile(…)``, for use within
         `filesystem.TemporaryName()` – q.v. class definition sub.
         
         Parameters
         ----------
-        pth : str / bytes / descriptor / filename-ish
+        tempth : str / bytes / descriptor / filename-ish
             File name, path, or descriptor to open.
         mode : str / bytes, optional
             String-like symbolic explication of mode with which to open
@@ -325,14 +339,18 @@ def TemporaryNamedFile(tpth, mode='wb', buffer_size=-1, delete=True):
     
     descriptor = 0
     filehandle = None
-    tpth = os.fspath(tpth)
+    path = None
     
     try:
-        descriptor = os.open(tpth, flags)
+        path = os.fspath(tempth)
+        descriptor = os.open(path, flags)
         filehandle = os.fdopen(descriptor, mode, buffer_size)
-        return TemporaryFileWrapper(filehandle, tpth, delete)
+        return TemporaryFileWrapper(filehandle, path, delete)
     except BaseException as base_exception:
-        rm_rf(tpth)
+        try:
+            rm_rf(path)
+        except ExecutionError:
+            pass
         if descriptor > 0:
             os.close(descriptor)
         raise FilesystemError(str(base_exception))
