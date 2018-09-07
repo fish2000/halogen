@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 
-from __future__ import print_function, unicode_literals
+from __future__ import print_function
 
 import six
 import sys
+import types
 import typing as tx
 
 from functools import wraps
@@ -13,6 +14,7 @@ __all__ = ('get_terminal_size', 'terminal_width',
            'tuplize',
            'wrap_value', 'Memoizer', 'memoize',
            'current_umask', 'masked_permissions',
+           'modulize',
            'append_paths', 'remove_paths',
            'string_types', 'is_string', 'stringify',
                                         'u8bytes',
@@ -27,7 +29,7 @@ __dir__ = lambda: list(__all__)
 # get_terminal_size(): does what you think it does
 # adapted from this: http://stackoverflow.com/a/566752/298171
 
-def get_terminal_size(default_LINES: int=25, default_COLUMNS: int=120):
+def get_terminal_size(default_LINES: int=25, default_COLUMNS: int=120) -> tx.Tuple[int, int]:
     """ Get the width and height of the terminal window in characters """
     if hasattr(get_terminal_size, 'size_cache'):
         return get_terminal_size.size_cache[0], \
@@ -60,12 +62,14 @@ def get_terminal_size(default_LINES: int=25, default_COLUMNS: int=120):
 
 terminal_width, terminal_height = get_terminal_size()
 
-string_types = (type(''),
-                type(b''),
-                type(r''),
-                type(u'')) + six.string_types
+StringType = tx.TypeVar('StringType', bound=type, covariant=True)
 
-is_string = lambda thing: isinstance(thing, string_types)
+string_types: tx.Type[StringType] = (type(''),
+                                     type(b''),
+                                     type(r''),
+                                     type(u'')) + six.string_types
+
+is_string: tx.Callable[[tx.Any], bool] = lambda thing: isinstance(thing, string_types)
 
 def tuplize(*items) -> tuple:
     return tuple(item for item in items if item is not None)
@@ -73,7 +77,10 @@ def tuplize(*items) -> tuple:
 def listify(*items) -> list:
     return list(item for item in items if item is not None)
 
-def wrap_value(value):
+def wrap_value(value: tx.Any) -> tx.Callable[[tx.Optional[tx.Iterable[tx.Any]],
+                                              tx.Optional[tx.Mapping[tx.Any,
+                                                                     tx.Any]]],
+                                             tx.Any]:
     return lambda *args, **kwargs: value
 
 class Memoizer(dict):
@@ -125,18 +132,60 @@ def current_umask():
 def masked_permissions(perms=0o666):
     return perms & ~current_umask()
 
-def append_paths(*putatives):
+def modulize(namespace: tx.MutableMapping[str, tx.Any],
+             modulename: str,
+             moduledocs: tx.Optional[str] = None,
+             modulefile: tx.Optional[str] = None) -> types.ModuleType:
+    
+    """ Convert a dictionary mapping into a legit Python module """
+    
+    import os
+    import re
+    
+    # Update the namespace with '__all__' and '__dir__':
+    if '__all__' not in namespace:
+        ns_all = tuplize(*sorted(namespace.keys()))
+        namespace.update({
+            '__all__' : ns_all,
+            '__dir__' : lambda: list(ns_all)
+        })
+    
+    
+    # Create a new module with a trivially namespaced name:
+    # namespacedname: str = f'__dynamic_modules__.{modulename}'
+    if modulefile:
+        relpath: str = os.path.relpath(modulefile,
+                 start=os.path.dirname(__file__))
+        dotpath = re.sub(re.compile(rf"({os.path.sep})"), os.path.extsep, relpath)
+        if dotpath.endswith('.py'):
+            dotpath = dotpath[:len(dotpath)-3]
+        namespacedname: str = f'__dynamic_modules__.halogen.{dotpath}.{modulename}'
+        namespace.update({ '__file__' : modulefile })
+    else:
+        namespacedname: str = f'__dynamic_modules__.halogen.{modulename}'
+    namespace.update({ '__package__' : namespacedname })
+    
+    module = types.ModuleType(namespacedname, moduledocs)
+    module.__dict__.update(namespace)
+    
+    # Add to sys.modules, as per import machinery:
+    sys.modules.update({ modulename : module })
+    
+    # Return the new module instance:
+    return module
+
+def append_paths(*putatives) -> tx.Dict[str, bool]:
     """ Mutate `sys.path` by appending one or more new paths -- all of which
         are checked for both nonexistence and presence within the existing
         `sys.path` list via inode lookup, and which those failing such checks
         are summarily excluded.
     """
     import os
-    out = {}
+    out: tx.Dict[str, bool] = {}
     if len(putatives) < 1:
         return out
-    paths = set(sys.path)
-    append_paths.oldsyspath = tuple(sys.path)
+    paths: tx.Set[str] = set(sys.path)
+    append_paths.oldsyspath: tx.Tuple[str, ...] = tuple(sys.path)
     for pth in putatives:
         if hasattr(pth, 'name'):
             pth = pth.name
@@ -155,20 +204,20 @@ def append_paths(*putatives):
         continue
     return out
 
-append_paths.oldsyspath = tuple()
+append_paths.oldsyspath: tx.Tuple[str, ...] = tuple()
 
-def remove_paths(*putatives):
+def remove_paths(*putatives) -> tx.Dict[str, bool]:
     """ Mutate `sys.path` by removing one or more existing paths --
         all of which are checked for presence within the existing `sys.path`
         list via inode lookup before being marked for removal, which that
         (the removal) is done atomically.
     """
     import os
-    out = {}
+    out: tx.Dict[str, bool] = {}
     if len(putatives) < 1:
         return out
-    removals = set()
-    paths = set(sys.path)
+    removals: tx.Set[str] = set()
+    paths: tx.Set[str] = set(sys.path)
     for pth in putatives:
         if hasattr(pth, 'name'):
             pth = pth.name
@@ -180,11 +229,11 @@ def remove_paths(*putatives):
         out[pth] = False
         continue
     paths -= removals
-    remove_paths.oldsyspath = tuple(sys.path)
+    remove_paths.oldsyspath: tx.Tuple[str, ...] = tuple(sys.path)
     sys.path = list(paths)
     return out
 
-remove_paths.oldsyspath = tuple()
+remove_paths.oldsyspath: tx.Tuple[str, ...] = tuple()
 
 def u8encode(source: tx.Any) -> bytes:
     """ Encode a source as bytes using the UTF-8 codec """
@@ -214,7 +263,7 @@ def u8str(source: tx.Any) -> str:
     """
     return u8bytes(source).decode('UTF-8')
 
-def stringify(instance, fields):
+def stringify(instance: tx.Any, fields: tx.Iterable[str]):
     """ Stringify an object instance, using an iterable field list to
         extract and render its values, and printing them along with the 
         typename of the instance and its memory address -- yielding a
@@ -229,21 +278,21 @@ def stringify(instance, fields):
                 return stringify(self, type(self).__slots__)
         
     """
-    field_dict = {}
+    field_dict: tx.Dict[str, str] = {}
     for field in fields:
         field_value = getattr(instance, field, "")
         field_value = callable(field_value) and field_value() or field_value
         if field_value:
             field_dict.update({ str(field) : field_value })
-    field_dict_items = []
+    field_dict_items: tx.List[str] = []
     for k, v in field_dict.items():
         field_dict_items.append(f'''{k}="{v}"''')
-    typename = type(instance).__name__
-    field_dict_string = ", ".join(field_dict_items)
-    hex_id = hex(id(instance))
+    typename: str = type(instance).__name__
+    field_dict_string: str = ", ".join(field_dict_items)
+    hex_id: str = hex(id(instance))
     return f"{typename}({field_dict_string}) @ {hex_id}"
 
-def suffix_searcher(suffix):
+def suffix_searcher(suffix: str) -> tx.Callable[[tx.AnyStr], bool]:
     """ Return a boolean function that will search for the given
         file suffix in strings with which it is called, returning
         True when they are found and False when they aren’t.
@@ -257,7 +306,7 @@ def suffix_searcher(suffix):
     import re, os
     if len(suffix) < 1:
         return lambda searching_for: True
-    regex_str = r""
+    regex_str: str = r""
     if suffix.startswith(os.extsep):
         regex_str += rf"\{suffix}$"
     else:
@@ -273,11 +322,11 @@ def terminal_print(message: str, handle: tx.Any=sys.stdout,
     from clint.textui import colored
     
     colorizer = getattr(colored, color.lower(), red)
-    message = f" {message.strip()} "
+    message: str = f" {message.strip()} "
     
-    asterisks = (terminal_width / 2) - (len(message) / 2)
-    aa = asterisk[0] * asterisks
-    ab = asterisk[0] * (asterisks + 0 - (len(message) % 2))
+    asterisks: int = (terminal_width / 2) - (len(message) / 2)
+    aa: str = asterisk[0] * asterisks
+    ab: str = asterisk[0] * (asterisks + 0 - (len(message) % 2))
     
     print(colorizer(f"{aa}{message}{ab}"), file=handle)
 
@@ -285,10 +334,10 @@ def print_cache(BaseClass: type, cache_instance_name: str):
     """ Pretty-print the contents of a cached metaclass variable """
     from pprint import pprint
     
-    instance = getattr(BaseClass, cache_instance_name)
-    qualname = f"{BaseClass.__name__}.{cache_instance_name}"
-    entrycnt = len(instance)
-    dicttype = type(instance).__name__
+    instance: tx.Any = getattr(BaseClass, cache_instance_name)
+    qualname: str = f"{BaseClass.__name__}.{cache_instance_name}"
+    entrycnt: int = len(instance)
+    dicttype: str = type(instance).__name__
     
     width, _ = get_terminal_size()
     
@@ -344,7 +393,7 @@ def print_config(conf):
     print("")
     # print("-" * width)
 
-def test_compile(conf, test_source, print_cdb=False):
+def test_compile(conf, test_source: str, print_cdb: bool = False):
     """ Test-compile some inline C++ source, using the options provided
         by a given halogen.config.ConfigBase subclass instance.
     """
@@ -354,10 +403,10 @@ def test_compile(conf, test_source, print_cdb=False):
     from filesystem import NamedTemporaryFile, TemporaryName
     
     width, _ = get_terminal_size()
-    bytelength = len(test_source)
-    output = tuple()
-    px = "yodogg-"
-    cdb = CDBBase()
+    bytelength: int = len(test_source)
+    output: tx.Tuple[str, ...] = tuple()
+    px: str = "yodogg-"
+    cdb: CDBBase = CDBBase()
     
     print("=" * width)
     print("")
@@ -389,8 +438,8 @@ def test_compile(conf, test_source, print_cdb=False):
             if len(output[1]) > 0:
                 # failure
                 print(" * COMPILATION FAILED:")
-                stdout = u8str(output[0]).strip()
-                stderr = u8str(output[1]).strip()
+                stdout: str = u8str(output[0]).strip()
+                stderr: str = u8str(output[1]).strip()
                 if stdout:
                     print(f"STDOUT: {stdout}", file=sys.stdout)
                     print("")
@@ -402,9 +451,9 @@ def test_compile(conf, test_source, print_cdb=False):
             # success!
             print(" • COMPILATION TOTALLY WORKED!")
             print("")
-            cdb_json = str(cdb)
-            stdout = u8str(output[0]).strip()
-            stderr = u8str(output[1]).strip()
+            cdb_json: str = str(cdb)
+            stdout: str = u8str(output[0]).strip()
+            stderr: str = u8str(output[1]).strip()
             if cdb_json and print_cdb:
                 print(f"   CDB: {cdb_json}", file=sys.stdout)
                 print("")
@@ -419,3 +468,39 @@ def test_compile(conf, test_source, print_cdb=False):
             else:
                 print("... BUT THEN WHERE THE FUCK IS MY SHIT?!?!")
     return False
+
+def test():
+    import os
+    from pprint import pformat
+    
+    print(f"PACKAGE: {__package__}")
+    # print(f" MODULE: {__module__})")
+    print(f"   FILE: {__file__}")
+    print(f"   SPEC: {__spec__}")
+    relfile = os.path.relpath('/Users/fish/Dropbox/halogen/halogen/filesystem.py',
+                              start=os.path.dirname(__file__))
+    print(f"RELFILE: {relfile}")
+    
+    ns = {
+             'func' : lambda: print("Yo Dogg"),
+        'otherfunc' : lambda string=None: print(string or 'no dogg.'),
+          # '__all__' : ('func', 'otherfunc'),
+          # '__dir__' : lambda: ['func', 'otherfunc']
+    }
+    
+    modulize(ns, 'wat', "WHAT THE HELL PEOPLE", __file__)
+    import wat
+    
+    # Call module functions:
+    wat.func()
+    wat.otherfunc("Oh, Dogg!")
+    
+    # Inspect module:
+    # contents = ", ".join(sorted(wat.__dict__.keys()))
+    contents = pformat(wat.__dict__, indent=4, width=terminal_width)
+    print(f"Imported module name:      {wat.__name__}")
+    print(f"Imported module contents:  {contents}")
+    print(f"Imported module docstring: {wat.__doc__}")
+
+if __name__ == '__main__':
+    test()

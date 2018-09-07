@@ -8,6 +8,7 @@ import os
 import re
 import six
 import sys
+import typing as tx
 
 try:
     from scandir import scandir, walk
@@ -27,7 +28,9 @@ __all__ = ('DEFAULT_PATH',
            'script_path', 'which', 'back_tick',
            'rm_rf', 'temporary',
            'TemporaryName',
-           'Directory', 'cd', 'wd',
+           'Directory', 'DirectoryLike',
+                   'MaybeDirectoryLike',
+           'cd', 'wd',
            'TemporaryDirectory', 'Intermediate',
            'NamedTemporaryFile')
 
@@ -904,7 +907,7 @@ class Directory(DirectoryAncestor):
         return self.name
     
     def __bool__(self):
-        return True
+        return self.exists
     
     def __iter__(self):
         return scandir(self.realpath())
@@ -923,12 +926,18 @@ class Directory(DirectoryAncestor):
         return self.subpath(filename, requisite=True) is not None
     
     def __eq__(self, other):
-        return os.path.samefile(self.name,
-                                os.fspath(other))
+        try:
+            return os.path.samefile(self.name,
+                                    os.fspath(other))
+        except FileNotFoundError:
+            return False
     
     def __ne__(self, other):
-        return not os.path.samefile(self.name,
-                                    os.fspath(other))
+        try:
+            return not os.path.samefile(self.name,
+                                        os.fspath(other))
+        except FileNotFoundError:
+            return True
     
     def __hash__(self):
         return hash((self.name, self.exists))
@@ -939,10 +948,15 @@ class Directory(DirectoryAncestor):
     def __unicode__(self):
         return six.u(str(self))
 
+DirectoryLike = tx.Union[tx.AnyStr,
+                         os.PathLike,
+                            Directory]
+
+MaybeDirectoryLike = tx.Optional[DirectoryLike]
 
 class cd(Directory):
     
-    def __init__(self, pth):
+    def __init__(self, pth: DirectoryLike):
         """ Change to a new directory (the target path `pth` must be specified).
         """
         super(cd, self).__init__(pth)
