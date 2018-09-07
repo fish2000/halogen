@@ -4,8 +4,10 @@ from __future__ import print_function
 
 import os
 import sys
-import config
+import typing as tx
 
+import config
+import filesystem
 from compiledb import CDBJsonFile
 from config import SHARED_LIBRARY_SUFFIX, STATIC_LIBRARY_SUFFIX, DEFAULT_VERBOSITY
 from errors import HalogenError, GeneratorLoaderError, GenerationError
@@ -25,8 +27,8 @@ __dir__ = lambda: list(__all__)
 
 DEFAULT_MAXIMUM_GENERATOR_COUNT = 1024
 
-CONF = config.ConfigUnion(config.SysConfig(),
-                          config.BrewedHalideConfig())
+CONF: config.ts.ConfigType = config.ConfigUnion(config.SysConfig(),
+                                                config.BrewedHalideConfig())
 
 # A few bespoke errors ... because yes on the occasions I do indulge myself,
 # my version of a real TREAT-YO-SELF bender is: exception subclasses. It is true.
@@ -660,9 +662,11 @@ class Generators(object):
         self.clear()                # will destroy all .o files
         return exc_type is None
 
-def print_exception(exc):
-    exc_name = str(type(exc).__name__)
-    trace_output = f""" 
+ExceptionType = tx.TypeVar('ExceptionType', bound=BaseException, covariant=True)
+
+def print_exception(exc: ExceptionType):
+    exc_name: str = str(type(exc).__name__)
+    trace_output: str = f""" 
         • EXCEPTION:    {exc_name}
         • MESSAGE:     “{str(exc)}”
     """
@@ -678,9 +682,9 @@ def test(MAXIMUM_GENERATORS=255):
     from pprint import pprint
     import api
     
-    directory = Directory(pth="/Users/fish/Dropbox/halogen/tests/generators")
-    destination = Directory(pth=os.path.join(tempfile.gettempdir(), "yodogg"))
-    zip_destination = os.path.realpath("/tmp")
+    directory: filesystem.ts.DirectoryLike = Directory(pth="/Users/fish/Dropbox/halogen/tests/generators")
+    destination: filesystem.ts.DirectoryLike = Directory(pth=os.path.join(tempfile.gettempdir(), "yodogg"))
+    zip_destination: filesystem.ts.DirectoryLike = os.path.realpath("/tmp")
     
     with TemporaryDirectory(prefix='yo-dogg-') as td:
         

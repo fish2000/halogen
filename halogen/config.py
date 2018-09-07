@@ -26,7 +26,7 @@ from errors import ConfigurationError, ConfigCommandError
 from filesystem import which, back_tick, script_path
 from filesystem import Directory
 from ocd import OCDSet, OCDFrozenSet
-from utils import is_string, stringify, u8bytes, u8str
+from utils import is_string, modulize, stringify, u8bytes, u8str
 
 __all__ = ('SHARED_LIBRARY_SUFFIX', 'STATIC_LIBRARY_SUFFIX',
            'DEFAULT_VERBOSITY',
@@ -39,7 +39,8 @@ __all__ = ('SHARED_LIBRARY_SUFFIX', 'STATIC_LIBRARY_SUFFIX',
                                      'BrewedHalideConfig',
                                      'BrewedImreadConfig',
            'ConfigUnion',
-           'CC', 'CXX', 'LD', 'AR')
+           'CC', 'CXX', 'LD', 'AR',
+           'ts')
 
 __dir__ = lambda: list(__all__)
 
@@ -1399,7 +1400,20 @@ def AR(conf: ConfigType, outfile: str, *infiles, **kwargs):
                      ret_err=True,
                      verbose=kwargs.pop('verbose', DEFAULT_VERBOSITY))
 
+
+modulize({
+      'MaybeStr' : MaybeStr,
+        'AnySet' : AnySet,
+      'Ancestor' : Ancestor,
+    'ConfigType' : ConfigType
+}, 'config.ts', "Typenames local to the config module", __file__)
+
+import config.ts as ts
+
+del MaybeStr
+del AnySet
 del Ancestor
+del ConfigType
 del SubBaseAncestor
 del BaseAncestor
 
@@ -1409,19 +1423,19 @@ def test():
     from utils import print_cache
     import test_generators
     
-    brewedHalideConfig: ConfigType = BrewedHalideConfig()
-    brewedPythonConfig: ConfigType = BrewedPythonConfig()
-    pythonConfig: ConfigType = PythonConfig()
-    sysConfig: ConfigType = SysConfig()
-    pkgConfig: ConfigType = PkgConfig()
-    numpyConfig: ConfigType = NumpyConfig()
+    brewedHalideConfig: ts.ConfigType = BrewedHalideConfig()
+    brewedPythonConfig: ts.ConfigType = BrewedPythonConfig()
+    pythonConfig: ts.ConfigType = PythonConfig()
+    sysConfig: ts.ConfigType = SysConfig()
+    pkgConfig: ts.ConfigType = PkgConfig()
+    numpyConfig: ts.ConfigType = NumpyConfig()
     
     sysConfigSetWrap: SetWrap = SetWrap(sysConfig)
     numpyConfigSetWrap: SetWrap = SetWrap(numpyConfig)
     
-    configUnionOne: ConfigType = ConfigUnion(SysConfig(with_openssl=True))
-    configUnion: ConfigType = ConfigUnion(brewedHalideConfig, sysConfig)
-    configUnionAll: ConfigType = ConfigUnion(brewedHalideConfig, sysConfig,
+    configUnionOne: ts.ConfigType = ConfigUnion(SysConfig(with_openssl=True))
+    configUnion: ts.ConfigType = ConfigUnion(brewedHalideConfig, sysConfig)
+    configUnionAll: ts.ConfigType = ConfigUnion(brewedHalideConfig, sysConfig,
                                              brewedPythonConfig, pythonConfig,
                                                                  pkgConfig,
                                                                  numpyConfig)
@@ -1457,6 +1471,13 @@ def test():
     
     print_cache(ConfigBase, 'base_field_cache')
     print_cache(ConfigBase, 'field_cache')
+    
+    # Check “ts” submodule:
+    assert ts
+    assert ts.MaybeStr
+    assert ts.AnySet
+    assert ts.Ancestor
+    assert ts.ConfigType
 
 
 def corefoundation_check():
@@ -1484,9 +1505,9 @@ def corefoundation_check():
     # prefix = os.path.dirname(os.path.dirname(bundlepath))
     prefix: Directory = bundlepath.parent().parent()
     
-    brewedHalideConfig: ConfigType = BrewedHalideConfig()
-    pyConfig: ConfigType = PythonConfig(prefix)
-    configUnion: ConfigType = ConfigUnion(brewedHalideConfig, pyConfig)
+    brewedHalideConfig: ts.ConfigType = BrewedHalideConfig()
+    pyConfig: ts.ConfigType = PythonConfig(prefix)
+    configUnion: ts.ConfigType = ConfigUnion(brewedHalideConfig, pyConfig)
     
     """ 5. Dump the ConfigUnion instance used in the CoreFoundation test: """
     
