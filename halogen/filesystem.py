@@ -19,7 +19,7 @@ from functools import wraps
 from tempfile import _TemporaryFileWrapper as TemporaryFileWrapperBase
 
 from errors import ExecutionError, FilesystemError
-from utils import memoize, stringify, suffix_searcher, u8bytes, u8str
+from utils import memoize, modulize, stringify, suffix_searcher, u8bytes, u8str
 
 __all__ = ('DEFAULT_PATH',
            'DEFAULT_PREFIX',
@@ -28,11 +28,11 @@ __all__ = ('DEFAULT_PATH',
            'script_path', 'which', 'back_tick',
            'rm_rf', 'temporary',
            'TemporaryName',
-           'Directory', 'DirectoryLike',
-                   'MaybeDirectoryLike',
+           'Directory',
            'cd', 'wd',
            'TemporaryDirectory', 'Intermediate',
-           'NamedTemporaryFile')
+           'NamedTemporaryFile',
+           'ts')
 
 __dir__ = lambda: list(__all__)
 
@@ -1140,10 +1140,19 @@ def NamedTemporaryFile(mode='w+b', buffer_size=-1,
             os.close(descriptor)
         raise FilesystemError(str(base_exception))
 
+modulize({
+         'DirectoryLike' : DirectoryLike,
+    'MaybeDirectoryLike' : MaybeDirectoryLike
+}, 'ts', "Typenames local to the filesystem module", __file__)
+
+import ts
+
 del TemporaryFileWrapperBase
 del TemporaryFileWrapperAncestor
 del TemporaryNameAncestor
 del DirectoryAncestor
+del DirectoryLike
+del MaybeDirectoryLike
 
 def test():
     
@@ -1287,6 +1296,12 @@ def test():
     
     # Confirm that the TemporaryDirectory has been deleted:
     assert not tdp.exists
+    
+    # Check the 'ts' submodule:
+    assert ts
+    assert ts.DirectoryLike
+    assert ts.MaybeDirectoryLike
+    
 
 if __name__ == '__main__':
     test()

@@ -150,9 +150,7 @@ def modulize(namespace: tx.MutableMapping[str, tx.Any],
             '__dir__' : lambda: list(ns_all)
         })
     
-    
     # Create a new module with a trivially namespaced name:
-    # namespacedname: str = f'__dynamic_modules__.{modulename}'
     if modulefile:
         relpath: str = os.path.relpath(modulefile,
                  start=os.path.dirname(__file__))

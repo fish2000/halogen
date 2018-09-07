@@ -20,10 +20,11 @@ from collections import OrderedDict
 from ctypes.util import find_library
 from functools import wraps
 
+import filesystem
 from compiledb import CDBSubBase
 from errors import ConfigurationError, ConfigCommandError
 from filesystem import which, back_tick, script_path
-from filesystem import Directory, DirectoryLike, MaybeDirectoryLike
+from filesystem import Directory
 from ocd import OCDSet, OCDFrozenSet
 from utils import is_string, stringify, u8bytes, u8str
 
@@ -99,7 +100,7 @@ class ConfigSubBase(SubBaseAncestor):
     
     @prefix.setter
     @abstractmethod
-    def prefix(self, value: DirectoryLike): pass
+    def prefix(self, value: filesystem.ts.DirectoryLike): pass
     
     @prefix.deleter
     @abstractmethod
@@ -115,7 +116,7 @@ class ConfigSubBase(SubBaseAncestor):
     # many Config-ish classes:
     
     @abstractmethod
-    def subdirectory(self, subdir: tx.AnyStr, whence: MaybeDirectoryLike = None) -> MaybeStr: pass
+    def subdirectory(self, subdir: tx.AnyStr, whence: filesystem.ts.MaybeDirectoryLike = None) -> MaybeStr: pass
     
     # These four methods prepare the command strings,
     # using the result(s) from calling one or more
@@ -246,9 +247,9 @@ class ConfigBase(BaseAncestor):
             back to me if you are still confused. Thanks! -Alex
         """
         
-        __slots__: tx.ClassVar[tx.Tuple[str, ...]] = ('stored_fields',
-                                                      'exclude_fields',
-                                                      'include_dir_fields')
+        __slots__: tx.ClassVar[tx.Tuple[str, str, str]] = ('stored_fields',
+                                                           'exclude_fields',
+                                                           'include_dir_fields')
         
         def store(self, *fields):
             self.stored_fields: frozenset = frozenset(fields)
@@ -283,7 +284,7 @@ class ConfigBase(BaseAncestor):
         return getattr(self, '_prefix')
     
     @prefix.setter
-    def prefix(self, value: DirectoryLike):
+    def prefix(self, value: filesystem.ts.DirectoryLike):
         prefixd: Directory = Directory(value)
         if not prefixd.exists:
             raise ValueError(f"prefix path does not exist: {prefixd}")
@@ -403,7 +404,7 @@ class SetWrap(ConfigBase):
 
 class Macro(object):
     
-    __slots__: tx.ClassVar[tx.Tuple[str, ...]] = ('name', 'definition', 'undefine')
+    __slots__: tx.ClassVar[tx.Tuple[str, str, str]] = ('name', 'definition', 'undefine')
     
     STRING_ZERO: str = '0'
     STRING_ONE: str  = '1'
@@ -580,7 +581,7 @@ class PythonConfig(ConfigBase):
     # the path to the 'Frameworks' directory (empty before calls):
     framework_path: MaybeStr = None
     
-    def __init__(self, prefix: MaybeDirectoryLike = None):
+    def __init__(self, prefix: filesystem.ts.MaybeDirectoryLike = None):
         """ Initialize PythonConfig, optionally specifying a system prefix """
         if not prefix:
             prefix = Directory(sys.prefix)
@@ -790,9 +791,9 @@ class PkgConfig(ConfigBase):
                                   'pkg_name', dir_fields=True)
     
     # List of cflags to use with all pkg-config-based classes:
-    cflags: OCDFrozenSet = OCDFrozenSet(("funroll-loops",
-                                         "mtune=native",
-                                         "O3"))
+    cflags: tx.ClassVar[OCDFrozenSet] = OCDFrozenSet(("funroll-loops",
+                                                      "mtune=native",
+                                                      "O3"))
     
     # Location of the `pkg-config` binary:
     pkgconfig: str = which('pkg-config')
@@ -963,8 +964,8 @@ class BrewedConfig(ConfigBase):
         if not brew_name:
             brew_name = 'halide'
         self.brew_name: str = brew_name
-        self.prefix: DirectoryLike = back_tick(f"{self.brew} --prefix {self.brew_name}",
-                                                ret_err=False)
+        self.prefix: filesystem.ts.DirectoryLike = back_tick(f"{self.brew} --prefix {self.brew_name}",
+                                                               ret_err=False)
     
     def bin(self) -> MaybeStr:
         return self.subdirectory("bin")
@@ -1055,7 +1056,7 @@ class BrewedImreadConfig(BrewedConfig):
     
     def __init__(self):
         """ Complete override of BrewedConfig’s __init__ method: """
-        self.prefix: DirectoryLike = back_tick(f"{self.imread_config} --prefix", ret_err=False)
+        self.prefix: filesystem.ts.DirectoryLike = back_tick(f"{self.imread_config} --prefix", ret_err=False)
     
     @property
     def name(self) -> str:
@@ -1075,7 +1076,7 @@ class BrewedImreadConfig(BrewedConfig):
         return back_tick(f"{self.imread_config} --ldflags", ret_err=False)
 
 
-class ConfigUnion(ConfigBase):
+class ConfigUnion(ConfigBase, tx.Collection[ConfigType]):
     
     """ A config class that provides values as the union of all provided values
         for the arbitrary config classes specified upon construction. E.g.:
@@ -1163,9 +1164,9 @@ class ConfigUnion(ConfigBase):
             return u8bytes(repr(self))
     
     # Ordered list of all possible optimization flags:
-    optimization: FlagSet = FlagSet("O%s", ('0', 's', 'fast', '1',
-                                            'g', '',  '2',    '3',
-                                            '4')) # 4 is technically a fake
+    optimization: tx.ClassVar[FlagSet] = FlagSet("O%s", ('0', 's', 'fast', '1',
+                                                         'g', '',  '2',    '3',
+                                                         '4')) # 4 is technically a fake
     
     # Regular expression to match fake optimization flags e.g. -O8, -O785 etc.
     optimization_flag_matcher = re.compile("^O(\d+)$").match
@@ -1176,9 +1177,14 @@ class ConfigUnion(ConfigBase):
     
     # Ordered list of all possible C++ standard flags --
     # adapted from Clang’s LangStandards.def, https://git.io/vSRX9
-    cxx_standard: FlagSet = FlagSet("std=%s", ('c++98', 'gnu++98', 'c++0x', 'gnu++0x', 'c++11', 'gnu++11',
-                                               'c++1y', 'gnu++1y', 'c++14', 'gnu++14', 'c++1z', 'gnu++1z',
-                                               'c++17', 'gnu++17', 'c++2a', 'gnu++2a'))
+    cxx_standard: tx.ClassVar[FlagSet] = FlagSet("std=%s", ('c++98', 'gnu++98',
+                                                            'c++0x', 'gnu++0x',
+                                                            'c++11', 'gnu++11',
+                                                            'c++1y', 'gnu++1y',
+                                                            'c++14', 'gnu++14',
+                                                            'c++1z', 'gnu++1z',
+                                                            'c++17', 'gnu++17',
+                                                            'c++2a', 'gnu++2a'))
     
     @classmethod
     def fake_optimization_flags(cls, flags: AnySet) -> OCDFrozenSet:
@@ -1281,6 +1287,9 @@ class ConfigUnion(ConfigBase):
     def __len__(self) -> int:
         """ The length of a ConfigUnion instance is equal to the number of its sub-configs """
         return len(self.configs)
+    
+    def __iter__(self) -> tx.Iterable[ConfigType]:
+        return iter(self.configs)
     
     def __getitem__(self, key: int) -> ConfigType:
         """ Access one of the ConfigUnion instances’ sub-configs via subscript """
