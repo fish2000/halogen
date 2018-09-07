@@ -1143,9 +1143,9 @@ def NamedTemporaryFile(mode='w+b', buffer_size=-1,
 modulize({
          'DirectoryLike' : DirectoryLike,
     'MaybeDirectoryLike' : MaybeDirectoryLike
-}, 'ts', "Typenames local to the filesystem module", __file__)
+}, 'filesystem.ts', "Typenames local to the filesystem module", __file__)
 
-import ts
+import filesystem.ts as ts
 
 del TemporaryFileWrapperBase
 del TemporaryFileWrapperAncestor
