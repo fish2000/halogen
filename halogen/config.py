@@ -432,7 +432,7 @@ class Macro(object):
             raise ConfigurationError("Macro() requires a valid name")
         string_zero: bool = self.is_string_value(definition)
         string_one: bool = self.is_string_value(definition, value=1)
-        string_something = string_zero or string_one
+        string_something: bool = string_zero or string_one
         self.name: str = name
         self.definition: MaybeStr = (not string_something or None) and definition
         self.undefine: bool = string_zero or undefine
