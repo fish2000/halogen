@@ -1410,6 +1410,7 @@ modulize({
 
 import config.ts as ts
 
+del TC
 del MaybeStr
 del AnySet
 del Ancestor
