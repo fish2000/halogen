@@ -60,10 +60,6 @@ class OCDType(abc.ABCMeta, tx.Iterable[T]):
         Type:   type
         Bases:  tx.Tuple[str, ...] = ()
         
-        # @classmethod
-        # def for_cls_xxx(cls, newcls):
-        #     return super(OCDType.TypeAndBases, cls).__new__(cls, (newcls, tuple(base.__qualname__ for base in newcls.__bases__)))
-        
         @staticmethod
         def for_type(newcls):
             basenames = tuple(f"{base.__module__}.{base.__qualname__}" \
