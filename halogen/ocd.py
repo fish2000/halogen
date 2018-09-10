@@ -185,7 +185,11 @@ class OCDType(abc.ABCMeta, tx.Iterable[T]):
         """ Maintain declaration order in class members: """
         return collections.OrderedDict()
     
-    def __new__(metacls, name, bases, attributes, **kwargs) -> type:
+    def __new__(metacls,
+                   name: str,
+                  bases: tx.Iterable[str],
+             attributes: tx.MutableMapping[str, tx.Any],
+               **kwargs) -> type:
         """ When used as a metaclass, OCDType will insert a specialization
             of the class for which it has been chosen as a metaclass as its
             immediate base ancestor, and then create a new class based

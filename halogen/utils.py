@@ -10,11 +10,10 @@ import typing as tx
 # from collections import namedtuple
 from functools import wraps
 
-__all__ = (
-           'TerminalSize',
-           'terminal_size', 'terminal_width',
-                            'terminal_height',
-           'tuplize',
+__all__ = ('TerminalSize', 'terminal_size',
+                           'terminal_width',
+                           'terminal_height',
+           'tuplize', 'listify',
            'wrap_value', 'Memoizer', 'memoize',
            'current_umask', 'masked_permissions',
            'modulize',
