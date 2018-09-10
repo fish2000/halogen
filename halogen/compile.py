@@ -2,6 +2,7 @@
 
 from __future__ import print_function
 
+import contextlib
 import os
 import sys
 import typing as tx
@@ -51,7 +52,7 @@ class ArchiverError(IOError, HalogenError):
     pass
 
 
-class Generator(object):
+class Generator(contextlib.AbstractContextManager):
     
     """ Atomically compile a generator from C++ source, using a specific “Config”-ish
         instance (like, from the config module) and writing the output to a specific
@@ -193,7 +194,7 @@ class Generator(object):
         return exc_type is None
 
 
-class Generators(object):
+class Generators(contextlib.AbstractContextManager):
     
     """ Atomically compile all C++ source files from a given directory tree as generators,
         using a config instance (q.v. Generator, above) and then link all of them as a dynamic

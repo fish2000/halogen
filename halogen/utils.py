@@ -29,11 +29,6 @@ __all__ = ('TerminalSize', 'terminal_size',
 __dir__ = lambda: list(__all__)
 
 
-# SizeAncestor = namedtuple('Size', field_names=('width', 'height'),
-#                                      defaults=(25, 25),
-#                                        module='utils')
-
-
 class TerminalSize(object):
     
     # get_terminal_size(): does what you think it does

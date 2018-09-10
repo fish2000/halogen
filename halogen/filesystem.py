@@ -4,6 +4,8 @@ from __future__ import print_function
 
 import abc
 import collections
+import collections.abc
+import contextlib
 import os
 import re
 import six
@@ -276,6 +278,7 @@ class TypeLocker(abc.ABCMeta):
 
 TemporaryFileWrapperAncestor = six.with_metaclass(TypeLocker,
                                                   TemporaryFileWrapperBase,
+                                                  contextlib.AbstractContextManager,
                                                   os.PathLike)
 
 class TemporaryFileWrapper(TemporaryFileWrapperAncestor):
@@ -361,7 +364,10 @@ def TemporaryNamedFile(tempth, mode='wb', buffer_size=-1, delete=True):
             os.close(descriptor)
         raise FilesystemError(str(base_exception))
 
-TemporaryNameAncestor = six.with_metaclass(TypeLocker, os.PathLike)
+TemporaryNameAncestor = six.with_metaclass(TypeLocker, collections.abc.Hashable,
+                                                       contextlib.AbstractContextManager,
+                                                       os.PathLike)
+
 class TemporaryName(TemporaryNameAncestor):
     
     """ This is like NamedTemporaryFile without any of the actual stuff;
@@ -538,7 +544,11 @@ class TemporaryName(TemporaryNameAncestor):
 non_dotfile_match = re.compile(r"^[^\.]").match
 non_dotfile_matcher = lambda p: non_dotfile_match(p.name)
 
-DirectoryAncestor = six.with_metaclass(TypeLocker, os.PathLike)
+DirectoryAncestor = six.with_metaclass(TypeLocker, collections.abc.Hashable,
+                                                   collections.abc.Mapping,
+                                                   contextlib.AbstractContextManager,
+                                                   os.PathLike)
+
 class Directory(DirectoryAncestor):
     
     """ A context-managed directory: change in on enter, change back out
