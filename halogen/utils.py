@@ -451,7 +451,7 @@ def print_cache(BaseClass: type, cache_instance_name: str):
     print(f" • CACHE DICT HAS {entrycnt} ENTRIES{entrycnt > 0 and ':' or ''}")
     if entrycnt > 0:
         print("")
-        pprint(instance, indent=4,
+        pprint(instance, indent=4, depth=20,
                          width=width)
     print("")
 

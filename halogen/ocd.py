@@ -57,7 +57,7 @@ class OCDType(abc.ABCMeta, tx.Iterable[T]):
     prefix: str = "OCD"
     
     class TypeAndBases(tx.NamedTuple):
-        Type:   type
+        Type:   tx.Type[type]
         Bases:  tx.Tuple[str, ...] = ()
         
         @staticmethod
@@ -180,14 +180,14 @@ class OCDType(abc.ABCMeta, tx.Iterable[T]):
     @classmethod
     def __prepare__(metacls,
                        name: str,
-                      bases: tx.Iterable[str],
+                      bases: tx.Iterable[type],
                    **kwargs)  -> tx.Dict[str, tx.Any]:
         """ Maintain declaration order in class members: """
         return collections.OrderedDict()
     
     def __new__(metacls,
                    name: str,
-                  bases: tx.Iterable[str],
+                  bases: tx.Iterable[type],
              attributes: tx.MutableMapping[str, tx.Any],
                **kwargs) -> type:
         """ When used as a metaclass, OCDType will insert a specialization
@@ -196,7 +196,7 @@ class OCDType(abc.ABCMeta, tx.Iterable[T]):
             on that specialization for forwarding to Python’s class-creation
             apparatus:
         """
-        subbase = object
+        subbase: type = object
         for basecls in bases:
             if issubclass(basecls, (tx.Iterable,
                                     tx.Iterator)):
@@ -263,6 +263,49 @@ class SortedNamespace(Namespace, collections.abc.Sized,
 
 OCDNamespace  = OCDType[Namespace]
 
+
+def test_namespace_types():
+    """ Test instances of various SimpleNamespace subclasses """
+    
+    from pprint import pformat
+    from utils import terminal_size
+    
+    nsdata = {
+                'yo' : 'dogg',
+                 'i' : 'heard',
+               'you' : 'liked',
+        'namespaced' : 'dictionary data'
+    }
+    
+    simpleNamespace = types.SimpleNamespace(**nsdata)
+    namespace = Namespace(**nsdata)
+    ocdNamespace = OCDNamespace(**nsdata)
+    sortedNamespace = SortedNamespace(**nsdata)
+    width: int = terminal_size().width
+    
+    print("=" * width)
+    print("")
+    
+    print("• SIMPLE NAMESPACE: ")
+    print(pformat(simpleNamespace,
+                  indent=4, depth=10, width=width))
+    print("")
+    
+    print("• REGULAR NAMESPACE: ")
+    print(pformat(namespace,
+                  indent=4, depth=10, width=width))
+    print("")
+    
+    print("• OCD NAMESPACE: ")
+    print(pformat(ocdNamespace,
+                  indent=4, depth=10, width=width))
+    print("")
+    
+    print("• SORTED NAMESPACE: ")
+    print(pformat(sortedNamespace,
+                  indent=4, depth=10, width=width))
+    print("")
+
 def test():
     """ Inline tests for OCDType and friends """
     
@@ -307,11 +350,15 @@ def test():
     assert SortedMatrix([[0, 1, 2], [0, 1, 2], [0, 1, 2]]).__len__() == 3
     assert SortedMatrix(OCDNumpyArray([[0, 1, 2], [0, 1, 2], [0, 1, 2]])).__len__() == 3
     
-    """ 2. Reveal the cached OCDType specializations: """
+    """ 2. Test various SimpleNamespace subclasses: """
+    
+    test_namespace_types()
+    
+    """ 3. Reveal the cached OCDType specializations: """
     
     print_cache(OCDType, 'types')
     
-    """ 3. Reveal the cached OCDType subtypes: """
+    """ 4. Reveal the cached OCDType subtypes: """
     
     print_cache(OCDType, 'subtypes')
 
