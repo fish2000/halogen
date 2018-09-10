@@ -7,10 +7,13 @@ import sys
 import types
 import typing as tx
 
+# from collections import namedtuple
 from functools import wraps
 
-__all__ = ('get_terminal_size', 'terminal_width',
-                                'terminal_height',
+__all__ = (
+           'TerminalSize',
+           'terminal_size', 'terminal_width',
+                            'terminal_height',
            'tuplize',
            'wrap_value', 'Memoizer', 'memoize',
            'current_umask', 'masked_permissions',
@@ -26,48 +29,149 @@ __all__ = ('get_terminal_size', 'terminal_width',
 
 __dir__ = lambda: list(__all__)
 
-# get_terminal_size(): does what you think it does
-# adapted from this: http://stackoverflow.com/a/566752/298171
 
-def get_terminal_size(default_LINES: int=25, default_COLUMNS: int=120) -> tx.Tuple[int, int]:
-    """ Get the width and height of the terminal window in characters """
-    if hasattr(get_terminal_size, 'size_cache'):
-        return get_terminal_size.size_cache[0], \
-               get_terminal_size.size_cache[1]
-    else:
+# SizeAncestor = namedtuple('Size', field_names=('width', 'height'),
+#                                      defaults=(25, 25),
+#                                        module='utils')
+
+
+class TerminalSize(object):
+    
+    # get_terminal_size(): does what you think it does
+    # adapted from this: http://stackoverflow.com/a/566752/298171
+    
+    class Size(tx.NamedTuple):
+        
+        height: int = 25
+        width: int = 120
+        
+        @property
+        def area(self) -> int:
+            """ Compute total area """
+            return self.width * self.height
+        
+        @property
+        def perimeter(self) -> int:
+            """ Calculate perimeter of the size’s bounding box """
+            return (self.width * 2) + \
+                   (self.height * 2)
+        
+        @property
+        def lines(self) -> int:
+            """ known also as how high, the height, the tallness … """
+            return self.height
+        
+        @property
+        def columns(self) -> int:
+            """ a.k.a how long, width, the x-dimension etc """
+            return self.width
+        
+        def copy(self) -> tx.NamedTuple:
+            """ Duplicate the Size instance """
+            return self._replace(
+                 **self._asdict())
+    
+    DEFAULT_LINES:   int = 25
+    DEFAULT_COLUMNS: int = 130
+    MINIMUM_LINES:   int = 25
+    MINIMUM_COLUMNS: int = 25
+    
+    cache: tx.List[Size] = []
+    
+    @staticmethod
+    def ioctl_GWINSZ(descriptor: int) -> tx.Optional[
+                                         tx.Tuple[int, int]]:
+        """ Extract the GWINSZ terminal I/O property value data
+            from a file descriptor, using an `ioctl(…)` call to
+            obtain the packed Posix data structure, a call to the
+           `struct.unpack(…)` module to process the raw ioctl output
+            into Python integers
+        """
+        
+        import fcntl, termios, struct
+        try:
+            cr: tx.Tuple[int, int] = struct.unpack('hh',
+                                      fcntl.ioctl(descriptor,
+                                                  termios.TIOCGWINSZ,
+                                                 '1234'))
+        except:
+            return None
+        return cr
+    
+    def __init__(self, DEFAULT_LINES:   tx.Optional[int] = None,
+                       DEFAULT_COLUMNS: tx.Optional[int] = None):
+        
+        """ Initialize the TerminalSize babysitter class """
+        
+        if DEFAULT_LINES is not None:
+            if self.DEFAULT_LINES   !=   DEFAULT_LINES and \
+               self.MINIMUM_LINES   <=   DEFAULT_LINES:
+               self.DEFAULT_LINES   =    DEFAULT_LINES
+        
+        if DEFAULT_COLUMNS is not None:
+            if self.DEFAULT_COLUMNS != DEFAULT_COLUMNS and \
+               self.MINIMUM_COLUMNS <= DEFAULT_COLUMNS:
+               self.DEFAULT_COLUMNS =  DEFAULT_COLUMNS
+        
+        self.store_terminal_size()
+        
+    def fetch_terminal_size_values(self) -> tx.Tuple[int, int]:
         import os
         env = os.environ
-        def ioctl_GWINSZ(fd):
-            try:
-                import fcntl, termios, struct
-                cr = struct.unpack('hh',
-                       fcntl.ioctl(fd, termios.TIOCGWINSZ, '1234'))
-            except:
-                return
-            return cr
-        cr = ioctl_GWINSZ(0) or ioctl_GWINSZ(1) or ioctl_GWINSZ(2)
+        
+        # First, attemopt to pluck out the CGWINSZ terminal values using
+        # the stdin/stdout/stderr file descriptor numbers:
+        cr: tx.Optional[
+            tx.Tuple[int, int]] = self.ioctl_GWINSZ(0) or \
+                                  self.ioctl_GWINSZ(1) or \
+                                  self.ioctl_GWINSZ(2)
+        
+        # … if that did not work, get the /dev entry name of the terminal
+        # in which our process is ensconced, open a descriptor on it for reaing,
+        # and use that descriptor to once again attempt to read CGWINSZ values 
+        # for the terminal:
         if not cr:
             try:
-                fd = os.open(os.ctermid(), os.O_RDONLY)
-                cr = ioctl_GWINSZ(fd)
-                os.close(fd)
+                descriptor: int = os.open(
+                                  os.ctermid(),
+                                  os.O_RDONLY)
+                cr: tx.Optional[
+                    tx.Tuple[int, int]] = self.ioctl_GWINSZ(descriptor)
+                os.close(descriptor)
             except:
                 pass
+        
+        # … if we were unsuccessfull in reading from all three of the standard I/O
+        # descriptors •and• a bespoke descriptor opened directly on the /dev entry,
+        # make a last-ditch effort to send back values culled from the environment,
+        # with truly last-resort possibilities filled in with hardcoded defaults.
         if not cr:
-            cr = (env.get('LINES',   default_LINES),
-                  env.get('COLUMNS', default_COLUMNS))
-        get_terminal_size.size_cache = (int(cr[1]), int(cr[0]))
-    return get_terminal_size.size_cache[0], \
-           get_terminal_size.size_cache[1]
+            cr = (env.get('LINES',   self.DEFAULT_LINES),
+                  env.get('COLUMNS', self.DEFAULT_COLUMNS))
+        
+        # Return plain tuple:
+        return cr
+    
+    def store_terminal_size(self) -> Size:
+        size: self.Size = self.Size(*self.fetch_terminal_size_values())
+        self.cache.append(size)
+        return size
+    
+    def __call__(self, *args, **kwargs) -> Size:
+        if len(self.cache) < 1:
+            self.store_terminal_size()
+        return self.cache[-1]
 
-terminal_width, terminal_height = get_terminal_size()
+terminal_size: TerminalSize = TerminalSize()
+terminal_width:  int        = terminal_size().width 
+terminal_height: int        = terminal_size().height
 
 StringType = tx.TypeVar('StringType', bound=type, covariant=True)
 
-string_types: tx.Type[StringType] = (type(''),
-                                     type(b''),
-                                     type(r''),
-                                     type(u'')) + six.string_types
+string_types: tx.Tuple[tx.Type[StringType], ...] = (type(''),
+                                                    type(b''),
+                                                    type(f''),
+                                                    type(r'')) + six.string_types
 
 is_string: tx.Callable[[tx.Any], bool] = lambda thing: isinstance(thing, string_types)
 
@@ -76,6 +180,8 @@ def tuplize(*items) -> tuple:
 
 def listify(*items) -> list:
     return list(item for item in items if item is not None)
+
+WrapArg = tx.TypeVar('WrapArg', covariant=True)
 
 def wrap_value(value: tx.Any) -> tx.Callable[[tx.Optional[tx.Iterable[tx.Any]],
                                               tx.Optional[tx.Mapping[tx.Any,
@@ -321,8 +427,9 @@ def terminal_print(message: str, handle: tx.Any=sys.stdout,
     
     colorizer = getattr(colored, color.lower(), red)
     message: str = f" {message.strip()} "
+    width: int = terminal_size().width
     
-    asterisks: int = (terminal_width / 2) - (len(message) / 2)
+    asterisks: int = (width / 2) - (len(message) / 2)
     aa: str = asterisk[0] * asterisks
     ab: str = asterisk[0] * (asterisks + 0 - (len(message) % 2))
     
@@ -337,7 +444,7 @@ def print_cache(BaseClass: type, cache_instance_name: str):
     entrycnt: int = len(instance)
     dicttype: str = type(instance).__name__
     
-    width, _ = get_terminal_size()
+    width: int = terminal_size().width
     
     print("=" * width)
     print("")
@@ -352,7 +459,7 @@ def print_cache(BaseClass: type, cache_instance_name: str):
 def print_config(conf):
     """ Print debug information for a halogen.config.ConfigBase subclass """
     
-    width, _ = get_terminal_size()
+    width: int = terminal_size().width
     
     print("=" * width)
     print("")
@@ -400,7 +507,7 @@ def test_compile(conf, test_source: str, print_cdb: bool = False):
     from compiledb import CDBBase
     from filesystem import NamedTemporaryFile, TemporaryName
     
-    width, _ = get_terminal_size()
+    width: int = terminal_size().width
     bytelength: int = len(test_source)
     output: tx.Tuple[str, ...] = tuple()
     px: str = "yodogg-"
@@ -475,8 +582,8 @@ def test():
     # print(f" MODULE: {__module__})")
     print(f"   FILE: {__file__}")
     print(f"   SPEC: {__spec__}")
-    relfile = os.path.relpath('/Users/fish/Dropbox/halogen/halogen/filesystem.py',
-                              start=os.path.dirname(__file__))
+    relfile: str = os.path.relpath('/Users/fish/Dropbox/halogen/halogen/filesystem.py',
+                                    start=os.path.dirname(__file__))
     print(f"RELFILE: {relfile}")
     
     ns = {
@@ -495,7 +602,7 @@ def test():
     
     # Inspect module:
     # contents = ", ".join(sorted(wat.__dict__.keys()))
-    contents = pformat(wat.__dict__, indent=4, width=terminal_width)
+    contents: str = pformat(wat.__dict__, indent=4, width=terminal_size().width)
     print(f"Imported module name:      {wat.__name__}")
     print(f"Imported module contents:  {contents}")
     print(f"Imported module docstring: {wat.__doc__}")

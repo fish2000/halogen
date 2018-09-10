@@ -5,19 +5,26 @@ from __future__ import print_function
 import abc
 import collections
 import collections.abc
+import types
 import typing as tx
 
 from utils import tuplize
 
 __all__ = ('OCDType',
            'OCDSet', 'OCDFrozenSet',
-           'OCDTuple', 'OCDList')
+           'OCDTuple', 'OCDList',
+           'Namespace', 'SortedNamespace', 'OCDNamespace')
 
 __dir__ = lambda: list(__all__)
 
+T = tx.TypeVar('T', covariant=True)
+S = tx.TypeVar('S', bound=str, covariant=True)
+MaybeString = tx.Optional[str]
 TypeFactory = tx.Callable[..., tx.Any]
+MaybeFactory = tx.Optional[TypeFactory]
+F = tx.TypeVar('F', bound=TypeFactory, covariant=True)
 
-class OCDType(abc.ABCMeta):
+class OCDType(abc.ABCMeta, tx.Iterable[T]):
     
     """ OCDType is a templated Python type.
     
@@ -49,26 +56,23 @@ class OCDType(abc.ABCMeta):
     # types, á la Objective-C naming prefixes:
     prefix: str = "OCD"
     
-    # The metaclass-internal dictionaries of all generated types:
-    types:    tx.Dict[str, type] = collections.OrderedDict()
-    subtypes: tx.Dict[str, type] = collections.OrderedDict()
+    class TypeAndBases(tx.NamedTuple):
+        Type:   type
+        Bases:  tx.Tuple[str, ...] = ()
+        
+        # @classmethod
+        # def for_cls_xxx(cls, newcls):
+        #     return super(OCDType.TypeAndBases, cls).__new__(cls, (newcls, tuple(base.__qualname__ for base in newcls.__bases__)))
+        
+        @staticmethod
+        def for_type(newcls):
+            basenames = tuple(f"{base.__module__}.{base.__qualname__}" \
+                   for base in newcls.__bases__)
+            return OCDType.TypeAndBases(newcls, basenames)
     
-    class OCDMixin(object):
-        
-        """ A mixin for OCDType specializations to bequeath upon them the gift
-            of being stringified.
-        """
-        
-        token: str = ', '
-        begin: str = '{ '
-        endin: str = ' }'
-        
-        def __str__(self) -> str:
-            return super().__str__()
-        
-        def __repr__(self) -> str:
-            items = self.token.join(self.__iter__())
-            return f"{self.begin}{items}{self.endin}"
+    # The metaclass-internal dictionaries of all generated types:
+    types:    tx.Dict[str, TypeAndBases] = collections.OrderedDict()
+    subtypes: tx.Dict[str, TypeAndBases] = collections.OrderedDict()
     
     @classmethod
     def __class_getitem__(metacls,
@@ -121,7 +125,7 @@ class OCDType(abc.ABCMeta):
         # return it without creating a new class:
         
         if clsname in metacls.types:
-            return metacls.types[clsname]
+            return metacls.types[clsname].Type
         
         # Stow the covariant typevar and the computed name in the new class,
         # and install an `__iter__()` method that delegates to the covariant
@@ -133,8 +137,6 @@ class OCDType(abc.ABCMeta):
              '__covariant__' : key,
                   '__name__' : clsname,
                   '__iter__' : lambda self: iter(sorted(it.__iter__(self))),
-                  '__repr__' : metacls.OCDMixin.__repr__,
-                   '__str__' : metacls.OCDMixin.__str__,
             
             # q.v. inline notes to the Python 3 `typing` module
             # supra: https://git.io/fAsNO
@@ -167,18 +169,23 @@ class OCDType(abc.ABCMeta):
         # metaclasses’ __new__(…) method, and stash it in a
         # metaclass-local dict keyed with the generated classname:
         
+        baseset = kwargs.pop('baseset', frozenset())
         cls = super(OCDType, metacls).__new__(metacls,
                                               clsname,
                                               tuplize(key,
-                                                      collections.abc.Iterable,
-                                                      metacls.OCDMixin),
+                                                     *baseset,
+                                                      collections.abc.Iterable),
                                               dict(attributes),
                                             **kwargs)
-        metacls.types[clsname] = cls
+        
+        metacls.types[clsname] = metacls.TypeAndBases.for_type(cls)
         return cls
     
     @classmethod
-    def __prepare__(metacls, name, bases, **kwargs) -> tx.Dict:
+    def __prepare__(metacls,
+                       name: str,
+                      bases: tx.Iterable[str],
+                   **kwargs)  -> tx.Dict[str, tx.Any]:
         """ Maintain declaration order in class members: """
         return collections.OrderedDict()
     
@@ -195,9 +202,12 @@ class OCDType(abc.ABCMeta):
                                     tx.Iterator)):
                 subbase = basecls
                 break
-        # others = tuplize(other for other in bases if other != subbase)
+        
         subname = kwargs.pop('subname', None)
         factory = kwargs.pop('factory', None)
+        baseset = (len(bases) > 1) \
+                   and (frozenset(bases) - { subbase }) \
+                   or frozenset()
         
         # Create the base ancestor with a direct call to “__class_getitem__(…)”
         # -- which, note, will fail if no bases were specified; if `subbase`
@@ -206,6 +216,7 @@ class OCDType(abc.ABCMeta):
         base = metacls.__class_getitem__(subbase,
                                          subname,
                                          factory,
+                                         baseset=baseset,
                                        **kwargs)
         
         # The return value of type.__new__(…), called with the amended
@@ -214,7 +225,8 @@ class OCDType(abc.ABCMeta):
                                                        tuplize(base),
                                                        dict(attributes),
                                                      **kwargs)
-        metacls.subtypes[name] = cls
+        
+        metacls.subtypes[name] = metacls.TypeAndBases.for_type(cls)
         return cls
 
 ###
@@ -230,6 +242,26 @@ class SortedList(list, metaclass=OCDType):
 
 OCDList       = OCDType[list] # this emits the cached type from above
 
+class Namespace(types.SimpleNamespace):
+    
+    def __bool__(self):
+        return bool(self.__dict__)
+    
+    def __iter__(self):
+        return iter(self.__dict__)
+    
+    def __len__(self):
+        return len(self.__dict__)
+    
+    def __contains__(self, key):
+        return key in self.__dict__
+
+class SortedNamespace(Namespace, collections.abc.Sized,
+                                 collections.abc.Container,
+                                 metaclass=OCDType):
+    pass
+
+OCDNamespace  = OCDType[Namespace]
 
 def test():
     """ Inline tests for OCDType and friends """
@@ -261,8 +293,7 @@ def test():
     assert OCDNumpyArray.__name__ == 'OCDNumpyArray'
     assert OCDNumpyArray.__base__ == numpy.ndarray
     assert OCDNumpyArray.__bases__ == tuplize(numpy.ndarray,
-                                              collections.abc.Iterable,
-                                              OCDType.OCDMixin)
+                                              collections.abc.Iterable)
     assert OCDNumpyArray.__factory__ == numpy.array
     
     assert SortedMatrix.__base__ == OCDType[numpy.matrix]

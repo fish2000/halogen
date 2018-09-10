@@ -65,6 +65,20 @@ AnySet = tx.Union[tx.Set[TC],
 # Ancestor type variable annotation:
 Ancestor = tx.TypeVar('Ancestor', bound=ABC, covariant=True)
 
+# Type variable for creating homogenously-typed tuple
+# typing values factory-stype (q.v. TupleType function sub.):
+HomogenousTypeVar = tx.TypeVar('HomogenousTypeVar')
+# TupleTypeReturnType = tx.Union[tx.Type[tx.Tuple[HomogenousTypeVar, ...]],
+#                                tx.Type[tx.ClassVar[tx.Tuple[HomogenousTypeVar, ...]]]]
+TupleTypeReturnType = tx.Type[tx.Tuple[HomogenousTypeVar, ...]]
+
+def TupleType(length: int,
+              tuptyp: tx.Type[HomogenousTypeVar] = str,
+              clsvar: bool = False) -> TupleTypeReturnType:
+    assert length > 0
+    out = tx.Tuple[tuple(tuptyp for idx in range(length))]
+    return clsvar and tx.ClassVar[out] or out
+
 SubBaseAncestor: tx.Type[Ancestor] = six.with_metaclass(ABCMeta, ABC)
 class ConfigSubBase(SubBaseAncestor):
     
@@ -219,14 +233,14 @@ class ConfigBase(BaseAncestor):
           and definitions below of FieldList for related internals.
     """
     
-    base_fields: tx.ClassVar[tx.Tuple[str, ...]] = ('prefix', 'get_includes',
-                                                    'get_libs',
-                                                    'get_cflags',
-                                                    'get_ldflags')
+    base_fields: TupleType(5, clsvar=True) = ('prefix', 'get_includes',
+                                                        'get_libs',
+                                                        'get_cflags',
+                                                        'get_ldflags')
     
-    dir_fields: tx.ClassVar[tx.Tuple[str, ...]] = ('bin', 'include',
-                                                   'lib', 'libexec', 'libexecbin',
-                                                   'share')
+    dir_fields: TupleType(6, clsvar=True) = ('bin', 'include',
+                                             'lib', 'libexec', 'libexecbin',
+                                             'share')
     
     class FieldList(object):
         
@@ -248,9 +262,9 @@ class ConfigBase(BaseAncestor):
             back to me if you are still confused. Thanks! -Alex
         """
         
-        __slots__: tx.ClassVar[tx.Tuple[str, str, str]] = ('stored_fields',
-                                                           'exclude_fields',
-                                                           'include_dir_fields')
+        __slots__: TupleType(3, clsvar=True) = ('stored_fields',
+                                                'exclude_fields',
+                                                'include_dir_fields')
         
         def store(self, *fields):
             self.stored_fields: frozenset = frozenset(fields)
@@ -405,7 +419,7 @@ class SetWrap(ConfigBase):
 
 class Macro(object):
     
-    __slots__: tx.ClassVar[tx.Tuple[str, str, str]] = ('name', 'definition', 'undefine')
+    __slots__: TupleType(3, clsvar=True) = ('name', 'definition', 'undefine')
     
     STRING_ZERO: str = '0'
     STRING_ONE: str  = '1'
@@ -765,9 +779,9 @@ class SysConfig(PythonConfig):
     
     def get_ldflags(self) -> str:
         ldstring: str = ""
-        libpths: tx.Tuple[str, ...] = (environ_override('LIBDIR'),
-                                       environ_override('LIBPL'),
-                                       environ_override('LIBDEST'))
+        libpths: TupleType(3) = (environ_override('LIBDIR'),
+                                 environ_override('LIBPL'),
+                                 environ_override('LIBDEST'))
         for pth in libpths:
             if os.path.exists(pth):
                 ldstring += f"{TOKEN}L{pth}"
@@ -881,7 +895,7 @@ class PkgConfig(ConfigBase):
 
 class NumpyConfig(ConfigBase):
     
-    subpackages: tx.ClassVar[tx.Tuple[str, str]] = ('npymath', 'mlib')
+    subpackages: TupleType(2, clsvar=True) = ('npymath', 'mlib')
     
     fields = ConfigBase.FieldList('subpackages',
                                   'get_numpy_include_directory',
@@ -1104,7 +1118,7 @@ class ConfigUnion(ConfigBase, tx.Collection[ConfigType]):
                                                     # and return it
         """
         
-        __slots__: tx.ClassVar[tx.Tuple[str]] = ('name',)
+        __slots__: TupleType(1, clsvar=True) = ('name',)
         
         def __init__(self, name: str):
             """ Initialize the @union_of decorator, stashing the name of the function
@@ -1131,7 +1145,7 @@ class ConfigUnion(ConfigBase, tx.Collection[ConfigType]):
         """ A sugary-sweet class for stowing a set of flags whose order is significant. """
         
         joiner: tx.ClassVar[str] = f",{TOKEN}"
-        __slots__: tx.ClassVar[tx.Tuple[str, str]] = ('flags', 'set')
+        __slots__: TupleType(2, clsvar=True) = ('flags', 'set')
         
         def __init__(self, template: str, flaglist: tx.Iterable[str]):
             self.flags: tx.List[str] = [template % flag for flag in flaglist]
@@ -1402,19 +1416,22 @@ def AR(conf: ConfigType, outfile: str, *infiles, **kwargs):
 
 
 modulize({
-      'MaybeStr' : MaybeStr,
-        'AnySet' : AnySet,
-      'Ancestor' : Ancestor,
-    'ConfigType' : ConfigType
+               'MaybeStr' : MaybeStr,
+                 'AnySet' : AnySet,
+               'Ancestor' : Ancestor,
+      'HomogenousTypeVar' : HomogenousTypeVar,
+              'TupleType' : TupleType,
+             'ConfigType' : ConfigType
 }, 'config.ts', "Typenames local to the config module", __file__)
 
 import config.ts as ts
 
 del TC
-del MaybeStr
-del AnySet
+# del MaybeStr
+# del AnySet
 del Ancestor
-del ConfigType
+del HomogenousTypeVar
+# del ConfigType
 del SubBaseAncestor
 del BaseAncestor
 
