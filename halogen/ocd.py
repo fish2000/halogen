@@ -270,17 +270,17 @@ def test_namespace_types():
     from pprint import pformat
     from utils import terminal_size
     
-    nsdata = {
+    nsdata: tx.Dict[str, str] = {
                 'yo' : 'dogg',
                  'i' : 'heard',
                'you' : 'liked',
         'namespaced' : 'dictionary data'
     }
     
-    simpleNamespace = types.SimpleNamespace(**nsdata)
-    namespace = Namespace(**nsdata)
-    ocdNamespace = OCDNamespace(**nsdata)
-    sortedNamespace = SortedNamespace(**nsdata)
+    simpleNamespace: types.SimpleNamespace = types.SimpleNamespace(**nsdata)
+    namespace: Namespace = Namespace(**nsdata)
+    ocdNamespace: OCDNamespace = OCDNamespace(**nsdata)
+    sortedNamespace: SortedNamespace = SortedNamespace(**nsdata)
     width: int = terminal_size().width
     
     print("=" * width)
