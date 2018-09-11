@@ -7,7 +7,6 @@ import sys
 import types
 import typing as tx
 
-# from collections import namedtuple
 from functools import wraps
 
 __all__ = ('TerminalSize', 'terminal_size',
@@ -30,9 +29,6 @@ __dir__ = lambda: list(__all__)
 
 
 class TerminalSize(object):
-    
-    # get_terminal_size(): does what you think it does
-    # adapted from this: http://stackoverflow.com/a/566752/298171
     
     class Size(tx.NamedTuple):
         
@@ -113,7 +109,8 @@ class TerminalSize(object):
         import os
         env = os.environ
         
-        # First, attemopt to pluck out the CGWINSZ terminal values using
+        # Adapted from this: http://stackoverflow.com/a/566752/298171
+        # … first, attempt to pluck out the CGWINSZ terminal values using
         # the stdin/stdout/stderr file descriptor numbers:
         cr: tx.Optional[
             tx.Tuple[int, int]] = self.ioctl_GWINSZ(0) or \
