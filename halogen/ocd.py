@@ -8,7 +8,7 @@ import collections.abc
 import types
 import typing as tx
 
-from utils import tuplize
+from utils import find_generic_for_type, tuplize
 
 __all__ = ('OCDType',
            'OCDSet', 'OCDFrozenSet',
@@ -24,12 +24,6 @@ TypeFactory = tx.Callable[..., tx.Any]
 MaybeFactory = tx.Optional[TypeFactory]
 F = tx.TypeVar('F', bound=TypeFactory, covariant=True)
 
-# build a “for_origin” dict:
-for_origin = {}
-for key in tx.__dir__():
-    txattr = getattr(tx, key)
-    if hasattr(txattr, '__origin__'):
-        for_origin[txattr.__origin__] = txattr
 
 class OCDType(abc.ABCMeta, tx.Iterable[T]):
     
@@ -156,8 +150,9 @@ class OCDType(abc.ABCMeta, tx.Iterable[T]):
         # General question: should I do those two methods, “__str__”
         # and “__repr__”, with like __mro__ tricks or something, instead?
         
-        if key in for_origin:
-            generic_type = for_origin[key]
+        generic_type: tx.Optional[type] = find_generic_for_type(key)
+        
+        if generic_type is not None:
             attributes.update({
                '__generic__' : generic_type
             })

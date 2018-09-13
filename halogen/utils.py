@@ -9,7 +9,8 @@ import typing as tx
 
 from functools import wraps
 
-__all__ = ('TerminalSize', 'terminal_size',
+__all__ = ('ty', 'find_generic_for_type',
+           'TerminalSize', 'terminal_size',
                            'terminal_width',
                            'terminal_height',
            'tuplize', 'listify',
@@ -26,6 +27,27 @@ __all__ = ('TerminalSize', 'terminal_size',
                              'test_compile')
 
 __dir__ = lambda: list(__all__)
+
+ty = types.SimpleNamespace()
+
+# build a “for_origin” dict and namespace:
+ty.for_origin = {}
+for key in tx.__dir__():
+    txattr = getattr(tx, key)
+    if hasattr(txattr, '__origin__'):
+        origin = txattr.__origin__
+        ty.for_origin[origin] = txattr
+        ty.__setattr__(origin.__name__, txattr)
+
+ConcreteType = tx.TypeVar('ConcreteType', bound=type, covariant=True)
+
+def find_generic_for_type(T: tx.Type[ConcreteType]) -> tx.Optional[type]:
+    if not hasattr(T, '__mro__'):
+        return None
+    for t in T.__mro__:
+        if t in ty.for_origin:
+            return ty.for_origin.get(t)
+    return None
 
 
 class TerminalSize(object):
