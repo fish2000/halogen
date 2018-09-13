@@ -24,7 +24,7 @@ TypeFactory = tx.Callable[..., tx.Any]
 MaybeFactory = tx.Optional[TypeFactory]
 F = tx.TypeVar('F', bound=TypeFactory, covariant=True)
 
-# build an “for_origin” dict:
+# build a “for_origin” dict:
 for_origin = {}
 for key in tx.__dir__():
     txattr = getattr(tx, key)
