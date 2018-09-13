@@ -399,7 +399,7 @@ class TemporaryName(TemporaryNameAncestor):
                 suffix = f"{os.extsep}{suffix}"
         else:
             suffix = f"{os.extsep}tmp"
-        if not parent:
+        if parent is None:
             parent = kwargs.pop('dir', None)
         if parent:
             parent = os.fspath(parent)
@@ -873,7 +873,7 @@ class Directory(DirectoryAncestor):
             the default value is `zipfile.ZIP_DEFLATED`.
         """
         import zipfile
-        if not zpth:
+        if zpth is None:
             raise FilesystemError("Need to specify a zip-archive file path")
         zpth = os.fspath(zpth)
         if not zpth.lower().endswith(self.zip_suffix):
@@ -1017,7 +1017,7 @@ class TemporaryDirectory(Directory):
         if suffix:
             if not suffix.startswith(os.extsep):
                 suffix = f"{os.extsep}{suffix}"
-        if not parent:
+        if parent is None:
             parent = kwargs.pop('dir', None)
         if parent:
             parent = os.fspath(parent)

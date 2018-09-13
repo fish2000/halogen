@@ -2,6 +2,8 @@
 
 from __future__ import print_function
 
+import abc
+import collections
 import os
 import re
 import six
@@ -14,14 +16,11 @@ try:
 except ImportError:
     pass
 
-from abc import ABC, ABCMeta, abstractmethod
-from collections import defaultdict as DefaultDict
-from collections import OrderedDict
 from ctypes.util import find_library
 from functools import wraps
 
 import filesystem
-from compiledb import CDBSubBase
+import compiledb
 from errors import ConfigurationError, ConfigCommandError
 from filesystem import which, back_tick, script_path
 from filesystem import Directory
@@ -63,7 +62,7 @@ AnySet = tx.Union[tx.Set[TC],
                   OCDFrozenSet]
 
 # Ancestor type variable annotation:
-Ancestor = tx.TypeVar('Ancestor', bound=ABC, covariant=True)
+Ancestor = tx.TypeVar('Ancestor', bound=abc.ABC, covariant=True)
 
 # Type variable for creating homogenously-typed tuple
 # typing values factory-stype (q.v. TupleType function sub.):
@@ -79,7 +78,7 @@ def TupleType(length: int,
     out = tx.Tuple[tuple(tuptyp for idx in range(length))]
     return clsvar and tx.ClassVar[out] or out
 
-SubBaseAncestor: tx.Type[Ancestor] = six.with_metaclass(ABCMeta, ABC)
+SubBaseAncestor: tx.Type[Ancestor] = six.with_metaclass(abc.ABCMeta, abc.ABC)
 class ConfigSubBase(SubBaseAncestor):
     
     """ The abstract base class ancestor of all Config-ish classes we define here.
@@ -104,34 +103,34 @@ class ConfigSubBase(SubBaseAncestor):
         the “subdirectory()” method, and other stuff you can read about below.
     """
     
-    base_field_cache: tx.ClassVar[tx.Dict[str, tx.Tuple[str, ...]]] = OrderedDict()
-    field_cache:      tx.ClassVar[tx.Dict[str, tx.Tuple[str, ...]]] = OrderedDict()
+    base_field_cache: tx.ClassVar[tx.Dict[str, tx.Tuple[str, ...]]] = collections.OrderedDict()
+    field_cache:      tx.ClassVar[tx.Dict[str, tx.Tuple[str, ...]]] = collections.OrderedDict()
     
     # Prefix get/set/delete methods:
     
     @property
-    @abstractmethod
+    @abc.abstractmethod
     def prefix(self) -> Directory: pass
     
     @prefix.setter
-    @abstractmethod
+    @abc.abstractmethod
     def prefix(self,
                value: filesystem.ts.DirectoryLike): pass
     
     @prefix.deleter
-    @abstractmethod
+    @abc.abstractmethod
     def prefix(self): pass
     
     # Name get method:
     
     @property
-    @abstractmethod
+    @abc.abstractmethod
     def name(self) -> str: pass
     
     # The `subdirectory` method is used throughout
     # many Config-ish classes:
     
-    @abstractmethod
+    @abc.abstractmethod
     def subdirectory(self,
                      subdir: tx.AnyStr,
                      whence: filesystem.ts.MaybeDirectoryLike = None) -> MaybeStr: pass
@@ -141,51 +140,51 @@ class ConfigSubBase(SubBaseAncestor):
     # of the get_* methods (q.v. prototypes sub.)
     # to compose their arguments:
     
-    @abstractmethod
+    @abc.abstractmethod
     def cc_flag_string(self) -> str: pass
     
-    @abstractmethod
+    @abc.abstractmethod
     def cxx_flag_string(self) -> str: pass
     
-    @abstractmethod
+    @abc.abstractmethod
     def ld_flag_string(self) -> str: pass
     
-    @abstractmethod
+    @abc.abstractmethod
     def ar_flag_string(self) -> str: pass
     
     # Stringification and representation methods:
     
-    @abstractmethod
+    @abc.abstractmethod
     def to_string(self,
                   field_list: tx.Optional[tx.Iterable[str]] = None) -> str: pass
     
-    @abstractmethod
+    @abc.abstractmethod
     def __repr__(self) -> str: pass
     
-    @abstractmethod
+    @abc.abstractmethod
     def __str__(self) -> str: pass
     
-    @abstractmethod
+    @abc.abstractmethod
     def __bytes__(self) -> bytes: pass
     
     # These four get_* methods make up the bare-bones
     # requirement for what a Config-ish class needs
     # to provide:
     
-    @abstractmethod
+    @abc.abstractmethod
     def get_includes(self) -> str: pass
     
-    @abstractmethod
+    @abc.abstractmethod
     def get_libs(self) -> str: pass
     
-    @abstractmethod
+    @abc.abstractmethod
     def get_cflags(self) -> str: pass
     
-    @abstractmethod
+    @abc.abstractmethod
     def get_ldflags(self) -> str: pass
 
 
-class ConfigBaseMeta(ABCMeta):
+class ConfigBaseMeta(abc.ABCMeta):
     
     """ The metaclass for all Config-ish classes we define here; used with
         ConfigBase (q.v. class definition sub.)
@@ -293,7 +292,7 @@ class ConfigBase(BaseAncestor):
         
         def __set__(self,
                     instance: tx.Any,
-                    iterable: tx.Iterable):
+                    iterable: tx.Iterable[str]):
             self.store(*iterable)
         
         def __delete__(self,
@@ -361,7 +360,7 @@ class ConfigBase(BaseAncestor):
             or if none was provided, the iterable-of-strings class variable “fields”.
         """
         if not field_list:
-            field_list = type(self).fields
+            field_list: tx.Iterable[str] = type(self).fields
         return stringify(self, field_list)
     
     def __repr__(self) -> str:
@@ -919,13 +918,13 @@ class NumpyConfig(ConfigBase):
     def get_numpy_include_directory(cls) -> Directory:
         if not hasattr(cls, 'include_path'):
             import numpy
-            cls.include_path = Directory(pth=numpy.get_include())
+            cls.include_path: Directory = Directory(pth=numpy.get_include())
         return cls.include_path
     
     def __init__(self):
         """ Prefix is likely /…/numpy/core """
         from shlex import quote
-        self.info: tx.DefaultDict[str, OCDSet] = DefaultDict(OCDSet)
+        self.info: tx.DefaultDict[str, OCDSet] = collections.defaultdict(OCDSet)
         self.macros: Macros = Macros()
         self.prefix: Directory = self.get_numpy_include_directory().parent()
         import numpy.distutils, numpy.version
@@ -1327,7 +1326,7 @@ class ConfigUnion(ConfigBase, tx.Collection[ConfigType]):
         """ Retrieve a set of the names of this ConfigUnion instances’ sub-configs """
         return OCDFrozenSet( config.name for config in self.configs )
     
-    def __contains__(self, key: tx.Union[tx.AnyStr, ConfigType]):
+    def __contains__(self, key: tx.Union[tx.AnyStr, ConfigType]) -> bool:
         """ Determine if a config type is contained within this ConfigUnion instance """
         return getattr(key, 'name', key) in self.sub_config_types()
     
@@ -1382,9 +1381,9 @@ def CC(conf: ConfigType, outfile: str, infile: str, **kwargs) -> tx.Tuple[str, .
     """ Execute the C compiler, as named in the `CC` environment variable,
         falling back to the compiler specified in Python `sysconfig`:
     """
-    cdb: tx.Optional[CDBSubBase] = kwargs.pop('cdb', None)
+    cdb: tx.Optional[compiledb.CDBSubBase] = kwargs.pop('cdb', None)
     command: str = conf.cc_flag_string() % (infile, outfile)
-    if isinstance(cdb, CDBSubBase):
+    if isinstance(cdb, compiledb.CDBSubBase):
         cdb.push(infile, command, directory=kwargs.pop('directory', None),
                                   destination=outfile)
     return back_tick(command,
@@ -1395,9 +1394,9 @@ def CXX(conf: ConfigType, outfile: str, infile: str, **kwargs) -> tx.Tuple[str, 
     """ Execute the C++ compiler, as named in the `CXX` environment variable,
         falling back to the compiler specified in Python `sysconfig`:
     """
-    cdb: tx.Optional[CDBSubBase] = kwargs.pop('cdb', None)
+    cdb: tx.Optional[compiledb.CDBSubBase] = kwargs.pop('cdb', None)
     command: str = conf.cxx_flag_string() % (infile, outfile)
-    if isinstance(cdb, CDBSubBase):
+    if isinstance(cdb, compiledb.CDBSubBase):
         cdb.push(infile, command, directory=kwargs.pop('directory', None),
                                   destination=outfile)
     return back_tick(command,
@@ -1408,12 +1407,12 @@ def LD(conf: ConfigType, outfile: str, *infiles, **kwargs) -> tx.Tuple[str, ...]
     """ Execute the dynamic linker, as named in the `LDCXXSHARED` environment variable,
         falling back to the linker specified in Python `sysconfig`:
     """
-    command = conf.ld_flag_string() % (" ".join(infiles), outfile)
+    command: str = conf.ld_flag_string() % (" ".join(infiles), outfile)
     return back_tick(command,
                      ret_err=True,
                      verbose=kwargs.pop('verbose', DEFAULT_VERBOSITY))
 
-def AR(conf: ConfigType, outfile: str, *infiles, **kwargs):
+def AR(conf: ConfigType, outfile: str, *infiles, **kwargs) -> tx.Tuple[str, ...]:
     """ Execute the library archiver, as named in the `AR` environment variable,
         falling back to the library archiver specified in Python `sysconfig`:
     """
@@ -1439,6 +1438,7 @@ modulize({
 
 import config.ts as ts
 
+del find_library
 del TC
 # del MaybeStr
 # del AnySet

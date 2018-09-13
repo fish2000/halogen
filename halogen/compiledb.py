@@ -2,6 +2,8 @@
 
 from __future__ import print_function
 
+import collections.abc
+import contextlib
 import json
 import os
 import six
@@ -48,7 +50,8 @@ class CDBSubBase(SubBaseAncestor):
     def __bool__(self): pass
 
 
-class CDBBase(CDBSubBase):
+class CDBBase(CDBSubBase, collections.abc.Sequence,
+                          collections.abc.Sized):
     
     fields = ('length',)
     
@@ -118,7 +121,7 @@ class CDBBase(CDBSubBase):
 
 CDBSubBase.register(CDBBase)
 
-class CDBJsonFile(CDBBase):
+class CDBJsonFile(CDBBase, contextlib.AbstractContextManager):
     
     fields = ('filename', 'length', 'exists')
     filename = f'compilation_database{os.extsep}json'
