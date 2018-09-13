@@ -95,6 +95,10 @@ class OCDType(abc.ABCMeta, tx.Iterable[T]):
             elif len(tup) > 3:
                 raise KeyError("Too many arguments passed to OCDType template "
                                "specialization: {tup}")
+        if key.__name__ in metacls.types or \
+           key.__name__ in metacls.subtypes:
+           raise TypeError("OCDType cannot be specialized on an "
+                           "existant product of an OCDType specialization")
         if type(key) != type:
             raise TypeError("OCDType is a templated type, "
                             "it must be specialized using a Python typevar "
@@ -103,10 +107,6 @@ class OCDType(abc.ABCMeta, tx.Iterable[T]):
             raise TypeError("OCDType is a templated type, "
                             "it must be specialized on an iterable Python type "
                            f"(not a {type(key)})")
-        if key.__name__ in metacls.types or \
-           key.__name__ in metacls.subtypes:
-           raise TypeError("OCDType cannot be specialized on an "
-                           "existant product of an OCDType specialization")
         
         # Save any passed clsname:
         
@@ -133,7 +133,7 @@ class OCDType(abc.ABCMeta, tx.Iterable[T]):
         # returning them:
         it: tx.Iterable = tx.cast(tx.Iterable, key)
         
-        attributes = {
+        attributes: tx.Dict[str, tx.Any] = {
              '__covariant__' : key,
                   '__name__' : clsname,
                   '__iter__' : lambda self: iter(sorted(it.__iter__(self))),
@@ -169,7 +169,7 @@ class OCDType(abc.ABCMeta, tx.Iterable[T]):
         # metaclasses’ __new__(…) method, and stash it in a
         # metaclass-local dict keyed with the generated classname:
         
-        baseset = kwargs.pop('baseset', frozenset())
+        baseset: frozenset = kwargs.pop('baseset', frozenset())
         cls = super(OCDType, metacls).__new__(metacls,
                                               clsname,
                                               tuplize(key,
@@ -185,7 +185,7 @@ class OCDType(abc.ABCMeta, tx.Iterable[T]):
     def __prepare__(metacls,
                        name: str,
                       bases: tx.Iterable[type],
-                   **kwargs)  -> tx.Dict[str, tx.Any]:
+                   **kwargs) -> tx.MutableMapping[str, tx.Any]:
         """ Maintain declaration order in class members: """
         return collections.OrderedDict()
     
@@ -358,7 +358,7 @@ def test():
         # can’t specialize a specialization!
         OCDType[OCDSet]
     except TypeError as exc:
-        assert "specialized" in str(exc)
+        assert "specialization" in str(exc)
     
     """ 2. Test various SimpleNamespace subclasses: """
     
@@ -366,10 +366,12 @@ def test():
     
     """ 3. Reveal the cached OCDType specializations: """
     
+    assert len(OCDType.types) == 8
     print_cache(OCDType, 'types')
     
     """ 4. Reveal the cached OCDType subtypes: """
     
+    assert len(OCDType.subtypes) == 3
     print_cache(OCDType, 'subtypes')
 
 if __name__ == '__main__':
