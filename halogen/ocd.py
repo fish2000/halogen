@@ -24,6 +24,13 @@ TypeFactory = tx.Callable[..., tx.Any]
 MaybeFactory = tx.Optional[TypeFactory]
 F = tx.TypeVar('F', bound=TypeFactory, covariant=True)
 
+# build an “for_origin” dict:
+for_origin = {}
+for key in tx.__dir__():
+    txattr = getattr(tx, key)
+    if hasattr(txattr, '__origin__'):
+        for_origin[txattr.__origin__] = txattr
+
 class OCDType(abc.ABCMeta, tx.Iterable[T]):
     
     """ OCDType is a templated Python type.
@@ -148,6 +155,12 @@ class OCDType(abc.ABCMeta, tx.Iterable[T]):
         
         # General question: should I do those two methods, “__str__”
         # and “__repr__”, with like __mro__ tricks or something, instead?
+        
+        if key in for_origin:
+            generic_type = for_origin[key]
+            attributes.update({
+               '__generic__' : generic_type
+            })
         
         # Using a factory -- a callable that returns an instance of the type,
         # á la “__new__” -- allows the wrapping of types like numpy.ndarray,
@@ -336,17 +349,23 @@ def test():
     assert ocd_settttts.__name__ == 'OCDSet'
     assert ocd_settttts.__base__ == set
     assert not hasattr(ocd_settttts, '__factory__')
+    assert ocd_settttts.__generic__ == tx.Set
+    
+    # assert OCDSet[T]
+    # assert SortedMatrix[T]
     
     assert OCDNumpyArray.__name__ == 'OCDNumpyArray'
     assert OCDNumpyArray.__base__ == numpy.ndarray
     assert OCDNumpyArray.__bases__ == tuplize(numpy.ndarray,
                                               collections.abc.Iterable)
     assert OCDNumpyArray.__factory__ == numpy.array
+    assert not hasattr(OCDNumpyArray, '__generic__')
     
     assert SortedMatrix.__base__ == OCDType[numpy.matrix]
     assert SortedMatrix.__base__.__name__ == 'OCDMatrix'
     assert SortedMatrix.__base__.__base__ == numpy.matrixlib.defmatrix.matrix
     assert SortedMatrix.__base__.__factory__ == numpy.asmatrix
+    assert not hasattr(SortedMatrix.__base__, '__generic__')
     
     assert OCDArray('i', range(10)).__len__() == 10
     assert numpy.array([[0, 1, 2], [0, 1, 2], [0, 1, 2]]).__len__() == 3
