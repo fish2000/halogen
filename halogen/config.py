@@ -115,7 +115,8 @@ class ConfigSubBase(SubBaseAncestor):
     
     @prefix.setter
     @abstractmethod
-    def prefix(self, value: filesystem.ts.DirectoryLike): pass
+    def prefix(self,
+               value: filesystem.ts.DirectoryLike): pass
     
     @prefix.deleter
     @abstractmethod
@@ -131,7 +132,9 @@ class ConfigSubBase(SubBaseAncestor):
     # many Config-ish classes:
     
     @abstractmethod
-    def subdirectory(self, subdir: tx.AnyStr, whence: filesystem.ts.MaybeDirectoryLike = None) -> MaybeStr: pass
+    def subdirectory(self,
+                     subdir: tx.AnyStr,
+                     whence: filesystem.ts.MaybeDirectoryLike = None) -> MaybeStr: pass
     
     # These four methods prepare the command strings,
     # using the result(s) from calling one or more
@@ -153,7 +156,8 @@ class ConfigSubBase(SubBaseAncestor):
     # Stringification and representation methods:
     
     @abstractmethod
-    def to_string(self, field_list: tx.Optional[tx.Iterable[str]] = None) -> str: pass
+    def to_string(self,
+                  field_list: tx.Optional[tx.Iterable[str]] = None) -> str: pass
     
     @abstractmethod
     def __repr__(self) -> str: pass
@@ -276,7 +280,9 @@ class ConfigBase(BaseAncestor):
             self.exclude_fields: frozenset = frozenset(kwargs.pop('exclude', tuple()))
             self.store(*more_fields)
         
-        def __get__(self, instance: tx.Any, cls: tx.Optional[type] = None) -> tx.Tuple[str, ...]:
+        def __get__(self,
+                    instance: tx.Any,
+                    cls: tx.Optional[type] = None) -> tx.Tuple[str, ...]:
             if cls is None:
                 cls = type(instance)
             out: OCDSet = OCDSet(self.stored_fields)
@@ -285,10 +291,13 @@ class ConfigBase(BaseAncestor):
             out -= self.exclude_fields
             return tuple(out)
         
-        def __set__(self, instance: tx.Any, iterable: tx.Iterable):
+        def __set__(self,
+                    instance: tx.Any,
+                    iterable: tx.Iterable):
             self.store(*iterable)
         
-        def __delete__(self, instance: tx.Any):
+        def __delete__(self,
+                       instance: tx.Any):
             raise AttributeError("Can't delete a FieldList attribute")
     
     @property
@@ -299,7 +308,8 @@ class ConfigBase(BaseAncestor):
         return getattr(self, '_prefix')
     
     @prefix.setter
-    def prefix(self, value: filesystem.ts.DirectoryLike):
+    def prefix(self,
+               value: filesystem.ts.DirectoryLike):
         prefixd: Directory = Directory(value)
         if not prefixd.exists:
             raise ValueError(f"prefix path does not exist: {prefixd}")
@@ -315,7 +325,9 @@ class ConfigBase(BaseAncestor):
         """ The name of the Config instance. This defaults to the name of its class. """
         return type(self).__name__
     
-    def subdirectory(self, subdir, whence=None) -> MaybeStr:
+    def subdirectory(self,
+                     subdir: tx.AnyStr,
+                     whence: filesystem.ts.MaybeDirectoryLike = None) -> MaybeStr:
         """ Return the path to a subdirectory within this Config instances’ prefix """
         return self.prefix.subpath(subdir, whence, requisite=True)
     
@@ -343,7 +355,8 @@ class ConfigBase(BaseAncestor):
             arflags += 's'
         return              f"{environ_override('AR')} {arflags} %s %s"
     
-    def to_string(self, field_list: tx.Optional[tx.Iterable[str]] = None) -> str:
+    def to_string(self,
+                  field_list: tx.Optional[tx.Iterable[str]] = None) -> str:
         """ Stringify the instance, using either a provided list of fields to evaluate,
             or if none was provided, the iterable-of-strings class variable “fields”.
         """

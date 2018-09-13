@@ -103,6 +103,10 @@ class OCDType(abc.ABCMeta, tx.Iterable[T]):
             raise TypeError("OCDType is a templated type, "
                             "it must be specialized on an iterable Python type "
                            f"(not a {type(key)})")
+        if key.__name__ in metacls.types or \
+           key.__name__ in metacls.subtypes:
+           raise TypeError("OCDType cannot be specialized on an "
+                           "existant product of an OCDType specialization")
         
         # Save any passed clsname:
         
@@ -349,6 +353,12 @@ def test():
     assert OCDNumpyArray([[0, 1, 2], [0, 1, 2], [0, 1, 2]]).__len__() == 3
     assert SortedMatrix([[0, 1, 2], [0, 1, 2], [0, 1, 2]]).__len__() == 3
     assert SortedMatrix(OCDNumpyArray([[0, 1, 2], [0, 1, 2], [0, 1, 2]])).__len__() == 3
+    
+    try:
+        # can’t specialize a specialization!
+        OCDType[OCDSet]
+    except TypeError as exc:
+        assert "specialized" in str(exc)
     
     """ 2. Test various SimpleNamespace subclasses: """
     

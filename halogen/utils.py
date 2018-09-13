@@ -121,16 +121,18 @@ class TerminalSize(object):
         # in which our process is ensconced, open a descriptor on it for reaing,
         # and use that descriptor to once again attempt to read CGWINSZ values 
         # for the terminal:
+        descriptor: int = 0
         if not cr:
             try:
-                descriptor: int = os.open(
-                                  os.ctermid(),
-                                  os.O_RDONLY)
+                descriptor = os.open(os.ctermid(),
+                                     os.O_RDONLY)
                 cr: tx.Optional[
                     tx.Tuple[int, int]] = self.ioctl_GWINSZ(descriptor)
-                os.close(descriptor)
             except:
                 pass
+            finally:
+                if descriptor:
+                    os.close(descriptor)
         
         # … if we were unsuccessfull in reading from all three of the standard I/O
         # descriptors •and• a bespoke descriptor opened directly on the /dev entry,
@@ -358,7 +360,7 @@ def u8str(source: tx.Any) -> str:
     """
     return u8bytes(source).decode('UTF-8')
 
-def stringify(instance: tx.Any, fields: tx.Iterable[str]):
+def stringify(instance: tx.Any, fields: tx.Iterable[str]) -> str:
     """ Stringify an object instance, using an iterable field list to
         extract and render its values, and printing them along with the 
         typename of the instance and its memory address -- yielding a
@@ -409,8 +411,10 @@ def suffix_searcher(suffix: str) -> tx.Callable[[tx.AnyStr], bool]:
     searcher = re.compile(regex_str, re.IGNORECASE).search
     return lambda searching_for: bool(searcher(searching_for))
 
-def terminal_print(message: str, handle: tx.Any=sys.stdout,
-                   color: str='red', asterisk: str='*'):
+def terminal_print(message: str,
+                   handle: tx.Any = sys.stdout,
+                   color: str = 'red',
+                   asterisk: str = '*'):
     """ Print a string to the terminal, centered and bookended with asterisks
     """
     from clint.textui.colored import red
@@ -489,7 +493,7 @@ def print_config(conf):
     print("")
     # print("-" * width)
 
-def test_compile(conf, test_source: str, print_cdb: bool = False):
+def test_compile(conf, test_source: str, print_cdb: bool = False) -> bool:
     """ Test-compile some inline C++ source, using the options provided
         by a given halogen.config.ConfigBase subclass instance.
     """
@@ -525,7 +529,7 @@ def test_compile(conf, test_source: str, print_cdb: bool = False):
             print("")
             
             output += config.CXX(conf, outfile=os.fspath(adotout),
-                                       infile=tf.name,
+                                       infile=os.fspath(tf),
                                        cdb=cdb,
                                        verbose=True)
             
