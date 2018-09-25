@@ -151,7 +151,7 @@ class OCDType(abc.ABCMeta, tx.Iterable[T]):
         generic: tx.Optional[type] = find_generic_for_type(key, missing=tx.Generic)
         get: ClassGetType = getattr(generic, '__class_getitem__',
                             getattr(generic, '__getitem__',
-                                    lambda cls, *args, **kw: cls))
+                                    lambda cls, *args, **kw: tx.Generic[args]))
         
         attributes: tx.Dict[str, tx.Any] = {
            '__class_getitem__' : get,
