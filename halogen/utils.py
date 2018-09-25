@@ -2,6 +2,7 @@
 
 from __future__ import print_function
 
+# import builtins
 import six
 import sys
 import types
@@ -30,14 +31,21 @@ __dir__ = lambda: list(__all__)
 
 ty = types.SimpleNamespace()
 
-# build a “for_origin” dict and namespace:
-ty.for_origin = {}
+# build a “for_origin” dict in the “ty” namespace:
+ty.for_origin: tx.Dict[str, type] = {}
 for key in tx.__dir__():
     txattr = getattr(tx, key)
     if hasattr(txattr, '__origin__'):
         origin = txattr.__origin__
         ty.for_origin[origin] = txattr
         ty.__setattr__(origin.__name__, txattr)
+
+# build a “for_name” dict in the “ty” namespace:
+# ty.for_name: tx.Dict[str, type] = {}
+# for tup in builtins.__dict__.items():
+#     if type(tup[1]) == type:
+#         builtin = tup[1]
+#         ty.for_name[]
 
 ConcreteType = tx.TypeVar('ConcreteType', bound=type, covariant=True)
 

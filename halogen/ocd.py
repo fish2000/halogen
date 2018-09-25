@@ -8,6 +8,7 @@ import collections.abc
 import types
 import typing as tx
 
+# from functools import partial, partialmethod
 from utils import find_generic_for_type, tuplize
 
 __all__ = ('OCDType',
@@ -63,9 +64,17 @@ class OCDType(abc.ABCMeta, tx.Iterable[T]):
         
         @staticmethod
         def for_type(newcls):
-            basenames = tuple(f"{base.__module__}.{base.__qualname__}" \
-                   for base in newcls.__bases__)
-            return OCDType.TypeAndBases(newcls, basenames)
+            basenames = []
+            for base in newcls.__bases__:
+                name = getattr(base, '__qualname__',
+                       getattr(base, '__name__'))
+                mod = getattr(base, '__module__', '')
+                if len(mod) > 1:
+                    mod += '.'
+                basenames.append(f"{mod}{name}")
+            # basenames = tuple(f"{name}" \
+            #        for base in newcls.__bases__)
+            return OCDType.TypeAndBases(newcls, tuple(basenames))
     
     # The metaclass-internal dictionaries of all generated types:
     types:    tx.Dict[str, TypeAndBases] = collections.OrderedDict()
@@ -135,27 +144,32 @@ class OCDType(abc.ABCMeta, tx.Iterable[T]):
         it: tx.Iterable = tx.cast(tx.Iterable, key)
         
         attributes: tx.Dict[str, tx.Any] = {
-             '__covariant__' : key,
-                  '__name__' : clsname,
-                  '__iter__' : lambda self: iter(sorted(it.__iter__(self))),
+               '__covariant__' : key,
+                    '__name__' : clsname,
+                    '__iter__' : lambda self: iter(sorted(it.__iter__(self))),
             
             # q.v. inline notes to the Python 3 `typing` module
             # supra: https://git.io/fAsNO
             
-                  '__args__' : tuplize(key, clsnamearg, factory),
-            '__parameters__' : tuplize(key, clsnamearg, factory),
-                '__origin__' : metacls
+                    '__args__' : tuplize(key, clsnamearg, factory),
+              '__parameters__' : tuplize(key, clsnamearg, factory),
+                  '__origin__' : metacls
         }
         
         # General question: should I do those two methods, “__str__”
         # and “__repr__”, with like __mro__ tricks or something, instead?
         
         generic_type: tx.Optional[type] = find_generic_for_type(key)
+        # generic_getitem = getattr(tx.Generic, '__class_getitem__').__wrapped__
+        # haxxored_getitem = partialmethod(classmethod(generic_getitem), cls=key)
         
-        if generic_type is not None:
-            attributes.update({
-               '__generic__' : generic_type
-            })
+        attributes.update({
+                 '__generic__' : generic_type or tx.Generic,
+           # '__class_getitem__' : lambda cls, params: generic_getitem(key, params)
+        })
+        
+        # partialmethod(, key)
+        # staticmethod(lambda params: tx.Generic.__class_getitem__.__wrapped__(key, params))
         
         # Using a factory -- a callable that returns an instance of the type,
         # á la “__new__” -- allows the wrapping of types like numpy.ndarray,
@@ -169,22 +183,20 @@ class OCDType(abc.ABCMeta, tx.Iterable[T]):
         
         if callable(factory):
             attributes.update({
-                   '__new__' : lambda cls, *args, **kw: factory(*args, **kw),
-               '__factory__' : staticmethod(factory)
+                     '__new__' : lambda cls, *args, **kw: factory(*args, **kw),
+                 '__factory__' : staticmethod(factory)
             })
         
         # Create the new class, as one does in the override of a
         # metaclasses’ __new__(…) method, and stash it in a
         # metaclass-local dict keyed with the generated classname:
+        baseset: list = list(kwargs.pop('baseset', frozenset()))
         
-        baseset: frozenset = kwargs.pop('baseset', frozenset())
-        cls = super(OCDType, metacls).__new__(metacls,
-                                              clsname,
-                                              tuplize(key,
-                                                     *baseset,
-                                                      collections.abc.Iterable),
-                                              dict(attributes),
-                                            **kwargs)
+        cls = type(clsname, tuplize(key,
+                                   *baseset,
+                                    collections.abc.Iterable),
+                            dict(attributes),
+                          **kwargs)
         
         metacls.types[clsname] = metacls.TypeAndBases.for_type(cls)
         return cls
@@ -322,6 +334,7 @@ def test():
     """ Inline tests for OCDType and friends """
     
     from utils import print_cache
+    # from pprint import pprint
     
     """ 0. Set up some specializations and subtypes for testing: """
     
@@ -346,21 +359,25 @@ def test():
     assert not hasattr(ocd_settttts, '__factory__')
     assert ocd_settttts.__generic__ == tx.Set
     
+    # pprint(dir(ocd_settttts))
+    
     # assert OCDSet[T]
+    # assert OCDSet[str]
     # assert SortedMatrix[T]
+    # print(type(OCDSet[T, S]))
     
     assert OCDNumpyArray.__name__ == 'OCDNumpyArray'
     assert OCDNumpyArray.__base__ == numpy.ndarray
     assert OCDNumpyArray.__bases__ == tuplize(numpy.ndarray,
                                               collections.abc.Iterable)
     assert OCDNumpyArray.__factory__ == numpy.array
-    assert not hasattr(OCDNumpyArray, '__generic__')
+    assert OCDNumpyArray.__generic__ == tx.Generic
     
     assert SortedMatrix.__base__ == OCDType[numpy.matrix]
     assert SortedMatrix.__base__.__name__ == 'OCDMatrix'
     assert SortedMatrix.__base__.__base__ == numpy.matrixlib.defmatrix.matrix
     assert SortedMatrix.__base__.__factory__ == numpy.asmatrix
-    assert not hasattr(SortedMatrix.__base__, '__generic__')
+    assert SortedMatrix.__base__.__generic__ == tx.Generic
     
     assert OCDArray('i', range(10)).__len__() == 10
     assert numpy.array([[0, 1, 2], [0, 1, 2], [0, 1, 2]]).__len__() == 3
