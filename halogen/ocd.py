@@ -170,9 +170,6 @@ class OCDType(abc.ABCMeta, tx.Iterable[T]):
                   '__origin__' : metacls
         }
         
-        # General question: should I do those two methods, “__str__”
-        # and “__repr__”, with like __mro__ tricks or something, instead?
-        
         # Using a factory -- a callable that returns an instance of the type,
         # á la “__new__” -- allows the wrapping of types like numpy.ndarray,
         # like so:
