@@ -9,7 +9,7 @@ import types
 import typing as tx
 
 # from functools import partial, partialmethod
-from utils import find_generic_for_type, tuplize
+from utils import find_generic_for_type, tuplize, u8str
 
 __all__ = ('OCDType',
            'OCDSet', 'OCDFrozenSet',
@@ -24,6 +24,9 @@ MaybeString = tx.Optional[str]
 TypeFactory = tx.Callable[..., tx.Any]
 MaybeFactory = tx.Optional[TypeFactory]
 F = tx.TypeVar('F', bound=TypeFactory, covariant=True)
+
+ClassGetType = tx.Callable[[tx._GenericAlias, tx.Tuple[type, ...]],
+                            tx._GenericAlias]
 
 
 class OCDType(abc.ABCMeta, tx.Iterable[T]):
@@ -62,8 +65,8 @@ class OCDType(abc.ABCMeta, tx.Iterable[T]):
         Type:   tx.Type[type]
         Bases:  tx.Tuple[str, ...] = ()
         
-        @staticmethod
-        def for_type(newcls):
+        @classmethod
+        def for_type(cls, newcls):
             basenames = []
             for base in newcls.__bases__:
                 name = getattr(base, '__qualname__',
@@ -72,9 +75,7 @@ class OCDType(abc.ABCMeta, tx.Iterable[T]):
                 if len(mod) > 1:
                     mod += '.'
                 basenames.append(f"{mod}{name}")
-            # basenames = tuple(f"{name}" \
-            #        for base in newcls.__bases__)
-            return OCDType.TypeAndBases(newcls, tuple(basenames))
+            return cls(newcls, tuple(basenames))
     
     # The metaclass-internal dictionaries of all generated types:
     types:    tx.Dict[str, TypeAndBases] = collections.OrderedDict()
@@ -131,6 +132,10 @@ class OCDType(abc.ABCMeta, tx.Iterable[T]):
             name: str = capwords(clsname)
             clsname = f"{metacls.prefix}{name}"
         
+        if not clsname.isidentifier():
+            raise KeyError("specialization class name must be a valid identifier "
+                          f"(not “{clsname}”)")
+        
         # If the class name already exists in the metaclass type dictionary,
         # return it without creating a new class:
         
@@ -141,10 +146,19 @@ class OCDType(abc.ABCMeta, tx.Iterable[T]):
         # and install an `__iter__()` method that delegates to the covariant
         # implementation and wraps the results in a `sorted()` iterator before
         # returning them:
+        
         it: tx.Iterable = tx.cast(tx.Iterable, key)
+        modulename: tx.Optional[str] = getattr(metacls, '__module__', '__main__')
+        generic: tx.Optional[type] = find_generic_for_type(key, missing=tx.Generic)
+        get: ClassGetType = getattr(generic, '__class_getitem__',
+                            getattr(generic, '__getitem__',
+                                    lambda cls, *args, **kw: cls))
         
         attributes: tx.Dict[str, tx.Any] = {
+           '__class_getitem__' : get,
                '__covariant__' : key,
+                 '__generic__' : generic,
+                  '__module__' : modulename,
                     '__name__' : clsname,
                     '__iter__' : lambda self: iter(sorted(it.__iter__(self))),
             
@@ -158,18 +172,6 @@ class OCDType(abc.ABCMeta, tx.Iterable[T]):
         
         # General question: should I do those two methods, “__str__”
         # and “__repr__”, with like __mro__ tricks or something, instead?
-        
-        generic_type: tx.Optional[type] = find_generic_for_type(key)
-        # generic_getitem = getattr(tx.Generic, '__class_getitem__').__wrapped__
-        # haxxored_getitem = partialmethod(classmethod(generic_getitem), cls=key)
-        
-        attributes.update({
-                 '__generic__' : generic_type or tx.Generic,
-           # '__class_getitem__' : lambda cls, params: generic_getitem(key, params)
-        })
-        
-        # partialmethod(, key)
-        # staticmethod(lambda params: tx.Generic.__class_getitem__.__wrapped__(key, params))
         
         # Using a factory -- a callable that returns an instance of the type,
         # á la “__new__” -- allows the wrapping of types like numpy.ndarray,
@@ -190,7 +192,8 @@ class OCDType(abc.ABCMeta, tx.Iterable[T]):
         # Create the new class, as one does in the override of a
         # metaclasses’ __new__(…) method, and stash it in a
         # metaclass-local dict keyed with the generated classname:
-        baseset: list = list(kwargs.pop('baseset', frozenset()))
+        
+        baseset: list = kwargs.pop('baseset', [])
         
         cls = type(clsname, tuplize(key,
                                    *baseset,
@@ -227,11 +230,15 @@ class OCDType(abc.ABCMeta, tx.Iterable[T]):
                 subbase = basecls
                 break
         
+        # DON’T KNOW ABOUT YOU BUT I AM UN:
+        debaser = tuplize(subbase,
+                          collections.abc.Iterable,
+                          collections.abc.Iterator)
         subname = kwargs.pop('subname', None)
         factory = kwargs.pop('factory', None)
         baseset = (len(bases) > 1) \
-                   and (frozenset(bases) - { subbase }) \
-                   or frozenset()
+                   and [chien for chien in bases if chien not in debaser] \
+                   or []
         
         # Create the base ancestor with a direct call to “__class_getitem__(…)”
         # -- which, note, will fail if no bases were specified; if `subbase`
@@ -280,10 +287,20 @@ class Namespace(types.SimpleNamespace):
     def __contains__(self, key):
         return key in self.__dict__
 
-class SortedNamespace(Namespace, collections.abc.Sized,
-                                 collections.abc.Container,
+class SortedNamespace(Namespace, collections.abc.MutableMapping,
+                                 collections.abc.Iterable,
+                                 collections.abc.Sized,
                                  metaclass=OCDType):
-    pass
+    
+    def __getitem__(self, key):
+        if key in self.__dict__:
+            return self.__dict__[key]
+        return super(SortedNamespace, self).__getitem__(key)
+    
+    def __setitem__(self, key, value):
+        if not u8str(key).isidentifier():
+            raise ValueError("key must be a valid identifier")
+        super(SortedNamespace, self).__setattr__(key, value)
 
 OCDNamespace  = OCDType[Namespace]
 
@@ -334,7 +351,7 @@ def test():
     """ Inline tests for OCDType and friends """
     
     from utils import print_cache
-    # from pprint import pprint
+    from pprint import pprint
     
     """ 0. Set up some specializations and subtypes for testing: """
     
@@ -361,10 +378,13 @@ def test():
     
     # pprint(dir(ocd_settttts))
     
-    # assert OCDSet[T]
-    # assert OCDSet[str]
-    # assert SortedMatrix[T]
+    assert OCDSet[T]
+    assert OCDSet[str]
+    assert SortedMatrix[T]
     # print(type(OCDSet[T, S]))
+    # pprint(type(OCDSet[S]))
+    pprint(OCDSet[T])
+    pprint(OCDNamespace[T, S])
     
     assert OCDNumpyArray.__name__ == 'OCDNumpyArray'
     assert OCDNumpyArray.__base__ == numpy.ndarray
@@ -390,6 +410,8 @@ def test():
         OCDType[OCDSet]
     except TypeError as exc:
         assert "specialization" in str(exc)
+    else:
+        assert False, "`OCDType[OCDSet]` didn’t raise!"
     
     """ 2. Test various SimpleNamespace subclasses: """
     

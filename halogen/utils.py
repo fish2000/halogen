@@ -49,13 +49,15 @@ for key in tx.__dir__():
 
 ConcreteType = tx.TypeVar('ConcreteType', bound=type, covariant=True)
 
-def find_generic_for_type(T: tx.Type[ConcreteType]) -> tx.Optional[type]:
+def find_generic_for_type(T: tx.Type[ConcreteType],
+                          missing: tx.Optional[
+                                   tx.Type[ConcreteType]] = None) -> tx.Optional[type]:
     if not hasattr(T, '__mro__'):
-        return None
+        return missing
     for t in T.__mro__:
         if t in ty.for_origin:
             return ty.for_origin.get(t)
-    return None
+    return missing
 
 
 class TerminalSize(object):
