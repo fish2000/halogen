@@ -156,13 +156,18 @@ class OCDType(abc.ABCMeta, tx.Iterable[T]):
                             getattr(generic, '__getitem__',
                                     lambda cls, *args, **kw: tx.Generic[args]))
         
+        key = kwargs.pop('key', None)
+        rev = kwargs.pop('reverse', False)
+        
         attributes: tx.Dict[str, tx.Any] = {
            '__class_getitem__' : get,
                '__covariant__' : typename,
                  '__generic__' : generic,
                   '__module__' : modulename,
                     '__name__' : clsname,
-                    '__iter__' : lambda self: iter(sorted(it.__iter__(self))),
+                    '__iter__' : lambda self: iter(
+                                              sorted(it.__iter__(self), key=key,
+                                                                        reverse=rev)),
             
             # q.v. inline notes to the Python 3 `typing` module
             # supra: https://git.io/fAsNO
@@ -211,6 +216,10 @@ class OCDType(abc.ABCMeta, tx.Iterable[T]):
         """ Maintain declaration order in class members: """
         return collections.OrderedDict()
     
+    # @classmethod
+    # def __init_subclass__(metacls, key=None, reverse=False, **kwargs):
+    #     super(OCDType, metacls).__init_subclass__(**kwargs)
+    
     def __new__(metacls,
                    name: str,
                   bases: tx.Iterable[type],
@@ -233,8 +242,12 @@ class OCDType(abc.ABCMeta, tx.Iterable[T]):
         debaser = tuplize(subbase,
                           collections.abc.Iterable,
                           collections.abc.Iterator)
+        
         subname = kwargs.pop('subname', None)
         factory = kwargs.pop('factory', None)
+        key = kwargs.pop('key', None)
+        rev = kwargs.pop('reverse', False)
+        
         baseset = (len(bases) > 1) \
                    and [chien for chien in bases if chien not in debaser] \
                    or []
@@ -245,8 +258,9 @@ class OCDType(abc.ABCMeta, tx.Iterable[T]):
         # an iterable operand:
         base = metacls.__class_getitem__(subbase,
                                          subname,
-                                         factory,
-                                         baseset=baseset,
+                                         factory, key=key,
+                                                  reverse=rev,
+                                                  baseset=baseset,
                                        **kwargs)
         
         # The return value of type.__new__(…), called with the amended
@@ -363,7 +377,8 @@ def test():
     
     class SortedMatrix(numpy.matrix, metaclass=OCDType,
                                      subname='OCDMatrix',
-                                     factory=numpy.asmatrix): pass
+                                     factory=numpy.asmatrix,
+                                     key=lambda x: abs(x)): pass
     
     ocd_settttts = OCDType[set]
     
