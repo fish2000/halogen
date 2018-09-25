@@ -84,7 +84,7 @@ class OCDType(abc.ABCMeta, tx.Iterable[T]):
     
     @classmethod
     def __class_getitem__(metacls,
-                              key: tx.Union[type, tuple],
+                         typename: tx.Union[type, tuple],
                           clsname: tx.Optional[str] = None,
                           factory: tx.Optional[TypeFactory] = None,
                         **kwargs) -> type:
@@ -96,30 +96,30 @@ class OCDType(abc.ABCMeta, tx.Iterable[T]):
         
         # Validate covariant typevar argument:
         
-        if not key:
+        if not typename:
             raise KeyError("OCDType is a templated type, "
                            "it requires a Python type on which to specialize")
-        if type(key) == tuple:
-            tup: tx.Tuple = tx.cast(tx.Tuple, key)
+        if type(typename) == tuple:
+            tup: tx.Tuple = tx.cast(tx.Tuple, typename)
             if len(tup) == 2:
-                key, clsname = tup
+                typename, clsname = tup
             elif len(tup) == 3:
-                key, clsname, factory = tup
+                typename, clsname, factory = tup
             elif len(tup) > 3:
                 raise KeyError("Too many arguments passed to OCDType template "
                                "specialization: {tup}")
-        if key.__name__ in metacls.types or \
-           key.__name__ in metacls.subtypes:
+        if typename.__name__ in metacls.types or \
+           typename.__name__ in metacls.subtypes:
            raise TypeError("OCDType cannot be specialized on an "
                            "existant product of an OCDType specialization")
-        if type(key) != type:
+        if type(typename) != type:
             raise TypeError("OCDType is a templated type, "
                             "it must be specialized using a Python typevar "
-                           f"(not a {type(key)})")
-        if not hasattr(key, '__iter__'):
+                           f"(not a {type(typename)})")
+        if not hasattr(typename, '__iter__'):
             raise TypeError("OCDType is a templated type, "
                             "it must be specialized on an iterable Python type "
-                           f"(not a {type(key)})")
+                           f"(not a {type(typename)})")
         
         # Save any passed clsname:
         
@@ -128,7 +128,7 @@ class OCDType(abc.ABCMeta, tx.Iterable[T]):
         # Compute the name for the new class:
         
         if not clsname:
-            name: str = capwords(key.__name__)
+            name: str = capwords(typename.__name__)
             clsname = f"{metacls.prefix}{name}"
         elif not clsname.startswith(metacls.prefix):
             name: str = capwords(clsname)
@@ -149,16 +149,16 @@ class OCDType(abc.ABCMeta, tx.Iterable[T]):
         # implementation and wraps the results in a `sorted()` iterator before
         # returning them:
         
-        it: tx.Iterable = tx.cast(tx.Iterable, key)
+        it: tx.Iterable = tx.cast(tx.Iterable, typename)
         modulename: tx.Optional[str] = getattr(metacls, '__module__', '__main__')
-        generic: tx.Optional[type] = find_generic_for_type(key, missing=tx.Generic)
+        generic: tx.Optional[type] = find_generic_for_type(typename, missing=tx.Generic)
         get: ClassGetType = getattr(generic, '__class_getitem__',
                             getattr(generic, '__getitem__',
                                     lambda cls, *args, **kw: tx.Generic[args]))
         
         attributes: tx.Dict[str, tx.Any] = {
            '__class_getitem__' : get,
-               '__covariant__' : key,
+               '__covariant__' : typename,
                  '__generic__' : generic,
                   '__module__' : modulename,
                     '__name__' : clsname,
@@ -167,8 +167,8 @@ class OCDType(abc.ABCMeta, tx.Iterable[T]):
             # q.v. inline notes to the Python 3 `typing` module
             # supra: https://git.io/fAsNO
             
-                    '__args__' : tuplize(key, clsnamearg, factory),
-              '__parameters__' : tuplize(key, clsnamearg, factory),
+                    '__args__' : tuplize(typename, clsnamearg, factory),
+              '__parameters__' : tuplize(typename, clsnamearg, factory),
                   '__origin__' : metacls
         }
         
@@ -194,7 +194,7 @@ class OCDType(abc.ABCMeta, tx.Iterable[T]):
         
         baseset: list = kwargs.pop('baseset', [])
         
-        cls = type(clsname, tuplize(key,
+        cls = type(clsname, tuplize(typename,
                                    *baseset,
                                     collections.abc.Iterable),
                             dict(attributes),
