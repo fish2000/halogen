@@ -193,7 +193,7 @@ class ConfigBaseMeta(abc.ABCMeta):
     def __new__(metacls, name, bases, attributes, **kwargs) -> type:
         if not 'base_fields' in attributes:
             attributes['base_fields'] = tuple()
-        base_fields: OCDSet = OCDSet(attributes['base_fields'])
+        base_fields: OCDSet[str] = OCDSet(attributes['base_fields'])
         for base in bases:
             if hasattr(base, 'base_fields'):
                 base_fields |= frozenset(base.base_fields)
@@ -284,7 +284,7 @@ class ConfigBase(BaseAncestor):
                     cls: tx.Optional[type] = None) -> tx.Tuple[str, ...]:
             if cls is None:
                 cls = type(instance)
-            out: OCDSet = OCDSet(self.stored_fields)
+            out: OCDSet[str] = OCDSet(self.stored_fields)
             if hasattr(cls, 'base_fields'):
                 out |= frozenset(cls.base_fields)
             out -= self.exclude_fields
@@ -818,15 +818,15 @@ class PkgConfig(ConfigBase):
                                   'pkg_name', dir_fields=True)
     
     # List of cflags to use with all pkg-config-based classes:
-    cflags: tx.ClassVar[OCDFrozenSet] = OCDFrozenSet(("funroll-loops",
-                                                      "mtune=native",
-                                                      "O3"))
+    cflags: tx.ClassVar[OCDFrozenSet[str]] = OCDFrozenSet(("funroll-loops",
+                                                           "mtune=native",
+                                                           "O3"))
     
     # Location of the `pkg-config` binary:
     pkgconfig: str = which('pkg-config')
     
     # Cache of complete package list:
-    packages: tx.ClassVar[OCDSet] = OCDSet()
+    packages: tx.ClassVar[OCDSet[str]] = OCDSet()
     did_load_packages: tx.ClassVar[bool] = False
     
     @classmethod
@@ -924,7 +924,7 @@ class NumpyConfig(ConfigBase):
     def __init__(self):
         """ Prefix is likely /…/numpy/core """
         from shlex import quote
-        self.info: tx.DefaultDict[str, OCDSet] = collections.defaultdict(OCDSet)
+        self.info: tx.DefaultDict[str, OCDSet[tx.Any]] = collections.defaultdict(OCDSet)
         self.macros: Macros = Macros()
         self.prefix: Directory = self.get_numpy_include_directory().parent()
         import numpy.distutils, numpy.version
@@ -982,9 +982,9 @@ class BrewedConfig(ConfigBase):
     brew: str = which('brew')
     
     # List of cflags to use with all Homebrew-based config classes:
-    cflags: tx.ClassVar[OCDFrozenSet] = OCDFrozenSet(("funroll-loops",
-                                                      "mtune=native",
-                                                      "O3"))
+    cflags: tx.ClassVar[OCDFrozenSet[str]] = OCDFrozenSet(("funroll-loops",
+                                                           "mtune=native",
+                                                           "O3"))
     
     def __init__(self, brew_name=None):
         """ Initialize BrewedConfig, optionally naming a formula (the default is “halide”) """
@@ -1045,8 +1045,8 @@ class BrewedHalideConfig(BrewedConfig):
     library: str = "Halide"
     
     # List of Halide-specific cflags to use:
-    cflags: tx.ClassVar[OCDFrozenSet] = OCDFrozenSet(("std=c++1z",
-                                                      "stdlib=libc++")) | BrewedConfig.cflags
+    cflags: tx.ClassVar[OCDFrozenSet[str]] = OCDFrozenSet(("std=c++1z",
+                                                           "stdlib=libc++")) | BrewedConfig.cflags
     
     def __init__(self):
         """ Initialize BrewedHalideConfig (constructor takes no arguments) """
@@ -1145,7 +1145,7 @@ class ConfigUnion(ConfigBase, tx.Collection[ConfigType]):
             # N.B. the curly-brace expression below is a set comprehension:
             @wraps(base_function)
             def getter(this):
-                out: OCDSet = OCDSet()
+                out: OCDSet[str] = OCDSet()
                 for config in this.configs:
                     function_to_call = getattr(config, self.name)
                     out |= { flag.strip() for flag in f" {function_to_call()}".split(TOKEN) }
@@ -1214,7 +1214,7 @@ class ConfigUnion(ConfigBase, tx.Collection[ConfigType]):
                                                             'c++2a', 'gnu++2a'))
     
     @classmethod
-    def fake_optimization_flags(cls, flags: AnySet) -> OCDFrozenSet:
+    def fake_optimization_flags(cls, flags: AnySet) -> OCDFrozenSet[str]:
         """ Prune out fake optimization flags e.g. -O8, -O785 etc.
             N.B. Consider renaming this function to `false_flags`, 
             in order to search-engine optimize for the Google searches
@@ -1227,7 +1227,7 @@ class ConfigUnion(ConfigBase, tx.Collection[ConfigType]):
                                     (flag not in opt_set), flags))
     
     @classmethod
-    def nonexistent_path_flags(cls, flags: AnySet) -> OCDFrozenSet:
+    def nonexistent_path_flags(cls, flags: AnySet) -> OCDFrozenSet[str]:
         """ Filter out include- or lib-path flags pointing to directories
             that do not actually exist, from a set of flags: """
         match_func = cls.directory_flag_matcher
@@ -1322,7 +1322,7 @@ class ConfigUnion(ConfigBase, tx.Collection[ConfigType]):
         """ Access one of the ConfigUnion instances’ sub-configs via subscript """
         return self.configs[key]
     
-    def sub_config_types(self) -> OCDFrozenSet:
+    def sub_config_types(self) -> OCDFrozenSet[str]:
         """ Retrieve a set of the names of this ConfigUnion instances’ sub-configs """
         return OCDFrozenSet( config.name for config in self.configs )
     

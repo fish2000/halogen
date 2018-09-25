@@ -11,7 +11,7 @@ __all__ = ('valid_emits', 'emit_defaults',
 
 __dir__ = lambda: list(__all__)
 
-valid_emits = OCDFrozenSet((
+valid_emits: OCDFrozenSet[str] = OCDFrozenSet((
     'assembly',
     'bitcode',
     'cpp', 'cpp_stub',
