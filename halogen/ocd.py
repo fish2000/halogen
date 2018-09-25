@@ -8,7 +8,6 @@ import collections.abc
 import types
 import typing as tx
 
-# from functools import partial, partialmethod
 from utils import find_generic_for_type, tuplize, u8str
 
 __all__ = ('OCDType',
