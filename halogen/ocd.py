@@ -66,7 +66,8 @@ class OCDType(abc.ABCMeta, tx.Iterable[T]):
         Bases:  tx.Tuple[str, ...] = ()
         
         @classmethod
-        def for_type(cls, newcls: tx.Type[ConcreteType]) -> type:
+        def for_type(cls,
+                  newcls: tx.Type[ConcreteType]) -> type:
             basenames: list = []
             for base in newcls.__bases__:
                 name: str = getattr(base, '__qualname__',
