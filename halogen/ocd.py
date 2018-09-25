@@ -216,10 +216,6 @@ class OCDType(abc.ABCMeta, tx.Iterable[T]):
         """ Maintain declaration order in class members: """
         return collections.OrderedDict()
     
-    # @classmethod
-    # def __init_subclass__(metacls, key=None, reverse=False, **kwargs):
-    #     super(OCDType, metacls).__init_subclass__(**kwargs)
-    
     def __new__(metacls,
                    name: str,
                   bases: tx.Iterable[type],
