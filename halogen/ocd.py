@@ -150,8 +150,8 @@ class OCDType(abc.ABCMeta, tx.Iterable[T]):
         # returning them:
         
         it: tx.Iterable = tx.cast(tx.Iterable, typename)
-        modulename: tx.Optional[str] = getattr(metacls, '__module__', '__main__')
-        generic: tx.Optional[type] = find_generic_for_type(typename, missing=tx.Generic)
+        modulename: str = getattr(metacls, '__module__', '__main__')
+        generic: type = find_generic_for_type(typename, missing=tx.Generic)
         get: ClassGetType = getattr(generic, '__class_getitem__',
                             getattr(generic, '__getitem__',
                                     lambda cls, *args, **kw: tx.Generic[args]))
@@ -374,7 +374,7 @@ def test():
     class SortedMatrix(numpy.matrix, metaclass=OCDType,
                                      subname='OCDMatrix',
                                      factory=numpy.asmatrix,
-                                     key=lambda x: abs(x)): pass
+                                     key=lambda x: abs(x), reverse=True): pass
     
     ocd_settttts = OCDType[set]
     
