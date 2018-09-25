@@ -299,7 +299,7 @@ class SortedNamespace(Namespace, collections.abc.MutableMapping,
     
     def __setitem__(self, key, value):
         if not u8str(key).isidentifier():
-            raise ValueError("key must be a valid identifier")
+            raise KeyError("key must be a valid identifier")
         super(SortedNamespace, self).__setattr__(key, value)
 
 OCDNamespace  = OCDType[Namespace]
