@@ -8,7 +8,7 @@ import collections.abc
 import types
 import typing as tx
 
-from utils import find_generic_for_type, tuplize, u8str
+from utils import tuplize, u8str
 
 __all__ = ('OCDType',
            'OCDSet', 'OCDFrozenSet',
@@ -24,6 +24,7 @@ TypeFactory = tx.Callable[..., tx.Any]
 MaybeFactory = tx.Optional[TypeFactory]
 F = tx.TypeVar('F', bound=TypeFactory, covariant=True)
 
+ConcreteType = tx.TypeVar('ConcreteType', bound=type, covariant=True)
 ClassGetType = tx.Callable[[tx._GenericAlias, tx.Tuple[type, ...]],
                             tx._GenericAlias]
 
@@ -65,12 +66,12 @@ class OCDType(abc.ABCMeta, tx.Iterable[T]):
         Bases:  tx.Tuple[str, ...] = ()
         
         @classmethod
-        def for_type(cls, newcls):
-            basenames = []
+        def for_type(cls, newcls: tx.Type[ConcreteType]) -> type:
+            basenames: list = []
             for base in newcls.__bases__:
-                name = getattr(base, '__qualname__',
-                       getattr(base, '__name__'))
-                mod = getattr(base, '__module__', '')
+                name: str = getattr(base, '__qualname__',
+                            getattr(base, '__name__'))
+                mod: str = getattr(base, '__module__', '')
                 if len(mod) > 1:
                     mod += '.'
                 basenames.append(f"{mod}{name}")
@@ -90,6 +91,7 @@ class OCDType(abc.ABCMeta, tx.Iterable[T]):
             Returns the newly specialized type, as per metaclass type creation.
         """
         from string import capwords
+        from utils import find_generic_for_type
         
         # Validate covariant typevar argument:
         
