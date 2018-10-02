@@ -25,11 +25,11 @@ MaybeFactory = tx.Optional[TypeFactory]
 F = tx.TypeVar('F', bound=TypeFactory, covariant=True)
 
 ConcreteType = tx.TypeVar('ConcreteType', bound=type, covariant=True)
+NamedTupType = tx.TypeVar('NamedTupType', bound=tx.NamedTuple, covariant=True)
 ClassGetType = tx.Callable[[tx._GenericAlias, tx.Tuple[type, ...]],
                             tx._GenericAlias]
 
-
-class OCDType(abc.ABCMeta, tx.Iterable[T]):
+class OCDType(abc.ABCMeta):
     
     """ OCDType is a templated Python type.
     
@@ -63,11 +63,11 @@ class OCDType(abc.ABCMeta, tx.Iterable[T]):
     
     class TypeAndBases(tx.NamedTuple):
         Type:   tx.Type[type]
-        Bases:  tx.Tuple[str, ...] = ()
+        Bases:  tx.Tuple[str, ...] = tuple()
         
         @classmethod
         def for_type(cls,
-                  newcls: tx.Type[ConcreteType]) -> type:
+                  newcls: tx.Type[ConcreteType]) -> NamedTupType:
             basenames: list = []
             for base in newcls.__bases__:
                 name: str = getattr(base, '__qualname__',
@@ -107,7 +107,11 @@ class OCDType(abc.ABCMeta, tx.Iterable[T]):
                 typename, clsname, factory = tup
             elif len(tup) > 3:
                 raise KeyError("Too many arguments passed to OCDType template "
-                               "specialization: {tup}")
+                              f"specialization: {tup}")
+        if not hasattr(typename, '__name__'):
+            raise TypeError("OCDType is a templated type, "
+                            "it must be specialized using a Python typevar "
+                           f"(not a {type(typename)})")
         if typename.__name__ in metacls.types or \
            typename.__name__ in metacls.subtypes:
            raise TypeError("OCDType cannot be specialized on an "
@@ -150,11 +154,15 @@ class OCDType(abc.ABCMeta, tx.Iterable[T]):
         # returning them:
         
         it: tx.Iterable = tx.cast(tx.Iterable, typename)
-        modulename: str = getattr(metacls, '__module__', '__main__')
+        # modulename: str = getattr(metacls, '__module__', 'ocd')
+        modulename: str = 'ocd'
         generic: type = find_generic_for_type(typename, missing=tx.Generic)
         get: ClassGetType = getattr(generic, '__class_getitem__',
                             getattr(generic, '__getitem__',
-                                    lambda cls, *args, **kw: tx.Generic[args]))
+                            classmethod(
+                            lambda cls, *args: tx.Generic.__class_getitem__(*args))))
+        
+        # reprfunc = classmethod(lambda cls: f'{cls.__module__}.{cls.__name__}')
         
         key = kwargs.pop('key', None)
         rev = kwargs.pop('reverse', False)
@@ -268,6 +276,9 @@ class OCDType(abc.ABCMeta, tx.Iterable[T]):
         
         metacls.subtypes[name] = metacls.TypeAndBases.for_type(cls)
         return cls
+    
+    # def __repr__(cls):
+    #     return f'ocd.{cls.__name__}'
 
 ###
 ### SPECIALIZATIONS OF OCDType:
@@ -394,20 +405,26 @@ def test():
     # print(type(OCDSet[T, S]))
     # pprint(type(OCDSet[S]))
     pprint(OCDSet[T])
+    pprint(OCDSet.__origin__)
+    pprint(OCDSet.__generic__)
+    pprint(OCDSet[T].__origin__)
     pprint(OCDNamespace[T, S])
+    pprint(OCDNamespace.__origin__)
+    pprint(OCDNamespace.__generic__)
+    pprint(OCDNamespace[T, S].__origin__)
     
     assert OCDNumpyArray.__name__ == 'OCDNumpyArray'
     assert OCDNumpyArray.__base__ == numpy.ndarray
     assert OCDNumpyArray.__bases__ == tuplize(numpy.ndarray,
                                               collections.abc.Iterable)
     assert OCDNumpyArray.__factory__ == numpy.array
-    assert OCDNumpyArray.__generic__ == tx.Generic
+    # assert OCDNumpyArray.__generic__ == tx.Generic
     
     assert SortedMatrix.__base__ == OCDType[numpy.matrix]
     assert SortedMatrix.__base__.__name__ == 'OCDMatrix'
     assert SortedMatrix.__base__.__base__ == numpy.matrixlib.defmatrix.matrix
     assert SortedMatrix.__base__.__factory__ == numpy.asmatrix
-    assert SortedMatrix.__base__.__generic__ == tx.Generic
+    # assert SortedMatrix.__base__.__generic__ == tx.Generic
     
     assert OCDArray('i', range(10)).__len__() == 10
     assert numpy.array([[0, 1, 2], [0, 1, 2], [0, 1, 2]]).__len__() == 3

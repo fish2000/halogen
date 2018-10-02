@@ -1377,7 +1377,10 @@ class ConfigUnion(ConfigBase, tx.Collection[ConfigType]):
         return out
 
 
-def CC(conf: ConfigType, outfile: str, infile: str, **kwargs) -> tx.Tuple[str, ...]:
+def CC(conf: ConfigType,
+       outfile: str,
+       infile: str,
+     **kwargs) -> tx.Tuple[str, ...]:
     """ Execute the C compiler, as named in the `CC` environment variable,
         falling back to the compiler specified in Python `sysconfig`:
     """
@@ -1390,7 +1393,10 @@ def CC(conf: ConfigType, outfile: str, infile: str, **kwargs) -> tx.Tuple[str, .
                      ret_err=True,
                      verbose=kwargs.pop('verbose', DEFAULT_VERBOSITY))
 
-def CXX(conf: ConfigType, outfile: str, infile: str, **kwargs) -> tx.Tuple[str, ...]:
+def CXX(conf: ConfigType,
+        outfile: str,
+        infile: str,
+      **kwargs) -> tx.Tuple[str, ...]:
     """ Execute the C++ compiler, as named in the `CXX` environment variable,
         falling back to the compiler specified in Python `sysconfig`:
     """
@@ -1403,7 +1409,10 @@ def CXX(conf: ConfigType, outfile: str, infile: str, **kwargs) -> tx.Tuple[str, 
                      ret_err=True,
                      verbose=kwargs.pop('verbose', DEFAULT_VERBOSITY))
 
-def LD(conf: ConfigType, outfile: str, *infiles, **kwargs) -> tx.Tuple[str, ...]:
+def LD(conf: ConfigType,
+       outfile: str,
+      *infiles,
+     **kwargs) -> tx.Tuple[str, ...]:
     """ Execute the dynamic linker, as named in the `LDCXXSHARED` environment variable,
         falling back to the linker specified in Python `sysconfig`:
     """
@@ -1412,7 +1421,10 @@ def LD(conf: ConfigType, outfile: str, *infiles, **kwargs) -> tx.Tuple[str, ...]
                      ret_err=True,
                      verbose=kwargs.pop('verbose', DEFAULT_VERBOSITY))
 
-def AR(conf: ConfigType, outfile: str, *infiles, **kwargs) -> tx.Tuple[str, ...]:
+def AR(conf: ConfigType,
+       outfile: str,
+      *infiles,
+     **kwargs) -> tx.Tuple[str, ...]:
     """ Execute the library archiver, as named in the `AR` environment variable,
         falling back to the library archiver specified in Python `sysconfig`:
     """

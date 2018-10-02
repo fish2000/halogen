@@ -3,14 +3,21 @@
 from __future__ import print_function
 
 # import builtins
+import abc
 import six
 import sys
 import types
 import typing as tx
 
 from functools import wraps
+from multidict import MultiDict
+from multidict._abc import MultiMapping
 
-__all__ = ('ty', 'find_generic_for_type',
+__all__ = ('Namespace', 'SimpleNamespace',
+                        'MultiNamespace',
+                        'TypeSpace',
+                        'ty',
+           'find_generic_for_type',
            'TerminalSize', 'terminal_size',
                            'terminal_width',
                            'terminal_height',
@@ -29,16 +36,151 @@ __all__ = ('ty', 'find_generic_for_type',
 
 __dir__ = lambda: list(__all__)
 
-ty = types.SimpleNamespace()
+T = tx.TypeVar('T', covariant=True)
+
+class Originator(abc.ABCMeta):
+    
+    def __new__(metacls,
+                   name: str,
+                  bases: tx.Iterable[type],
+             attributes: tx.MutableMapping[str, tx.Any],
+               **kwargs) -> type:
+        
+        """ Set the __origin__ class attribute to the un-subscripted base class value """
+        
+        # find the first generic base:
+        genericbase: tx.Optional[type] = None
+        for basecls in bases:
+            if basecls is tx.Generic:
+                genericbase = basecls
+                break
+            if hasattr(basecls, '__parameters__'):
+                genericbase = basecls.__origin__
+                break
+        
+        # Raise if no generics are happened upon:
+        if not genericbase:
+            raise TypeError("couldn't find a generic base class")
+        
+        # Jam it in:
+        attributes.update({
+            '__origin__' : genericbase
+        })
+        
+        # Do the beard:
+        cls = super(Originator, metacls).__new__(metacls, name,
+                                                          bases,
+                                                          dict(attributes),
+                                                        **kwargs)
+        
+        # Return to zero:
+        return cls
+
+class Namespace(tx.Generic[T],
+                      abc.ABC,
+                      metaclass=Originator):
+    __slots__ = tuple()
+
+# Namespace = tx._GenericAlias(NamespaceBase, T, special=True,
+#                                                inst=True,
+#                                                name='Namespace')
+# Namespace.__name__ = 'Namespace'
+
+class SimpleNamespace(Namespace[T]):
+    __slots__ = ('__dict__',)
+    
+    def __init__(self, **kwargs):
+        self.__dict__.update(kwargs)
+
+class MultiNamespace(Namespace[T], tx.Collection[T]):
+    
+    __slots__ = ('_mdict',
+                 '_initialized')
+    
+    # __origin__ = Namespace
+    
+    def __init__(self, **kwargs):
+        self._mdict: MultiMapping[str, T] = MultiDict()
+        self._mdict.update(kwargs)
+        self._initialized = True
+    
+    def initialized(self) -> bool:
+        try:
+            return super(MultiNamespace, self).__getattribute__('_initialized')
+        except:
+            return False
+    
+    def mdict(self) -> MultiMapping[str, T]:
+        return super(MultiNamespace, self).__getattribute__('_mdict')
+    
+    def __len__(self) -> int:
+        return len(self.mdict())
+    
+    def __contains__(self, key: str) -> bool:
+        return key in self.mdict()
+    
+    def __iter__(self) -> tx.Iterator[T]:
+        return iter(dict(self.mdict()))
+    
+    def __getattr__(self, key: str) -> tx.Optional[T]:
+        d = self.mdict()
+        return (key in d) and d.getone(key) or d.__getitem__(key)
+    
+    def __setattr__(self, key: str, val: T):
+        if self.initialized():
+            self.mdict().add(key, val)
+        else:
+            super(MultiNamespace, self).__setattr__(key, val)
+    
+    def add(self, key: str, val: T):
+        if not self.initialized():
+            raise KeyError('multidict uninitialized')
+        self.mdict().add(key, val)
+    
+    def allof(self, key: str) -> tx.Tuple[T, ...]:
+        return self.mdict().getall(key)
+    
+    def count(self, key: str) -> int:
+        return (key in self.mdict()) and len(self.allof(key)) or 0
+    
+    def zero(self, key: str):
+        if key in self.mdict():
+            del self.mdict()[key]
+    
+    def __repr__(self) -> str:
+        return repr(self.mdict())
+
+ConcreteType = tx.TypeVar('ConcreteType', bound=type, covariant=True)
+
+class TypeSpace(MultiNamespace[ConcreteType]):
+    
+    __slots__ = ('for_origin')
+    # __origin__ = MultiNamespace
+    
+    def __init__(self, **kwargs):
+        self.for_origin: tx.Dict[str, ConcreteType] = {}
+        super(TypeSpace, self).__init__(**kwargs)
+    
+    def add_original(self, cls: tx.Type[ConcreteType]) -> bool:
+        origin: tx.Optional[ConcreteType] = getattr(cls, '__origin__', None)
+        if not origin:
+            return False
+        self.for_origin[origin] = cls
+        self.add(origin.__name__, cls)
+        return True
+
+ty: TypeSpace[ConcreteType] = TypeSpace()
 
 # build a “for_origin” dict in the “ty” namespace:
-ty.for_origin: tx.Dict[str, type] = {}
 for key in tx.__dir__():
     txattr = getattr(tx, key)
-    if hasattr(txattr, '__origin__'):
-        origin = txattr.__origin__
-        ty.for_origin[origin] = txattr
-        ty.__setattr__(origin.__name__, txattr)
+    ty.add_original(txattr)
+
+# ty.add('type', TypeSpace)
+ty.add_original(Namespace)
+ty.add_original(SimpleNamespace)
+ty.add_original(MultiNamespace)
+ty.add_original(TypeSpace)
 
 # build a “for_name” dict in the “ty” namespace:
 # ty.for_name: tx.Dict[str, type] = {}
@@ -47,18 +189,25 @@ for key in tx.__dir__():
 #         builtin = tup[1]
 #         ty.for_name[]
 
-ConcreteType = tx.TypeVar('ConcreteType', bound=type, covariant=True)
-
-def find_generic_for_type(T: tx.Type[ConcreteType],
+def find_generic_for_type(cls: tx.Type[ConcreteType],
                           missing: tx.Optional[
                                    tx.Type[ConcreteType]] = None) -> tx.Optional[type]:
-    if not hasattr(T, '__mro__'):
+    if not hasattr(cls, '__mro__'):
         return missing
-    for t in T.__mro__:
+    for t in cls.__mro__:
         if t in ty.for_origin:
             return ty.for_origin.get(t)
     return missing
 
+from pprint import pprint
+print(f'Typing Index: {len(ty)} types, {len(ty.mdict())} in mdict, {len(ty.for_origin)} in for_origin')
+print()
+pprint(dict(ty.mdict()))
+print()
+pprint(ty.for_origin)
+print()
+print(ty)
+print()
 
 class TerminalSize(object):
     
@@ -93,6 +242,8 @@ class TerminalSize(object):
             return self._replace(
                  **self._asdict())
     
+    Descriptor = tx.NewType('Descriptor', int)
+    
     DEFAULT_LINES:   int = 25
     DEFAULT_COLUMNS: int = 130
     MINIMUM_LINES:   int = 25
@@ -100,9 +251,8 @@ class TerminalSize(object):
     
     cache: tx.List[Size] = []
     
-    @staticmethod
-    def ioctl_GWINSZ(descriptor: int) -> tx.Optional[
-                                         tx.Tuple[int, int]]:
+    @classmethod
+    def ioctl_GWINSZ(cls, descriptor: Descriptor) -> tx.Optional[Size]:
         """ Extract the GWINSZ terminal I/O property value data
             from a file descriptor, using an `ioctl(…)` call to
             obtain the packed Posix data structure, a call to the
@@ -113,12 +263,14 @@ class TerminalSize(object):
         import fcntl, termios, struct
         try:
             cr: tx.Tuple[int, int] = struct.unpack('hh',
-                                      fcntl.ioctl(descriptor,
-                                                  termios.TIOCGWINSZ,
-                                                 '1234'))
+                                       fcntl.ioctl(
+                                           tx.cast(int, descriptor),
+                                                   termios.TIOCGWINSZ,
+                                                  '1234'))
         except:
             return None
-        return cr
+        
+        return cls.Size(*cr)
     
     def __init__(self, DEFAULT_LINES:   tx.Optional[int] = None,
                        DEFAULT_COLUMNS: tx.Optional[int] = None):
@@ -137,29 +289,27 @@ class TerminalSize(object):
         
         self.store_terminal_size()
         
-    def fetch_terminal_size_values(self) -> tx.Tuple[int, int]:
+    def fetch_terminal_size_values(self) -> Size:
         import os
         env = os.environ
         
         # Adapted from this: http://stackoverflow.com/a/566752/298171
         # … first, attempt to pluck out the CGWINSZ terminal values using
         # the stdin/stdout/stderr file descriptor numbers:
-        cr: tx.Optional[
-            tx.Tuple[int, int]] = self.ioctl_GWINSZ(0) or \
-                                  self.ioctl_GWINSZ(1) or \
-                                  self.ioctl_GWINSZ(2)
+        sz: tx.Optional[self.Size] = self.ioctl_GWINSZ(0) or \
+                                     self.ioctl_GWINSZ(1) or \
+                                     self.ioctl_GWINSZ(2)
         
         # … if that did not work, get the /dev entry name of the terminal
         # in which our process is ensconced, open a descriptor on it for reaing,
         # and use that descriptor to once again attempt to read CGWINSZ values 
         # for the terminal:
         descriptor: int = 0
-        if not cr:
+        if not sz:
             try:
-                descriptor = os.open(os.ctermid(),
-                                     os.O_RDONLY)
-                cr: tx.Optional[
-                    tx.Tuple[int, int]] = self.ioctl_GWINSZ(descriptor)
+                descriptor: self.Descriptor = os.open(os.ctermid(),
+                                                      os.O_RDONLY)
+                sz: tx.Optional[self.Size] = self.ioctl_GWINSZ(descriptor)
             except:
                 pass
             finally:
@@ -170,15 +320,15 @@ class TerminalSize(object):
         # descriptors •and• a bespoke descriptor opened directly on the /dev entry,
         # make a last-ditch effort to send back values culled from the environment,
         # with truly last-resort possibilities filled in with hardcoded defaults.
-        if not cr:
-            cr = (env.get('LINES',   self.DEFAULT_LINES),
-                  env.get('COLUMNS', self.DEFAULT_COLUMNS))
+        if not sz:
+            sz = self.Size(env.get('LINES',   self.DEFAULT_LINES),
+                           env.get('COLUMNS', self.DEFAULT_COLUMNS))
         
         # Return plain tuple:
-        return cr
+        return sz
     
     def store_terminal_size(self) -> Size:
-        size: self.Size = self.Size(*self.fetch_terminal_size_values())
+        size: self.Size = self.fetch_terminal_size_values()
         self.cache.append(size)
         return size
     
@@ -190,6 +340,8 @@ class TerminalSize(object):
 terminal_size: TerminalSize = TerminalSize()
 terminal_width:  int        = terminal_size().width 
 terminal_height: int        = terminal_size().height
+
+# print(f"width: {terminal_width}, height: {terminal_height}")
 
 StringType = tx.TypeVar('StringType', bound=type, covariant=True)
 
