@@ -55,7 +55,6 @@ class Originator(abc.ABCMeta):
                 genericbase = basecls
                 break
             if hasattr(basecls, '__parameters__'):
-                # genericbase = basecls.__origin__
                 genericbase = basecls
                 break
         
