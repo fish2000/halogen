@@ -55,7 +55,8 @@ class Originator(abc.ABCMeta):
                 genericbase = basecls
                 break
             if hasattr(basecls, '__parameters__'):
-                genericbase = basecls.__origin__
+                # genericbase = basecls.__origin__
+                genericbase = basecls
                 break
         
         # Raise if no generics are happened upon:
@@ -79,25 +80,25 @@ class Originator(abc.ABCMeta):
 class Namespace(tx.Generic[T],
                       abc.ABC,
                       metaclass=Originator):
+    
     __slots__ = tuple()
-
-# Namespace = tx._GenericAlias(NamespaceBase, T, special=True,
-#                                                inst=True,
-#                                                name='Namespace')
-# Namespace.__name__ = 'Namespace'
+    
+    def __new__(cls, **kwargs):
+        instance = super(Namespace, cls).__new__(cls)
+        for k, v in kwargs.items():
+            setattr(instance, k, v)
+        return instance
 
 class SimpleNamespace(Namespace[T]):
-    __slots__ = ('__dict__',)
-    
-    def __init__(self, **kwargs):
-        self.__dict__.update(kwargs)
+    __slots__ = tuple()
 
 class MultiNamespace(Namespace[T], tx.Collection[T]):
     
     __slots__ = ('_mdict',
                  '_initialized')
     
-    # __origin__ = Namespace
+    def __new__(cls, **kwargs):
+        return object.__new__(cls)
     
     def __init__(self, **kwargs):
         self._mdict: MultiMapping[str, T] = MultiDict()
@@ -199,15 +200,15 @@ def find_generic_for_type(cls: tx.Type[ConcreteType],
             return ty.for_origin.get(t)
     return missing
 
-from pprint import pprint
-print(f'Typing Index: {len(ty)} types, {len(ty.mdict())} in mdict, {len(ty.for_origin)} in for_origin')
-print()
-pprint(dict(ty.mdict()))
-print()
-pprint(ty.for_origin)
-print()
-print(ty)
-print()
+# from pprint import pprint
+# print(f'Typing Index: {len(ty)} types, {len(ty.mdict())} in mdict, {len(ty.for_origin)} in for_origin')
+# print()
+# pprint(dict(ty.mdict()))
+# print()
+# pprint(ty.for_origin)
+# print()
+# print(ty)
+# print()
 
 class TerminalSize(object):
     
