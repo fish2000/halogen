@@ -14,7 +14,8 @@ from functools import wraps
 from multidict import MultiDict
 from multidict._abc import MultiMapping
 
-__all__ = ('Originator',
+__all__ = ('tuplize', 'listify',
+           'Originator',
            'Namespace', 'SimpleNamespace',
                         'MultiNamespace',
                         'TypeSpace',
@@ -23,7 +24,6 @@ __all__ = ('Originator',
            'TerminalSize', 'terminal_size',
                            'terminal_width',
                            'terminal_height',
-           'tuplize', 'listify',
            'wrap_value', 'Memoizer', 'memoize',
            'current_umask', 'masked_permissions',
            'modulize',
@@ -39,9 +39,15 @@ __all__ = ('Originator',
 __dir__ = lambda: list(__all__)
 
 abstract = None # SHUT UP, PYFLAKES!!
-PRINT_ORIGIN_TYPES = False
+PRINT_ORIGIN_TYPES = True
 
 T = tx.TypeVar('T', covariant=True)
+
+def tuplize(*items) -> tuple:
+    return tuple(item for item in items if item is not None)
+
+def listify(*items) -> list:
+    return list(item for item in items if item is not None)
 
 class Originator(abc.ABCMeta):
     
@@ -96,9 +102,10 @@ class Originator(abc.ABCMeta):
 class Namespace(tx.Generic[T],
                       abc.ABC,
                       metaclass=Originator):
+    __slots__ = tuple()
     
-    def __init__(self, **kwargs):
-        self.__dict__.update(kwargs)
+    @abstract
+    def __init__(self, **kwargs): ...
     
     @abstract
     def __bool__(self) -> bool: ...
@@ -113,15 +120,18 @@ class Namespace(tx.Generic[T],
     def __iter__(self) -> tx.Iterator[T]: ...
     
     @abstract
-    def __repr__(self) -> str: ...
+    def __copy__(self): ...
     
-    def __copy__(self):
-        return type(self)(**self.__dict__)
+    @abstract
+    def __repr__(self) -> str: ...
 
 class SimpleNamespace(Namespace[T], tx.Sized,
                                     tx.Iterable[T],
                                     tx.Container[T]):
-    __slots__ = tuple()
+    __slots__ = tuplize('__dict__')
+    
+    def __init__(self, **kwargs):
+        self.__dict__.update(kwargs)
     
     def __bool__(self) -> bool:
         return bool(self.__dict__)
@@ -135,13 +145,17 @@ class SimpleNamespace(Namespace[T], tx.Sized,
     def __iter__(self) -> tx.Iterator[T]:
         return iter(self.__dict__)
     
+    def __copy__(self):
+        return type(self)(**self.__dict__)
+    
     def __repr__(self) -> str:
         keys = sorted(self.__dict__)
         items = ("{}={!r}".format(k, self.__dict__[k]) for k in keys)
         return "{}({})".format(type(self).__name__, ", ".join(items))
 
 class MultiNamespace(Namespace[T], tx.Collection[T]):
-    __slots__ = ('_dict', '_initialized',)
+    __slots__ = tuplize('_dict',
+                        '_initialized')
     
     def __init__(self, **kwargs):
         self._dict: MultiMapping[str, T] = MultiDict()
@@ -207,8 +221,7 @@ class MultiNamespace(Namespace[T], tx.Collection[T]):
 ConcreteType = tx.TypeVar('ConcreteType', bound=type, covariant=True)
 
 class TypeSpace(MultiNamespace[ConcreteType]):
-    
-    __slots__ = ('for_origin')
+    __slots__ = tuplize('for_origin')
     
     def __init__(self, **kwargs):
         self.for_origin: tx.Dict[str, ConcreteType] = {}
@@ -252,16 +265,6 @@ def find_generic_for_type(cls: tx.Type[ConcreteType],
             return ty.for_origin.get(t)
     return missing
 
-if __name__ == '__main__' and PRINT_ORIGIN_TYPES:
-    from pprint import pprint
-    print(f'Typing Index: {len(ty)} types, {len(ty.mdict())} in mdict, {len(ty.for_origin)} in for_origin')
-    print()
-    pprint(dict(ty.mdict()))
-    print()
-    pprint(ty.for_origin)
-    print()
-    print(ty)
-    print()
 
 class TerminalSize(object):
     
@@ -395,6 +398,20 @@ terminal_size: TerminalSize = TerminalSize()
 terminal_width:  int        = terminal_size().width 
 terminal_height: int        = terminal_size().height
 
+if __name__ == '__main__' and PRINT_ORIGIN_TYPES:
+    from pprint import pprint
+    print("=" * terminal_width)
+    print(f'Typing Index: {len(ty)} types, {len(ty.mdict())} in mdict, {len(ty.for_origin)} in for_origin')
+    print()
+    pprint(dict(ty.mdict()))
+    print()
+    pprint(ty.for_origin)
+    print()
+    print(ty)
+    print()
+    print("-" * terminal_width)
+    print()
+
 # print(f"width: {terminal_width}, height: {terminal_height}")
 
 StringType = tx.TypeVar('StringType', bound=type, covariant=True)
@@ -405,12 +422,6 @@ string_types: tx.Tuple[tx.Type[StringType], ...] = (type(''),
                                                     type(r'')) + six.string_types
 
 is_string: tx.Callable[[tx.Any], bool] = lambda thing: isinstance(thing, string_types)
-
-def tuplize(*items) -> tuple:
-    return tuple(item for item in items if item is not None)
-
-def listify(*items) -> list:
-    return list(item for item in items if item is not None)
 
 WrapArg = tx.TypeVar('WrapArg', covariant=True)
 
