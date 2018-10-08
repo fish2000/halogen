@@ -110,22 +110,22 @@ class ConfigSubBase(SubBaseAncestor):
     
     @property
     @abc.abstractmethod
-    def prefix(self) -> Directory: pass
+    def prefix(self) -> Directory: ...
     
     @prefix.setter
     @abc.abstractmethod
     def prefix(self,
-               value: filesystem.ts.DirectoryLike): pass
+               value: filesystem.ts.DirectoryLike): ...
     
     @prefix.deleter
     @abc.abstractmethod
-    def prefix(self): pass
+    def prefix(self): ...
     
     # Name get method:
     
     @property
     @abc.abstractmethod
-    def name(self) -> str: pass
+    def name(self) -> str: ...
     
     # The `subdirectory` method is used throughout
     # many Config-ish classes:
@@ -133,7 +133,7 @@ class ConfigSubBase(SubBaseAncestor):
     @abc.abstractmethod
     def subdirectory(self,
                      subdir: tx.AnyStr,
-                     whence: filesystem.ts.MaybeDirectoryLike = None) -> MaybeStr: pass
+                     whence: filesystem.ts.MaybeDirectoryLike = None) -> MaybeStr: ...
     
     # These four methods prepare the command strings,
     # using the result(s) from calling one or more
@@ -141,13 +141,13 @@ class ConfigSubBase(SubBaseAncestor):
     # to compose their arguments:
     
     @abc.abstractmethod
-    def cc_flag_string(self) -> str: pass
+    def cc_flag_string(self) -> str: ...
     
     @abc.abstractmethod
-    def cxx_flag_string(self) -> str: pass
+    def cxx_flag_string(self) -> str: ...
     
     @abc.abstractmethod
-    def ld_flag_string(self) -> str: pass
+    def ld_flag_string(self) -> str: ...
     
     @abc.abstractmethod
     def ar_flag_string(self) -> str: pass
@@ -156,32 +156,32 @@ class ConfigSubBase(SubBaseAncestor):
     
     @abc.abstractmethod
     def to_string(self,
-                  field_list: tx.Optional[tx.Iterable[str]] = None) -> str: pass
+                  field_list: tx.Optional[tx.Iterable[str]] = None) -> str: ...
     
     @abc.abstractmethod
-    def __repr__(self) -> str: pass
+    def __repr__(self) -> str: ...
     
     @abc.abstractmethod
-    def __str__(self) -> str: pass
+    def __str__(self) -> str: ...
     
     @abc.abstractmethod
-    def __bytes__(self) -> bytes: pass
+    def __bytes__(self) -> bytes: ...
     
     # These four get_* methods make up the bare-bones
     # requirement for what a Config-ish class needs
     # to provide:
     
     @abc.abstractmethod
-    def get_includes(self) -> str: pass
+    def get_includes(self) -> str: ...
     
     @abc.abstractmethod
-    def get_libs(self) -> str: pass
+    def get_libs(self) -> str: ...
     
     @abc.abstractmethod
-    def get_cflags(self) -> str: pass
+    def get_cflags(self) -> str: ...
     
     @abc.abstractmethod
-    def get_ldflags(self) -> str: pass
+    def get_ldflags(self) -> str: ...
 
 
 class ConfigBaseMeta(abc.ABCMeta):
