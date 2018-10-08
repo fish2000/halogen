@@ -84,17 +84,6 @@ class Namespace(tx.Generic[T],
     def __init__(self, **kwargs):
             self.__dict__.update(kwargs)
     
-    # def __new__(cls, **kwargs):
-    #     instance = super(Namespace, cls).__new__(cls)
-    #     reprs = []
-    #     for k, v in kwargs.items():
-    #         setattr(instance, k, v)
-    #         reprs.append(f"{k}=“{v}”")
-    #     reprlist = ", ".join(reprs)
-    #     reprstr = f"{cls.__name__}({reprlist})"
-    #     setattr(instance, '__repr__', staticmethod(lambda: reprstr))
-    #     return instance
-    
     def __repr__(self):
         keys = sorted(self.__dict__)
         items = ("{}={!r}".format(k, self.__dict__[k]) for k in keys)
@@ -165,7 +154,6 @@ ConcreteType = tx.TypeVar('ConcreteType', bound=type, covariant=True)
 class TypeSpace(MultiNamespace[ConcreteType]):
     
     __slots__ = ('for_origin')
-    # __origin__ = MultiNamespace
     
     def __init__(self, **kwargs):
         self.for_origin: tx.Dict[str, ConcreteType] = {}
