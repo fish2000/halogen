@@ -1194,12 +1194,12 @@ def test():
         assert tfn.suffix in os.fspath(tfn)
         assert tfn.destroy
         assert type(tfn.directory(os.path.basename(tfn.name))) == Directory
-        assert isinstance(tfn, TemporaryName)
-        assert isinstance(tfn, collections.abc.Hashable)
-        assert isinstance(tfn, contextlib.AbstractContextManager)
-        assert isinstance(tfn, os.PathLike)
+        assert isinstance(tfn,                          TemporaryName)
+        assert isinstance(tfn,                          collections.abc.Hashable)
+        assert isinstance(tfn,                          contextlib.AbstractContextManager)
+        assert isinstance(tfn,                          os.PathLike)
         p = tfn.parent()
-        assert os.path.samefile(os.fspath(p), gettempdir())
+        assert os.path.samefile(os.fspath(p),           gettempdir())
         # The next four asserts will be “not” asserts while
         # the TemporaryName has not been written to:
         assert not tfn.exists
@@ -1227,15 +1227,15 @@ def test():
     
     with wd() as cwd:
         print(f"* Testing working-directory instance: {cwd.name}")
-        assert os.path.samefile(os.getcwd(),            cwd.new)
-        assert os.path.samefile(os.getcwd(),            cwd.old)
-        assert os.path.samefile(os.getcwd(),            os.fspath(cwd))
-        assert os.path.samefile(cwd.new,                cwd.old)
-        assert os.path.samefile(cwd.new,                initial)
-        assert os.path.samefile(cwd.old,                initial)
-        assert os.path.samefile(cwd.new,                os.fspath(cwd))
-        assert os.path.samefile(cwd.old,                os.fspath(cwd))
-        assert os.path.samefile(os.fspath(cwd),         initial)
+        assert os.path.samefile(os.getcwd(),           cwd.new)
+        assert os.path.samefile(os.getcwd(),           cwd.old)
+        assert os.path.samefile(os.getcwd(),           os.fspath(cwd))
+        assert os.path.samefile(cwd.new,               cwd.old)
+        assert os.path.samefile(cwd.new,               initial)
+        assert os.path.samefile(cwd.old,               initial)
+        assert os.path.samefile(cwd.new,               os.fspath(cwd))
+        assert os.path.samefile(cwd.old,               os.fspath(cwd))
+        assert os.path.samefile(os.fspath(cwd),        initial)
         assert not cwd.subdirectory('yodogg').exists
         # assert cwd.subdirectory('yodogg').makedirs().exists
         assert not cwd.will_change
@@ -1243,13 +1243,13 @@ def test():
         assert not cwd.will_change_back
         assert not cwd.did_change_back
         assert type(cwd.directory(cwd.new)) == Directory
-        assert isinstance(cwd, wd)
-        assert isinstance(cwd, Directory)
-        assert isinstance(cwd, collections.abc.Hashable)
-        assert isinstance(cwd, collections.abc.Mapping)
-        assert isinstance(cwd, collections.abc.Sized)
-        assert isinstance(cwd, contextlib.AbstractContextManager)
-        assert isinstance(cwd, os.PathLike)
+        assert isinstance(cwd,                         wd)
+        assert isinstance(cwd,                         Directory)
+        assert isinstance(cwd,                         collections.abc.Hashable)
+        assert isinstance(cwd,                         collections.abc.Mapping)
+        assert isinstance(cwd,                         collections.abc.Sized)
+        assert isinstance(cwd,                         contextlib.AbstractContextManager)
+        assert isinstance(cwd,                         os.PathLike)
         assert os.path.isdir(os.fspath(cwd))
         assert not 'yodogg' in cwd
         assert cwd.basename in cwd.dirname
@@ -1259,15 +1259,15 @@ def test():
     
     with cd(gettempdir()) as tmp:
         print(f"* Testing directory-change instance: {tmp.name}")
-        assert os.path.samefile(os.getcwd(),            gettempdir())
-        assert os.path.samefile(os.getcwd(),            tmp.new)
-        assert os.path.samefile(gettempdir(),           tmp.new)
-        assert os.path.samefile(os.getcwd(),            os.fspath(tmp))
-        assert os.path.samefile(gettempdir(),           os.fspath(tmp))
-        assert not os.path.samefile(os.getcwd(),        initial)
-        assert not os.path.samefile(tmp.new,            initial)
-        assert not os.path.samefile(os.fspath(tmp),     initial)
-        assert os.path.samefile(tmp.old,                initial)
+        assert os.path.samefile(os.getcwd(),          gettempdir())
+        assert os.path.samefile(os.getcwd(),          tmp.new)
+        assert os.path.samefile(gettempdir(),         tmp.new)
+        assert os.path.samefile(os.getcwd(),          os.fspath(tmp))
+        assert os.path.samefile(gettempdir(),         os.fspath(tmp))
+        assert not os.path.samefile(os.getcwd(),      initial)
+        assert not os.path.samefile(tmp.new,          initial)
+        assert not os.path.samefile(os.fspath(tmp),   initial)
+        assert os.path.samefile(tmp.old,              initial)
         # assert not tmp.subdirectory('yodogg').exists
         # assert tmp.subdirectory('yodogg').makedirs().exists
         assert tmp.will_change
@@ -1275,13 +1275,13 @@ def test():
         assert tmp.will_change_back
         assert not tmp.did_change_back
         assert type(tmp.directory(tmp.new)) == Directory
-        assert isinstance(tmp, cd)
-        assert isinstance(tmp, Directory)
-        assert isinstance(tmp, collections.abc.Hashable)
-        assert isinstance(tmp, collections.abc.Mapping)
-        assert isinstance(tmp, collections.abc.Sized)
-        assert isinstance(tmp, contextlib.AbstractContextManager)
-        assert isinstance(tmp, os.PathLike)
+        assert isinstance(tmp,                        cd)
+        assert isinstance(tmp,                        Directory)
+        assert isinstance(tmp,                        collections.abc.Hashable)
+        assert isinstance(tmp,                        collections.abc.Mapping)
+        assert isinstance(tmp,                        collections.abc.Sized)
+        assert isinstance(tmp,                        contextlib.AbstractContextManager)
+        assert isinstance(tmp,                        os.PathLike)
         assert os.path.isdir(os.fspath(tmp))
         assert tmp.basename in tmp.dirname
         print("* Directory-change object tests completed OK")
@@ -1312,15 +1312,15 @@ def test():
         assert ttd.will_change_back
         assert not ttd.did_change_back
         assert type(ttd.directory(ttd.new)) == Directory
-        assert isinstance(ttd, TemporaryDirectory)
-        assert isinstance(ttd, Directory)
-        assert isinstance(ttd, collections.abc.Hashable)
-        assert isinstance(ttd, collections.abc.Mapping)
-        assert isinstance(ttd, collections.abc.Sized)
-        assert isinstance(ttd, contextlib.AbstractContextManager)
-        assert isinstance(ttd, os.PathLike)
+        assert isinstance(ttd,                          TemporaryDirectory)
+        assert isinstance(ttd,                          Directory)
+        assert isinstance(ttd,                          collections.abc.Hashable)
+        assert isinstance(ttd,                          collections.abc.Mapping)
+        assert isinstance(ttd,                          collections.abc.Sized)
+        assert isinstance(ttd,                          contextlib.AbstractContextManager)
+        assert isinstance(ttd,                          os.PathLike)
         p = ttd.parent()
-        assert os.path.samefile(os.fspath(p), gettempdir())
+        assert os.path.samefile(os.fspath(p),           gettempdir())
         assert os.path.isdir(os.fspath(ttd))
         assert os.path.isdir(os.fspath(p))
         assert ttd.basename in p

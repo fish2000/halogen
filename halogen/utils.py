@@ -4,6 +4,7 @@ from __future__ import print_function
 
 # import builtins
 import abc
+import collections
 import six
 import sys
 import types
@@ -37,9 +38,23 @@ __all__ = ('Originator',
 
 __dir__ = lambda: list(__all__)
 
+abstract = None # SHUT UP, PYFLAKES!!
+PRINT_ORIGIN_TYPES = False
+
 T = tx.TypeVar('T', covariant=True)
 
 class Originator(abc.ABCMeta):
+    
+    @classmethod
+    def __prepare__(metacls,
+                       name: str,
+                      bases: tx.Iterable[type],
+                   **kwargs) -> tx.MutableMapping[str, tx.Any]:
+        """ Maintain declaration order in class members, and
+            import @abstractmethod from the `abc` module into
+            the class namespace as @abstract:
+        """
+        return collections.OrderedDict(abstract=abc.abstractmethod)
     
     def __new__(metacls,
                    name: str,
@@ -85,13 +100,45 @@ class Namespace(tx.Generic[T],
     def __init__(self, **kwargs):
         self.__dict__.update(kwargs)
     
-    def __repr__(self):
+    @abstract
+    def __bool__(self) -> bool: ...
+    
+    @abstract
+    def __len__(self) -> int: ...
+    
+    @abstract
+    def __contains__(self, key: str) -> bool: ...
+    
+    @abstract
+    def __iter__(self) -> tx.Iterator[T]: ...
+    
+    @abstract
+    def __repr__(self) -> str: ...
+    
+    def __copy__(self):
+        return type(self)(**self.__dict__)
+
+class SimpleNamespace(Namespace[T], tx.Sized,
+                                    tx.Iterable[T],
+                                    tx.Container[T]):
+    __slots__ = tuple()
+    
+    def __bool__(self) -> bool:
+        return bool(self.__dict__)
+    
+    def __len__(self) -> int:
+        return len(self.__dict__)
+    
+    def __contains__(self, key: str) -> bool:
+        return key in self.__dict__
+    
+    def __iter__(self) -> tx.Iterator[T]:
+        return iter(self.__dict__)
+    
+    def __repr__(self) -> str:
         keys = sorted(self.__dict__)
         items = ("{}={!r}".format(k, self.__dict__[k]) for k in keys)
         return "{}({})".format(type(self).__name__, ", ".join(items))
-
-class SimpleNamespace(Namespace[T]):
-    __slots__ = tuple()
 
 class MultiNamespace(Namespace[T], tx.Collection[T]):
     __slots__ = ('_dict', '_initialized',)
@@ -109,6 +156,9 @@ class MultiNamespace(Namespace[T], tx.Collection[T]):
     
     def mdict(self) -> MultiMapping[str, T]:
         return super().__getattribute__('_dict')
+    
+    def __bool__(self) -> bool:
+        return bool(self.__dict__)
     
     def __len__(self) -> int:
         return len(self.mdict())
@@ -140,9 +190,16 @@ class MultiNamespace(Namespace[T], tx.Collection[T]):
     def count(self, key: str) -> int:
         return (key in self.mdict()) and len(self.allof(key)) or 0
     
-    def zero(self, key: str):
+    def zero(self, key: str) -> bool:
         if key in self.mdict():
             del self.mdict()[key]
+            return True
+        return False
+    
+    def __copy__(self):
+        out = type(self)()
+        out.mdict().update(self.mdict())
+        return out
     
     def __repr__(self) -> str:
         return repr(self.mdict())
@@ -195,15 +252,16 @@ def find_generic_for_type(cls: tx.Type[ConcreteType],
             return ty.for_origin.get(t)
     return missing
 
-# from pprint import pprint
-# print(f'Typing Index: {len(ty)} types, {len(ty.mdict())} in mdict, {len(ty.for_origin)} in for_origin')
-# print()
-# pprint(dict(ty.mdict()))
-# print()
-# pprint(ty.for_origin)
-# print()
-# print(ty)
-# print()
+if __name__ == '__main__' and PRINT_ORIGIN_TYPES:
+    from pprint import pprint
+    print(f'Typing Index: {len(ty)} types, {len(ty.mdict())} in mdict, {len(ty.for_origin)} in for_origin')
+    print()
+    pprint(dict(ty.mdict()))
+    print()
+    pprint(ty.for_origin)
+    print()
+    print(ty)
+    print()
 
 class TerminalSize(object):
     
@@ -610,7 +668,7 @@ def terminal_print(message: str,
     
     print(colorizer(f"{aa}{message}{ab}"), file=handle)
 
-def print_cache(BaseClass: type, cache_instance_name: str):
+def print_cache(BaseClass: tx.Type[type], cache_instance_name: str):
     """ Pretty-print the contents of a cached metaclass variable """
     from pprint import pprint
     
