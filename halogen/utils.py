@@ -13,7 +13,8 @@ from functools import wraps
 from multidict import MultiDict
 from multidict._abc import MultiMapping
 
-__all__ = ('Namespace', 'SimpleNamespace',
+__all__ = ('Originator',
+           'Namespace', 'SimpleNamespace',
                         'MultiNamespace',
                         'TypeSpace',
                         'ty',
@@ -80,28 +81,37 @@ class Namespace(tx.Generic[T],
                       abc.ABC,
                       metaclass=Originator):
     
-    __slots__ = tuple()
+    def __init__(self, **kwargs):
+            self.__dict__.update(kwargs)
     
-    def __new__(cls, **kwargs):
-        instance = super(Namespace, cls).__new__(cls)
-        for k, v in kwargs.items():
-            setattr(instance, k, v)
-        return instance
+    # def __new__(cls, **kwargs):
+    #     instance = super(Namespace, cls).__new__(cls)
+    #     reprs = []
+    #     for k, v in kwargs.items():
+    #         setattr(instance, k, v)
+    #         reprs.append(f"{k}=“{v}”")
+    #     reprlist = ", ".join(reprs)
+    #     reprstr = f"{cls.__name__}({reprlist})"
+    #     setattr(instance, '__repr__', staticmethod(lambda: reprstr))
+    #     return instance
+    
+    def __repr__(self):
+        keys = sorted(self.__dict__)
+        items = ("{}={!r}".format(k, self.__dict__[k]) for k in keys)
+        return "{}({})".format(type(self).__name__, ", ".join(items))
 
 class SimpleNamespace(Namespace[T]):
     __slots__ = tuple()
 
 class MultiNamespace(Namespace[T], tx.Collection[T]):
-    
-    __slots__ = ('_mdict',
-                 '_initialized')
+    __slots__ = ('_dict', '_initialized',)
     
     def __new__(cls, **kwargs):
         return object.__new__(cls)
     
     def __init__(self, **kwargs):
-        self._mdict: MultiMapping[str, T] = MultiDict()
-        self._mdict.update(kwargs)
+        self._dict: MultiMapping[str, T] = MultiDict()
+        self._dict.update(kwargs)
         self._initialized = True
     
     def initialized(self) -> bool:
@@ -111,7 +121,7 @@ class MultiNamespace(Namespace[T], tx.Collection[T]):
             return False
     
     def mdict(self) -> MultiMapping[str, T]:
-        return super(MultiNamespace, self).__getattribute__('_mdict')
+        return super(MultiNamespace, self).__getattribute__('_dict')
     
     def __len__(self) -> int:
         return len(self.mdict())
