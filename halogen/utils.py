@@ -39,7 +39,7 @@ __all__ = ('tuplize', 'listify',
 __dir__ = lambda: list(__all__)
 
 abstract = None # SHUT UP, PYFLAKES!!
-PRINT_ORIGIN_TYPES = True
+PRINT_ORIGIN_TYPES = False
 
 T = tx.TypeVar('T', covariant=True)
 
@@ -105,9 +105,6 @@ class Namespace(tx.Generic[T],
     __slots__ = tuple()
     
     @abstract
-    def __init__(self, **kwargs): ...
-    
-    @abstract
     def __bool__(self) -> bool: ...
     
     @abstract
@@ -118,12 +115,6 @@ class Namespace(tx.Generic[T],
     
     @abstract
     def __iter__(self) -> tx.Iterator[T]: ...
-    
-    @abstract
-    def __copy__(self): ...
-    
-    @abstract
-    def __repr__(self) -> str: ...
 
 class SimpleNamespace(Namespace[T], tx.Sized,
                                     tx.Iterable[T],

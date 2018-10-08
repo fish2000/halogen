@@ -9,6 +9,7 @@ import types
 import typing as tx
 
 from utils import tuplize, u8str
+# from utils import Originator, Namespace as GenericNamespace
 
 __all__ = ('OCDType',
            'OCDSet', 'OCDFrozenSet',
@@ -288,18 +289,27 @@ class SortedList(list, metaclass=OCDType):
 
 OCDList       = OCDType[list] # this emits the cached type from above
 
+# class MetaType(Originator, OCDType):
+#
+#     def __new__(metacls,
+#                    name: str,
+#                   bases: tx.Iterable[type],
+#              attributes: tx.MutableMapping[str, tx.Any],
+#                **kwargs) -> type:
+#         return OCDType.__new__(metacls, name, tuplize(bases), dict(attributes), **kwargs)
+
 class Namespace(types.SimpleNamespace):
     
-    def __bool__(self):
+    def __bool__(self) -> bool:
         return bool(self.__dict__)
     
-    def __iter__(self):
+    def __iter__(self) -> tx.Iterator[T]:
         return iter(self.__dict__)
     
-    def __len__(self):
+    def __len__(self) -> int:
         return len(self.__dict__)
     
-    def __contains__(self, key):
+    def __contains__(self, key) -> bool:
         return key in self.__dict__
 
 class SortedNamespace(Namespace, collections.abc.MutableMapping,
