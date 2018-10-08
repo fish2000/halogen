@@ -158,7 +158,7 @@ class MultiNamespace(Namespace[T], tx.Collection[T]):
         return super().__getattribute__('_dict')
     
     def __bool__(self) -> bool:
-        return bool(self.__dict__)
+        return bool(self.mdict())
     
     def __len__(self) -> int:
         return len(self.mdict())
