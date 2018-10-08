@@ -65,7 +65,8 @@ class Originator(abc.ABCMeta):
         
         # Jam it in:
         attributes.update({
-            '__origin__' : genericbase
+            '__originator__' : metacls,
+                '__origin__' : genericbase
         })
         
         # Do the beard:
@@ -82,7 +83,7 @@ class Namespace(tx.Generic[T],
                       metaclass=Originator):
     
     def __init__(self, **kwargs):
-            self.__dict__.update(kwargs)
+        self.__dict__.update(kwargs)
     
     def __repr__(self):
         keys = sorted(self.__dict__)
@@ -95,22 +96,19 @@ class SimpleNamespace(Namespace[T]):
 class MultiNamespace(Namespace[T], tx.Collection[T]):
     __slots__ = ('_dict', '_initialized',)
     
-    def __new__(cls, **kwargs):
-        return object.__new__(cls)
-    
     def __init__(self, **kwargs):
         self._dict: MultiMapping[str, T] = MultiDict()
         self._dict.update(kwargs)
-        self._initialized = True
+        self._initialized: bool = True
     
     def initialized(self) -> bool:
         try:
-            return super(MultiNamespace, self).__getattribute__('_initialized')
+            return super().__getattribute__('_initialized')
         except:
             return False
     
     def mdict(self) -> MultiMapping[str, T]:
-        return super(MultiNamespace, self).__getattribute__('_dict')
+        return super().__getattribute__('_dict')
     
     def __len__(self) -> int:
         return len(self.mdict())
@@ -129,7 +127,7 @@ class MultiNamespace(Namespace[T], tx.Collection[T]):
         if self.initialized():
             self.mdict().add(key, val)
         else:
-            super(MultiNamespace, self).__setattr__(key, val)
+            super().__setattr__(key, val)
     
     def add(self, key: str, val: T):
         if not self.initialized():
@@ -157,7 +155,7 @@ class TypeSpace(MultiNamespace[ConcreteType]):
     
     def __init__(self, **kwargs):
         self.for_origin: tx.Dict[str, ConcreteType] = {}
-        super(TypeSpace, self).__init__(**kwargs)
+        super().__init__(**kwargs)
     
     def add_original(self, cls: tx.Type[ConcreteType]) -> bool:
         origin: tx.Optional[ConcreteType] = getattr(cls, '__origin__', None)

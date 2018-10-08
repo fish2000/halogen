@@ -162,8 +162,6 @@ class OCDType(abc.ABCMeta):
                             classmethod(
                             lambda cls, *args: tx.Generic.__class_getitem__(*args))))
         
-        # reprfunc = classmethod(lambda cls: f'{cls.__module__}.{cls.__name__}')
-        
         key = kwargs.pop('key', None)
         rev = kwargs.pop('reverse', False)
         
@@ -276,9 +274,6 @@ class OCDType(abc.ABCMeta):
         
         metacls.subtypes[name] = metacls.TypeAndBases.for_type(cls)
         return cls
-    
-    # def __repr__(cls):
-    #     return f'ocd.{cls.__name__}'
 
 ###
 ### SPECIALIZATIONS OF OCDType:
