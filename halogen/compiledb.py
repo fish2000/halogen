@@ -2,13 +2,13 @@
 
 from __future__ import print_function
 
+import abc
 import collections.abc
 import contextlib
 import json
 import os
-import six
 
-from abc import ABC, ABCMeta, abstractmethod as abstract
+from abc import abstractmethod as abstract
 from errors import CDBError
 from filesystem import rm_rf, TemporaryName, Directory
 from utils import stringify, u8bytes, u8str
@@ -18,36 +18,32 @@ __all__ = ('CDBSubBase', 'CDBBase',
 
 __dir__ = lambda: list(__all__)
 
-SubBaseAncestor = six.with_metaclass(ABCMeta, ABC)
-class CDBSubBase(SubBaseAncestor):
+class CDBSubBase(abc.ABC, metaclass=abc.ABCMeta):
     
     @abstract
     def push(self, filepth, command, directory=None,
-                                     destination=None): pass
+                                     destination=None): ...
     
     @abstract
-    def __len__(self): pass
+    def __len__(self): ...
     
     @abstract
-    def __getitem__(self, key): pass
+    def __getitem__(self, key): ...
     
     @abstract
-    def to_string(self): pass
+    def to_string(self): ...
     
     @abstract
-    def __repr__(self): pass
+    def __repr__(self): ...
     
     @abstract
-    def __str__(self): pass
+    def __str__(self): ...
     
     @abstract
-    def __bytes__(self): pass
+    def __bytes__(self): ...
     
     @abstract
-    def __unicode__(self): pass
-    
-    @abstract
-    def __bool__(self): pass
+    def __bool__(self): ...
 
 
 class CDBBase(CDBSubBase, collections.abc.Sequence,
@@ -112,9 +108,6 @@ class CDBBase(CDBSubBase, collections.abc.Sequence,
     
     def __bytes__(self):
         return u8bytes(json.dumps(self.rollout()))
-    
-    def __unicode__(self):
-        return six.u(str(self))
     
     def __bool__(self):
         return True
@@ -199,8 +192,6 @@ class CDBJsonFile(CDBBase, contextlib.AbstractContextManager):
         self.write()
 
 CDBSubBase.register(CDBJsonFile)
-
-del SubBaseAncestor
 
 def test():
     pass
