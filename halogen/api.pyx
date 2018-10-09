@@ -153,7 +153,7 @@ cdef class Type:
         # FIRST: examine `other` argument, looking for an existing Type object,
         # from which we can copy-construct:
         if other is not None:
-            if type(other) == type(self):
+            if type(other) is type(self):
                 self.__this__ = HalType(other.__this__)
                 return
         # NEXT, IF THAT DIDN’T WORK: check **kwargs for one of either:
@@ -1170,7 +1170,7 @@ def link_modules(module_name not None, *modules):
     
     # check the type of all positional arguments:
     for module in modules:
-        if type(module) != Module:
+        if type(module) is not Module:
             raise TypeError("""All positional args must be halogen.api.Module""")
         f_insert_into(module, modulevec)
     

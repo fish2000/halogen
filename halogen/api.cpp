@@ -4877,7 +4877,7 @@ static int __pyx_pf_7halogen_3api_4Type_2__cinit__(struct __pyx_obj_7halogen_3ap
  *         # FIRST: examine `other` argument, looking for an existing Type object,
  *         # from which we can copy-construct:
  *         if other is not None:             # <<<<<<<<<<<<<<
- *             if type(other) == type(self):
+ *             if type(other) is type(self):
  *                 self.__this__ = HalType(other.__this__)
  */
   __pyx_t_1 = (((PyObject *)__pyx_v_other) != Py_None);
@@ -4887,18 +4887,17 @@ static int __pyx_pf_7halogen_3api_4Type_2__cinit__(struct __pyx_obj_7halogen_3ap
     /* "halogen/api.pyx":156
  *         # from which we can copy-construct:
  *         if other is not None:
- *             if type(other) == type(self):             # <<<<<<<<<<<<<<
+ *             if type(other) is type(self):             # <<<<<<<<<<<<<<
  *                 self.__this__ = HalType(other.__this__)
  *                 return
  */
-    __pyx_t_3 = PyObject_RichCompare(((PyObject *)Py_TYPE(((PyObject *)__pyx_v_other))), ((PyObject *)Py_TYPE(((PyObject *)__pyx_v_self))), Py_EQ); __Pyx_XGOTREF(__pyx_t_3); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 156, __pyx_L1_error)
-    __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 156, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    if (__pyx_t_2) {
+    __pyx_t_2 = (((PyObject *)Py_TYPE(((PyObject *)__pyx_v_other))) == ((PyObject *)Py_TYPE(((PyObject *)__pyx_v_self))));
+    __pyx_t_1 = (__pyx_t_2 != 0);
+    if (__pyx_t_1) {
 
       /* "halogen/api.pyx":157
  *         if other is not None:
- *             if type(other) == type(self):
+ *             if type(other) is type(self):
  *                 self.__this__ = HalType(other.__this__)             # <<<<<<<<<<<<<<
  *                 return
  *         # NEXT, IF THAT DIDNT WORK: check **kwargs for one of either:
@@ -4906,7 +4905,7 @@ static int __pyx_pf_7halogen_3api_4Type_2__cinit__(struct __pyx_obj_7halogen_3ap
       __pyx_v_self->__pyx___this__ = Halide::Type(__pyx_v_other->__pyx___this__);
 
       /* "halogen/api.pyx":158
- *             if type(other) == type(self):
+ *             if type(other) is type(self):
  *                 self.__this__ = HalType(other.__this__)
  *                 return             # <<<<<<<<<<<<<<
  *         # NEXT, IF THAT DIDNT WORK: check **kwargs for one of either:
@@ -4918,7 +4917,7 @@ static int __pyx_pf_7halogen_3api_4Type_2__cinit__(struct __pyx_obj_7halogen_3ap
       /* "halogen/api.pyx":156
  *         # from which we can copy-construct:
  *         if other is not None:
- *             if type(other) == type(self):             # <<<<<<<<<<<<<<
+ *             if type(other) is type(self):             # <<<<<<<<<<<<<<
  *                 self.__this__ = HalType(other.__this__)
  *                 return
  */
@@ -4928,7 +4927,7 @@ static int __pyx_pf_7halogen_3api_4Type_2__cinit__(struct __pyx_obj_7halogen_3ap
  *         # FIRST: examine `other` argument, looking for an existing Type object,
  *         # from which we can copy-construct:
  *         if other is not None:             # <<<<<<<<<<<<<<
- *             if type(other) == type(self):
+ *             if type(other) is type(self):
  *                 self.__this__ = HalType(other.__this__)
  */
   }
@@ -4940,9 +4939,9 @@ static int __pyx_pf_7halogen_3api_4Type_2__cinit__(struct __pyx_obj_7halogen_3ap
  *             self.__this__ = self.__this__.with_code(kwargs.get('code'))
  *         elif 'bits' in kwargs:
  */
-  __pyx_t_2 = (__Pyx_PyDict_ContainsTF(__pyx_n_s_code, __pyx_v_kwargs, Py_EQ)); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 164, __pyx_L1_error)
-  __pyx_t_1 = (__pyx_t_2 != 0);
-  if (__pyx_t_1) {
+  __pyx_t_1 = (__Pyx_PyDict_ContainsTF(__pyx_n_s_code, __pyx_v_kwargs, Py_EQ)); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 164, __pyx_L1_error)
+  __pyx_t_2 = (__pyx_t_1 != 0);
+  if (__pyx_t_2) {
 
     /* "halogen/api.pyx":165
  *         # `with_whatever()` single-argument static construction helper methods:
@@ -4980,9 +4979,9 @@ static int __pyx_pf_7halogen_3api_4Type_2__cinit__(struct __pyx_obj_7halogen_3ap
  *             self.__this__ = self.__this__.with_bits(<uint8_t>kwargs.get('bits'))
  *         elif 'lanes' in kwargs:
  */
-  __pyx_t_1 = (__Pyx_PyDict_ContainsTF(__pyx_n_s_bits, __pyx_v_kwargs, Py_EQ)); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 166, __pyx_L1_error)
-  __pyx_t_2 = (__pyx_t_1 != 0);
-  if (__pyx_t_2) {
+  __pyx_t_2 = (__Pyx_PyDict_ContainsTF(__pyx_n_s_bits, __pyx_v_kwargs, Py_EQ)); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 166, __pyx_L1_error)
+  __pyx_t_1 = (__pyx_t_2 != 0);
+  if (__pyx_t_1) {
 
     /* "halogen/api.pyx":167
  *             self.__this__ = self.__this__.with_code(kwargs.get('code'))
@@ -5020,9 +5019,9 @@ static int __pyx_pf_7halogen_3api_4Type_2__cinit__(struct __pyx_obj_7halogen_3ap
  *             self.__this__ = self.__this__.with_lanes(<uint16_t>kwargs.get('lanes'))
  *         else:
  */
-  __pyx_t_2 = (__Pyx_PyDict_ContainsTF(__pyx_n_s_lanes, __pyx_v_kwargs, Py_EQ)); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 168, __pyx_L1_error)
-  __pyx_t_1 = (__pyx_t_2 != 0);
-  if (__pyx_t_1) {
+  __pyx_t_1 = (__Pyx_PyDict_ContainsTF(__pyx_n_s_lanes, __pyx_v_kwargs, Py_EQ)); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 168, __pyx_L1_error)
+  __pyx_t_2 = (__pyx_t_1 != 0);
+  if (__pyx_t_2) {
 
     /* "halogen/api.pyx":169
  *             self.__this__ = self.__this__.with_bits(<uint8_t>kwargs.get('bits'))
@@ -23816,6 +23815,7 @@ static PyObject *__pyx_pf_7halogen_3api_20link_modules(CYTHON_UNUSED PyObject *_
   PyObject *__pyx_t_3 = NULL;
   Py_ssize_t __pyx_t_4;
   int __pyx_t_5;
+  int __pyx_t_6;
   __Pyx_RefNannySetupContext("link_modules", 0);
 
   /* "halogen/api.pyx":1164
@@ -23884,7 +23884,7 @@ static PyObject *__pyx_pf_7halogen_3api_20link_modules(CYTHON_UNUSED PyObject *_
  * 
  *     # check the type of all positional arguments:
  *     for module in modules:             # <<<<<<<<<<<<<<
- *         if type(module) != Module:
+ *         if type(module) is not Module:
  *             raise TypeError("""All positional args must be halogen.api.Module""")
  */
   __pyx_t_3 = __pyx_v_modules; __Pyx_INCREF(__pyx_t_3); __pyx_t_4 = 0;
@@ -23902,18 +23902,17 @@ static PyObject *__pyx_pf_7halogen_3api_20link_modules(CYTHON_UNUSED PyObject *_
     /* "halogen/api.pyx":1173
  *     # check the type of all positional arguments:
  *     for module in modules:
- *         if type(module) != Module:             # <<<<<<<<<<<<<<
+ *         if type(module) is not Module:             # <<<<<<<<<<<<<<
  *             raise TypeError("""All positional args must be halogen.api.Module""")
  *         f_insert_into(module, modulevec)
  */
-    __pyx_t_1 = PyObject_RichCompare(((PyObject *)Py_TYPE(__pyx_v_module)), ((PyObject *)__pyx_ptype_7halogen_3api_Module), Py_NE); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1173, __pyx_L1_error)
-    __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_5 < 0)) __PYX_ERR(0, 1173, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    if (unlikely(__pyx_t_5)) {
+    __pyx_t_5 = (((PyObject *)Py_TYPE(__pyx_v_module)) != ((PyObject *)__pyx_ptype_7halogen_3api_Module));
+    __pyx_t_6 = (__pyx_t_5 != 0);
+    if (unlikely(__pyx_t_6)) {
 
       /* "halogen/api.pyx":1174
  *     for module in modules:
- *         if type(module) != Module:
+ *         if type(module) is not Module:
  *             raise TypeError("""All positional args must be halogen.api.Module""")             # <<<<<<<<<<<<<<
  *         f_insert_into(module, modulevec)
  * 
@@ -23927,14 +23926,14 @@ static PyObject *__pyx_pf_7halogen_3api_20link_modules(CYTHON_UNUSED PyObject *_
       /* "halogen/api.pyx":1173
  *     # check the type of all positional arguments:
  *     for module in modules:
- *         if type(module) != Module:             # <<<<<<<<<<<<<<
+ *         if type(module) is not Module:             # <<<<<<<<<<<<<<
  *             raise TypeError("""All positional args must be halogen.api.Module""")
  *         f_insert_into(module, modulevec)
  */
     }
 
     /* "halogen/api.pyx":1175
- *         if type(module) != Module:
+ *         if type(module) is not Module:
  *             raise TypeError("""All positional args must be halogen.api.Module""")
  *         f_insert_into(module, modulevec)             # <<<<<<<<<<<<<<
  * 
@@ -23947,7 +23946,7 @@ static PyObject *__pyx_pf_7halogen_3api_20link_modules(CYTHON_UNUSED PyObject *_
  * 
  *     # check the type of all positional arguments:
  *     for module in modules:             # <<<<<<<<<<<<<<
- *         if type(module) != Module:
+ *         if type(module) is not Module:
  *             raise TypeError("""All positional args must be halogen.api.Module""")
  */
   }
@@ -27730,7 +27729,7 @@ static int __Pyx_InitCachedConstants(void) {
 
   /* "halogen/api.pyx":1174
  *     for module in modules:
- *         if type(module) != Module:
+ *         if type(module) is not Module:
  *             raise TypeError("""All positional args must be halogen.api.Module""")             # <<<<<<<<<<<<<<
  *         f_insert_into(module, modulevec)
  * 
