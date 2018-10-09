@@ -11122,7 +11122,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_36__setstate_cython__(CYTHON_UNU
  * 
  *     @classmethod
  *     def check(cls, instance):             # <<<<<<<<<<<<<<
- *         return getattr(instance, '__class__', None) == cls
+ *         return getattr(instance, '__class__', None) is cls
  * 
  */
 
@@ -11144,37 +11144,38 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_check(PyTypeObject *__pyx_v_cls
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
-  PyObject *__pyx_t_2 = NULL;
+  int __pyx_t_2;
   __Pyx_RefNannySetupContext("check", 0);
 
   /* "halogen/api.pyx":448
  *     @classmethod
  *     def check(cls, instance):
- *         return getattr(instance, '__class__', None) == cls             # <<<<<<<<<<<<<<
+ *         return getattr(instance, '__class__', None) is cls             # <<<<<<<<<<<<<<
  * 
  *     def __cinit__(self, *args, **kwargs):
  */
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_1 = __Pyx_GetAttr3(__pyx_v_instance, __pyx_n_s_class, Py_None); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 448, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = PyObject_RichCompare(__pyx_t_1, ((PyObject *)__pyx_v_cls), Py_EQ); __Pyx_XGOTREF(__pyx_t_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 448, __pyx_L1_error)
+  __pyx_t_2 = (__pyx_t_1 == ((PyObject *)__pyx_v_cls));
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_r = __pyx_t_2;
-  __pyx_t_2 = 0;
+  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 448, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
   goto __pyx_L0;
 
   /* "halogen/api.pyx":447
  * 
  *     @classmethod
  *     def check(cls, instance):             # <<<<<<<<<<<<<<
- *         return getattr(instance, '__class__', None) == cls
+ *         return getattr(instance, '__class__', None) is cls
  * 
  */
 
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_XDECREF(__pyx_t_2);
   __Pyx_AddTraceback("halogen.api.Outputs.check", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
@@ -11184,7 +11185,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_check(PyTypeObject *__pyx_v_cls
 }
 
 /* "halogen/api.pyx":450
- *         return getattr(instance, '__class__', None) == cls
+ *         return getattr(instance, '__class__', None) is cls
  * 
  *     def __cinit__(self, *args, **kwargs):             # <<<<<<<<<<<<<<
  *         for arg in args:
@@ -11723,7 +11724,7 @@ static int __pyx_pf_7halogen_3api_7Outputs_2__cinit__(struct __pyx_obj_7halogen_
   __pyx_v_self->__pyx___this__.schedule_name = ((std::string)__pyx_t_16);
 
   /* "halogen/api.pyx":450
- *         return getattr(instance, '__class__', None) == cls
+ *         return getattr(instance, '__class__', None) is cls
  * 
  *     def __cinit__(self, *args, **kwargs):             # <<<<<<<<<<<<<<
  *         for arg in args:
@@ -28655,7 +28656,7 @@ if (!__Pyx_RefNanny) {
  * 
  *     @classmethod
  *     def check(cls, instance):             # <<<<<<<<<<<<<<
- *         return getattr(instance, '__class__', None) == cls
+ *         return getattr(instance, '__class__', None) is cls
  * 
  */
   __pyx_t_2 = __Pyx_GetNameInClass((PyObject *)__pyx_ptype_7halogen_3api_Outputs, __pyx_n_s_check); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 447, __pyx_L1_error)
@@ -28666,7 +28667,7 @@ if (!__Pyx_RefNanny) {
  * 
  *     @classmethod             # <<<<<<<<<<<<<<
  *     def check(cls, instance):
- *         return getattr(instance, '__class__', None) == cls
+ *         return getattr(instance, '__class__', None) is cls
  */
   __pyx_t_1 = __Pyx_Method_ClassMethod(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 446, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
