@@ -228,11 +228,11 @@ class ConfigBase(BaseAncestor):
         * The definition of the “prefix” property, a property that pretty much all
           of our Config-ish subclasses rely on (with the notable exception of the 
           ConfigUnion class, q.v. class definition sub.)
-        * The definition of the “subdirectory(…)” method, which is also very popular
-          with the subclasses.
-        * Definitions for __repr__(), __str__(), __unicode__(), and a “to_string(…)”
-          method -- all of which should be adequate for, like, 99 percent of all of
-          the possible subclasses’ introspection-printing needs; also see docstrings
+        * The definition of the “subdirectory(…)” method, the invocation of which
+          is also very popular with the subclasses.
+        * Definitions for __repr__(), __str__(), and a “to_string(…)” method --
+          all of which should be adequate for, like, 99 percent of all of the
+          possible subclasses’ introspection-printing needs; also see docstrings
           and definitions below of FieldList for related internals.
     """
     

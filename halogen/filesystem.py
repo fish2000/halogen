@@ -8,7 +8,6 @@ import collections.abc
 import contextlib
 import os
 import re
-import six
 import sys
 import typing as tx
 
@@ -276,12 +275,11 @@ class TypeLocker(abc.ABCMeta):
         os.PathLike.register(cls)
         return cls
 
-TemporaryFileWrapperAncestor = six.with_metaclass(TypeLocker,
-                                                  TemporaryFileWrapperBase,
-                                                  contextlib.AbstractContextManager,
-                                                  os.PathLike)
-
-class TemporaryFileWrapper(TemporaryFileWrapperAncestor):
+class TemporaryFileWrapper(TemporaryFileWrapperBase,
+                           contextlib.AbstractContextManager,
+                           os.PathLike,
+                           metaclass=TypeLocker):
+    
     """ Local subclass of `tempfile._TemporaryFileWrapper`.
         
         We inherit from both `tempfile._TemporaryFileWrapper` and
@@ -302,7 +300,6 @@ class TemporaryFileWrapper(TemporaryFileWrapperAncestor):
 
 @memoize
 def TemporaryNamedFile(tempth, mode='wb', buffer_size=-1, delete=True):
-    
     """ Variation on ``tempfile.NamedTemporaryFile(…)``, for use within
         `filesystem.TemporaryName()` – q.v. class definition sub.
         
@@ -364,11 +361,10 @@ def TemporaryNamedFile(tempth, mode='wb', buffer_size=-1, delete=True):
             os.close(descriptor)
         raise FilesystemError(str(base_exception))
 
-TemporaryNameAncestor = six.with_metaclass(TypeLocker, collections.abc.Hashable,
-                                                       contextlib.AbstractContextManager,
-                                                       os.PathLike)
-
-class TemporaryName(TemporaryNameAncestor):
+class TemporaryName(collections.abc.Hashable,
+                    contextlib.AbstractContextManager,
+                    os.PathLike,
+                    metaclass=TypeLocker):
     
     """ This is like NamedTemporaryFile without any of the actual stuff;
         it just makes a file name -- YOU have to make shit happen with it.
@@ -540,20 +536,16 @@ class TemporaryName(TemporaryNameAncestor):
     
     def __hash__(self):
         return hash((self._name, self.exists))
-    
-    def __unicode__(self):
-        return six.u(str(self))
 
 non_dotfile_match = re.compile(r"^[^\.]").match
 non_dotfile_matcher = lambda p: non_dotfile_match(p.name)
 
-DirectoryAncestor = six.with_metaclass(TypeLocker, collections.abc.Hashable,
-                                                   collections.abc.Mapping,
-                                                   collections.abc.Sized,
-                                                   contextlib.AbstractContextManager,
-                                                   os.PathLike)
-
-class Directory(DirectoryAncestor):
+class Directory(collections.abc.Hashable,
+                collections.abc.Mapping,
+                collections.abc.Sized,
+                contextlib.AbstractContextManager,
+                os.PathLike,
+                metaclass=TypeLocker):
     
     """ A context-managed directory: change in on enter, change back out
         on exit. Plus a few convenience functions for listing and whatnot.
@@ -564,11 +556,6 @@ class Directory(DirectoryAncestor):
               'will_change_back',   'did_change_back')
     
     zip_suffix = f"{os.extsep}zip"
-    
-    # def __new__(cls, pth=None, **kwargs):
-    #     instance = super(Directory, cls).__new__(cls)
-    #     instance.ctx_initialize()
-    #     return instance
     
     def __init__(self, pth=None):
         """ Initialize a new Directory object.
@@ -958,9 +945,6 @@ class Directory(DirectoryAncestor):
     
     def __call__(self, *args, **kwargs):
         return self
-    
-    def __unicode__(self):
-        return six.u(str(self))
 
 DirectoryLike = tx.Union[tx.AnyStr,
                          os.PathLike,
@@ -1117,7 +1101,6 @@ def NamedTemporaryFile(mode='w+b', buffer_size=-1,
                        suffix="tmp", prefix=DEFAULT_PREFIX,
                        directory=None,
                        delete=True):
-    
     """ Variation on tempfile.NamedTemporaryFile(…), such that suffixes
         are passed WITHOUT specifying the period in front (versus the
         standard library version which makes you pass suffixes WITH
@@ -1162,9 +1145,6 @@ modulize({
 import filesystem.ts as ts
 
 del TemporaryFileWrapperBase
-del TemporaryFileWrapperAncestor
-del TemporaryNameAncestor
-del DirectoryAncestor
 del DirectoryLike
 del MaybeDirectoryLike
 
