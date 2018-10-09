@@ -6,7 +6,6 @@ import abc
 import collections
 import os
 import re
-import six
 import sys
 import sysconfig
 import typing as tx
@@ -21,6 +20,7 @@ from functools import wraps
 
 import filesystem
 import compiledb
+from abc import abstractmethod as abstract
 from errors import ConfigurationError, ConfigCommandError
 from filesystem import which, back_tick, script_path
 from filesystem import Directory
@@ -78,8 +78,7 @@ def TupleType(length: int,
     out = tx.Tuple[tuple(tuptyp for idx in range(length))]
     return clsvar and tx.ClassVar[out] or out
 
-SubBaseAncestor: tx.Type[Ancestor] = six.with_metaclass(abc.ABCMeta, abc.ABC)
-class ConfigSubBase(SubBaseAncestor):
+class ConfigSubBase(abc.ABC, metaclass=abc.ABCMeta):
     
     """ The abstract base class ancestor of all Config-ish classes we define here.
         
@@ -109,28 +108,28 @@ class ConfigSubBase(SubBaseAncestor):
     # Prefix get/set/delete methods:
     
     @property
-    @abc.abstractmethod
+    @abstract
     def prefix(self) -> Directory: ...
     
     @prefix.setter
-    @abc.abstractmethod
+    @abstract
     def prefix(self,
                value: filesystem.ts.DirectoryLike): ...
     
     @prefix.deleter
-    @abc.abstractmethod
+    @abstract
     def prefix(self): ...
     
     # Name get method:
     
     @property
-    @abc.abstractmethod
+    @abstract
     def name(self) -> str: ...
     
     # The `subdirectory` method is used throughout
     # many Config-ish classes:
     
-    @abc.abstractmethod
+    @abstract
     def subdirectory(self,
                      subdir: tx.AnyStr,
                      whence: filesystem.ts.MaybeDirectoryLike = None) -> MaybeStr: ...
@@ -140,47 +139,47 @@ class ConfigSubBase(SubBaseAncestor):
     # of the get_* methods (q.v. prototypes sub.)
     # to compose their arguments:
     
-    @abc.abstractmethod
+    @abstract
     def cc_flag_string(self) -> str: ...
     
-    @abc.abstractmethod
+    @abstract
     def cxx_flag_string(self) -> str: ...
     
-    @abc.abstractmethod
+    @abstract
     def ld_flag_string(self) -> str: ...
     
-    @abc.abstractmethod
+    @abstract
     def ar_flag_string(self) -> str: pass
     
     # Stringification and representation methods:
     
-    @abc.abstractmethod
+    @abstract
     def to_string(self,
                   field_list: tx.Optional[tx.Iterable[str]] = None) -> str: ...
     
-    @abc.abstractmethod
+    @abstract
     def __repr__(self) -> str: ...
     
-    @abc.abstractmethod
+    @abstract
     def __str__(self) -> str: ...
     
-    @abc.abstractmethod
+    @abstract
     def __bytes__(self) -> bytes: ...
     
     # These four get_* methods make up the bare-bones
     # requirement for what a Config-ish class needs
     # to provide:
     
-    @abc.abstractmethod
+    @abstract
     def get_includes(self) -> str: ...
     
-    @abc.abstractmethod
+    @abstract
     def get_libs(self) -> str: ...
     
-    @abc.abstractmethod
+    @abstract
     def get_cflags(self) -> str: ...
     
-    @abc.abstractmethod
+    @abstract
     def get_ldflags(self) -> str: ...
 
 
@@ -218,8 +217,7 @@ def environ_override(name: str) -> str:
     return os.environ.get(name,
             sysconfig.get_config_var(name) or '')
 
-BaseAncestor: tx.Type[Ancestor] = six.with_metaclass(ConfigBaseMeta, ConfigSubBase)
-class ConfigBase(BaseAncestor):
+class ConfigBase(ConfigSubBase, metaclass=ConfigBaseMeta):
     
     """ The base class for all Config-ish classes we define here. This includes:
         
@@ -1457,8 +1455,6 @@ del TC
 del Ancestor
 del HomogenousTypeVar
 # del ConfigType
-del SubBaseAncestor
-del BaseAncestor
 
 def test():
     from utils import print_config
