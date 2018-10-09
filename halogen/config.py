@@ -56,10 +56,8 @@ MaybeStr = tx.Optional[str]
 
 # Any kind of set:
 TC = tx.TypeVar('TC', covariant=True)
-AnySet = tx.Union[tx.Set[TC],
-                  tx.FrozenSet[TC],
-                  OCDSet,
-                  OCDFrozenSet]
+AnySet = tx.Union[tx.Set[TC],   tx.FrozenSet[TC],
+                  OCDSet[TC],   OCDFrozenSet[TC]]
 
 # Ancestor type variable annotation:
 Ancestor = tx.TypeVar('Ancestor', bound=abc.ABC, covariant=True)
@@ -1133,16 +1131,18 @@ class ConfigUnion(ConfigBase, tx.Collection[ConfigType]):
         def __init__(self, name: str):
             """ Initialize the @union_of decorator, stashing the name of the function
                 to call upon those config-class instances wrapped by the ConfigUnion
-                instance in question. """
+                instance in question.
+            """
             self.name: str = f"get_{str(name)}"
         
         def __call__(self, base_function):
             """ Process the decorated method, passed in as `base_function` --
                 The `base_function` call should process the populated input set of flags
-                and return a set (either a modified version of the input set, or not). """
+                and return an OCDSet[str] (either a modified version of the input set, or not).
+            """
             # N.B. the curly-brace expression below is a set comprehension:
             @wraps(base_function)
-            def getter(this):
+            def getter(this) -> str:
                 out: OCDSet[str] = OCDSet()
                 for config in this.configs:
                     function_to_call = getattr(config, self.name)
@@ -1227,7 +1227,8 @@ class ConfigUnion(ConfigBase, tx.Collection[ConfigType]):
     @classmethod
     def nonexistent_path_flags(cls, flags: AnySet) -> OCDFrozenSet[str]:
         """ Filter out include- or lib-path flags pointing to directories
-            that do not actually exist, from a set of flags: """
+            that do not actually exist, from a set of flags:
+        """
         match_func = cls.directory_flag_matcher
         check_func = os.path.exists
         return OCDFrozenSet(
@@ -1237,7 +1238,8 @@ class ConfigUnion(ConfigBase, tx.Collection[ConfigType]):
     @classmethod
     def highest_optimization_level(cls, flags: AnySet) -> AnySet:
         """ Strip all but the highest optimization-level compiler flag
-            from a set of (de-dashed) flags. Returns a new set. """
+            from a set of (de-dashed) flags. Returns a new set.
+        """
         # Which flags are optflags?
         optflags: AnySet = flags.intersection(cls.optimization.set)
         
@@ -1261,7 +1263,8 @@ class ConfigUnion(ConfigBase, tx.Collection[ConfigType]):
     @classmethod
     def highest_cxx_standard_level(cls, flags: AnySet) -> AnySet:
         """ Strip all but the highest C++-standard-level compiler flag
-            from a set of (de-dashed) flags. Returns a new set. """
+            from a set of (de-dashed) flags. Returns a new set.
+        """
         # Which flags are stdflags?
         stdflags: AnySet = flags.intersection(cls.cxx_standard.set)
         
@@ -1341,25 +1344,29 @@ class ConfigUnion(ConfigBase, tx.Collection[ConfigType]):
             itself with the sub-config type list.
         """
         typelist: str = ", ".join(self.sub_config_types())
-        return f"{type(self).__name__}<{typelist}>"
+        typename: str = type(self).__name__
+        return f"{typename}<{typelist}>"
     
     @union_of(name='includes')
-    def get_includes(self, includes) -> set:
+    def get_includes(self, includes: OCDSet[str]) -> OCDSet[str]:
         """ Return the union of all flags amassed from the calling
-            of all base Config objects' `get_includes()`: """
+            of all base Config objects' `get_includes()`:
+        """
         out = includes - self.nonexistent_path_flags(includes)
         return out
     
     @union_of(name='libs')
-    def get_libs(self, libs) -> set:
+    def get_libs(self, libs: OCDSet[str]) -> OCDSet[str]:
         """ Return the union of all flags amassed from the calling
-            of all base Config objects' `get_libs()`: """
+            of all base Config objects' `get_libs()`:
+        """
         return libs
     
     @union_of(name='cflags')
-    def get_cflags(self, cflags) -> set:
+    def get_cflags(self, cflags: OCDSet[str]) -> OCDSet[str]:
         """ Return the union of all flags amassed from the calling
-            of all base Config objects' `get_cflags()`: """
+            of all base Config objects' `get_cflags()`:
+        """
         # Consolidate optimization and C++ standard flags,
         # passing only the respective highest-value flags:
         out = self.highest_cxx_standard_level(
@@ -1368,9 +1375,10 @@ class ConfigUnion(ConfigBase, tx.Collection[ConfigType]):
         return out
     
     @union_of(name='ldflags')
-    def get_ldflags(self, ldflags) -> set:
+    def get_ldflags(self, ldflags: OCDSet[str]) -> OCDSet[str]:
         """ Return the union of all flags amassed from the calling
-            of all base Config objects' `get_ldflags()`: """
+            of all base Config objects' `get_ldflags()`:
+        """
         out = ldflags - self.nonexistent_path_flags(ldflags)
         return out
 
