@@ -3655,7 +3655,7 @@ static PyObject *__pyx_f_7halogen_3api_u8bytes(PyObject *__pyx_v_source, CYTHON_
  *         return u8encode(str(source))
  *     elif type(source) is bool:             # <<<<<<<<<<<<<<
  *         return source and b'True' or b'False'
- *     elif type(source) is array:
+ *     elif type(source) is type(None):
  */
   __pyx_t_1 = (((PyObject *)Py_TYPE(__pyx_v_source)) == ((PyObject*)&PyBool_Type));
   __pyx_t_2 = (__pyx_t_1 != 0);
@@ -3665,8 +3665,8 @@ static PyObject *__pyx_f_7halogen_3api_u8bytes(PyObject *__pyx_v_source, CYTHON_
  *         return u8encode(str(source))
  *     elif type(source) is bool:
  *         return source and b'True' or b'False'             # <<<<<<<<<<<<<<
- *     elif type(source) is array:
- *         return bytes(source)
+ *     elif type(source) is type(None):
+ *         return b'None'
  */
     __Pyx_XDECREF(__pyx_r);
     __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_v_source); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 99, __pyx_L1_error)
@@ -3694,55 +3694,50 @@ static PyObject *__pyx_f_7halogen_3api_u8bytes(PyObject *__pyx_v_source, CYTHON_
  *         return u8encode(str(source))
  *     elif type(source) is bool:             # <<<<<<<<<<<<<<
  *         return source and b'True' or b'False'
- *     elif type(source) is array:
+ *     elif type(source) is type(None):
  */
   }
 
   /* "halogen/api.pyx":100
  *     elif type(source) is bool:
  *         return source and b'True' or b'False'
- *     elif type(source) is array:             # <<<<<<<<<<<<<<
- *         return bytes(source)
- *     elif type(source) is memoryview:
+ *     elif type(source) is type(None):             # <<<<<<<<<<<<<<
+ *         return b'None'
+ *     elif type(source) is array:
  */
-  __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_array); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 100, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_2 = (((PyObject *)Py_TYPE(__pyx_v_source)) == __pyx_t_4);
-  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  __pyx_t_2 = (((PyObject *)Py_TYPE(__pyx_v_source)) == ((PyObject *)Py_TYPE(Py_None)));
   __pyx_t_1 = (__pyx_t_2 != 0);
   if (__pyx_t_1) {
 
     /* "halogen/api.pyx":101
  *         return source and b'True' or b'False'
+ *     elif type(source) is type(None):
+ *         return b'None'             # <<<<<<<<<<<<<<
  *     elif type(source) is array:
- *         return bytes(source)             # <<<<<<<<<<<<<<
- *     elif type(source) is memoryview:
  *         return bytes(source)
  */
     __Pyx_XDECREF(__pyx_r);
-    __pyx_t_4 = __Pyx_PyObject_CallOneArg(((PyObject *)(&PyBytes_Type)), __pyx_v_source); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 101, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_4);
-    __pyx_r = ((PyObject*)__pyx_t_4);
-    __pyx_t_4 = 0;
+    __Pyx_INCREF(__pyx_n_b_None);
+    __pyx_r = __pyx_n_b_None;
     goto __pyx_L0;
 
     /* "halogen/api.pyx":100
  *     elif type(source) is bool:
  *         return source and b'True' or b'False'
- *     elif type(source) is array:             # <<<<<<<<<<<<<<
- *         return bytes(source)
- *     elif type(source) is memoryview:
+ *     elif type(source) is type(None):             # <<<<<<<<<<<<<<
+ *         return b'None'
+ *     elif type(source) is array:
  */
   }
 
   /* "halogen/api.pyx":102
- *     elif type(source) is array:
+ *     elif type(source) is type(None):
+ *         return b'None'
+ *     elif type(source) is array:             # <<<<<<<<<<<<<<
  *         return bytes(source)
- *     elif type(source) is memoryview:             # <<<<<<<<<<<<<<
- *         return bytes(source)
- *     if source is None:
+ *     elif type(source) is memoryview:
  */
-  __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_memoryview); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 102, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_array); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 102, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __pyx_t_1 = (((PyObject *)Py_TYPE(__pyx_v_source)) == __pyx_t_4);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
@@ -3750,11 +3745,11 @@ static PyObject *__pyx_f_7halogen_3api_u8bytes(PyObject *__pyx_v_source, CYTHON_
   if (__pyx_t_2) {
 
     /* "halogen/api.pyx":103
- *         return bytes(source)
- *     elif type(source) is memoryview:
- *         return bytes(source)             # <<<<<<<<<<<<<<
- *     if source is None:
  *         return b'None'
+ *     elif type(source) is array:
+ *         return bytes(source)             # <<<<<<<<<<<<<<
+ *     elif type(source) is memoryview:
+ *         return bytes(source)
  */
     __Pyx_XDECREF(__pyx_r);
     __pyx_t_4 = __Pyx_PyObject_CallOneArg(((PyObject *)(&PyBytes_Type)), __pyx_v_source); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 103, __pyx_L1_error)
@@ -3764,49 +3759,54 @@ static PyObject *__pyx_f_7halogen_3api_u8bytes(PyObject *__pyx_v_source, CYTHON_
     goto __pyx_L0;
 
     /* "halogen/api.pyx":102
- *     elif type(source) is array:
+ *     elif type(source) is type(None):
+ *         return b'None'
+ *     elif type(source) is array:             # <<<<<<<<<<<<<<
  *         return bytes(source)
- *     elif type(source) is memoryview:             # <<<<<<<<<<<<<<
- *         return bytes(source)
- *     if source is None:
+ *     elif type(source) is memoryview:
  */
   }
 
   /* "halogen/api.pyx":104
- *     elif type(source) is memoryview:
+ *     elif type(source) is array:
  *         return bytes(source)
- *     if source is None:             # <<<<<<<<<<<<<<
- *         return b'None'
+ *     elif type(source) is memoryview:             # <<<<<<<<<<<<<<
+ *         return bytes(source)
  *     if hasattr(source, '__fspath__'):
  */
-  __pyx_t_2 = (__pyx_v_source == Py_None);
+  __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_memoryview); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 104, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  __pyx_t_2 = (((PyObject *)Py_TYPE(__pyx_v_source)) == __pyx_t_4);
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __pyx_t_1 = (__pyx_t_2 != 0);
   if (__pyx_t_1) {
 
     /* "halogen/api.pyx":105
  *         return bytes(source)
- *     if source is None:
- *         return b'None'             # <<<<<<<<<<<<<<
+ *     elif type(source) is memoryview:
+ *         return bytes(source)             # <<<<<<<<<<<<<<
  *     if hasattr(source, '__fspath__'):
  *         return u8encode(source.__fspath__())
  */
     __Pyx_XDECREF(__pyx_r);
-    __Pyx_INCREF(__pyx_n_b_None);
-    __pyx_r = __pyx_n_b_None;
+    __pyx_t_4 = __Pyx_PyObject_CallOneArg(((PyObject *)(&PyBytes_Type)), __pyx_v_source); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 105, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __pyx_r = ((PyObject*)__pyx_t_4);
+    __pyx_t_4 = 0;
     goto __pyx_L0;
 
     /* "halogen/api.pyx":104
- *     elif type(source) is memoryview:
+ *     elif type(source) is array:
  *         return bytes(source)
- *     if source is None:             # <<<<<<<<<<<<<<
- *         return b'None'
+ *     elif type(source) is memoryview:             # <<<<<<<<<<<<<<
+ *         return bytes(source)
  *     if hasattr(source, '__fspath__'):
  */
   }
 
   /* "halogen/api.pyx":106
- *     if source is None:
- *         return b'None'
+ *     elif type(source) is memoryview:
+ *         return bytes(source)
  *     if hasattr(source, '__fspath__'):             # <<<<<<<<<<<<<<
  *         return u8encode(source.__fspath__())
  *     elif hasattr(source, '__str__'):
@@ -3816,7 +3816,7 @@ static PyObject *__pyx_f_7halogen_3api_u8bytes(PyObject *__pyx_v_source, CYTHON_
   if (__pyx_t_2) {
 
     /* "halogen/api.pyx":107
- *         return b'None'
+ *         return bytes(source)
  *     if hasattr(source, '__fspath__'):
  *         return u8encode(source.__fspath__())             # <<<<<<<<<<<<<<
  *     elif hasattr(source, '__str__'):
@@ -3851,8 +3851,8 @@ static PyObject *__pyx_f_7halogen_3api_u8bytes(PyObject *__pyx_v_source, CYTHON_
     goto __pyx_L0;
 
     /* "halogen/api.pyx":106
- *     if source is None:
- *         return b'None'
+ *     elif type(source) is memoryview:
+ *         return bytes(source)
  *     if hasattr(source, '__fspath__'):             # <<<<<<<<<<<<<<
  *         return u8encode(source.__fspath__())
  *     elif hasattr(source, '__str__'):
@@ -3992,7 +3992,7 @@ static PyObject *__pyx_f_7halogen_3api_u8bytes(PyObject *__pyx_v_source, CYTHON_
     __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 115, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     if (!__pyx_t_2) {
-      goto __pyx_L10_next_or;
+      goto __pyx_L9_next_or;
     } else {
     }
     __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_n_b_True); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 115, __pyx_L1_error)
@@ -4000,12 +4000,12 @@ static PyObject *__pyx_f_7halogen_3api_u8bytes(PyObject *__pyx_v_source, CYTHON_
     } else {
       __Pyx_INCREF(__pyx_n_b_True);
       __pyx_t_3 = __pyx_n_b_True;
-      goto __pyx_L9_bool_binop_done;
+      goto __pyx_L8_bool_binop_done;
     }
-    __pyx_L10_next_or:;
+    __pyx_L9_next_or:;
     __Pyx_INCREF(__pyx_n_b_False);
     __pyx_t_3 = __pyx_n_b_False;
-    __pyx_L9_bool_binop_done:;
+    __pyx_L8_bool_binop_done:;
     __pyx_r = ((PyObject*)__pyx_t_3);
     __pyx_t_3 = 0;
     goto __pyx_L0;

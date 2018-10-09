@@ -97,12 +97,12 @@ cpdef bytes u8bytes(object source):
         return u8encode(str(source))
     elif type(source) is bool:
         return source and b'True' or b'False'
+    elif type(source) is type(None):
+        return b'None'
     elif type(source) is array:
         return bytes(source)
     elif type(source) is memoryview:
         return bytes(source)
-    if source is None:
-        return b'None'
     if hasattr(source, '__fspath__'):
         return u8encode(source.__fspath__())
     elif hasattr(source, '__str__'):
