@@ -83,19 +83,23 @@ cdef inline bytes u8encode(object source):
 
 cpdef bytes u8bytes(object source):
     """ Custom version of u8bytes(…) for use in Cython extensions: """
-    if type(source) == bytes:
+    if type(source) is bytes:
         return source
-    elif type(source) in (str, unicode):
+    elif type(source) is str:
         return u8encode(source)
-    elif type(source) in (int, long, float):
+    elif type(source) is unicode:
+        return u8encode(source)
+    elif type(source) is int:
         return u8encode(str(source))
-    elif type(source) == bool:
+    elif type(source) is long:
+        return u8encode(str(source))
+    elif type(source) is float:
+        return u8encode(str(source))
+    elif type(source) is bool:
         return source and b'True' or b'False'
-    # elif type(source) == OS:
-    #     return bytes(str(<int>source), encoding='UTF-8')
-    # elif type(source) == Arch:
-    #     return bytes(str(<int>source), encoding='UTF-8')
-    elif type(source) in (array, memoryview):
+    elif type(source) is array:
+        return bytes(source)
+    elif type(source) is memoryview:
         return bytes(source)
     if source is None:
         return b'None'
@@ -115,7 +119,8 @@ cpdef str u8str(object source):
     """ Custom version of u8str(…) for use in Cython extensions: """
     return u8bytes(source).decode('UTF-8')
 
-def stringify(object instance not None, object fields not None):
+def stringify(object instance not None,
+              object fields not None):
     """ Custom version of stringify(instance, fields) for use in Cython extensions: """
     field_dict = {}
     for field in fields:
@@ -223,11 +228,13 @@ cdef class Type:
         return out
     
     def can_represent(self, other):
-        if type(other) == type(self):
+        if type(other) is type(self):
             return self.can_represent_type(other)
-        elif type(other) == float:
+        elif type(other) is float:
             return self.can_represent_float(float(other))
-        elif type(other) in (int, long):
+        elif type(other) is int:
+            return self.can_represent_long(long(other))
+        elif type(other) is long:
             return self.can_represent_long(long(other))
         return False
     
@@ -399,9 +406,8 @@ cdef class Target:
     def __repr__(self):
         return stringify(self, ('os', 'arch', 'bits')).decode('UTF-8')
     
-    def __richcmp__(self,
-                    Target other not None,
-                    int op):
+    def __richcmp__(self, Target other not None,
+                             int op):
         if op == 2: # ==
             return bool(<HalTarget>self.__this__ == <HalTarget>other.__this__)
         elif op == 3: # !=
@@ -443,7 +449,7 @@ cdef class Outputs:
     
     def __cinit__(self, *args, **kwargs):
         for arg in args:
-            if type(arg) == type(self):
+            if type(arg) is type(self):
                 self.__this__ = self.__this__.object(arg.object_name) \
                                              .assembly(arg.assembly_name) \
                                              .bitcode(arg.bitcode_name) \
@@ -677,7 +683,7 @@ cdef class EmitOptions:
     
     def __cinit__(self, *args, **kwargs):
         for arg in args:
-            if type(arg) == type(self):
+            if type(arg) is type(self):
                 self.__this__ = EmOpts()
                 self.__this__.emit_o = PyObject_IsTrue(arg.emit_o)
                 self.__this__.emit_h = PyObject_IsTrue(arg.emit_h)
@@ -896,7 +902,7 @@ cdef class Module:
     def __cinit__(self, *args, **kwargs):
         cdef HalTarget htarg
         for arg in args:
-            if type(arg) == type(self):
+            if type(arg) is type(self):
                 htarg = HalTarget(<string>arg.get_target().to_string())
                 self.__this__.reset(new HalModule(<string>arg.name, <HalTarget>htarg))
                 if self.__this__.get():
@@ -972,7 +978,7 @@ cdef class Module:
         # Halide::Buffer<void>, Halide::LoweredFunc, and Halide::ExternalCode --
         # which those (at time of writing) do not yet have wrapper cdef-class types:
         cdef Module mother
-        if type(other) == type(self):
+        if type(other) is type(self):
             mother = <Module>other
             deref(self.__this__).append(deref(mother.__this__))
     

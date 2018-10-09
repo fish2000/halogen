@@ -1662,7 +1662,7 @@ typedef std::vector<Halide::Internal::StubInput>  __pyx_t_7halogen_3ext_6halide_
 typedef std::vector<std::string>  __pyx_t_7halogen_3ext_6halide_4util_stringvec_t;
 struct __pyx_opt_args_7halogen_3api_get_generator_module;
 
-/* "halogen/api.pyx":654
+/* "halogen/api.pyx":660
  * 
  * 
  * ctypedef GeneratorBase.EmitOptions EmOpts             # <<<<<<<<<<<<<<
@@ -1671,7 +1671,7 @@ struct __pyx_opt_args_7halogen_3api_get_generator_module;
  */
 typedef Halide::Internal::GeneratorBase::EmitOptions __pyx_t_7halogen_3api_EmOpts;
 
-/* "halogen/api.pyx":887
+/* "halogen/api.pyx":893
  * 
  * 
  * ctypedef unique_ptr[HalModule] module_ptr_t             # <<<<<<<<<<<<<<
@@ -1680,7 +1680,7 @@ typedef Halide::Internal::GeneratorBase::EmitOptions __pyx_t_7halogen_3api_EmOpt
  */
 typedef std::unique_ptr<Halide::Module>  __pyx_t_7halogen_3api_module_ptr_t;
 
-/* "halogen/api.pyx":1096
+/* "halogen/api.pyx":1102
  *                                     file_base_name_string)
  * 
  * cpdef Module get_generator_module(object name, object arguments={}):             # <<<<<<<<<<<<<<
@@ -1692,7 +1692,7 @@ struct __pyx_opt_args_7halogen_3api_get_generator_module {
   PyObject *arguments;
 };
 
-/* "halogen/api.pyx":135
+/* "halogen/api.pyx":140
  * 
  * @cython.freelist(32)
  * cdef class Type:             # <<<<<<<<<<<<<<
@@ -1706,7 +1706,7 @@ struct __pyx_obj_7halogen_3api_Type {
 };
 
 
-/* "halogen/api.pyx":321
+/* "halogen/api.pyx":328
  * 
  * @cython.freelist(32)
  * cdef class Target:             # <<<<<<<<<<<<<<
@@ -1719,7 +1719,7 @@ struct __pyx_obj_7halogen_3api_Target {
 };
 
 
-/* "halogen/api.pyx":434
+/* "halogen/api.pyx":440
  * 
  * @cython.freelist(32)
  * cdef class Outputs:             # <<<<<<<<<<<<<<
@@ -1732,7 +1732,7 @@ struct __pyx_obj_7halogen_3api_Outputs {
 };
 
 
-/* "halogen/api.pyx":657
+/* "halogen/api.pyx":663
  * 
  * @cython.freelist(32)
  * cdef class EmitOptions:             # <<<<<<<<<<<<<<
@@ -1745,7 +1745,7 @@ struct __pyx_obj_7halogen_3api_EmitOptions {
 };
 
 
-/* "halogen/api.pyx":889
+/* "halogen/api.pyx":895
  * ctypedef unique_ptr[HalModule] module_ptr_t
  * 
  * cdef class Module:             # <<<<<<<<<<<<<<
@@ -1759,7 +1759,7 @@ struct __pyx_obj_7halogen_3api_Module {
 };
 
 
-/* "halogen/api.pyx":1005
+/* "halogen/api.pyx":1011
  *         return dict(metadata_map)
  * 
  *     def to_string(self):             # <<<<<<<<<<<<<<
@@ -1773,7 +1773,7 @@ struct __pyx_obj_7halogen_3api___pyx_scope_struct__to_string {
 };
 
 
-/* "halogen/api.pyx":1024
+/* "halogen/api.pyx":1030
  *             #                                       for k, v in metadata_dict.items())
  *             # ... right now the keys and values look to be exactly the same always, sooo:
  *             metadata_str = b", ".join(b"%s" % k for k in metadata_dict.keys())             # <<<<<<<<<<<<<<
@@ -1790,7 +1790,7 @@ struct __pyx_obj_7halogen_3api___pyx_scope_struct_1_genexpr {
 };
 
 
-/* "halogen/api.pyx":1027
+/* "halogen/api.pyx":1033
  *             field_values += (b""" metadata={ %s } """ % metadata_str,)
  *         return b"%s(%s) @ %s" % (u8bytes(type(self).__name__),
  *                                  b", ".join(field_value.strip() for field_value in field_values),             # <<<<<<<<<<<<<<
@@ -1807,7 +1807,7 @@ struct __pyx_obj_7halogen_3api___pyx_scope_struct_2_genexpr {
 
 
 
-/* "halogen/api.pyx":135
+/* "halogen/api.pyx":140
  * 
  * @cython.freelist(32)
  * cdef class Type:             # <<<<<<<<<<<<<<
@@ -1823,7 +1823,7 @@ struct __pyx_vtabstruct_7halogen_3api_Type {
 static struct __pyx_vtabstruct_7halogen_3api_Type *__pyx_vtabptr_7halogen_3api_Type;
 
 
-/* "halogen/api.pyx":889
+/* "halogen/api.pyx":895
  * ctypedef unique_ptr[HalModule] module_ptr_t
  * 
  * cdef class Module:             # <<<<<<<<<<<<<<
@@ -3424,37 +3424,36 @@ static CYTHON_INLINE PyObject *__pyx_f_7halogen_3api_u8encode(PyObject *__pyx_v_
  * 
  * cpdef bytes u8bytes(object source):             # <<<<<<<<<<<<<<
  *     """ Custom version of u8bytes() for use in Cython extensions: """
- *     if type(source) == bytes:
+ *     if type(source) is bytes:
  */
 
 static PyObject *__pyx_pw_7halogen_3api_1u8bytes(PyObject *__pyx_self, PyObject *__pyx_v_source); /*proto*/
 static PyObject *__pyx_f_7halogen_3api_u8bytes(PyObject *__pyx_v_source, CYTHON_UNUSED int __pyx_skip_dispatch) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
-  PyObject *__pyx_t_1 = NULL;
+  int __pyx_t_1;
   int __pyx_t_2;
   PyObject *__pyx_t_3 = NULL;
-  int __pyx_t_4;
+  PyObject *__pyx_t_4 = NULL;
   PyObject *__pyx_t_5 = NULL;
   __Pyx_RefNannySetupContext("u8bytes", 0);
 
   /* "halogen/api.pyx":86
  * cpdef bytes u8bytes(object source):
  *     """ Custom version of u8bytes() for use in Cython extensions: """
- *     if type(source) == bytes:             # <<<<<<<<<<<<<<
+ *     if type(source) is bytes:             # <<<<<<<<<<<<<<
  *         return source
- *     elif type(source) in (str, unicode):
+ *     elif type(source) is str:
  */
-  __pyx_t_1 = PyObject_RichCompare(((PyObject *)Py_TYPE(__pyx_v_source)), ((PyObject *)(&PyBytes_Type)), Py_EQ); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 86, __pyx_L1_error)
-  __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 86, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_1 = (((PyObject *)Py_TYPE(__pyx_v_source)) == ((PyObject *)(&PyBytes_Type)));
+  __pyx_t_2 = (__pyx_t_1 != 0);
   if (__pyx_t_2) {
 
     /* "halogen/api.pyx":87
  *     """ Custom version of u8bytes() for use in Cython extensions: """
- *     if type(source) == bytes:
+ *     if type(source) is bytes:
  *         return source             # <<<<<<<<<<<<<<
- *     elif type(source) in (str, unicode):
+ *     elif type(source) is str:
  *         return u8encode(source)
  */
     __Pyx_XDECREF(__pyx_r);
@@ -3466,147 +3465,537 @@ static PyObject *__pyx_f_7halogen_3api_u8bytes(PyObject *__pyx_v_source, CYTHON_
     /* "halogen/api.pyx":86
  * cpdef bytes u8bytes(object source):
  *     """ Custom version of u8bytes() for use in Cython extensions: """
- *     if type(source) == bytes:             # <<<<<<<<<<<<<<
+ *     if type(source) is bytes:             # <<<<<<<<<<<<<<
  *         return source
- *     elif type(source) in (str, unicode):
+ *     elif type(source) is str:
  */
   }
 
   /* "halogen/api.pyx":88
- *     if type(source) == bytes:
+ *     if type(source) is bytes:
  *         return source
- *     elif type(source) in (str, unicode):             # <<<<<<<<<<<<<<
+ *     elif type(source) is str:             # <<<<<<<<<<<<<<
  *         return u8encode(source)
- *     elif type(source) in (int, long, float):
+ *     elif type(source) is unicode:
  */
-  __Pyx_INCREF(((PyObject *)Py_TYPE(__pyx_v_source)));
-  __pyx_t_1 = ((PyObject *)Py_TYPE(__pyx_v_source));
-  __pyx_t_3 = PyObject_RichCompare(((PyObject *)__pyx_t_1), ((PyObject *)(&PyString_Type)), Py_EQ); __Pyx_XGOTREF(__pyx_t_3); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 88, __pyx_L1_error)
-  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 88, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (!__pyx_t_4) {
-  } else {
-    __pyx_t_2 = __pyx_t_4;
-    goto __pyx_L4_bool_binop_done;
-  }
-  __pyx_t_3 = PyObject_RichCompare(((PyObject *)__pyx_t_1), ((PyObject *)(&PyUnicode_Type)), Py_EQ); __Pyx_XGOTREF(__pyx_t_3); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 88, __pyx_L1_error)
-  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 88, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_2 = __pyx_t_4;
-  __pyx_L4_bool_binop_done:;
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_4 = (__pyx_t_2 != 0);
-  if (__pyx_t_4) {
+  __pyx_t_2 = (((PyObject *)Py_TYPE(__pyx_v_source)) == ((PyObject *)(&PyString_Type)));
+  __pyx_t_1 = (__pyx_t_2 != 0);
+  if (__pyx_t_1) {
 
     /* "halogen/api.pyx":89
  *         return source
- *     elif type(source) in (str, unicode):
+ *     elif type(source) is str:
  *         return u8encode(source)             # <<<<<<<<<<<<<<
- *     elif type(source) in (int, long, float):
- *         return u8encode(str(source))
+ *     elif type(source) is unicode:
+ *         return u8encode(source)
  */
     __Pyx_XDECREF(__pyx_r);
-    __pyx_t_1 = __pyx_f_7halogen_3api_u8encode(__pyx_v_source); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 89, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __pyx_r = ((PyObject*)__pyx_t_1);
-    __pyx_t_1 = 0;
+    __pyx_t_3 = __pyx_f_7halogen_3api_u8encode(__pyx_v_source); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 89, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_3);
+    __pyx_r = ((PyObject*)__pyx_t_3);
+    __pyx_t_3 = 0;
     goto __pyx_L0;
 
     /* "halogen/api.pyx":88
- *     if type(source) == bytes:
+ *     if type(source) is bytes:
  *         return source
- *     elif type(source) in (str, unicode):             # <<<<<<<<<<<<<<
+ *     elif type(source) is str:             # <<<<<<<<<<<<<<
  *         return u8encode(source)
- *     elif type(source) in (int, long, float):
+ *     elif type(source) is unicode:
  */
   }
 
   /* "halogen/api.pyx":90
- *     elif type(source) in (str, unicode):
+ *     elif type(source) is str:
  *         return u8encode(source)
- *     elif type(source) in (int, long, float):             # <<<<<<<<<<<<<<
- *         return u8encode(str(source))
- *     elif type(source) == bool:
+ *     elif type(source) is unicode:             # <<<<<<<<<<<<<<
+ *         return u8encode(source)
+ *     elif type(source) is int:
  */
-  __Pyx_INCREF(((PyObject *)Py_TYPE(__pyx_v_source)));
-  __pyx_t_1 = ((PyObject *)Py_TYPE(__pyx_v_source));
-  __pyx_t_3 = PyObject_RichCompare(((PyObject *)__pyx_t_1), ((PyObject *)(&PyInt_Type)), Py_EQ); __Pyx_XGOTREF(__pyx_t_3); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 90, __pyx_L1_error)
-  __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 90, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (!__pyx_t_2) {
-  } else {
-    __pyx_t_4 = __pyx_t_2;
-    goto __pyx_L6_bool_binop_done;
-  }
-  __pyx_t_3 = PyObject_RichCompare(((PyObject *)__pyx_t_1), ((PyObject *)(&PyLong_Type)), Py_EQ); __Pyx_XGOTREF(__pyx_t_3); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 90, __pyx_L1_error)
-  __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 90, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (!__pyx_t_2) {
-  } else {
-    __pyx_t_4 = __pyx_t_2;
-    goto __pyx_L6_bool_binop_done;
-  }
-  __pyx_t_3 = PyObject_RichCompare(((PyObject *)__pyx_t_1), ((PyObject *)(&PyFloat_Type)), Py_EQ); __Pyx_XGOTREF(__pyx_t_3); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 90, __pyx_L1_error)
-  __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 90, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_4 = __pyx_t_2;
-  __pyx_L6_bool_binop_done:;
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_2 = (__pyx_t_4 != 0);
+  __pyx_t_1 = (((PyObject *)Py_TYPE(__pyx_v_source)) == ((PyObject *)(&PyUnicode_Type)));
+  __pyx_t_2 = (__pyx_t_1 != 0);
   if (__pyx_t_2) {
 
     /* "halogen/api.pyx":91
  *         return u8encode(source)
- *     elif type(source) in (int, long, float):
- *         return u8encode(str(source))             # <<<<<<<<<<<<<<
- *     elif type(source) == bool:
- *         return source and b'True' or b'False'
+ *     elif type(source) is unicode:
+ *         return u8encode(source)             # <<<<<<<<<<<<<<
+ *     elif type(source) is int:
+ *         return u8encode(str(source))
  */
     __Pyx_XDECREF(__pyx_r);
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(((PyObject *)(&PyString_Type)), __pyx_v_source); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 91, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_3 = __pyx_f_7halogen_3api_u8encode(__pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 91, __pyx_L1_error)
+    __pyx_t_3 = __pyx_f_7halogen_3api_u8encode(__pyx_v_source); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 91, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __pyx_r = ((PyObject*)__pyx_t_3);
     __pyx_t_3 = 0;
     goto __pyx_L0;
 
     /* "halogen/api.pyx":90
- *     elif type(source) in (str, unicode):
+ *     elif type(source) is str:
  *         return u8encode(source)
- *     elif type(source) in (int, long, float):             # <<<<<<<<<<<<<<
- *         return u8encode(str(source))
- *     elif type(source) == bool:
+ *     elif type(source) is unicode:             # <<<<<<<<<<<<<<
+ *         return u8encode(source)
+ *     elif type(source) is int:
  */
   }
 
   /* "halogen/api.pyx":92
- *     elif type(source) in (int, long, float):
+ *     elif type(source) is unicode:
+ *         return u8encode(source)
+ *     elif type(source) is int:             # <<<<<<<<<<<<<<
  *         return u8encode(str(source))
- *     elif type(source) == bool:             # <<<<<<<<<<<<<<
- *         return source and b'True' or b'False'
- *     # elif type(source) == OS:
+ *     elif type(source) is long:
  */
-  __pyx_t_3 = PyObject_RichCompare(((PyObject *)Py_TYPE(__pyx_v_source)), ((PyObject*)&PyBool_Type), Py_EQ); __Pyx_XGOTREF(__pyx_t_3); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 92, __pyx_L1_error)
-  __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 92, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (__pyx_t_2) {
+  __pyx_t_2 = (((PyObject *)Py_TYPE(__pyx_v_source)) == ((PyObject *)(&PyInt_Type)));
+  __pyx_t_1 = (__pyx_t_2 != 0);
+  if (__pyx_t_1) {
 
     /* "halogen/api.pyx":93
+ *         return u8encode(source)
+ *     elif type(source) is int:
+ *         return u8encode(str(source))             # <<<<<<<<<<<<<<
+ *     elif type(source) is long:
  *         return u8encode(str(source))
- *     elif type(source) == bool:
- *         return source and b'True' or b'False'             # <<<<<<<<<<<<<<
- *     # elif type(source) == OS:
- *     #     return bytes(str(<int>source), encoding='UTF-8')
  */
     __Pyx_XDECREF(__pyx_r);
-    __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_v_source); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 93, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_CallOneArg(((PyObject *)(&PyString_Type)), __pyx_v_source); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 93, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_3);
+    __pyx_t_4 = __pyx_f_7halogen_3api_u8encode(__pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 93, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+    __pyx_r = ((PyObject*)__pyx_t_4);
+    __pyx_t_4 = 0;
+    goto __pyx_L0;
+
+    /* "halogen/api.pyx":92
+ *     elif type(source) is unicode:
+ *         return u8encode(source)
+ *     elif type(source) is int:             # <<<<<<<<<<<<<<
+ *         return u8encode(str(source))
+ *     elif type(source) is long:
+ */
+  }
+
+  /* "halogen/api.pyx":94
+ *     elif type(source) is int:
+ *         return u8encode(str(source))
+ *     elif type(source) is long:             # <<<<<<<<<<<<<<
+ *         return u8encode(str(source))
+ *     elif type(source) is float:
+ */
+  __pyx_t_1 = (((PyObject *)Py_TYPE(__pyx_v_source)) == ((PyObject *)(&PyLong_Type)));
+  __pyx_t_2 = (__pyx_t_1 != 0);
+  if (__pyx_t_2) {
+
+    /* "halogen/api.pyx":95
+ *         return u8encode(str(source))
+ *     elif type(source) is long:
+ *         return u8encode(str(source))             # <<<<<<<<<<<<<<
+ *     elif type(source) is float:
+ *         return u8encode(str(source))
+ */
+    __Pyx_XDECREF(__pyx_r);
+    __pyx_t_4 = __Pyx_PyObject_CallOneArg(((PyObject *)(&PyString_Type)), __pyx_v_source); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 95, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __pyx_t_3 = __pyx_f_7halogen_3api_u8encode(__pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 95, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_3);
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+    __pyx_r = ((PyObject*)__pyx_t_3);
+    __pyx_t_3 = 0;
+    goto __pyx_L0;
+
+    /* "halogen/api.pyx":94
+ *     elif type(source) is int:
+ *         return u8encode(str(source))
+ *     elif type(source) is long:             # <<<<<<<<<<<<<<
+ *         return u8encode(str(source))
+ *     elif type(source) is float:
+ */
+  }
+
+  /* "halogen/api.pyx":96
+ *     elif type(source) is long:
+ *         return u8encode(str(source))
+ *     elif type(source) is float:             # <<<<<<<<<<<<<<
+ *         return u8encode(str(source))
+ *     elif type(source) is bool:
+ */
+  __pyx_t_2 = (((PyObject *)Py_TYPE(__pyx_v_source)) == ((PyObject *)(&PyFloat_Type)));
+  __pyx_t_1 = (__pyx_t_2 != 0);
+  if (__pyx_t_1) {
+
+    /* "halogen/api.pyx":97
+ *         return u8encode(str(source))
+ *     elif type(source) is float:
+ *         return u8encode(str(source))             # <<<<<<<<<<<<<<
+ *     elif type(source) is bool:
+ *         return source and b'True' or b'False'
+ */
+    __Pyx_XDECREF(__pyx_r);
+    __pyx_t_3 = __Pyx_PyObject_CallOneArg(((PyObject *)(&PyString_Type)), __pyx_v_source); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 97, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_3);
+    __pyx_t_4 = __pyx_f_7halogen_3api_u8encode(__pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 97, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+    __pyx_r = ((PyObject*)__pyx_t_4);
+    __pyx_t_4 = 0;
+    goto __pyx_L0;
+
+    /* "halogen/api.pyx":96
+ *     elif type(source) is long:
+ *         return u8encode(str(source))
+ *     elif type(source) is float:             # <<<<<<<<<<<<<<
+ *         return u8encode(str(source))
+ *     elif type(source) is bool:
+ */
+  }
+
+  /* "halogen/api.pyx":98
+ *     elif type(source) is float:
+ *         return u8encode(str(source))
+ *     elif type(source) is bool:             # <<<<<<<<<<<<<<
+ *         return source and b'True' or b'False'
+ *     elif type(source) is array:
+ */
+  __pyx_t_1 = (((PyObject *)Py_TYPE(__pyx_v_source)) == ((PyObject*)&PyBool_Type));
+  __pyx_t_2 = (__pyx_t_1 != 0);
+  if (__pyx_t_2) {
+
+    /* "halogen/api.pyx":99
+ *         return u8encode(str(source))
+ *     elif type(source) is bool:
+ *         return source and b'True' or b'False'             # <<<<<<<<<<<<<<
+ *     elif type(source) is array:
+ *         return bytes(source)
+ */
+    __Pyx_XDECREF(__pyx_r);
+    __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_v_source); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 99, __pyx_L1_error)
+    if (!__pyx_t_2) {
+      goto __pyx_L5_next_or;
+    } else {
+    }
+    __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_n_b_True); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 99, __pyx_L1_error)
+    if (!__pyx_t_2) {
+    } else {
+      __Pyx_INCREF(__pyx_n_b_True);
+      __pyx_t_4 = __pyx_n_b_True;
+      goto __pyx_L4_bool_binop_done;
+    }
+    __pyx_L5_next_or:;
+    __Pyx_INCREF(__pyx_n_b_False);
+    __pyx_t_4 = __pyx_n_b_False;
+    __pyx_L4_bool_binop_done:;
+    __pyx_r = ((PyObject*)__pyx_t_4);
+    __pyx_t_4 = 0;
+    goto __pyx_L0;
+
+    /* "halogen/api.pyx":98
+ *     elif type(source) is float:
+ *         return u8encode(str(source))
+ *     elif type(source) is bool:             # <<<<<<<<<<<<<<
+ *         return source and b'True' or b'False'
+ *     elif type(source) is array:
+ */
+  }
+
+  /* "halogen/api.pyx":100
+ *     elif type(source) is bool:
+ *         return source and b'True' or b'False'
+ *     elif type(source) is array:             # <<<<<<<<<<<<<<
+ *         return bytes(source)
+ *     elif type(source) is memoryview:
+ */
+  __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_array); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 100, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  __pyx_t_2 = (((PyObject *)Py_TYPE(__pyx_v_source)) == __pyx_t_4);
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  __pyx_t_1 = (__pyx_t_2 != 0);
+  if (__pyx_t_1) {
+
+    /* "halogen/api.pyx":101
+ *         return source and b'True' or b'False'
+ *     elif type(source) is array:
+ *         return bytes(source)             # <<<<<<<<<<<<<<
+ *     elif type(source) is memoryview:
+ *         return bytes(source)
+ */
+    __Pyx_XDECREF(__pyx_r);
+    __pyx_t_4 = __Pyx_PyObject_CallOneArg(((PyObject *)(&PyBytes_Type)), __pyx_v_source); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 101, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __pyx_r = ((PyObject*)__pyx_t_4);
+    __pyx_t_4 = 0;
+    goto __pyx_L0;
+
+    /* "halogen/api.pyx":100
+ *     elif type(source) is bool:
+ *         return source and b'True' or b'False'
+ *     elif type(source) is array:             # <<<<<<<<<<<<<<
+ *         return bytes(source)
+ *     elif type(source) is memoryview:
+ */
+  }
+
+  /* "halogen/api.pyx":102
+ *     elif type(source) is array:
+ *         return bytes(source)
+ *     elif type(source) is memoryview:             # <<<<<<<<<<<<<<
+ *         return bytes(source)
+ *     if source is None:
+ */
+  __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_memoryview); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 102, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  __pyx_t_1 = (((PyObject *)Py_TYPE(__pyx_v_source)) == __pyx_t_4);
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  __pyx_t_2 = (__pyx_t_1 != 0);
+  if (__pyx_t_2) {
+
+    /* "halogen/api.pyx":103
+ *         return bytes(source)
+ *     elif type(source) is memoryview:
+ *         return bytes(source)             # <<<<<<<<<<<<<<
+ *     if source is None:
+ *         return b'None'
+ */
+    __Pyx_XDECREF(__pyx_r);
+    __pyx_t_4 = __Pyx_PyObject_CallOneArg(((PyObject *)(&PyBytes_Type)), __pyx_v_source); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 103, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __pyx_r = ((PyObject*)__pyx_t_4);
+    __pyx_t_4 = 0;
+    goto __pyx_L0;
+
+    /* "halogen/api.pyx":102
+ *     elif type(source) is array:
+ *         return bytes(source)
+ *     elif type(source) is memoryview:             # <<<<<<<<<<<<<<
+ *         return bytes(source)
+ *     if source is None:
+ */
+  }
+
+  /* "halogen/api.pyx":104
+ *     elif type(source) is memoryview:
+ *         return bytes(source)
+ *     if source is None:             # <<<<<<<<<<<<<<
+ *         return b'None'
+ *     if hasattr(source, '__fspath__'):
+ */
+  __pyx_t_2 = (__pyx_v_source == Py_None);
+  __pyx_t_1 = (__pyx_t_2 != 0);
+  if (__pyx_t_1) {
+
+    /* "halogen/api.pyx":105
+ *         return bytes(source)
+ *     if source is None:
+ *         return b'None'             # <<<<<<<<<<<<<<
+ *     if hasattr(source, '__fspath__'):
+ *         return u8encode(source.__fspath__())
+ */
+    __Pyx_XDECREF(__pyx_r);
+    __Pyx_INCREF(__pyx_n_b_None);
+    __pyx_r = __pyx_n_b_None;
+    goto __pyx_L0;
+
+    /* "halogen/api.pyx":104
+ *     elif type(source) is memoryview:
+ *         return bytes(source)
+ *     if source is None:             # <<<<<<<<<<<<<<
+ *         return b'None'
+ *     if hasattr(source, '__fspath__'):
+ */
+  }
+
+  /* "halogen/api.pyx":106
+ *     if source is None:
+ *         return b'None'
+ *     if hasattr(source, '__fspath__'):             # <<<<<<<<<<<<<<
+ *         return u8encode(source.__fspath__())
+ *     elif hasattr(source, '__str__'):
+ */
+  __pyx_t_1 = __Pyx_HasAttr(__pyx_v_source, __pyx_n_s_fspath); if (unlikely(__pyx_t_1 == ((int)-1))) __PYX_ERR(0, 106, __pyx_L1_error)
+  __pyx_t_2 = (__pyx_t_1 != 0);
+  if (__pyx_t_2) {
+
+    /* "halogen/api.pyx":107
+ *         return b'None'
+ *     if hasattr(source, '__fspath__'):
+ *         return u8encode(source.__fspath__())             # <<<<<<<<<<<<<<
+ *     elif hasattr(source, '__str__'):
+ *         return u8encode(str(source))
+ */
+    __Pyx_XDECREF(__pyx_r);
+    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_source, __pyx_n_s_fspath); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 107, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_3);
+    __pyx_t_5 = NULL;
+    if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_3))) {
+      __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_3);
+      if (likely(__pyx_t_5)) {
+        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
+        __Pyx_INCREF(__pyx_t_5);
+        __Pyx_INCREF(function);
+        __Pyx_DECREF_SET(__pyx_t_3, function);
+      }
+    }
+    if (__pyx_t_5) {
+      __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_5); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 107, __pyx_L1_error)
+      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+    } else {
+      __pyx_t_4 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 107, __pyx_L1_error)
+    }
+    __Pyx_GOTREF(__pyx_t_4);
+    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+    __pyx_t_3 = __pyx_f_7halogen_3api_u8encode(__pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 107, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_3);
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+    __pyx_r = ((PyObject*)__pyx_t_3);
+    __pyx_t_3 = 0;
+    goto __pyx_L0;
+
+    /* "halogen/api.pyx":106
+ *     if source is None:
+ *         return b'None'
+ *     if hasattr(source, '__fspath__'):             # <<<<<<<<<<<<<<
+ *         return u8encode(source.__fspath__())
+ *     elif hasattr(source, '__str__'):
+ */
+  }
+
+  /* "halogen/api.pyx":108
+ *     if hasattr(source, '__fspath__'):
+ *         return u8encode(source.__fspath__())
+ *     elif hasattr(source, '__str__'):             # <<<<<<<<<<<<<<
+ *         return u8encode(str(source))
+ *     elif hasattr(source, '__bytes__'):
+ */
+  __pyx_t_2 = __Pyx_HasAttr(__pyx_v_source, __pyx_n_s_str); if (unlikely(__pyx_t_2 == ((int)-1))) __PYX_ERR(0, 108, __pyx_L1_error)
+  __pyx_t_1 = (__pyx_t_2 != 0);
+  if (__pyx_t_1) {
+
+    /* "halogen/api.pyx":109
+ *         return u8encode(source.__fspath__())
+ *     elif hasattr(source, '__str__'):
+ *         return u8encode(str(source))             # <<<<<<<<<<<<<<
+ *     elif hasattr(source, '__bytes__'):
+ *         return bytes(source)
+ */
+    __Pyx_XDECREF(__pyx_r);
+    __pyx_t_3 = __Pyx_PyObject_CallOneArg(((PyObject *)(&PyString_Type)), __pyx_v_source); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 109, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_3);
+    __pyx_t_4 = __pyx_f_7halogen_3api_u8encode(__pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 109, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+    __pyx_r = ((PyObject*)__pyx_t_4);
+    __pyx_t_4 = 0;
+    goto __pyx_L0;
+
+    /* "halogen/api.pyx":108
+ *     if hasattr(source, '__fspath__'):
+ *         return u8encode(source.__fspath__())
+ *     elif hasattr(source, '__str__'):             # <<<<<<<<<<<<<<
+ *         return u8encode(str(source))
+ *     elif hasattr(source, '__bytes__'):
+ */
+  }
+
+  /* "halogen/api.pyx":110
+ *     elif hasattr(source, '__str__'):
+ *         return u8encode(str(source))
+ *     elif hasattr(source, '__bytes__'):             # <<<<<<<<<<<<<<
+ *         return bytes(source)
+ *     elif hasattr(source, '__unicode__'):
+ */
+  __pyx_t_1 = __Pyx_HasAttr(__pyx_v_source, __pyx_n_s_bytes); if (unlikely(__pyx_t_1 == ((int)-1))) __PYX_ERR(0, 110, __pyx_L1_error)
+  __pyx_t_2 = (__pyx_t_1 != 0);
+  if (__pyx_t_2) {
+
+    /* "halogen/api.pyx":111
+ *         return u8encode(str(source))
+ *     elif hasattr(source, '__bytes__'):
+ *         return bytes(source)             # <<<<<<<<<<<<<<
+ *     elif hasattr(source, '__unicode__'):
+ *         return u8encode(unicode(source))
+ */
+    __Pyx_XDECREF(__pyx_r);
+    __pyx_t_4 = __Pyx_PyObject_CallOneArg(((PyObject *)(&PyBytes_Type)), __pyx_v_source); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 111, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __pyx_r = ((PyObject*)__pyx_t_4);
+    __pyx_t_4 = 0;
+    goto __pyx_L0;
+
+    /* "halogen/api.pyx":110
+ *     elif hasattr(source, '__str__'):
+ *         return u8encode(str(source))
+ *     elif hasattr(source, '__bytes__'):             # <<<<<<<<<<<<<<
+ *         return bytes(source)
+ *     elif hasattr(source, '__unicode__'):
+ */
+  }
+
+  /* "halogen/api.pyx":112
+ *     elif hasattr(source, '__bytes__'):
+ *         return bytes(source)
+ *     elif hasattr(source, '__unicode__'):             # <<<<<<<<<<<<<<
+ *         return u8encode(unicode(source))
+ *     elif hasattr(source, '__bool__'):
+ */
+  __pyx_t_2 = __Pyx_HasAttr(__pyx_v_source, __pyx_n_s_unicode); if (unlikely(__pyx_t_2 == ((int)-1))) __PYX_ERR(0, 112, __pyx_L1_error)
+  __pyx_t_1 = (__pyx_t_2 != 0);
+  if (__pyx_t_1) {
+
+    /* "halogen/api.pyx":113
+ *         return bytes(source)
+ *     elif hasattr(source, '__unicode__'):
+ *         return u8encode(unicode(source))             # <<<<<<<<<<<<<<
+ *     elif hasattr(source, '__bool__'):
+ *         return bool(source) and b'True' or b'False'
+ */
+    __Pyx_XDECREF(__pyx_r);
+    __pyx_t_4 = __Pyx_PyObject_Unicode(__pyx_v_source); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 113, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __pyx_t_3 = __pyx_f_7halogen_3api_u8encode(__pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 113, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_3);
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+    __pyx_r = ((PyObject*)__pyx_t_3);
+    __pyx_t_3 = 0;
+    goto __pyx_L0;
+
+    /* "halogen/api.pyx":112
+ *     elif hasattr(source, '__bytes__'):
+ *         return bytes(source)
+ *     elif hasattr(source, '__unicode__'):             # <<<<<<<<<<<<<<
+ *         return u8encode(unicode(source))
+ *     elif hasattr(source, '__bool__'):
+ */
+  }
+
+  /* "halogen/api.pyx":114
+ *     elif hasattr(source, '__unicode__'):
+ *         return u8encode(unicode(source))
+ *     elif hasattr(source, '__bool__'):             # <<<<<<<<<<<<<<
+ *         return bool(source) and b'True' or b'False'
+ *     return bytes(source)
+ */
+  __pyx_t_1 = __Pyx_HasAttr(__pyx_v_source, __pyx_n_s_bool); if (unlikely(__pyx_t_1 == ((int)-1))) __PYX_ERR(0, 114, __pyx_L1_error)
+  __pyx_t_2 = (__pyx_t_1 != 0);
+  if (__pyx_t_2) {
+
+    /* "halogen/api.pyx":115
+ *         return u8encode(unicode(source))
+ *     elif hasattr(source, '__bool__'):
+ *         return bool(source) and b'True' or b'False'             # <<<<<<<<<<<<<<
+ *     return bytes(source)
+ * 
+ */
+    __Pyx_XDECREF(__pyx_r);
+    __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_v_source); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 115, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyBool_FromLong((!(!__pyx_t_2))); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 115, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 115, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     if (!__pyx_t_2) {
       goto __pyx_L10_next_or;
     } else {
     }
-    __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_n_b_True); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 93, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_n_b_True); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 115, __pyx_L1_error)
     if (!__pyx_t_2) {
     } else {
       __Pyx_INCREF(__pyx_n_b_True);
@@ -3621,309 +4010,7 @@ static PyObject *__pyx_f_7halogen_3api_u8bytes(PyObject *__pyx_v_source, CYTHON_
     __pyx_t_3 = 0;
     goto __pyx_L0;
 
-    /* "halogen/api.pyx":92
- *     elif type(source) in (int, long, float):
- *         return u8encode(str(source))
- *     elif type(source) == bool:             # <<<<<<<<<<<<<<
- *         return source and b'True' or b'False'
- *     # elif type(source) == OS:
- */
-  }
-
-  /* "halogen/api.pyx":98
- *     # elif type(source) == Arch:
- *     #     return bytes(str(<int>source), encoding='UTF-8')
- *     elif type(source) in (array, memoryview):             # <<<<<<<<<<<<<<
- *         return bytes(source)
- *     if source is None:
- */
-  __Pyx_INCREF(((PyObject *)Py_TYPE(__pyx_v_source)));
-  __pyx_t_3 = ((PyObject *)Py_TYPE(__pyx_v_source));
-  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_array); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 98, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_5 = PyObject_RichCompare(((PyObject *)__pyx_t_3), __pyx_t_1, Py_EQ); __Pyx_XGOTREF(__pyx_t_5); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 98, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_t_5); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 98, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  if (!__pyx_t_4) {
-  } else {
-    __pyx_t_2 = __pyx_t_4;
-    goto __pyx_L12_bool_binop_done;
-  }
-  __pyx_t_5 = __Pyx_GetModuleGlobalName(__pyx_n_s_memoryview); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 98, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_1 = PyObject_RichCompare(((PyObject *)__pyx_t_3), __pyx_t_5, Py_EQ); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 98, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 98, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_2 = __pyx_t_4;
-  __pyx_L12_bool_binop_done:;
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_4 = (__pyx_t_2 != 0);
-  if (__pyx_t_4) {
-
-    /* "halogen/api.pyx":99
- *     #     return bytes(str(<int>source), encoding='UTF-8')
- *     elif type(source) in (array, memoryview):
- *         return bytes(source)             # <<<<<<<<<<<<<<
- *     if source is None:
- *         return b'None'
- */
-    __Pyx_XDECREF(__pyx_r);
-    __pyx_t_3 = __Pyx_PyObject_CallOneArg(((PyObject *)(&PyBytes_Type)), __pyx_v_source); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 99, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_3);
-    __pyx_r = ((PyObject*)__pyx_t_3);
-    __pyx_t_3 = 0;
-    goto __pyx_L0;
-
-    /* "halogen/api.pyx":98
- *     # elif type(source) == Arch:
- *     #     return bytes(str(<int>source), encoding='UTF-8')
- *     elif type(source) in (array, memoryview):             # <<<<<<<<<<<<<<
- *         return bytes(source)
- *     if source is None:
- */
-  }
-
-  /* "halogen/api.pyx":100
- *     elif type(source) in (array, memoryview):
- *         return bytes(source)
- *     if source is None:             # <<<<<<<<<<<<<<
- *         return b'None'
- *     if hasattr(source, '__fspath__'):
- */
-  __pyx_t_4 = (__pyx_v_source == Py_None);
-  __pyx_t_2 = (__pyx_t_4 != 0);
-  if (__pyx_t_2) {
-
-    /* "halogen/api.pyx":101
- *         return bytes(source)
- *     if source is None:
- *         return b'None'             # <<<<<<<<<<<<<<
- *     if hasattr(source, '__fspath__'):
- *         return u8encode(source.__fspath__())
- */
-    __Pyx_XDECREF(__pyx_r);
-    __Pyx_INCREF(__pyx_n_b_None);
-    __pyx_r = __pyx_n_b_None;
-    goto __pyx_L0;
-
-    /* "halogen/api.pyx":100
- *     elif type(source) in (array, memoryview):
- *         return bytes(source)
- *     if source is None:             # <<<<<<<<<<<<<<
- *         return b'None'
- *     if hasattr(source, '__fspath__'):
- */
-  }
-
-  /* "halogen/api.pyx":102
- *     if source is None:
- *         return b'None'
- *     if hasattr(source, '__fspath__'):             # <<<<<<<<<<<<<<
- *         return u8encode(source.__fspath__())
- *     elif hasattr(source, '__str__'):
- */
-  __pyx_t_2 = __Pyx_HasAttr(__pyx_v_source, __pyx_n_s_fspath); if (unlikely(__pyx_t_2 == ((int)-1))) __PYX_ERR(0, 102, __pyx_L1_error)
-  __pyx_t_4 = (__pyx_t_2 != 0);
-  if (__pyx_t_4) {
-
-    /* "halogen/api.pyx":103
- *         return b'None'
- *     if hasattr(source, '__fspath__'):
- *         return u8encode(source.__fspath__())             # <<<<<<<<<<<<<<
- *     elif hasattr(source, '__str__'):
- *         return u8encode(str(source))
- */
-    __Pyx_XDECREF(__pyx_r);
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_source, __pyx_n_s_fspath); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 103, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_5 = NULL;
-    if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_1))) {
-      __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_1);
-      if (likely(__pyx_t_5)) {
-        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_1);
-        __Pyx_INCREF(__pyx_t_5);
-        __Pyx_INCREF(function);
-        __Pyx_DECREF_SET(__pyx_t_1, function);
-      }
-    }
-    if (__pyx_t_5) {
-      __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_5); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 103, __pyx_L1_error)
-      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-    } else {
-      __pyx_t_3 = __Pyx_PyObject_CallNoArg(__pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 103, __pyx_L1_error)
-    }
-    __Pyx_GOTREF(__pyx_t_3);
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_t_1 = __pyx_f_7halogen_3api_u8encode(__pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 103, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_r = ((PyObject*)__pyx_t_1);
-    __pyx_t_1 = 0;
-    goto __pyx_L0;
-
-    /* "halogen/api.pyx":102
- *     if source is None:
- *         return b'None'
- *     if hasattr(source, '__fspath__'):             # <<<<<<<<<<<<<<
- *         return u8encode(source.__fspath__())
- *     elif hasattr(source, '__str__'):
- */
-  }
-
-  /* "halogen/api.pyx":104
- *     if hasattr(source, '__fspath__'):
- *         return u8encode(source.__fspath__())
- *     elif hasattr(source, '__str__'):             # <<<<<<<<<<<<<<
- *         return u8encode(str(source))
- *     elif hasattr(source, '__bytes__'):
- */
-  __pyx_t_4 = __Pyx_HasAttr(__pyx_v_source, __pyx_n_s_str); if (unlikely(__pyx_t_4 == ((int)-1))) __PYX_ERR(0, 104, __pyx_L1_error)
-  __pyx_t_2 = (__pyx_t_4 != 0);
-  if (__pyx_t_2) {
-
-    /* "halogen/api.pyx":105
- *         return u8encode(source.__fspath__())
- *     elif hasattr(source, '__str__'):
- *         return u8encode(str(source))             # <<<<<<<<<<<<<<
- *     elif hasattr(source, '__bytes__'):
- *         return bytes(source)
- */
-    __Pyx_XDECREF(__pyx_r);
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(((PyObject *)(&PyString_Type)), __pyx_v_source); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 105, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_3 = __pyx_f_7halogen_3api_u8encode(__pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 105, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_3);
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_r = ((PyObject*)__pyx_t_3);
-    __pyx_t_3 = 0;
-    goto __pyx_L0;
-
-    /* "halogen/api.pyx":104
- *     if hasattr(source, '__fspath__'):
- *         return u8encode(source.__fspath__())
- *     elif hasattr(source, '__str__'):             # <<<<<<<<<<<<<<
- *         return u8encode(str(source))
- *     elif hasattr(source, '__bytes__'):
- */
-  }
-
-  /* "halogen/api.pyx":106
- *     elif hasattr(source, '__str__'):
- *         return u8encode(str(source))
- *     elif hasattr(source, '__bytes__'):             # <<<<<<<<<<<<<<
- *         return bytes(source)
- *     elif hasattr(source, '__unicode__'):
- */
-  __pyx_t_2 = __Pyx_HasAttr(__pyx_v_source, __pyx_n_s_bytes); if (unlikely(__pyx_t_2 == ((int)-1))) __PYX_ERR(0, 106, __pyx_L1_error)
-  __pyx_t_4 = (__pyx_t_2 != 0);
-  if (__pyx_t_4) {
-
-    /* "halogen/api.pyx":107
- *         return u8encode(str(source))
- *     elif hasattr(source, '__bytes__'):
- *         return bytes(source)             # <<<<<<<<<<<<<<
- *     elif hasattr(source, '__unicode__'):
- *         return u8encode(unicode(source))
- */
-    __Pyx_XDECREF(__pyx_r);
-    __pyx_t_3 = __Pyx_PyObject_CallOneArg(((PyObject *)(&PyBytes_Type)), __pyx_v_source); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 107, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_3);
-    __pyx_r = ((PyObject*)__pyx_t_3);
-    __pyx_t_3 = 0;
-    goto __pyx_L0;
-
-    /* "halogen/api.pyx":106
- *     elif hasattr(source, '__str__'):
- *         return u8encode(str(source))
- *     elif hasattr(source, '__bytes__'):             # <<<<<<<<<<<<<<
- *         return bytes(source)
- *     elif hasattr(source, '__unicode__'):
- */
-  }
-
-  /* "halogen/api.pyx":108
- *     elif hasattr(source, '__bytes__'):
- *         return bytes(source)
- *     elif hasattr(source, '__unicode__'):             # <<<<<<<<<<<<<<
- *         return u8encode(unicode(source))
- *     elif hasattr(source, '__bool__'):
- */
-  __pyx_t_4 = __Pyx_HasAttr(__pyx_v_source, __pyx_n_s_unicode); if (unlikely(__pyx_t_4 == ((int)-1))) __PYX_ERR(0, 108, __pyx_L1_error)
-  __pyx_t_2 = (__pyx_t_4 != 0);
-  if (__pyx_t_2) {
-
-    /* "halogen/api.pyx":109
- *         return bytes(source)
- *     elif hasattr(source, '__unicode__'):
- *         return u8encode(unicode(source))             # <<<<<<<<<<<<<<
- *     elif hasattr(source, '__bool__'):
- *         return bool(source) and b'True' or b'False'
- */
-    __Pyx_XDECREF(__pyx_r);
-    __pyx_t_3 = __Pyx_PyObject_Unicode(__pyx_v_source); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 109, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_1 = __pyx_f_7halogen_3api_u8encode(__pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 109, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_r = ((PyObject*)__pyx_t_1);
-    __pyx_t_1 = 0;
-    goto __pyx_L0;
-
-    /* "halogen/api.pyx":108
- *     elif hasattr(source, '__bytes__'):
- *         return bytes(source)
- *     elif hasattr(source, '__unicode__'):             # <<<<<<<<<<<<<<
- *         return u8encode(unicode(source))
- *     elif hasattr(source, '__bool__'):
- */
-  }
-
-  /* "halogen/api.pyx":110
- *     elif hasattr(source, '__unicode__'):
- *         return u8encode(unicode(source))
- *     elif hasattr(source, '__bool__'):             # <<<<<<<<<<<<<<
- *         return bool(source) and b'True' or b'False'
- *     return bytes(source)
- */
-  __pyx_t_2 = __Pyx_HasAttr(__pyx_v_source, __pyx_n_s_bool); if (unlikely(__pyx_t_2 == ((int)-1))) __PYX_ERR(0, 110, __pyx_L1_error)
-  __pyx_t_4 = (__pyx_t_2 != 0);
-  if (__pyx_t_4) {
-
-    /* "halogen/api.pyx":111
- *         return u8encode(unicode(source))
- *     elif hasattr(source, '__bool__'):
- *         return bool(source) and b'True' or b'False'             # <<<<<<<<<<<<<<
- *     return bytes(source)
- * 
- */
-    __Pyx_XDECREF(__pyx_r);
-    __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_v_source); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 111, __pyx_L1_error)
-    __pyx_t_3 = __Pyx_PyBool_FromLong((!(!__pyx_t_4))); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 111, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 111, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    if (!__pyx_t_4) {
-      goto __pyx_L17_next_or;
-    } else {
-    }
-    __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_n_b_True); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 111, __pyx_L1_error)
-    if (!__pyx_t_4) {
-    } else {
-      __Pyx_INCREF(__pyx_n_b_True);
-      __pyx_t_1 = __pyx_n_b_True;
-      goto __pyx_L16_bool_binop_done;
-    }
-    __pyx_L17_next_or:;
-    __Pyx_INCREF(__pyx_n_b_False);
-    __pyx_t_1 = __pyx_n_b_False;
-    __pyx_L16_bool_binop_done:;
-    __pyx_r = ((PyObject*)__pyx_t_1);
-    __pyx_t_1 = 0;
-    goto __pyx_L0;
-
-    /* "halogen/api.pyx":110
+    /* "halogen/api.pyx":114
  *     elif hasattr(source, '__unicode__'):
  *         return u8encode(unicode(source))
  *     elif hasattr(source, '__bool__'):             # <<<<<<<<<<<<<<
@@ -3932,7 +4019,7 @@ static PyObject *__pyx_f_7halogen_3api_u8bytes(PyObject *__pyx_v_source, CYTHON_
  */
   }
 
-  /* "halogen/api.pyx":112
+  /* "halogen/api.pyx":116
  *     elif hasattr(source, '__bool__'):
  *         return bool(source) and b'True' or b'False'
  *     return bytes(source)             # <<<<<<<<<<<<<<
@@ -3940,10 +4027,10 @@ static PyObject *__pyx_f_7halogen_3api_u8bytes(PyObject *__pyx_v_source, CYTHON_
  * cpdef str u8str(object source):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyObject_CallOneArg(((PyObject *)(&PyBytes_Type)), __pyx_v_source); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 112, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_r = ((PyObject*)__pyx_t_1);
-  __pyx_t_1 = 0;
+  __pyx_t_3 = __Pyx_PyObject_CallOneArg(((PyObject *)(&PyBytes_Type)), __pyx_v_source); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 116, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __pyx_r = ((PyObject*)__pyx_t_3);
+  __pyx_t_3 = 0;
   goto __pyx_L0;
 
   /* "halogen/api.pyx":84
@@ -3951,13 +4038,13 @@ static PyObject *__pyx_f_7halogen_3api_u8bytes(PyObject *__pyx_v_source, CYTHON_
  * 
  * cpdef bytes u8bytes(object source):             # <<<<<<<<<<<<<<
  *     """ Custom version of u8bytes() for use in Cython extensions: """
- *     if type(source) == bytes:
+ *     if type(source) is bytes:
  */
 
   /* function exit code */
   __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_1);
   __Pyx_XDECREF(__pyx_t_3);
+  __Pyx_XDECREF(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_5);
   __Pyx_AddTraceback("halogen.api.u8bytes", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
@@ -4004,7 +4091,7 @@ static PyObject *__pyx_pf_7halogen_3api_u8bytes(CYTHON_UNUSED PyObject *__pyx_se
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":114
+/* "halogen/api.pyx":118
  *     return bytes(source)
  * 
  * cpdef str u8str(object source):             # <<<<<<<<<<<<<<
@@ -4020,29 +4107,29 @@ static PyObject *__pyx_f_7halogen_3api_u8str(PyObject *__pyx_v_source, CYTHON_UN
   PyObject *__pyx_t_2 = NULL;
   __Pyx_RefNannySetupContext("u8str", 0);
 
-  /* "halogen/api.pyx":116
+  /* "halogen/api.pyx":120
  * cpdef str u8str(object source):
  *     """ Custom version of u8str() for use in Cython extensions: """
  *     return u8bytes(source).decode('UTF-8')             # <<<<<<<<<<<<<<
  * 
- * def stringify(object instance not None, object fields not None):
+ * def stringify(object instance not None,
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_source, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 116, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_source, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 120, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   if (unlikely(__pyx_t_1 == Py_None)) {
     PyErr_Format(PyExc_AttributeError, "'NoneType' object has no attribute '%.30s'", "decode");
-    __PYX_ERR(0, 116, __pyx_L1_error)
+    __PYX_ERR(0, 120, __pyx_L1_error)
   }
-  __pyx_t_2 = __Pyx_decode_bytes(__pyx_t_1, 0, PY_SSIZE_T_MAX, NULL, NULL, PyUnicode_DecodeUTF8); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 116, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_decode_bytes(__pyx_t_1, 0, PY_SSIZE_T_MAX, NULL, NULL, PyUnicode_DecodeUTF8); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 120, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  if (!(likely(PyString_CheckExact(__pyx_t_2))||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "str", Py_TYPE(__pyx_t_2)->tp_name), 0))) __PYX_ERR(0, 116, __pyx_L1_error)
+  if (!(likely(PyString_CheckExact(__pyx_t_2))||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "str", Py_TYPE(__pyx_t_2)->tp_name), 0))) __PYX_ERR(0, 120, __pyx_L1_error)
   __pyx_r = ((PyObject*)__pyx_t_2);
   __pyx_t_2 = 0;
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":114
+  /* "halogen/api.pyx":118
  *     return bytes(source)
  * 
  * cpdef str u8str(object source):             # <<<<<<<<<<<<<<
@@ -4082,7 +4169,7 @@ static PyObject *__pyx_pf_7halogen_3api_2u8str(CYTHON_UNUSED PyObject *__pyx_sel
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("u8str", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_7halogen_3api_u8str(__pyx_v_source, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 114, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_7halogen_3api_u8str(__pyx_v_source, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 118, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -4099,12 +4186,12 @@ static PyObject *__pyx_pf_7halogen_3api_2u8str(CYTHON_UNUSED PyObject *__pyx_sel
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":118
+/* "halogen/api.pyx":122
  *     return u8bytes(source).decode('UTF-8')
  * 
- * def stringify(object instance not None, object fields not None):             # <<<<<<<<<<<<<<
+ * def stringify(object instance not None,             # <<<<<<<<<<<<<<
+ *               object fields not None):
  *     """ Custom version of stringify(instance, fields) for use in Cython extensions: """
- *     field_dict = {}
  */
 
 /* Python wrapper */
@@ -4140,11 +4227,11 @@ static PyObject *__pyx_pw_7halogen_3api_5stringify(PyObject *__pyx_self, PyObjec
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_fields)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("stringify", 1, 2, 2, 1); __PYX_ERR(0, 118, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("stringify", 1, 2, 2, 1); __PYX_ERR(0, 122, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "stringify") < 0)) __PYX_ERR(0, 118, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "stringify") < 0)) __PYX_ERR(0, 122, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
@@ -4157,17 +4244,17 @@ static PyObject *__pyx_pw_7halogen_3api_5stringify(PyObject *__pyx_self, PyObjec
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("stringify", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 118, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("stringify", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 122, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("halogen.api.stringify", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
   if (unlikely(((PyObject *)__pyx_v_instance) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "instance"); __PYX_ERR(0, 118, __pyx_L1_error)
+    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "instance"); __PYX_ERR(0, 122, __pyx_L1_error)
   }
   if (unlikely(((PyObject *)__pyx_v_fields) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "fields"); __PYX_ERR(0, 118, __pyx_L1_error)
+    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "fields"); __PYX_ERR(0, 123, __pyx_L1_error)
   }
   __pyx_r = __pyx_pf_7halogen_3api_4stringify(__pyx_self, __pyx_v_instance, __pyx_v_fields);
 
@@ -4201,19 +4288,19 @@ static PyObject *__pyx_pf_7halogen_3api_4stringify(CYTHON_UNUSED PyObject *__pyx
   int __pyx_t_10;
   __Pyx_RefNannySetupContext("stringify", 0);
 
-  /* "halogen/api.pyx":120
- * def stringify(object instance not None, object fields not None):
+  /* "halogen/api.pyx":125
+ *               object fields not None):
  *     """ Custom version of stringify(instance, fields) for use in Cython extensions: """
  *     field_dict = {}             # <<<<<<<<<<<<<<
  *     for field in fields:
  *         field_value = getattr(instance, field, b"")
  */
-  __pyx_t_1 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 120, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 125, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_field_dict = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "halogen/api.pyx":121
+  /* "halogen/api.pyx":126
  *     """ Custom version of stringify(instance, fields) for use in Cython extensions: """
  *     field_dict = {}
  *     for field in fields:             # <<<<<<<<<<<<<<
@@ -4224,26 +4311,26 @@ static PyObject *__pyx_pf_7halogen_3api_4stringify(CYTHON_UNUSED PyObject *__pyx
     __pyx_t_1 = __pyx_v_fields; __Pyx_INCREF(__pyx_t_1); __pyx_t_2 = 0;
     __pyx_t_3 = NULL;
   } else {
-    __pyx_t_2 = -1; __pyx_t_1 = PyObject_GetIter(__pyx_v_fields); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 121, __pyx_L1_error)
+    __pyx_t_2 = -1; __pyx_t_1 = PyObject_GetIter(__pyx_v_fields); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 126, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_3 = Py_TYPE(__pyx_t_1)->tp_iternext; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 121, __pyx_L1_error)
+    __pyx_t_3 = Py_TYPE(__pyx_t_1)->tp_iternext; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 126, __pyx_L1_error)
   }
   for (;;) {
     if (likely(!__pyx_t_3)) {
       if (likely(PyList_CheckExact(__pyx_t_1))) {
         if (__pyx_t_2 >= PyList_GET_SIZE(__pyx_t_1)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_4 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_2); __Pyx_INCREF(__pyx_t_4); __pyx_t_2++; if (unlikely(0 < 0)) __PYX_ERR(0, 121, __pyx_L1_error)
+        __pyx_t_4 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_2); __Pyx_INCREF(__pyx_t_4); __pyx_t_2++; if (unlikely(0 < 0)) __PYX_ERR(0, 126, __pyx_L1_error)
         #else
-        __pyx_t_4 = PySequence_ITEM(__pyx_t_1, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 121, __pyx_L1_error)
+        __pyx_t_4 = PySequence_ITEM(__pyx_t_1, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 126, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_4);
         #endif
       } else {
         if (__pyx_t_2 >= PyTuple_GET_SIZE(__pyx_t_1)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_4 = PyTuple_GET_ITEM(__pyx_t_1, __pyx_t_2); __Pyx_INCREF(__pyx_t_4); __pyx_t_2++; if (unlikely(0 < 0)) __PYX_ERR(0, 121, __pyx_L1_error)
+        __pyx_t_4 = PyTuple_GET_ITEM(__pyx_t_1, __pyx_t_2); __Pyx_INCREF(__pyx_t_4); __pyx_t_2++; if (unlikely(0 < 0)) __PYX_ERR(0, 126, __pyx_L1_error)
         #else
-        __pyx_t_4 = PySequence_ITEM(__pyx_t_1, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 121, __pyx_L1_error)
+        __pyx_t_4 = PySequence_ITEM(__pyx_t_1, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 126, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_4);
         #endif
       }
@@ -4253,7 +4340,7 @@ static PyObject *__pyx_pf_7halogen_3api_4stringify(CYTHON_UNUSED PyObject *__pyx
         PyObject* exc_type = PyErr_Occurred();
         if (exc_type) {
           if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-          else __PYX_ERR(0, 121, __pyx_L1_error)
+          else __PYX_ERR(0, 126, __pyx_L1_error)
         }
         break;
       }
@@ -4262,44 +4349,44 @@ static PyObject *__pyx_pf_7halogen_3api_4stringify(CYTHON_UNUSED PyObject *__pyx
     __Pyx_XDECREF_SET(__pyx_v_field, __pyx_t_4);
     __pyx_t_4 = 0;
 
-    /* "halogen/api.pyx":122
+    /* "halogen/api.pyx":127
  *     field_dict = {}
  *     for field in fields:
  *         field_value = getattr(instance, field, b"")             # <<<<<<<<<<<<<<
  *         if field_value:
  *             field_dict.update({ field : field_value })
  */
-    __pyx_t_4 = __Pyx_GetAttr3(__pyx_v_instance, __pyx_v_field, __pyx_kp_b_); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 122, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_GetAttr3(__pyx_v_instance, __pyx_v_field, __pyx_kp_b_); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 127, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_XDECREF_SET(__pyx_v_field_value, __pyx_t_4);
     __pyx_t_4 = 0;
 
-    /* "halogen/api.pyx":123
+    /* "halogen/api.pyx":128
  *     for field in fields:
  *         field_value = getattr(instance, field, b"")
  *         if field_value:             # <<<<<<<<<<<<<<
  *             field_dict.update({ field : field_value })
  *     field_dict_items = []
  */
-    __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_v_field_value); if (unlikely(__pyx_t_5 < 0)) __PYX_ERR(0, 123, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_v_field_value); if (unlikely(__pyx_t_5 < 0)) __PYX_ERR(0, 128, __pyx_L1_error)
     if (__pyx_t_5) {
 
-      /* "halogen/api.pyx":124
+      /* "halogen/api.pyx":129
  *         field_value = getattr(instance, field, b"")
  *         if field_value:
  *             field_dict.update({ field : field_value })             # <<<<<<<<<<<<<<
  *     field_dict_items = []
  *     for k, v in field_dict.items():
  */
-      __pyx_t_4 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 124, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 129, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
-      if (PyDict_SetItem(__pyx_t_4, __pyx_v_field, __pyx_v_field_value) < 0) __PYX_ERR(0, 124, __pyx_L1_error)
-      __pyx_t_6 = __Pyx_CallUnboundCMethod1(&__pyx_umethod_PyDict_Type_update, __pyx_v_field_dict, __pyx_t_4); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 124, __pyx_L1_error)
+      if (PyDict_SetItem(__pyx_t_4, __pyx_v_field, __pyx_v_field_value) < 0) __PYX_ERR(0, 129, __pyx_L1_error)
+      __pyx_t_6 = __Pyx_CallUnboundCMethod1(&__pyx_umethod_PyDict_Type_update, __pyx_v_field_dict, __pyx_t_4); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 129, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_6);
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
 
-      /* "halogen/api.pyx":123
+      /* "halogen/api.pyx":128
  *     for field in fields:
  *         field_value = getattr(instance, field, b"")
  *         if field_value:             # <<<<<<<<<<<<<<
@@ -4308,7 +4395,7 @@ static PyObject *__pyx_pf_7halogen_3api_4stringify(CYTHON_UNUSED PyObject *__pyx
  */
     }
 
-    /* "halogen/api.pyx":121
+    /* "halogen/api.pyx":126
  *     """ Custom version of stringify(instance, fields) for use in Cython extensions: """
  *     field_dict = {}
  *     for field in fields:             # <<<<<<<<<<<<<<
@@ -4318,34 +4405,34 @@ static PyObject *__pyx_pf_7halogen_3api_4stringify(CYTHON_UNUSED PyObject *__pyx
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "halogen/api.pyx":125
+  /* "halogen/api.pyx":130
  *         if field_value:
  *             field_dict.update({ field : field_value })
  *     field_dict_items = []             # <<<<<<<<<<<<<<
  *     for k, v in field_dict.items():
  *         field_dict_items.append(b'''%s="%s"''' % (u8bytes(k),
  */
-  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 125, __pyx_L1_error)
+  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 130, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_field_dict_items = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "halogen/api.pyx":126
+  /* "halogen/api.pyx":131
  *             field_dict.update({ field : field_value })
  *     field_dict_items = []
  *     for k, v in field_dict.items():             # <<<<<<<<<<<<<<
  *         field_dict_items.append(b'''%s="%s"''' % (u8bytes(k),
  *                                                   u8bytes(v)))
  */
-  __pyx_t_1 = __Pyx_PyDict_Items(__pyx_v_field_dict); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 126, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyDict_Items(__pyx_v_field_dict); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 131, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   if (likely(PyList_CheckExact(__pyx_t_1)) || PyTuple_CheckExact(__pyx_t_1)) {
     __pyx_t_6 = __pyx_t_1; __Pyx_INCREF(__pyx_t_6); __pyx_t_2 = 0;
     __pyx_t_3 = NULL;
   } else {
-    __pyx_t_2 = -1; __pyx_t_6 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 126, __pyx_L1_error)
+    __pyx_t_2 = -1; __pyx_t_6 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 131, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
-    __pyx_t_3 = Py_TYPE(__pyx_t_6)->tp_iternext; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 126, __pyx_L1_error)
+    __pyx_t_3 = Py_TYPE(__pyx_t_6)->tp_iternext; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 131, __pyx_L1_error)
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   for (;;) {
@@ -4353,17 +4440,17 @@ static PyObject *__pyx_pf_7halogen_3api_4stringify(CYTHON_UNUSED PyObject *__pyx
       if (likely(PyList_CheckExact(__pyx_t_6))) {
         if (__pyx_t_2 >= PyList_GET_SIZE(__pyx_t_6)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_1 = PyList_GET_ITEM(__pyx_t_6, __pyx_t_2); __Pyx_INCREF(__pyx_t_1); __pyx_t_2++; if (unlikely(0 < 0)) __PYX_ERR(0, 126, __pyx_L1_error)
+        __pyx_t_1 = PyList_GET_ITEM(__pyx_t_6, __pyx_t_2); __Pyx_INCREF(__pyx_t_1); __pyx_t_2++; if (unlikely(0 < 0)) __PYX_ERR(0, 131, __pyx_L1_error)
         #else
-        __pyx_t_1 = PySequence_ITEM(__pyx_t_6, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 126, __pyx_L1_error)
+        __pyx_t_1 = PySequence_ITEM(__pyx_t_6, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 131, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         #endif
       } else {
         if (__pyx_t_2 >= PyTuple_GET_SIZE(__pyx_t_6)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_1 = PyTuple_GET_ITEM(__pyx_t_6, __pyx_t_2); __Pyx_INCREF(__pyx_t_1); __pyx_t_2++; if (unlikely(0 < 0)) __PYX_ERR(0, 126, __pyx_L1_error)
+        __pyx_t_1 = PyTuple_GET_ITEM(__pyx_t_6, __pyx_t_2); __Pyx_INCREF(__pyx_t_1); __pyx_t_2++; if (unlikely(0 < 0)) __PYX_ERR(0, 131, __pyx_L1_error)
         #else
-        __pyx_t_1 = PySequence_ITEM(__pyx_t_6, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 126, __pyx_L1_error)
+        __pyx_t_1 = PySequence_ITEM(__pyx_t_6, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 131, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         #endif
       }
@@ -4373,7 +4460,7 @@ static PyObject *__pyx_pf_7halogen_3api_4stringify(CYTHON_UNUSED PyObject *__pyx
         PyObject* exc_type = PyErr_Occurred();
         if (exc_type) {
           if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-          else __PYX_ERR(0, 126, __pyx_L1_error)
+          else __PYX_ERR(0, 131, __pyx_L1_error)
         }
         break;
       }
@@ -4385,7 +4472,7 @@ static PyObject *__pyx_pf_7halogen_3api_4stringify(CYTHON_UNUSED PyObject *__pyx
       if (unlikely(size != 2)) {
         if (size > 2) __Pyx_RaiseTooManyValuesError(2);
         else if (size >= 0) __Pyx_RaiseNeedMoreValuesError(size);
-        __PYX_ERR(0, 126, __pyx_L1_error)
+        __PYX_ERR(0, 131, __pyx_L1_error)
       }
       #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
       if (likely(PyTuple_CheckExact(sequence))) {
@@ -4398,15 +4485,15 @@ static PyObject *__pyx_pf_7halogen_3api_4stringify(CYTHON_UNUSED PyObject *__pyx
       __Pyx_INCREF(__pyx_t_4);
       __Pyx_INCREF(__pyx_t_7);
       #else
-      __pyx_t_4 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 126, __pyx_L1_error)
+      __pyx_t_4 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 131, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
-      __pyx_t_7 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 126, __pyx_L1_error)
+      __pyx_t_7 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 131, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_7);
       #endif
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     } else {
       Py_ssize_t index = -1;
-      __pyx_t_8 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 126, __pyx_L1_error)
+      __pyx_t_8 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 131, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_8);
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       __pyx_t_9 = Py_TYPE(__pyx_t_8)->tp_iternext;
@@ -4414,7 +4501,7 @@ static PyObject *__pyx_pf_7halogen_3api_4stringify(CYTHON_UNUSED PyObject *__pyx
       __Pyx_GOTREF(__pyx_t_4);
       index = 1; __pyx_t_7 = __pyx_t_9(__pyx_t_8); if (unlikely(!__pyx_t_7)) goto __pyx_L8_unpacking_failed;
       __Pyx_GOTREF(__pyx_t_7);
-      if (__Pyx_IternextUnpackEndCheck(__pyx_t_9(__pyx_t_8), 2) < 0) __PYX_ERR(0, 126, __pyx_L1_error)
+      if (__Pyx_IternextUnpackEndCheck(__pyx_t_9(__pyx_t_8), 2) < 0) __PYX_ERR(0, 131, __pyx_L1_error)
       __pyx_t_9 = NULL;
       __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
       goto __pyx_L9_unpacking_done;
@@ -4422,7 +4509,7 @@ static PyObject *__pyx_pf_7halogen_3api_4stringify(CYTHON_UNUSED PyObject *__pyx
       __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
       __pyx_t_9 = NULL;
       if (__Pyx_IterFinish() == 0) __Pyx_RaiseNeedMoreValuesError(index);
-      __PYX_ERR(0, 126, __pyx_L1_error)
+      __PYX_ERR(0, 131, __pyx_L1_error)
       __pyx_L9_unpacking_done:;
     }
     __Pyx_XDECREF_SET(__pyx_v_k, __pyx_t_4);
@@ -4430,34 +4517,34 @@ static PyObject *__pyx_pf_7halogen_3api_4stringify(CYTHON_UNUSED PyObject *__pyx
     __Pyx_XDECREF_SET(__pyx_v_v, __pyx_t_7);
     __pyx_t_7 = 0;
 
-    /* "halogen/api.pyx":127
+    /* "halogen/api.pyx":132
  *     field_dict_items = []
  *     for k, v in field_dict.items():
  *         field_dict_items.append(b'''%s="%s"''' % (u8bytes(k),             # <<<<<<<<<<<<<<
  *                                                   u8bytes(v)))
  *     return b"%s(%s) @ %s" % (u8encode(type(instance).__name__),
  */
-    __pyx_t_1 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_k, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 127, __pyx_L1_error)
+    __pyx_t_1 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_k, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 132, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
 
-    /* "halogen/api.pyx":128
+    /* "halogen/api.pyx":133
  *     for k, v in field_dict.items():
  *         field_dict_items.append(b'''%s="%s"''' % (u8bytes(k),
  *                                                   u8bytes(v)))             # <<<<<<<<<<<<<<
  *     return b"%s(%s) @ %s" % (u8encode(type(instance).__name__),
  *                              b", ".join(field_dict_items),
  */
-    __pyx_t_7 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_v, 0); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 128, __pyx_L1_error)
+    __pyx_t_7 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_v, 0); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 133, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
 
-    /* "halogen/api.pyx":127
+    /* "halogen/api.pyx":132
  *     field_dict_items = []
  *     for k, v in field_dict.items():
  *         field_dict_items.append(b'''%s="%s"''' % (u8bytes(k),             # <<<<<<<<<<<<<<
  *                                                   u8bytes(v)))
  *     return b"%s(%s) @ %s" % (u8encode(type(instance).__name__),
  */
-    __pyx_t_4 = PyTuple_New(2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 127, __pyx_L1_error)
+    __pyx_t_4 = PyTuple_New(2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 132, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_GIVEREF(__pyx_t_1);
     PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_1);
@@ -4465,13 +4552,13 @@ static PyObject *__pyx_pf_7halogen_3api_4stringify(CYTHON_UNUSED PyObject *__pyx
     PyTuple_SET_ITEM(__pyx_t_4, 1, __pyx_t_7);
     __pyx_t_1 = 0;
     __pyx_t_7 = 0;
-    __pyx_t_7 = PyNumber_Remainder(__pyx_kp_b_s_s, __pyx_t_4); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 127, __pyx_L1_error)
+    __pyx_t_7 = PyNumber_Remainder(__pyx_kp_b_s_s, __pyx_t_4); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 132, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __pyx_t_10 = __Pyx_PyList_Append(__pyx_v_field_dict_items, __pyx_t_7); if (unlikely(__pyx_t_10 == ((int)-1))) __PYX_ERR(0, 127, __pyx_L1_error)
+    __pyx_t_10 = __Pyx_PyList_Append(__pyx_v_field_dict_items, __pyx_t_7); if (unlikely(__pyx_t_10 == ((int)-1))) __PYX_ERR(0, 132, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
 
-    /* "halogen/api.pyx":126
+    /* "halogen/api.pyx":131
  *             field_dict.update({ field : field_value })
  *     field_dict_items = []
  *     for k, v in field_dict.items():             # <<<<<<<<<<<<<<
@@ -4481,7 +4568,7 @@ static PyObject *__pyx_pf_7halogen_3api_4stringify(CYTHON_UNUSED PyObject *__pyx
   }
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
 
-  /* "halogen/api.pyx":129
+  /* "halogen/api.pyx":134
  *         field_dict_items.append(b'''%s="%s"''' % (u8bytes(k),
  *                                                   u8bytes(v)))
  *     return b"%s(%s) @ %s" % (u8encode(type(instance).__name__),             # <<<<<<<<<<<<<<
@@ -4489,46 +4576,46 @@ static PyObject *__pyx_pf_7halogen_3api_4stringify(CYTHON_UNUSED PyObject *__pyx
  *                              u8encode(hex(id(instance))))
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(((PyObject *)Py_TYPE(__pyx_v_instance)), __pyx_n_s_name); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 129, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(((PyObject *)Py_TYPE(__pyx_v_instance)), __pyx_n_s_name); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 134, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  __pyx_t_7 = __pyx_f_7halogen_3api_u8encode(__pyx_t_6); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 129, __pyx_L1_error)
+  __pyx_t_7 = __pyx_f_7halogen_3api_u8encode(__pyx_t_6); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 134, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
 
-  /* "halogen/api.pyx":130
+  /* "halogen/api.pyx":135
  *                                                   u8bytes(v)))
  *     return b"%s(%s) @ %s" % (u8encode(type(instance).__name__),
  *                              b", ".join(field_dict_items),             # <<<<<<<<<<<<<<
  *                              u8encode(hex(id(instance))))
  * 
  */
-  __pyx_t_6 = __Pyx_PyBytes_Join(__pyx_kp_b__2, __pyx_v_field_dict_items); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 130, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyBytes_Join(__pyx_kp_b__2, __pyx_v_field_dict_items); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 135, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
 
-  /* "halogen/api.pyx":131
+  /* "halogen/api.pyx":136
  *     return b"%s(%s) @ %s" % (u8encode(type(instance).__name__),
  *                              b", ".join(field_dict_items),
  *                              u8encode(hex(id(instance))))             # <<<<<<<<<<<<<<
  * 
  * 
  */
-  __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_builtin_id, __pyx_v_instance); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 131, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_builtin_id, __pyx_v_instance); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 136, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_builtin_hex, __pyx_t_4); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 131, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_builtin_hex, __pyx_t_4); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 136, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = __pyx_f_7halogen_3api_u8encode(__pyx_t_1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 131, __pyx_L1_error)
+  __pyx_t_4 = __pyx_f_7halogen_3api_u8encode(__pyx_t_1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 136, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "halogen/api.pyx":129
+  /* "halogen/api.pyx":134
  *         field_dict_items.append(b'''%s="%s"''' % (u8bytes(k),
  *                                                   u8bytes(v)))
  *     return b"%s(%s) @ %s" % (u8encode(type(instance).__name__),             # <<<<<<<<<<<<<<
  *                              b", ".join(field_dict_items),
  *                              u8encode(hex(id(instance))))
  */
-  __pyx_t_1 = PyTuple_New(3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 129, __pyx_L1_error)
+  __pyx_t_1 = PyTuple_New(3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 134, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_GIVEREF(__pyx_t_7);
   PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_t_7);
@@ -4539,19 +4626,19 @@ static PyObject *__pyx_pf_7halogen_3api_4stringify(CYTHON_UNUSED PyObject *__pyx
   __pyx_t_7 = 0;
   __pyx_t_6 = 0;
   __pyx_t_4 = 0;
-  __pyx_t_4 = PyNumber_Remainder(__pyx_kp_b_s_s_s, __pyx_t_1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 129, __pyx_L1_error)
+  __pyx_t_4 = PyNumber_Remainder(__pyx_kp_b_s_s_s, __pyx_t_1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 134, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_r = __pyx_t_4;
   __pyx_t_4 = 0;
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":118
+  /* "halogen/api.pyx":122
  *     return u8bytes(source).decode('UTF-8')
  * 
- * def stringify(object instance not None, object fields not None):             # <<<<<<<<<<<<<<
+ * def stringify(object instance not None,             # <<<<<<<<<<<<<<
+ *               object fields not None):
  *     """ Custom version of stringify(instance, fields) for use in Cython extensions: """
- *     field_dict = {}
  */
 
   /* function exit code */
@@ -4575,7 +4662,7 @@ static PyObject *__pyx_pf_7halogen_3api_4stringify(CYTHON_UNUSED PyObject *__pyx
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":142
+/* "halogen/api.pyx":147
  * 
  *     @staticmethod
  *     def fromother(Type other not None):             # <<<<<<<<<<<<<<
@@ -4611,7 +4698,7 @@ static PyObject *__pyx_pw_7halogen_3api_4Type_1fromother(CYTHON_UNUSED PyObject 
         else goto __pyx_L5_argtuple_error;
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "fromother") < 0)) __PYX_ERR(0, 142, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "fromother") < 0)) __PYX_ERR(0, 147, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 1) {
       goto __pyx_L5_argtuple_error;
@@ -4622,13 +4709,13 @@ static PyObject *__pyx_pw_7halogen_3api_4Type_1fromother(CYTHON_UNUSED PyObject 
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("fromother", 1, 1, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 142, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("fromother", 1, 1, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 147, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("halogen.api.Type.fromother", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_other), __pyx_ptype_7halogen_3api_Type, 0, "other", 0))) __PYX_ERR(0, 142, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_other), __pyx_ptype_7halogen_3api_Type, 0, "other", 0))) __PYX_ERR(0, 147, __pyx_L1_error)
   __pyx_r = __pyx_pf_7halogen_3api_4Type_fromother(__pyx_v_other);
 
   /* function exit code */
@@ -4647,19 +4734,19 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_fromother(struct __pyx_obj_7haloge
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("fromother", 0);
 
-  /* "halogen/api.pyx":143
+  /* "halogen/api.pyx":148
  *     @staticmethod
  *     def fromother(Type other not None):
  *         out = Type()             # <<<<<<<<<<<<<<
  *         out.__this__ = HalType(other.__this__)
  *         return out
  */
-  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_7halogen_3api_Type)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 143, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_7halogen_3api_Type)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 148, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_out = ((struct __pyx_obj_7halogen_3api_Type *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "halogen/api.pyx":144
+  /* "halogen/api.pyx":149
  *     def fromother(Type other not None):
  *         out = Type()
  *         out.__this__ = HalType(other.__this__)             # <<<<<<<<<<<<<<
@@ -4668,7 +4755,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_fromother(struct __pyx_obj_7haloge
  */
   __pyx_v_out->__pyx___this__ = Halide::Type(__pyx_v_other->__pyx___this__);
 
-  /* "halogen/api.pyx":145
+  /* "halogen/api.pyx":150
  *         out = Type()
  *         out.__this__ = HalType(other.__this__)
  *         return out             # <<<<<<<<<<<<<<
@@ -4680,7 +4767,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_fromother(struct __pyx_obj_7haloge
   __pyx_r = ((PyObject *)__pyx_v_out);
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":142
+  /* "halogen/api.pyx":147
  * 
  *     @staticmethod
  *     def fromother(Type other not None):             # <<<<<<<<<<<<<<
@@ -4700,7 +4787,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_fromother(struct __pyx_obj_7haloge
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":147
+/* "halogen/api.pyx":152
  *         return out
  * 
  *     def __cinit__(self, Type other=None, **kwargs):             # <<<<<<<<<<<<<<
@@ -4740,7 +4827,7 @@ static int __pyx_pw_7halogen_3api_4Type_3__cinit__(PyObject *__pyx_v_self, PyObj
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, __pyx_v_kwargs, values, pos_args, "__cinit__") < 0)) __PYX_ERR(0, 147, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, __pyx_v_kwargs, values, pos_args, "__cinit__") < 0)) __PYX_ERR(0, 152, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -4754,14 +4841,14 @@ static int __pyx_pw_7halogen_3api_4Type_3__cinit__(PyObject *__pyx_v_self, PyObj
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__cinit__", 0, 0, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 147, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("__cinit__", 0, 0, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 152, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_DECREF(__pyx_v_kwargs); __pyx_v_kwargs = 0;
   __Pyx_AddTraceback("halogen.api.Type.__cinit__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return -1;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_other), __pyx_ptype_7halogen_3api_Type, 1, "other", 0))) __PYX_ERR(0, 147, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_other), __pyx_ptype_7halogen_3api_Type, 1, "other", 0))) __PYX_ERR(0, 152, __pyx_L1_error)
   __pyx_r = __pyx_pf_7halogen_3api_4Type_2__cinit__(((struct __pyx_obj_7halogen_3api_Type *)__pyx_v_self), __pyx_v_other, __pyx_v_kwargs);
 
   /* function exit code */
@@ -4786,7 +4873,7 @@ static int __pyx_pf_7halogen_3api_4Type_2__cinit__(struct __pyx_obj_7halogen_3ap
   uint16_t __pyx_t_7;
   __Pyx_RefNannySetupContext("__cinit__", 0);
 
-  /* "halogen/api.pyx":150
+  /* "halogen/api.pyx":155
  *         # FIRST: examine `other` argument, looking for an existing Type object,
  *         # from which we can copy-construct:
  *         if other is not None:             # <<<<<<<<<<<<<<
@@ -4797,19 +4884,19 @@ static int __pyx_pf_7halogen_3api_4Type_2__cinit__(struct __pyx_obj_7halogen_3ap
   __pyx_t_2 = (__pyx_t_1 != 0);
   if (__pyx_t_2) {
 
-    /* "halogen/api.pyx":151
+    /* "halogen/api.pyx":156
  *         # from which we can copy-construct:
  *         if other is not None:
  *             if type(other) == type(self):             # <<<<<<<<<<<<<<
  *                 self.__this__ = HalType(other.__this__)
  *                 return
  */
-    __pyx_t_3 = PyObject_RichCompare(((PyObject *)Py_TYPE(((PyObject *)__pyx_v_other))), ((PyObject *)Py_TYPE(((PyObject *)__pyx_v_self))), Py_EQ); __Pyx_XGOTREF(__pyx_t_3); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 151, __pyx_L1_error)
-    __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 151, __pyx_L1_error)
+    __pyx_t_3 = PyObject_RichCompare(((PyObject *)Py_TYPE(((PyObject *)__pyx_v_other))), ((PyObject *)Py_TYPE(((PyObject *)__pyx_v_self))), Py_EQ); __Pyx_XGOTREF(__pyx_t_3); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 156, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 156, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     if (__pyx_t_2) {
 
-      /* "halogen/api.pyx":152
+      /* "halogen/api.pyx":157
  *         if other is not None:
  *             if type(other) == type(self):
  *                 self.__this__ = HalType(other.__this__)             # <<<<<<<<<<<<<<
@@ -4818,7 +4905,7 @@ static int __pyx_pf_7halogen_3api_4Type_2__cinit__(struct __pyx_obj_7halogen_3ap
  */
       __pyx_v_self->__pyx___this__ = Halide::Type(__pyx_v_other->__pyx___this__);
 
-      /* "halogen/api.pyx":153
+      /* "halogen/api.pyx":158
  *             if type(other) == type(self):
  *                 self.__this__ = HalType(other.__this__)
  *                 return             # <<<<<<<<<<<<<<
@@ -4828,7 +4915,7 @@ static int __pyx_pf_7halogen_3api_4Type_2__cinit__(struct __pyx_obj_7halogen_3ap
       __pyx_r = 0;
       goto __pyx_L0;
 
-      /* "halogen/api.pyx":151
+      /* "halogen/api.pyx":156
  *         # from which we can copy-construct:
  *         if other is not None:
  *             if type(other) == type(self):             # <<<<<<<<<<<<<<
@@ -4837,7 +4924,7 @@ static int __pyx_pf_7halogen_3api_4Type_2__cinit__(struct __pyx_obj_7halogen_3ap
  */
     }
 
-    /* "halogen/api.pyx":150
+    /* "halogen/api.pyx":155
  *         # FIRST: examine `other` argument, looking for an existing Type object,
  *         # from which we can copy-construct:
  *         if other is not None:             # <<<<<<<<<<<<<<
@@ -4846,37 +4933,37 @@ static int __pyx_pf_7halogen_3api_4Type_2__cinit__(struct __pyx_obj_7halogen_3ap
  */
   }
 
-  /* "halogen/api.pyx":159
+  /* "halogen/api.pyx":164
  *         # specification. We do it like this because Halide::Type implements these
  *         # `with_whatever()` single-argument static construction helper methods:
  *         if 'code' in kwargs:             # <<<<<<<<<<<<<<
  *             self.__this__ = self.__this__.with_code(kwargs.get('code'))
  *         elif 'bits' in kwargs:
  */
-  __pyx_t_2 = (__Pyx_PyDict_ContainsTF(__pyx_n_s_code, __pyx_v_kwargs, Py_EQ)); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 159, __pyx_L1_error)
+  __pyx_t_2 = (__Pyx_PyDict_ContainsTF(__pyx_n_s_code, __pyx_v_kwargs, Py_EQ)); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 164, __pyx_L1_error)
   __pyx_t_1 = (__pyx_t_2 != 0);
   if (__pyx_t_1) {
 
-    /* "halogen/api.pyx":160
+    /* "halogen/api.pyx":165
  *         # `with_whatever()` single-argument static construction helper methods:
  *         if 'code' in kwargs:
  *             self.__this__ = self.__this__.with_code(kwargs.get('code'))             # <<<<<<<<<<<<<<
  *         elif 'bits' in kwargs:
  *             self.__this__ = self.__this__.with_bits(<uint8_t>kwargs.get('bits'))
  */
-    __pyx_t_3 = __Pyx_PyDict_GetItemDefault(__pyx_v_kwargs, __pyx_n_s_code, Py_None); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 160, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyDict_GetItemDefault(__pyx_v_kwargs, __pyx_n_s_code, Py_None); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 165, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_4 = ((halide_type_code_t)__Pyx_PyInt_As_halide_type_code_t(__pyx_t_3)); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 160, __pyx_L1_error)
+    __pyx_t_4 = ((halide_type_code_t)__Pyx_PyInt_As_halide_type_code_t(__pyx_t_3)); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 165, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     try {
       __pyx_t_5 = __pyx_v_self->__pyx___this__.with_code(__pyx_t_4);
     } catch(...) {
       __Pyx_CppExn2PyErr();
-      __PYX_ERR(0, 160, __pyx_L1_error)
+      __PYX_ERR(0, 165, __pyx_L1_error)
     }
     __pyx_v_self->__pyx___this__ = __pyx_t_5;
 
-    /* "halogen/api.pyx":159
+    /* "halogen/api.pyx":164
  *         # specification. We do it like this because Halide::Type implements these
  *         # `with_whatever()` single-argument static construction helper methods:
  *         if 'code' in kwargs:             # <<<<<<<<<<<<<<
@@ -4886,37 +4973,37 @@ static int __pyx_pf_7halogen_3api_4Type_2__cinit__(struct __pyx_obj_7halogen_3ap
     goto __pyx_L5;
   }
 
-  /* "halogen/api.pyx":161
+  /* "halogen/api.pyx":166
  *         if 'code' in kwargs:
  *             self.__this__ = self.__this__.with_code(kwargs.get('code'))
  *         elif 'bits' in kwargs:             # <<<<<<<<<<<<<<
  *             self.__this__ = self.__this__.with_bits(<uint8_t>kwargs.get('bits'))
  *         elif 'lanes' in kwargs:
  */
-  __pyx_t_1 = (__Pyx_PyDict_ContainsTF(__pyx_n_s_bits, __pyx_v_kwargs, Py_EQ)); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 161, __pyx_L1_error)
+  __pyx_t_1 = (__Pyx_PyDict_ContainsTF(__pyx_n_s_bits, __pyx_v_kwargs, Py_EQ)); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 166, __pyx_L1_error)
   __pyx_t_2 = (__pyx_t_1 != 0);
   if (__pyx_t_2) {
 
-    /* "halogen/api.pyx":162
+    /* "halogen/api.pyx":167
  *             self.__this__ = self.__this__.with_code(kwargs.get('code'))
  *         elif 'bits' in kwargs:
  *             self.__this__ = self.__this__.with_bits(<uint8_t>kwargs.get('bits'))             # <<<<<<<<<<<<<<
  *         elif 'lanes' in kwargs:
  *             self.__this__ = self.__this__.with_lanes(<uint16_t>kwargs.get('lanes'))
  */
-    __pyx_t_3 = __Pyx_PyDict_GetItemDefault(__pyx_v_kwargs, __pyx_n_s_bits, Py_None); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 162, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyDict_GetItemDefault(__pyx_v_kwargs, __pyx_n_s_bits, Py_None); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 167, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_6 = __Pyx_PyInt_As_uint8_t(__pyx_t_3); if (unlikely((__pyx_t_6 == ((uint8_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 162, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyInt_As_uint8_t(__pyx_t_3); if (unlikely((__pyx_t_6 == ((uint8_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 167, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     try {
       __pyx_t_5 = __pyx_v_self->__pyx___this__.with_bits(((uint8_t)__pyx_t_6));
     } catch(...) {
       __Pyx_CppExn2PyErr();
-      __PYX_ERR(0, 162, __pyx_L1_error)
+      __PYX_ERR(0, 167, __pyx_L1_error)
     }
     __pyx_v_self->__pyx___this__ = __pyx_t_5;
 
-    /* "halogen/api.pyx":161
+    /* "halogen/api.pyx":166
  *         if 'code' in kwargs:
  *             self.__this__ = self.__this__.with_code(kwargs.get('code'))
  *         elif 'bits' in kwargs:             # <<<<<<<<<<<<<<
@@ -4926,37 +5013,37 @@ static int __pyx_pf_7halogen_3api_4Type_2__cinit__(struct __pyx_obj_7halogen_3ap
     goto __pyx_L5;
   }
 
-  /* "halogen/api.pyx":163
+  /* "halogen/api.pyx":168
  *         elif 'bits' in kwargs:
  *             self.__this__ = self.__this__.with_bits(<uint8_t>kwargs.get('bits'))
  *         elif 'lanes' in kwargs:             # <<<<<<<<<<<<<<
  *             self.__this__ = self.__this__.with_lanes(<uint16_t>kwargs.get('lanes'))
  *         else:
  */
-  __pyx_t_2 = (__Pyx_PyDict_ContainsTF(__pyx_n_s_lanes, __pyx_v_kwargs, Py_EQ)); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 163, __pyx_L1_error)
+  __pyx_t_2 = (__Pyx_PyDict_ContainsTF(__pyx_n_s_lanes, __pyx_v_kwargs, Py_EQ)); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 168, __pyx_L1_error)
   __pyx_t_1 = (__pyx_t_2 != 0);
   if (__pyx_t_1) {
 
-    /* "halogen/api.pyx":164
+    /* "halogen/api.pyx":169
  *             self.__this__ = self.__this__.with_bits(<uint8_t>kwargs.get('bits'))
  *         elif 'lanes' in kwargs:
  *             self.__this__ = self.__this__.with_lanes(<uint16_t>kwargs.get('lanes'))             # <<<<<<<<<<<<<<
  *         else:
  *             # default to uint8_t:
  */
-    __pyx_t_3 = __Pyx_PyDict_GetItemDefault(__pyx_v_kwargs, __pyx_n_s_lanes, Py_None); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 164, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyDict_GetItemDefault(__pyx_v_kwargs, __pyx_n_s_lanes, Py_None); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 169, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_7 = __Pyx_PyInt_As_uint16_t(__pyx_t_3); if (unlikely((__pyx_t_7 == ((uint16_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 164, __pyx_L1_error)
+    __pyx_t_7 = __Pyx_PyInt_As_uint16_t(__pyx_t_3); if (unlikely((__pyx_t_7 == ((uint16_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 169, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     try {
       __pyx_t_5 = __pyx_v_self->__pyx___this__.with_lanes(((uint16_t)__pyx_t_7));
     } catch(...) {
       __Pyx_CppExn2PyErr();
-      __PYX_ERR(0, 164, __pyx_L1_error)
+      __PYX_ERR(0, 169, __pyx_L1_error)
     }
     __pyx_v_self->__pyx___this__ = __pyx_t_5;
 
-    /* "halogen/api.pyx":163
+    /* "halogen/api.pyx":168
  *         elif 'bits' in kwargs:
  *             self.__this__ = self.__this__.with_bits(<uint8_t>kwargs.get('bits'))
  *         elif 'lanes' in kwargs:             # <<<<<<<<<<<<<<
@@ -4966,7 +5053,7 @@ static int __pyx_pf_7halogen_3api_4Type_2__cinit__(struct __pyx_obj_7halogen_3ap
     goto __pyx_L5;
   }
 
-  /* "halogen/api.pyx":167
+  /* "halogen/api.pyx":172
  *         else:
  *             # default to uint8_t:
  *             self.__this__ = HalType_UInt(8, 1)             # <<<<<<<<<<<<<<
@@ -4978,13 +5065,13 @@ static int __pyx_pf_7halogen_3api_4Type_2__cinit__(struct __pyx_obj_7halogen_3ap
       __pyx_t_5 = Halide::UInt(8, 1);
     } catch(...) {
       __Pyx_CppExn2PyErr();
-      __PYX_ERR(0, 167, __pyx_L1_error)
+      __PYX_ERR(0, 172, __pyx_L1_error)
     }
     __pyx_v_self->__pyx___this__ = __pyx_t_5;
   }
   __pyx_L5:;
 
-  /* "halogen/api.pyx":147
+  /* "halogen/api.pyx":152
  *         return out
  * 
  *     def __cinit__(self, Type other=None, **kwargs):             # <<<<<<<<<<<<<<
@@ -5004,7 +5091,7 @@ static int __pyx_pf_7halogen_3api_4Type_2__cinit__(struct __pyx_obj_7halogen_3ap
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":169
+/* "halogen/api.pyx":174
  *             self.__this__ = HalType_UInt(8, 1)
  * 
  *     def code(self):             # <<<<<<<<<<<<<<
@@ -5032,7 +5119,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_4code(struct __pyx_obj_7halogen_3a
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("code", 0);
 
-  /* "halogen/api.pyx":170
+  /* "halogen/api.pyx":175
  * 
  *     def code(self):
  *         return self.__this__.code()             # <<<<<<<<<<<<<<
@@ -5040,13 +5127,13 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_4code(struct __pyx_obj_7halogen_3a
  *     def bytes(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_halide_type_code_t(__pyx_v_self->__pyx___this__.code()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 170, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_halide_type_code_t(__pyx_v_self->__pyx___this__.code()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 175, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":169
+  /* "halogen/api.pyx":174
  *             self.__this__ = HalType_UInt(8, 1)
  * 
  *     def code(self):             # <<<<<<<<<<<<<<
@@ -5065,7 +5152,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_4code(struct __pyx_obj_7halogen_3a
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":172
+/* "halogen/api.pyx":177
  *         return self.__this__.code()
  * 
  *     def bytes(self):             # <<<<<<<<<<<<<<
@@ -5093,7 +5180,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_6bytes(struct __pyx_obj_7halogen_3
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("bytes", 0);
 
-  /* "halogen/api.pyx":173
+  /* "halogen/api.pyx":178
  * 
  *     def bytes(self):
  *         return self.__this__.bytes()             # <<<<<<<<<<<<<<
@@ -5101,13 +5188,13 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_6bytes(struct __pyx_obj_7halogen_3
  *     def bits(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->__pyx___this__.bytes()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 173, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->__pyx___this__.bytes()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 178, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":172
+  /* "halogen/api.pyx":177
  *         return self.__this__.code()
  * 
  *     def bytes(self):             # <<<<<<<<<<<<<<
@@ -5126,7 +5213,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_6bytes(struct __pyx_obj_7halogen_3
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":175
+/* "halogen/api.pyx":180
  *         return self.__this__.bytes()
  * 
  *     def bits(self):             # <<<<<<<<<<<<<<
@@ -5154,7 +5241,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_8bits(struct __pyx_obj_7halogen_3a
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("bits", 0);
 
-  /* "halogen/api.pyx":176
+  /* "halogen/api.pyx":181
  * 
  *     def bits(self):
  *         return self.__this__.bits()             # <<<<<<<<<<<<<<
@@ -5162,13 +5249,13 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_8bits(struct __pyx_obj_7halogen_3a
  *     def lanes(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->__pyx___this__.bits()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 176, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->__pyx___this__.bits()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 181, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":175
+  /* "halogen/api.pyx":180
  *         return self.__this__.bytes()
  * 
  *     def bits(self):             # <<<<<<<<<<<<<<
@@ -5187,7 +5274,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_8bits(struct __pyx_obj_7halogen_3a
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":178
+/* "halogen/api.pyx":183
  *         return self.__this__.bits()
  * 
  *     def lanes(self):             # <<<<<<<<<<<<<<
@@ -5215,7 +5302,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_10lanes(struct __pyx_obj_7halogen_
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("lanes", 0);
 
-  /* "halogen/api.pyx":179
+  /* "halogen/api.pyx":184
  * 
  *     def lanes(self):
  *         return self.__this__.lanes()             # <<<<<<<<<<<<<<
@@ -5223,13 +5310,13 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_10lanes(struct __pyx_obj_7halogen_
  *     def with_code(self, code):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->__pyx___this__.lanes()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 179, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->__pyx___this__.lanes()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 184, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":178
+  /* "halogen/api.pyx":183
  *         return self.__this__.bits()
  * 
  *     def lanes(self):             # <<<<<<<<<<<<<<
@@ -5248,7 +5335,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_10lanes(struct __pyx_obj_7halogen_
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":181
+/* "halogen/api.pyx":186
  *         return self.__this__.lanes()
  * 
  *     def with_code(self, code):             # <<<<<<<<<<<<<<
@@ -5279,35 +5366,35 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_12with_code(struct __pyx_obj_7halo
   Halide::Type __pyx_t_3;
   __Pyx_RefNannySetupContext("with_code", 0);
 
-  /* "halogen/api.pyx":182
+  /* "halogen/api.pyx":187
  * 
  *     def with_code(self, code):
  *         out = Type()             # <<<<<<<<<<<<<<
  *         out.__this__ = self.__this__.with_code(code)
  *         return out
  */
-  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_7halogen_3api_Type)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 182, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_7halogen_3api_Type)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 187, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_out = ((struct __pyx_obj_7halogen_3api_Type *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "halogen/api.pyx":183
+  /* "halogen/api.pyx":188
  *     def with_code(self, code):
  *         out = Type()
  *         out.__this__ = self.__this__.with_code(code)             # <<<<<<<<<<<<<<
  *         return out
  * 
  */
-  __pyx_t_2 = ((halide_type_code_t)__Pyx_PyInt_As_halide_type_code_t(__pyx_v_code)); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 183, __pyx_L1_error)
+  __pyx_t_2 = ((halide_type_code_t)__Pyx_PyInt_As_halide_type_code_t(__pyx_v_code)); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 188, __pyx_L1_error)
   try {
     __pyx_t_3 = __pyx_v_self->__pyx___this__.with_code(__pyx_t_2);
   } catch(...) {
     __Pyx_CppExn2PyErr();
-    __PYX_ERR(0, 183, __pyx_L1_error)
+    __PYX_ERR(0, 188, __pyx_L1_error)
   }
   __pyx_v_out->__pyx___this__ = __pyx_t_3;
 
-  /* "halogen/api.pyx":184
+  /* "halogen/api.pyx":189
  *         out = Type()
  *         out.__this__ = self.__this__.with_code(code)
  *         return out             # <<<<<<<<<<<<<<
@@ -5319,7 +5406,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_12with_code(struct __pyx_obj_7halo
   __pyx_r = ((PyObject *)__pyx_v_out);
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":181
+  /* "halogen/api.pyx":186
  *         return self.__this__.lanes()
  * 
  *     def with_code(self, code):             # <<<<<<<<<<<<<<
@@ -5339,7 +5426,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_12with_code(struct __pyx_obj_7halo
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":186
+/* "halogen/api.pyx":191
  *         return out
  * 
  *     def with_bits(self, bits):             # <<<<<<<<<<<<<<
@@ -5370,35 +5457,35 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_14with_bits(struct __pyx_obj_7halo
   Halide::Type __pyx_t_3;
   __Pyx_RefNannySetupContext("with_bits", 0);
 
-  /* "halogen/api.pyx":187
+  /* "halogen/api.pyx":192
  * 
  *     def with_bits(self, bits):
  *         out = Type()             # <<<<<<<<<<<<<<
  *         out.__this__ = self.__this__.with_bits(<uint8_t>bits)
  *         return out
  */
-  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_7halogen_3api_Type)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 187, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_7halogen_3api_Type)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 192, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_out = ((struct __pyx_obj_7halogen_3api_Type *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "halogen/api.pyx":188
+  /* "halogen/api.pyx":193
  *     def with_bits(self, bits):
  *         out = Type()
  *         out.__this__ = self.__this__.with_bits(<uint8_t>bits)             # <<<<<<<<<<<<<<
  *         return out
  * 
  */
-  __pyx_t_2 = __Pyx_PyInt_As_uint8_t(__pyx_v_bits); if (unlikely((__pyx_t_2 == ((uint8_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 188, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_As_uint8_t(__pyx_v_bits); if (unlikely((__pyx_t_2 == ((uint8_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 193, __pyx_L1_error)
   try {
     __pyx_t_3 = __pyx_v_self->__pyx___this__.with_bits(((uint8_t)__pyx_t_2));
   } catch(...) {
     __Pyx_CppExn2PyErr();
-    __PYX_ERR(0, 188, __pyx_L1_error)
+    __PYX_ERR(0, 193, __pyx_L1_error)
   }
   __pyx_v_out->__pyx___this__ = __pyx_t_3;
 
-  /* "halogen/api.pyx":189
+  /* "halogen/api.pyx":194
  *         out = Type()
  *         out.__this__ = self.__this__.with_bits(<uint8_t>bits)
  *         return out             # <<<<<<<<<<<<<<
@@ -5410,7 +5497,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_14with_bits(struct __pyx_obj_7halo
   __pyx_r = ((PyObject *)__pyx_v_out);
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":186
+  /* "halogen/api.pyx":191
  *         return out
  * 
  *     def with_bits(self, bits):             # <<<<<<<<<<<<<<
@@ -5430,7 +5517,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_14with_bits(struct __pyx_obj_7halo
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":191
+/* "halogen/api.pyx":196
  *         return out
  * 
  *     def with_lanes(self, lanes):             # <<<<<<<<<<<<<<
@@ -5461,35 +5548,35 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_16with_lanes(struct __pyx_obj_7hal
   Halide::Type __pyx_t_3;
   __Pyx_RefNannySetupContext("with_lanes", 0);
 
-  /* "halogen/api.pyx":192
+  /* "halogen/api.pyx":197
  * 
  *     def with_lanes(self, lanes):
  *         out = Type()             # <<<<<<<<<<<<<<
  *         out.__this__ = self.__this__.with_lanes(<uint16_t>lanes)
  *         return out
  */
-  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_7halogen_3api_Type)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 192, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_7halogen_3api_Type)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 197, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_out = ((struct __pyx_obj_7halogen_3api_Type *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "halogen/api.pyx":193
+  /* "halogen/api.pyx":198
  *     def with_lanes(self, lanes):
  *         out = Type()
  *         out.__this__ = self.__this__.with_lanes(<uint16_t>lanes)             # <<<<<<<<<<<<<<
  *         return out
  * 
  */
-  __pyx_t_2 = __Pyx_PyInt_As_uint16_t(__pyx_v_lanes); if (unlikely((__pyx_t_2 == ((uint16_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 193, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_As_uint16_t(__pyx_v_lanes); if (unlikely((__pyx_t_2 == ((uint16_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 198, __pyx_L1_error)
   try {
     __pyx_t_3 = __pyx_v_self->__pyx___this__.with_lanes(((uint16_t)__pyx_t_2));
   } catch(...) {
     __Pyx_CppExn2PyErr();
-    __PYX_ERR(0, 193, __pyx_L1_error)
+    __PYX_ERR(0, 198, __pyx_L1_error)
   }
   __pyx_v_out->__pyx___this__ = __pyx_t_3;
 
-  /* "halogen/api.pyx":194
+  /* "halogen/api.pyx":199
  *         out = Type()
  *         out.__this__ = self.__this__.with_lanes(<uint16_t>lanes)
  *         return out             # <<<<<<<<<<<<<<
@@ -5501,7 +5588,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_16with_lanes(struct __pyx_obj_7hal
   __pyx_r = ((PyObject *)__pyx_v_out);
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":191
+  /* "halogen/api.pyx":196
  *         return out
  * 
  *     def with_lanes(self, lanes):             # <<<<<<<<<<<<<<
@@ -5521,7 +5608,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_16with_lanes(struct __pyx_obj_7hal
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":196
+/* "halogen/api.pyx":201
  *         return out
  * 
  *     def is_bool(self):             # <<<<<<<<<<<<<<
@@ -5549,7 +5636,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_18is_bool(struct __pyx_obj_7haloge
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("is_bool", 0);
 
-  /* "halogen/api.pyx":197
+  /* "halogen/api.pyx":202
  * 
  *     def is_bool(self):
  *         return self.__this__.is_bool()             # <<<<<<<<<<<<<<
@@ -5557,13 +5644,13 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_18is_bool(struct __pyx_obj_7haloge
  *     def is_vector(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_v_self->__pyx___this__.is_bool()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 197, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_v_self->__pyx___this__.is_bool()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 202, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":196
+  /* "halogen/api.pyx":201
  *         return out
  * 
  *     def is_bool(self):             # <<<<<<<<<<<<<<
@@ -5582,7 +5669,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_18is_bool(struct __pyx_obj_7haloge
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":199
+/* "halogen/api.pyx":204
  *         return self.__this__.is_bool()
  * 
  *     def is_vector(self):             # <<<<<<<<<<<<<<
@@ -5610,7 +5697,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_20is_vector(struct __pyx_obj_7halo
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("is_vector", 0);
 
-  /* "halogen/api.pyx":200
+  /* "halogen/api.pyx":205
  * 
  *     def is_vector(self):
  *         return self.__this__.is_vector()             # <<<<<<<<<<<<<<
@@ -5618,13 +5705,13 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_20is_vector(struct __pyx_obj_7halo
  *     def is_scalar(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_v_self->__pyx___this__.is_vector()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 200, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_v_self->__pyx___this__.is_vector()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 205, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":199
+  /* "halogen/api.pyx":204
  *         return self.__this__.is_bool()
  * 
  *     def is_vector(self):             # <<<<<<<<<<<<<<
@@ -5643,7 +5730,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_20is_vector(struct __pyx_obj_7halo
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":202
+/* "halogen/api.pyx":207
  *         return self.__this__.is_vector()
  * 
  *     def is_scalar(self):             # <<<<<<<<<<<<<<
@@ -5671,7 +5758,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_22is_scalar(struct __pyx_obj_7halo
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("is_scalar", 0);
 
-  /* "halogen/api.pyx":203
+  /* "halogen/api.pyx":208
  * 
  *     def is_scalar(self):
  *         return self.__this__.is_scalar()             # <<<<<<<<<<<<<<
@@ -5679,13 +5766,13 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_22is_scalar(struct __pyx_obj_7halo
  *     def is_float(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_v_self->__pyx___this__.is_scalar()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 203, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_v_self->__pyx___this__.is_scalar()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 208, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":202
+  /* "halogen/api.pyx":207
  *         return self.__this__.is_vector()
  * 
  *     def is_scalar(self):             # <<<<<<<<<<<<<<
@@ -5704,7 +5791,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_22is_scalar(struct __pyx_obj_7halo
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":205
+/* "halogen/api.pyx":210
  *         return self.__this__.is_scalar()
  * 
  *     def is_float(self):             # <<<<<<<<<<<<<<
@@ -5732,7 +5819,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_24is_float(struct __pyx_obj_7halog
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("is_float", 0);
 
-  /* "halogen/api.pyx":206
+  /* "halogen/api.pyx":211
  * 
  *     def is_float(self):
  *         return self.__this__.is_float()             # <<<<<<<<<<<<<<
@@ -5740,13 +5827,13 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_24is_float(struct __pyx_obj_7halog
  *     def is_int(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_v_self->__pyx___this__.is_float()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 206, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_v_self->__pyx___this__.is_float()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 211, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":205
+  /* "halogen/api.pyx":210
  *         return self.__this__.is_scalar()
  * 
  *     def is_float(self):             # <<<<<<<<<<<<<<
@@ -5765,7 +5852,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_24is_float(struct __pyx_obj_7halog
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":208
+/* "halogen/api.pyx":213
  *         return self.__this__.is_float()
  * 
  *     def is_int(self):             # <<<<<<<<<<<<<<
@@ -5793,7 +5880,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_26is_int(struct __pyx_obj_7halogen
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("is_int", 0);
 
-  /* "halogen/api.pyx":209
+  /* "halogen/api.pyx":214
  * 
  *     def is_int(self):
  *         return self.__this__.is_int()             # <<<<<<<<<<<<<<
@@ -5801,13 +5888,13 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_26is_int(struct __pyx_obj_7halogen
  *     def is_uint(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_v_self->__pyx___this__.is_int()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 209, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_v_self->__pyx___this__.is_int()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 214, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":208
+  /* "halogen/api.pyx":213
  *         return self.__this__.is_float()
  * 
  *     def is_int(self):             # <<<<<<<<<<<<<<
@@ -5826,7 +5913,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_26is_int(struct __pyx_obj_7halogen
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":211
+/* "halogen/api.pyx":216
  *         return self.__this__.is_int()
  * 
  *     def is_uint(self):             # <<<<<<<<<<<<<<
@@ -5854,7 +5941,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_28is_uint(struct __pyx_obj_7haloge
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("is_uint", 0);
 
-  /* "halogen/api.pyx":212
+  /* "halogen/api.pyx":217
  * 
  *     def is_uint(self):
  *         return self.__this__.is_uint()             # <<<<<<<<<<<<<<
@@ -5862,13 +5949,13 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_28is_uint(struct __pyx_obj_7haloge
  *     def is_handle(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_v_self->__pyx___this__.is_uint()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 212, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_v_self->__pyx___this__.is_uint()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 217, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":211
+  /* "halogen/api.pyx":216
  *         return self.__this__.is_int()
  * 
  *     def is_uint(self):             # <<<<<<<<<<<<<<
@@ -5887,7 +5974,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_28is_uint(struct __pyx_obj_7haloge
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":214
+/* "halogen/api.pyx":219
  *         return self.__this__.is_uint()
  * 
  *     def is_handle(self):             # <<<<<<<<<<<<<<
@@ -5915,7 +6002,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_30is_handle(struct __pyx_obj_7halo
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("is_handle", 0);
 
-  /* "halogen/api.pyx":215
+  /* "halogen/api.pyx":220
  * 
  *     def is_handle(self):
  *         return self.__this__.is_handle()             # <<<<<<<<<<<<<<
@@ -5923,13 +6010,13 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_30is_handle(struct __pyx_obj_7halo
  *     def same_handle_type(self, Type other not None):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_v_self->__pyx___this__.is_handle()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 215, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_v_self->__pyx___this__.is_handle()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 220, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":214
+  /* "halogen/api.pyx":219
  *         return self.__this__.is_uint()
  * 
  *     def is_handle(self):             # <<<<<<<<<<<<<<
@@ -5948,7 +6035,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_30is_handle(struct __pyx_obj_7halo
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":217
+/* "halogen/api.pyx":222
  *         return self.__this__.is_handle()
  * 
  *     def same_handle_type(self, Type other not None):             # <<<<<<<<<<<<<<
@@ -5963,7 +6050,7 @@ static PyObject *__pyx_pw_7halogen_3api_4Type_33same_handle_type(PyObject *__pyx
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("same_handle_type (wrapper)", 0);
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_other), __pyx_ptype_7halogen_3api_Type, 0, "other", 0))) __PYX_ERR(0, 217, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_other), __pyx_ptype_7halogen_3api_Type, 0, "other", 0))) __PYX_ERR(0, 222, __pyx_L1_error)
   __pyx_r = __pyx_pf_7halogen_3api_4Type_32same_handle_type(((struct __pyx_obj_7halogen_3api_Type *)__pyx_v_self), ((struct __pyx_obj_7halogen_3api_Type *)__pyx_v_other));
 
   /* function exit code */
@@ -5981,7 +6068,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_32same_handle_type(struct __pyx_ob
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("same_handle_type", 0);
 
-  /* "halogen/api.pyx":218
+  /* "halogen/api.pyx":223
  * 
  *     def same_handle_type(self, Type other not None):
  *         return self.__this__.same_handle_type(other.__this__)             # <<<<<<<<<<<<<<
@@ -5989,13 +6076,13 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_32same_handle_type(struct __pyx_ob
  *     def element_of(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_v_self->__pyx___this__.same_handle_type(__pyx_v_other->__pyx___this__)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 218, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_v_self->__pyx___this__.same_handle_type(__pyx_v_other->__pyx___this__)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 223, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":217
+  /* "halogen/api.pyx":222
  *         return self.__this__.is_handle()
  * 
  *     def same_handle_type(self, Type other not None):             # <<<<<<<<<<<<<<
@@ -6014,7 +6101,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_32same_handle_type(struct __pyx_ob
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":220
+/* "halogen/api.pyx":225
  *         return self.__this__.same_handle_type(other.__this__)
  * 
  *     def element_of(self):             # <<<<<<<<<<<<<<
@@ -6043,19 +6130,19 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_34element_of(struct __pyx_obj_7hal
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("element_of", 0);
 
-  /* "halogen/api.pyx":221
+  /* "halogen/api.pyx":226
  * 
  *     def element_of(self):
  *         out = Type()             # <<<<<<<<<<<<<<
  *         out.__this__ = self.__this__.element_of()
  *         return out
  */
-  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_7halogen_3api_Type)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 221, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_7halogen_3api_Type)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 226, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_out = ((struct __pyx_obj_7halogen_3api_Type *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "halogen/api.pyx":222
+  /* "halogen/api.pyx":227
  *     def element_of(self):
  *         out = Type()
  *         out.__this__ = self.__this__.element_of()             # <<<<<<<<<<<<<<
@@ -6064,7 +6151,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_34element_of(struct __pyx_obj_7hal
  */
   __pyx_v_out->__pyx___this__ = __pyx_v_self->__pyx___this__.element_of();
 
-  /* "halogen/api.pyx":223
+  /* "halogen/api.pyx":228
  *         out = Type()
  *         out.__this__ = self.__this__.element_of()
  *         return out             # <<<<<<<<<<<<<<
@@ -6076,7 +6163,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_34element_of(struct __pyx_obj_7hal
   __pyx_r = ((PyObject *)__pyx_v_out);
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":220
+  /* "halogen/api.pyx":225
  *         return self.__this__.same_handle_type(other.__this__)
  * 
  *     def element_of(self):             # <<<<<<<<<<<<<<
@@ -6096,11 +6183,11 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_34element_of(struct __pyx_obj_7hal
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":225
+/* "halogen/api.pyx":230
  *         return out
  * 
  *     def can_represent(self, other):             # <<<<<<<<<<<<<<
- *         if type(other) == type(self):
+ *         if type(other) is type(self):
  *             return self.can_represent_type(other)
  */
 
@@ -6121,141 +6208,161 @@ static PyObject *__pyx_pw_7halogen_3api_4Type_37can_represent(PyObject *__pyx_v_
 static PyObject *__pyx_pf_7halogen_3api_4Type_36can_represent(struct __pyx_obj_7halogen_3api_Type *__pyx_v_self, PyObject *__pyx_v_other) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
-  PyObject *__pyx_t_1 = NULL;
+  int __pyx_t_1;
   int __pyx_t_2;
-  double __pyx_t_3;
-  PyObject *__pyx_t_4 = NULL;
-  int __pyx_t_5;
-  long __pyx_t_6;
+  PyObject *__pyx_t_3 = NULL;
+  double __pyx_t_4;
+  long __pyx_t_5;
   __Pyx_RefNannySetupContext("can_represent", 0);
 
-  /* "halogen/api.pyx":226
+  /* "halogen/api.pyx":231
  * 
  *     def can_represent(self, other):
- *         if type(other) == type(self):             # <<<<<<<<<<<<<<
+ *         if type(other) is type(self):             # <<<<<<<<<<<<<<
  *             return self.can_represent_type(other)
- *         elif type(other) == float:
+ *         elif type(other) is float:
  */
-  __pyx_t_1 = PyObject_RichCompare(((PyObject *)Py_TYPE(__pyx_v_other)), ((PyObject *)Py_TYPE(((PyObject *)__pyx_v_self))), Py_EQ); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 226, __pyx_L1_error)
-  __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 226, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_1 = (((PyObject *)Py_TYPE(__pyx_v_other)) == ((PyObject *)Py_TYPE(((PyObject *)__pyx_v_self))));
+  __pyx_t_2 = (__pyx_t_1 != 0);
   if (__pyx_t_2) {
 
-    /* "halogen/api.pyx":227
+    /* "halogen/api.pyx":232
  *     def can_represent(self, other):
- *         if type(other) == type(self):
+ *         if type(other) is type(self):
  *             return self.can_represent_type(other)             # <<<<<<<<<<<<<<
- *         elif type(other) == float:
+ *         elif type(other) is float:
  *             return self.can_represent_float(float(other))
  */
     __Pyx_XDECREF(__pyx_r);
-    if (!(likely(((__pyx_v_other) == Py_None) || likely(__Pyx_TypeTest(__pyx_v_other, __pyx_ptype_7halogen_3api_Type))))) __PYX_ERR(0, 227, __pyx_L1_error)
-    __pyx_t_1 = ((struct __pyx_vtabstruct_7halogen_3api_Type *)__pyx_v_self->__pyx_vtab)->can_represent_type(__pyx_v_self, ((struct __pyx_obj_7halogen_3api_Type *)__pyx_v_other), 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 227, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __pyx_r = __pyx_t_1;
-    __pyx_t_1 = 0;
+    if (!(likely(((__pyx_v_other) == Py_None) || likely(__Pyx_TypeTest(__pyx_v_other, __pyx_ptype_7halogen_3api_Type))))) __PYX_ERR(0, 232, __pyx_L1_error)
+    __pyx_t_3 = ((struct __pyx_vtabstruct_7halogen_3api_Type *)__pyx_v_self->__pyx_vtab)->can_represent_type(__pyx_v_self, ((struct __pyx_obj_7halogen_3api_Type *)__pyx_v_other), 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 232, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_3);
+    __pyx_r = __pyx_t_3;
+    __pyx_t_3 = 0;
     goto __pyx_L0;
 
-    /* "halogen/api.pyx":226
+    /* "halogen/api.pyx":231
  * 
  *     def can_represent(self, other):
- *         if type(other) == type(self):             # <<<<<<<<<<<<<<
+ *         if type(other) is type(self):             # <<<<<<<<<<<<<<
  *             return self.can_represent_type(other)
- *         elif type(other) == float:
+ *         elif type(other) is float:
  */
   }
 
-  /* "halogen/api.pyx":228
- *         if type(other) == type(self):
+  /* "halogen/api.pyx":233
+ *         if type(other) is type(self):
  *             return self.can_represent_type(other)
- *         elif type(other) == float:             # <<<<<<<<<<<<<<
+ *         elif type(other) is float:             # <<<<<<<<<<<<<<
  *             return self.can_represent_float(float(other))
- *         elif type(other) in (int, long):
+ *         elif type(other) is int:
  */
-  __pyx_t_1 = PyObject_RichCompare(((PyObject *)Py_TYPE(__pyx_v_other)), ((PyObject *)(&PyFloat_Type)), Py_EQ); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 228, __pyx_L1_error)
-  __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 228, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  if (__pyx_t_2) {
+  __pyx_t_2 = (((PyObject *)Py_TYPE(__pyx_v_other)) == ((PyObject *)(&PyFloat_Type)));
+  __pyx_t_1 = (__pyx_t_2 != 0);
+  if (__pyx_t_1) {
 
-    /* "halogen/api.pyx":229
+    /* "halogen/api.pyx":234
  *             return self.can_represent_type(other)
- *         elif type(other) == float:
+ *         elif type(other) is float:
  *             return self.can_represent_float(float(other))             # <<<<<<<<<<<<<<
- *         elif type(other) in (int, long):
+ *         elif type(other) is int:
  *             return self.can_represent_long(long(other))
  */
     __Pyx_XDECREF(__pyx_r);
-    __pyx_t_3 = __Pyx_PyObject_AsDouble(__pyx_v_other); if (unlikely(__pyx_t_3 == ((double)((double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 229, __pyx_L1_error)
-    __pyx_t_1 = ((struct __pyx_vtabstruct_7halogen_3api_Type *)__pyx_v_self->__pyx_vtab)->can_represent_float(__pyx_v_self, __pyx_t_3, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 229, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __pyx_r = __pyx_t_1;
-    __pyx_t_1 = 0;
+    __pyx_t_4 = __Pyx_PyObject_AsDouble(__pyx_v_other); if (unlikely(__pyx_t_4 == ((double)((double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 234, __pyx_L1_error)
+    __pyx_t_3 = ((struct __pyx_vtabstruct_7halogen_3api_Type *)__pyx_v_self->__pyx_vtab)->can_represent_float(__pyx_v_self, __pyx_t_4, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 234, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_3);
+    __pyx_r = __pyx_t_3;
+    __pyx_t_3 = 0;
     goto __pyx_L0;
 
-    /* "halogen/api.pyx":228
- *         if type(other) == type(self):
+    /* "halogen/api.pyx":233
+ *         if type(other) is type(self):
  *             return self.can_represent_type(other)
- *         elif type(other) == float:             # <<<<<<<<<<<<<<
+ *         elif type(other) is float:             # <<<<<<<<<<<<<<
  *             return self.can_represent_float(float(other))
- *         elif type(other) in (int, long):
+ *         elif type(other) is int:
  */
   }
 
-  /* "halogen/api.pyx":230
- *         elif type(other) == float:
+  /* "halogen/api.pyx":235
+ *         elif type(other) is float:
  *             return self.can_represent_float(float(other))
- *         elif type(other) in (int, long):             # <<<<<<<<<<<<<<
+ *         elif type(other) is int:             # <<<<<<<<<<<<<<
+ *             return self.can_represent_long(long(other))
+ *         elif type(other) is long:
+ */
+  __pyx_t_1 = (((PyObject *)Py_TYPE(__pyx_v_other)) == ((PyObject *)(&PyInt_Type)));
+  __pyx_t_2 = (__pyx_t_1 != 0);
+  if (__pyx_t_2) {
+
+    /* "halogen/api.pyx":236
+ *             return self.can_represent_float(float(other))
+ *         elif type(other) is int:
+ *             return self.can_represent_long(long(other))             # <<<<<<<<<<<<<<
+ *         elif type(other) is long:
+ *             return self.can_represent_long(long(other))
+ */
+    __Pyx_XDECREF(__pyx_r);
+    __pyx_t_3 = __Pyx_PyObject_CallOneArg(((PyObject *)(&PyLong_Type)), __pyx_v_other); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 236, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_3);
+    __pyx_t_5 = __Pyx_PyInt_As_long(__pyx_t_3); if (unlikely((__pyx_t_5 == (long)-1) && PyErr_Occurred())) __PYX_ERR(0, 236, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+    __pyx_t_3 = ((struct __pyx_vtabstruct_7halogen_3api_Type *)__pyx_v_self->__pyx_vtab)->can_represent_long(__pyx_v_self, __pyx_t_5, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 236, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_3);
+    __pyx_r = __pyx_t_3;
+    __pyx_t_3 = 0;
+    goto __pyx_L0;
+
+    /* "halogen/api.pyx":235
+ *         elif type(other) is float:
+ *             return self.can_represent_float(float(other))
+ *         elif type(other) is int:             # <<<<<<<<<<<<<<
+ *             return self.can_represent_long(long(other))
+ *         elif type(other) is long:
+ */
+  }
+
+  /* "halogen/api.pyx":237
+ *         elif type(other) is int:
+ *             return self.can_represent_long(long(other))
+ *         elif type(other) is long:             # <<<<<<<<<<<<<<
  *             return self.can_represent_long(long(other))
  *         return False
  */
-  __Pyx_INCREF(((PyObject *)Py_TYPE(__pyx_v_other)));
-  __pyx_t_1 = ((PyObject *)Py_TYPE(__pyx_v_other));
-  __pyx_t_4 = PyObject_RichCompare(((PyObject *)__pyx_t_1), ((PyObject *)(&PyInt_Type)), Py_EQ); __Pyx_XGOTREF(__pyx_t_4); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 230, __pyx_L1_error)
-  __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely(__pyx_t_5 < 0)) __PYX_ERR(0, 230, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  if (!__pyx_t_5) {
-  } else {
-    __pyx_t_2 = __pyx_t_5;
-    goto __pyx_L4_bool_binop_done;
-  }
-  __pyx_t_4 = PyObject_RichCompare(((PyObject *)__pyx_t_1), ((PyObject *)(&PyLong_Type)), Py_EQ); __Pyx_XGOTREF(__pyx_t_4); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 230, __pyx_L1_error)
-  __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely(__pyx_t_5 < 0)) __PYX_ERR(0, 230, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_2 = __pyx_t_5;
-  __pyx_L4_bool_binop_done:;
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_5 = (__pyx_t_2 != 0);
-  if (__pyx_t_5) {
+  __pyx_t_2 = (((PyObject *)Py_TYPE(__pyx_v_other)) == ((PyObject *)(&PyLong_Type)));
+  __pyx_t_1 = (__pyx_t_2 != 0);
+  if (__pyx_t_1) {
 
-    /* "halogen/api.pyx":231
- *             return self.can_represent_float(float(other))
- *         elif type(other) in (int, long):
+    /* "halogen/api.pyx":238
+ *             return self.can_represent_long(long(other))
+ *         elif type(other) is long:
  *             return self.can_represent_long(long(other))             # <<<<<<<<<<<<<<
  *         return False
  * 
  */
     __Pyx_XDECREF(__pyx_r);
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(((PyObject *)(&PyLong_Type)), __pyx_v_other); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 231, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_6 = __Pyx_PyInt_As_long(__pyx_t_1); if (unlikely((__pyx_t_6 == (long)-1) && PyErr_Occurred())) __PYX_ERR(0, 231, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_t_1 = ((struct __pyx_vtabstruct_7halogen_3api_Type *)__pyx_v_self->__pyx_vtab)->can_represent_long(__pyx_v_self, __pyx_t_6, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 231, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __pyx_r = __pyx_t_1;
-    __pyx_t_1 = 0;
+    __pyx_t_3 = __Pyx_PyObject_CallOneArg(((PyObject *)(&PyLong_Type)), __pyx_v_other); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 238, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_3);
+    __pyx_t_5 = __Pyx_PyInt_As_long(__pyx_t_3); if (unlikely((__pyx_t_5 == (long)-1) && PyErr_Occurred())) __PYX_ERR(0, 238, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+    __pyx_t_3 = ((struct __pyx_vtabstruct_7halogen_3api_Type *)__pyx_v_self->__pyx_vtab)->can_represent_long(__pyx_v_self, __pyx_t_5, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 238, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_3);
+    __pyx_r = __pyx_t_3;
+    __pyx_t_3 = 0;
     goto __pyx_L0;
 
-    /* "halogen/api.pyx":230
- *         elif type(other) == float:
- *             return self.can_represent_float(float(other))
- *         elif type(other) in (int, long):             # <<<<<<<<<<<<<<
+    /* "halogen/api.pyx":237
+ *         elif type(other) is int:
+ *             return self.can_represent_long(long(other))
+ *         elif type(other) is long:             # <<<<<<<<<<<<<<
  *             return self.can_represent_long(long(other))
  *         return False
  */
   }
 
-  /* "halogen/api.pyx":232
- *         elif type(other) in (int, long):
+  /* "halogen/api.pyx":239
+ *         elif type(other) is long:
  *             return self.can_represent_long(long(other))
  *         return False             # <<<<<<<<<<<<<<
  * 
@@ -6266,18 +6373,17 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_36can_represent(struct __pyx_obj_7
   __pyx_r = Py_False;
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":225
+  /* "halogen/api.pyx":230
  *         return out
  * 
  *     def can_represent(self, other):             # <<<<<<<<<<<<<<
- *         if type(other) == type(self):
+ *         if type(other) is type(self):
  *             return self.can_represent_type(other)
  */
 
   /* function exit code */
   __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_XDECREF(__pyx_t_4);
+  __Pyx_XDECREF(__pyx_t_3);
   __Pyx_AddTraceback("halogen.api.Type.can_represent", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
@@ -6286,7 +6392,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_36can_represent(struct __pyx_obj_7
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":234
+/* "halogen/api.pyx":241
  *         return False
  * 
  *     cpdef object can_represent_type(Type self, Type other):             # <<<<<<<<<<<<<<
@@ -6308,7 +6414,7 @@ static PyObject *__pyx_f_7halogen_3api_4Type_can_represent_type(struct __pyx_obj
   if (unlikely(__pyx_skip_dispatch)) ;
   /* Check if overridden in Python */
   else if (unlikely(Py_TYPE(((PyObject *)__pyx_v_self))->tp_dictoffset != 0)) {
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_can_represent_type); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 234, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_can_represent_type); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 241, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)__pyx_pw_7halogen_3api_4Type_39can_represent_type)) {
       __Pyx_XDECREF(__pyx_r);
@@ -6324,13 +6430,13 @@ static PyObject *__pyx_f_7halogen_3api_4Type_can_represent_type(struct __pyx_obj
         }
       }
       if (!__pyx_t_4) {
-        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, ((PyObject *)__pyx_v_other)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 234, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, ((PyObject *)__pyx_v_other)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 241, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
       } else {
         #if CYTHON_FAST_PYCALL
         if (PyFunction_Check(__pyx_t_3)) {
           PyObject *__pyx_temp[2] = {__pyx_t_4, ((PyObject *)__pyx_v_other)};
-          __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 234, __pyx_L1_error)
+          __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 241, __pyx_L1_error)
           __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
           __Pyx_GOTREF(__pyx_t_2);
         } else
@@ -6338,19 +6444,19 @@ static PyObject *__pyx_f_7halogen_3api_4Type_can_represent_type(struct __pyx_obj
         #if CYTHON_FAST_PYCCALL
         if (__Pyx_PyFastCFunction_Check(__pyx_t_3)) {
           PyObject *__pyx_temp[2] = {__pyx_t_4, ((PyObject *)__pyx_v_other)};
-          __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 234, __pyx_L1_error)
+          __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 241, __pyx_L1_error)
           __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
           __Pyx_GOTREF(__pyx_t_2);
         } else
         #endif
         {
-          __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 234, __pyx_L1_error)
+          __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 241, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_5);
           __Pyx_GIVEREF(__pyx_t_4); PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_4); __pyx_t_4 = NULL;
           __Pyx_INCREF(((PyObject *)__pyx_v_other));
           __Pyx_GIVEREF(((PyObject *)__pyx_v_other));
           PyTuple_SET_ITEM(__pyx_t_5, 0+1, ((PyObject *)__pyx_v_other));
-          __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_5, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 234, __pyx_L1_error)
+          __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_5, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 241, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_2);
           __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
         }
@@ -6364,7 +6470,7 @@ static PyObject *__pyx_f_7halogen_3api_4Type_can_represent_type(struct __pyx_obj
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   }
 
-  /* "halogen/api.pyx":235
+  /* "halogen/api.pyx":242
  * 
  *     cpdef object can_represent_type(Type self, Type other):
  *         return self.__this__.can_represent(other.__this__)             # <<<<<<<<<<<<<<
@@ -6372,13 +6478,13 @@ static PyObject *__pyx_f_7halogen_3api_4Type_can_represent_type(struct __pyx_obj
  *     cpdef object can_represent_float(Type self, float other):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_v_self->__pyx___this__.can_represent(__pyx_v_other->__pyx___this__)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 235, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_v_self->__pyx___this__.can_represent(__pyx_v_other->__pyx___this__)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 242, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":234
+  /* "halogen/api.pyx":241
  *         return False
  * 
  *     cpdef object can_represent_type(Type self, Type other):             # <<<<<<<<<<<<<<
@@ -6408,7 +6514,7 @@ static PyObject *__pyx_pw_7halogen_3api_4Type_39can_represent_type(PyObject *__p
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("can_represent_type (wrapper)", 0);
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_other), __pyx_ptype_7halogen_3api_Type, 1, "other", 0))) __PYX_ERR(0, 234, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_other), __pyx_ptype_7halogen_3api_Type, 1, "other", 0))) __PYX_ERR(0, 241, __pyx_L1_error)
   __pyx_r = __pyx_pf_7halogen_3api_4Type_38can_represent_type(((struct __pyx_obj_7halogen_3api_Type *)__pyx_v_self), ((struct __pyx_obj_7halogen_3api_Type *)__pyx_v_other));
 
   /* function exit code */
@@ -6426,7 +6532,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_38can_represent_type(struct __pyx_
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("can_represent_type", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_7halogen_3api_4Type_can_represent_type(__pyx_v_self, __pyx_v_other, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 234, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_7halogen_3api_4Type_can_represent_type(__pyx_v_self, __pyx_v_other, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 241, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -6443,7 +6549,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_38can_represent_type(struct __pyx_
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":237
+/* "halogen/api.pyx":244
  *         return self.__this__.can_represent(other.__this__)
  * 
  *     cpdef object can_represent_float(Type self, float other):             # <<<<<<<<<<<<<<
@@ -6466,11 +6572,11 @@ static PyObject *__pyx_f_7halogen_3api_4Type_can_represent_float(struct __pyx_ob
   if (unlikely(__pyx_skip_dispatch)) ;
   /* Check if overridden in Python */
   else if (unlikely(Py_TYPE(((PyObject *)__pyx_v_self))->tp_dictoffset != 0)) {
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_can_represent_float); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 237, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_can_represent_float); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 244, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)__pyx_pw_7halogen_3api_4Type_41can_represent_float)) {
       __Pyx_XDECREF(__pyx_r);
-      __pyx_t_3 = PyFloat_FromDouble(__pyx_v_other); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 237, __pyx_L1_error)
+      __pyx_t_3 = PyFloat_FromDouble(__pyx_v_other); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 244, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_INCREF(__pyx_t_1);
       __pyx_t_4 = __pyx_t_1; __pyx_t_5 = NULL;
@@ -6484,14 +6590,14 @@ static PyObject *__pyx_f_7halogen_3api_4Type_can_represent_float(struct __pyx_ob
         }
       }
       if (!__pyx_t_5) {
-        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 237, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 244, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
         __Pyx_GOTREF(__pyx_t_2);
       } else {
         #if CYTHON_FAST_PYCALL
         if (PyFunction_Check(__pyx_t_4)) {
           PyObject *__pyx_temp[2] = {__pyx_t_5, __pyx_t_3};
-          __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_4, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 237, __pyx_L1_error)
+          __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_4, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 244, __pyx_L1_error)
           __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
           __Pyx_GOTREF(__pyx_t_2);
           __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -6500,20 +6606,20 @@ static PyObject *__pyx_f_7halogen_3api_4Type_can_represent_float(struct __pyx_ob
         #if CYTHON_FAST_PYCCALL
         if (__Pyx_PyFastCFunction_Check(__pyx_t_4)) {
           PyObject *__pyx_temp[2] = {__pyx_t_5, __pyx_t_3};
-          __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_4, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 237, __pyx_L1_error)
+          __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_4, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 244, __pyx_L1_error)
           __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
           __Pyx_GOTREF(__pyx_t_2);
           __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
         } else
         #endif
         {
-          __pyx_t_6 = PyTuple_New(1+1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 237, __pyx_L1_error)
+          __pyx_t_6 = PyTuple_New(1+1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 244, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_6);
           __Pyx_GIVEREF(__pyx_t_5); PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_5); __pyx_t_5 = NULL;
           __Pyx_GIVEREF(__pyx_t_3);
           PyTuple_SET_ITEM(__pyx_t_6, 0+1, __pyx_t_3);
           __pyx_t_3 = 0;
-          __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_6, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 237, __pyx_L1_error)
+          __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_6, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 244, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_2);
           __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
         }
@@ -6527,7 +6633,7 @@ static PyObject *__pyx_f_7halogen_3api_4Type_can_represent_float(struct __pyx_ob
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   }
 
-  /* "halogen/api.pyx":238
+  /* "halogen/api.pyx":245
  * 
  *     cpdef object can_represent_float(Type self, float other):
  *         return self.__this__.can_represent(<double>other)             # <<<<<<<<<<<<<<
@@ -6535,13 +6641,13 @@ static PyObject *__pyx_f_7halogen_3api_4Type_can_represent_float(struct __pyx_ob
  *     cpdef object can_represent_long(Type self, long other):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_v_self->__pyx___this__.can_represent(((double)__pyx_v_other))); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 238, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_v_self->__pyx___this__.can_represent(((double)__pyx_v_other))); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 245, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":237
+  /* "halogen/api.pyx":244
  *         return self.__this__.can_represent(other.__this__)
  * 
  *     cpdef object can_represent_float(Type self, float other):             # <<<<<<<<<<<<<<
@@ -6574,7 +6680,7 @@ static PyObject *__pyx_pw_7halogen_3api_4Type_41can_represent_float(PyObject *__
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("can_represent_float (wrapper)", 0);
   assert(__pyx_arg_other); {
-    __pyx_v_other = __pyx_PyFloat_AsFloat(__pyx_arg_other); if (unlikely((__pyx_v_other == (float)-1) && PyErr_Occurred())) __PYX_ERR(0, 237, __pyx_L3_error)
+    __pyx_v_other = __pyx_PyFloat_AsFloat(__pyx_arg_other); if (unlikely((__pyx_v_other == (float)-1) && PyErr_Occurred())) __PYX_ERR(0, 244, __pyx_L3_error)
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -6595,7 +6701,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_40can_represent_float(struct __pyx
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("can_represent_float", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_7halogen_3api_4Type_can_represent_float(__pyx_v_self, __pyx_v_other, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 237, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_7halogen_3api_4Type_can_represent_float(__pyx_v_self, __pyx_v_other, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 244, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -6612,7 +6718,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_40can_represent_float(struct __pyx
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":240
+/* "halogen/api.pyx":247
  *         return self.__this__.can_represent(<double>other)
  * 
  *     cpdef object can_represent_long(Type self, long other):             # <<<<<<<<<<<<<<
@@ -6635,11 +6741,11 @@ static PyObject *__pyx_f_7halogen_3api_4Type_can_represent_long(struct __pyx_obj
   if (unlikely(__pyx_skip_dispatch)) ;
   /* Check if overridden in Python */
   else if (unlikely(Py_TYPE(((PyObject *)__pyx_v_self))->tp_dictoffset != 0)) {
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_can_represent_long); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 240, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_can_represent_long); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 247, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)__pyx_pw_7halogen_3api_4Type_43can_represent_long)) {
       __Pyx_XDECREF(__pyx_r);
-      __pyx_t_3 = __Pyx_PyInt_From_long(__pyx_v_other); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 240, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyInt_From_long(__pyx_v_other); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 247, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_INCREF(__pyx_t_1);
       __pyx_t_4 = __pyx_t_1; __pyx_t_5 = NULL;
@@ -6653,14 +6759,14 @@ static PyObject *__pyx_f_7halogen_3api_4Type_can_represent_long(struct __pyx_obj
         }
       }
       if (!__pyx_t_5) {
-        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 240, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 247, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
         __Pyx_GOTREF(__pyx_t_2);
       } else {
         #if CYTHON_FAST_PYCALL
         if (PyFunction_Check(__pyx_t_4)) {
           PyObject *__pyx_temp[2] = {__pyx_t_5, __pyx_t_3};
-          __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_4, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 240, __pyx_L1_error)
+          __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_4, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 247, __pyx_L1_error)
           __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
           __Pyx_GOTREF(__pyx_t_2);
           __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -6669,20 +6775,20 @@ static PyObject *__pyx_f_7halogen_3api_4Type_can_represent_long(struct __pyx_obj
         #if CYTHON_FAST_PYCCALL
         if (__Pyx_PyFastCFunction_Check(__pyx_t_4)) {
           PyObject *__pyx_temp[2] = {__pyx_t_5, __pyx_t_3};
-          __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_4, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 240, __pyx_L1_error)
+          __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_4, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 247, __pyx_L1_error)
           __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
           __Pyx_GOTREF(__pyx_t_2);
           __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
         } else
         #endif
         {
-          __pyx_t_6 = PyTuple_New(1+1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 240, __pyx_L1_error)
+          __pyx_t_6 = PyTuple_New(1+1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 247, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_6);
           __Pyx_GIVEREF(__pyx_t_5); PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_5); __pyx_t_5 = NULL;
           __Pyx_GIVEREF(__pyx_t_3);
           PyTuple_SET_ITEM(__pyx_t_6, 0+1, __pyx_t_3);
           __pyx_t_3 = 0;
-          __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_6, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 240, __pyx_L1_error)
+          __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_6, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 247, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_2);
           __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
         }
@@ -6696,7 +6802,7 @@ static PyObject *__pyx_f_7halogen_3api_4Type_can_represent_long(struct __pyx_obj
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   }
 
-  /* "halogen/api.pyx":241
+  /* "halogen/api.pyx":248
  * 
  *     cpdef object can_represent_long(Type self, long other):
  *         return self.__this__.can_represent(<int64_t>other)             # <<<<<<<<<<<<<<
@@ -6704,13 +6810,13 @@ static PyObject *__pyx_f_7halogen_3api_4Type_can_represent_long(struct __pyx_obj
  *     def repr_c_source(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_v_self->__pyx___this__.can_represent(((int64_t)__pyx_v_other))); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 241, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_v_self->__pyx___this__.can_represent(((int64_t)__pyx_v_other))); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 248, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":240
+  /* "halogen/api.pyx":247
  *         return self.__this__.can_represent(<double>other)
  * 
  *     cpdef object can_represent_long(Type self, long other):             # <<<<<<<<<<<<<<
@@ -6743,7 +6849,7 @@ static PyObject *__pyx_pw_7halogen_3api_4Type_43can_represent_long(PyObject *__p
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("can_represent_long (wrapper)", 0);
   assert(__pyx_arg_other); {
-    __pyx_v_other = __Pyx_PyInt_As_long(__pyx_arg_other); if (unlikely((__pyx_v_other == (long)-1) && PyErr_Occurred())) __PYX_ERR(0, 240, __pyx_L3_error)
+    __pyx_v_other = __Pyx_PyInt_As_long(__pyx_arg_other); if (unlikely((__pyx_v_other == (long)-1) && PyErr_Occurred())) __PYX_ERR(0, 247, __pyx_L3_error)
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -6764,7 +6870,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_42can_represent_long(struct __pyx_
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("can_represent_long", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_7halogen_3api_4Type_can_represent_long(__pyx_v_self, __pyx_v_other, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 240, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_7halogen_3api_4Type_can_represent_long(__pyx_v_self, __pyx_v_other, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 247, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -6781,7 +6887,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_42can_represent_long(struct __pyx_
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":243
+/* "halogen/api.pyx":250
  *         return self.__this__.can_represent(<int64_t>other)
  * 
  *     def repr_c_source(self):             # <<<<<<<<<<<<<<
@@ -6816,7 +6922,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_44repr_c_source(struct __pyx_obj_7
   PyObject *__pyx_t_8 = NULL;
   __Pyx_RefNannySetupContext("repr_c_source", 0);
 
-  /* "halogen/api.pyx":244
+  /* "halogen/api.pyx":251
  * 
  *     def repr_c_source(self):
  *         try:             # <<<<<<<<<<<<<<
@@ -6832,7 +6938,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_44repr_c_source(struct __pyx_obj_7
     __Pyx_XGOTREF(__pyx_t_3);
     /*try:*/ {
 
-      /* "halogen/api.pyx":245
+      /* "halogen/api.pyx":252
  *     def repr_c_source(self):
  *         try:
  *             return halide_type_to_c_source(self.__this__)             # <<<<<<<<<<<<<<
@@ -6844,15 +6950,15 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_44repr_c_source(struct __pyx_obj_7
         __pyx_t_4 = Halide::Internal::halide_type_to_c_source(__pyx_v_self->__pyx___this__);
       } catch(...) {
         __Pyx_CppExn2PyErr();
-        __PYX_ERR(0, 245, __pyx_L3_error)
+        __PYX_ERR(0, 252, __pyx_L3_error)
       }
-      __pyx_t_5 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_t_4); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 245, __pyx_L3_error)
+      __pyx_t_5 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_t_4); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 252, __pyx_L3_error)
       __Pyx_GOTREF(__pyx_t_5);
       __pyx_r = __pyx_t_5;
       __pyx_t_5 = 0;
       goto __pyx_L7_try_return;
 
-      /* "halogen/api.pyx":244
+      /* "halogen/api.pyx":251
  * 
  *     def repr_c_source(self):
  *         try:             # <<<<<<<<<<<<<<
@@ -6863,7 +6969,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_44repr_c_source(struct __pyx_obj_7
     __pyx_L3_error:;
     __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-    /* "halogen/api.pyx":246
+    /* "halogen/api.pyx":253
  *         try:
  *             return halide_type_to_c_source(self.__this__)
  *         except IndexError:             # <<<<<<<<<<<<<<
@@ -6873,12 +6979,12 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_44repr_c_source(struct __pyx_obj_7
     __pyx_t_6 = __Pyx_PyErr_ExceptionMatches(__pyx_builtin_IndexError);
     if (__pyx_t_6) {
       __Pyx_AddTraceback("halogen.api.Type.repr_c_source", __pyx_clineno, __pyx_lineno, __pyx_filename);
-      if (__Pyx_GetException(&__pyx_t_5, &__pyx_t_7, &__pyx_t_8) < 0) __PYX_ERR(0, 246, __pyx_L5_except_error)
+      if (__Pyx_GetException(&__pyx_t_5, &__pyx_t_7, &__pyx_t_8) < 0) __PYX_ERR(0, 253, __pyx_L5_except_error)
       __Pyx_GOTREF(__pyx_t_5);
       __Pyx_GOTREF(__pyx_t_7);
       __Pyx_GOTREF(__pyx_t_8);
 
-      /* "halogen/api.pyx":247
+      /* "halogen/api.pyx":254
  *             return halide_type_to_c_source(self.__this__)
  *         except IndexError:
  *             return b"Halide::type_sink<void>"             # <<<<<<<<<<<<<<
@@ -6896,7 +7002,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_44repr_c_source(struct __pyx_obj_7
     goto __pyx_L5_except_error;
     __pyx_L5_except_error:;
 
-    /* "halogen/api.pyx":244
+    /* "halogen/api.pyx":251
  * 
  *     def repr_c_source(self):
  *         try:             # <<<<<<<<<<<<<<
@@ -6922,7 +7028,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_44repr_c_source(struct __pyx_obj_7
     goto __pyx_L0;
   }
 
-  /* "halogen/api.pyx":243
+  /* "halogen/api.pyx":250
  *         return self.__this__.can_represent(<int64_t>other)
  * 
  *     def repr_c_source(self):             # <<<<<<<<<<<<<<
@@ -6943,7 +7049,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_44repr_c_source(struct __pyx_obj_7
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":249
+/* "halogen/api.pyx":256
  *             return b"Halide::type_sink<void>"
  * 
  *     def repr_c_type(self):             # <<<<<<<<<<<<<<
@@ -6978,7 +7084,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_46repr_c_type(struct __pyx_obj_7ha
   PyObject *__pyx_t_8 = NULL;
   __Pyx_RefNannySetupContext("repr_c_type", 0);
 
-  /* "halogen/api.pyx":250
+  /* "halogen/api.pyx":257
  * 
  *     def repr_c_type(self):
  *         try:             # <<<<<<<<<<<<<<
@@ -6994,7 +7100,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_46repr_c_type(struct __pyx_obj_7ha
     __Pyx_XGOTREF(__pyx_t_3);
     /*try:*/ {
 
-      /* "halogen/api.pyx":251
+      /* "halogen/api.pyx":258
  *     def repr_c_type(self):
  *         try:
  *             return halide_type_to_c_type(self.__this__)             # <<<<<<<<<<<<<<
@@ -7006,15 +7112,15 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_46repr_c_type(struct __pyx_obj_7ha
         __pyx_t_4 = Halide::Internal::halide_type_to_c_type(__pyx_v_self->__pyx___this__);
       } catch(...) {
         __Pyx_CppExn2PyErr();
-        __PYX_ERR(0, 251, __pyx_L3_error)
+        __PYX_ERR(0, 258, __pyx_L3_error)
       }
-      __pyx_t_5 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_t_4); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 251, __pyx_L3_error)
+      __pyx_t_5 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_t_4); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 258, __pyx_L3_error)
       __Pyx_GOTREF(__pyx_t_5);
       __pyx_r = __pyx_t_5;
       __pyx_t_5 = 0;
       goto __pyx_L7_try_return;
 
-      /* "halogen/api.pyx":250
+      /* "halogen/api.pyx":257
  * 
  *     def repr_c_type(self):
  *         try:             # <<<<<<<<<<<<<<
@@ -7025,7 +7131,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_46repr_c_type(struct __pyx_obj_7ha
     __pyx_L3_error:;
     __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-    /* "halogen/api.pyx":252
+    /* "halogen/api.pyx":259
  *         try:
  *             return halide_type_to_c_type(self.__this__)
  *         except IndexError:             # <<<<<<<<<<<<<<
@@ -7035,12 +7141,12 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_46repr_c_type(struct __pyx_obj_7ha
     __pyx_t_6 = __Pyx_PyErr_ExceptionMatches(__pyx_builtin_IndexError);
     if (__pyx_t_6) {
       __Pyx_AddTraceback("halogen.api.Type.repr_c_type", __pyx_clineno, __pyx_lineno, __pyx_filename);
-      if (__Pyx_GetException(&__pyx_t_5, &__pyx_t_7, &__pyx_t_8) < 0) __PYX_ERR(0, 252, __pyx_L5_except_error)
+      if (__Pyx_GetException(&__pyx_t_5, &__pyx_t_7, &__pyx_t_8) < 0) __PYX_ERR(0, 259, __pyx_L5_except_error)
       __Pyx_GOTREF(__pyx_t_5);
       __Pyx_GOTREF(__pyx_t_7);
       __Pyx_GOTREF(__pyx_t_8);
 
-      /* "halogen/api.pyx":253
+      /* "halogen/api.pyx":260
  *             return halide_type_to_c_type(self.__this__)
  *         except IndexError:
  *             return b"void"             # <<<<<<<<<<<<<<
@@ -7058,7 +7164,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_46repr_c_type(struct __pyx_obj_7ha
     goto __pyx_L5_except_error;
     __pyx_L5_except_error:;
 
-    /* "halogen/api.pyx":250
+    /* "halogen/api.pyx":257
  * 
  *     def repr_c_type(self):
  *         try:             # <<<<<<<<<<<<<<
@@ -7084,7 +7190,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_46repr_c_type(struct __pyx_obj_7ha
     goto __pyx_L0;
   }
 
-  /* "halogen/api.pyx":249
+  /* "halogen/api.pyx":256
  *             return b"Halide::type_sink<void>"
  * 
  *     def repr_c_type(self):             # <<<<<<<<<<<<<<
@@ -7105,7 +7211,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_46repr_c_type(struct __pyx_obj_7ha
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":255
+/* "halogen/api.pyx":262
  *             return b"void"
  * 
  *     def repr_enum_string(self):             # <<<<<<<<<<<<<<
@@ -7140,7 +7246,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_48repr_enum_string(struct __pyx_ob
   PyObject *__pyx_t_8 = NULL;
   __Pyx_RefNannySetupContext("repr_enum_string", 0);
 
-  /* "halogen/api.pyx":256
+  /* "halogen/api.pyx":263
  * 
  *     def repr_enum_string(self):
  *         try:             # <<<<<<<<<<<<<<
@@ -7156,7 +7262,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_48repr_enum_string(struct __pyx_ob
     __Pyx_XGOTREF(__pyx_t_3);
     /*try:*/ {
 
-      /* "halogen/api.pyx":257
+      /* "halogen/api.pyx":264
  *     def repr_enum_string(self):
  *         try:
  *             return halide_type_to_enum_string(self.__this__)             # <<<<<<<<<<<<<<
@@ -7168,15 +7274,15 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_48repr_enum_string(struct __pyx_ob
         __pyx_t_4 = Halide::Internal::halide_type_to_enum_string(__pyx_v_self->__pyx___this__);
       } catch(...) {
         __Pyx_CppExn2PyErr();
-        __PYX_ERR(0, 257, __pyx_L3_error)
+        __PYX_ERR(0, 264, __pyx_L3_error)
       }
-      __pyx_t_5 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_t_4); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 257, __pyx_L3_error)
+      __pyx_t_5 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_t_4); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 264, __pyx_L3_error)
       __Pyx_GOTREF(__pyx_t_5);
       __pyx_r = __pyx_t_5;
       __pyx_t_5 = 0;
       goto __pyx_L7_try_return;
 
-      /* "halogen/api.pyx":256
+      /* "halogen/api.pyx":263
  * 
  *     def repr_enum_string(self):
  *         try:             # <<<<<<<<<<<<<<
@@ -7187,7 +7293,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_48repr_enum_string(struct __pyx_ob
     __pyx_L3_error:;
     __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-    /* "halogen/api.pyx":258
+    /* "halogen/api.pyx":265
  *         try:
  *             return halide_type_to_enum_string(self.__this__)
  *         except IndexError:             # <<<<<<<<<<<<<<
@@ -7197,12 +7303,12 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_48repr_enum_string(struct __pyx_ob
     __pyx_t_6 = __Pyx_PyErr_ExceptionMatches(__pyx_builtin_IndexError);
     if (__pyx_t_6) {
       __Pyx_AddTraceback("halogen.api.Type.repr_enum_string", __pyx_clineno, __pyx_lineno, __pyx_filename);
-      if (__Pyx_GetException(&__pyx_t_5, &__pyx_t_7, &__pyx_t_8) < 0) __PYX_ERR(0, 258, __pyx_L5_except_error)
+      if (__Pyx_GetException(&__pyx_t_5, &__pyx_t_7, &__pyx_t_8) < 0) __PYX_ERR(0, 265, __pyx_L5_except_error)
       __Pyx_GOTREF(__pyx_t_5);
       __Pyx_GOTREF(__pyx_t_7);
       __Pyx_GOTREF(__pyx_t_8);
 
-      /* "halogen/api.pyx":259
+      /* "halogen/api.pyx":266
  *             return halide_type_to_enum_string(self.__this__)
  *         except IndexError:
  *             return b"void"             # <<<<<<<<<<<<<<
@@ -7220,7 +7326,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_48repr_enum_string(struct __pyx_ob
     goto __pyx_L5_except_error;
     __pyx_L5_except_error:;
 
-    /* "halogen/api.pyx":256
+    /* "halogen/api.pyx":263
  * 
  *     def repr_enum_string(self):
  *         try:             # <<<<<<<<<<<<<<
@@ -7246,7 +7352,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_48repr_enum_string(struct __pyx_ob
     goto __pyx_L0;
   }
 
-  /* "halogen/api.pyx":255
+  /* "halogen/api.pyx":262
  *             return b"void"
  * 
  *     def repr_enum_string(self):             # <<<<<<<<<<<<<<
@@ -7267,7 +7373,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_48repr_enum_string(struct __pyx_ob
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":261
+/* "halogen/api.pyx":268
  *             return b"void"
  * 
  *     def to_string(Type self not None):             # <<<<<<<<<<<<<<
@@ -7283,7 +7389,7 @@ static PyObject *__pyx_pw_7halogen_3api_4Type_51to_string(PyObject *__pyx_v_self
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("to_string (wrapper)", 0);
   if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 261, __pyx_L1_error)
+    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 268, __pyx_L1_error)
   }
   __pyx_r = __pyx_pf_7halogen_3api_4Type_50to_string(((struct __pyx_obj_7halogen_3api_Type *)__pyx_v_self));
 
@@ -7309,7 +7415,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_50to_string(struct __pyx_obj_7halo
   PyObject *__pyx_t_8 = NULL;
   __Pyx_RefNannySetupContext("to_string", 0);
 
-  /* "halogen/api.pyx":262
+  /* "halogen/api.pyx":269
  * 
  *     def to_string(Type self not None):
  *         try:             # <<<<<<<<<<<<<<
@@ -7325,7 +7431,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_50to_string(struct __pyx_obj_7halo
     __Pyx_XGOTREF(__pyx_t_3);
     /*try:*/ {
 
-      /* "halogen/api.pyx":263
+      /* "halogen/api.pyx":270
  *     def to_string(Type self not None):
  *         try:
  *             return halide_type_to_c_type(self.__this__)             # <<<<<<<<<<<<<<
@@ -7337,15 +7443,15 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_50to_string(struct __pyx_obj_7halo
         __pyx_t_4 = Halide::Internal::halide_type_to_c_type(__pyx_v_self->__pyx___this__);
       } catch(...) {
         __Pyx_CppExn2PyErr();
-        __PYX_ERR(0, 263, __pyx_L3_error)
+        __PYX_ERR(0, 270, __pyx_L3_error)
       }
-      __pyx_t_5 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_t_4); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 263, __pyx_L3_error)
+      __pyx_t_5 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_t_4); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 270, __pyx_L3_error)
       __Pyx_GOTREF(__pyx_t_5);
       __pyx_r = __pyx_t_5;
       __pyx_t_5 = 0;
       goto __pyx_L7_try_return;
 
-      /* "halogen/api.pyx":262
+      /* "halogen/api.pyx":269
  * 
  *     def to_string(Type self not None):
  *         try:             # <<<<<<<<<<<<<<
@@ -7356,7 +7462,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_50to_string(struct __pyx_obj_7halo
     __pyx_L3_error:;
     __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-    /* "halogen/api.pyx":264
+    /* "halogen/api.pyx":271
  *         try:
  *             return halide_type_to_c_type(self.__this__)
  *         except IndexError:             # <<<<<<<<<<<<<<
@@ -7366,12 +7472,12 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_50to_string(struct __pyx_obj_7halo
     __pyx_t_6 = __Pyx_PyErr_ExceptionMatches(__pyx_builtin_IndexError);
     if (__pyx_t_6) {
       __Pyx_AddTraceback("halogen.api.Type.to_string", __pyx_clineno, __pyx_lineno, __pyx_filename);
-      if (__Pyx_GetException(&__pyx_t_5, &__pyx_t_7, &__pyx_t_8) < 0) __PYX_ERR(0, 264, __pyx_L5_except_error)
+      if (__Pyx_GetException(&__pyx_t_5, &__pyx_t_7, &__pyx_t_8) < 0) __PYX_ERR(0, 271, __pyx_L5_except_error)
       __Pyx_GOTREF(__pyx_t_5);
       __Pyx_GOTREF(__pyx_t_7);
       __Pyx_GOTREF(__pyx_t_8);
 
-      /* "halogen/api.pyx":265
+      /* "halogen/api.pyx":272
  *             return halide_type_to_c_type(self.__this__)
  *         except IndexError:
  *             return b"void"             # <<<<<<<<<<<<<<
@@ -7389,7 +7495,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_50to_string(struct __pyx_obj_7halo
     goto __pyx_L5_except_error;
     __pyx_L5_except_error:;
 
-    /* "halogen/api.pyx":262
+    /* "halogen/api.pyx":269
  * 
  *     def to_string(Type self not None):
  *         try:             # <<<<<<<<<<<<<<
@@ -7415,7 +7521,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_50to_string(struct __pyx_obj_7halo
     goto __pyx_L0;
   }
 
-  /* "halogen/api.pyx":261
+  /* "halogen/api.pyx":268
  *             return b"void"
  * 
  *     def to_string(Type self not None):             # <<<<<<<<<<<<<<
@@ -7436,7 +7542,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_50to_string(struct __pyx_obj_7halo
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":267
+/* "halogen/api.pyx":274
  *             return b"void"
  * 
  *     def __repr__(self):             # <<<<<<<<<<<<<<
@@ -7471,7 +7577,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_52__repr__(struct __pyx_obj_7halog
   PyObject *__pyx_t_8 = NULL;
   __Pyx_RefNannySetupContext("__repr__", 0);
 
-  /* "halogen/api.pyx":268
+  /* "halogen/api.pyx":275
  * 
  *     def __repr__(self):
  *         try:             # <<<<<<<<<<<<<<
@@ -7487,7 +7593,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_52__repr__(struct __pyx_obj_7halog
     __Pyx_XGOTREF(__pyx_t_3);
     /*try:*/ {
 
-      /* "halogen/api.pyx":269
+      /* "halogen/api.pyx":276
  *     def __repr__(self):
  *         try:
  *             c_source = <bytes>halide_type_to_c_source(self.__this__)             # <<<<<<<<<<<<<<
@@ -7498,9 +7604,9 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_52__repr__(struct __pyx_obj_7halog
         __pyx_t_4 = Halide::Internal::halide_type_to_c_source(__pyx_v_self->__pyx___this__);
       } catch(...) {
         __Pyx_CppExn2PyErr();
-        __PYX_ERR(0, 269, __pyx_L3_error)
+        __PYX_ERR(0, 276, __pyx_L3_error)
       }
-      __pyx_t_5 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_t_4); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 269, __pyx_L3_error)
+      __pyx_t_5 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_t_4); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 276, __pyx_L3_error)
       __Pyx_GOTREF(__pyx_t_5);
       __pyx_t_6 = __pyx_t_5;
       __Pyx_INCREF(__pyx_t_6);
@@ -7508,7 +7614,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_52__repr__(struct __pyx_obj_7halog
       __pyx_v_c_source = ((PyObject*)__pyx_t_6);
       __pyx_t_6 = 0;
 
-      /* "halogen/api.pyx":268
+      /* "halogen/api.pyx":275
  * 
  *     def __repr__(self):
  *         try:             # <<<<<<<<<<<<<<
@@ -7524,7 +7630,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_52__repr__(struct __pyx_obj_7halog
     __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
     __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
 
-    /* "halogen/api.pyx":270
+    /* "halogen/api.pyx":277
  *         try:
  *             c_source = <bytes>halide_type_to_c_source(self.__this__)
  *         except IndexError:             # <<<<<<<<<<<<<<
@@ -7534,12 +7640,12 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_52__repr__(struct __pyx_obj_7halog
     __pyx_t_7 = __Pyx_PyErr_ExceptionMatches(__pyx_builtin_IndexError);
     if (__pyx_t_7) {
       __Pyx_AddTraceback("halogen.api.Type.__repr__", __pyx_clineno, __pyx_lineno, __pyx_filename);
-      if (__Pyx_GetException(&__pyx_t_6, &__pyx_t_5, &__pyx_t_8) < 0) __PYX_ERR(0, 270, __pyx_L5_except_error)
+      if (__Pyx_GetException(&__pyx_t_6, &__pyx_t_5, &__pyx_t_8) < 0) __PYX_ERR(0, 277, __pyx_L5_except_error)
       __Pyx_GOTREF(__pyx_t_6);
       __Pyx_GOTREF(__pyx_t_5);
       __Pyx_GOTREF(__pyx_t_8);
 
-      /* "halogen/api.pyx":271
+      /* "halogen/api.pyx":278
  *             c_source = <bytes>halide_type_to_c_source(self.__this__)
  *         except IndexError:
  *             c_source = b"Halide::type_sink<void>"             # <<<<<<<<<<<<<<
@@ -7556,7 +7662,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_52__repr__(struct __pyx_obj_7halog
     goto __pyx_L5_except_error;
     __pyx_L5_except_error:;
 
-    /* "halogen/api.pyx":268
+    /* "halogen/api.pyx":275
  * 
  *     def __repr__(self):
  *         try:             # <<<<<<<<<<<<<<
@@ -7576,7 +7682,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_52__repr__(struct __pyx_obj_7halog
     __pyx_L8_try_end:;
   }
 
-  /* "halogen/api.pyx":272
+  /* "halogen/api.pyx":279
  *         except IndexError:
  *             c_source = b"Halide::type_sink<void>"
  *         return "<%s @ %s>" % (c_source.decode('UTF-8'),             # <<<<<<<<<<<<<<
@@ -7586,32 +7692,32 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_52__repr__(struct __pyx_obj_7halog
   __Pyx_XDECREF(__pyx_r);
   if (unlikely(__pyx_v_c_source == Py_None)) {
     PyErr_Format(PyExc_AttributeError, "'NoneType' object has no attribute '%.30s'", "decode");
-    __PYX_ERR(0, 272, __pyx_L1_error)
+    __PYX_ERR(0, 279, __pyx_L1_error)
   }
-  __pyx_t_8 = __Pyx_decode_bytes(__pyx_v_c_source, 0, PY_SSIZE_T_MAX, NULL, NULL, PyUnicode_DecodeUTF8); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 272, __pyx_L1_error)
+  __pyx_t_8 = __Pyx_decode_bytes(__pyx_v_c_source, 0, PY_SSIZE_T_MAX, NULL, NULL, PyUnicode_DecodeUTF8); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 279, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
 
-  /* "halogen/api.pyx":273
+  /* "halogen/api.pyx":280
  *             c_source = b"Halide::type_sink<void>"
  *         return "<%s @ %s>" % (c_source.decode('UTF-8'),
  *                               hex(id(self)))             # <<<<<<<<<<<<<<
  * 
  *     def __str__(self):
  */
-  __pyx_t_5 = __Pyx_PyObject_CallOneArg(__pyx_builtin_id, ((PyObject *)__pyx_v_self)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 273, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_CallOneArg(__pyx_builtin_id, ((PyObject *)__pyx_v_self)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 280, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_6 = __Pyx_PyObject_CallOneArg(__pyx_builtin_hex, __pyx_t_5); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 273, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyObject_CallOneArg(__pyx_builtin_hex, __pyx_t_5); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 280, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-  /* "halogen/api.pyx":272
+  /* "halogen/api.pyx":279
  *         except IndexError:
  *             c_source = b"Halide::type_sink<void>"
  *         return "<%s @ %s>" % (c_source.decode('UTF-8'),             # <<<<<<<<<<<<<<
  *                               hex(id(self)))
  * 
  */
-  __pyx_t_5 = PyTuple_New(2); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 272, __pyx_L1_error)
+  __pyx_t_5 = PyTuple_New(2); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 279, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_GIVEREF(__pyx_t_8);
   PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_8);
@@ -7619,14 +7725,14 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_52__repr__(struct __pyx_obj_7halog
   PyTuple_SET_ITEM(__pyx_t_5, 1, __pyx_t_6);
   __pyx_t_8 = 0;
   __pyx_t_6 = 0;
-  __pyx_t_6 = __Pyx_PyString_Format(__pyx_kp_s_s_s_2, __pyx_t_5); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 272, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyString_Format(__pyx_kp_s_s_s_2, __pyx_t_5); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 279, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   __pyx_r = __pyx_t_6;
   __pyx_t_6 = 0;
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":267
+  /* "halogen/api.pyx":274
  *             return b"void"
  * 
  *     def __repr__(self):             # <<<<<<<<<<<<<<
@@ -7648,7 +7754,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_52__repr__(struct __pyx_obj_7halog
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":275
+/* "halogen/api.pyx":282
  *                               hex(id(self)))
  * 
  *     def __str__(self):             # <<<<<<<<<<<<<<
@@ -7683,7 +7789,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_54__str__(struct __pyx_obj_7haloge
   PyObject *__pyx_t_8 = NULL;
   __Pyx_RefNannySetupContext("__str__", 0);
 
-  /* "halogen/api.pyx":276
+  /* "halogen/api.pyx":283
  * 
  *     def __str__(self):
  *         try:             # <<<<<<<<<<<<<<
@@ -7699,7 +7805,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_54__str__(struct __pyx_obj_7haloge
     __Pyx_XGOTREF(__pyx_t_3);
     /*try:*/ {
 
-      /* "halogen/api.pyx":277
+      /* "halogen/api.pyx":284
  *     def __str__(self):
  *         try:
  *             c_type = <bytes>halide_type_to_c_type(self.__this__)             # <<<<<<<<<<<<<<
@@ -7710,9 +7816,9 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_54__str__(struct __pyx_obj_7haloge
         __pyx_t_4 = Halide::Internal::halide_type_to_c_type(__pyx_v_self->__pyx___this__);
       } catch(...) {
         __Pyx_CppExn2PyErr();
-        __PYX_ERR(0, 277, __pyx_L3_error)
+        __PYX_ERR(0, 284, __pyx_L3_error)
       }
-      __pyx_t_5 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_t_4); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 277, __pyx_L3_error)
+      __pyx_t_5 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_t_4); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 284, __pyx_L3_error)
       __Pyx_GOTREF(__pyx_t_5);
       __pyx_t_6 = __pyx_t_5;
       __Pyx_INCREF(__pyx_t_6);
@@ -7720,7 +7826,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_54__str__(struct __pyx_obj_7haloge
       __pyx_v_c_type = ((PyObject*)__pyx_t_6);
       __pyx_t_6 = 0;
 
-      /* "halogen/api.pyx":276
+      /* "halogen/api.pyx":283
  * 
  *     def __str__(self):
  *         try:             # <<<<<<<<<<<<<<
@@ -7736,7 +7842,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_54__str__(struct __pyx_obj_7haloge
     __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
     __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
 
-    /* "halogen/api.pyx":278
+    /* "halogen/api.pyx":285
  *         try:
  *             c_type = <bytes>halide_type_to_c_type(self.__this__)
  *         except IndexError:             # <<<<<<<<<<<<<<
@@ -7746,12 +7852,12 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_54__str__(struct __pyx_obj_7haloge
     __pyx_t_7 = __Pyx_PyErr_ExceptionMatches(__pyx_builtin_IndexError);
     if (__pyx_t_7) {
       __Pyx_AddTraceback("halogen.api.Type.__str__", __pyx_clineno, __pyx_lineno, __pyx_filename);
-      if (__Pyx_GetException(&__pyx_t_6, &__pyx_t_5, &__pyx_t_8) < 0) __PYX_ERR(0, 278, __pyx_L5_except_error)
+      if (__Pyx_GetException(&__pyx_t_6, &__pyx_t_5, &__pyx_t_8) < 0) __PYX_ERR(0, 285, __pyx_L5_except_error)
       __Pyx_GOTREF(__pyx_t_6);
       __Pyx_GOTREF(__pyx_t_5);
       __Pyx_GOTREF(__pyx_t_8);
 
-      /* "halogen/api.pyx":279
+      /* "halogen/api.pyx":286
  *             c_type = <bytes>halide_type_to_c_type(self.__this__)
  *         except IndexError:
  *             c_type = b"void"             # <<<<<<<<<<<<<<
@@ -7768,7 +7874,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_54__str__(struct __pyx_obj_7haloge
     goto __pyx_L5_except_error;
     __pyx_L5_except_error:;
 
-    /* "halogen/api.pyx":276
+    /* "halogen/api.pyx":283
  * 
  *     def __str__(self):
  *         try:             # <<<<<<<<<<<<<<
@@ -7788,7 +7894,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_54__str__(struct __pyx_obj_7haloge
     __pyx_L8_try_end:;
   }
 
-  /* "halogen/api.pyx":280
+  /* "halogen/api.pyx":287
  *         except IndexError:
  *             c_type = b"void"
  *         return c_type.decode('UTF-8')             # <<<<<<<<<<<<<<
@@ -7798,15 +7904,15 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_54__str__(struct __pyx_obj_7haloge
   __Pyx_XDECREF(__pyx_r);
   if (unlikely(__pyx_v_c_type == Py_None)) {
     PyErr_Format(PyExc_AttributeError, "'NoneType' object has no attribute '%.30s'", "decode");
-    __PYX_ERR(0, 280, __pyx_L1_error)
+    __PYX_ERR(0, 287, __pyx_L1_error)
   }
-  __pyx_t_8 = __Pyx_decode_bytes(__pyx_v_c_type, 0, PY_SSIZE_T_MAX, NULL, NULL, PyUnicode_DecodeUTF8); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 280, __pyx_L1_error)
+  __pyx_t_8 = __Pyx_decode_bytes(__pyx_v_c_type, 0, PY_SSIZE_T_MAX, NULL, NULL, PyUnicode_DecodeUTF8); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 287, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
   __pyx_r = __pyx_t_8;
   __pyx_t_8 = 0;
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":275
+  /* "halogen/api.pyx":282
  *                               hex(id(self)))
  * 
  *     def __str__(self):             # <<<<<<<<<<<<<<
@@ -7828,7 +7934,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_54__str__(struct __pyx_obj_7haloge
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":282
+/* "halogen/api.pyx":289
  *         return c_type.decode('UTF-8')
  * 
  *     def __bytes__(self):             # <<<<<<<<<<<<<<
@@ -7864,7 +7970,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_56__bytes__(struct __pyx_obj_7halo
   PyObject *__pyx_t_8 = NULL;
   __Pyx_RefNannySetupContext("__bytes__", 0);
 
-  /* "halogen/api.pyx":283
+  /* "halogen/api.pyx":290
  * 
  *     def __bytes__(self):
  *         try:             # <<<<<<<<<<<<<<
@@ -7880,7 +7986,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_56__bytes__(struct __pyx_obj_7halo
     __Pyx_XGOTREF(__pyx_t_3);
     /*try:*/ {
 
-      /* "halogen/api.pyx":284
+      /* "halogen/api.pyx":291
  *     def __bytes__(self):
  *         try:
  *             c_type = <bytes>halide_type_to_c_type(self.__this__)             # <<<<<<<<<<<<<<
@@ -7891,9 +7997,9 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_56__bytes__(struct __pyx_obj_7halo
         __pyx_t_4 = Halide::Internal::halide_type_to_c_type(__pyx_v_self->__pyx___this__);
       } catch(...) {
         __Pyx_CppExn2PyErr();
-        __PYX_ERR(0, 284, __pyx_L3_error)
+        __PYX_ERR(0, 291, __pyx_L3_error)
       }
-      __pyx_t_5 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_t_4); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 284, __pyx_L3_error)
+      __pyx_t_5 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_t_4); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 291, __pyx_L3_error)
       __Pyx_GOTREF(__pyx_t_5);
       __pyx_t_6 = __pyx_t_5;
       __Pyx_INCREF(__pyx_t_6);
@@ -7901,7 +8007,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_56__bytes__(struct __pyx_obj_7halo
       __pyx_v_c_type = ((PyObject*)__pyx_t_6);
       __pyx_t_6 = 0;
 
-      /* "halogen/api.pyx":283
+      /* "halogen/api.pyx":290
  * 
  *     def __bytes__(self):
  *         try:             # <<<<<<<<<<<<<<
@@ -7917,7 +8023,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_56__bytes__(struct __pyx_obj_7halo
     __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
     __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
 
-    /* "halogen/api.pyx":285
+    /* "halogen/api.pyx":292
  *         try:
  *             c_type = <bytes>halide_type_to_c_type(self.__this__)
  *         except IndexError:             # <<<<<<<<<<<<<<
@@ -7927,12 +8033,12 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_56__bytes__(struct __pyx_obj_7halo
     __pyx_t_7 = __Pyx_PyErr_ExceptionMatches(__pyx_builtin_IndexError);
     if (__pyx_t_7) {
       __Pyx_AddTraceback("halogen.api.Type.__bytes__", __pyx_clineno, __pyx_lineno, __pyx_filename);
-      if (__Pyx_GetException(&__pyx_t_6, &__pyx_t_5, &__pyx_t_8) < 0) __PYX_ERR(0, 285, __pyx_L5_except_error)
+      if (__Pyx_GetException(&__pyx_t_6, &__pyx_t_5, &__pyx_t_8) < 0) __PYX_ERR(0, 292, __pyx_L5_except_error)
       __Pyx_GOTREF(__pyx_t_6);
       __Pyx_GOTREF(__pyx_t_5);
       __Pyx_GOTREF(__pyx_t_8);
 
-      /* "halogen/api.pyx":286
+      /* "halogen/api.pyx":293
  *             c_type = <bytes>halide_type_to_c_type(self.__this__)
  *         except IndexError:
  *             c_type = b"void"             # <<<<<<<<<<<<<<
@@ -7949,7 +8055,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_56__bytes__(struct __pyx_obj_7halo
     goto __pyx_L5_except_error;
     __pyx_L5_except_error:;
 
-    /* "halogen/api.pyx":283
+    /* "halogen/api.pyx":290
  * 
  *     def __bytes__(self):
  *         try:             # <<<<<<<<<<<<<<
@@ -7969,7 +8075,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_56__bytes__(struct __pyx_obj_7halo
     __pyx_L8_try_end:;
   }
 
-  /* "halogen/api.pyx":287
+  /* "halogen/api.pyx":294
  *         except IndexError:
  *             c_type = b"void"
  *         return c_type             # <<<<<<<<<<<<<<
@@ -7981,7 +8087,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_56__bytes__(struct __pyx_obj_7halo
   __pyx_r = __pyx_v_c_type;
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":282
+  /* "halogen/api.pyx":289
  *         return c_type.decode('UTF-8')
  * 
  *     def __bytes__(self):             # <<<<<<<<<<<<<<
@@ -8003,7 +8109,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_56__bytes__(struct __pyx_obj_7halo
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":290
+/* "halogen/api.pyx":297
  * 
  *     @staticmethod
  *     def Int(int bits, int lanes=1):             # <<<<<<<<<<<<<<
@@ -8048,7 +8154,7 @@ static PyObject *__pyx_pw_7halogen_3api_4Type_59Int(CYTHON_UNUSED PyObject *__py
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "Int") < 0)) __PYX_ERR(0, 290, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "Int") < 0)) __PYX_ERR(0, 297, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -8059,16 +8165,16 @@ static PyObject *__pyx_pw_7halogen_3api_4Type_59Int(CYTHON_UNUSED PyObject *__py
         default: goto __pyx_L5_argtuple_error;
       }
     }
-    __pyx_v_bits = __Pyx_PyInt_As_int(values[0]); if (unlikely((__pyx_v_bits == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 290, __pyx_L3_error)
+    __pyx_v_bits = __Pyx_PyInt_As_int(values[0]); if (unlikely((__pyx_v_bits == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 297, __pyx_L3_error)
     if (values[1]) {
-      __pyx_v_lanes = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_lanes == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 290, __pyx_L3_error)
+      __pyx_v_lanes = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_lanes == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 297, __pyx_L3_error)
     } else {
       __pyx_v_lanes = ((int)1);
     }
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("Int", 0, 1, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 290, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("Int", 0, 1, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 297, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("halogen.api.Type.Int", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -8089,19 +8195,19 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_58Int(int __pyx_v_bits, int __pyx_
   Halide::Type __pyx_t_2;
   __Pyx_RefNannySetupContext("Int", 0);
 
-  /* "halogen/api.pyx":291
+  /* "halogen/api.pyx":298
  *     @staticmethod
  *     def Int(int bits, int lanes=1):
  *         out = Type()             # <<<<<<<<<<<<<<
  *         out.__this__ = HalType_Int(bits, lanes)
  *         return out
  */
-  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_7halogen_3api_Type)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 291, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_7halogen_3api_Type)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 298, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_out = ((struct __pyx_obj_7halogen_3api_Type *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "halogen/api.pyx":292
+  /* "halogen/api.pyx":299
  *     def Int(int bits, int lanes=1):
  *         out = Type()
  *         out.__this__ = HalType_Int(bits, lanes)             # <<<<<<<<<<<<<<
@@ -8112,11 +8218,11 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_58Int(int __pyx_v_bits, int __pyx_
     __pyx_t_2 = Halide::Int(__pyx_v_bits, __pyx_v_lanes);
   } catch(...) {
     __Pyx_CppExn2PyErr();
-    __PYX_ERR(0, 292, __pyx_L1_error)
+    __PYX_ERR(0, 299, __pyx_L1_error)
   }
   __pyx_v_out->__pyx___this__ = __pyx_t_2;
 
-  /* "halogen/api.pyx":293
+  /* "halogen/api.pyx":300
  *         out = Type()
  *         out.__this__ = HalType_Int(bits, lanes)
  *         return out             # <<<<<<<<<<<<<<
@@ -8128,7 +8234,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_58Int(int __pyx_v_bits, int __pyx_
   __pyx_r = ((PyObject *)__pyx_v_out);
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":290
+  /* "halogen/api.pyx":297
  * 
  *     @staticmethod
  *     def Int(int bits, int lanes=1):             # <<<<<<<<<<<<<<
@@ -8148,7 +8254,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_58Int(int __pyx_v_bits, int __pyx_
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":296
+/* "halogen/api.pyx":303
  * 
  *     @staticmethod
  *     def UInt(int bits, int lanes=1):             # <<<<<<<<<<<<<<
@@ -8193,7 +8299,7 @@ static PyObject *__pyx_pw_7halogen_3api_4Type_61UInt(CYTHON_UNUSED PyObject *__p
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "UInt") < 0)) __PYX_ERR(0, 296, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "UInt") < 0)) __PYX_ERR(0, 303, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -8204,16 +8310,16 @@ static PyObject *__pyx_pw_7halogen_3api_4Type_61UInt(CYTHON_UNUSED PyObject *__p
         default: goto __pyx_L5_argtuple_error;
       }
     }
-    __pyx_v_bits = __Pyx_PyInt_As_int(values[0]); if (unlikely((__pyx_v_bits == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 296, __pyx_L3_error)
+    __pyx_v_bits = __Pyx_PyInt_As_int(values[0]); if (unlikely((__pyx_v_bits == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 303, __pyx_L3_error)
     if (values[1]) {
-      __pyx_v_lanes = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_lanes == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 296, __pyx_L3_error)
+      __pyx_v_lanes = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_lanes == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 303, __pyx_L3_error)
     } else {
       __pyx_v_lanes = ((int)1);
     }
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("UInt", 0, 1, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 296, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("UInt", 0, 1, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 303, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("halogen.api.Type.UInt", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -8234,19 +8340,19 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_60UInt(int __pyx_v_bits, int __pyx
   Halide::Type __pyx_t_2;
   __Pyx_RefNannySetupContext("UInt", 0);
 
-  /* "halogen/api.pyx":297
+  /* "halogen/api.pyx":304
  *     @staticmethod
  *     def UInt(int bits, int lanes=1):
  *         out = Type()             # <<<<<<<<<<<<<<
  *         out.__this__ = HalType_UInt(bits, lanes)
  *         return out
  */
-  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_7halogen_3api_Type)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 297, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_7halogen_3api_Type)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 304, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_out = ((struct __pyx_obj_7halogen_3api_Type *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "halogen/api.pyx":298
+  /* "halogen/api.pyx":305
  *     def UInt(int bits, int lanes=1):
  *         out = Type()
  *         out.__this__ = HalType_UInt(bits, lanes)             # <<<<<<<<<<<<<<
@@ -8257,11 +8363,11 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_60UInt(int __pyx_v_bits, int __pyx
     __pyx_t_2 = Halide::UInt(__pyx_v_bits, __pyx_v_lanes);
   } catch(...) {
     __Pyx_CppExn2PyErr();
-    __PYX_ERR(0, 298, __pyx_L1_error)
+    __PYX_ERR(0, 305, __pyx_L1_error)
   }
   __pyx_v_out->__pyx___this__ = __pyx_t_2;
 
-  /* "halogen/api.pyx":299
+  /* "halogen/api.pyx":306
  *         out = Type()
  *         out.__this__ = HalType_UInt(bits, lanes)
  *         return out             # <<<<<<<<<<<<<<
@@ -8273,7 +8379,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_60UInt(int __pyx_v_bits, int __pyx
   __pyx_r = ((PyObject *)__pyx_v_out);
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":296
+  /* "halogen/api.pyx":303
  * 
  *     @staticmethod
  *     def UInt(int bits, int lanes=1):             # <<<<<<<<<<<<<<
@@ -8293,7 +8399,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_60UInt(int __pyx_v_bits, int __pyx
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":302
+/* "halogen/api.pyx":309
  * 
  *     @staticmethod
  *     def Float(int bits, int lanes=1):             # <<<<<<<<<<<<<<
@@ -8338,7 +8444,7 @@ static PyObject *__pyx_pw_7halogen_3api_4Type_63Float(CYTHON_UNUSED PyObject *__
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "Float") < 0)) __PYX_ERR(0, 302, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "Float") < 0)) __PYX_ERR(0, 309, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -8349,16 +8455,16 @@ static PyObject *__pyx_pw_7halogen_3api_4Type_63Float(CYTHON_UNUSED PyObject *__
         default: goto __pyx_L5_argtuple_error;
       }
     }
-    __pyx_v_bits = __Pyx_PyInt_As_int(values[0]); if (unlikely((__pyx_v_bits == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 302, __pyx_L3_error)
+    __pyx_v_bits = __Pyx_PyInt_As_int(values[0]); if (unlikely((__pyx_v_bits == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 309, __pyx_L3_error)
     if (values[1]) {
-      __pyx_v_lanes = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_lanes == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 302, __pyx_L3_error)
+      __pyx_v_lanes = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_lanes == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 309, __pyx_L3_error)
     } else {
       __pyx_v_lanes = ((int)1);
     }
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("Float", 0, 1, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 302, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("Float", 0, 1, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 309, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("halogen.api.Type.Float", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -8379,19 +8485,19 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_62Float(int __pyx_v_bits, int __py
   Halide::Type __pyx_t_2;
   __Pyx_RefNannySetupContext("Float", 0);
 
-  /* "halogen/api.pyx":303
+  /* "halogen/api.pyx":310
  *     @staticmethod
  *     def Float(int bits, int lanes=1):
  *         out = Type()             # <<<<<<<<<<<<<<
  *         out.__this__ = HalType_Float(bits, lanes)
  *         return out
  */
-  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_7halogen_3api_Type)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 303, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_7halogen_3api_Type)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 310, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_out = ((struct __pyx_obj_7halogen_3api_Type *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "halogen/api.pyx":304
+  /* "halogen/api.pyx":311
  *     def Float(int bits, int lanes=1):
  *         out = Type()
  *         out.__this__ = HalType_Float(bits, lanes)             # <<<<<<<<<<<<<<
@@ -8402,11 +8508,11 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_62Float(int __pyx_v_bits, int __py
     __pyx_t_2 = Halide::Float(__pyx_v_bits, __pyx_v_lanes);
   } catch(...) {
     __Pyx_CppExn2PyErr();
-    __PYX_ERR(0, 304, __pyx_L1_error)
+    __PYX_ERR(0, 311, __pyx_L1_error)
   }
   __pyx_v_out->__pyx___this__ = __pyx_t_2;
 
-  /* "halogen/api.pyx":305
+  /* "halogen/api.pyx":312
  *         out = Type()
  *         out.__this__ = HalType_Float(bits, lanes)
  *         return out             # <<<<<<<<<<<<<<
@@ -8418,7 +8524,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_62Float(int __pyx_v_bits, int __py
   __pyx_r = ((PyObject *)__pyx_v_out);
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":302
+  /* "halogen/api.pyx":309
  * 
  *     @staticmethod
  *     def Float(int bits, int lanes=1):             # <<<<<<<<<<<<<<
@@ -8438,7 +8544,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_62Float(int __pyx_v_bits, int __py
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":308
+/* "halogen/api.pyx":315
  * 
  *     @staticmethod
  *     def Bool(int lanes=1):             # <<<<<<<<<<<<<<
@@ -8476,7 +8582,7 @@ static PyObject *__pyx_pw_7halogen_3api_4Type_65Bool(CYTHON_UNUSED PyObject *__p
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "Bool") < 0)) __PYX_ERR(0, 308, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "Bool") < 0)) __PYX_ERR(0, 315, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -8487,14 +8593,14 @@ static PyObject *__pyx_pw_7halogen_3api_4Type_65Bool(CYTHON_UNUSED PyObject *__p
       }
     }
     if (values[0]) {
-      __pyx_v_lanes = __Pyx_PyInt_As_int(values[0]); if (unlikely((__pyx_v_lanes == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 308, __pyx_L3_error)
+      __pyx_v_lanes = __Pyx_PyInt_As_int(values[0]); if (unlikely((__pyx_v_lanes == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 315, __pyx_L3_error)
     } else {
       __pyx_v_lanes = ((int)1);
     }
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("Bool", 0, 0, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 308, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("Bool", 0, 0, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 315, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("halogen.api.Type.Bool", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -8515,19 +8621,19 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_64Bool(int __pyx_v_lanes) {
   Halide::Type __pyx_t_2;
   __Pyx_RefNannySetupContext("Bool", 0);
 
-  /* "halogen/api.pyx":309
+  /* "halogen/api.pyx":316
  *     @staticmethod
  *     def Bool(int lanes=1):
  *         out = Type()             # <<<<<<<<<<<<<<
  *         out.__this__ = HalType_Bool(lanes)
  *         return out
  */
-  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_7halogen_3api_Type)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 309, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_7halogen_3api_Type)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 316, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_out = ((struct __pyx_obj_7halogen_3api_Type *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "halogen/api.pyx":310
+  /* "halogen/api.pyx":317
  *     def Bool(int lanes=1):
  *         out = Type()
  *         out.__this__ = HalType_Bool(lanes)             # <<<<<<<<<<<<<<
@@ -8538,11 +8644,11 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_64Bool(int __pyx_v_lanes) {
     __pyx_t_2 = Halide::Bool(__pyx_v_lanes);
   } catch(...) {
     __Pyx_CppExn2PyErr();
-    __PYX_ERR(0, 310, __pyx_L1_error)
+    __PYX_ERR(0, 317, __pyx_L1_error)
   }
   __pyx_v_out->__pyx___this__ = __pyx_t_2;
 
-  /* "halogen/api.pyx":311
+  /* "halogen/api.pyx":318
  *         out = Type()
  *         out.__this__ = HalType_Bool(lanes)
  *         return out             # <<<<<<<<<<<<<<
@@ -8554,7 +8660,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_64Bool(int __pyx_v_lanes) {
   __pyx_r = ((PyObject *)__pyx_v_out);
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":308
+  /* "halogen/api.pyx":315
  * 
  *     @staticmethod
  *     def Bool(int lanes=1):             # <<<<<<<<<<<<<<
@@ -8574,7 +8680,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_64Bool(int __pyx_v_lanes) {
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":314
+/* "halogen/api.pyx":321
  * 
  *     @staticmethod
  *     def Handle(int lanes=1):             # <<<<<<<<<<<<<<
@@ -8612,7 +8718,7 @@ static PyObject *__pyx_pw_7halogen_3api_4Type_67Handle(CYTHON_UNUSED PyObject *_
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "Handle") < 0)) __PYX_ERR(0, 314, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "Handle") < 0)) __PYX_ERR(0, 321, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -8623,14 +8729,14 @@ static PyObject *__pyx_pw_7halogen_3api_4Type_67Handle(CYTHON_UNUSED PyObject *_
       }
     }
     if (values[0]) {
-      __pyx_v_lanes = __Pyx_PyInt_As_int(values[0]); if (unlikely((__pyx_v_lanes == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 314, __pyx_L3_error)
+      __pyx_v_lanes = __Pyx_PyInt_As_int(values[0]); if (unlikely((__pyx_v_lanes == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 321, __pyx_L3_error)
     } else {
       __pyx_v_lanes = ((int)1);
     }
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("Handle", 0, 0, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 314, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("Handle", 0, 0, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 321, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("halogen.api.Type.Handle", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -8651,19 +8757,19 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_66Handle(int __pyx_v_lanes) {
   Halide::Type __pyx_t_2;
   __Pyx_RefNannySetupContext("Handle", 0);
 
-  /* "halogen/api.pyx":315
+  /* "halogen/api.pyx":322
  *     @staticmethod
  *     def Handle(int lanes=1):
  *         out = Type()             # <<<<<<<<<<<<<<
  *         out.__this__ = HalType_Handle(lanes, NULL)
  *         return out
  */
-  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_7halogen_3api_Type)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 315, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_7halogen_3api_Type)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 322, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_out = ((struct __pyx_obj_7halogen_3api_Type *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "halogen/api.pyx":316
+  /* "halogen/api.pyx":323
  *     def Handle(int lanes=1):
  *         out = Type()
  *         out.__this__ = HalType_Handle(lanes, NULL)             # <<<<<<<<<<<<<<
@@ -8674,11 +8780,11 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_66Handle(int __pyx_v_lanes) {
     __pyx_t_2 = Halide::Handle(__pyx_v_lanes, NULL);
   } catch(...) {
     __Pyx_CppExn2PyErr();
-    __PYX_ERR(0, 316, __pyx_L1_error)
+    __PYX_ERR(0, 323, __pyx_L1_error)
   }
   __pyx_v_out->__pyx___this__ = __pyx_t_2;
 
-  /* "halogen/api.pyx":317
+  /* "halogen/api.pyx":324
  *         out = Type()
  *         out.__this__ = HalType_Handle(lanes, NULL)
  *         return out             # <<<<<<<<<<<<<<
@@ -8690,7 +8796,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_66Handle(int __pyx_v_lanes) {
   __pyx_r = ((PyObject *)__pyx_v_out);
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":314
+  /* "halogen/api.pyx":321
  * 
  *     @staticmethod
  *     def Handle(int lanes=1):             # <<<<<<<<<<<<<<
@@ -8819,7 +8925,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_70__setstate_cython__(CYTHON_UNUSE
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":328
+/* "halogen/api.pyx":335
  * 
  *     @staticmethod
  *     def validate_target_string(object target_string not None):             # <<<<<<<<<<<<<<
@@ -8855,7 +8961,7 @@ static PyObject *__pyx_pw_7halogen_3api_6Target_1validate_target_string(CYTHON_U
         else goto __pyx_L5_argtuple_error;
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "validate_target_string") < 0)) __PYX_ERR(0, 328, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "validate_target_string") < 0)) __PYX_ERR(0, 335, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 1) {
       goto __pyx_L5_argtuple_error;
@@ -8866,14 +8972,14 @@ static PyObject *__pyx_pw_7halogen_3api_6Target_1validate_target_string(CYTHON_U
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("validate_target_string", 1, 1, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 328, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("validate_target_string", 1, 1, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 335, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("halogen.api.Target.validate_target_string", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
   if (unlikely(((PyObject *)__pyx_v_target_string) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "target_string"); __PYX_ERR(0, 328, __pyx_L1_error)
+    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "target_string"); __PYX_ERR(0, 335, __pyx_L1_error)
   }
   __pyx_r = __pyx_pf_7halogen_3api_6Target_validate_target_string(__pyx_v_target_string);
 
@@ -8893,7 +8999,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_validate_target_string(PyObject 
   std::string __pyx_t_2;
   __Pyx_RefNannySetupContext("validate_target_string", 0);
 
-  /* "halogen/api.pyx":329
+  /* "halogen/api.pyx":336
  *     @staticmethod
  *     def validate_target_string(object target_string not None):
  *         return HalTarget.validate_target_string(<string>u8bytes(target_string))             # <<<<<<<<<<<<<<
@@ -8901,17 +9007,17 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_validate_target_string(PyObject 
  *     def __cinit__(self, *args, **kwargs):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_target_string, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 329, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_target_string, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 336, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 329, __pyx_L1_error)
+  __pyx_t_2 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 336, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyBool_FromLong(Halide::Target::validate_target_string(((std::string)__pyx_t_2))); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 329, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyBool_FromLong(Halide::Target::validate_target_string(((std::string)__pyx_t_2))); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 336, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":328
+  /* "halogen/api.pyx":335
  * 
  *     @staticmethod
  *     def validate_target_string(object target_string not None):             # <<<<<<<<<<<<<<
@@ -8930,7 +9036,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_validate_target_string(PyObject 
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":331
+/* "halogen/api.pyx":338
  *         return HalTarget.validate_target_string(<string>u8bytes(target_string))
  * 
  *     def __cinit__(self, *args, **kwargs):             # <<<<<<<<<<<<<<
@@ -8972,47 +9078,47 @@ static int __pyx_pf_7halogen_3api_6Target_2__cinit__(struct __pyx_obj_7halogen_3
   Py_ssize_t __pyx_t_6;
   __Pyx_RefNannySetupContext("__cinit__", 0);
 
-  /* "halogen/api.pyx":332
+  /* "halogen/api.pyx":339
  * 
  *     def __cinit__(self, *args, **kwargs):
  *         cdef string target_string = b'host'             # <<<<<<<<<<<<<<
  *         if 'target_string' in kwargs:
  *             target_string = <string>u8bytes(kwargs.get('target_string', target_string))
  */
-  __pyx_t_1 = __pyx_convert_string_from_py_std__in_string(__pyx_n_b_host); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 332, __pyx_L1_error)
+  __pyx_t_1 = __pyx_convert_string_from_py_std__in_string(__pyx_n_b_host); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 339, __pyx_L1_error)
   __pyx_v_target_string = __pyx_t_1;
 
-  /* "halogen/api.pyx":333
+  /* "halogen/api.pyx":340
  *     def __cinit__(self, *args, **kwargs):
  *         cdef string target_string = b'host'
  *         if 'target_string' in kwargs:             # <<<<<<<<<<<<<<
  *             target_string = <string>u8bytes(kwargs.get('target_string', target_string))
  *         elif len(args) > 0:
  */
-  __pyx_t_2 = (__Pyx_PyDict_ContainsTF(__pyx_n_s_target_string, __pyx_v_kwargs, Py_EQ)); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 333, __pyx_L1_error)
+  __pyx_t_2 = (__Pyx_PyDict_ContainsTF(__pyx_n_s_target_string, __pyx_v_kwargs, Py_EQ)); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 340, __pyx_L1_error)
   __pyx_t_3 = (__pyx_t_2 != 0);
   if (__pyx_t_3) {
 
-    /* "halogen/api.pyx":334
+    /* "halogen/api.pyx":341
  *         cdef string target_string = b'host'
  *         if 'target_string' in kwargs:
  *             target_string = <string>u8bytes(kwargs.get('target_string', target_string))             # <<<<<<<<<<<<<<
  *         elif len(args) > 0:
  *             target_string = <string>u8bytes(args[0])
  */
-    __pyx_t_4 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_target_string); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 334, __pyx_L1_error)
+    __pyx_t_4 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_target_string); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 341, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_5 = __Pyx_PyDict_GetItemDefault(__pyx_v_kwargs, __pyx_n_s_target_string, __pyx_t_4); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 334, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyDict_GetItemDefault(__pyx_v_kwargs, __pyx_n_s_target_string, __pyx_t_4); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 341, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __pyx_t_4 = __pyx_f_7halogen_3api_u8bytes(__pyx_t_5, 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 334, __pyx_L1_error)
+    __pyx_t_4 = __pyx_f_7halogen_3api_u8bytes(__pyx_t_5, 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 341, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-    __pyx_t_1 = __pyx_convert_string_from_py_std__in_string(__pyx_t_4); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 334, __pyx_L1_error)
+    __pyx_t_1 = __pyx_convert_string_from_py_std__in_string(__pyx_t_4); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 341, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __pyx_v_target_string = ((std::string)__pyx_t_1);
 
-    /* "halogen/api.pyx":333
+    /* "halogen/api.pyx":340
  *     def __cinit__(self, *args, **kwargs):
  *         cdef string target_string = b'host'
  *         if 'target_string' in kwargs:             # <<<<<<<<<<<<<<
@@ -9022,34 +9128,34 @@ static int __pyx_pf_7halogen_3api_6Target_2__cinit__(struct __pyx_obj_7halogen_3
     goto __pyx_L3;
   }
 
-  /* "halogen/api.pyx":335
+  /* "halogen/api.pyx":342
  *         if 'target_string' in kwargs:
  *             target_string = <string>u8bytes(kwargs.get('target_string', target_string))
  *         elif len(args) > 0:             # <<<<<<<<<<<<<<
  *             target_string = <string>u8bytes(args[0])
  *         if not HalTarget.validate_target_string(target_string):
  */
-  __pyx_t_6 = PyTuple_GET_SIZE(__pyx_v_args); if (unlikely(__pyx_t_6 == ((Py_ssize_t)-1))) __PYX_ERR(0, 335, __pyx_L1_error)
+  __pyx_t_6 = PyTuple_GET_SIZE(__pyx_v_args); if (unlikely(__pyx_t_6 == ((Py_ssize_t)-1))) __PYX_ERR(0, 342, __pyx_L1_error)
   __pyx_t_3 = ((__pyx_t_6 > 0) != 0);
   if (__pyx_t_3) {
 
-    /* "halogen/api.pyx":336
+    /* "halogen/api.pyx":343
  *             target_string = <string>u8bytes(kwargs.get('target_string', target_string))
  *         elif len(args) > 0:
  *             target_string = <string>u8bytes(args[0])             # <<<<<<<<<<<<<<
  *         if not HalTarget.validate_target_string(target_string):
  *             raise ValueError("invalid target string: %s" % u8str(target_string))
  */
-    __pyx_t_4 = __Pyx_GetItemInt_Tuple(__pyx_v_args, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 336, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_GetItemInt_Tuple(__pyx_v_args, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 343, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_5 = __pyx_f_7halogen_3api_u8bytes(__pyx_t_4, 0); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 336, __pyx_L1_error)
+    __pyx_t_5 = __pyx_f_7halogen_3api_u8bytes(__pyx_t_4, 0); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 343, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __pyx_t_1 = __pyx_convert_string_from_py_std__in_string(__pyx_t_5); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 336, __pyx_L1_error)
+    __pyx_t_1 = __pyx_convert_string_from_py_std__in_string(__pyx_t_5); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 343, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     __pyx_v_target_string = ((std::string)__pyx_t_1);
 
-    /* "halogen/api.pyx":335
+    /* "halogen/api.pyx":342
  *         if 'target_string' in kwargs:
  *             target_string = <string>u8bytes(kwargs.get('target_string', target_string))
  *         elif len(args) > 0:             # <<<<<<<<<<<<<<
@@ -9059,7 +9165,7 @@ static int __pyx_pf_7halogen_3api_6Target_2__cinit__(struct __pyx_obj_7halogen_3
   }
   __pyx_L3:;
 
-  /* "halogen/api.pyx":337
+  /* "halogen/api.pyx":344
  *         elif len(args) > 0:
  *             target_string = <string>u8bytes(args[0])
  *         if not HalTarget.validate_target_string(target_string):             # <<<<<<<<<<<<<<
@@ -9069,29 +9175,29 @@ static int __pyx_pf_7halogen_3api_6Target_2__cinit__(struct __pyx_obj_7halogen_3
   __pyx_t_3 = ((!(Halide::Target::validate_target_string(__pyx_v_target_string) != 0)) != 0);
   if (unlikely(__pyx_t_3)) {
 
-    /* "halogen/api.pyx":338
+    /* "halogen/api.pyx":345
  *             target_string = <string>u8bytes(args[0])
  *         if not HalTarget.validate_target_string(target_string):
  *             raise ValueError("invalid target string: %s" % u8str(target_string))             # <<<<<<<<<<<<<<
  *         self.__this__ = HalTarget(target_string)
  *         # INSERT FEATURE CHECK HERE
  */
-    __pyx_t_5 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_target_string); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 338, __pyx_L1_error)
+    __pyx_t_5 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_target_string); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 345, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
-    __pyx_t_4 = __pyx_f_7halogen_3api_u8str(__pyx_t_5, 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 338, __pyx_L1_error)
+    __pyx_t_4 = __pyx_f_7halogen_3api_u8str(__pyx_t_5, 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 345, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-    __pyx_t_5 = __Pyx_PyString_Format(__pyx_kp_s_invalid_target_string_s, __pyx_t_4); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 338, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyString_Format(__pyx_kp_s_invalid_target_string_s, __pyx_t_4); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 345, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_builtin_ValueError, __pyx_t_5); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 338, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_builtin_ValueError, __pyx_t_5); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 345, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     __Pyx_Raise(__pyx_t_4, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __PYX_ERR(0, 338, __pyx_L1_error)
+    __PYX_ERR(0, 345, __pyx_L1_error)
 
-    /* "halogen/api.pyx":337
+    /* "halogen/api.pyx":344
  *         elif len(args) > 0:
  *             target_string = <string>u8bytes(args[0])
  *         if not HalTarget.validate_target_string(target_string):             # <<<<<<<<<<<<<<
@@ -9100,7 +9206,7 @@ static int __pyx_pf_7halogen_3api_6Target_2__cinit__(struct __pyx_obj_7halogen_3
  */
   }
 
-  /* "halogen/api.pyx":339
+  /* "halogen/api.pyx":346
  *         if not HalTarget.validate_target_string(target_string):
  *             raise ValueError("invalid target string: %s" % u8str(target_string))
  *         self.__this__ = HalTarget(target_string)             # <<<<<<<<<<<<<<
@@ -9109,7 +9215,7 @@ static int __pyx_pf_7halogen_3api_6Target_2__cinit__(struct __pyx_obj_7halogen_3
  */
   __pyx_v_self->__pyx___this__ = Halide::Target(__pyx_v_target_string);
 
-  /* "halogen/api.pyx":331
+  /* "halogen/api.pyx":338
  *         return HalTarget.validate_target_string(<string>u8bytes(target_string))
  * 
  *     def __cinit__(self, *args, **kwargs):             # <<<<<<<<<<<<<<
@@ -9130,7 +9236,7 @@ static int __pyx_pf_7halogen_3api_6Target_2__cinit__(struct __pyx_obj_7halogen_3
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":343
+/* "halogen/api.pyx":350
  * 
  *     @property
  *     def os(self):             # <<<<<<<<<<<<<<
@@ -9157,7 +9263,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_2os___get__(struct __pyx_obj_7ha
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("__get__", 0);
 
-  /* "halogen/api.pyx":344
+  /* "halogen/api.pyx":351
  *     @property
  *     def os(self):
  *         return PyInt_FromLong(<long>(self.__this__.os))             # <<<<<<<<<<<<<<
@@ -9165,13 +9271,13 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_2os___get__(struct __pyx_obj_7ha
  *     @os.setter
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyInt_FromLong(((long)__pyx_v_self->__pyx___this__.os)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 344, __pyx_L1_error)
+  __pyx_t_1 = PyInt_FromLong(((long)__pyx_v_self->__pyx___this__.os)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 351, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":343
+  /* "halogen/api.pyx":350
  * 
  *     @property
  *     def os(self):             # <<<<<<<<<<<<<<
@@ -9190,7 +9296,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_2os___get__(struct __pyx_obj_7ha
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":347
+/* "halogen/api.pyx":354
  * 
  *     @os.setter
  *     def os(self, value not None):             # <<<<<<<<<<<<<<
@@ -9205,7 +9311,7 @@ static int __pyx_pw_7halogen_3api_6Target_2os_3__set__(PyObject *__pyx_v_self, P
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__set__ (wrapper)", 0);
   if (unlikely(((PyObject *)__pyx_v_value) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "value"); __PYX_ERR(0, 347, __pyx_L1_error)
+    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "value"); __PYX_ERR(0, 354, __pyx_L1_error)
   }
   __pyx_r = __pyx_pf_7halogen_3api_6Target_2os_2__set__(((struct __pyx_obj_7halogen_3api_Target *)__pyx_v_self), ((PyObject *)__pyx_v_value));
 
@@ -9225,20 +9331,20 @@ static int __pyx_pf_7halogen_3api_6Target_2os_2__set__(struct __pyx_obj_7halogen
   long __pyx_t_2;
   __Pyx_RefNannySetupContext("__set__", 0);
 
-  /* "halogen/api.pyx":348
+  /* "halogen/api.pyx":355
  *     @os.setter
  *     def os(self, value not None):
  *         self.__this__.os = <OS>PyInt_AsLong(int(value))             # <<<<<<<<<<<<<<
  * 
  *     @property
  */
-  __pyx_t_1 = __Pyx_PyNumber_Int(__pyx_v_value); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 348, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyNumber_Int(__pyx_v_value); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 355, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = PyInt_AsLong(__pyx_t_1); if (unlikely(__pyx_t_2 == ((long)-1L) && PyErr_Occurred())) __PYX_ERR(0, 348, __pyx_L1_error)
+  __pyx_t_2 = PyInt_AsLong(__pyx_t_1); if (unlikely(__pyx_t_2 == ((long)-1L) && PyErr_Occurred())) __PYX_ERR(0, 355, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_self->__pyx___this__.os = ((Halide::Target::OS)__pyx_t_2);
 
-  /* "halogen/api.pyx":347
+  /* "halogen/api.pyx":354
  * 
  *     @os.setter
  *     def os(self, value not None):             # <<<<<<<<<<<<<<
@@ -9258,7 +9364,7 @@ static int __pyx_pf_7halogen_3api_6Target_2os_2__set__(struct __pyx_obj_7halogen
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":351
+/* "halogen/api.pyx":358
  * 
  *     @property
  *     def arch(self):             # <<<<<<<<<<<<<<
@@ -9285,7 +9391,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_4arch___get__(struct __pyx_obj_7
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("__get__", 0);
 
-  /* "halogen/api.pyx":352
+  /* "halogen/api.pyx":359
  *     @property
  *     def arch(self):
  *         return PyInt_FromLong(<long>(self.__this__.arch))             # <<<<<<<<<<<<<<
@@ -9293,13 +9399,13 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_4arch___get__(struct __pyx_obj_7
  *     @arch.setter
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyInt_FromLong(((long)__pyx_v_self->__pyx___this__.arch)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 352, __pyx_L1_error)
+  __pyx_t_1 = PyInt_FromLong(((long)__pyx_v_self->__pyx___this__.arch)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 359, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":351
+  /* "halogen/api.pyx":358
  * 
  *     @property
  *     def arch(self):             # <<<<<<<<<<<<<<
@@ -9318,7 +9424,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_4arch___get__(struct __pyx_obj_7
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":355
+/* "halogen/api.pyx":362
  * 
  *     @arch.setter
  *     def arch(self, value not None):             # <<<<<<<<<<<<<<
@@ -9333,7 +9439,7 @@ static int __pyx_pw_7halogen_3api_6Target_4arch_3__set__(PyObject *__pyx_v_self,
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__set__ (wrapper)", 0);
   if (unlikely(((PyObject *)__pyx_v_value) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "value"); __PYX_ERR(0, 355, __pyx_L1_error)
+    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "value"); __PYX_ERR(0, 362, __pyx_L1_error)
   }
   __pyx_r = __pyx_pf_7halogen_3api_6Target_4arch_2__set__(((struct __pyx_obj_7halogen_3api_Target *)__pyx_v_self), ((PyObject *)__pyx_v_value));
 
@@ -9353,20 +9459,20 @@ static int __pyx_pf_7halogen_3api_6Target_4arch_2__set__(struct __pyx_obj_7halog
   long __pyx_t_2;
   __Pyx_RefNannySetupContext("__set__", 0);
 
-  /* "halogen/api.pyx":356
+  /* "halogen/api.pyx":363
  *     @arch.setter
  *     def arch(self, value not None):
  *         self.__this__.arch = <Arch>PyInt_AsLong(int(value))             # <<<<<<<<<<<<<<
  * 
  *     @property
  */
-  __pyx_t_1 = __Pyx_PyNumber_Int(__pyx_v_value); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 356, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyNumber_Int(__pyx_v_value); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 363, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = PyInt_AsLong(__pyx_t_1); if (unlikely(__pyx_t_2 == ((long)-1L) && PyErr_Occurred())) __PYX_ERR(0, 356, __pyx_L1_error)
+  __pyx_t_2 = PyInt_AsLong(__pyx_t_1); if (unlikely(__pyx_t_2 == ((long)-1L) && PyErr_Occurred())) __PYX_ERR(0, 363, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_self->__pyx___this__.arch = ((Halide::Target::Arch)__pyx_t_2);
 
-  /* "halogen/api.pyx":355
+  /* "halogen/api.pyx":362
  * 
  *     @arch.setter
  *     def arch(self, value not None):             # <<<<<<<<<<<<<<
@@ -9386,7 +9492,7 @@ static int __pyx_pf_7halogen_3api_6Target_4arch_2__set__(struct __pyx_obj_7halog
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":359
+/* "halogen/api.pyx":366
  * 
  *     @property
  *     def bits(self):             # <<<<<<<<<<<<<<
@@ -9413,7 +9519,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_4bits___get__(struct __pyx_obj_7
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("__get__", 0);
 
-  /* "halogen/api.pyx":360
+  /* "halogen/api.pyx":367
  *     @property
  *     def bits(self):
  *         return PyInt_FromLong(self.__this__.bits)             # <<<<<<<<<<<<<<
@@ -9421,13 +9527,13 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_4bits___get__(struct __pyx_obj_7
  *     @bits.setter
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyInt_FromLong(__pyx_v_self->__pyx___this__.bits); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 360, __pyx_L1_error)
+  __pyx_t_1 = PyInt_FromLong(__pyx_v_self->__pyx___this__.bits); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 367, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":359
+  /* "halogen/api.pyx":366
  * 
  *     @property
  *     def bits(self):             # <<<<<<<<<<<<<<
@@ -9446,7 +9552,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_4bits___get__(struct __pyx_obj_7
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":363
+/* "halogen/api.pyx":370
  * 
  *     @bits.setter
  *     def bits(self, value not None):             # <<<<<<<<<<<<<<
@@ -9461,7 +9567,7 @@ static int __pyx_pw_7halogen_3api_6Target_4bits_3__set__(PyObject *__pyx_v_self,
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__set__ (wrapper)", 0);
   if (unlikely(((PyObject *)__pyx_v_value) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "value"); __PYX_ERR(0, 363, __pyx_L1_error)
+    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "value"); __PYX_ERR(0, 370, __pyx_L1_error)
   }
   __pyx_r = __pyx_pf_7halogen_3api_6Target_4bits_2__set__(((struct __pyx_obj_7halogen_3api_Target *)__pyx_v_self), ((PyObject *)__pyx_v_value));
 
@@ -9481,20 +9587,20 @@ static int __pyx_pf_7halogen_3api_6Target_4bits_2__set__(struct __pyx_obj_7halog
   long __pyx_t_2;
   __Pyx_RefNannySetupContext("__set__", 0);
 
-  /* "halogen/api.pyx":364
+  /* "halogen/api.pyx":371
  *     @bits.setter
  *     def bits(self, value not None):
  *         self.__this__.bits = <int>PyInt_AsLong(int(value))             # <<<<<<<<<<<<<<
  * 
  *     def has_gpu_feature(self):
  */
-  __pyx_t_1 = __Pyx_PyNumber_Int(__pyx_v_value); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 364, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyNumber_Int(__pyx_v_value); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 371, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = PyInt_AsLong(__pyx_t_1); if (unlikely(__pyx_t_2 == ((long)-1L) && PyErr_Occurred())) __PYX_ERR(0, 364, __pyx_L1_error)
+  __pyx_t_2 = PyInt_AsLong(__pyx_t_1); if (unlikely(__pyx_t_2 == ((long)-1L) && PyErr_Occurred())) __PYX_ERR(0, 371, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_self->__pyx___this__.bits = ((int)__pyx_t_2);
 
-  /* "halogen/api.pyx":363
+  /* "halogen/api.pyx":370
  * 
  *     @bits.setter
  *     def bits(self, value not None):             # <<<<<<<<<<<<<<
@@ -9514,7 +9620,7 @@ static int __pyx_pf_7halogen_3api_6Target_4bits_2__set__(struct __pyx_obj_7halog
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":366
+/* "halogen/api.pyx":373
  *         self.__this__.bits = <int>PyInt_AsLong(int(value))
  * 
  *     def has_gpu_feature(self):             # <<<<<<<<<<<<<<
@@ -9542,7 +9648,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_4has_gpu_feature(struct __pyx_ob
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("has_gpu_feature", 0);
 
-  /* "halogen/api.pyx":367
+  /* "halogen/api.pyx":374
  * 
  *     def has_gpu_feature(self):
  *         return self.__this__.has_gpu_feature()             # <<<<<<<<<<<<<<
@@ -9550,13 +9656,13 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_4has_gpu_feature(struct __pyx_ob
  *     def has_feature(self, feature):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_v_self->__pyx___this__.has_gpu_feature()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 367, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_v_self->__pyx___this__.has_gpu_feature()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 374, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":366
+  /* "halogen/api.pyx":373
  *         self.__this__.bits = <int>PyInt_AsLong(int(value))
  * 
  *     def has_gpu_feature(self):             # <<<<<<<<<<<<<<
@@ -9575,7 +9681,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_4has_gpu_feature(struct __pyx_ob
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":369
+/* "halogen/api.pyx":376
  *         return self.__this__.has_gpu_feature()
  * 
  *     def has_feature(self, feature):             # <<<<<<<<<<<<<<
@@ -9604,7 +9710,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_6has_feature(struct __pyx_obj_7h
   long __pyx_t_2;
   __Pyx_RefNannySetupContext("has_feature", 0);
 
-  /* "halogen/api.pyx":370
+  /* "halogen/api.pyx":377
  * 
  *     def has_feature(self, feature):
  *         return self.__this__.has_feature(<Feature>PyInt_AsLong(int(feature)))             # <<<<<<<<<<<<<<
@@ -9612,17 +9718,17 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_6has_feature(struct __pyx_obj_7h
  *     def includes_halide_runtime(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyNumber_Int(__pyx_v_feature); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 370, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyNumber_Int(__pyx_v_feature); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 377, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = PyInt_AsLong(__pyx_t_1); if (unlikely(__pyx_t_2 == ((long)-1L) && PyErr_Occurred())) __PYX_ERR(0, 370, __pyx_L1_error)
+  __pyx_t_2 = PyInt_AsLong(__pyx_t_1); if (unlikely(__pyx_t_2 == ((long)-1L) && PyErr_Occurred())) __PYX_ERR(0, 377, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_v_self->__pyx___this__.has_feature(((Halide::Target::Feature)__pyx_t_2))); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 370, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_v_self->__pyx___this__.has_feature(((Halide::Target::Feature)__pyx_t_2))); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 377, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":369
+  /* "halogen/api.pyx":376
  *         return self.__this__.has_gpu_feature()
  * 
  *     def has_feature(self, feature):             # <<<<<<<<<<<<<<
@@ -9641,7 +9747,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_6has_feature(struct __pyx_obj_7h
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":372
+/* "halogen/api.pyx":379
  *         return self.__this__.has_feature(<Feature>PyInt_AsLong(int(feature)))
  * 
  *     def includes_halide_runtime(self):             # <<<<<<<<<<<<<<
@@ -9676,7 +9782,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_8includes_halide_runtime(struct 
   int __pyx_t_8;
   __Pyx_RefNannySetupContext("includes_halide_runtime", 0);
 
-  /* "halogen/api.pyx":373
+  /* "halogen/api.pyx":380
  * 
  *     def includes_halide_runtime(self):
  *         try:             # <<<<<<<<<<<<<<
@@ -9692,7 +9798,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_8includes_halide_runtime(struct 
     __Pyx_XGOTREF(__pyx_t_3);
     /*try:*/ {
 
-      /* "halogen/api.pyx":374
+      /* "halogen/api.pyx":381
  *     def includes_halide_runtime(self):
  *         try:
  *             return self.to_string().decode('UTF-8').lower().index('no_runtime') < 0             # <<<<<<<<<<<<<<
@@ -9700,7 +9806,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_8includes_halide_runtime(struct 
  *             return True
  */
       __Pyx_XDECREF(__pyx_r);
-      __pyx_t_6 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_to_string); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 374, __pyx_L3_error)
+      __pyx_t_6 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_to_string); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 381, __pyx_L3_error)
       __Pyx_GOTREF(__pyx_t_6);
       __pyx_t_7 = NULL;
       if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_6))) {
@@ -9713,20 +9819,20 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_8includes_halide_runtime(struct 
         }
       }
       if (__pyx_t_7) {
-        __pyx_t_5 = __Pyx_PyObject_CallOneArg(__pyx_t_6, __pyx_t_7); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 374, __pyx_L3_error)
+        __pyx_t_5 = __Pyx_PyObject_CallOneArg(__pyx_t_6, __pyx_t_7); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 381, __pyx_L3_error)
         __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
       } else {
-        __pyx_t_5 = __Pyx_PyObject_CallNoArg(__pyx_t_6); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 374, __pyx_L3_error)
+        __pyx_t_5 = __Pyx_PyObject_CallNoArg(__pyx_t_6); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 381, __pyx_L3_error)
       }
       __Pyx_GOTREF(__pyx_t_5);
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-      __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_decode); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 374, __pyx_L3_error)
+      __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_decode); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 381, __pyx_L3_error)
       __Pyx_GOTREF(__pyx_t_6);
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-      __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_tuple__5, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 374, __pyx_L3_error)
+      __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_tuple__5, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 381, __pyx_L3_error)
       __Pyx_GOTREF(__pyx_t_5);
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-      __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_lower); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 374, __pyx_L3_error)
+      __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_lower); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 381, __pyx_L3_error)
       __Pyx_GOTREF(__pyx_t_6);
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
       __pyx_t_5 = NULL;
@@ -9740,26 +9846,26 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_8includes_halide_runtime(struct 
         }
       }
       if (__pyx_t_5) {
-        __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_t_6, __pyx_t_5); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 374, __pyx_L3_error)
+        __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_t_6, __pyx_t_5); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 381, __pyx_L3_error)
         __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
       } else {
-        __pyx_t_4 = __Pyx_PyObject_CallNoArg(__pyx_t_6); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 374, __pyx_L3_error)
+        __pyx_t_4 = __Pyx_PyObject_CallNoArg(__pyx_t_6); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 381, __pyx_L3_error)
       }
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-      __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_index); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 374, __pyx_L3_error)
+      __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_index); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 381, __pyx_L3_error)
       __Pyx_GOTREF(__pyx_t_6);
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-      __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_tuple__6, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 374, __pyx_L3_error)
+      __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_tuple__6, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 381, __pyx_L3_error)
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-      __pyx_t_6 = PyObject_RichCompare(__pyx_t_4, __pyx_int_0, Py_LT); __Pyx_XGOTREF(__pyx_t_6); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 374, __pyx_L3_error)
+      __pyx_t_6 = PyObject_RichCompare(__pyx_t_4, __pyx_int_0, Py_LT); __Pyx_XGOTREF(__pyx_t_6); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 381, __pyx_L3_error)
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
       __pyx_r = __pyx_t_6;
       __pyx_t_6 = 0;
       goto __pyx_L7_try_return;
 
-      /* "halogen/api.pyx":373
+      /* "halogen/api.pyx":380
  * 
  *     def includes_halide_runtime(self):
  *         try:             # <<<<<<<<<<<<<<
@@ -9773,7 +9879,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_8includes_halide_runtime(struct 
     __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
 
-    /* "halogen/api.pyx":375
+    /* "halogen/api.pyx":382
  *         try:
  *             return self.to_string().decode('UTF-8').lower().index('no_runtime') < 0
  *         except ValueError:             # <<<<<<<<<<<<<<
@@ -9783,12 +9889,12 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_8includes_halide_runtime(struct 
     __pyx_t_8 = __Pyx_PyErr_ExceptionMatches(__pyx_builtin_ValueError);
     if (__pyx_t_8) {
       __Pyx_AddTraceback("halogen.api.Target.includes_halide_runtime", __pyx_clineno, __pyx_lineno, __pyx_filename);
-      if (__Pyx_GetException(&__pyx_t_6, &__pyx_t_4, &__pyx_t_5) < 0) __PYX_ERR(0, 375, __pyx_L5_except_error)
+      if (__Pyx_GetException(&__pyx_t_6, &__pyx_t_4, &__pyx_t_5) < 0) __PYX_ERR(0, 382, __pyx_L5_except_error)
       __Pyx_GOTREF(__pyx_t_6);
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_GOTREF(__pyx_t_5);
 
-      /* "halogen/api.pyx":376
+      /* "halogen/api.pyx":383
  *             return self.to_string().decode('UTF-8').lower().index('no_runtime') < 0
  *         except ValueError:
  *             return True             # <<<<<<<<<<<<<<
@@ -9806,7 +9912,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_8includes_halide_runtime(struct 
     goto __pyx_L5_except_error;
     __pyx_L5_except_error:;
 
-    /* "halogen/api.pyx":373
+    /* "halogen/api.pyx":380
  * 
  *     def includes_halide_runtime(self):
  *         try:             # <<<<<<<<<<<<<<
@@ -9832,7 +9938,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_8includes_halide_runtime(struct 
     goto __pyx_L0;
   }
 
-  /* "halogen/api.pyx":372
+  /* "halogen/api.pyx":379
  *         return self.__this__.has_feature(<Feature>PyInt_AsLong(int(feature)))
  * 
  *     def includes_halide_runtime(self):             # <<<<<<<<<<<<<<
@@ -9854,7 +9960,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_8includes_halide_runtime(struct 
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":378
+/* "halogen/api.pyx":385
  *             return True
  * 
  *     def to_string(self):             # <<<<<<<<<<<<<<
@@ -9882,7 +9988,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_10to_string(struct __pyx_obj_7ha
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("to_string", 0);
 
-  /* "halogen/api.pyx":379
+  /* "halogen/api.pyx":386
  * 
  *     def to_string(self):
  *         return self.__this__.to_string()             # <<<<<<<<<<<<<<
@@ -9890,13 +9996,13 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_10to_string(struct __pyx_obj_7ha
  *     def maximum_buffer_size(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_self->__pyx___this__.to_string()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 379, __pyx_L1_error)
+  __pyx_t_1 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_self->__pyx___this__.to_string()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 386, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":378
+  /* "halogen/api.pyx":385
  *             return True
  * 
  *     def to_string(self):             # <<<<<<<<<<<<<<
@@ -9915,7 +10021,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_10to_string(struct __pyx_obj_7ha
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":381
+/* "halogen/api.pyx":388
  *         return self.__this__.to_string()
  * 
  *     def maximum_buffer_size(self):             # <<<<<<<<<<<<<<
@@ -9943,7 +10049,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_12maximum_buffer_size(struct __p
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("maximum_buffer_size", 0);
 
-  /* "halogen/api.pyx":382
+  /* "halogen/api.pyx":389
  * 
  *     def maximum_buffer_size(self):
  *         return self.__this__.maximum_buffer_size()             # <<<<<<<<<<<<<<
@@ -9951,13 +10057,13 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_12maximum_buffer_size(struct __p
  *     def supported(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_int64_t(__pyx_v_self->__pyx___this__.maximum_buffer_size()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 382, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int64_t(__pyx_v_self->__pyx___this__.maximum_buffer_size()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 389, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":381
+  /* "halogen/api.pyx":388
  *         return self.__this__.to_string()
  * 
  *     def maximum_buffer_size(self):             # <<<<<<<<<<<<<<
@@ -9976,7 +10082,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_12maximum_buffer_size(struct __p
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":384
+/* "halogen/api.pyx":391
  *         return self.__this__.maximum_buffer_size()
  * 
  *     def supported(self):             # <<<<<<<<<<<<<<
@@ -10004,7 +10110,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_14supported(struct __pyx_obj_7ha
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("supported", 0);
 
-  /* "halogen/api.pyx":385
+  /* "halogen/api.pyx":392
  * 
  *     def supported(self):
  *         return self.__this__.supported()             # <<<<<<<<<<<<<<
@@ -10012,13 +10118,13 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_14supported(struct __pyx_obj_7ha
  *     def supports_type(self, Type t not None):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_v_self->__pyx___this__.supported()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 385, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_v_self->__pyx___this__.supported()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 392, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":384
+  /* "halogen/api.pyx":391
  *         return self.__this__.maximum_buffer_size()
  * 
  *     def supported(self):             # <<<<<<<<<<<<<<
@@ -10037,7 +10143,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_14supported(struct __pyx_obj_7ha
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":387
+/* "halogen/api.pyx":394
  *         return self.__this__.supported()
  * 
  *     def supports_type(self, Type t not None):             # <<<<<<<<<<<<<<
@@ -10052,7 +10158,7 @@ static PyObject *__pyx_pw_7halogen_3api_6Target_17supports_type(PyObject *__pyx_
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("supports_type (wrapper)", 0);
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_t), __pyx_ptype_7halogen_3api_Type, 0, "t", 0))) __PYX_ERR(0, 387, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_t), __pyx_ptype_7halogen_3api_Type, 0, "t", 0))) __PYX_ERR(0, 394, __pyx_L1_error)
   __pyx_r = __pyx_pf_7halogen_3api_6Target_16supports_type(((struct __pyx_obj_7halogen_3api_Target *)__pyx_v_self), ((struct __pyx_obj_7halogen_3api_Type *)__pyx_v_t));
 
   /* function exit code */
@@ -10070,7 +10176,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_16supports_type(struct __pyx_obj
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("supports_type", 0);
 
-  /* "halogen/api.pyx":388
+  /* "halogen/api.pyx":395
  * 
  *     def supports_type(self, Type t not None):
  *         return self.__this__.supports_type(t.__this__)             # <<<<<<<<<<<<<<
@@ -10078,13 +10184,13 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_16supports_type(struct __pyx_obj
  *     def natural_vector_size(self, Type t not None):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_v_self->__pyx___this__.supports_type(__pyx_v_t->__pyx___this__)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 388, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_v_self->__pyx___this__.supports_type(__pyx_v_t->__pyx___this__)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 395, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":387
+  /* "halogen/api.pyx":394
  *         return self.__this__.supported()
  * 
  *     def supports_type(self, Type t not None):             # <<<<<<<<<<<<<<
@@ -10103,7 +10209,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_16supports_type(struct __pyx_obj
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":390
+/* "halogen/api.pyx":397
  *         return self.__this__.supports_type(t.__this__)
  * 
  *     def natural_vector_size(self, Type t not None):             # <<<<<<<<<<<<<<
@@ -10118,7 +10224,7 @@ static PyObject *__pyx_pw_7halogen_3api_6Target_19natural_vector_size(PyObject *
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("natural_vector_size (wrapper)", 0);
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_t), __pyx_ptype_7halogen_3api_Type, 0, "t", 0))) __PYX_ERR(0, 390, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_t), __pyx_ptype_7halogen_3api_Type, 0, "t", 0))) __PYX_ERR(0, 397, __pyx_L1_error)
   __pyx_r = __pyx_pf_7halogen_3api_6Target_18natural_vector_size(((struct __pyx_obj_7halogen_3api_Target *)__pyx_v_self), ((struct __pyx_obj_7halogen_3api_Type *)__pyx_v_t));
 
   /* function exit code */
@@ -10136,7 +10242,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_18natural_vector_size(struct __p
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("natural_vector_size", 0);
 
-  /* "halogen/api.pyx":391
+  /* "halogen/api.pyx":398
  * 
  *     def natural_vector_size(self, Type t not None):
  *         return self.__this__.natural_vector_size(t.__this__)             # <<<<<<<<<<<<<<
@@ -10144,13 +10250,13 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_18natural_vector_size(struct __p
  *     def __str__(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->__pyx___this__.natural_vector_size(__pyx_v_t->__pyx___this__)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 391, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->__pyx___this__.natural_vector_size(__pyx_v_t->__pyx___this__)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 398, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":390
+  /* "halogen/api.pyx":397
  *         return self.__this__.supports_type(t.__this__)
  * 
  *     def natural_vector_size(self, Type t not None):             # <<<<<<<<<<<<<<
@@ -10169,7 +10275,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_18natural_vector_size(struct __p
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":393
+/* "halogen/api.pyx":400
  *         return self.__this__.natural_vector_size(t.__this__)
  * 
  *     def __str__(self):             # <<<<<<<<<<<<<<
@@ -10196,7 +10302,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_20__str__(struct __pyx_obj_7halo
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("__str__", 0);
 
-  /* "halogen/api.pyx":394
+  /* "halogen/api.pyx":401
  * 
  *     def __str__(self):
  *         return self.__this__.to_string().decode('UTF-8')             # <<<<<<<<<<<<<<
@@ -10204,13 +10310,13 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_20__str__(struct __pyx_obj_7halo
  *     def __bytes__(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_decode_cpp_string(__pyx_v_self->__pyx___this__.to_string(), 0, PY_SSIZE_T_MAX, NULL, NULL, PyUnicode_DecodeUTF8); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 394, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_decode_cpp_string(__pyx_v_self->__pyx___this__.to_string(), 0, PY_SSIZE_T_MAX, NULL, NULL, PyUnicode_DecodeUTF8); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 401, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":393
+  /* "halogen/api.pyx":400
  *         return self.__this__.natural_vector_size(t.__this__)
  * 
  *     def __str__(self):             # <<<<<<<<<<<<<<
@@ -10229,7 +10335,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_20__str__(struct __pyx_obj_7halo
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":396
+/* "halogen/api.pyx":403
  *         return self.__this__.to_string().decode('UTF-8')
  * 
  *     def __bytes__(self):             # <<<<<<<<<<<<<<
@@ -10257,7 +10363,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_22__bytes__(struct __pyx_obj_7ha
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("__bytes__", 0);
 
-  /* "halogen/api.pyx":397
+  /* "halogen/api.pyx":404
  * 
  *     def __bytes__(self):
  *         return self.__this__.to_string()             # <<<<<<<<<<<<<<
@@ -10265,13 +10371,13 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_22__bytes__(struct __pyx_obj_7ha
  *     def __repr__(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_self->__pyx___this__.to_string()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 397, __pyx_L1_error)
+  __pyx_t_1 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_self->__pyx___this__.to_string()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 404, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":396
+  /* "halogen/api.pyx":403
  *         return self.__this__.to_string().decode('UTF-8')
  * 
  *     def __bytes__(self):             # <<<<<<<<<<<<<<
@@ -10290,7 +10396,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_22__bytes__(struct __pyx_obj_7ha
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":399
+/* "halogen/api.pyx":406
  *         return self.__this__.to_string()
  * 
  *     def __repr__(self):             # <<<<<<<<<<<<<<
@@ -10321,15 +10427,15 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_24__repr__(struct __pyx_obj_7hal
   PyObject *__pyx_t_5 = NULL;
   __Pyx_RefNannySetupContext("__repr__", 0);
 
-  /* "halogen/api.pyx":400
+  /* "halogen/api.pyx":407
  * 
  *     def __repr__(self):
  *         return stringify(self, ('os', 'arch', 'bits')).decode('UTF-8')             # <<<<<<<<<<<<<<
  * 
- *     def __richcmp__(self,
+ *     def __richcmp__(self, Target other not None,
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_stringify); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 400, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_stringify); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 407, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = NULL;
   __pyx_t_4 = 0;
@@ -10346,7 +10452,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_24__repr__(struct __pyx_obj_7hal
   #if CYTHON_FAST_PYCALL
   if (PyFunction_Check(__pyx_t_2)) {
     PyObject *__pyx_temp[3] = {__pyx_t_3, ((PyObject *)__pyx_v_self), __pyx_tuple__7};
-    __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_4, 2+__pyx_t_4); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 400, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_4, 2+__pyx_t_4); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 407, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_GOTREF(__pyx_t_1);
   } else
@@ -10354,13 +10460,13 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_24__repr__(struct __pyx_obj_7hal
   #if CYTHON_FAST_PYCCALL
   if (__Pyx_PyFastCFunction_Check(__pyx_t_2)) {
     PyObject *__pyx_temp[3] = {__pyx_t_3, ((PyObject *)__pyx_v_self), __pyx_tuple__7};
-    __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_4, 2+__pyx_t_4); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 400, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_4, 2+__pyx_t_4); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 407, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_GOTREF(__pyx_t_1);
   } else
   #endif
   {
-    __pyx_t_5 = PyTuple_New(2+__pyx_t_4); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 400, __pyx_L1_error)
+    __pyx_t_5 = PyTuple_New(2+__pyx_t_4); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 407, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     if (__pyx_t_3) {
       __Pyx_GIVEREF(__pyx_t_3); PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_3); __pyx_t_3 = NULL;
@@ -10371,22 +10477,22 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_24__repr__(struct __pyx_obj_7hal
     __Pyx_INCREF(__pyx_tuple__7);
     __Pyx_GIVEREF(__pyx_tuple__7);
     PyTuple_SET_ITEM(__pyx_t_5, 1+__pyx_t_4, __pyx_tuple__7);
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_5, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 400, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_5, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 407, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   }
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_decode); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 400, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_decode); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 407, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_tuple__8, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 400, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_tuple__8, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 407, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":399
+  /* "halogen/api.pyx":406
  *         return self.__this__.to_string()
  * 
  *     def __repr__(self):             # <<<<<<<<<<<<<<
@@ -10408,12 +10514,12 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_24__repr__(struct __pyx_obj_7hal
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":402
+/* "halogen/api.pyx":409
  *         return stringify(self, ('os', 'arch', 'bits')).decode('UTF-8')
  * 
- *     def __richcmp__(self,             # <<<<<<<<<<<<<<
- *                     Target other not None,
- *                     int op):
+ *     def __richcmp__(self, Target other not None,             # <<<<<<<<<<<<<<
+ *                              int op):
+ *         if op == 2: # ==
  */
 
 /* Python wrapper */
@@ -10422,7 +10528,7 @@ static PyObject *__pyx_pw_7halogen_3api_6Target_27__richcmp__(PyObject *__pyx_v_
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__richcmp__ (wrapper)", 0);
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_other), __pyx_ptype_7halogen_3api_Target, 0, "other", 0))) __PYX_ERR(0, 403, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_other), __pyx_ptype_7halogen_3api_Target, 0, "other", 0))) __PYX_ERR(0, 409, __pyx_L1_error)
   __pyx_r = __pyx_pf_7halogen_3api_6Target_26__richcmp__(((struct __pyx_obj_7halogen_3api_Target *)__pyx_v_self), ((struct __pyx_obj_7halogen_3api_Target *)__pyx_v_other), ((int)__pyx_v_op));
 
   /* function exit code */
@@ -10441,9 +10547,9 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_26__richcmp__(struct __pyx_obj_7
   PyObject *__pyx_t_2 = NULL;
   __Pyx_RefNannySetupContext("__richcmp__", 0);
 
-  /* "halogen/api.pyx":405
- *                     Target other not None,
- *                     int op):
+  /* "halogen/api.pyx":411
+ *     def __richcmp__(self, Target other not None,
+ *                              int op):
  *         if op == 2: # ==             # <<<<<<<<<<<<<<
  *             return bool(<HalTarget>self.__this__ == <HalTarget>other.__this__)
  *         elif op == 3: # !=
@@ -10451,8 +10557,8 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_26__richcmp__(struct __pyx_obj_7
   switch (__pyx_v_op) {
     case 2:
 
-    /* "halogen/api.pyx":406
- *                     int op):
+    /* "halogen/api.pyx":412
+ *                              int op):
  *         if op == 2: # ==
  *             return bool(<HalTarget>self.__this__ == <HalTarget>other.__this__)             # <<<<<<<<<<<<<<
  *         elif op == 3: # !=
@@ -10460,22 +10566,22 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_26__richcmp__(struct __pyx_obj_7
  */
     __Pyx_XDECREF(__pyx_r);
     __pyx_t_1 = (((Halide::Target)__pyx_v_self->__pyx___this__) == ((Halide::Target)__pyx_v_other->__pyx___this__));
-    __pyx_t_2 = __Pyx_PyBool_FromLong((!(!__pyx_t_1))); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 406, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyBool_FromLong((!(!__pyx_t_1))); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 412, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __pyx_r = __pyx_t_2;
     __pyx_t_2 = 0;
     goto __pyx_L0;
 
-    /* "halogen/api.pyx":405
- *                     Target other not None,
- *                     int op):
+    /* "halogen/api.pyx":411
+ *     def __richcmp__(self, Target other not None,
+ *                              int op):
  *         if op == 2: # ==             # <<<<<<<<<<<<<<
  *             return bool(<HalTarget>self.__this__ == <HalTarget>other.__this__)
  *         elif op == 3: # !=
  */
     break;
 
-    /* "halogen/api.pyx":407
+    /* "halogen/api.pyx":413
  *         if op == 2: # ==
  *             return bool(<HalTarget>self.__this__ == <HalTarget>other.__this__)
  *         elif op == 3: # !=             # <<<<<<<<<<<<<<
@@ -10484,7 +10590,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_26__richcmp__(struct __pyx_obj_7
  */
     case 3:
 
-    /* "halogen/api.pyx":408
+    /* "halogen/api.pyx":414
  *             return bool(<HalTarget>self.__this__ == <HalTarget>other.__this__)
  *         elif op == 3: # !=
  *             return bool(<HalTarget>self.__this__ != <HalTarget>other.__this__)             # <<<<<<<<<<<<<<
@@ -10493,13 +10599,13 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_26__richcmp__(struct __pyx_obj_7
  */
     __Pyx_XDECREF(__pyx_r);
     __pyx_t_1 = (((Halide::Target)__pyx_v_self->__pyx___this__) != ((Halide::Target)__pyx_v_other->__pyx___this__));
-    __pyx_t_2 = __Pyx_PyBool_FromLong((!(!__pyx_t_1))); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 408, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyBool_FromLong((!(!__pyx_t_1))); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 414, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __pyx_r = __pyx_t_2;
     __pyx_t_2 = 0;
     goto __pyx_L0;
 
-    /* "halogen/api.pyx":407
+    /* "halogen/api.pyx":413
  *         if op == 2: # ==
  *             return bool(<HalTarget>self.__this__ == <HalTarget>other.__this__)
  *         elif op == 3: # !=             # <<<<<<<<<<<<<<
@@ -10510,7 +10616,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_26__richcmp__(struct __pyx_obj_7
     default: break;
   }
 
-  /* "halogen/api.pyx":409
+  /* "halogen/api.pyx":415
  *         elif op == 3: # !=
  *             return bool(<HalTarget>self.__this__ != <HalTarget>other.__this__)
  *         return False             # <<<<<<<<<<<<<<
@@ -10522,12 +10628,12 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_26__richcmp__(struct __pyx_obj_7
   __pyx_r = Py_False;
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":402
+  /* "halogen/api.pyx":409
  *         return stringify(self, ('os', 'arch', 'bits')).decode('UTF-8')
  * 
- *     def __richcmp__(self,             # <<<<<<<<<<<<<<
- *                     Target other not None,
- *                     int op):
+ *     def __richcmp__(self, Target other not None,             # <<<<<<<<<<<<<<
+ *                              int op):
+ *         if op == 2: # ==
  */
 
   /* function exit code */
@@ -10541,7 +10647,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_26__richcmp__(struct __pyx_obj_7
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":412
+/* "halogen/api.pyx":418
  * 
  *     @staticmethod
  *     def host_target():             # <<<<<<<<<<<<<<
@@ -10574,19 +10680,19 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_28host_target(void) {
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("host_target", 0);
 
-  /* "halogen/api.pyx":413
+  /* "halogen/api.pyx":419
  *     @staticmethod
  *     def host_target():
  *         out = Target()             # <<<<<<<<<<<<<<
  *         with nogil:
  *             out.__this__ = halide_get_host_target()
  */
-  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_7halogen_3api_Target)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 413, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_7halogen_3api_Target)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 419, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_out = ((struct __pyx_obj_7halogen_3api_Target *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "halogen/api.pyx":414
+  /* "halogen/api.pyx":420
  *     def host_target():
  *         out = Target()
  *         with nogil:             # <<<<<<<<<<<<<<
@@ -10601,7 +10707,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_28host_target(void) {
       #endif
       /*try:*/ {
 
-        /* "halogen/api.pyx":415
+        /* "halogen/api.pyx":421
  *         out = Target()
  *         with nogil:
  *             out.__this__ = halide_get_host_target()             # <<<<<<<<<<<<<<
@@ -10611,7 +10717,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_28host_target(void) {
         __pyx_v_out->__pyx___this__ = Halide::get_host_target();
       }
 
-      /* "halogen/api.pyx":414
+      /* "halogen/api.pyx":420
  *     def host_target():
  *         out = Target()
  *         with nogil:             # <<<<<<<<<<<<<<
@@ -10630,7 +10736,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_28host_target(void) {
       }
   }
 
-  /* "halogen/api.pyx":416
+  /* "halogen/api.pyx":422
  *         with nogil:
  *             out.__this__ = halide_get_host_target()
  *         return out             # <<<<<<<<<<<<<<
@@ -10642,7 +10748,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_28host_target(void) {
   __pyx_r = ((PyObject *)__pyx_v_out);
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":412
+  /* "halogen/api.pyx":418
  * 
  *     @staticmethod
  *     def host_target():             # <<<<<<<<<<<<<<
@@ -10662,7 +10768,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_28host_target(void) {
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":419
+/* "halogen/api.pyx":425
  * 
  *     @staticmethod
  *     def target_from_environment():             # <<<<<<<<<<<<<<
@@ -10695,19 +10801,19 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_30target_from_environment(void) 
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("target_from_environment", 0);
 
-  /* "halogen/api.pyx":420
+  /* "halogen/api.pyx":426
  *     @staticmethod
  *     def target_from_environment():
  *         out = Target()             # <<<<<<<<<<<<<<
  *         with nogil:
  *             out.__this__ = halide_get_target_from_environment()
  */
-  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_7halogen_3api_Target)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 420, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_7halogen_3api_Target)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 426, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_out = ((struct __pyx_obj_7halogen_3api_Target *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "halogen/api.pyx":421
+  /* "halogen/api.pyx":427
  *     def target_from_environment():
  *         out = Target()
  *         with nogil:             # <<<<<<<<<<<<<<
@@ -10722,7 +10828,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_30target_from_environment(void) 
       #endif
       /*try:*/ {
 
-        /* "halogen/api.pyx":422
+        /* "halogen/api.pyx":428
  *         out = Target()
  *         with nogil:
  *             out.__this__ = halide_get_target_from_environment()             # <<<<<<<<<<<<<<
@@ -10732,7 +10838,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_30target_from_environment(void) 
         __pyx_v_out->__pyx___this__ = Halide::get_target_from_environment();
       }
 
-      /* "halogen/api.pyx":421
+      /* "halogen/api.pyx":427
  *     def target_from_environment():
  *         out = Target()
  *         with nogil:             # <<<<<<<<<<<<<<
@@ -10751,7 +10857,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_30target_from_environment(void) 
       }
   }
 
-  /* "halogen/api.pyx":423
+  /* "halogen/api.pyx":429
  *         with nogil:
  *             out.__this__ = halide_get_target_from_environment()
  *         return out             # <<<<<<<<<<<<<<
@@ -10763,7 +10869,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_30target_from_environment(void) 
   __pyx_r = ((PyObject *)__pyx_v_out);
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":419
+  /* "halogen/api.pyx":425
  * 
  *     @staticmethod
  *     def target_from_environment():             # <<<<<<<<<<<<<<
@@ -10783,7 +10889,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_30target_from_environment(void) 
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":426
+/* "halogen/api.pyx":432
  * 
  *     @staticmethod
  *     def jit_target_from_environment():             # <<<<<<<<<<<<<<
@@ -10816,19 +10922,19 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_32jit_target_from_environment(vo
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("jit_target_from_environment", 0);
 
-  /* "halogen/api.pyx":427
+  /* "halogen/api.pyx":433
  *     @staticmethod
  *     def jit_target_from_environment():
  *         out = Target()             # <<<<<<<<<<<<<<
  *         with nogil:
  *             out.__this__ = halide_get_jit_target_from_environment()
  */
-  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_7halogen_3api_Target)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 427, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_7halogen_3api_Target)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 433, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_out = ((struct __pyx_obj_7halogen_3api_Target *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "halogen/api.pyx":428
+  /* "halogen/api.pyx":434
  *     def jit_target_from_environment():
  *         out = Target()
  *         with nogil:             # <<<<<<<<<<<<<<
@@ -10843,7 +10949,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_32jit_target_from_environment(vo
       #endif
       /*try:*/ {
 
-        /* "halogen/api.pyx":429
+        /* "halogen/api.pyx":435
  *         out = Target()
  *         with nogil:
  *             out.__this__ = halide_get_jit_target_from_environment()             # <<<<<<<<<<<<<<
@@ -10853,7 +10959,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_32jit_target_from_environment(vo
         __pyx_v_out->__pyx___this__ = Halide::get_jit_target_from_environment();
       }
 
-      /* "halogen/api.pyx":428
+      /* "halogen/api.pyx":434
  *     def jit_target_from_environment():
  *         out = Target()
  *         with nogil:             # <<<<<<<<<<<<<<
@@ -10872,7 +10978,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_32jit_target_from_environment(vo
       }
   }
 
-  /* "halogen/api.pyx":430
+  /* "halogen/api.pyx":436
  *         with nogil:
  *             out.__this__ = halide_get_jit_target_from_environment()
  *         return out             # <<<<<<<<<<<<<<
@@ -10884,7 +10990,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_32jit_target_from_environment(vo
   __pyx_r = ((PyObject *)__pyx_v_out);
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":426
+  /* "halogen/api.pyx":432
  * 
  *     @staticmethod
  *     def jit_target_from_environment():             # <<<<<<<<<<<<<<
@@ -11013,7 +11119,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_36__setstate_cython__(CYTHON_UNU
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":441
+/* "halogen/api.pyx":447
  * 
  *     @classmethod
  *     def check(cls, instance):             # <<<<<<<<<<<<<<
@@ -11042,7 +11148,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_check(PyTypeObject *__pyx_v_cls
   PyObject *__pyx_t_2 = NULL;
   __Pyx_RefNannySetupContext("check", 0);
 
-  /* "halogen/api.pyx":442
+  /* "halogen/api.pyx":448
  *     @classmethod
  *     def check(cls, instance):
  *         return getattr(instance, '__class__', None) == cls             # <<<<<<<<<<<<<<
@@ -11050,15 +11156,15 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_check(PyTypeObject *__pyx_v_cls
  *     def __cinit__(self, *args, **kwargs):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_GetAttr3(__pyx_v_instance, __pyx_n_s_class, Py_None); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 442, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_GetAttr3(__pyx_v_instance, __pyx_n_s_class, Py_None); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 448, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = PyObject_RichCompare(__pyx_t_1, ((PyObject *)__pyx_v_cls), Py_EQ); __Pyx_XGOTREF(__pyx_t_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 442, __pyx_L1_error)
+  __pyx_t_2 = PyObject_RichCompare(__pyx_t_1, ((PyObject *)__pyx_v_cls), Py_EQ); __Pyx_XGOTREF(__pyx_t_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 448, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_r = __pyx_t_2;
   __pyx_t_2 = 0;
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":441
+  /* "halogen/api.pyx":447
  * 
  *     @classmethod
  *     def check(cls, instance):             # <<<<<<<<<<<<<<
@@ -11078,12 +11184,12 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_check(PyTypeObject *__pyx_v_cls
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":444
+/* "halogen/api.pyx":450
  *         return getattr(instance, '__class__', None) == cls
  * 
  *     def __cinit__(self, *args, **kwargs):             # <<<<<<<<<<<<<<
  *         for arg in args:
- *             if type(arg) == type(self):
+ *             if type(arg) is type(self):
  */
 
 /* Python wrapper */
@@ -11127,7 +11233,7 @@ static int __pyx_pf_7halogen_3api_7Outputs_2__cinit__(struct __pyx_obj_7halogen_
   Py_ssize_t __pyx_t_2;
   PyObject *__pyx_t_3 = NULL;
   int __pyx_t_4;
-  std::string __pyx_t_5;
+  int __pyx_t_5;
   std::string __pyx_t_6;
   std::string __pyx_t_7;
   std::string __pyx_t_8;
@@ -11138,181 +11244,181 @@ static int __pyx_pf_7halogen_3api_7Outputs_2__cinit__(struct __pyx_obj_7halogen_
   std::string __pyx_t_13;
   std::string __pyx_t_14;
   std::string __pyx_t_15;
+  std::string __pyx_t_16;
   __Pyx_RefNannySetupContext("__cinit__", 0);
 
-  /* "halogen/api.pyx":445
+  /* "halogen/api.pyx":451
  * 
  *     def __cinit__(self, *args, **kwargs):
  *         for arg in args:             # <<<<<<<<<<<<<<
- *             if type(arg) == type(self):
+ *             if type(arg) is type(self):
  *                 self.__this__ = self.__this__.object(arg.object_name) \
  */
   __pyx_t_1 = __pyx_v_args; __Pyx_INCREF(__pyx_t_1); __pyx_t_2 = 0;
   for (;;) {
     if (__pyx_t_2 >= PyTuple_GET_SIZE(__pyx_t_1)) break;
     #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-    __pyx_t_3 = PyTuple_GET_ITEM(__pyx_t_1, __pyx_t_2); __Pyx_INCREF(__pyx_t_3); __pyx_t_2++; if (unlikely(0 < 0)) __PYX_ERR(0, 445, __pyx_L1_error)
+    __pyx_t_3 = PyTuple_GET_ITEM(__pyx_t_1, __pyx_t_2); __Pyx_INCREF(__pyx_t_3); __pyx_t_2++; if (unlikely(0 < 0)) __PYX_ERR(0, 451, __pyx_L1_error)
     #else
-    __pyx_t_3 = PySequence_ITEM(__pyx_t_1, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 445, __pyx_L1_error)
+    __pyx_t_3 = PySequence_ITEM(__pyx_t_1, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 451, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     #endif
     __Pyx_XDECREF_SET(__pyx_v_arg, __pyx_t_3);
     __pyx_t_3 = 0;
 
-    /* "halogen/api.pyx":446
+    /* "halogen/api.pyx":452
  *     def __cinit__(self, *args, **kwargs):
  *         for arg in args:
- *             if type(arg) == type(self):             # <<<<<<<<<<<<<<
+ *             if type(arg) is type(self):             # <<<<<<<<<<<<<<
  *                 self.__this__ = self.__this__.object(arg.object_name) \
  *                                              .assembly(arg.assembly_name) \
  */
-    __pyx_t_3 = PyObject_RichCompare(((PyObject *)Py_TYPE(__pyx_v_arg)), ((PyObject *)Py_TYPE(((PyObject *)__pyx_v_self))), Py_EQ); __Pyx_XGOTREF(__pyx_t_3); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 446, __pyx_L1_error)
-    __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 446, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    if (__pyx_t_4) {
+    __pyx_t_4 = (((PyObject *)Py_TYPE(__pyx_v_arg)) == ((PyObject *)Py_TYPE(((PyObject *)__pyx_v_self))));
+    __pyx_t_5 = (__pyx_t_4 != 0);
+    if (__pyx_t_5) {
 
-      /* "halogen/api.pyx":447
+      /* "halogen/api.pyx":453
  *         for arg in args:
- *             if type(arg) == type(self):
+ *             if type(arg) is type(self):
  *                 self.__this__ = self.__this__.object(arg.object_name) \             # <<<<<<<<<<<<<<
  *                                              .assembly(arg.assembly_name) \
  *                                              .bitcode(arg.bitcode_name) \
  */
-      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_arg, __pyx_n_s_object_name); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 447, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_arg, __pyx_n_s_object_name); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 453, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_5 = __pyx_convert_string_from_py_std__in_string(__pyx_t_3); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 447, __pyx_L1_error)
+      __pyx_t_6 = __pyx_convert_string_from_py_std__in_string(__pyx_t_3); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 453, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-      /* "halogen/api.pyx":448
- *             if type(arg) == type(self):
+      /* "halogen/api.pyx":454
+ *             if type(arg) is type(self):
  *                 self.__this__ = self.__this__.object(arg.object_name) \
  *                                              .assembly(arg.assembly_name) \             # <<<<<<<<<<<<<<
  *                                              .bitcode(arg.bitcode_name) \
  *                                              .llvm_assembly(arg.llvm_assembly_name) \
  */
-      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_arg, __pyx_n_s_assembly_name); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 448, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_arg, __pyx_n_s_assembly_name); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 454, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_6 = __pyx_convert_string_from_py_std__in_string(__pyx_t_3); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 448, __pyx_L1_error)
+      __pyx_t_7 = __pyx_convert_string_from_py_std__in_string(__pyx_t_3); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 454, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-      /* "halogen/api.pyx":449
+      /* "halogen/api.pyx":455
  *                 self.__this__ = self.__this__.object(arg.object_name) \
  *                                              .assembly(arg.assembly_name) \
  *                                              .bitcode(arg.bitcode_name) \             # <<<<<<<<<<<<<<
  *                                              .llvm_assembly(arg.llvm_assembly_name) \
  *                                              .c_header(arg.c_header_name) \
  */
-      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_arg, __pyx_n_s_bitcode_name); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 449, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_arg, __pyx_n_s_bitcode_name); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 455, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_7 = __pyx_convert_string_from_py_std__in_string(__pyx_t_3); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 449, __pyx_L1_error)
+      __pyx_t_8 = __pyx_convert_string_from_py_std__in_string(__pyx_t_3); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 455, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-      /* "halogen/api.pyx":450
+      /* "halogen/api.pyx":456
  *                                              .assembly(arg.assembly_name) \
  *                                              .bitcode(arg.bitcode_name) \
  *                                              .llvm_assembly(arg.llvm_assembly_name) \             # <<<<<<<<<<<<<<
  *                                              .c_header(arg.c_header_name) \
  *                                              .c_source(arg.c_source_name) \
  */
-      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_arg, __pyx_n_s_llvm_assembly_name); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 450, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_arg, __pyx_n_s_llvm_assembly_name); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 456, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_8 = __pyx_convert_string_from_py_std__in_string(__pyx_t_3); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 450, __pyx_L1_error)
+      __pyx_t_9 = __pyx_convert_string_from_py_std__in_string(__pyx_t_3); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 456, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-      /* "halogen/api.pyx":451
+      /* "halogen/api.pyx":457
  *                                              .bitcode(arg.bitcode_name) \
  *                                              .llvm_assembly(arg.llvm_assembly_name) \
  *                                              .c_header(arg.c_header_name) \             # <<<<<<<<<<<<<<
  *                                              .c_source(arg.c_source_name) \
  *                                              .python_extension(arg.python_extension_name) \
  */
-      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_arg, __pyx_n_s_c_header_name); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 451, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_arg, __pyx_n_s_c_header_name); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 457, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_9 = __pyx_convert_string_from_py_std__in_string(__pyx_t_3); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 451, __pyx_L1_error)
+      __pyx_t_10 = __pyx_convert_string_from_py_std__in_string(__pyx_t_3); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 457, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-      /* "halogen/api.pyx":452
+      /* "halogen/api.pyx":458
  *                                              .llvm_assembly(arg.llvm_assembly_name) \
  *                                              .c_header(arg.c_header_name) \
  *                                              .c_source(arg.c_source_name) \             # <<<<<<<<<<<<<<
  *                                              .python_extension(arg.python_extension_name) \
  *                                              .stmt(arg.stmt_name) \
  */
-      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_arg, __pyx_n_s_c_source_name); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 452, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_arg, __pyx_n_s_c_source_name); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 458, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_10 = __pyx_convert_string_from_py_std__in_string(__pyx_t_3); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 452, __pyx_L1_error)
+      __pyx_t_11 = __pyx_convert_string_from_py_std__in_string(__pyx_t_3); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 458, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-      /* "halogen/api.pyx":453
+      /* "halogen/api.pyx":459
  *                                              .c_header(arg.c_header_name) \
  *                                              .c_source(arg.c_source_name) \
  *                                              .python_extension(arg.python_extension_name) \             # <<<<<<<<<<<<<<
  *                                              .stmt(arg.stmt_name) \
  *                                              .stmt_html(arg.stmt_html_name) \
  */
-      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_arg, __pyx_n_s_python_extension_name); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 453, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_arg, __pyx_n_s_python_extension_name); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 459, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_11 = __pyx_convert_string_from_py_std__in_string(__pyx_t_3); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 453, __pyx_L1_error)
+      __pyx_t_12 = __pyx_convert_string_from_py_std__in_string(__pyx_t_3); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 459, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-      /* "halogen/api.pyx":454
+      /* "halogen/api.pyx":460
  *                                              .c_source(arg.c_source_name) \
  *                                              .python_extension(arg.python_extension_name) \
  *                                              .stmt(arg.stmt_name) \             # <<<<<<<<<<<<<<
  *                                              .stmt_html(arg.stmt_html_name) \
  *                                              .static_library(arg.static_library_name) \
  */
-      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_arg, __pyx_n_s_stmt_name); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 454, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_arg, __pyx_n_s_stmt_name); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 460, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_12 = __pyx_convert_string_from_py_std__in_string(__pyx_t_3); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 454, __pyx_L1_error)
+      __pyx_t_13 = __pyx_convert_string_from_py_std__in_string(__pyx_t_3); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 460, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-      /* "halogen/api.pyx":455
+      /* "halogen/api.pyx":461
  *                                              .python_extension(arg.python_extension_name) \
  *                                              .stmt(arg.stmt_name) \
  *                                              .stmt_html(arg.stmt_html_name) \             # <<<<<<<<<<<<<<
  *                                              .static_library(arg.static_library_name) \
  *                                              .schedule(arg.schedule_name)
  */
-      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_arg, __pyx_n_s_stmt_html_name); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 455, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_arg, __pyx_n_s_stmt_html_name); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 461, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_13 = __pyx_convert_string_from_py_std__in_string(__pyx_t_3); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 455, __pyx_L1_error)
+      __pyx_t_14 = __pyx_convert_string_from_py_std__in_string(__pyx_t_3); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 461, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-      /* "halogen/api.pyx":456
+      /* "halogen/api.pyx":462
  *                                              .stmt(arg.stmt_name) \
  *                                              .stmt_html(arg.stmt_html_name) \
  *                                              .static_library(arg.static_library_name) \             # <<<<<<<<<<<<<<
  *                                              .schedule(arg.schedule_name)
  *                 return
  */
-      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_arg, __pyx_n_s_static_library_name); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 456, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_arg, __pyx_n_s_static_library_name); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 462, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_14 = __pyx_convert_string_from_py_std__in_string(__pyx_t_3); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 456, __pyx_L1_error)
+      __pyx_t_15 = __pyx_convert_string_from_py_std__in_string(__pyx_t_3); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 462, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-      /* "halogen/api.pyx":457
+      /* "halogen/api.pyx":463
  *                                              .stmt_html(arg.stmt_html_name) \
  *                                              .static_library(arg.static_library_name) \
  *                                              .schedule(arg.schedule_name)             # <<<<<<<<<<<<<<
  *                 return
  * 
  */
-      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_arg, __pyx_n_s_schedule_name); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 457, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_arg, __pyx_n_s_schedule_name); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 463, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_15 = __pyx_convert_string_from_py_std__in_string(__pyx_t_3); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 457, __pyx_L1_error)
+      __pyx_t_16 = __pyx_convert_string_from_py_std__in_string(__pyx_t_3); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 463, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-      /* "halogen/api.pyx":447
+      /* "halogen/api.pyx":453
  *         for arg in args:
- *             if type(arg) == type(self):
+ *             if type(arg) is type(self):
  *                 self.__this__ = self.__this__.object(arg.object_name) \             # <<<<<<<<<<<<<<
  *                                              .assembly(arg.assembly_name) \
  *                                              .bitcode(arg.bitcode_name) \
  */
-      __pyx_v_self->__pyx___this__ = __pyx_v_self->__pyx___this__.object(__pyx_t_5).assembly(__pyx_t_6).bitcode(__pyx_t_7).llvm_assembly(__pyx_t_8).c_header(__pyx_t_9).c_source(__pyx_t_10).python_extension(__pyx_t_11).stmt(__pyx_t_12).stmt_html(__pyx_t_13).static_library(__pyx_t_14).schedule(__pyx_t_15);
+      __pyx_v_self->__pyx___this__ = __pyx_v_self->__pyx___this__.object(__pyx_t_6).assembly(__pyx_t_7).bitcode(__pyx_t_8).llvm_assembly(__pyx_t_9).c_header(__pyx_t_10).c_source(__pyx_t_11).python_extension(__pyx_t_12).stmt(__pyx_t_13).stmt_html(__pyx_t_14).static_library(__pyx_t_15).schedule(__pyx_t_16);
 
-      /* "halogen/api.pyx":458
+      /* "halogen/api.pyx":464
  *                                              .static_library(arg.static_library_name) \
  *                                              .schedule(arg.schedule_name)
  *                 return             # <<<<<<<<<<<<<<
@@ -11323,306 +11429,306 @@ static int __pyx_pf_7halogen_3api_7Outputs_2__cinit__(struct __pyx_obj_7halogen_
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       goto __pyx_L0;
 
-      /* "halogen/api.pyx":446
+      /* "halogen/api.pyx":452
  *     def __cinit__(self, *args, **kwargs):
  *         for arg in args:
- *             if type(arg) == type(self):             # <<<<<<<<<<<<<<
+ *             if type(arg) is type(self):             # <<<<<<<<<<<<<<
  *                 self.__this__ = self.__this__.object(arg.object_name) \
  *                                              .assembly(arg.assembly_name) \
  */
     }
 
-    /* "halogen/api.pyx":445
+    /* "halogen/api.pyx":451
  * 
  *     def __cinit__(self, *args, **kwargs):
  *         for arg in args:             # <<<<<<<<<<<<<<
- *             if type(arg) == type(self):
+ *             if type(arg) is type(self):
  *                 self.__this__ = self.__this__.object(arg.object_name) \
  */
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "halogen/api.pyx":460
+  /* "halogen/api.pyx":466
  *                 return
  * 
  *         object_name = kwargs.pop('object_name', '')             # <<<<<<<<<<<<<<
  *         assembly_name = kwargs.pop('assembly_name', '')
  *         bitcode_name = kwargs.pop('bitcode_name', '')
  */
-  __pyx_t_1 = __Pyx_PyDict_Pop(__pyx_v_kwargs, __pyx_n_s_object_name, __pyx_kp_s_); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 460, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyDict_Pop(__pyx_v_kwargs, __pyx_n_s_object_name, __pyx_kp_s_); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 466, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_object_name = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "halogen/api.pyx":461
+  /* "halogen/api.pyx":467
  * 
  *         object_name = kwargs.pop('object_name', '')
  *         assembly_name = kwargs.pop('assembly_name', '')             # <<<<<<<<<<<<<<
  *         bitcode_name = kwargs.pop('bitcode_name', '')
  *         llvm_assembly_name = kwargs.pop('llvm_assembly_name', '')
  */
-  __pyx_t_1 = __Pyx_PyDict_Pop(__pyx_v_kwargs, __pyx_n_s_assembly_name, __pyx_kp_s_); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 461, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyDict_Pop(__pyx_v_kwargs, __pyx_n_s_assembly_name, __pyx_kp_s_); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 467, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_assembly_name = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "halogen/api.pyx":462
+  /* "halogen/api.pyx":468
  *         object_name = kwargs.pop('object_name', '')
  *         assembly_name = kwargs.pop('assembly_name', '')
  *         bitcode_name = kwargs.pop('bitcode_name', '')             # <<<<<<<<<<<<<<
  *         llvm_assembly_name = kwargs.pop('llvm_assembly_name', '')
  *         c_header_name = kwargs.pop('c_header_name', '')
  */
-  __pyx_t_1 = __Pyx_PyDict_Pop(__pyx_v_kwargs, __pyx_n_s_bitcode_name, __pyx_kp_s_); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 462, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyDict_Pop(__pyx_v_kwargs, __pyx_n_s_bitcode_name, __pyx_kp_s_); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 468, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_bitcode_name = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "halogen/api.pyx":463
+  /* "halogen/api.pyx":469
  *         assembly_name = kwargs.pop('assembly_name', '')
  *         bitcode_name = kwargs.pop('bitcode_name', '')
  *         llvm_assembly_name = kwargs.pop('llvm_assembly_name', '')             # <<<<<<<<<<<<<<
  *         c_header_name = kwargs.pop('c_header_name', '')
  *         c_source_name = kwargs.pop('c_source_name', '')
  */
-  __pyx_t_1 = __Pyx_PyDict_Pop(__pyx_v_kwargs, __pyx_n_s_llvm_assembly_name, __pyx_kp_s_); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 463, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyDict_Pop(__pyx_v_kwargs, __pyx_n_s_llvm_assembly_name, __pyx_kp_s_); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 469, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_llvm_assembly_name = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "halogen/api.pyx":464
+  /* "halogen/api.pyx":470
  *         bitcode_name = kwargs.pop('bitcode_name', '')
  *         llvm_assembly_name = kwargs.pop('llvm_assembly_name', '')
  *         c_header_name = kwargs.pop('c_header_name', '')             # <<<<<<<<<<<<<<
  *         c_source_name = kwargs.pop('c_source_name', '')
  *         python_extension_name = kwargs.pop('python_extension_name', '')
  */
-  __pyx_t_1 = __Pyx_PyDict_Pop(__pyx_v_kwargs, __pyx_n_s_c_header_name, __pyx_kp_s_); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 464, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyDict_Pop(__pyx_v_kwargs, __pyx_n_s_c_header_name, __pyx_kp_s_); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 470, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_c_header_name = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "halogen/api.pyx":465
+  /* "halogen/api.pyx":471
  *         llvm_assembly_name = kwargs.pop('llvm_assembly_name', '')
  *         c_header_name = kwargs.pop('c_header_name', '')
  *         c_source_name = kwargs.pop('c_source_name', '')             # <<<<<<<<<<<<<<
  *         python_extension_name = kwargs.pop('python_extension_name', '')
  *         stmt_name = kwargs.pop('stmt_name', '')
  */
-  __pyx_t_1 = __Pyx_PyDict_Pop(__pyx_v_kwargs, __pyx_n_s_c_source_name, __pyx_kp_s_); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 465, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyDict_Pop(__pyx_v_kwargs, __pyx_n_s_c_source_name, __pyx_kp_s_); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 471, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_c_source_name = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "halogen/api.pyx":466
+  /* "halogen/api.pyx":472
  *         c_header_name = kwargs.pop('c_header_name', '')
  *         c_source_name = kwargs.pop('c_source_name', '')
  *         python_extension_name = kwargs.pop('python_extension_name', '')             # <<<<<<<<<<<<<<
  *         stmt_name = kwargs.pop('stmt_name', '')
  *         stmt_html_name = kwargs.pop('stmt_html_name', '')
  */
-  __pyx_t_1 = __Pyx_PyDict_Pop(__pyx_v_kwargs, __pyx_n_s_python_extension_name, __pyx_kp_s_); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 466, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyDict_Pop(__pyx_v_kwargs, __pyx_n_s_python_extension_name, __pyx_kp_s_); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 472, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_python_extension_name = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "halogen/api.pyx":467
+  /* "halogen/api.pyx":473
  *         c_source_name = kwargs.pop('c_source_name', '')
  *         python_extension_name = kwargs.pop('python_extension_name', '')
  *         stmt_name = kwargs.pop('stmt_name', '')             # <<<<<<<<<<<<<<
  *         stmt_html_name = kwargs.pop('stmt_html_name', '')
  *         static_library_name = kwargs.pop('static_library_name', '')
  */
-  __pyx_t_1 = __Pyx_PyDict_Pop(__pyx_v_kwargs, __pyx_n_s_stmt_name, __pyx_kp_s_); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 467, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyDict_Pop(__pyx_v_kwargs, __pyx_n_s_stmt_name, __pyx_kp_s_); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 473, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_stmt_name = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "halogen/api.pyx":468
+  /* "halogen/api.pyx":474
  *         python_extension_name = kwargs.pop('python_extension_name', '')
  *         stmt_name = kwargs.pop('stmt_name', '')
  *         stmt_html_name = kwargs.pop('stmt_html_name', '')             # <<<<<<<<<<<<<<
  *         static_library_name = kwargs.pop('static_library_name', '')
  *         schedule_name = kwargs.pop('schedule_name', '')
  */
-  __pyx_t_1 = __Pyx_PyDict_Pop(__pyx_v_kwargs, __pyx_n_s_stmt_html_name, __pyx_kp_s_); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 468, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyDict_Pop(__pyx_v_kwargs, __pyx_n_s_stmt_html_name, __pyx_kp_s_); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 474, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_stmt_html_name = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "halogen/api.pyx":469
+  /* "halogen/api.pyx":475
  *         stmt_name = kwargs.pop('stmt_name', '')
  *         stmt_html_name = kwargs.pop('stmt_html_name', '')
  *         static_library_name = kwargs.pop('static_library_name', '')             # <<<<<<<<<<<<<<
  *         schedule_name = kwargs.pop('schedule_name', '')
  * 
  */
-  __pyx_t_1 = __Pyx_PyDict_Pop(__pyx_v_kwargs, __pyx_n_s_static_library_name, __pyx_kp_s_); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 469, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyDict_Pop(__pyx_v_kwargs, __pyx_n_s_static_library_name, __pyx_kp_s_); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 475, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_static_library_name = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "halogen/api.pyx":470
+  /* "halogen/api.pyx":476
  *         stmt_html_name = kwargs.pop('stmt_html_name', '')
  *         static_library_name = kwargs.pop('static_library_name', '')
  *         schedule_name = kwargs.pop('schedule_name', '')             # <<<<<<<<<<<<<<
  * 
  *         self.__this__.object_name = <string>u8bytes(object_name)
  */
-  __pyx_t_1 = __Pyx_PyDict_Pop(__pyx_v_kwargs, __pyx_n_s_schedule_name, __pyx_kp_s_); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 470, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyDict_Pop(__pyx_v_kwargs, __pyx_n_s_schedule_name, __pyx_kp_s_); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 476, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_schedule_name = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "halogen/api.pyx":472
+  /* "halogen/api.pyx":478
  *         schedule_name = kwargs.pop('schedule_name', '')
  * 
  *         self.__this__.object_name = <string>u8bytes(object_name)             # <<<<<<<<<<<<<<
  *         self.__this__.assembly_name = <string>u8bytes(assembly_name)
  *         self.__this__.bitcode_name = <string>u8bytes(bitcode_name)
  */
-  __pyx_t_1 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_object_name, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 472, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_object_name, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 478, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_15 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 472, __pyx_L1_error)
+  __pyx_t_16 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 478, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_v_self->__pyx___this__.object_name = ((std::string)__pyx_t_15);
+  __pyx_v_self->__pyx___this__.object_name = ((std::string)__pyx_t_16);
 
-  /* "halogen/api.pyx":473
+  /* "halogen/api.pyx":479
  * 
  *         self.__this__.object_name = <string>u8bytes(object_name)
  *         self.__this__.assembly_name = <string>u8bytes(assembly_name)             # <<<<<<<<<<<<<<
  *         self.__this__.bitcode_name = <string>u8bytes(bitcode_name)
  *         self.__this__.llvm_assembly_name = <string>u8bytes(llvm_assembly_name)
  */
-  __pyx_t_1 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_assembly_name, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 473, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_assembly_name, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 479, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_15 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 473, __pyx_L1_error)
+  __pyx_t_16 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 479, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_v_self->__pyx___this__.assembly_name = ((std::string)__pyx_t_15);
+  __pyx_v_self->__pyx___this__.assembly_name = ((std::string)__pyx_t_16);
 
-  /* "halogen/api.pyx":474
+  /* "halogen/api.pyx":480
  *         self.__this__.object_name = <string>u8bytes(object_name)
  *         self.__this__.assembly_name = <string>u8bytes(assembly_name)
  *         self.__this__.bitcode_name = <string>u8bytes(bitcode_name)             # <<<<<<<<<<<<<<
  *         self.__this__.llvm_assembly_name = <string>u8bytes(llvm_assembly_name)
  *         self.__this__.c_header_name = <string>u8bytes(c_header_name)
  */
-  __pyx_t_1 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_bitcode_name, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 474, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_bitcode_name, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 480, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_15 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 474, __pyx_L1_error)
+  __pyx_t_16 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 480, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_v_self->__pyx___this__.bitcode_name = ((std::string)__pyx_t_15);
+  __pyx_v_self->__pyx___this__.bitcode_name = ((std::string)__pyx_t_16);
 
-  /* "halogen/api.pyx":475
+  /* "halogen/api.pyx":481
  *         self.__this__.assembly_name = <string>u8bytes(assembly_name)
  *         self.__this__.bitcode_name = <string>u8bytes(bitcode_name)
  *         self.__this__.llvm_assembly_name = <string>u8bytes(llvm_assembly_name)             # <<<<<<<<<<<<<<
  *         self.__this__.c_header_name = <string>u8bytes(c_header_name)
  *         self.__this__.c_source_name = <string>u8bytes(c_source_name)
  */
-  __pyx_t_1 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_llvm_assembly_name, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 475, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_llvm_assembly_name, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 481, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_15 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 475, __pyx_L1_error)
+  __pyx_t_16 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 481, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_v_self->__pyx___this__.llvm_assembly_name = ((std::string)__pyx_t_15);
+  __pyx_v_self->__pyx___this__.llvm_assembly_name = ((std::string)__pyx_t_16);
 
-  /* "halogen/api.pyx":476
+  /* "halogen/api.pyx":482
  *         self.__this__.bitcode_name = <string>u8bytes(bitcode_name)
  *         self.__this__.llvm_assembly_name = <string>u8bytes(llvm_assembly_name)
  *         self.__this__.c_header_name = <string>u8bytes(c_header_name)             # <<<<<<<<<<<<<<
  *         self.__this__.c_source_name = <string>u8bytes(c_source_name)
  *         self.__this__.python_extension_name = <string>u8bytes(python_extension_name)
  */
-  __pyx_t_1 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_c_header_name, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 476, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_c_header_name, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 482, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_15 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 476, __pyx_L1_error)
+  __pyx_t_16 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 482, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_v_self->__pyx___this__.c_header_name = ((std::string)__pyx_t_15);
+  __pyx_v_self->__pyx___this__.c_header_name = ((std::string)__pyx_t_16);
 
-  /* "halogen/api.pyx":477
+  /* "halogen/api.pyx":483
  *         self.__this__.llvm_assembly_name = <string>u8bytes(llvm_assembly_name)
  *         self.__this__.c_header_name = <string>u8bytes(c_header_name)
  *         self.__this__.c_source_name = <string>u8bytes(c_source_name)             # <<<<<<<<<<<<<<
  *         self.__this__.python_extension_name = <string>u8bytes(python_extension_name)
  *         self.__this__.stmt_name = <string>u8bytes(stmt_name)
  */
-  __pyx_t_1 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_c_source_name, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 477, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_c_source_name, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 483, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_15 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 477, __pyx_L1_error)
+  __pyx_t_16 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 483, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_v_self->__pyx___this__.c_source_name = ((std::string)__pyx_t_15);
+  __pyx_v_self->__pyx___this__.c_source_name = ((std::string)__pyx_t_16);
 
-  /* "halogen/api.pyx":478
+  /* "halogen/api.pyx":484
  *         self.__this__.c_header_name = <string>u8bytes(c_header_name)
  *         self.__this__.c_source_name = <string>u8bytes(c_source_name)
  *         self.__this__.python_extension_name = <string>u8bytes(python_extension_name)             # <<<<<<<<<<<<<<
  *         self.__this__.stmt_name = <string>u8bytes(stmt_name)
  *         self.__this__.stmt_html_name = <string>u8bytes(stmt_html_name)
  */
-  __pyx_t_1 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_python_extension_name, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 478, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_python_extension_name, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 484, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_15 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 478, __pyx_L1_error)
+  __pyx_t_16 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 484, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_v_self->__pyx___this__.python_extension_name = ((std::string)__pyx_t_15);
+  __pyx_v_self->__pyx___this__.python_extension_name = ((std::string)__pyx_t_16);
 
-  /* "halogen/api.pyx":479
+  /* "halogen/api.pyx":485
  *         self.__this__.c_source_name = <string>u8bytes(c_source_name)
  *         self.__this__.python_extension_name = <string>u8bytes(python_extension_name)
  *         self.__this__.stmt_name = <string>u8bytes(stmt_name)             # <<<<<<<<<<<<<<
  *         self.__this__.stmt_html_name = <string>u8bytes(stmt_html_name)
  *         self.__this__.static_library_name = <string>u8bytes(static_library_name)
  */
-  __pyx_t_1 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_stmt_name, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 479, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_stmt_name, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 485, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_15 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 479, __pyx_L1_error)
+  __pyx_t_16 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 485, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_v_self->__pyx___this__.stmt_name = ((std::string)__pyx_t_15);
+  __pyx_v_self->__pyx___this__.stmt_name = ((std::string)__pyx_t_16);
 
-  /* "halogen/api.pyx":480
+  /* "halogen/api.pyx":486
  *         self.__this__.python_extension_name = <string>u8bytes(python_extension_name)
  *         self.__this__.stmt_name = <string>u8bytes(stmt_name)
  *         self.__this__.stmt_html_name = <string>u8bytes(stmt_html_name)             # <<<<<<<<<<<<<<
  *         self.__this__.static_library_name = <string>u8bytes(static_library_name)
  *         self.__this__.schedule_name = <string>u8bytes(schedule_name)
  */
-  __pyx_t_1 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_stmt_html_name, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 480, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_stmt_html_name, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 486, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_15 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 480, __pyx_L1_error)
+  __pyx_t_16 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 486, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_v_self->__pyx___this__.stmt_html_name = ((std::string)__pyx_t_15);
+  __pyx_v_self->__pyx___this__.stmt_html_name = ((std::string)__pyx_t_16);
 
-  /* "halogen/api.pyx":481
+  /* "halogen/api.pyx":487
  *         self.__this__.stmt_name = <string>u8bytes(stmt_name)
  *         self.__this__.stmt_html_name = <string>u8bytes(stmt_html_name)
  *         self.__this__.static_library_name = <string>u8bytes(static_library_name)             # <<<<<<<<<<<<<<
  *         self.__this__.schedule_name = <string>u8bytes(schedule_name)
  * 
  */
-  __pyx_t_1 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_static_library_name, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 481, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_static_library_name, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 487, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_15 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 481, __pyx_L1_error)
+  __pyx_t_16 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 487, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_v_self->__pyx___this__.static_library_name = ((std::string)__pyx_t_15);
+  __pyx_v_self->__pyx___this__.static_library_name = ((std::string)__pyx_t_16);
 
-  /* "halogen/api.pyx":482
+  /* "halogen/api.pyx":488
  *         self.__this__.stmt_html_name = <string>u8bytes(stmt_html_name)
  *         self.__this__.static_library_name = <string>u8bytes(static_library_name)
  *         self.__this__.schedule_name = <string>u8bytes(schedule_name)             # <<<<<<<<<<<<<<
  * 
  *     @property
  */
-  __pyx_t_1 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_schedule_name, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 482, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_schedule_name, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 488, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_15 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 482, __pyx_L1_error)
+  __pyx_t_16 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 488, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_v_self->__pyx___this__.schedule_name = ((std::string)__pyx_t_15);
+  __pyx_v_self->__pyx___this__.schedule_name = ((std::string)__pyx_t_16);
 
-  /* "halogen/api.pyx":444
+  /* "halogen/api.pyx":450
  *         return getattr(instance, '__class__', None) == cls
  * 
  *     def __cinit__(self, *args, **kwargs):             # <<<<<<<<<<<<<<
  *         for arg in args:
- *             if type(arg) == type(self):
+ *             if type(arg) is type(self):
  */
 
   /* function exit code */
@@ -11650,7 +11756,7 @@ static int __pyx_pf_7halogen_3api_7Outputs_2__cinit__(struct __pyx_obj_7halogen_
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":485
+/* "halogen/api.pyx":491
  * 
  *     @property
  *     def object_name(self):             # <<<<<<<<<<<<<<
@@ -11677,7 +11783,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_11object_name___get__(struct __
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("__get__", 0);
 
-  /* "halogen/api.pyx":486
+  /* "halogen/api.pyx":492
  *     @property
  *     def object_name(self):
  *         return <string>self.__this__.object_name             # <<<<<<<<<<<<<<
@@ -11685,13 +11791,13 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_11object_name___get__(struct __
  *     def object_name(self, object value not None):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_convert_PyBytes_string_to_py_std__in_string(((std::string)__pyx_v_self->__pyx___this__.object_name)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 486, __pyx_L1_error)
+  __pyx_t_1 = __pyx_convert_PyBytes_string_to_py_std__in_string(((std::string)__pyx_v_self->__pyx___this__.object_name)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 492, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":485
+  /* "halogen/api.pyx":491
  * 
  *     @property
  *     def object_name(self):             # <<<<<<<<<<<<<<
@@ -11710,7 +11816,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_11object_name___get__(struct __
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":488
+/* "halogen/api.pyx":494
  *         return <string>self.__this__.object_name
  *     @object_name.setter
  *     def object_name(self, object value not None):             # <<<<<<<<<<<<<<
@@ -11725,7 +11831,7 @@ static int __pyx_pw_7halogen_3api_7Outputs_11object_name_3__set__(PyObject *__py
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__set__ (wrapper)", 0);
   if (unlikely(((PyObject *)__pyx_v_value) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "value"); __PYX_ERR(0, 488, __pyx_L1_error)
+    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "value"); __PYX_ERR(0, 494, __pyx_L1_error)
   }
   __pyx_r = __pyx_pf_7halogen_3api_7Outputs_11object_name_2__set__(((struct __pyx_obj_7halogen_3api_Outputs *)__pyx_v_self), ((PyObject *)__pyx_v_value));
 
@@ -11745,20 +11851,20 @@ static int __pyx_pf_7halogen_3api_7Outputs_11object_name_2__set__(struct __pyx_o
   std::string __pyx_t_2;
   __Pyx_RefNannySetupContext("__set__", 0);
 
-  /* "halogen/api.pyx":489
+  /* "halogen/api.pyx":495
  *     @object_name.setter
  *     def object_name(self, object value not None):
  *         self.__this__.object_name = <string>u8bytes(value)             # <<<<<<<<<<<<<<
  * 
  *     @property
  */
-  __pyx_t_1 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_value, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 489, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_value, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 495, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 489, __pyx_L1_error)
+  __pyx_t_2 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 495, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_self->__pyx___this__.object_name = ((std::string)__pyx_t_2);
 
-  /* "halogen/api.pyx":488
+  /* "halogen/api.pyx":494
  *         return <string>self.__this__.object_name
  *     @object_name.setter
  *     def object_name(self, object value not None):             # <<<<<<<<<<<<<<
@@ -11778,7 +11884,7 @@ static int __pyx_pf_7halogen_3api_7Outputs_11object_name_2__set__(struct __pyx_o
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":492
+/* "halogen/api.pyx":498
  * 
  *     @property
  *     def assembly_name(self):             # <<<<<<<<<<<<<<
@@ -11805,7 +11911,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_13assembly_name___get__(struct 
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("__get__", 0);
 
-  /* "halogen/api.pyx":493
+  /* "halogen/api.pyx":499
  *     @property
  *     def assembly_name(self):
  *         return <string>self.__this__.assembly_name             # <<<<<<<<<<<<<<
@@ -11813,13 +11919,13 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_13assembly_name___get__(struct 
  *     def assembly_name(self, object value not None):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_convert_PyBytes_string_to_py_std__in_string(((std::string)__pyx_v_self->__pyx___this__.assembly_name)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 493, __pyx_L1_error)
+  __pyx_t_1 = __pyx_convert_PyBytes_string_to_py_std__in_string(((std::string)__pyx_v_self->__pyx___this__.assembly_name)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 499, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":492
+  /* "halogen/api.pyx":498
  * 
  *     @property
  *     def assembly_name(self):             # <<<<<<<<<<<<<<
@@ -11838,7 +11944,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_13assembly_name___get__(struct 
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":495
+/* "halogen/api.pyx":501
  *         return <string>self.__this__.assembly_name
  *     @assembly_name.setter
  *     def assembly_name(self, object value not None):             # <<<<<<<<<<<<<<
@@ -11853,7 +11959,7 @@ static int __pyx_pw_7halogen_3api_7Outputs_13assembly_name_3__set__(PyObject *__
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__set__ (wrapper)", 0);
   if (unlikely(((PyObject *)__pyx_v_value) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "value"); __PYX_ERR(0, 495, __pyx_L1_error)
+    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "value"); __PYX_ERR(0, 501, __pyx_L1_error)
   }
   __pyx_r = __pyx_pf_7halogen_3api_7Outputs_13assembly_name_2__set__(((struct __pyx_obj_7halogen_3api_Outputs *)__pyx_v_self), ((PyObject *)__pyx_v_value));
 
@@ -11873,20 +11979,20 @@ static int __pyx_pf_7halogen_3api_7Outputs_13assembly_name_2__set__(struct __pyx
   std::string __pyx_t_2;
   __Pyx_RefNannySetupContext("__set__", 0);
 
-  /* "halogen/api.pyx":496
+  /* "halogen/api.pyx":502
  *     @assembly_name.setter
  *     def assembly_name(self, object value not None):
  *         self.__this__.assembly_name = <string>u8bytes(value)             # <<<<<<<<<<<<<<
  * 
  *     @property
  */
-  __pyx_t_1 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_value, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 496, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_value, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 502, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 496, __pyx_L1_error)
+  __pyx_t_2 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 502, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_self->__pyx___this__.assembly_name = ((std::string)__pyx_t_2);
 
-  /* "halogen/api.pyx":495
+  /* "halogen/api.pyx":501
  *         return <string>self.__this__.assembly_name
  *     @assembly_name.setter
  *     def assembly_name(self, object value not None):             # <<<<<<<<<<<<<<
@@ -11906,7 +12012,7 @@ static int __pyx_pf_7halogen_3api_7Outputs_13assembly_name_2__set__(struct __pyx
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":499
+/* "halogen/api.pyx":505
  * 
  *     @property
  *     def bitcode_name(self):             # <<<<<<<<<<<<<<
@@ -11933,7 +12039,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_12bitcode_name___get__(struct _
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("__get__", 0);
 
-  /* "halogen/api.pyx":500
+  /* "halogen/api.pyx":506
  *     @property
  *     def bitcode_name(self):
  *         return <string>self.__this__.bitcode_name             # <<<<<<<<<<<<<<
@@ -11941,13 +12047,13 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_12bitcode_name___get__(struct _
  *     def bitcode_name(self, object value not None):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_convert_PyBytes_string_to_py_std__in_string(((std::string)__pyx_v_self->__pyx___this__.bitcode_name)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 500, __pyx_L1_error)
+  __pyx_t_1 = __pyx_convert_PyBytes_string_to_py_std__in_string(((std::string)__pyx_v_self->__pyx___this__.bitcode_name)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 506, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":499
+  /* "halogen/api.pyx":505
  * 
  *     @property
  *     def bitcode_name(self):             # <<<<<<<<<<<<<<
@@ -11966,7 +12072,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_12bitcode_name___get__(struct _
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":502
+/* "halogen/api.pyx":508
  *         return <string>self.__this__.bitcode_name
  *     @bitcode_name.setter
  *     def bitcode_name(self, object value not None):             # <<<<<<<<<<<<<<
@@ -11981,7 +12087,7 @@ static int __pyx_pw_7halogen_3api_7Outputs_12bitcode_name_3__set__(PyObject *__p
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__set__ (wrapper)", 0);
   if (unlikely(((PyObject *)__pyx_v_value) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "value"); __PYX_ERR(0, 502, __pyx_L1_error)
+    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "value"); __PYX_ERR(0, 508, __pyx_L1_error)
   }
   __pyx_r = __pyx_pf_7halogen_3api_7Outputs_12bitcode_name_2__set__(((struct __pyx_obj_7halogen_3api_Outputs *)__pyx_v_self), ((PyObject *)__pyx_v_value));
 
@@ -12001,20 +12107,20 @@ static int __pyx_pf_7halogen_3api_7Outputs_12bitcode_name_2__set__(struct __pyx_
   std::string __pyx_t_2;
   __Pyx_RefNannySetupContext("__set__", 0);
 
-  /* "halogen/api.pyx":503
+  /* "halogen/api.pyx":509
  *     @bitcode_name.setter
  *     def bitcode_name(self, object value not None):
  *         self.__this__.bitcode_name = <string>u8bytes(value)             # <<<<<<<<<<<<<<
  * 
  *     @property
  */
-  __pyx_t_1 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_value, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 503, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_value, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 509, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 503, __pyx_L1_error)
+  __pyx_t_2 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 509, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_self->__pyx___this__.bitcode_name = ((std::string)__pyx_t_2);
 
-  /* "halogen/api.pyx":502
+  /* "halogen/api.pyx":508
  *         return <string>self.__this__.bitcode_name
  *     @bitcode_name.setter
  *     def bitcode_name(self, object value not None):             # <<<<<<<<<<<<<<
@@ -12034,7 +12140,7 @@ static int __pyx_pf_7halogen_3api_7Outputs_12bitcode_name_2__set__(struct __pyx_
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":506
+/* "halogen/api.pyx":512
  * 
  *     @property
  *     def llvm_assembly_name(self):             # <<<<<<<<<<<<<<
@@ -12061,7 +12167,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_18llvm_assembly_name___get__(st
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("__get__", 0);
 
-  /* "halogen/api.pyx":507
+  /* "halogen/api.pyx":513
  *     @property
  *     def llvm_assembly_name(self):
  *         return <string>self.__this__.llvm_assembly_name             # <<<<<<<<<<<<<<
@@ -12069,13 +12175,13 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_18llvm_assembly_name___get__(st
  *     def llvm_assembly_name(self, object value not None):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_convert_PyBytes_string_to_py_std__in_string(((std::string)__pyx_v_self->__pyx___this__.llvm_assembly_name)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 507, __pyx_L1_error)
+  __pyx_t_1 = __pyx_convert_PyBytes_string_to_py_std__in_string(((std::string)__pyx_v_self->__pyx___this__.llvm_assembly_name)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 513, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":506
+  /* "halogen/api.pyx":512
  * 
  *     @property
  *     def llvm_assembly_name(self):             # <<<<<<<<<<<<<<
@@ -12094,7 +12200,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_18llvm_assembly_name___get__(st
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":509
+/* "halogen/api.pyx":515
  *         return <string>self.__this__.llvm_assembly_name
  *     @llvm_assembly_name.setter
  *     def llvm_assembly_name(self, object value not None):             # <<<<<<<<<<<<<<
@@ -12109,7 +12215,7 @@ static int __pyx_pw_7halogen_3api_7Outputs_18llvm_assembly_name_3__set__(PyObjec
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__set__ (wrapper)", 0);
   if (unlikely(((PyObject *)__pyx_v_value) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "value"); __PYX_ERR(0, 509, __pyx_L1_error)
+    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "value"); __PYX_ERR(0, 515, __pyx_L1_error)
   }
   __pyx_r = __pyx_pf_7halogen_3api_7Outputs_18llvm_assembly_name_2__set__(((struct __pyx_obj_7halogen_3api_Outputs *)__pyx_v_self), ((PyObject *)__pyx_v_value));
 
@@ -12129,20 +12235,20 @@ static int __pyx_pf_7halogen_3api_7Outputs_18llvm_assembly_name_2__set__(struct 
   std::string __pyx_t_2;
   __Pyx_RefNannySetupContext("__set__", 0);
 
-  /* "halogen/api.pyx":510
+  /* "halogen/api.pyx":516
  *     @llvm_assembly_name.setter
  *     def llvm_assembly_name(self, object value not None):
  *         self.__this__.llvm_assembly_name = <string>u8bytes(value)             # <<<<<<<<<<<<<<
  * 
  *     @property
  */
-  __pyx_t_1 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_value, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 510, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_value, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 516, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 510, __pyx_L1_error)
+  __pyx_t_2 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 516, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_self->__pyx___this__.llvm_assembly_name = ((std::string)__pyx_t_2);
 
-  /* "halogen/api.pyx":509
+  /* "halogen/api.pyx":515
  *         return <string>self.__this__.llvm_assembly_name
  *     @llvm_assembly_name.setter
  *     def llvm_assembly_name(self, object value not None):             # <<<<<<<<<<<<<<
@@ -12162,7 +12268,7 @@ static int __pyx_pf_7halogen_3api_7Outputs_18llvm_assembly_name_2__set__(struct 
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":513
+/* "halogen/api.pyx":519
  * 
  *     @property
  *     def c_header_name(self):             # <<<<<<<<<<<<<<
@@ -12189,7 +12295,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_13c_header_name___get__(struct 
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("__get__", 0);
 
-  /* "halogen/api.pyx":514
+  /* "halogen/api.pyx":520
  *     @property
  *     def c_header_name(self):
  *         return <string>self.__this__.c_header_name             # <<<<<<<<<<<<<<
@@ -12197,13 +12303,13 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_13c_header_name___get__(struct 
  *     def c_header_name(self, object value not None):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_convert_PyBytes_string_to_py_std__in_string(((std::string)__pyx_v_self->__pyx___this__.c_header_name)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 514, __pyx_L1_error)
+  __pyx_t_1 = __pyx_convert_PyBytes_string_to_py_std__in_string(((std::string)__pyx_v_self->__pyx___this__.c_header_name)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 520, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":513
+  /* "halogen/api.pyx":519
  * 
  *     @property
  *     def c_header_name(self):             # <<<<<<<<<<<<<<
@@ -12222,7 +12328,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_13c_header_name___get__(struct 
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":516
+/* "halogen/api.pyx":522
  *         return <string>self.__this__.c_header_name
  *     @c_header_name.setter
  *     def c_header_name(self, object value not None):             # <<<<<<<<<<<<<<
@@ -12237,7 +12343,7 @@ static int __pyx_pw_7halogen_3api_7Outputs_13c_header_name_3__set__(PyObject *__
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__set__ (wrapper)", 0);
   if (unlikely(((PyObject *)__pyx_v_value) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "value"); __PYX_ERR(0, 516, __pyx_L1_error)
+    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "value"); __PYX_ERR(0, 522, __pyx_L1_error)
   }
   __pyx_r = __pyx_pf_7halogen_3api_7Outputs_13c_header_name_2__set__(((struct __pyx_obj_7halogen_3api_Outputs *)__pyx_v_self), ((PyObject *)__pyx_v_value));
 
@@ -12257,20 +12363,20 @@ static int __pyx_pf_7halogen_3api_7Outputs_13c_header_name_2__set__(struct __pyx
   std::string __pyx_t_2;
   __Pyx_RefNannySetupContext("__set__", 0);
 
-  /* "halogen/api.pyx":517
+  /* "halogen/api.pyx":523
  *     @c_header_name.setter
  *     def c_header_name(self, object value not None):
  *         self.__this__.c_header_name = <string>u8bytes(value)             # <<<<<<<<<<<<<<
  * 
  *     @property
  */
-  __pyx_t_1 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_value, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 517, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_value, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 523, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 517, __pyx_L1_error)
+  __pyx_t_2 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 523, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_self->__pyx___this__.c_header_name = ((std::string)__pyx_t_2);
 
-  /* "halogen/api.pyx":516
+  /* "halogen/api.pyx":522
  *         return <string>self.__this__.c_header_name
  *     @c_header_name.setter
  *     def c_header_name(self, object value not None):             # <<<<<<<<<<<<<<
@@ -12290,7 +12396,7 @@ static int __pyx_pf_7halogen_3api_7Outputs_13c_header_name_2__set__(struct __pyx
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":520
+/* "halogen/api.pyx":526
  * 
  *     @property
  *     def c_source_name(self):             # <<<<<<<<<<<<<<
@@ -12317,7 +12423,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_13c_source_name___get__(struct 
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("__get__", 0);
 
-  /* "halogen/api.pyx":521
+  /* "halogen/api.pyx":527
  *     @property
  *     def c_source_name(self):
  *         return <string>self.__this__.c_source_name             # <<<<<<<<<<<<<<
@@ -12325,13 +12431,13 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_13c_source_name___get__(struct 
  *     def c_source_name(self, object value not None):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_convert_PyBytes_string_to_py_std__in_string(((std::string)__pyx_v_self->__pyx___this__.c_source_name)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 521, __pyx_L1_error)
+  __pyx_t_1 = __pyx_convert_PyBytes_string_to_py_std__in_string(((std::string)__pyx_v_self->__pyx___this__.c_source_name)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 527, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":520
+  /* "halogen/api.pyx":526
  * 
  *     @property
  *     def c_source_name(self):             # <<<<<<<<<<<<<<
@@ -12350,7 +12456,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_13c_source_name___get__(struct 
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":523
+/* "halogen/api.pyx":529
  *         return <string>self.__this__.c_source_name
  *     @c_source_name.setter
  *     def c_source_name(self, object value not None):             # <<<<<<<<<<<<<<
@@ -12365,7 +12471,7 @@ static int __pyx_pw_7halogen_3api_7Outputs_13c_source_name_3__set__(PyObject *__
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__set__ (wrapper)", 0);
   if (unlikely(((PyObject *)__pyx_v_value) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "value"); __PYX_ERR(0, 523, __pyx_L1_error)
+    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "value"); __PYX_ERR(0, 529, __pyx_L1_error)
   }
   __pyx_r = __pyx_pf_7halogen_3api_7Outputs_13c_source_name_2__set__(((struct __pyx_obj_7halogen_3api_Outputs *)__pyx_v_self), ((PyObject *)__pyx_v_value));
 
@@ -12385,20 +12491,20 @@ static int __pyx_pf_7halogen_3api_7Outputs_13c_source_name_2__set__(struct __pyx
   std::string __pyx_t_2;
   __Pyx_RefNannySetupContext("__set__", 0);
 
-  /* "halogen/api.pyx":524
+  /* "halogen/api.pyx":530
  *     @c_source_name.setter
  *     def c_source_name(self, object value not None):
  *         self.__this__.c_source_name = <string>u8bytes(value)             # <<<<<<<<<<<<<<
  * 
  *     @property
  */
-  __pyx_t_1 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_value, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 524, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_value, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 530, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 524, __pyx_L1_error)
+  __pyx_t_2 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 530, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_self->__pyx___this__.c_source_name = ((std::string)__pyx_t_2);
 
-  /* "halogen/api.pyx":523
+  /* "halogen/api.pyx":529
  *         return <string>self.__this__.c_source_name
  *     @c_source_name.setter
  *     def c_source_name(self, object value not None):             # <<<<<<<<<<<<<<
@@ -12418,7 +12524,7 @@ static int __pyx_pf_7halogen_3api_7Outputs_13c_source_name_2__set__(struct __pyx
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":527
+/* "halogen/api.pyx":533
  * 
  *     @property
  *     def python_extension_name(self):             # <<<<<<<<<<<<<<
@@ -12445,7 +12551,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_21python_extension_name___get__
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("__get__", 0);
 
-  /* "halogen/api.pyx":528
+  /* "halogen/api.pyx":534
  *     @property
  *     def python_extension_name(self):
  *         return <string>self.__this__.python_extension_name             # <<<<<<<<<<<<<<
@@ -12453,13 +12559,13 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_21python_extension_name___get__
  *     def python_extension_name(self, object value not None):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_convert_PyBytes_string_to_py_std__in_string(((std::string)__pyx_v_self->__pyx___this__.python_extension_name)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 528, __pyx_L1_error)
+  __pyx_t_1 = __pyx_convert_PyBytes_string_to_py_std__in_string(((std::string)__pyx_v_self->__pyx___this__.python_extension_name)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 534, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":527
+  /* "halogen/api.pyx":533
  * 
  *     @property
  *     def python_extension_name(self):             # <<<<<<<<<<<<<<
@@ -12478,7 +12584,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_21python_extension_name___get__
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":530
+/* "halogen/api.pyx":536
  *         return <string>self.__this__.python_extension_name
  *     @python_extension_name.setter
  *     def python_extension_name(self, object value not None):             # <<<<<<<<<<<<<<
@@ -12493,7 +12599,7 @@ static int __pyx_pw_7halogen_3api_7Outputs_21python_extension_name_3__set__(PyOb
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__set__ (wrapper)", 0);
   if (unlikely(((PyObject *)__pyx_v_value) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "value"); __PYX_ERR(0, 530, __pyx_L1_error)
+    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "value"); __PYX_ERR(0, 536, __pyx_L1_error)
   }
   __pyx_r = __pyx_pf_7halogen_3api_7Outputs_21python_extension_name_2__set__(((struct __pyx_obj_7halogen_3api_Outputs *)__pyx_v_self), ((PyObject *)__pyx_v_value));
 
@@ -12513,20 +12619,20 @@ static int __pyx_pf_7halogen_3api_7Outputs_21python_extension_name_2__set__(stru
   std::string __pyx_t_2;
   __Pyx_RefNannySetupContext("__set__", 0);
 
-  /* "halogen/api.pyx":531
+  /* "halogen/api.pyx":537
  *     @python_extension_name.setter
  *     def python_extension_name(self, object value not None):
  *         self.__this__.python_extension_name = <string>u8bytes(value)             # <<<<<<<<<<<<<<
  * 
  *     @property
  */
-  __pyx_t_1 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_value, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 531, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_value, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 537, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 531, __pyx_L1_error)
+  __pyx_t_2 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 537, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_self->__pyx___this__.python_extension_name = ((std::string)__pyx_t_2);
 
-  /* "halogen/api.pyx":530
+  /* "halogen/api.pyx":536
  *         return <string>self.__this__.python_extension_name
  *     @python_extension_name.setter
  *     def python_extension_name(self, object value not None):             # <<<<<<<<<<<<<<
@@ -12546,7 +12652,7 @@ static int __pyx_pf_7halogen_3api_7Outputs_21python_extension_name_2__set__(stru
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":534
+/* "halogen/api.pyx":540
  * 
  *     @property
  *     def stmt_name(self):             # <<<<<<<<<<<<<<
@@ -12573,7 +12679,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_9stmt_name___get__(struct __pyx
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("__get__", 0);
 
-  /* "halogen/api.pyx":535
+  /* "halogen/api.pyx":541
  *     @property
  *     def stmt_name(self):
  *         return <string>self.__this__.stmt_name             # <<<<<<<<<<<<<<
@@ -12581,13 +12687,13 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_9stmt_name___get__(struct __pyx
  *     def stmt_name(self, object value not None):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_convert_PyBytes_string_to_py_std__in_string(((std::string)__pyx_v_self->__pyx___this__.stmt_name)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 535, __pyx_L1_error)
+  __pyx_t_1 = __pyx_convert_PyBytes_string_to_py_std__in_string(((std::string)__pyx_v_self->__pyx___this__.stmt_name)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 541, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":534
+  /* "halogen/api.pyx":540
  * 
  *     @property
  *     def stmt_name(self):             # <<<<<<<<<<<<<<
@@ -12606,7 +12712,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_9stmt_name___get__(struct __pyx
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":537
+/* "halogen/api.pyx":543
  *         return <string>self.__this__.stmt_name
  *     @stmt_name.setter
  *     def stmt_name(self, object value not None):             # <<<<<<<<<<<<<<
@@ -12621,7 +12727,7 @@ static int __pyx_pw_7halogen_3api_7Outputs_9stmt_name_3__set__(PyObject *__pyx_v
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__set__ (wrapper)", 0);
   if (unlikely(((PyObject *)__pyx_v_value) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "value"); __PYX_ERR(0, 537, __pyx_L1_error)
+    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "value"); __PYX_ERR(0, 543, __pyx_L1_error)
   }
   __pyx_r = __pyx_pf_7halogen_3api_7Outputs_9stmt_name_2__set__(((struct __pyx_obj_7halogen_3api_Outputs *)__pyx_v_self), ((PyObject *)__pyx_v_value));
 
@@ -12641,20 +12747,20 @@ static int __pyx_pf_7halogen_3api_7Outputs_9stmt_name_2__set__(struct __pyx_obj_
   std::string __pyx_t_2;
   __Pyx_RefNannySetupContext("__set__", 0);
 
-  /* "halogen/api.pyx":538
+  /* "halogen/api.pyx":544
  *     @stmt_name.setter
  *     def stmt_name(self, object value not None):
  *         self.__this__.stmt_name = <string>u8bytes(value)             # <<<<<<<<<<<<<<
  * 
  *     @property
  */
-  __pyx_t_1 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_value, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 538, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_value, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 544, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 538, __pyx_L1_error)
+  __pyx_t_2 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 544, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_self->__pyx___this__.stmt_name = ((std::string)__pyx_t_2);
 
-  /* "halogen/api.pyx":537
+  /* "halogen/api.pyx":543
  *         return <string>self.__this__.stmt_name
  *     @stmt_name.setter
  *     def stmt_name(self, object value not None):             # <<<<<<<<<<<<<<
@@ -12674,7 +12780,7 @@ static int __pyx_pf_7halogen_3api_7Outputs_9stmt_name_2__set__(struct __pyx_obj_
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":541
+/* "halogen/api.pyx":547
  * 
  *     @property
  *     def stmt_html_name(self):             # <<<<<<<<<<<<<<
@@ -12701,7 +12807,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_14stmt_html_name___get__(struct
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("__get__", 0);
 
-  /* "halogen/api.pyx":542
+  /* "halogen/api.pyx":548
  *     @property
  *     def stmt_html_name(self):
  *         return <string>self.__this__.stmt_html_name             # <<<<<<<<<<<<<<
@@ -12709,13 +12815,13 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_14stmt_html_name___get__(struct
  *     def stmt_html_name(self, object value not None):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_convert_PyBytes_string_to_py_std__in_string(((std::string)__pyx_v_self->__pyx___this__.stmt_html_name)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 542, __pyx_L1_error)
+  __pyx_t_1 = __pyx_convert_PyBytes_string_to_py_std__in_string(((std::string)__pyx_v_self->__pyx___this__.stmt_html_name)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 548, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":541
+  /* "halogen/api.pyx":547
  * 
  *     @property
  *     def stmt_html_name(self):             # <<<<<<<<<<<<<<
@@ -12734,7 +12840,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_14stmt_html_name___get__(struct
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":544
+/* "halogen/api.pyx":550
  *         return <string>self.__this__.stmt_html_name
  *     @stmt_html_name.setter
  *     def stmt_html_name(self, object value not None):             # <<<<<<<<<<<<<<
@@ -12749,7 +12855,7 @@ static int __pyx_pw_7halogen_3api_7Outputs_14stmt_html_name_3__set__(PyObject *_
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__set__ (wrapper)", 0);
   if (unlikely(((PyObject *)__pyx_v_value) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "value"); __PYX_ERR(0, 544, __pyx_L1_error)
+    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "value"); __PYX_ERR(0, 550, __pyx_L1_error)
   }
   __pyx_r = __pyx_pf_7halogen_3api_7Outputs_14stmt_html_name_2__set__(((struct __pyx_obj_7halogen_3api_Outputs *)__pyx_v_self), ((PyObject *)__pyx_v_value));
 
@@ -12769,20 +12875,20 @@ static int __pyx_pf_7halogen_3api_7Outputs_14stmt_html_name_2__set__(struct __py
   std::string __pyx_t_2;
   __Pyx_RefNannySetupContext("__set__", 0);
 
-  /* "halogen/api.pyx":545
+  /* "halogen/api.pyx":551
  *     @stmt_html_name.setter
  *     def stmt_html_name(self, object value not None):
  *         self.__this__.stmt_html_name = <string>u8bytes(value)             # <<<<<<<<<<<<<<
  * 
  *     @property
  */
-  __pyx_t_1 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_value, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 545, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_value, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 551, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 545, __pyx_L1_error)
+  __pyx_t_2 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 551, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_self->__pyx___this__.stmt_html_name = ((std::string)__pyx_t_2);
 
-  /* "halogen/api.pyx":544
+  /* "halogen/api.pyx":550
  *         return <string>self.__this__.stmt_html_name
  *     @stmt_html_name.setter
  *     def stmt_html_name(self, object value not None):             # <<<<<<<<<<<<<<
@@ -12802,7 +12908,7 @@ static int __pyx_pf_7halogen_3api_7Outputs_14stmt_html_name_2__set__(struct __py
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":548
+/* "halogen/api.pyx":554
  * 
  *     @property
  *     def static_library_name(self):             # <<<<<<<<<<<<<<
@@ -12829,7 +12935,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_19static_library_name___get__(s
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("__get__", 0);
 
-  /* "halogen/api.pyx":549
+  /* "halogen/api.pyx":555
  *     @property
  *     def static_library_name(self):
  *         return <string>self.__this__.static_library_name             # <<<<<<<<<<<<<<
@@ -12837,13 +12943,13 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_19static_library_name___get__(s
  *     def static_library_name(self, object value not None):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_convert_PyBytes_string_to_py_std__in_string(((std::string)__pyx_v_self->__pyx___this__.static_library_name)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 549, __pyx_L1_error)
+  __pyx_t_1 = __pyx_convert_PyBytes_string_to_py_std__in_string(((std::string)__pyx_v_self->__pyx___this__.static_library_name)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 555, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":548
+  /* "halogen/api.pyx":554
  * 
  *     @property
  *     def static_library_name(self):             # <<<<<<<<<<<<<<
@@ -12862,7 +12968,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_19static_library_name___get__(s
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":551
+/* "halogen/api.pyx":557
  *         return <string>self.__this__.static_library_name
  *     @static_library_name.setter
  *     def static_library_name(self, object value not None):             # <<<<<<<<<<<<<<
@@ -12877,7 +12983,7 @@ static int __pyx_pw_7halogen_3api_7Outputs_19static_library_name_3__set__(PyObje
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__set__ (wrapper)", 0);
   if (unlikely(((PyObject *)__pyx_v_value) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "value"); __PYX_ERR(0, 551, __pyx_L1_error)
+    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "value"); __PYX_ERR(0, 557, __pyx_L1_error)
   }
   __pyx_r = __pyx_pf_7halogen_3api_7Outputs_19static_library_name_2__set__(((struct __pyx_obj_7halogen_3api_Outputs *)__pyx_v_self), ((PyObject *)__pyx_v_value));
 
@@ -12897,20 +13003,20 @@ static int __pyx_pf_7halogen_3api_7Outputs_19static_library_name_2__set__(struct
   std::string __pyx_t_2;
   __Pyx_RefNannySetupContext("__set__", 0);
 
-  /* "halogen/api.pyx":552
+  /* "halogen/api.pyx":558
  *     @static_library_name.setter
  *     def static_library_name(self, object value not None):
  *         self.__this__.static_library_name = <string>u8bytes(value)             # <<<<<<<<<<<<<<
  * 
  *     @property
  */
-  __pyx_t_1 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_value, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 552, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_value, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 558, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 552, __pyx_L1_error)
+  __pyx_t_2 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 558, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_self->__pyx___this__.static_library_name = ((std::string)__pyx_t_2);
 
-  /* "halogen/api.pyx":551
+  /* "halogen/api.pyx":557
  *         return <string>self.__this__.static_library_name
  *     @static_library_name.setter
  *     def static_library_name(self, object value not None):             # <<<<<<<<<<<<<<
@@ -12930,7 +13036,7 @@ static int __pyx_pf_7halogen_3api_7Outputs_19static_library_name_2__set__(struct
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":555
+/* "halogen/api.pyx":561
  * 
  *     @property
  *     def schedule_name(self):             # <<<<<<<<<<<<<<
@@ -12957,7 +13063,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_13schedule_name___get__(struct 
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("__get__", 0);
 
-  /* "halogen/api.pyx":556
+  /* "halogen/api.pyx":562
  *     @property
  *     def schedule_name(self):
  *         return <string>self.__this__.schedule_name             # <<<<<<<<<<<<<<
@@ -12965,13 +13071,13 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_13schedule_name___get__(struct 
  *     def schedule_name(self, object value not None):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_convert_PyBytes_string_to_py_std__in_string(((std::string)__pyx_v_self->__pyx___this__.schedule_name)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 556, __pyx_L1_error)
+  __pyx_t_1 = __pyx_convert_PyBytes_string_to_py_std__in_string(((std::string)__pyx_v_self->__pyx___this__.schedule_name)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 562, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":555
+  /* "halogen/api.pyx":561
  * 
  *     @property
  *     def schedule_name(self):             # <<<<<<<<<<<<<<
@@ -12990,7 +13096,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_13schedule_name___get__(struct 
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":558
+/* "halogen/api.pyx":564
  *         return <string>self.__this__.schedule_name
  *     @schedule_name.setter
  *     def schedule_name(self, object value not None):             # <<<<<<<<<<<<<<
@@ -13005,7 +13111,7 @@ static int __pyx_pw_7halogen_3api_7Outputs_13schedule_name_3__set__(PyObject *__
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__set__ (wrapper)", 0);
   if (unlikely(((PyObject *)__pyx_v_value) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "value"); __PYX_ERR(0, 558, __pyx_L1_error)
+    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "value"); __PYX_ERR(0, 564, __pyx_L1_error)
   }
   __pyx_r = __pyx_pf_7halogen_3api_7Outputs_13schedule_name_2__set__(((struct __pyx_obj_7halogen_3api_Outputs *)__pyx_v_self), ((PyObject *)__pyx_v_value));
 
@@ -13025,20 +13131,20 @@ static int __pyx_pf_7halogen_3api_7Outputs_13schedule_name_2__set__(struct __pyx
   std::string __pyx_t_2;
   __Pyx_RefNannySetupContext("__set__", 0);
 
-  /* "halogen/api.pyx":559
+  /* "halogen/api.pyx":565
  *     @schedule_name.setter
  *     def schedule_name(self, object value not None):
  *         self.__this__.schedule_name = <string>u8bytes(value)             # <<<<<<<<<<<<<<
  * 
  *     def object(self, object s=None):
  */
-  __pyx_t_1 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_value, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 559, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_value, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 565, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 559, __pyx_L1_error)
+  __pyx_t_2 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 565, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_self->__pyx___this__.schedule_name = ((std::string)__pyx_t_2);
 
-  /* "halogen/api.pyx":558
+  /* "halogen/api.pyx":564
  *         return <string>self.__this__.schedule_name
  *     @schedule_name.setter
  *     def schedule_name(self, object value not None):             # <<<<<<<<<<<<<<
@@ -13058,7 +13164,7 @@ static int __pyx_pf_7halogen_3api_7Outputs_13schedule_name_2__set__(struct __pyx
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":561
+/* "halogen/api.pyx":567
  *         self.__this__.schedule_name = <string>u8bytes(value)
  * 
  *     def object(self, object s=None):             # <<<<<<<<<<<<<<
@@ -13096,7 +13202,7 @@ static PyObject *__pyx_pw_7halogen_3api_7Outputs_5object(PyObject *__pyx_v_self,
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "object") < 0)) __PYX_ERR(0, 561, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "object") < 0)) __PYX_ERR(0, 567, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -13110,7 +13216,7 @@ static PyObject *__pyx_pw_7halogen_3api_7Outputs_5object(PyObject *__pyx_v_self,
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("object", 0, 0, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 561, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("object", 0, 0, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 567, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("halogen.api.Outputs.object", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -13134,19 +13240,19 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_4object(struct __pyx_obj_7halog
   __Pyx_RefNannySetupContext("object", 0);
   __Pyx_INCREF(__pyx_v_s);
 
-  /* "halogen/api.pyx":562
+  /* "halogen/api.pyx":568
  * 
  *     def object(self, object s=None):
  *         out = Outputs()             # <<<<<<<<<<<<<<
  *         if s is None:
  *             s = ''
  */
-  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_7halogen_3api_Outputs)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 562, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_7halogen_3api_Outputs)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 568, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_out = ((struct __pyx_obj_7halogen_3api_Outputs *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "halogen/api.pyx":563
+  /* "halogen/api.pyx":569
  *     def object(self, object s=None):
  *         out = Outputs()
  *         if s is None:             # <<<<<<<<<<<<<<
@@ -13157,7 +13263,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_4object(struct __pyx_obj_7halog
   __pyx_t_3 = (__pyx_t_2 != 0);
   if (__pyx_t_3) {
 
-    /* "halogen/api.pyx":564
+    /* "halogen/api.pyx":570
  *         out = Outputs()
  *         if s is None:
  *             s = ''             # <<<<<<<<<<<<<<
@@ -13167,7 +13273,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_4object(struct __pyx_obj_7halog
     __Pyx_INCREF(__pyx_kp_s_);
     __Pyx_DECREF_SET(__pyx_v_s, __pyx_kp_s_);
 
-    /* "halogen/api.pyx":563
+    /* "halogen/api.pyx":569
  *     def object(self, object s=None):
  *         out = Outputs()
  *         if s is None:             # <<<<<<<<<<<<<<
@@ -13176,20 +13282,20 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_4object(struct __pyx_obj_7halog
  */
   }
 
-  /* "halogen/api.pyx":565
+  /* "halogen/api.pyx":571
  *         if s is None:
  *             s = ''
  *         out.__this__ = self.__this__.object(u8bytes(s))             # <<<<<<<<<<<<<<
  *         return out
  * 
  */
-  __pyx_t_1 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_s, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 565, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_s, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 571, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_4 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 565, __pyx_L1_error)
+  __pyx_t_4 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 571, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_out->__pyx___this__ = __pyx_v_self->__pyx___this__.object(__pyx_t_4);
 
-  /* "halogen/api.pyx":566
+  /* "halogen/api.pyx":572
  *             s = ''
  *         out.__this__ = self.__this__.object(u8bytes(s))
  *         return out             # <<<<<<<<<<<<<<
@@ -13201,7 +13307,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_4object(struct __pyx_obj_7halog
   __pyx_r = ((PyObject *)__pyx_v_out);
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":561
+  /* "halogen/api.pyx":567
  *         self.__this__.schedule_name = <string>u8bytes(value)
  * 
  *     def object(self, object s=None):             # <<<<<<<<<<<<<<
@@ -13222,7 +13328,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_4object(struct __pyx_obj_7halog
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":568
+/* "halogen/api.pyx":574
  *         return out
  * 
  *     def assembly(self, object s=None):             # <<<<<<<<<<<<<<
@@ -13260,7 +13366,7 @@ static PyObject *__pyx_pw_7halogen_3api_7Outputs_7assembly(PyObject *__pyx_v_sel
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "assembly") < 0)) __PYX_ERR(0, 568, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "assembly") < 0)) __PYX_ERR(0, 574, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -13274,7 +13380,7 @@ static PyObject *__pyx_pw_7halogen_3api_7Outputs_7assembly(PyObject *__pyx_v_sel
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("assembly", 0, 0, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 568, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("assembly", 0, 0, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 574, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("halogen.api.Outputs.assembly", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -13298,19 +13404,19 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_6assembly(struct __pyx_obj_7hal
   __Pyx_RefNannySetupContext("assembly", 0);
   __Pyx_INCREF(__pyx_v_s);
 
-  /* "halogen/api.pyx":569
+  /* "halogen/api.pyx":575
  * 
  *     def assembly(self, object s=None):
  *         out = Outputs()             # <<<<<<<<<<<<<<
  *         if s is None:
  *             s = ''
  */
-  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_7halogen_3api_Outputs)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 569, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_7halogen_3api_Outputs)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 575, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_out = ((struct __pyx_obj_7halogen_3api_Outputs *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "halogen/api.pyx":570
+  /* "halogen/api.pyx":576
  *     def assembly(self, object s=None):
  *         out = Outputs()
  *         if s is None:             # <<<<<<<<<<<<<<
@@ -13321,7 +13427,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_6assembly(struct __pyx_obj_7hal
   __pyx_t_3 = (__pyx_t_2 != 0);
   if (__pyx_t_3) {
 
-    /* "halogen/api.pyx":571
+    /* "halogen/api.pyx":577
  *         out = Outputs()
  *         if s is None:
  *             s = ''             # <<<<<<<<<<<<<<
@@ -13331,7 +13437,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_6assembly(struct __pyx_obj_7hal
     __Pyx_INCREF(__pyx_kp_s_);
     __Pyx_DECREF_SET(__pyx_v_s, __pyx_kp_s_);
 
-    /* "halogen/api.pyx":570
+    /* "halogen/api.pyx":576
  *     def assembly(self, object s=None):
  *         out = Outputs()
  *         if s is None:             # <<<<<<<<<<<<<<
@@ -13340,20 +13446,20 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_6assembly(struct __pyx_obj_7hal
  */
   }
 
-  /* "halogen/api.pyx":572
+  /* "halogen/api.pyx":578
  *         if s is None:
  *             s = ''
  *         out.__this__ = self.__this__.assembly(u8bytes(s))             # <<<<<<<<<<<<<<
  *         return out
  * 
  */
-  __pyx_t_1 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_s, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 572, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_s, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 578, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_4 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 572, __pyx_L1_error)
+  __pyx_t_4 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 578, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_out->__pyx___this__ = __pyx_v_self->__pyx___this__.assembly(__pyx_t_4);
 
-  /* "halogen/api.pyx":573
+  /* "halogen/api.pyx":579
  *             s = ''
  *         out.__this__ = self.__this__.assembly(u8bytes(s))
  *         return out             # <<<<<<<<<<<<<<
@@ -13365,7 +13471,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_6assembly(struct __pyx_obj_7hal
   __pyx_r = ((PyObject *)__pyx_v_out);
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":568
+  /* "halogen/api.pyx":574
  *         return out
  * 
  *     def assembly(self, object s=None):             # <<<<<<<<<<<<<<
@@ -13386,7 +13492,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_6assembly(struct __pyx_obj_7hal
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":575
+/* "halogen/api.pyx":581
  *         return out
  * 
  *     def bitcode(self, object s=None):             # <<<<<<<<<<<<<<
@@ -13424,7 +13530,7 @@ static PyObject *__pyx_pw_7halogen_3api_7Outputs_9bitcode(PyObject *__pyx_v_self
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "bitcode") < 0)) __PYX_ERR(0, 575, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "bitcode") < 0)) __PYX_ERR(0, 581, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -13438,7 +13544,7 @@ static PyObject *__pyx_pw_7halogen_3api_7Outputs_9bitcode(PyObject *__pyx_v_self
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("bitcode", 0, 0, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 575, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("bitcode", 0, 0, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 581, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("halogen.api.Outputs.bitcode", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -13462,19 +13568,19 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_8bitcode(struct __pyx_obj_7halo
   __Pyx_RefNannySetupContext("bitcode", 0);
   __Pyx_INCREF(__pyx_v_s);
 
-  /* "halogen/api.pyx":576
+  /* "halogen/api.pyx":582
  * 
  *     def bitcode(self, object s=None):
  *         out = Outputs()             # <<<<<<<<<<<<<<
  *         if s is None:
  *             s = ''
  */
-  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_7halogen_3api_Outputs)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 576, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_7halogen_3api_Outputs)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 582, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_out = ((struct __pyx_obj_7halogen_3api_Outputs *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "halogen/api.pyx":577
+  /* "halogen/api.pyx":583
  *     def bitcode(self, object s=None):
  *         out = Outputs()
  *         if s is None:             # <<<<<<<<<<<<<<
@@ -13485,7 +13591,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_8bitcode(struct __pyx_obj_7halo
   __pyx_t_3 = (__pyx_t_2 != 0);
   if (__pyx_t_3) {
 
-    /* "halogen/api.pyx":578
+    /* "halogen/api.pyx":584
  *         out = Outputs()
  *         if s is None:
  *             s = ''             # <<<<<<<<<<<<<<
@@ -13495,7 +13601,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_8bitcode(struct __pyx_obj_7halo
     __Pyx_INCREF(__pyx_kp_s_);
     __Pyx_DECREF_SET(__pyx_v_s, __pyx_kp_s_);
 
-    /* "halogen/api.pyx":577
+    /* "halogen/api.pyx":583
  *     def bitcode(self, object s=None):
  *         out = Outputs()
  *         if s is None:             # <<<<<<<<<<<<<<
@@ -13504,20 +13610,20 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_8bitcode(struct __pyx_obj_7halo
  */
   }
 
-  /* "halogen/api.pyx":579
+  /* "halogen/api.pyx":585
  *         if s is None:
  *             s = ''
  *         out.__this__ = self.__this__.bitcode(u8bytes(s))             # <<<<<<<<<<<<<<
  *         return out
  * 
  */
-  __pyx_t_1 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_s, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 579, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_s, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 585, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_4 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 579, __pyx_L1_error)
+  __pyx_t_4 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 585, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_out->__pyx___this__ = __pyx_v_self->__pyx___this__.bitcode(__pyx_t_4);
 
-  /* "halogen/api.pyx":580
+  /* "halogen/api.pyx":586
  *             s = ''
  *         out.__this__ = self.__this__.bitcode(u8bytes(s))
  *         return out             # <<<<<<<<<<<<<<
@@ -13529,7 +13635,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_8bitcode(struct __pyx_obj_7halo
   __pyx_r = ((PyObject *)__pyx_v_out);
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":575
+  /* "halogen/api.pyx":581
  *         return out
  * 
  *     def bitcode(self, object s=None):             # <<<<<<<<<<<<<<
@@ -13550,7 +13656,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_8bitcode(struct __pyx_obj_7halo
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":582
+/* "halogen/api.pyx":588
  *         return out
  * 
  *     def llvm_assembly(self, object s=None):             # <<<<<<<<<<<<<<
@@ -13588,7 +13694,7 @@ static PyObject *__pyx_pw_7halogen_3api_7Outputs_11llvm_assembly(PyObject *__pyx
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "llvm_assembly") < 0)) __PYX_ERR(0, 582, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "llvm_assembly") < 0)) __PYX_ERR(0, 588, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -13602,7 +13708,7 @@ static PyObject *__pyx_pw_7halogen_3api_7Outputs_11llvm_assembly(PyObject *__pyx
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("llvm_assembly", 0, 0, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 582, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("llvm_assembly", 0, 0, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 588, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("halogen.api.Outputs.llvm_assembly", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -13626,19 +13732,19 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_10llvm_assembly(struct __pyx_ob
   __Pyx_RefNannySetupContext("llvm_assembly", 0);
   __Pyx_INCREF(__pyx_v_s);
 
-  /* "halogen/api.pyx":583
+  /* "halogen/api.pyx":589
  * 
  *     def llvm_assembly(self, object s=None):
  *         out = Outputs()             # <<<<<<<<<<<<<<
  *         if s is None:
  *             s = ''
  */
-  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_7halogen_3api_Outputs)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 583, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_7halogen_3api_Outputs)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 589, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_out = ((struct __pyx_obj_7halogen_3api_Outputs *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "halogen/api.pyx":584
+  /* "halogen/api.pyx":590
  *     def llvm_assembly(self, object s=None):
  *         out = Outputs()
  *         if s is None:             # <<<<<<<<<<<<<<
@@ -13649,7 +13755,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_10llvm_assembly(struct __pyx_ob
   __pyx_t_3 = (__pyx_t_2 != 0);
   if (__pyx_t_3) {
 
-    /* "halogen/api.pyx":585
+    /* "halogen/api.pyx":591
  *         out = Outputs()
  *         if s is None:
  *             s = ''             # <<<<<<<<<<<<<<
@@ -13659,7 +13765,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_10llvm_assembly(struct __pyx_ob
     __Pyx_INCREF(__pyx_kp_s_);
     __Pyx_DECREF_SET(__pyx_v_s, __pyx_kp_s_);
 
-    /* "halogen/api.pyx":584
+    /* "halogen/api.pyx":590
  *     def llvm_assembly(self, object s=None):
  *         out = Outputs()
  *         if s is None:             # <<<<<<<<<<<<<<
@@ -13668,20 +13774,20 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_10llvm_assembly(struct __pyx_ob
  */
   }
 
-  /* "halogen/api.pyx":586
+  /* "halogen/api.pyx":592
  *         if s is None:
  *             s = ''
  *         out.__this__ = self.__this__.llvm_assembly(u8bytes(s))             # <<<<<<<<<<<<<<
  *         return out
  * 
  */
-  __pyx_t_1 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_s, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 586, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_s, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 592, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_4 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 586, __pyx_L1_error)
+  __pyx_t_4 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 592, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_out->__pyx___this__ = __pyx_v_self->__pyx___this__.llvm_assembly(__pyx_t_4);
 
-  /* "halogen/api.pyx":587
+  /* "halogen/api.pyx":593
  *             s = ''
  *         out.__this__ = self.__this__.llvm_assembly(u8bytes(s))
  *         return out             # <<<<<<<<<<<<<<
@@ -13693,7 +13799,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_10llvm_assembly(struct __pyx_ob
   __pyx_r = ((PyObject *)__pyx_v_out);
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":582
+  /* "halogen/api.pyx":588
  *         return out
  * 
  *     def llvm_assembly(self, object s=None):             # <<<<<<<<<<<<<<
@@ -13714,7 +13820,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_10llvm_assembly(struct __pyx_ob
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":589
+/* "halogen/api.pyx":595
  *         return out
  * 
  *     def c_header(self, object s=None):             # <<<<<<<<<<<<<<
@@ -13752,7 +13858,7 @@ static PyObject *__pyx_pw_7halogen_3api_7Outputs_13c_header(PyObject *__pyx_v_se
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "c_header") < 0)) __PYX_ERR(0, 589, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "c_header") < 0)) __PYX_ERR(0, 595, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -13766,7 +13872,7 @@ static PyObject *__pyx_pw_7halogen_3api_7Outputs_13c_header(PyObject *__pyx_v_se
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("c_header", 0, 0, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 589, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("c_header", 0, 0, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 595, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("halogen.api.Outputs.c_header", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -13790,19 +13896,19 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_12c_header(struct __pyx_obj_7ha
   __Pyx_RefNannySetupContext("c_header", 0);
   __Pyx_INCREF(__pyx_v_s);
 
-  /* "halogen/api.pyx":590
+  /* "halogen/api.pyx":596
  * 
  *     def c_header(self, object s=None):
  *         out = Outputs()             # <<<<<<<<<<<<<<
  *         if s is None:
  *             s = ''
  */
-  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_7halogen_3api_Outputs)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 590, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_7halogen_3api_Outputs)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 596, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_out = ((struct __pyx_obj_7halogen_3api_Outputs *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "halogen/api.pyx":591
+  /* "halogen/api.pyx":597
  *     def c_header(self, object s=None):
  *         out = Outputs()
  *         if s is None:             # <<<<<<<<<<<<<<
@@ -13813,7 +13919,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_12c_header(struct __pyx_obj_7ha
   __pyx_t_3 = (__pyx_t_2 != 0);
   if (__pyx_t_3) {
 
-    /* "halogen/api.pyx":592
+    /* "halogen/api.pyx":598
  *         out = Outputs()
  *         if s is None:
  *             s = ''             # <<<<<<<<<<<<<<
@@ -13823,7 +13929,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_12c_header(struct __pyx_obj_7ha
     __Pyx_INCREF(__pyx_kp_s_);
     __Pyx_DECREF_SET(__pyx_v_s, __pyx_kp_s_);
 
-    /* "halogen/api.pyx":591
+    /* "halogen/api.pyx":597
  *     def c_header(self, object s=None):
  *         out = Outputs()
  *         if s is None:             # <<<<<<<<<<<<<<
@@ -13832,20 +13938,20 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_12c_header(struct __pyx_obj_7ha
  */
   }
 
-  /* "halogen/api.pyx":593
+  /* "halogen/api.pyx":599
  *         if s is None:
  *             s = ''
  *         out.__this__ = self.__this__.c_header(u8bytes(s))             # <<<<<<<<<<<<<<
  *         return out
  * 
  */
-  __pyx_t_1 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_s, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 593, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_s, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 599, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_4 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 593, __pyx_L1_error)
+  __pyx_t_4 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 599, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_out->__pyx___this__ = __pyx_v_self->__pyx___this__.c_header(__pyx_t_4);
 
-  /* "halogen/api.pyx":594
+  /* "halogen/api.pyx":600
  *             s = ''
  *         out.__this__ = self.__this__.c_header(u8bytes(s))
  *         return out             # <<<<<<<<<<<<<<
@@ -13857,7 +13963,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_12c_header(struct __pyx_obj_7ha
   __pyx_r = ((PyObject *)__pyx_v_out);
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":589
+  /* "halogen/api.pyx":595
  *         return out
  * 
  *     def c_header(self, object s=None):             # <<<<<<<<<<<<<<
@@ -13878,7 +13984,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_12c_header(struct __pyx_obj_7ha
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":596
+/* "halogen/api.pyx":602
  *         return out
  * 
  *     def c_source(self, object s=None):             # <<<<<<<<<<<<<<
@@ -13916,7 +14022,7 @@ static PyObject *__pyx_pw_7halogen_3api_7Outputs_15c_source(PyObject *__pyx_v_se
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "c_source") < 0)) __PYX_ERR(0, 596, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "c_source") < 0)) __PYX_ERR(0, 602, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -13930,7 +14036,7 @@ static PyObject *__pyx_pw_7halogen_3api_7Outputs_15c_source(PyObject *__pyx_v_se
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("c_source", 0, 0, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 596, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("c_source", 0, 0, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 602, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("halogen.api.Outputs.c_source", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -13954,19 +14060,19 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_14c_source(struct __pyx_obj_7ha
   __Pyx_RefNannySetupContext("c_source", 0);
   __Pyx_INCREF(__pyx_v_s);
 
-  /* "halogen/api.pyx":597
+  /* "halogen/api.pyx":603
  * 
  *     def c_source(self, object s=None):
  *         out = Outputs()             # <<<<<<<<<<<<<<
  *         if s is None:
  *             s = ''
  */
-  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_7halogen_3api_Outputs)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 597, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_7halogen_3api_Outputs)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 603, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_out = ((struct __pyx_obj_7halogen_3api_Outputs *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "halogen/api.pyx":598
+  /* "halogen/api.pyx":604
  *     def c_source(self, object s=None):
  *         out = Outputs()
  *         if s is None:             # <<<<<<<<<<<<<<
@@ -13977,7 +14083,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_14c_source(struct __pyx_obj_7ha
   __pyx_t_3 = (__pyx_t_2 != 0);
   if (__pyx_t_3) {
 
-    /* "halogen/api.pyx":599
+    /* "halogen/api.pyx":605
  *         out = Outputs()
  *         if s is None:
  *             s = ''             # <<<<<<<<<<<<<<
@@ -13987,7 +14093,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_14c_source(struct __pyx_obj_7ha
     __Pyx_INCREF(__pyx_kp_s_);
     __Pyx_DECREF_SET(__pyx_v_s, __pyx_kp_s_);
 
-    /* "halogen/api.pyx":598
+    /* "halogen/api.pyx":604
  *     def c_source(self, object s=None):
  *         out = Outputs()
  *         if s is None:             # <<<<<<<<<<<<<<
@@ -13996,20 +14102,20 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_14c_source(struct __pyx_obj_7ha
  */
   }
 
-  /* "halogen/api.pyx":600
+  /* "halogen/api.pyx":606
  *         if s is None:
  *             s = ''
  *         out.__this__ = self.__this__.c_source(u8bytes(s))             # <<<<<<<<<<<<<<
  *         return out
  * 
  */
-  __pyx_t_1 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_s, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 600, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_s, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 606, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_4 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 600, __pyx_L1_error)
+  __pyx_t_4 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 606, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_out->__pyx___this__ = __pyx_v_self->__pyx___this__.c_source(__pyx_t_4);
 
-  /* "halogen/api.pyx":601
+  /* "halogen/api.pyx":607
  *             s = ''
  *         out.__this__ = self.__this__.c_source(u8bytes(s))
  *         return out             # <<<<<<<<<<<<<<
@@ -14021,7 +14127,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_14c_source(struct __pyx_obj_7ha
   __pyx_r = ((PyObject *)__pyx_v_out);
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":596
+  /* "halogen/api.pyx":602
  *         return out
  * 
  *     def c_source(self, object s=None):             # <<<<<<<<<<<<<<
@@ -14042,7 +14148,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_14c_source(struct __pyx_obj_7ha
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":603
+/* "halogen/api.pyx":609
  *         return out
  * 
  *     def python_extension(self, object s=None):             # <<<<<<<<<<<<<<
@@ -14080,7 +14186,7 @@ static PyObject *__pyx_pw_7halogen_3api_7Outputs_17python_extension(PyObject *__
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "python_extension") < 0)) __PYX_ERR(0, 603, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "python_extension") < 0)) __PYX_ERR(0, 609, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -14094,7 +14200,7 @@ static PyObject *__pyx_pw_7halogen_3api_7Outputs_17python_extension(PyObject *__
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("python_extension", 0, 0, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 603, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("python_extension", 0, 0, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 609, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("halogen.api.Outputs.python_extension", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -14118,19 +14224,19 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_16python_extension(struct __pyx
   __Pyx_RefNannySetupContext("python_extension", 0);
   __Pyx_INCREF(__pyx_v_s);
 
-  /* "halogen/api.pyx":604
+  /* "halogen/api.pyx":610
  * 
  *     def python_extension(self, object s=None):
  *         out = Outputs()             # <<<<<<<<<<<<<<
  *         if s is None:
  *             s = ''
  */
-  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_7halogen_3api_Outputs)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 604, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_7halogen_3api_Outputs)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 610, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_out = ((struct __pyx_obj_7halogen_3api_Outputs *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "halogen/api.pyx":605
+  /* "halogen/api.pyx":611
  *     def python_extension(self, object s=None):
  *         out = Outputs()
  *         if s is None:             # <<<<<<<<<<<<<<
@@ -14141,7 +14247,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_16python_extension(struct __pyx
   __pyx_t_3 = (__pyx_t_2 != 0);
   if (__pyx_t_3) {
 
-    /* "halogen/api.pyx":606
+    /* "halogen/api.pyx":612
  *         out = Outputs()
  *         if s is None:
  *             s = ''             # <<<<<<<<<<<<<<
@@ -14151,7 +14257,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_16python_extension(struct __pyx
     __Pyx_INCREF(__pyx_kp_s_);
     __Pyx_DECREF_SET(__pyx_v_s, __pyx_kp_s_);
 
-    /* "halogen/api.pyx":605
+    /* "halogen/api.pyx":611
  *     def python_extension(self, object s=None):
  *         out = Outputs()
  *         if s is None:             # <<<<<<<<<<<<<<
@@ -14160,20 +14266,20 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_16python_extension(struct __pyx
  */
   }
 
-  /* "halogen/api.pyx":607
+  /* "halogen/api.pyx":613
  *         if s is None:
  *             s = ''
  *         out.__this__ = self.__this__.python_extension(u8bytes(s))             # <<<<<<<<<<<<<<
  *         return out
  * 
  */
-  __pyx_t_1 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_s, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 607, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_s, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 613, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_4 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 607, __pyx_L1_error)
+  __pyx_t_4 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 613, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_out->__pyx___this__ = __pyx_v_self->__pyx___this__.python_extension(__pyx_t_4);
 
-  /* "halogen/api.pyx":608
+  /* "halogen/api.pyx":614
  *             s = ''
  *         out.__this__ = self.__this__.python_extension(u8bytes(s))
  *         return out             # <<<<<<<<<<<<<<
@@ -14185,7 +14291,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_16python_extension(struct __pyx
   __pyx_r = ((PyObject *)__pyx_v_out);
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":603
+  /* "halogen/api.pyx":609
  *         return out
  * 
  *     def python_extension(self, object s=None):             # <<<<<<<<<<<<<<
@@ -14206,7 +14312,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_16python_extension(struct __pyx
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":610
+/* "halogen/api.pyx":616
  *         return out
  * 
  *     def stmt(self, object s=None):             # <<<<<<<<<<<<<<
@@ -14244,7 +14350,7 @@ static PyObject *__pyx_pw_7halogen_3api_7Outputs_19stmt(PyObject *__pyx_v_self, 
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "stmt") < 0)) __PYX_ERR(0, 610, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "stmt") < 0)) __PYX_ERR(0, 616, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -14258,7 +14364,7 @@ static PyObject *__pyx_pw_7halogen_3api_7Outputs_19stmt(PyObject *__pyx_v_self, 
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("stmt", 0, 0, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 610, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("stmt", 0, 0, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 616, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("halogen.api.Outputs.stmt", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -14282,19 +14388,19 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_18stmt(struct __pyx_obj_7haloge
   __Pyx_RefNannySetupContext("stmt", 0);
   __Pyx_INCREF(__pyx_v_s);
 
-  /* "halogen/api.pyx":611
+  /* "halogen/api.pyx":617
  * 
  *     def stmt(self, object s=None):
  *         out = Outputs()             # <<<<<<<<<<<<<<
  *         if s is None:
  *             s = ''
  */
-  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_7halogen_3api_Outputs)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 611, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_7halogen_3api_Outputs)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 617, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_out = ((struct __pyx_obj_7halogen_3api_Outputs *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "halogen/api.pyx":612
+  /* "halogen/api.pyx":618
  *     def stmt(self, object s=None):
  *         out = Outputs()
  *         if s is None:             # <<<<<<<<<<<<<<
@@ -14305,7 +14411,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_18stmt(struct __pyx_obj_7haloge
   __pyx_t_3 = (__pyx_t_2 != 0);
   if (__pyx_t_3) {
 
-    /* "halogen/api.pyx":613
+    /* "halogen/api.pyx":619
  *         out = Outputs()
  *         if s is None:
  *             s = ''             # <<<<<<<<<<<<<<
@@ -14315,7 +14421,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_18stmt(struct __pyx_obj_7haloge
     __Pyx_INCREF(__pyx_kp_s_);
     __Pyx_DECREF_SET(__pyx_v_s, __pyx_kp_s_);
 
-    /* "halogen/api.pyx":612
+    /* "halogen/api.pyx":618
  *     def stmt(self, object s=None):
  *         out = Outputs()
  *         if s is None:             # <<<<<<<<<<<<<<
@@ -14324,20 +14430,20 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_18stmt(struct __pyx_obj_7haloge
  */
   }
 
-  /* "halogen/api.pyx":614
+  /* "halogen/api.pyx":620
  *         if s is None:
  *             s = ''
  *         out.__this__ = self.__this__.stmt(u8bytes(s))             # <<<<<<<<<<<<<<
  *         return out
  * 
  */
-  __pyx_t_1 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_s, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 614, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_s, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 620, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_4 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 614, __pyx_L1_error)
+  __pyx_t_4 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 620, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_out->__pyx___this__ = __pyx_v_self->__pyx___this__.stmt(__pyx_t_4);
 
-  /* "halogen/api.pyx":615
+  /* "halogen/api.pyx":621
  *             s = ''
  *         out.__this__ = self.__this__.stmt(u8bytes(s))
  *         return out             # <<<<<<<<<<<<<<
@@ -14349,7 +14455,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_18stmt(struct __pyx_obj_7haloge
   __pyx_r = ((PyObject *)__pyx_v_out);
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":610
+  /* "halogen/api.pyx":616
  *         return out
  * 
  *     def stmt(self, object s=None):             # <<<<<<<<<<<<<<
@@ -14370,7 +14476,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_18stmt(struct __pyx_obj_7haloge
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":617
+/* "halogen/api.pyx":623
  *         return out
  * 
  *     def stmt_html(self, object s=None):             # <<<<<<<<<<<<<<
@@ -14408,7 +14514,7 @@ static PyObject *__pyx_pw_7halogen_3api_7Outputs_21stmt_html(PyObject *__pyx_v_s
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "stmt_html") < 0)) __PYX_ERR(0, 617, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "stmt_html") < 0)) __PYX_ERR(0, 623, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -14422,7 +14528,7 @@ static PyObject *__pyx_pw_7halogen_3api_7Outputs_21stmt_html(PyObject *__pyx_v_s
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("stmt_html", 0, 0, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 617, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("stmt_html", 0, 0, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 623, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("halogen.api.Outputs.stmt_html", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -14446,19 +14552,19 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_20stmt_html(struct __pyx_obj_7h
   __Pyx_RefNannySetupContext("stmt_html", 0);
   __Pyx_INCREF(__pyx_v_s);
 
-  /* "halogen/api.pyx":618
+  /* "halogen/api.pyx":624
  * 
  *     def stmt_html(self, object s=None):
  *         out = Outputs()             # <<<<<<<<<<<<<<
  *         if s is None:
  *             s = ''
  */
-  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_7halogen_3api_Outputs)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 618, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_7halogen_3api_Outputs)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 624, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_out = ((struct __pyx_obj_7halogen_3api_Outputs *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "halogen/api.pyx":619
+  /* "halogen/api.pyx":625
  *     def stmt_html(self, object s=None):
  *         out = Outputs()
  *         if s is None:             # <<<<<<<<<<<<<<
@@ -14469,7 +14575,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_20stmt_html(struct __pyx_obj_7h
   __pyx_t_3 = (__pyx_t_2 != 0);
   if (__pyx_t_3) {
 
-    /* "halogen/api.pyx":620
+    /* "halogen/api.pyx":626
  *         out = Outputs()
  *         if s is None:
  *             s = ''             # <<<<<<<<<<<<<<
@@ -14479,7 +14585,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_20stmt_html(struct __pyx_obj_7h
     __Pyx_INCREF(__pyx_kp_s_);
     __Pyx_DECREF_SET(__pyx_v_s, __pyx_kp_s_);
 
-    /* "halogen/api.pyx":619
+    /* "halogen/api.pyx":625
  *     def stmt_html(self, object s=None):
  *         out = Outputs()
  *         if s is None:             # <<<<<<<<<<<<<<
@@ -14488,20 +14594,20 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_20stmt_html(struct __pyx_obj_7h
  */
   }
 
-  /* "halogen/api.pyx":621
+  /* "halogen/api.pyx":627
  *         if s is None:
  *             s = ''
  *         out.__this__ = self.__this__.stmt_html(u8bytes(s))             # <<<<<<<<<<<<<<
  *         return out
  * 
  */
-  __pyx_t_1 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_s, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 621, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_s, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 627, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_4 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 621, __pyx_L1_error)
+  __pyx_t_4 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 627, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_out->__pyx___this__ = __pyx_v_self->__pyx___this__.stmt_html(__pyx_t_4);
 
-  /* "halogen/api.pyx":622
+  /* "halogen/api.pyx":628
  *             s = ''
  *         out.__this__ = self.__this__.stmt_html(u8bytes(s))
  *         return out             # <<<<<<<<<<<<<<
@@ -14513,7 +14619,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_20stmt_html(struct __pyx_obj_7h
   __pyx_r = ((PyObject *)__pyx_v_out);
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":617
+  /* "halogen/api.pyx":623
  *         return out
  * 
  *     def stmt_html(self, object s=None):             # <<<<<<<<<<<<<<
@@ -14534,7 +14640,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_20stmt_html(struct __pyx_obj_7h
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":624
+/* "halogen/api.pyx":630
  *         return out
  * 
  *     def static_library(self, object s=None):             # <<<<<<<<<<<<<<
@@ -14572,7 +14678,7 @@ static PyObject *__pyx_pw_7halogen_3api_7Outputs_23static_library(PyObject *__py
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "static_library") < 0)) __PYX_ERR(0, 624, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "static_library") < 0)) __PYX_ERR(0, 630, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -14586,7 +14692,7 @@ static PyObject *__pyx_pw_7halogen_3api_7Outputs_23static_library(PyObject *__py
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("static_library", 0, 0, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 624, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("static_library", 0, 0, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 630, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("halogen.api.Outputs.static_library", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -14610,19 +14716,19 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_22static_library(struct __pyx_o
   __Pyx_RefNannySetupContext("static_library", 0);
   __Pyx_INCREF(__pyx_v_s);
 
-  /* "halogen/api.pyx":625
+  /* "halogen/api.pyx":631
  * 
  *     def static_library(self, object s=None):
  *         out = Outputs()             # <<<<<<<<<<<<<<
  *         if s is None:
  *             s = ''
  */
-  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_7halogen_3api_Outputs)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 625, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_7halogen_3api_Outputs)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 631, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_out = ((struct __pyx_obj_7halogen_3api_Outputs *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "halogen/api.pyx":626
+  /* "halogen/api.pyx":632
  *     def static_library(self, object s=None):
  *         out = Outputs()
  *         if s is None:             # <<<<<<<<<<<<<<
@@ -14633,7 +14739,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_22static_library(struct __pyx_o
   __pyx_t_3 = (__pyx_t_2 != 0);
   if (__pyx_t_3) {
 
-    /* "halogen/api.pyx":627
+    /* "halogen/api.pyx":633
  *         out = Outputs()
  *         if s is None:
  *             s = ''             # <<<<<<<<<<<<<<
@@ -14643,7 +14749,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_22static_library(struct __pyx_o
     __Pyx_INCREF(__pyx_kp_s_);
     __Pyx_DECREF_SET(__pyx_v_s, __pyx_kp_s_);
 
-    /* "halogen/api.pyx":626
+    /* "halogen/api.pyx":632
  *     def static_library(self, object s=None):
  *         out = Outputs()
  *         if s is None:             # <<<<<<<<<<<<<<
@@ -14652,20 +14758,20 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_22static_library(struct __pyx_o
  */
   }
 
-  /* "halogen/api.pyx":628
+  /* "halogen/api.pyx":634
  *         if s is None:
  *             s = ''
  *         out.__this__ = self.__this__.static_library(u8bytes(s))             # <<<<<<<<<<<<<<
  *         return out
  * 
  */
-  __pyx_t_1 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_s, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 628, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_s, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 634, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_4 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 628, __pyx_L1_error)
+  __pyx_t_4 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 634, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_out->__pyx___this__ = __pyx_v_self->__pyx___this__.static_library(__pyx_t_4);
 
-  /* "halogen/api.pyx":629
+  /* "halogen/api.pyx":635
  *             s = ''
  *         out.__this__ = self.__this__.static_library(u8bytes(s))
  *         return out             # <<<<<<<<<<<<<<
@@ -14677,7 +14783,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_22static_library(struct __pyx_o
   __pyx_r = ((PyObject *)__pyx_v_out);
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":624
+  /* "halogen/api.pyx":630
  *         return out
  * 
  *     def static_library(self, object s=None):             # <<<<<<<<<<<<<<
@@ -14698,7 +14804,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_22static_library(struct __pyx_o
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":631
+/* "halogen/api.pyx":637
  *         return out
  * 
  *     def schedule(self, object s=None):             # <<<<<<<<<<<<<<
@@ -14736,7 +14842,7 @@ static PyObject *__pyx_pw_7halogen_3api_7Outputs_25schedule(PyObject *__pyx_v_se
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "schedule") < 0)) __PYX_ERR(0, 631, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "schedule") < 0)) __PYX_ERR(0, 637, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -14750,7 +14856,7 @@ static PyObject *__pyx_pw_7halogen_3api_7Outputs_25schedule(PyObject *__pyx_v_se
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("schedule", 0, 0, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 631, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("schedule", 0, 0, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 637, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("halogen.api.Outputs.schedule", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -14774,19 +14880,19 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_24schedule(struct __pyx_obj_7ha
   __Pyx_RefNannySetupContext("schedule", 0);
   __Pyx_INCREF(__pyx_v_s);
 
-  /* "halogen/api.pyx":632
+  /* "halogen/api.pyx":638
  * 
  *     def schedule(self, object s=None):
  *         out = Outputs()             # <<<<<<<<<<<<<<
  *         if s is None:
  *             s = ''
  */
-  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_7halogen_3api_Outputs)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 632, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_7halogen_3api_Outputs)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 638, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_out = ((struct __pyx_obj_7halogen_3api_Outputs *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "halogen/api.pyx":633
+  /* "halogen/api.pyx":639
  *     def schedule(self, object s=None):
  *         out = Outputs()
  *         if s is None:             # <<<<<<<<<<<<<<
@@ -14797,7 +14903,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_24schedule(struct __pyx_obj_7ha
   __pyx_t_3 = (__pyx_t_2 != 0);
   if (__pyx_t_3) {
 
-    /* "halogen/api.pyx":634
+    /* "halogen/api.pyx":640
  *         out = Outputs()
  *         if s is None:
  *             s = ''             # <<<<<<<<<<<<<<
@@ -14807,7 +14913,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_24schedule(struct __pyx_obj_7ha
     __Pyx_INCREF(__pyx_kp_s_);
     __Pyx_DECREF_SET(__pyx_v_s, __pyx_kp_s_);
 
-    /* "halogen/api.pyx":633
+    /* "halogen/api.pyx":639
  *     def schedule(self, object s=None):
  *         out = Outputs()
  *         if s is None:             # <<<<<<<<<<<<<<
@@ -14816,20 +14922,20 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_24schedule(struct __pyx_obj_7ha
  */
   }
 
-  /* "halogen/api.pyx":635
+  /* "halogen/api.pyx":641
  *         if s is None:
  *             s = ''
  *         out.__this__ = self.__this__.schedule(u8bytes(s))             # <<<<<<<<<<<<<<
  *         return out
  * 
  */
-  __pyx_t_1 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_s, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 635, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_s, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 641, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_4 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 635, __pyx_L1_error)
+  __pyx_t_4 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 641, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_out->__pyx___this__ = __pyx_v_self->__pyx___this__.schedule(__pyx_t_4);
 
-  /* "halogen/api.pyx":636
+  /* "halogen/api.pyx":642
  *             s = ''
  *         out.__this__ = self.__this__.schedule(u8bytes(s))
  *         return out             # <<<<<<<<<<<<<<
@@ -14841,7 +14947,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_24schedule(struct __pyx_obj_7ha
   __pyx_r = ((PyObject *)__pyx_v_out);
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":631
+  /* "halogen/api.pyx":637
  *         return out
  * 
  *     def schedule(self, object s=None):             # <<<<<<<<<<<<<<
@@ -14862,7 +14968,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_24schedule(struct __pyx_obj_7ha
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":638
+/* "halogen/api.pyx":644
  *         return out
  * 
  *     def to_string(self):             # <<<<<<<<<<<<<<
@@ -14894,7 +15000,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_26to_string(struct __pyx_obj_7h
   PyObject *__pyx_t_5 = NULL;
   __Pyx_RefNannySetupContext("to_string", 0);
 
-  /* "halogen/api.pyx":639
+  /* "halogen/api.pyx":645
  * 
  *     def to_string(self):
  *         return stringify(self, ("object_name", "assembly_name", "bitcode_name",             # <<<<<<<<<<<<<<
@@ -14902,7 +15008,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_26to_string(struct __pyx_obj_7h
  *                                 "python_extension_name", "stmt_name", "stmt_html_name",
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_stringify); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 639, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_stringify); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 645, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = NULL;
   __pyx_t_4 = 0;
@@ -14919,7 +15025,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_26to_string(struct __pyx_obj_7h
   #if CYTHON_FAST_PYCALL
   if (PyFunction_Check(__pyx_t_2)) {
     PyObject *__pyx_temp[3] = {__pyx_t_3, ((PyObject *)__pyx_v_self), __pyx_tuple__11};
-    __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_4, 2+__pyx_t_4); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 639, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_4, 2+__pyx_t_4); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 645, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_GOTREF(__pyx_t_1);
   } else
@@ -14927,13 +15033,13 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_26to_string(struct __pyx_obj_7h
   #if CYTHON_FAST_PYCCALL
   if (__Pyx_PyFastCFunction_Check(__pyx_t_2)) {
     PyObject *__pyx_temp[3] = {__pyx_t_3, ((PyObject *)__pyx_v_self), __pyx_tuple__11};
-    __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_4, 2+__pyx_t_4); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 639, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_4, 2+__pyx_t_4); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 645, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_GOTREF(__pyx_t_1);
   } else
   #endif
   {
-    __pyx_t_5 = PyTuple_New(2+__pyx_t_4); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 639, __pyx_L1_error)
+    __pyx_t_5 = PyTuple_New(2+__pyx_t_4); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 645, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     if (__pyx_t_3) {
       __Pyx_GIVEREF(__pyx_t_3); PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_3); __pyx_t_3 = NULL;
@@ -14944,7 +15050,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_26to_string(struct __pyx_obj_7h
     __Pyx_INCREF(__pyx_tuple__11);
     __Pyx_GIVEREF(__pyx_tuple__11);
     PyTuple_SET_ITEM(__pyx_t_5, 1+__pyx_t_4, __pyx_tuple__11);
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_5, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 639, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_5, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 645, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   }
@@ -14953,7 +15059,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_26to_string(struct __pyx_obj_7h
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":638
+  /* "halogen/api.pyx":644
  *         return out
  * 
  *     def to_string(self):             # <<<<<<<<<<<<<<
@@ -14975,7 +15081,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_26to_string(struct __pyx_obj_7h
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":644
+/* "halogen/api.pyx":650
  *                                 "static_library_name", "schedule_name"))
  * 
  *     def __bytes__(self):             # <<<<<<<<<<<<<<
@@ -15005,7 +15111,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_28__bytes__(struct __pyx_obj_7h
   PyObject *__pyx_t_3 = NULL;
   __Pyx_RefNannySetupContext("__bytes__", 0);
 
-  /* "halogen/api.pyx":645
+  /* "halogen/api.pyx":651
  * 
  *     def __bytes__(self):
  *         return self.to_string()             # <<<<<<<<<<<<<<
@@ -15013,7 +15119,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_28__bytes__(struct __pyx_obj_7h
  *     def __str__(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_to_string); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 645, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_to_string); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 651, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
@@ -15026,10 +15132,10 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_28__bytes__(struct __pyx_obj_7h
     }
   }
   if (__pyx_t_3) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 645, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 651, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   } else {
-    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 645, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 651, __pyx_L1_error)
   }
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
@@ -15037,7 +15143,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_28__bytes__(struct __pyx_obj_7h
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":644
+  /* "halogen/api.pyx":650
  *                                 "static_library_name", "schedule_name"))
  * 
  *     def __bytes__(self):             # <<<<<<<<<<<<<<
@@ -15058,7 +15164,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_28__bytes__(struct __pyx_obj_7h
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":647
+/* "halogen/api.pyx":653
  *         return self.to_string()
  * 
  *     def __str__(self):             # <<<<<<<<<<<<<<
@@ -15087,7 +15193,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_30__str__(struct __pyx_obj_7hal
   PyObject *__pyx_t_3 = NULL;
   __Pyx_RefNannySetupContext("__str__", 0);
 
-  /* "halogen/api.pyx":648
+  /* "halogen/api.pyx":654
  * 
  *     def __str__(self):
  *         return self.to_string().decode('UTF-8')             # <<<<<<<<<<<<<<
@@ -15095,7 +15201,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_30__str__(struct __pyx_obj_7hal
  *     def __repr__(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_to_string); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 648, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_to_string); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 654, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
@@ -15108,24 +15214,24 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_30__str__(struct __pyx_obj_7hal
     }
   }
   if (__pyx_t_3) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 648, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 654, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   } else {
-    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 648, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 654, __pyx_L1_error)
   }
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_decode); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 648, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_decode); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 654, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_tuple__12, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 648, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_tuple__12, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 654, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":647
+  /* "halogen/api.pyx":653
  *         return self.to_string()
  * 
  *     def __str__(self):             # <<<<<<<<<<<<<<
@@ -15146,7 +15252,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_30__str__(struct __pyx_obj_7hal
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":650
+/* "halogen/api.pyx":656
  *         return self.to_string().decode('UTF-8')
  * 
  *     def __repr__(self):             # <<<<<<<<<<<<<<
@@ -15175,7 +15281,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_32__repr__(struct __pyx_obj_7ha
   PyObject *__pyx_t_3 = NULL;
   __Pyx_RefNannySetupContext("__repr__", 0);
 
-  /* "halogen/api.pyx":651
+  /* "halogen/api.pyx":657
  * 
  *     def __repr__(self):
  *         return self.to_string().decode('UTF-8')             # <<<<<<<<<<<<<<
@@ -15183,7 +15289,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_32__repr__(struct __pyx_obj_7ha
  * 
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_to_string); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 651, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_to_string); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 657, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
@@ -15196,24 +15302,24 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_32__repr__(struct __pyx_obj_7ha
     }
   }
   if (__pyx_t_3) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 651, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 657, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   } else {
-    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 651, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 657, __pyx_L1_error)
   }
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_decode); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 651, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_decode); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 657, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_tuple__13, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 651, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_tuple__13, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 657, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":650
+  /* "halogen/api.pyx":656
  *         return self.to_string().decode('UTF-8')
  * 
  *     def __repr__(self):             # <<<<<<<<<<<<<<
@@ -15343,12 +15449,12 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_36__setstate_cython__(CYTHON_UN
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":678
+/* "halogen/api.pyx":684
  *     }
  * 
  *     def __cinit__(self, *args, **kwargs):             # <<<<<<<<<<<<<<
  *         for arg in args:
- *             if type(arg) == type(self):
+ *             if type(arg) is type(self):
  */
 
 /* Python wrapper */
@@ -15395,265 +15501,265 @@ static int __pyx_pf_7halogen_3api_11EmitOptions___cinit__(struct __pyx_obj_7halo
   Py_ssize_t __pyx_t_2;
   PyObject *__pyx_t_3 = NULL;
   int __pyx_t_4;
-  PyObject *__pyx_t_5 = NULL;
+  int __pyx_t_5;
   PyObject *__pyx_t_6 = NULL;
-  Py_ssize_t __pyx_t_7;
-  PyObject *(*__pyx_t_8)(PyObject *);
-  PyObject *__pyx_t_9 = NULL;
+  PyObject *__pyx_t_7 = NULL;
+  Py_ssize_t __pyx_t_8;
+  PyObject *(*__pyx_t_9)(PyObject *);
   PyObject *__pyx_t_10 = NULL;
-  PyObject *(*__pyx_t_11)(PyObject *);
-  std::string __pyx_t_12;
+  PyObject *__pyx_t_11 = NULL;
+  PyObject *(*__pyx_t_12)(PyObject *);
   std::string __pyx_t_13;
+  std::string __pyx_t_14;
   __Pyx_RefNannySetupContext("__cinit__", 0);
 
-  /* "halogen/api.pyx":679
+  /* "halogen/api.pyx":685
  * 
  *     def __cinit__(self, *args, **kwargs):
  *         for arg in args:             # <<<<<<<<<<<<<<
- *             if type(arg) == type(self):
+ *             if type(arg) is type(self):
  *                 self.__this__ = EmOpts()
  */
   __pyx_t_1 = __pyx_v_args; __Pyx_INCREF(__pyx_t_1); __pyx_t_2 = 0;
   for (;;) {
     if (__pyx_t_2 >= PyTuple_GET_SIZE(__pyx_t_1)) break;
     #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-    __pyx_t_3 = PyTuple_GET_ITEM(__pyx_t_1, __pyx_t_2); __Pyx_INCREF(__pyx_t_3); __pyx_t_2++; if (unlikely(0 < 0)) __PYX_ERR(0, 679, __pyx_L1_error)
+    __pyx_t_3 = PyTuple_GET_ITEM(__pyx_t_1, __pyx_t_2); __Pyx_INCREF(__pyx_t_3); __pyx_t_2++; if (unlikely(0 < 0)) __PYX_ERR(0, 685, __pyx_L1_error)
     #else
-    __pyx_t_3 = PySequence_ITEM(__pyx_t_1, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 679, __pyx_L1_error)
+    __pyx_t_3 = PySequence_ITEM(__pyx_t_1, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 685, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     #endif
     __Pyx_XDECREF_SET(__pyx_v_arg, __pyx_t_3);
     __pyx_t_3 = 0;
 
-    /* "halogen/api.pyx":680
+    /* "halogen/api.pyx":686
  *     def __cinit__(self, *args, **kwargs):
  *         for arg in args:
- *             if type(arg) == type(self):             # <<<<<<<<<<<<<<
+ *             if type(arg) is type(self):             # <<<<<<<<<<<<<<
  *                 self.__this__ = EmOpts()
  *                 self.__this__.emit_o = PyObject_IsTrue(arg.emit_o)
  */
-    __pyx_t_3 = PyObject_RichCompare(((PyObject *)Py_TYPE(__pyx_v_arg)), ((PyObject *)Py_TYPE(((PyObject *)__pyx_v_self))), Py_EQ); __Pyx_XGOTREF(__pyx_t_3); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 680, __pyx_L1_error)
-    __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 680, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    if (__pyx_t_4) {
+    __pyx_t_4 = (((PyObject *)Py_TYPE(__pyx_v_arg)) == ((PyObject *)Py_TYPE(((PyObject *)__pyx_v_self))));
+    __pyx_t_5 = (__pyx_t_4 != 0);
+    if (__pyx_t_5) {
 
-      /* "halogen/api.pyx":681
+      /* "halogen/api.pyx":687
  *         for arg in args:
- *             if type(arg) == type(self):
+ *             if type(arg) is type(self):
  *                 self.__this__ = EmOpts()             # <<<<<<<<<<<<<<
  *                 self.__this__.emit_o = PyObject_IsTrue(arg.emit_o)
  *                 self.__this__.emit_h = PyObject_IsTrue(arg.emit_h)
  */
       __pyx_v_self->__pyx___this__ = __pyx_t_7halogen_3api_EmOpts();
 
-      /* "halogen/api.pyx":682
- *             if type(arg) == type(self):
+      /* "halogen/api.pyx":688
+ *             if type(arg) is type(self):
  *                 self.__this__ = EmOpts()
  *                 self.__this__.emit_o = PyObject_IsTrue(arg.emit_o)             # <<<<<<<<<<<<<<
  *                 self.__this__.emit_h = PyObject_IsTrue(arg.emit_h)
  *                 self.__this__.emit_cpp = PyObject_IsTrue(arg.emit_cpp)
  */
-      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_arg, __pyx_n_s_emit_o); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 682, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_arg, __pyx_n_s_emit_o); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 688, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_4 = PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_4 == ((int)-1))) __PYX_ERR(0, 682, __pyx_L1_error)
+      __pyx_t_5 = PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_5 == ((int)-1))) __PYX_ERR(0, 688, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __pyx_v_self->__pyx___this__.emit_o = __pyx_t_4;
+      __pyx_v_self->__pyx___this__.emit_o = __pyx_t_5;
 
-      /* "halogen/api.pyx":683
+      /* "halogen/api.pyx":689
  *                 self.__this__ = EmOpts()
  *                 self.__this__.emit_o = PyObject_IsTrue(arg.emit_o)
  *                 self.__this__.emit_h = PyObject_IsTrue(arg.emit_h)             # <<<<<<<<<<<<<<
  *                 self.__this__.emit_cpp = PyObject_IsTrue(arg.emit_cpp)
  *                 self.__this__.emit_assembly = PyObject_IsTrue(arg.emit_assembly)
  */
-      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_arg, __pyx_n_s_emit_h); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 683, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_arg, __pyx_n_s_emit_h); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 689, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_4 = PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_4 == ((int)-1))) __PYX_ERR(0, 683, __pyx_L1_error)
+      __pyx_t_5 = PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_5 == ((int)-1))) __PYX_ERR(0, 689, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __pyx_v_self->__pyx___this__.emit_h = __pyx_t_4;
+      __pyx_v_self->__pyx___this__.emit_h = __pyx_t_5;
 
-      /* "halogen/api.pyx":684
+      /* "halogen/api.pyx":690
  *                 self.__this__.emit_o = PyObject_IsTrue(arg.emit_o)
  *                 self.__this__.emit_h = PyObject_IsTrue(arg.emit_h)
  *                 self.__this__.emit_cpp = PyObject_IsTrue(arg.emit_cpp)             # <<<<<<<<<<<<<<
  *                 self.__this__.emit_assembly = PyObject_IsTrue(arg.emit_assembly)
  *                 self.__this__.emit_bitcode = PyObject_IsTrue(arg.emit_bitcode)
  */
-      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_arg, __pyx_n_s_emit_cpp); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 684, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_arg, __pyx_n_s_emit_cpp); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 690, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_4 = PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_4 == ((int)-1))) __PYX_ERR(0, 684, __pyx_L1_error)
+      __pyx_t_5 = PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_5 == ((int)-1))) __PYX_ERR(0, 690, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __pyx_v_self->__pyx___this__.emit_cpp = __pyx_t_4;
+      __pyx_v_self->__pyx___this__.emit_cpp = __pyx_t_5;
 
-      /* "halogen/api.pyx":685
+      /* "halogen/api.pyx":691
  *                 self.__this__.emit_h = PyObject_IsTrue(arg.emit_h)
  *                 self.__this__.emit_cpp = PyObject_IsTrue(arg.emit_cpp)
  *                 self.__this__.emit_assembly = PyObject_IsTrue(arg.emit_assembly)             # <<<<<<<<<<<<<<
  *                 self.__this__.emit_bitcode = PyObject_IsTrue(arg.emit_bitcode)
  *                 self.__this__.emit_stmt = PyObject_IsTrue(arg.emit_stmt)
  */
-      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_arg, __pyx_n_s_emit_assembly); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 685, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_arg, __pyx_n_s_emit_assembly); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 691, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_4 = PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_4 == ((int)-1))) __PYX_ERR(0, 685, __pyx_L1_error)
+      __pyx_t_5 = PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_5 == ((int)-1))) __PYX_ERR(0, 691, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __pyx_v_self->__pyx___this__.emit_assembly = __pyx_t_4;
+      __pyx_v_self->__pyx___this__.emit_assembly = __pyx_t_5;
 
-      /* "halogen/api.pyx":686
+      /* "halogen/api.pyx":692
  *                 self.__this__.emit_cpp = PyObject_IsTrue(arg.emit_cpp)
  *                 self.__this__.emit_assembly = PyObject_IsTrue(arg.emit_assembly)
  *                 self.__this__.emit_bitcode = PyObject_IsTrue(arg.emit_bitcode)             # <<<<<<<<<<<<<<
  *                 self.__this__.emit_stmt = PyObject_IsTrue(arg.emit_stmt)
  *                 self.__this__.emit_stmt_html = PyObject_IsTrue(arg.emit_stmt_html)
  */
-      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_arg, __pyx_n_s_emit_bitcode); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 686, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_arg, __pyx_n_s_emit_bitcode); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 692, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_4 = PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_4 == ((int)-1))) __PYX_ERR(0, 686, __pyx_L1_error)
+      __pyx_t_5 = PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_5 == ((int)-1))) __PYX_ERR(0, 692, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __pyx_v_self->__pyx___this__.emit_bitcode = __pyx_t_4;
+      __pyx_v_self->__pyx___this__.emit_bitcode = __pyx_t_5;
 
-      /* "halogen/api.pyx":687
+      /* "halogen/api.pyx":693
  *                 self.__this__.emit_assembly = PyObject_IsTrue(arg.emit_assembly)
  *                 self.__this__.emit_bitcode = PyObject_IsTrue(arg.emit_bitcode)
  *                 self.__this__.emit_stmt = PyObject_IsTrue(arg.emit_stmt)             # <<<<<<<<<<<<<<
  *                 self.__this__.emit_stmt_html = PyObject_IsTrue(arg.emit_stmt_html)
  *                 self.__this__.emit_python_extension = PyObject_IsTrue(arg.emit_python_extension)
  */
-      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_arg, __pyx_n_s_emit_stmt); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 687, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_arg, __pyx_n_s_emit_stmt); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 693, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_4 = PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_4 == ((int)-1))) __PYX_ERR(0, 687, __pyx_L1_error)
+      __pyx_t_5 = PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_5 == ((int)-1))) __PYX_ERR(0, 693, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __pyx_v_self->__pyx___this__.emit_stmt = __pyx_t_4;
+      __pyx_v_self->__pyx___this__.emit_stmt = __pyx_t_5;
 
-      /* "halogen/api.pyx":688
+      /* "halogen/api.pyx":694
  *                 self.__this__.emit_bitcode = PyObject_IsTrue(arg.emit_bitcode)
  *                 self.__this__.emit_stmt = PyObject_IsTrue(arg.emit_stmt)
  *                 self.__this__.emit_stmt_html = PyObject_IsTrue(arg.emit_stmt_html)             # <<<<<<<<<<<<<<
  *                 self.__this__.emit_python_extension = PyObject_IsTrue(arg.emit_python_extension)
  *                 self.__this__.emit_static_library = PyObject_IsTrue(arg.emit_static_library)
  */
-      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_arg, __pyx_n_s_emit_stmt_html); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 688, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_arg, __pyx_n_s_emit_stmt_html); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 694, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_4 = PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_4 == ((int)-1))) __PYX_ERR(0, 688, __pyx_L1_error)
+      __pyx_t_5 = PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_5 == ((int)-1))) __PYX_ERR(0, 694, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __pyx_v_self->__pyx___this__.emit_stmt_html = __pyx_t_4;
+      __pyx_v_self->__pyx___this__.emit_stmt_html = __pyx_t_5;
 
-      /* "halogen/api.pyx":689
+      /* "halogen/api.pyx":695
  *                 self.__this__.emit_stmt = PyObject_IsTrue(arg.emit_stmt)
  *                 self.__this__.emit_stmt_html = PyObject_IsTrue(arg.emit_stmt_html)
  *                 self.__this__.emit_python_extension = PyObject_IsTrue(arg.emit_python_extension)             # <<<<<<<<<<<<<<
  *                 self.__this__.emit_static_library = PyObject_IsTrue(arg.emit_static_library)
  *                 self.__this__.emit_cpp_stub = PyObject_IsTrue(arg.emit_cpp_stub)
  */
-      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_arg, __pyx_n_s_emit_python_extension); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 689, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_arg, __pyx_n_s_emit_python_extension); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 695, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_4 = PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_4 == ((int)-1))) __PYX_ERR(0, 689, __pyx_L1_error)
+      __pyx_t_5 = PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_5 == ((int)-1))) __PYX_ERR(0, 695, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __pyx_v_self->__pyx___this__.emit_python_extension = __pyx_t_4;
+      __pyx_v_self->__pyx___this__.emit_python_extension = __pyx_t_5;
 
-      /* "halogen/api.pyx":690
+      /* "halogen/api.pyx":696
  *                 self.__this__.emit_stmt_html = PyObject_IsTrue(arg.emit_stmt_html)
  *                 self.__this__.emit_python_extension = PyObject_IsTrue(arg.emit_python_extension)
  *                 self.__this__.emit_static_library = PyObject_IsTrue(arg.emit_static_library)             # <<<<<<<<<<<<<<
  *                 self.__this__.emit_cpp_stub = PyObject_IsTrue(arg.emit_cpp_stub)
  *                 self.__this__.emit_schedule = PyObject_IsTrue(arg.emit_schedule)
  */
-      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_arg, __pyx_n_s_emit_static_library); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 690, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_arg, __pyx_n_s_emit_static_library); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 696, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_4 = PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_4 == ((int)-1))) __PYX_ERR(0, 690, __pyx_L1_error)
+      __pyx_t_5 = PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_5 == ((int)-1))) __PYX_ERR(0, 696, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __pyx_v_self->__pyx___this__.emit_static_library = __pyx_t_4;
+      __pyx_v_self->__pyx___this__.emit_static_library = __pyx_t_5;
 
-      /* "halogen/api.pyx":691
+      /* "halogen/api.pyx":697
  *                 self.__this__.emit_python_extension = PyObject_IsTrue(arg.emit_python_extension)
  *                 self.__this__.emit_static_library = PyObject_IsTrue(arg.emit_static_library)
  *                 self.__this__.emit_cpp_stub = PyObject_IsTrue(arg.emit_cpp_stub)             # <<<<<<<<<<<<<<
  *                 self.__this__.emit_schedule = PyObject_IsTrue(arg.emit_schedule)
  *                 for k, v in arg.substitutions.items():
  */
-      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_arg, __pyx_n_s_emit_cpp_stub); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 691, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_arg, __pyx_n_s_emit_cpp_stub); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 697, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_4 = PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_4 == ((int)-1))) __PYX_ERR(0, 691, __pyx_L1_error)
+      __pyx_t_5 = PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_5 == ((int)-1))) __PYX_ERR(0, 697, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __pyx_v_self->__pyx___this__.emit_cpp_stub = __pyx_t_4;
+      __pyx_v_self->__pyx___this__.emit_cpp_stub = __pyx_t_5;
 
-      /* "halogen/api.pyx":692
+      /* "halogen/api.pyx":698
  *                 self.__this__.emit_static_library = PyObject_IsTrue(arg.emit_static_library)
  *                 self.__this__.emit_cpp_stub = PyObject_IsTrue(arg.emit_cpp_stub)
  *                 self.__this__.emit_schedule = PyObject_IsTrue(arg.emit_schedule)             # <<<<<<<<<<<<<<
  *                 for k, v in arg.substitutions.items():
  *                     self.__this__.substitutions[<string>u8bytes(k)] = <string>u8bytes(v)
  */
-      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_arg, __pyx_n_s_emit_schedule); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 692, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_arg, __pyx_n_s_emit_schedule); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 698, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_4 = PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_4 == ((int)-1))) __PYX_ERR(0, 692, __pyx_L1_error)
+      __pyx_t_5 = PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_5 == ((int)-1))) __PYX_ERR(0, 698, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __pyx_v_self->__pyx___this__.emit_schedule = __pyx_t_4;
+      __pyx_v_self->__pyx___this__.emit_schedule = __pyx_t_5;
 
-      /* "halogen/api.pyx":693
+      /* "halogen/api.pyx":699
  *                 self.__this__.emit_cpp_stub = PyObject_IsTrue(arg.emit_cpp_stub)
  *                 self.__this__.emit_schedule = PyObject_IsTrue(arg.emit_schedule)
  *                 for k, v in arg.substitutions.items():             # <<<<<<<<<<<<<<
  *                     self.__this__.substitutions[<string>u8bytes(k)] = <string>u8bytes(v)
  *                 return
  */
-      __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_arg, __pyx_n_s_substitutions); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 693, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_5);
-      __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_items); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 693, __pyx_L1_error)
+      __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_arg, __pyx_n_s_substitutions); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 699, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_6);
-      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-      __pyx_t_5 = NULL;
-      if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_6))) {
-        __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_6);
-        if (likely(__pyx_t_5)) {
-          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_6);
-          __Pyx_INCREF(__pyx_t_5);
+      __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_items); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 699, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_7);
+      __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+      __pyx_t_6 = NULL;
+      if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_7))) {
+        __pyx_t_6 = PyMethod_GET_SELF(__pyx_t_7);
+        if (likely(__pyx_t_6)) {
+          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_7);
+          __Pyx_INCREF(__pyx_t_6);
           __Pyx_INCREF(function);
-          __Pyx_DECREF_SET(__pyx_t_6, function);
+          __Pyx_DECREF_SET(__pyx_t_7, function);
         }
       }
-      if (__pyx_t_5) {
-        __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_t_6, __pyx_t_5); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 693, __pyx_L1_error)
-        __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+      if (__pyx_t_6) {
+        __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_t_7, __pyx_t_6); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 699, __pyx_L1_error)
+        __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
       } else {
-        __pyx_t_3 = __Pyx_PyObject_CallNoArg(__pyx_t_6); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 693, __pyx_L1_error)
+        __pyx_t_3 = __Pyx_PyObject_CallNoArg(__pyx_t_7); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 699, __pyx_L1_error)
       }
       __Pyx_GOTREF(__pyx_t_3);
-      __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+      __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
       if (likely(PyList_CheckExact(__pyx_t_3)) || PyTuple_CheckExact(__pyx_t_3)) {
-        __pyx_t_6 = __pyx_t_3; __Pyx_INCREF(__pyx_t_6); __pyx_t_7 = 0;
-        __pyx_t_8 = NULL;
+        __pyx_t_7 = __pyx_t_3; __Pyx_INCREF(__pyx_t_7); __pyx_t_8 = 0;
+        __pyx_t_9 = NULL;
       } else {
-        __pyx_t_7 = -1; __pyx_t_6 = PyObject_GetIter(__pyx_t_3); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 693, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_6);
-        __pyx_t_8 = Py_TYPE(__pyx_t_6)->tp_iternext; if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 693, __pyx_L1_error)
+        __pyx_t_8 = -1; __pyx_t_7 = PyObject_GetIter(__pyx_t_3); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 699, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_7);
+        __pyx_t_9 = Py_TYPE(__pyx_t_7)->tp_iternext; if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 699, __pyx_L1_error)
       }
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
       for (;;) {
-        if (likely(!__pyx_t_8)) {
-          if (likely(PyList_CheckExact(__pyx_t_6))) {
-            if (__pyx_t_7 >= PyList_GET_SIZE(__pyx_t_6)) break;
+        if (likely(!__pyx_t_9)) {
+          if (likely(PyList_CheckExact(__pyx_t_7))) {
+            if (__pyx_t_8 >= PyList_GET_SIZE(__pyx_t_7)) break;
             #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-            __pyx_t_3 = PyList_GET_ITEM(__pyx_t_6, __pyx_t_7); __Pyx_INCREF(__pyx_t_3); __pyx_t_7++; if (unlikely(0 < 0)) __PYX_ERR(0, 693, __pyx_L1_error)
+            __pyx_t_3 = PyList_GET_ITEM(__pyx_t_7, __pyx_t_8); __Pyx_INCREF(__pyx_t_3); __pyx_t_8++; if (unlikely(0 < 0)) __PYX_ERR(0, 699, __pyx_L1_error)
             #else
-            __pyx_t_3 = PySequence_ITEM(__pyx_t_6, __pyx_t_7); __pyx_t_7++; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 693, __pyx_L1_error)
+            __pyx_t_3 = PySequence_ITEM(__pyx_t_7, __pyx_t_8); __pyx_t_8++; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 699, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_3);
             #endif
           } else {
-            if (__pyx_t_7 >= PyTuple_GET_SIZE(__pyx_t_6)) break;
+            if (__pyx_t_8 >= PyTuple_GET_SIZE(__pyx_t_7)) break;
             #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-            __pyx_t_3 = PyTuple_GET_ITEM(__pyx_t_6, __pyx_t_7); __Pyx_INCREF(__pyx_t_3); __pyx_t_7++; if (unlikely(0 < 0)) __PYX_ERR(0, 693, __pyx_L1_error)
+            __pyx_t_3 = PyTuple_GET_ITEM(__pyx_t_7, __pyx_t_8); __Pyx_INCREF(__pyx_t_3); __pyx_t_8++; if (unlikely(0 < 0)) __PYX_ERR(0, 699, __pyx_L1_error)
             #else
-            __pyx_t_3 = PySequence_ITEM(__pyx_t_6, __pyx_t_7); __pyx_t_7++; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 693, __pyx_L1_error)
+            __pyx_t_3 = PySequence_ITEM(__pyx_t_7, __pyx_t_8); __pyx_t_8++; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 699, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_3);
             #endif
           }
         } else {
-          __pyx_t_3 = __pyx_t_8(__pyx_t_6);
+          __pyx_t_3 = __pyx_t_9(__pyx_t_7);
           if (unlikely(!__pyx_t_3)) {
             PyObject* exc_type = PyErr_Occurred();
             if (exc_type) {
               if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-              else __PYX_ERR(0, 693, __pyx_L1_error)
+              else __PYX_ERR(0, 699, __pyx_L1_error)
             }
             break;
           }
@@ -15665,69 +15771,69 @@ static int __pyx_pf_7halogen_3api_11EmitOptions___cinit__(struct __pyx_obj_7halo
           if (unlikely(size != 2)) {
             if (size > 2) __Pyx_RaiseTooManyValuesError(2);
             else if (size >= 0) __Pyx_RaiseNeedMoreValuesError(size);
-            __PYX_ERR(0, 693, __pyx_L1_error)
+            __PYX_ERR(0, 699, __pyx_L1_error)
           }
           #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
           if (likely(PyTuple_CheckExact(sequence))) {
-            __pyx_t_5 = PyTuple_GET_ITEM(sequence, 0); 
-            __pyx_t_9 = PyTuple_GET_ITEM(sequence, 1); 
+            __pyx_t_6 = PyTuple_GET_ITEM(sequence, 0); 
+            __pyx_t_10 = PyTuple_GET_ITEM(sequence, 1); 
           } else {
-            __pyx_t_5 = PyList_GET_ITEM(sequence, 0); 
-            __pyx_t_9 = PyList_GET_ITEM(sequence, 1); 
+            __pyx_t_6 = PyList_GET_ITEM(sequence, 0); 
+            __pyx_t_10 = PyList_GET_ITEM(sequence, 1); 
           }
-          __Pyx_INCREF(__pyx_t_5);
-          __Pyx_INCREF(__pyx_t_9);
+          __Pyx_INCREF(__pyx_t_6);
+          __Pyx_INCREF(__pyx_t_10);
           #else
-          __pyx_t_5 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 693, __pyx_L1_error)
-          __Pyx_GOTREF(__pyx_t_5);
-          __pyx_t_9 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 693, __pyx_L1_error)
-          __Pyx_GOTREF(__pyx_t_9);
+          __pyx_t_6 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 699, __pyx_L1_error)
+          __Pyx_GOTREF(__pyx_t_6);
+          __pyx_t_10 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 699, __pyx_L1_error)
+          __Pyx_GOTREF(__pyx_t_10);
           #endif
           __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
         } else {
           Py_ssize_t index = -1;
-          __pyx_t_10 = PyObject_GetIter(__pyx_t_3); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 693, __pyx_L1_error)
-          __Pyx_GOTREF(__pyx_t_10);
+          __pyx_t_11 = PyObject_GetIter(__pyx_t_3); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 699, __pyx_L1_error)
+          __Pyx_GOTREF(__pyx_t_11);
           __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-          __pyx_t_11 = Py_TYPE(__pyx_t_10)->tp_iternext;
-          index = 0; __pyx_t_5 = __pyx_t_11(__pyx_t_10); if (unlikely(!__pyx_t_5)) goto __pyx_L8_unpacking_failed;
-          __Pyx_GOTREF(__pyx_t_5);
-          index = 1; __pyx_t_9 = __pyx_t_11(__pyx_t_10); if (unlikely(!__pyx_t_9)) goto __pyx_L8_unpacking_failed;
-          __Pyx_GOTREF(__pyx_t_9);
-          if (__Pyx_IternextUnpackEndCheck(__pyx_t_11(__pyx_t_10), 2) < 0) __PYX_ERR(0, 693, __pyx_L1_error)
-          __pyx_t_11 = NULL;
-          __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
+          __pyx_t_12 = Py_TYPE(__pyx_t_11)->tp_iternext;
+          index = 0; __pyx_t_6 = __pyx_t_12(__pyx_t_11); if (unlikely(!__pyx_t_6)) goto __pyx_L8_unpacking_failed;
+          __Pyx_GOTREF(__pyx_t_6);
+          index = 1; __pyx_t_10 = __pyx_t_12(__pyx_t_11); if (unlikely(!__pyx_t_10)) goto __pyx_L8_unpacking_failed;
+          __Pyx_GOTREF(__pyx_t_10);
+          if (__Pyx_IternextUnpackEndCheck(__pyx_t_12(__pyx_t_11), 2) < 0) __PYX_ERR(0, 699, __pyx_L1_error)
+          __pyx_t_12 = NULL;
+          __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
           goto __pyx_L9_unpacking_done;
           __pyx_L8_unpacking_failed:;
-          __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-          __pyx_t_11 = NULL;
+          __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
+          __pyx_t_12 = NULL;
           if (__Pyx_IterFinish() == 0) __Pyx_RaiseNeedMoreValuesError(index);
-          __PYX_ERR(0, 693, __pyx_L1_error)
+          __PYX_ERR(0, 699, __pyx_L1_error)
           __pyx_L9_unpacking_done:;
         }
-        __Pyx_XDECREF_SET(__pyx_v_k, __pyx_t_5);
-        __pyx_t_5 = 0;
-        __Pyx_XDECREF_SET(__pyx_v_v, __pyx_t_9);
-        __pyx_t_9 = 0;
+        __Pyx_XDECREF_SET(__pyx_v_k, __pyx_t_6);
+        __pyx_t_6 = 0;
+        __Pyx_XDECREF_SET(__pyx_v_v, __pyx_t_10);
+        __pyx_t_10 = 0;
 
-        /* "halogen/api.pyx":694
+        /* "halogen/api.pyx":700
  *                 self.__this__.emit_schedule = PyObject_IsTrue(arg.emit_schedule)
  *                 for k, v in arg.substitutions.items():
  *                     self.__this__.substitutions[<string>u8bytes(k)] = <string>u8bytes(v)             # <<<<<<<<<<<<<<
  *                 return
  * 
  */
-        __pyx_t_3 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_v, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 694, __pyx_L1_error)
+        __pyx_t_3 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_v, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 700, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
-        __pyx_t_12 = __pyx_convert_string_from_py_std__in_string(__pyx_t_3); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 694, __pyx_L1_error)
+        __pyx_t_13 = __pyx_convert_string_from_py_std__in_string(__pyx_t_3); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 700, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-        __pyx_t_3 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_k, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 694, __pyx_L1_error)
+        __pyx_t_3 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_k, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 700, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
-        __pyx_t_13 = __pyx_convert_string_from_py_std__in_string(__pyx_t_3); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 694, __pyx_L1_error)
+        __pyx_t_14 = __pyx_convert_string_from_py_std__in_string(__pyx_t_3); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 700, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-        (__pyx_v_self->__pyx___this__.substitutions[((std::string)__pyx_t_13)]) = ((std::string)__pyx_t_12);
+        (__pyx_v_self->__pyx___this__.substitutions[((std::string)__pyx_t_14)]) = ((std::string)__pyx_t_13);
 
-        /* "halogen/api.pyx":693
+        /* "halogen/api.pyx":699
  *                 self.__this__.emit_cpp_stub = PyObject_IsTrue(arg.emit_cpp_stub)
  *                 self.__this__.emit_schedule = PyObject_IsTrue(arg.emit_schedule)
  *                 for k, v in arg.substitutions.items():             # <<<<<<<<<<<<<<
@@ -15735,9 +15841,9 @@ static int __pyx_pf_7halogen_3api_11EmitOptions___cinit__(struct __pyx_obj_7halo
  *                 return
  */
       }
-      __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+      __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
 
-      /* "halogen/api.pyx":695
+      /* "halogen/api.pyx":701
  *                 for k, v in arg.substitutions.items():
  *                     self.__this__.substitutions[<string>u8bytes(k)] = <string>u8bytes(v)
  *                 return             # <<<<<<<<<<<<<<
@@ -15748,309 +15854,309 @@ static int __pyx_pf_7halogen_3api_11EmitOptions___cinit__(struct __pyx_obj_7halo
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       goto __pyx_L0;
 
-      /* "halogen/api.pyx":680
+      /* "halogen/api.pyx":686
  *     def __cinit__(self, *args, **kwargs):
  *         for arg in args:
- *             if type(arg) == type(self):             # <<<<<<<<<<<<<<
+ *             if type(arg) is type(self):             # <<<<<<<<<<<<<<
  *                 self.__this__ = EmOpts()
  *                 self.__this__.emit_o = PyObject_IsTrue(arg.emit_o)
  */
     }
 
-    /* "halogen/api.pyx":679
+    /* "halogen/api.pyx":685
  * 
  *     def __cinit__(self, *args, **kwargs):
  *         for arg in args:             # <<<<<<<<<<<<<<
- *             if type(arg) == type(self):
+ *             if type(arg) is type(self):
  *                 self.__this__ = EmOpts()
  */
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "halogen/api.pyx":697
+  /* "halogen/api.pyx":703
  *                 return
  * 
  *         emit_o = bool(kwargs.pop('emit_o',                                  self.emit_defaults['emit_o']))             # <<<<<<<<<<<<<<
  *         emit_h = bool(kwargs.pop('emit_h',                                  self.emit_defaults['emit_h']))
  *         emit_cpp = bool(kwargs.pop('emit_cpp',                              self.emit_defaults['emit_cpp']))
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_emit_defaults); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 697, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_emit_defaults); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 703, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_6 = __Pyx_PyObject_Dict_GetItem(__pyx_t_1, __pyx_n_s_emit_o); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 697, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_6);
+  __pyx_t_7 = __Pyx_PyObject_Dict_GetItem(__pyx_t_1, __pyx_n_s_emit_o); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 703, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_7);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyDict_Pop(__pyx_v_kwargs, __pyx_n_s_emit_o, __pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 697, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyDict_Pop(__pyx_v_kwargs, __pyx_n_s_emit_o, __pyx_t_7); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 703, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 697, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+  __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_5 < 0)) __PYX_ERR(0, 703, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyBool_FromLong((!(!__pyx_t_4))); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 697, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyBool_FromLong((!(!__pyx_t_5))); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 703, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_emit_o = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "halogen/api.pyx":698
+  /* "halogen/api.pyx":704
  * 
  *         emit_o = bool(kwargs.pop('emit_o',                                  self.emit_defaults['emit_o']))
  *         emit_h = bool(kwargs.pop('emit_h',                                  self.emit_defaults['emit_h']))             # <<<<<<<<<<<<<<
  *         emit_cpp = bool(kwargs.pop('emit_cpp',                              self.emit_defaults['emit_cpp']))
  *         emit_assembly = bool(kwargs.pop('emit_assembly',                    self.emit_defaults['emit_assembly']))
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_emit_defaults); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 698, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_emit_defaults); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 704, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_6 = __Pyx_PyObject_Dict_GetItem(__pyx_t_1, __pyx_n_s_emit_h); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 698, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_6);
+  __pyx_t_7 = __Pyx_PyObject_Dict_GetItem(__pyx_t_1, __pyx_n_s_emit_h); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 704, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_7);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyDict_Pop(__pyx_v_kwargs, __pyx_n_s_emit_h, __pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 698, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyDict_Pop(__pyx_v_kwargs, __pyx_n_s_emit_h, __pyx_t_7); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 704, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 698, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+  __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_5 < 0)) __PYX_ERR(0, 704, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyBool_FromLong((!(!__pyx_t_4))); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 698, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyBool_FromLong((!(!__pyx_t_5))); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 704, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_emit_h = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "halogen/api.pyx":699
+  /* "halogen/api.pyx":705
  *         emit_o = bool(kwargs.pop('emit_o',                                  self.emit_defaults['emit_o']))
  *         emit_h = bool(kwargs.pop('emit_h',                                  self.emit_defaults['emit_h']))
  *         emit_cpp = bool(kwargs.pop('emit_cpp',                              self.emit_defaults['emit_cpp']))             # <<<<<<<<<<<<<<
  *         emit_assembly = bool(kwargs.pop('emit_assembly',                    self.emit_defaults['emit_assembly']))
  *         emit_bitcode = bool(kwargs.pop('emit_bitcode',                      self.emit_defaults['emit_bitcode']))
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_emit_defaults); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 699, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_emit_defaults); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 705, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_6 = __Pyx_PyObject_Dict_GetItem(__pyx_t_1, __pyx_n_s_emit_cpp); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 699, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_6);
+  __pyx_t_7 = __Pyx_PyObject_Dict_GetItem(__pyx_t_1, __pyx_n_s_emit_cpp); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 705, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_7);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyDict_Pop(__pyx_v_kwargs, __pyx_n_s_emit_cpp, __pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 699, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyDict_Pop(__pyx_v_kwargs, __pyx_n_s_emit_cpp, __pyx_t_7); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 705, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 699, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+  __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_5 < 0)) __PYX_ERR(0, 705, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyBool_FromLong((!(!__pyx_t_4))); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 699, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyBool_FromLong((!(!__pyx_t_5))); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 705, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_emit_cpp = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "halogen/api.pyx":700
+  /* "halogen/api.pyx":706
  *         emit_h = bool(kwargs.pop('emit_h',                                  self.emit_defaults['emit_h']))
  *         emit_cpp = bool(kwargs.pop('emit_cpp',                              self.emit_defaults['emit_cpp']))
  *         emit_assembly = bool(kwargs.pop('emit_assembly',                    self.emit_defaults['emit_assembly']))             # <<<<<<<<<<<<<<
  *         emit_bitcode = bool(kwargs.pop('emit_bitcode',                      self.emit_defaults['emit_bitcode']))
  *         emit_stmt = bool(kwargs.pop('emit_stmt',                            self.emit_defaults['emit_stmt']))
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_emit_defaults); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 700, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_emit_defaults); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 706, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_6 = __Pyx_PyObject_Dict_GetItem(__pyx_t_1, __pyx_n_s_emit_assembly); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 700, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_6);
+  __pyx_t_7 = __Pyx_PyObject_Dict_GetItem(__pyx_t_1, __pyx_n_s_emit_assembly); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 706, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_7);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyDict_Pop(__pyx_v_kwargs, __pyx_n_s_emit_assembly, __pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 700, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyDict_Pop(__pyx_v_kwargs, __pyx_n_s_emit_assembly, __pyx_t_7); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 706, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 700, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+  __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_5 < 0)) __PYX_ERR(0, 706, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyBool_FromLong((!(!__pyx_t_4))); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 700, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyBool_FromLong((!(!__pyx_t_5))); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 706, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_emit_assembly = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "halogen/api.pyx":701
+  /* "halogen/api.pyx":707
  *         emit_cpp = bool(kwargs.pop('emit_cpp',                              self.emit_defaults['emit_cpp']))
  *         emit_assembly = bool(kwargs.pop('emit_assembly',                    self.emit_defaults['emit_assembly']))
  *         emit_bitcode = bool(kwargs.pop('emit_bitcode',                      self.emit_defaults['emit_bitcode']))             # <<<<<<<<<<<<<<
  *         emit_stmt = bool(kwargs.pop('emit_stmt',                            self.emit_defaults['emit_stmt']))
  *         emit_stmt_html = bool(kwargs.pop('emit_stmt_html',                  self.emit_defaults['emit_stmt_html']))
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_emit_defaults); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 701, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_emit_defaults); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 707, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_6 = __Pyx_PyObject_Dict_GetItem(__pyx_t_1, __pyx_n_s_emit_bitcode); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 701, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_6);
+  __pyx_t_7 = __Pyx_PyObject_Dict_GetItem(__pyx_t_1, __pyx_n_s_emit_bitcode); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 707, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_7);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyDict_Pop(__pyx_v_kwargs, __pyx_n_s_emit_bitcode, __pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 701, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyDict_Pop(__pyx_v_kwargs, __pyx_n_s_emit_bitcode, __pyx_t_7); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 707, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 701, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+  __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_5 < 0)) __PYX_ERR(0, 707, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyBool_FromLong((!(!__pyx_t_4))); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 701, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyBool_FromLong((!(!__pyx_t_5))); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 707, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_emit_bitcode = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "halogen/api.pyx":702
+  /* "halogen/api.pyx":708
  *         emit_assembly = bool(kwargs.pop('emit_assembly',                    self.emit_defaults['emit_assembly']))
  *         emit_bitcode = bool(kwargs.pop('emit_bitcode',                      self.emit_defaults['emit_bitcode']))
  *         emit_stmt = bool(kwargs.pop('emit_stmt',                            self.emit_defaults['emit_stmt']))             # <<<<<<<<<<<<<<
  *         emit_stmt_html = bool(kwargs.pop('emit_stmt_html',                  self.emit_defaults['emit_stmt_html']))
  *         emit_python_extension = bool(kwargs.pop('emit_python_extension',    self.emit_defaults['emit_python_extension']))
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_emit_defaults); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 702, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_emit_defaults); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 708, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_6 = __Pyx_PyObject_Dict_GetItem(__pyx_t_1, __pyx_n_s_emit_stmt); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 702, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_6);
+  __pyx_t_7 = __Pyx_PyObject_Dict_GetItem(__pyx_t_1, __pyx_n_s_emit_stmt); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 708, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_7);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyDict_Pop(__pyx_v_kwargs, __pyx_n_s_emit_stmt, __pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 702, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyDict_Pop(__pyx_v_kwargs, __pyx_n_s_emit_stmt, __pyx_t_7); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 708, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 702, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+  __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_5 < 0)) __PYX_ERR(0, 708, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyBool_FromLong((!(!__pyx_t_4))); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 702, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyBool_FromLong((!(!__pyx_t_5))); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 708, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_emit_stmt = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "halogen/api.pyx":703
+  /* "halogen/api.pyx":709
  *         emit_bitcode = bool(kwargs.pop('emit_bitcode',                      self.emit_defaults['emit_bitcode']))
  *         emit_stmt = bool(kwargs.pop('emit_stmt',                            self.emit_defaults['emit_stmt']))
  *         emit_stmt_html = bool(kwargs.pop('emit_stmt_html',                  self.emit_defaults['emit_stmt_html']))             # <<<<<<<<<<<<<<
  *         emit_python_extension = bool(kwargs.pop('emit_python_extension',    self.emit_defaults['emit_python_extension']))
  *         emit_static_library = bool(kwargs.pop('emit_static_library',        self.emit_defaults['emit_static_library']))
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_emit_defaults); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 703, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_emit_defaults); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 709, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_6 = __Pyx_PyObject_Dict_GetItem(__pyx_t_1, __pyx_n_s_emit_stmt_html); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 703, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_6);
+  __pyx_t_7 = __Pyx_PyObject_Dict_GetItem(__pyx_t_1, __pyx_n_s_emit_stmt_html); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 709, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_7);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyDict_Pop(__pyx_v_kwargs, __pyx_n_s_emit_stmt_html, __pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 703, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyDict_Pop(__pyx_v_kwargs, __pyx_n_s_emit_stmt_html, __pyx_t_7); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 709, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 703, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+  __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_5 < 0)) __PYX_ERR(0, 709, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyBool_FromLong((!(!__pyx_t_4))); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 703, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyBool_FromLong((!(!__pyx_t_5))); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 709, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_emit_stmt_html = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "halogen/api.pyx":704
+  /* "halogen/api.pyx":710
  *         emit_stmt = bool(kwargs.pop('emit_stmt',                            self.emit_defaults['emit_stmt']))
  *         emit_stmt_html = bool(kwargs.pop('emit_stmt_html',                  self.emit_defaults['emit_stmt_html']))
  *         emit_python_extension = bool(kwargs.pop('emit_python_extension',    self.emit_defaults['emit_python_extension']))             # <<<<<<<<<<<<<<
  *         emit_static_library = bool(kwargs.pop('emit_static_library',        self.emit_defaults['emit_static_library']))
  *         emit_cpp_stub = bool(kwargs.pop('emit_cpp_stub',                    self.emit_defaults['emit_cpp_stub']))
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_emit_defaults); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 704, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_emit_defaults); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 710, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_6 = __Pyx_PyObject_Dict_GetItem(__pyx_t_1, __pyx_n_s_emit_python_extension); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 704, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_6);
+  __pyx_t_7 = __Pyx_PyObject_Dict_GetItem(__pyx_t_1, __pyx_n_s_emit_python_extension); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 710, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_7);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyDict_Pop(__pyx_v_kwargs, __pyx_n_s_emit_python_extension, __pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 704, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyDict_Pop(__pyx_v_kwargs, __pyx_n_s_emit_python_extension, __pyx_t_7); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 710, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 704, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+  __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_5 < 0)) __PYX_ERR(0, 710, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyBool_FromLong((!(!__pyx_t_4))); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 704, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyBool_FromLong((!(!__pyx_t_5))); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 710, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_emit_python_extension = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "halogen/api.pyx":705
+  /* "halogen/api.pyx":711
  *         emit_stmt_html = bool(kwargs.pop('emit_stmt_html',                  self.emit_defaults['emit_stmt_html']))
  *         emit_python_extension = bool(kwargs.pop('emit_python_extension',    self.emit_defaults['emit_python_extension']))
  *         emit_static_library = bool(kwargs.pop('emit_static_library',        self.emit_defaults['emit_static_library']))             # <<<<<<<<<<<<<<
  *         emit_cpp_stub = bool(kwargs.pop('emit_cpp_stub',                    self.emit_defaults['emit_cpp_stub']))
  *         emit_schedule = bool(kwargs.pop('emit_schedule',                    self.emit_defaults['emit_schedule']))
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_emit_defaults); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 705, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_emit_defaults); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 711, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_6 = __Pyx_PyObject_Dict_GetItem(__pyx_t_1, __pyx_n_s_emit_static_library); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 705, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_6);
+  __pyx_t_7 = __Pyx_PyObject_Dict_GetItem(__pyx_t_1, __pyx_n_s_emit_static_library); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 711, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_7);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyDict_Pop(__pyx_v_kwargs, __pyx_n_s_emit_static_library, __pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 705, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyDict_Pop(__pyx_v_kwargs, __pyx_n_s_emit_static_library, __pyx_t_7); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 711, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 705, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+  __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_5 < 0)) __PYX_ERR(0, 711, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyBool_FromLong((!(!__pyx_t_4))); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 705, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyBool_FromLong((!(!__pyx_t_5))); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 711, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_emit_static_library = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "halogen/api.pyx":706
+  /* "halogen/api.pyx":712
  *         emit_python_extension = bool(kwargs.pop('emit_python_extension',    self.emit_defaults['emit_python_extension']))
  *         emit_static_library = bool(kwargs.pop('emit_static_library',        self.emit_defaults['emit_static_library']))
  *         emit_cpp_stub = bool(kwargs.pop('emit_cpp_stub',                    self.emit_defaults['emit_cpp_stub']))             # <<<<<<<<<<<<<<
  *         emit_schedule = bool(kwargs.pop('emit_schedule',                    self.emit_defaults['emit_schedule']))
  *         substitutions = kwargs.pop('substitutions',                         self.emit_defaults['substitutions'])
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_emit_defaults); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 706, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_emit_defaults); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 712, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_6 = __Pyx_PyObject_Dict_GetItem(__pyx_t_1, __pyx_n_s_emit_cpp_stub); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 706, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_6);
+  __pyx_t_7 = __Pyx_PyObject_Dict_GetItem(__pyx_t_1, __pyx_n_s_emit_cpp_stub); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 712, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_7);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyDict_Pop(__pyx_v_kwargs, __pyx_n_s_emit_cpp_stub, __pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 706, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyDict_Pop(__pyx_v_kwargs, __pyx_n_s_emit_cpp_stub, __pyx_t_7); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 712, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 706, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+  __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_5 < 0)) __PYX_ERR(0, 712, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyBool_FromLong((!(!__pyx_t_4))); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 706, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyBool_FromLong((!(!__pyx_t_5))); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 712, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_emit_cpp_stub = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "halogen/api.pyx":707
+  /* "halogen/api.pyx":713
  *         emit_static_library = bool(kwargs.pop('emit_static_library',        self.emit_defaults['emit_static_library']))
  *         emit_cpp_stub = bool(kwargs.pop('emit_cpp_stub',                    self.emit_defaults['emit_cpp_stub']))
  *         emit_schedule = bool(kwargs.pop('emit_schedule',                    self.emit_defaults['emit_schedule']))             # <<<<<<<<<<<<<<
  *         substitutions = kwargs.pop('substitutions',                         self.emit_defaults['substitutions'])
  * 
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_emit_defaults); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 707, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_emit_defaults); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 713, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_6 = __Pyx_PyObject_Dict_GetItem(__pyx_t_1, __pyx_n_s_emit_schedule); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 707, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_6);
+  __pyx_t_7 = __Pyx_PyObject_Dict_GetItem(__pyx_t_1, __pyx_n_s_emit_schedule); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 713, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_7);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyDict_Pop(__pyx_v_kwargs, __pyx_n_s_emit_schedule, __pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 707, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyDict_Pop(__pyx_v_kwargs, __pyx_n_s_emit_schedule, __pyx_t_7); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 713, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 707, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+  __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_5 < 0)) __PYX_ERR(0, 713, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyBool_FromLong((!(!__pyx_t_4))); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 707, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyBool_FromLong((!(!__pyx_t_5))); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 713, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_emit_schedule = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "halogen/api.pyx":708
+  /* "halogen/api.pyx":714
  *         emit_cpp_stub = bool(kwargs.pop('emit_cpp_stub',                    self.emit_defaults['emit_cpp_stub']))
  *         emit_schedule = bool(kwargs.pop('emit_schedule',                    self.emit_defaults['emit_schedule']))
  *         substitutions = kwargs.pop('substitutions',                         self.emit_defaults['substitutions'])             # <<<<<<<<<<<<<<
  * 
  *         if not PyMapping_Check(substitutions):
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_emit_defaults); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 708, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_emit_defaults); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 714, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_6 = __Pyx_PyObject_Dict_GetItem(__pyx_t_1, __pyx_n_s_substitutions); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 708, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_6);
+  __pyx_t_7 = __Pyx_PyObject_Dict_GetItem(__pyx_t_1, __pyx_n_s_substitutions); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 714, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_7);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyDict_Pop(__pyx_v_kwargs, __pyx_n_s_substitutions, __pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 708, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyDict_Pop(__pyx_v_kwargs, __pyx_n_s_substitutions, __pyx_t_7); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 714, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+  __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
   __pyx_v_substitutions = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "halogen/api.pyx":710
+  /* "halogen/api.pyx":716
  *         substitutions = kwargs.pop('substitutions',                         self.emit_defaults['substitutions'])
  * 
  *         if not PyMapping_Check(substitutions):             # <<<<<<<<<<<<<<
  *             raise ValueError("substitutions must be a mapping type")
  * 
  */
-  __pyx_t_4 = ((!(PyMapping_Check(__pyx_v_substitutions) != 0)) != 0);
-  if (unlikely(__pyx_t_4)) {
+  __pyx_t_5 = ((!(PyMapping_Check(__pyx_v_substitutions) != 0)) != 0);
+  if (unlikely(__pyx_t_5)) {
 
-    /* "halogen/api.pyx":711
+    /* "halogen/api.pyx":717
  * 
  *         if not PyMapping_Check(substitutions):
  *             raise ValueError("substitutions must be a mapping type")             # <<<<<<<<<<<<<<
  * 
  *         self.__this__.emit_o = PyObject_IsTrue(emit_o)
  */
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__16, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 711, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__16, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 717, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_Raise(__pyx_t_1, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __PYX_ERR(0, 711, __pyx_L1_error)
+    __PYX_ERR(0, 717, __pyx_L1_error)
 
-    /* "halogen/api.pyx":710
+    /* "halogen/api.pyx":716
  *         substitutions = kwargs.pop('substitutions',                         self.emit_defaults['substitutions'])
  * 
  *         if not PyMapping_Check(substitutions):             # <<<<<<<<<<<<<<
@@ -16059,178 +16165,178 @@ static int __pyx_pf_7halogen_3api_11EmitOptions___cinit__(struct __pyx_obj_7halo
  */
   }
 
-  /* "halogen/api.pyx":713
+  /* "halogen/api.pyx":719
  *             raise ValueError("substitutions must be a mapping type")
  * 
  *         self.__this__.emit_o = PyObject_IsTrue(emit_o)             # <<<<<<<<<<<<<<
  *         self.__this__.emit_h = PyObject_IsTrue(emit_h)
  *         self.__this__.emit_cpp = PyObject_IsTrue(emit_cpp)
  */
-  __pyx_t_4 = PyObject_IsTrue(__pyx_v_emit_o); if (unlikely(__pyx_t_4 == ((int)-1))) __PYX_ERR(0, 713, __pyx_L1_error)
-  __pyx_v_self->__pyx___this__.emit_o = __pyx_t_4;
+  __pyx_t_5 = PyObject_IsTrue(__pyx_v_emit_o); if (unlikely(__pyx_t_5 == ((int)-1))) __PYX_ERR(0, 719, __pyx_L1_error)
+  __pyx_v_self->__pyx___this__.emit_o = __pyx_t_5;
 
-  /* "halogen/api.pyx":714
+  /* "halogen/api.pyx":720
  * 
  *         self.__this__.emit_o = PyObject_IsTrue(emit_o)
  *         self.__this__.emit_h = PyObject_IsTrue(emit_h)             # <<<<<<<<<<<<<<
  *         self.__this__.emit_cpp = PyObject_IsTrue(emit_cpp)
  *         self.__this__.emit_assembly = PyObject_IsTrue(emit_assembly)
  */
-  __pyx_t_4 = PyObject_IsTrue(__pyx_v_emit_h); if (unlikely(__pyx_t_4 == ((int)-1))) __PYX_ERR(0, 714, __pyx_L1_error)
-  __pyx_v_self->__pyx___this__.emit_h = __pyx_t_4;
+  __pyx_t_5 = PyObject_IsTrue(__pyx_v_emit_h); if (unlikely(__pyx_t_5 == ((int)-1))) __PYX_ERR(0, 720, __pyx_L1_error)
+  __pyx_v_self->__pyx___this__.emit_h = __pyx_t_5;
 
-  /* "halogen/api.pyx":715
+  /* "halogen/api.pyx":721
  *         self.__this__.emit_o = PyObject_IsTrue(emit_o)
  *         self.__this__.emit_h = PyObject_IsTrue(emit_h)
  *         self.__this__.emit_cpp = PyObject_IsTrue(emit_cpp)             # <<<<<<<<<<<<<<
  *         self.__this__.emit_assembly = PyObject_IsTrue(emit_assembly)
  *         self.__this__.emit_bitcode = PyObject_IsTrue(emit_bitcode)
  */
-  __pyx_t_4 = PyObject_IsTrue(__pyx_v_emit_cpp); if (unlikely(__pyx_t_4 == ((int)-1))) __PYX_ERR(0, 715, __pyx_L1_error)
-  __pyx_v_self->__pyx___this__.emit_cpp = __pyx_t_4;
+  __pyx_t_5 = PyObject_IsTrue(__pyx_v_emit_cpp); if (unlikely(__pyx_t_5 == ((int)-1))) __PYX_ERR(0, 721, __pyx_L1_error)
+  __pyx_v_self->__pyx___this__.emit_cpp = __pyx_t_5;
 
-  /* "halogen/api.pyx":716
+  /* "halogen/api.pyx":722
  *         self.__this__.emit_h = PyObject_IsTrue(emit_h)
  *         self.__this__.emit_cpp = PyObject_IsTrue(emit_cpp)
  *         self.__this__.emit_assembly = PyObject_IsTrue(emit_assembly)             # <<<<<<<<<<<<<<
  *         self.__this__.emit_bitcode = PyObject_IsTrue(emit_bitcode)
  *         self.__this__.emit_stmt = PyObject_IsTrue(emit_stmt)
  */
-  __pyx_t_4 = PyObject_IsTrue(__pyx_v_emit_assembly); if (unlikely(__pyx_t_4 == ((int)-1))) __PYX_ERR(0, 716, __pyx_L1_error)
-  __pyx_v_self->__pyx___this__.emit_assembly = __pyx_t_4;
+  __pyx_t_5 = PyObject_IsTrue(__pyx_v_emit_assembly); if (unlikely(__pyx_t_5 == ((int)-1))) __PYX_ERR(0, 722, __pyx_L1_error)
+  __pyx_v_self->__pyx___this__.emit_assembly = __pyx_t_5;
 
-  /* "halogen/api.pyx":717
+  /* "halogen/api.pyx":723
  *         self.__this__.emit_cpp = PyObject_IsTrue(emit_cpp)
  *         self.__this__.emit_assembly = PyObject_IsTrue(emit_assembly)
  *         self.__this__.emit_bitcode = PyObject_IsTrue(emit_bitcode)             # <<<<<<<<<<<<<<
  *         self.__this__.emit_stmt = PyObject_IsTrue(emit_stmt)
  *         self.__this__.emit_stmt_html = PyObject_IsTrue(emit_stmt_html)
  */
-  __pyx_t_4 = PyObject_IsTrue(__pyx_v_emit_bitcode); if (unlikely(__pyx_t_4 == ((int)-1))) __PYX_ERR(0, 717, __pyx_L1_error)
-  __pyx_v_self->__pyx___this__.emit_bitcode = __pyx_t_4;
+  __pyx_t_5 = PyObject_IsTrue(__pyx_v_emit_bitcode); if (unlikely(__pyx_t_5 == ((int)-1))) __PYX_ERR(0, 723, __pyx_L1_error)
+  __pyx_v_self->__pyx___this__.emit_bitcode = __pyx_t_5;
 
-  /* "halogen/api.pyx":718
+  /* "halogen/api.pyx":724
  *         self.__this__.emit_assembly = PyObject_IsTrue(emit_assembly)
  *         self.__this__.emit_bitcode = PyObject_IsTrue(emit_bitcode)
  *         self.__this__.emit_stmt = PyObject_IsTrue(emit_stmt)             # <<<<<<<<<<<<<<
  *         self.__this__.emit_stmt_html = PyObject_IsTrue(emit_stmt_html)
  *         self.__this__.emit_python_extension = PyObject_IsTrue(emit_python_extension)
  */
-  __pyx_t_4 = PyObject_IsTrue(__pyx_v_emit_stmt); if (unlikely(__pyx_t_4 == ((int)-1))) __PYX_ERR(0, 718, __pyx_L1_error)
-  __pyx_v_self->__pyx___this__.emit_stmt = __pyx_t_4;
+  __pyx_t_5 = PyObject_IsTrue(__pyx_v_emit_stmt); if (unlikely(__pyx_t_5 == ((int)-1))) __PYX_ERR(0, 724, __pyx_L1_error)
+  __pyx_v_self->__pyx___this__.emit_stmt = __pyx_t_5;
 
-  /* "halogen/api.pyx":719
+  /* "halogen/api.pyx":725
  *         self.__this__.emit_bitcode = PyObject_IsTrue(emit_bitcode)
  *         self.__this__.emit_stmt = PyObject_IsTrue(emit_stmt)
  *         self.__this__.emit_stmt_html = PyObject_IsTrue(emit_stmt_html)             # <<<<<<<<<<<<<<
  *         self.__this__.emit_python_extension = PyObject_IsTrue(emit_python_extension)
  *         self.__this__.emit_static_library = PyObject_IsTrue(emit_static_library)
  */
-  __pyx_t_4 = PyObject_IsTrue(__pyx_v_emit_stmt_html); if (unlikely(__pyx_t_4 == ((int)-1))) __PYX_ERR(0, 719, __pyx_L1_error)
-  __pyx_v_self->__pyx___this__.emit_stmt_html = __pyx_t_4;
+  __pyx_t_5 = PyObject_IsTrue(__pyx_v_emit_stmt_html); if (unlikely(__pyx_t_5 == ((int)-1))) __PYX_ERR(0, 725, __pyx_L1_error)
+  __pyx_v_self->__pyx___this__.emit_stmt_html = __pyx_t_5;
 
-  /* "halogen/api.pyx":720
+  /* "halogen/api.pyx":726
  *         self.__this__.emit_stmt = PyObject_IsTrue(emit_stmt)
  *         self.__this__.emit_stmt_html = PyObject_IsTrue(emit_stmt_html)
  *         self.__this__.emit_python_extension = PyObject_IsTrue(emit_python_extension)             # <<<<<<<<<<<<<<
  *         self.__this__.emit_static_library = PyObject_IsTrue(emit_static_library)
  *         self.__this__.emit_cpp_stub = PyObject_IsTrue(emit_cpp_stub)
  */
-  __pyx_t_4 = PyObject_IsTrue(__pyx_v_emit_python_extension); if (unlikely(__pyx_t_4 == ((int)-1))) __PYX_ERR(0, 720, __pyx_L1_error)
-  __pyx_v_self->__pyx___this__.emit_python_extension = __pyx_t_4;
+  __pyx_t_5 = PyObject_IsTrue(__pyx_v_emit_python_extension); if (unlikely(__pyx_t_5 == ((int)-1))) __PYX_ERR(0, 726, __pyx_L1_error)
+  __pyx_v_self->__pyx___this__.emit_python_extension = __pyx_t_5;
 
-  /* "halogen/api.pyx":721
+  /* "halogen/api.pyx":727
  *         self.__this__.emit_stmt_html = PyObject_IsTrue(emit_stmt_html)
  *         self.__this__.emit_python_extension = PyObject_IsTrue(emit_python_extension)
  *         self.__this__.emit_static_library = PyObject_IsTrue(emit_static_library)             # <<<<<<<<<<<<<<
  *         self.__this__.emit_cpp_stub = PyObject_IsTrue(emit_cpp_stub)
  *         self.__this__.emit_schedule = PyObject_IsTrue(emit_schedule)
  */
-  __pyx_t_4 = PyObject_IsTrue(__pyx_v_emit_static_library); if (unlikely(__pyx_t_4 == ((int)-1))) __PYX_ERR(0, 721, __pyx_L1_error)
-  __pyx_v_self->__pyx___this__.emit_static_library = __pyx_t_4;
+  __pyx_t_5 = PyObject_IsTrue(__pyx_v_emit_static_library); if (unlikely(__pyx_t_5 == ((int)-1))) __PYX_ERR(0, 727, __pyx_L1_error)
+  __pyx_v_self->__pyx___this__.emit_static_library = __pyx_t_5;
 
-  /* "halogen/api.pyx":722
+  /* "halogen/api.pyx":728
  *         self.__this__.emit_python_extension = PyObject_IsTrue(emit_python_extension)
  *         self.__this__.emit_static_library = PyObject_IsTrue(emit_static_library)
  *         self.__this__.emit_cpp_stub = PyObject_IsTrue(emit_cpp_stub)             # <<<<<<<<<<<<<<
  *         self.__this__.emit_schedule = PyObject_IsTrue(emit_schedule)
  * 
  */
-  __pyx_t_4 = PyObject_IsTrue(__pyx_v_emit_cpp_stub); if (unlikely(__pyx_t_4 == ((int)-1))) __PYX_ERR(0, 722, __pyx_L1_error)
-  __pyx_v_self->__pyx___this__.emit_cpp_stub = __pyx_t_4;
+  __pyx_t_5 = PyObject_IsTrue(__pyx_v_emit_cpp_stub); if (unlikely(__pyx_t_5 == ((int)-1))) __PYX_ERR(0, 728, __pyx_L1_error)
+  __pyx_v_self->__pyx___this__.emit_cpp_stub = __pyx_t_5;
 
-  /* "halogen/api.pyx":723
+  /* "halogen/api.pyx":729
  *         self.__this__.emit_static_library = PyObject_IsTrue(emit_static_library)
  *         self.__this__.emit_cpp_stub = PyObject_IsTrue(emit_cpp_stub)
  *         self.__this__.emit_schedule = PyObject_IsTrue(emit_schedule)             # <<<<<<<<<<<<<<
  * 
  *         for k, v in substitutions.items():
  */
-  __pyx_t_4 = PyObject_IsTrue(__pyx_v_emit_schedule); if (unlikely(__pyx_t_4 == ((int)-1))) __PYX_ERR(0, 723, __pyx_L1_error)
-  __pyx_v_self->__pyx___this__.emit_schedule = __pyx_t_4;
+  __pyx_t_5 = PyObject_IsTrue(__pyx_v_emit_schedule); if (unlikely(__pyx_t_5 == ((int)-1))) __PYX_ERR(0, 729, __pyx_L1_error)
+  __pyx_v_self->__pyx___this__.emit_schedule = __pyx_t_5;
 
-  /* "halogen/api.pyx":725
+  /* "halogen/api.pyx":731
  *         self.__this__.emit_schedule = PyObject_IsTrue(emit_schedule)
  * 
  *         for k, v in substitutions.items():             # <<<<<<<<<<<<<<
  *             self.__this__.substitutions[<string>u8bytes(k)] = <string>u8bytes(v)
  * 
  */
-  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_substitutions, __pyx_n_s_items); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 725, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_6);
+  __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_v_substitutions, __pyx_n_s_items); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 731, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_7);
   __pyx_t_3 = NULL;
-  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_6))) {
-    __pyx_t_3 = PyMethod_GET_SELF(__pyx_t_6);
+  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_7))) {
+    __pyx_t_3 = PyMethod_GET_SELF(__pyx_t_7);
     if (likely(__pyx_t_3)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_6);
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_7);
       __Pyx_INCREF(__pyx_t_3);
       __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_6, function);
+      __Pyx_DECREF_SET(__pyx_t_7, function);
     }
   }
   if (__pyx_t_3) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_6, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 725, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_7, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 731, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   } else {
-    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 725, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_7); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 731, __pyx_L1_error)
   }
   __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+  __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
   if (likely(PyList_CheckExact(__pyx_t_1)) || PyTuple_CheckExact(__pyx_t_1)) {
-    __pyx_t_6 = __pyx_t_1; __Pyx_INCREF(__pyx_t_6); __pyx_t_2 = 0;
-    __pyx_t_8 = NULL;
+    __pyx_t_7 = __pyx_t_1; __Pyx_INCREF(__pyx_t_7); __pyx_t_2 = 0;
+    __pyx_t_9 = NULL;
   } else {
-    __pyx_t_2 = -1; __pyx_t_6 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 725, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_6);
-    __pyx_t_8 = Py_TYPE(__pyx_t_6)->tp_iternext; if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 725, __pyx_L1_error)
+    __pyx_t_2 = -1; __pyx_t_7 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 731, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_7);
+    __pyx_t_9 = Py_TYPE(__pyx_t_7)->tp_iternext; if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 731, __pyx_L1_error)
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   for (;;) {
-    if (likely(!__pyx_t_8)) {
-      if (likely(PyList_CheckExact(__pyx_t_6))) {
-        if (__pyx_t_2 >= PyList_GET_SIZE(__pyx_t_6)) break;
+    if (likely(!__pyx_t_9)) {
+      if (likely(PyList_CheckExact(__pyx_t_7))) {
+        if (__pyx_t_2 >= PyList_GET_SIZE(__pyx_t_7)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_1 = PyList_GET_ITEM(__pyx_t_6, __pyx_t_2); __Pyx_INCREF(__pyx_t_1); __pyx_t_2++; if (unlikely(0 < 0)) __PYX_ERR(0, 725, __pyx_L1_error)
+        __pyx_t_1 = PyList_GET_ITEM(__pyx_t_7, __pyx_t_2); __Pyx_INCREF(__pyx_t_1); __pyx_t_2++; if (unlikely(0 < 0)) __PYX_ERR(0, 731, __pyx_L1_error)
         #else
-        __pyx_t_1 = PySequence_ITEM(__pyx_t_6, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 725, __pyx_L1_error)
+        __pyx_t_1 = PySequence_ITEM(__pyx_t_7, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 731, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         #endif
       } else {
-        if (__pyx_t_2 >= PyTuple_GET_SIZE(__pyx_t_6)) break;
+        if (__pyx_t_2 >= PyTuple_GET_SIZE(__pyx_t_7)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_1 = PyTuple_GET_ITEM(__pyx_t_6, __pyx_t_2); __Pyx_INCREF(__pyx_t_1); __pyx_t_2++; if (unlikely(0 < 0)) __PYX_ERR(0, 725, __pyx_L1_error)
+        __pyx_t_1 = PyTuple_GET_ITEM(__pyx_t_7, __pyx_t_2); __Pyx_INCREF(__pyx_t_1); __pyx_t_2++; if (unlikely(0 < 0)) __PYX_ERR(0, 731, __pyx_L1_error)
         #else
-        __pyx_t_1 = PySequence_ITEM(__pyx_t_6, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 725, __pyx_L1_error)
+        __pyx_t_1 = PySequence_ITEM(__pyx_t_7, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 731, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         #endif
       }
     } else {
-      __pyx_t_1 = __pyx_t_8(__pyx_t_6);
+      __pyx_t_1 = __pyx_t_9(__pyx_t_7);
       if (unlikely(!__pyx_t_1)) {
         PyObject* exc_type = PyErr_Occurred();
         if (exc_type) {
           if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-          else __PYX_ERR(0, 725, __pyx_L1_error)
+          else __PYX_ERR(0, 731, __pyx_L1_error)
         }
         break;
       }
@@ -16242,69 +16348,69 @@ static int __pyx_pf_7halogen_3api_11EmitOptions___cinit__(struct __pyx_obj_7halo
       if (unlikely(size != 2)) {
         if (size > 2) __Pyx_RaiseTooManyValuesError(2);
         else if (size >= 0) __Pyx_RaiseNeedMoreValuesError(size);
-        __PYX_ERR(0, 725, __pyx_L1_error)
+        __PYX_ERR(0, 731, __pyx_L1_error)
       }
       #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
       if (likely(PyTuple_CheckExact(sequence))) {
         __pyx_t_3 = PyTuple_GET_ITEM(sequence, 0); 
-        __pyx_t_9 = PyTuple_GET_ITEM(sequence, 1); 
+        __pyx_t_10 = PyTuple_GET_ITEM(sequence, 1); 
       } else {
         __pyx_t_3 = PyList_GET_ITEM(sequence, 0); 
-        __pyx_t_9 = PyList_GET_ITEM(sequence, 1); 
+        __pyx_t_10 = PyList_GET_ITEM(sequence, 1); 
       }
       __Pyx_INCREF(__pyx_t_3);
-      __Pyx_INCREF(__pyx_t_9);
+      __Pyx_INCREF(__pyx_t_10);
       #else
-      __pyx_t_3 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 725, __pyx_L1_error)
+      __pyx_t_3 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 731, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_9 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 725, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_9);
+      __pyx_t_10 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 731, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_10);
       #endif
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     } else {
       Py_ssize_t index = -1;
-      __pyx_t_5 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 725, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_5);
+      __pyx_t_6 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 731, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_6);
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-      __pyx_t_11 = Py_TYPE(__pyx_t_5)->tp_iternext;
-      index = 0; __pyx_t_3 = __pyx_t_11(__pyx_t_5); if (unlikely(!__pyx_t_3)) goto __pyx_L13_unpacking_failed;
+      __pyx_t_12 = Py_TYPE(__pyx_t_6)->tp_iternext;
+      index = 0; __pyx_t_3 = __pyx_t_12(__pyx_t_6); if (unlikely(!__pyx_t_3)) goto __pyx_L13_unpacking_failed;
       __Pyx_GOTREF(__pyx_t_3);
-      index = 1; __pyx_t_9 = __pyx_t_11(__pyx_t_5); if (unlikely(!__pyx_t_9)) goto __pyx_L13_unpacking_failed;
-      __Pyx_GOTREF(__pyx_t_9);
-      if (__Pyx_IternextUnpackEndCheck(__pyx_t_11(__pyx_t_5), 2) < 0) __PYX_ERR(0, 725, __pyx_L1_error)
-      __pyx_t_11 = NULL;
-      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+      index = 1; __pyx_t_10 = __pyx_t_12(__pyx_t_6); if (unlikely(!__pyx_t_10)) goto __pyx_L13_unpacking_failed;
+      __Pyx_GOTREF(__pyx_t_10);
+      if (__Pyx_IternextUnpackEndCheck(__pyx_t_12(__pyx_t_6), 2) < 0) __PYX_ERR(0, 731, __pyx_L1_error)
+      __pyx_t_12 = NULL;
+      __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
       goto __pyx_L14_unpacking_done;
       __pyx_L13_unpacking_failed:;
-      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-      __pyx_t_11 = NULL;
+      __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+      __pyx_t_12 = NULL;
       if (__Pyx_IterFinish() == 0) __Pyx_RaiseNeedMoreValuesError(index);
-      __PYX_ERR(0, 725, __pyx_L1_error)
+      __PYX_ERR(0, 731, __pyx_L1_error)
       __pyx_L14_unpacking_done:;
     }
     __Pyx_XDECREF_SET(__pyx_v_k, __pyx_t_3);
     __pyx_t_3 = 0;
-    __Pyx_XDECREF_SET(__pyx_v_v, __pyx_t_9);
-    __pyx_t_9 = 0;
+    __Pyx_XDECREF_SET(__pyx_v_v, __pyx_t_10);
+    __pyx_t_10 = 0;
 
-    /* "halogen/api.pyx":726
+    /* "halogen/api.pyx":732
  * 
  *         for k, v in substitutions.items():
  *             self.__this__.substitutions[<string>u8bytes(k)] = <string>u8bytes(v)             # <<<<<<<<<<<<<<
  * 
  *     @property
  */
-    __pyx_t_1 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_v, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 726, __pyx_L1_error)
+    __pyx_t_1 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_v, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 732, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_12 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 726, __pyx_L1_error)
+    __pyx_t_13 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 732, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_t_1 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_k, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 726, __pyx_L1_error)
+    __pyx_t_1 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_k, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 732, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_13 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 726, __pyx_L1_error)
+    __pyx_t_14 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 732, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    (__pyx_v_self->__pyx___this__.substitutions[((std::string)__pyx_t_13)]) = ((std::string)__pyx_t_12);
+    (__pyx_v_self->__pyx___this__.substitutions[((std::string)__pyx_t_14)]) = ((std::string)__pyx_t_13);
 
-    /* "halogen/api.pyx":725
+    /* "halogen/api.pyx":731
  *         self.__this__.emit_schedule = PyObject_IsTrue(emit_schedule)
  * 
  *         for k, v in substitutions.items():             # <<<<<<<<<<<<<<
@@ -16312,14 +16418,14 @@ static int __pyx_pf_7halogen_3api_11EmitOptions___cinit__(struct __pyx_obj_7halo
  * 
  */
   }
-  __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+  __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
 
-  /* "halogen/api.pyx":678
+  /* "halogen/api.pyx":684
  *     }
  * 
  *     def __cinit__(self, *args, **kwargs):             # <<<<<<<<<<<<<<
  *         for arg in args:
- *             if type(arg) == type(self):
+ *             if type(arg) is type(self):
  */
 
   /* function exit code */
@@ -16328,10 +16434,10 @@ static int __pyx_pf_7halogen_3api_11EmitOptions___cinit__(struct __pyx_obj_7halo
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
   __Pyx_XDECREF(__pyx_t_3);
-  __Pyx_XDECREF(__pyx_t_5);
   __Pyx_XDECREF(__pyx_t_6);
-  __Pyx_XDECREF(__pyx_t_9);
+  __Pyx_XDECREF(__pyx_t_7);
   __Pyx_XDECREF(__pyx_t_10);
+  __Pyx_XDECREF(__pyx_t_11);
   __Pyx_AddTraceback("halogen.api.EmitOptions.__cinit__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = -1;
   __pyx_L0:;
@@ -16354,7 +16460,7 @@ static int __pyx_pf_7halogen_3api_11EmitOptions___cinit__(struct __pyx_obj_7halo
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":729
+/* "halogen/api.pyx":735
  * 
  *     @property
  *     def emit_o(self):             # <<<<<<<<<<<<<<
@@ -16381,7 +16487,7 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_6emit_o___get__(struct __p
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("__get__", 0);
 
-  /* "halogen/api.pyx":730
+  /* "halogen/api.pyx":736
  *     @property
  *     def emit_o(self):
  *         return PyBool_FromLong(self.__this__.emit_o)             # <<<<<<<<<<<<<<
@@ -16389,13 +16495,13 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_6emit_o___get__(struct __p
  *     def emit_o(self, value not None):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyBool_FromLong(__pyx_v_self->__pyx___this__.emit_o); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 730, __pyx_L1_error)
+  __pyx_t_1 = PyBool_FromLong(__pyx_v_self->__pyx___this__.emit_o); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 736, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":729
+  /* "halogen/api.pyx":735
  * 
  *     @property
  *     def emit_o(self):             # <<<<<<<<<<<<<<
@@ -16414,7 +16520,7 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_6emit_o___get__(struct __p
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":732
+/* "halogen/api.pyx":738
  *         return PyBool_FromLong(self.__this__.emit_o)
  *     @emit_o.setter
  *     def emit_o(self, value not None):             # <<<<<<<<<<<<<<
@@ -16429,7 +16535,7 @@ static int __pyx_pw_7halogen_3api_11EmitOptions_6emit_o_3__set__(PyObject *__pyx
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__set__ (wrapper)", 0);
   if (unlikely(((PyObject *)__pyx_v_value) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "value"); __PYX_ERR(0, 732, __pyx_L1_error)
+    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "value"); __PYX_ERR(0, 738, __pyx_L1_error)
   }
   __pyx_r = __pyx_pf_7halogen_3api_11EmitOptions_6emit_o_2__set__(((struct __pyx_obj_7halogen_3api_EmitOptions *)__pyx_v_self), ((PyObject *)__pyx_v_value));
 
@@ -16448,17 +16554,17 @@ static int __pyx_pf_7halogen_3api_11EmitOptions_6emit_o_2__set__(struct __pyx_ob
   int __pyx_t_1;
   __Pyx_RefNannySetupContext("__set__", 0);
 
-  /* "halogen/api.pyx":733
+  /* "halogen/api.pyx":739
  *     @emit_o.setter
  *     def emit_o(self, value not None):
  *         self.__this__.emit_o = PyObject_IsTrue(value)             # <<<<<<<<<<<<<<
  * 
  *     @property
  */
-  __pyx_t_1 = PyObject_IsTrue(__pyx_v_value); if (unlikely(__pyx_t_1 == ((int)-1))) __PYX_ERR(0, 733, __pyx_L1_error)
+  __pyx_t_1 = PyObject_IsTrue(__pyx_v_value); if (unlikely(__pyx_t_1 == ((int)-1))) __PYX_ERR(0, 739, __pyx_L1_error)
   __pyx_v_self->__pyx___this__.emit_o = __pyx_t_1;
 
-  /* "halogen/api.pyx":732
+  /* "halogen/api.pyx":738
  *         return PyBool_FromLong(self.__this__.emit_o)
  *     @emit_o.setter
  *     def emit_o(self, value not None):             # <<<<<<<<<<<<<<
@@ -16477,7 +16583,7 @@ static int __pyx_pf_7halogen_3api_11EmitOptions_6emit_o_2__set__(struct __pyx_ob
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":736
+/* "halogen/api.pyx":742
  * 
  *     @property
  *     def emit_h(self):             # <<<<<<<<<<<<<<
@@ -16504,7 +16610,7 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_6emit_h___get__(struct __p
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("__get__", 0);
 
-  /* "halogen/api.pyx":737
+  /* "halogen/api.pyx":743
  *     @property
  *     def emit_h(self):
  *         return PyBool_FromLong(self.__this__.emit_h)             # <<<<<<<<<<<<<<
@@ -16512,13 +16618,13 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_6emit_h___get__(struct __p
  *     def emit_h(self, value not None):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyBool_FromLong(__pyx_v_self->__pyx___this__.emit_h); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 737, __pyx_L1_error)
+  __pyx_t_1 = PyBool_FromLong(__pyx_v_self->__pyx___this__.emit_h); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 743, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":736
+  /* "halogen/api.pyx":742
  * 
  *     @property
  *     def emit_h(self):             # <<<<<<<<<<<<<<
@@ -16537,7 +16643,7 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_6emit_h___get__(struct __p
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":739
+/* "halogen/api.pyx":745
  *         return PyBool_FromLong(self.__this__.emit_h)
  *     @emit_h.setter
  *     def emit_h(self, value not None):             # <<<<<<<<<<<<<<
@@ -16552,7 +16658,7 @@ static int __pyx_pw_7halogen_3api_11EmitOptions_6emit_h_3__set__(PyObject *__pyx
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__set__ (wrapper)", 0);
   if (unlikely(((PyObject *)__pyx_v_value) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "value"); __PYX_ERR(0, 739, __pyx_L1_error)
+    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "value"); __PYX_ERR(0, 745, __pyx_L1_error)
   }
   __pyx_r = __pyx_pf_7halogen_3api_11EmitOptions_6emit_h_2__set__(((struct __pyx_obj_7halogen_3api_EmitOptions *)__pyx_v_self), ((PyObject *)__pyx_v_value));
 
@@ -16571,17 +16677,17 @@ static int __pyx_pf_7halogen_3api_11EmitOptions_6emit_h_2__set__(struct __pyx_ob
   int __pyx_t_1;
   __Pyx_RefNannySetupContext("__set__", 0);
 
-  /* "halogen/api.pyx":740
+  /* "halogen/api.pyx":746
  *     @emit_h.setter
  *     def emit_h(self, value not None):
  *         self.__this__.emit_h = PyObject_IsTrue(value)             # <<<<<<<<<<<<<<
  * 
  *     @property
  */
-  __pyx_t_1 = PyObject_IsTrue(__pyx_v_value); if (unlikely(__pyx_t_1 == ((int)-1))) __PYX_ERR(0, 740, __pyx_L1_error)
+  __pyx_t_1 = PyObject_IsTrue(__pyx_v_value); if (unlikely(__pyx_t_1 == ((int)-1))) __PYX_ERR(0, 746, __pyx_L1_error)
   __pyx_v_self->__pyx___this__.emit_h = __pyx_t_1;
 
-  /* "halogen/api.pyx":739
+  /* "halogen/api.pyx":745
  *         return PyBool_FromLong(self.__this__.emit_h)
  *     @emit_h.setter
  *     def emit_h(self, value not None):             # <<<<<<<<<<<<<<
@@ -16600,7 +16706,7 @@ static int __pyx_pf_7halogen_3api_11EmitOptions_6emit_h_2__set__(struct __pyx_ob
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":743
+/* "halogen/api.pyx":749
  * 
  *     @property
  *     def emit_cpp(self):             # <<<<<<<<<<<<<<
@@ -16627,7 +16733,7 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_8emit_cpp___get__(struct _
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("__get__", 0);
 
-  /* "halogen/api.pyx":744
+  /* "halogen/api.pyx":750
  *     @property
  *     def emit_cpp(self):
  *         return PyBool_FromLong(self.__this__.emit_cpp)             # <<<<<<<<<<<<<<
@@ -16635,13 +16741,13 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_8emit_cpp___get__(struct _
  *     def emit_cpp(self, value not None):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyBool_FromLong(__pyx_v_self->__pyx___this__.emit_cpp); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 744, __pyx_L1_error)
+  __pyx_t_1 = PyBool_FromLong(__pyx_v_self->__pyx___this__.emit_cpp); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 750, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":743
+  /* "halogen/api.pyx":749
  * 
  *     @property
  *     def emit_cpp(self):             # <<<<<<<<<<<<<<
@@ -16660,7 +16766,7 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_8emit_cpp___get__(struct _
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":746
+/* "halogen/api.pyx":752
  *         return PyBool_FromLong(self.__this__.emit_cpp)
  *     @emit_cpp.setter
  *     def emit_cpp(self, value not None):             # <<<<<<<<<<<<<<
@@ -16675,7 +16781,7 @@ static int __pyx_pw_7halogen_3api_11EmitOptions_8emit_cpp_3__set__(PyObject *__p
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__set__ (wrapper)", 0);
   if (unlikely(((PyObject *)__pyx_v_value) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "value"); __PYX_ERR(0, 746, __pyx_L1_error)
+    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "value"); __PYX_ERR(0, 752, __pyx_L1_error)
   }
   __pyx_r = __pyx_pf_7halogen_3api_11EmitOptions_8emit_cpp_2__set__(((struct __pyx_obj_7halogen_3api_EmitOptions *)__pyx_v_self), ((PyObject *)__pyx_v_value));
 
@@ -16694,17 +16800,17 @@ static int __pyx_pf_7halogen_3api_11EmitOptions_8emit_cpp_2__set__(struct __pyx_
   int __pyx_t_1;
   __Pyx_RefNannySetupContext("__set__", 0);
 
-  /* "halogen/api.pyx":747
+  /* "halogen/api.pyx":753
  *     @emit_cpp.setter
  *     def emit_cpp(self, value not None):
  *         self.__this__.emit_cpp = PyObject_IsTrue(value)             # <<<<<<<<<<<<<<
  * 
  *     @property
  */
-  __pyx_t_1 = PyObject_IsTrue(__pyx_v_value); if (unlikely(__pyx_t_1 == ((int)-1))) __PYX_ERR(0, 747, __pyx_L1_error)
+  __pyx_t_1 = PyObject_IsTrue(__pyx_v_value); if (unlikely(__pyx_t_1 == ((int)-1))) __PYX_ERR(0, 753, __pyx_L1_error)
   __pyx_v_self->__pyx___this__.emit_cpp = __pyx_t_1;
 
-  /* "halogen/api.pyx":746
+  /* "halogen/api.pyx":752
  *         return PyBool_FromLong(self.__this__.emit_cpp)
  *     @emit_cpp.setter
  *     def emit_cpp(self, value not None):             # <<<<<<<<<<<<<<
@@ -16723,7 +16829,7 @@ static int __pyx_pf_7halogen_3api_11EmitOptions_8emit_cpp_2__set__(struct __pyx_
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":750
+/* "halogen/api.pyx":756
  * 
  *     @property
  *     def emit_assembly(self):             # <<<<<<<<<<<<<<
@@ -16750,7 +16856,7 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_13emit_assembly___get__(st
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("__get__", 0);
 
-  /* "halogen/api.pyx":751
+  /* "halogen/api.pyx":757
  *     @property
  *     def emit_assembly(self):
  *         return PyBool_FromLong(self.__this__.emit_assembly)             # <<<<<<<<<<<<<<
@@ -16758,13 +16864,13 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_13emit_assembly___get__(st
  *     def emit_assembly(self, value not None):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyBool_FromLong(__pyx_v_self->__pyx___this__.emit_assembly); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 751, __pyx_L1_error)
+  __pyx_t_1 = PyBool_FromLong(__pyx_v_self->__pyx___this__.emit_assembly); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 757, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":750
+  /* "halogen/api.pyx":756
  * 
  *     @property
  *     def emit_assembly(self):             # <<<<<<<<<<<<<<
@@ -16783,7 +16889,7 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_13emit_assembly___get__(st
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":753
+/* "halogen/api.pyx":759
  *         return PyBool_FromLong(self.__this__.emit_assembly)
  *     @emit_assembly.setter
  *     def emit_assembly(self, value not None):             # <<<<<<<<<<<<<<
@@ -16798,7 +16904,7 @@ static int __pyx_pw_7halogen_3api_11EmitOptions_13emit_assembly_3__set__(PyObjec
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__set__ (wrapper)", 0);
   if (unlikely(((PyObject *)__pyx_v_value) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "value"); __PYX_ERR(0, 753, __pyx_L1_error)
+    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "value"); __PYX_ERR(0, 759, __pyx_L1_error)
   }
   __pyx_r = __pyx_pf_7halogen_3api_11EmitOptions_13emit_assembly_2__set__(((struct __pyx_obj_7halogen_3api_EmitOptions *)__pyx_v_self), ((PyObject *)__pyx_v_value));
 
@@ -16817,17 +16923,17 @@ static int __pyx_pf_7halogen_3api_11EmitOptions_13emit_assembly_2__set__(struct 
   int __pyx_t_1;
   __Pyx_RefNannySetupContext("__set__", 0);
 
-  /* "halogen/api.pyx":754
+  /* "halogen/api.pyx":760
  *     @emit_assembly.setter
  *     def emit_assembly(self, value not None):
  *         self.__this__.emit_assembly = PyObject_IsTrue(value)             # <<<<<<<<<<<<<<
  * 
  *     @property
  */
-  __pyx_t_1 = PyObject_IsTrue(__pyx_v_value); if (unlikely(__pyx_t_1 == ((int)-1))) __PYX_ERR(0, 754, __pyx_L1_error)
+  __pyx_t_1 = PyObject_IsTrue(__pyx_v_value); if (unlikely(__pyx_t_1 == ((int)-1))) __PYX_ERR(0, 760, __pyx_L1_error)
   __pyx_v_self->__pyx___this__.emit_assembly = __pyx_t_1;
 
-  /* "halogen/api.pyx":753
+  /* "halogen/api.pyx":759
  *         return PyBool_FromLong(self.__this__.emit_assembly)
  *     @emit_assembly.setter
  *     def emit_assembly(self, value not None):             # <<<<<<<<<<<<<<
@@ -16846,7 +16952,7 @@ static int __pyx_pf_7halogen_3api_11EmitOptions_13emit_assembly_2__set__(struct 
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":757
+/* "halogen/api.pyx":763
  * 
  *     @property
  *     def emit_bitcode(self):             # <<<<<<<<<<<<<<
@@ -16873,7 +16979,7 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_12emit_bitcode___get__(str
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("__get__", 0);
 
-  /* "halogen/api.pyx":758
+  /* "halogen/api.pyx":764
  *     @property
  *     def emit_bitcode(self):
  *         return PyBool_FromLong(self.__this__.emit_bitcode)             # <<<<<<<<<<<<<<
@@ -16881,13 +16987,13 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_12emit_bitcode___get__(str
  *     def emit_bitcode(self, value not None):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyBool_FromLong(__pyx_v_self->__pyx___this__.emit_bitcode); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 758, __pyx_L1_error)
+  __pyx_t_1 = PyBool_FromLong(__pyx_v_self->__pyx___this__.emit_bitcode); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 764, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":757
+  /* "halogen/api.pyx":763
  * 
  *     @property
  *     def emit_bitcode(self):             # <<<<<<<<<<<<<<
@@ -16906,7 +17012,7 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_12emit_bitcode___get__(str
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":760
+/* "halogen/api.pyx":766
  *         return PyBool_FromLong(self.__this__.emit_bitcode)
  *     @emit_bitcode.setter
  *     def emit_bitcode(self, value not None):             # <<<<<<<<<<<<<<
@@ -16921,7 +17027,7 @@ static int __pyx_pw_7halogen_3api_11EmitOptions_12emit_bitcode_3__set__(PyObject
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__set__ (wrapper)", 0);
   if (unlikely(((PyObject *)__pyx_v_value) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "value"); __PYX_ERR(0, 760, __pyx_L1_error)
+    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "value"); __PYX_ERR(0, 766, __pyx_L1_error)
   }
   __pyx_r = __pyx_pf_7halogen_3api_11EmitOptions_12emit_bitcode_2__set__(((struct __pyx_obj_7halogen_3api_EmitOptions *)__pyx_v_self), ((PyObject *)__pyx_v_value));
 
@@ -16940,17 +17046,17 @@ static int __pyx_pf_7halogen_3api_11EmitOptions_12emit_bitcode_2__set__(struct _
   int __pyx_t_1;
   __Pyx_RefNannySetupContext("__set__", 0);
 
-  /* "halogen/api.pyx":761
+  /* "halogen/api.pyx":767
  *     @emit_bitcode.setter
  *     def emit_bitcode(self, value not None):
  *         self.__this__.emit_bitcode = PyObject_IsTrue(value)             # <<<<<<<<<<<<<<
  * 
  *     @property
  */
-  __pyx_t_1 = PyObject_IsTrue(__pyx_v_value); if (unlikely(__pyx_t_1 == ((int)-1))) __PYX_ERR(0, 761, __pyx_L1_error)
+  __pyx_t_1 = PyObject_IsTrue(__pyx_v_value); if (unlikely(__pyx_t_1 == ((int)-1))) __PYX_ERR(0, 767, __pyx_L1_error)
   __pyx_v_self->__pyx___this__.emit_bitcode = __pyx_t_1;
 
-  /* "halogen/api.pyx":760
+  /* "halogen/api.pyx":766
  *         return PyBool_FromLong(self.__this__.emit_bitcode)
  *     @emit_bitcode.setter
  *     def emit_bitcode(self, value not None):             # <<<<<<<<<<<<<<
@@ -16969,7 +17075,7 @@ static int __pyx_pf_7halogen_3api_11EmitOptions_12emit_bitcode_2__set__(struct _
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":764
+/* "halogen/api.pyx":770
  * 
  *     @property
  *     def emit_stmt(self):             # <<<<<<<<<<<<<<
@@ -16996,7 +17102,7 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_9emit_stmt___get__(struct 
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("__get__", 0);
 
-  /* "halogen/api.pyx":765
+  /* "halogen/api.pyx":771
  *     @property
  *     def emit_stmt(self):
  *         return PyBool_FromLong(self.__this__.emit_stmt)             # <<<<<<<<<<<<<<
@@ -17004,13 +17110,13 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_9emit_stmt___get__(struct 
  *     def emit_stmt(self, value not None):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyBool_FromLong(__pyx_v_self->__pyx___this__.emit_stmt); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 765, __pyx_L1_error)
+  __pyx_t_1 = PyBool_FromLong(__pyx_v_self->__pyx___this__.emit_stmt); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 771, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":764
+  /* "halogen/api.pyx":770
  * 
  *     @property
  *     def emit_stmt(self):             # <<<<<<<<<<<<<<
@@ -17029,7 +17135,7 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_9emit_stmt___get__(struct 
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":767
+/* "halogen/api.pyx":773
  *         return PyBool_FromLong(self.__this__.emit_stmt)
  *     @emit_stmt.setter
  *     def emit_stmt(self, value not None):             # <<<<<<<<<<<<<<
@@ -17044,7 +17150,7 @@ static int __pyx_pw_7halogen_3api_11EmitOptions_9emit_stmt_3__set__(PyObject *__
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__set__ (wrapper)", 0);
   if (unlikely(((PyObject *)__pyx_v_value) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "value"); __PYX_ERR(0, 767, __pyx_L1_error)
+    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "value"); __PYX_ERR(0, 773, __pyx_L1_error)
   }
   __pyx_r = __pyx_pf_7halogen_3api_11EmitOptions_9emit_stmt_2__set__(((struct __pyx_obj_7halogen_3api_EmitOptions *)__pyx_v_self), ((PyObject *)__pyx_v_value));
 
@@ -17063,17 +17169,17 @@ static int __pyx_pf_7halogen_3api_11EmitOptions_9emit_stmt_2__set__(struct __pyx
   int __pyx_t_1;
   __Pyx_RefNannySetupContext("__set__", 0);
 
-  /* "halogen/api.pyx":768
+  /* "halogen/api.pyx":774
  *     @emit_stmt.setter
  *     def emit_stmt(self, value not None):
  *         self.__this__.emit_stmt = PyObject_IsTrue(value)             # <<<<<<<<<<<<<<
  * 
  *     @property
  */
-  __pyx_t_1 = PyObject_IsTrue(__pyx_v_value); if (unlikely(__pyx_t_1 == ((int)-1))) __PYX_ERR(0, 768, __pyx_L1_error)
+  __pyx_t_1 = PyObject_IsTrue(__pyx_v_value); if (unlikely(__pyx_t_1 == ((int)-1))) __PYX_ERR(0, 774, __pyx_L1_error)
   __pyx_v_self->__pyx___this__.emit_stmt = __pyx_t_1;
 
-  /* "halogen/api.pyx":767
+  /* "halogen/api.pyx":773
  *         return PyBool_FromLong(self.__this__.emit_stmt)
  *     @emit_stmt.setter
  *     def emit_stmt(self, value not None):             # <<<<<<<<<<<<<<
@@ -17092,7 +17198,7 @@ static int __pyx_pf_7halogen_3api_11EmitOptions_9emit_stmt_2__set__(struct __pyx
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":771
+/* "halogen/api.pyx":777
  * 
  *     @property
  *     def emit_stmt_html(self):             # <<<<<<<<<<<<<<
@@ -17119,7 +17225,7 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_14emit_stmt_html___get__(s
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("__get__", 0);
 
-  /* "halogen/api.pyx":772
+  /* "halogen/api.pyx":778
  *     @property
  *     def emit_stmt_html(self):
  *         return PyBool_FromLong(self.__this__.emit_stmt_html)             # <<<<<<<<<<<<<<
@@ -17127,13 +17233,13 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_14emit_stmt_html___get__(s
  *     def emit_stmt_html(self, value not None):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyBool_FromLong(__pyx_v_self->__pyx___this__.emit_stmt_html); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 772, __pyx_L1_error)
+  __pyx_t_1 = PyBool_FromLong(__pyx_v_self->__pyx___this__.emit_stmt_html); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 778, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":771
+  /* "halogen/api.pyx":777
  * 
  *     @property
  *     def emit_stmt_html(self):             # <<<<<<<<<<<<<<
@@ -17152,7 +17258,7 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_14emit_stmt_html___get__(s
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":774
+/* "halogen/api.pyx":780
  *         return PyBool_FromLong(self.__this__.emit_stmt_html)
  *     @emit_stmt_html.setter
  *     def emit_stmt_html(self, value not None):             # <<<<<<<<<<<<<<
@@ -17167,7 +17273,7 @@ static int __pyx_pw_7halogen_3api_11EmitOptions_14emit_stmt_html_3__set__(PyObje
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__set__ (wrapper)", 0);
   if (unlikely(((PyObject *)__pyx_v_value) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "value"); __PYX_ERR(0, 774, __pyx_L1_error)
+    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "value"); __PYX_ERR(0, 780, __pyx_L1_error)
   }
   __pyx_r = __pyx_pf_7halogen_3api_11EmitOptions_14emit_stmt_html_2__set__(((struct __pyx_obj_7halogen_3api_EmitOptions *)__pyx_v_self), ((PyObject *)__pyx_v_value));
 
@@ -17186,17 +17292,17 @@ static int __pyx_pf_7halogen_3api_11EmitOptions_14emit_stmt_html_2__set__(struct
   int __pyx_t_1;
   __Pyx_RefNannySetupContext("__set__", 0);
 
-  /* "halogen/api.pyx":775
+  /* "halogen/api.pyx":781
  *     @emit_stmt_html.setter
  *     def emit_stmt_html(self, value not None):
  *         self.__this__.emit_stmt_html = PyObject_IsTrue(value)             # <<<<<<<<<<<<<<
  * 
  *     @property
  */
-  __pyx_t_1 = PyObject_IsTrue(__pyx_v_value); if (unlikely(__pyx_t_1 == ((int)-1))) __PYX_ERR(0, 775, __pyx_L1_error)
+  __pyx_t_1 = PyObject_IsTrue(__pyx_v_value); if (unlikely(__pyx_t_1 == ((int)-1))) __PYX_ERR(0, 781, __pyx_L1_error)
   __pyx_v_self->__pyx___this__.emit_stmt_html = __pyx_t_1;
 
-  /* "halogen/api.pyx":774
+  /* "halogen/api.pyx":780
  *         return PyBool_FromLong(self.__this__.emit_stmt_html)
  *     @emit_stmt_html.setter
  *     def emit_stmt_html(self, value not None):             # <<<<<<<<<<<<<<
@@ -17215,7 +17321,7 @@ static int __pyx_pf_7halogen_3api_11EmitOptions_14emit_stmt_html_2__set__(struct
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":778
+/* "halogen/api.pyx":784
  * 
  *     @property
  *     def emit_python_extension(self):             # <<<<<<<<<<<<<<
@@ -17242,7 +17348,7 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_21emit_python_extension___
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("__get__", 0);
 
-  /* "halogen/api.pyx":779
+  /* "halogen/api.pyx":785
  *     @property
  *     def emit_python_extension(self):
  *         return PyBool_FromLong(self.__this__.emit_python_extension)             # <<<<<<<<<<<<<<
@@ -17250,13 +17356,13 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_21emit_python_extension___
  *     def emit_python_extension(self, value not None):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyBool_FromLong(__pyx_v_self->__pyx___this__.emit_python_extension); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 779, __pyx_L1_error)
+  __pyx_t_1 = PyBool_FromLong(__pyx_v_self->__pyx___this__.emit_python_extension); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 785, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":778
+  /* "halogen/api.pyx":784
  * 
  *     @property
  *     def emit_python_extension(self):             # <<<<<<<<<<<<<<
@@ -17275,7 +17381,7 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_21emit_python_extension___
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":781
+/* "halogen/api.pyx":787
  *         return PyBool_FromLong(self.__this__.emit_python_extension)
  *     @emit_python_extension.setter
  *     def emit_python_extension(self, value not None):             # <<<<<<<<<<<<<<
@@ -17290,7 +17396,7 @@ static int __pyx_pw_7halogen_3api_11EmitOptions_21emit_python_extension_3__set__
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__set__ (wrapper)", 0);
   if (unlikely(((PyObject *)__pyx_v_value) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "value"); __PYX_ERR(0, 781, __pyx_L1_error)
+    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "value"); __PYX_ERR(0, 787, __pyx_L1_error)
   }
   __pyx_r = __pyx_pf_7halogen_3api_11EmitOptions_21emit_python_extension_2__set__(((struct __pyx_obj_7halogen_3api_EmitOptions *)__pyx_v_self), ((PyObject *)__pyx_v_value));
 
@@ -17309,17 +17415,17 @@ static int __pyx_pf_7halogen_3api_11EmitOptions_21emit_python_extension_2__set__
   int __pyx_t_1;
   __Pyx_RefNannySetupContext("__set__", 0);
 
-  /* "halogen/api.pyx":782
+  /* "halogen/api.pyx":788
  *     @emit_python_extension.setter
  *     def emit_python_extension(self, value not None):
  *         self.__this__.emit_python_extension = PyObject_IsTrue(value)             # <<<<<<<<<<<<<<
  * 
  *     @property
  */
-  __pyx_t_1 = PyObject_IsTrue(__pyx_v_value); if (unlikely(__pyx_t_1 == ((int)-1))) __PYX_ERR(0, 782, __pyx_L1_error)
+  __pyx_t_1 = PyObject_IsTrue(__pyx_v_value); if (unlikely(__pyx_t_1 == ((int)-1))) __PYX_ERR(0, 788, __pyx_L1_error)
   __pyx_v_self->__pyx___this__.emit_python_extension = __pyx_t_1;
 
-  /* "halogen/api.pyx":781
+  /* "halogen/api.pyx":787
  *         return PyBool_FromLong(self.__this__.emit_python_extension)
  *     @emit_python_extension.setter
  *     def emit_python_extension(self, value not None):             # <<<<<<<<<<<<<<
@@ -17338,7 +17444,7 @@ static int __pyx_pf_7halogen_3api_11EmitOptions_21emit_python_extension_2__set__
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":785
+/* "halogen/api.pyx":791
  * 
  *     @property
  *     def emit_static_library(self):             # <<<<<<<<<<<<<<
@@ -17365,7 +17471,7 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_19emit_static_library___ge
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("__get__", 0);
 
-  /* "halogen/api.pyx":786
+  /* "halogen/api.pyx":792
  *     @property
  *     def emit_static_library(self):
  *         return PyBool_FromLong(self.__this__.emit_static_library)             # <<<<<<<<<<<<<<
@@ -17373,13 +17479,13 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_19emit_static_library___ge
  *     def emit_static_library(self, value not None):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyBool_FromLong(__pyx_v_self->__pyx___this__.emit_static_library); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 786, __pyx_L1_error)
+  __pyx_t_1 = PyBool_FromLong(__pyx_v_self->__pyx___this__.emit_static_library); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 792, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":785
+  /* "halogen/api.pyx":791
  * 
  *     @property
  *     def emit_static_library(self):             # <<<<<<<<<<<<<<
@@ -17398,7 +17504,7 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_19emit_static_library___ge
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":788
+/* "halogen/api.pyx":794
  *         return PyBool_FromLong(self.__this__.emit_static_library)
  *     @emit_static_library.setter
  *     def emit_static_library(self, value not None):             # <<<<<<<<<<<<<<
@@ -17413,7 +17519,7 @@ static int __pyx_pw_7halogen_3api_11EmitOptions_19emit_static_library_3__set__(P
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__set__ (wrapper)", 0);
   if (unlikely(((PyObject *)__pyx_v_value) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "value"); __PYX_ERR(0, 788, __pyx_L1_error)
+    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "value"); __PYX_ERR(0, 794, __pyx_L1_error)
   }
   __pyx_r = __pyx_pf_7halogen_3api_11EmitOptions_19emit_static_library_2__set__(((struct __pyx_obj_7halogen_3api_EmitOptions *)__pyx_v_self), ((PyObject *)__pyx_v_value));
 
@@ -17432,17 +17538,17 @@ static int __pyx_pf_7halogen_3api_11EmitOptions_19emit_static_library_2__set__(s
   int __pyx_t_1;
   __Pyx_RefNannySetupContext("__set__", 0);
 
-  /* "halogen/api.pyx":789
+  /* "halogen/api.pyx":795
  *     @emit_static_library.setter
  *     def emit_static_library(self, value not None):
  *         self.__this__.emit_static_library = PyObject_IsTrue(value)             # <<<<<<<<<<<<<<
  * 
  *     @property
  */
-  __pyx_t_1 = PyObject_IsTrue(__pyx_v_value); if (unlikely(__pyx_t_1 == ((int)-1))) __PYX_ERR(0, 789, __pyx_L1_error)
+  __pyx_t_1 = PyObject_IsTrue(__pyx_v_value); if (unlikely(__pyx_t_1 == ((int)-1))) __PYX_ERR(0, 795, __pyx_L1_error)
   __pyx_v_self->__pyx___this__.emit_static_library = __pyx_t_1;
 
-  /* "halogen/api.pyx":788
+  /* "halogen/api.pyx":794
  *         return PyBool_FromLong(self.__this__.emit_static_library)
  *     @emit_static_library.setter
  *     def emit_static_library(self, value not None):             # <<<<<<<<<<<<<<
@@ -17461,7 +17567,7 @@ static int __pyx_pf_7halogen_3api_11EmitOptions_19emit_static_library_2__set__(s
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":792
+/* "halogen/api.pyx":798
  * 
  *     @property
  *     def emit_cpp_stub(self):             # <<<<<<<<<<<<<<
@@ -17488,7 +17594,7 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_13emit_cpp_stub___get__(st
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("__get__", 0);
 
-  /* "halogen/api.pyx":793
+  /* "halogen/api.pyx":799
  *     @property
  *     def emit_cpp_stub(self):
  *         return PyBool_FromLong(self.__this__.emit_cpp_stub)             # <<<<<<<<<<<<<<
@@ -17496,13 +17602,13 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_13emit_cpp_stub___get__(st
  *     def emit_cpp_stub(self, value not None):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyBool_FromLong(__pyx_v_self->__pyx___this__.emit_cpp_stub); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 793, __pyx_L1_error)
+  __pyx_t_1 = PyBool_FromLong(__pyx_v_self->__pyx___this__.emit_cpp_stub); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 799, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":792
+  /* "halogen/api.pyx":798
  * 
  *     @property
  *     def emit_cpp_stub(self):             # <<<<<<<<<<<<<<
@@ -17521,7 +17627,7 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_13emit_cpp_stub___get__(st
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":795
+/* "halogen/api.pyx":801
  *         return PyBool_FromLong(self.__this__.emit_cpp_stub)
  *     @emit_cpp_stub.setter
  *     def emit_cpp_stub(self, value not None):             # <<<<<<<<<<<<<<
@@ -17536,7 +17642,7 @@ static int __pyx_pw_7halogen_3api_11EmitOptions_13emit_cpp_stub_3__set__(PyObjec
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__set__ (wrapper)", 0);
   if (unlikely(((PyObject *)__pyx_v_value) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "value"); __PYX_ERR(0, 795, __pyx_L1_error)
+    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "value"); __PYX_ERR(0, 801, __pyx_L1_error)
   }
   __pyx_r = __pyx_pf_7halogen_3api_11EmitOptions_13emit_cpp_stub_2__set__(((struct __pyx_obj_7halogen_3api_EmitOptions *)__pyx_v_self), ((PyObject *)__pyx_v_value));
 
@@ -17555,17 +17661,17 @@ static int __pyx_pf_7halogen_3api_11EmitOptions_13emit_cpp_stub_2__set__(struct 
   int __pyx_t_1;
   __Pyx_RefNannySetupContext("__set__", 0);
 
-  /* "halogen/api.pyx":796
+  /* "halogen/api.pyx":802
  *     @emit_cpp_stub.setter
  *     def emit_cpp_stub(self, value not None):
  *         self.__this__.emit_cpp_stub = PyObject_IsTrue(value)             # <<<<<<<<<<<<<<
  * 
  *     @property
  */
-  __pyx_t_1 = PyObject_IsTrue(__pyx_v_value); if (unlikely(__pyx_t_1 == ((int)-1))) __PYX_ERR(0, 796, __pyx_L1_error)
+  __pyx_t_1 = PyObject_IsTrue(__pyx_v_value); if (unlikely(__pyx_t_1 == ((int)-1))) __PYX_ERR(0, 802, __pyx_L1_error)
   __pyx_v_self->__pyx___this__.emit_cpp_stub = __pyx_t_1;
 
-  /* "halogen/api.pyx":795
+  /* "halogen/api.pyx":801
  *         return PyBool_FromLong(self.__this__.emit_cpp_stub)
  *     @emit_cpp_stub.setter
  *     def emit_cpp_stub(self, value not None):             # <<<<<<<<<<<<<<
@@ -17584,7 +17690,7 @@ static int __pyx_pf_7halogen_3api_11EmitOptions_13emit_cpp_stub_2__set__(struct 
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":799
+/* "halogen/api.pyx":805
  * 
  *     @property
  *     def emit_schedule(self):             # <<<<<<<<<<<<<<
@@ -17611,7 +17717,7 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_13emit_schedule___get__(st
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("__get__", 0);
 
-  /* "halogen/api.pyx":800
+  /* "halogen/api.pyx":806
  *     @property
  *     def emit_schedule(self):
  *         return PyBool_FromLong(self.__this__.emit_schedule)             # <<<<<<<<<<<<<<
@@ -17619,13 +17725,13 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_13emit_schedule___get__(st
  *     def emit_schedule(self, value not None):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyBool_FromLong(__pyx_v_self->__pyx___this__.emit_schedule); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 800, __pyx_L1_error)
+  __pyx_t_1 = PyBool_FromLong(__pyx_v_self->__pyx___this__.emit_schedule); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 806, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":799
+  /* "halogen/api.pyx":805
  * 
  *     @property
  *     def emit_schedule(self):             # <<<<<<<<<<<<<<
@@ -17644,7 +17750,7 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_13emit_schedule___get__(st
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":802
+/* "halogen/api.pyx":808
  *         return PyBool_FromLong(self.__this__.emit_schedule)
  *     @emit_schedule.setter
  *     def emit_schedule(self, value not None):             # <<<<<<<<<<<<<<
@@ -17659,7 +17765,7 @@ static int __pyx_pw_7halogen_3api_11EmitOptions_13emit_schedule_3__set__(PyObjec
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__set__ (wrapper)", 0);
   if (unlikely(((PyObject *)__pyx_v_value) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "value"); __PYX_ERR(0, 802, __pyx_L1_error)
+    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "value"); __PYX_ERR(0, 808, __pyx_L1_error)
   }
   __pyx_r = __pyx_pf_7halogen_3api_11EmitOptions_13emit_schedule_2__set__(((struct __pyx_obj_7halogen_3api_EmitOptions *)__pyx_v_self), ((PyObject *)__pyx_v_value));
 
@@ -17678,17 +17784,17 @@ static int __pyx_pf_7halogen_3api_11EmitOptions_13emit_schedule_2__set__(struct 
   int __pyx_t_1;
   __Pyx_RefNannySetupContext("__set__", 0);
 
-  /* "halogen/api.pyx":803
+  /* "halogen/api.pyx":809
  *     @emit_schedule.setter
  *     def emit_schedule(self, value not None):
  *         self.__this__.emit_schedule = PyObject_IsTrue(value)             # <<<<<<<<<<<<<<
  * 
  *     @property
  */
-  __pyx_t_1 = PyObject_IsTrue(__pyx_v_value); if (unlikely(__pyx_t_1 == ((int)-1))) __PYX_ERR(0, 803, __pyx_L1_error)
+  __pyx_t_1 = PyObject_IsTrue(__pyx_v_value); if (unlikely(__pyx_t_1 == ((int)-1))) __PYX_ERR(0, 809, __pyx_L1_error)
   __pyx_v_self->__pyx___this__.emit_schedule = __pyx_t_1;
 
-  /* "halogen/api.pyx":802
+  /* "halogen/api.pyx":808
  *         return PyBool_FromLong(self.__this__.emit_schedule)
  *     @emit_schedule.setter
  *     def emit_schedule(self, value not None):             # <<<<<<<<<<<<<<
@@ -17707,7 +17813,7 @@ static int __pyx_pf_7halogen_3api_11EmitOptions_13emit_schedule_2__set__(struct 
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":806
+/* "halogen/api.pyx":812
  * 
  *     @property
  *     def substitutions(self):             # <<<<<<<<<<<<<<
@@ -17735,7 +17841,7 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_13substitutions___get__(st
   PyObject *__pyx_t_2 = NULL;
   __Pyx_RefNannySetupContext("__get__", 0);
 
-  /* "halogen/api.pyx":807
+  /* "halogen/api.pyx":813
  *     @property
  *     def substitutions(self):
  *         return dict(self.__this__.substitutions)             # <<<<<<<<<<<<<<
@@ -17743,16 +17849,16 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_13substitutions___get__(st
  *     def substitutions(self, object value not None):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_convert_map_to_py_std_3a__3a_string____std_3a__3a_string(__pyx_v_self->__pyx___this__.substitutions); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 807, __pyx_L1_error)
+  __pyx_t_1 = __pyx_convert_map_to_py_std_3a__3a_string____std_3a__3a_string(__pyx_v_self->__pyx___this__.substitutions); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 813, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_CallOneArg(((PyObject *)(&PyDict_Type)), __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 807, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_CallOneArg(((PyObject *)(&PyDict_Type)), __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 813, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_r = __pyx_t_2;
   __pyx_t_2 = 0;
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":806
+  /* "halogen/api.pyx":812
  * 
  *     @property
  *     def substitutions(self):             # <<<<<<<<<<<<<<
@@ -17772,7 +17878,7 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_13substitutions___get__(st
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":809
+/* "halogen/api.pyx":815
  *         return dict(self.__this__.substitutions)
  *     @substitutions.setter
  *     def substitutions(self, object value not None):             # <<<<<<<<<<<<<<
@@ -17787,7 +17893,7 @@ static int __pyx_pw_7halogen_3api_11EmitOptions_13substitutions_3__set__(PyObjec
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__set__ (wrapper)", 0);
   if (unlikely(((PyObject *)__pyx_v_value) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "value"); __PYX_ERR(0, 809, __pyx_L1_error)
+    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "value"); __PYX_ERR(0, 815, __pyx_L1_error)
   }
   __pyx_r = __pyx_pf_7halogen_3api_11EmitOptions_13substitutions_2__set__(((struct __pyx_obj_7halogen_3api_EmitOptions *)__pyx_v_self), ((PyObject *)__pyx_v_value));
 
@@ -17818,7 +17924,7 @@ static int __pyx_pf_7halogen_3api_11EmitOptions_13substitutions_2__set__(struct 
   std::string __pyx_t_11;
   __Pyx_RefNannySetupContext("__set__", 0);
 
-  /* "halogen/api.pyx":810
+  /* "halogen/api.pyx":816
  *     @substitutions.setter
  *     def substitutions(self, object value not None):
  *         if not PyMapping_Check(value):             # <<<<<<<<<<<<<<
@@ -17828,20 +17934,20 @@ static int __pyx_pf_7halogen_3api_11EmitOptions_13substitutions_2__set__(struct 
   __pyx_t_1 = ((!(PyMapping_Check(__pyx_v_value) != 0)) != 0);
   if (unlikely(__pyx_t_1)) {
 
-    /* "halogen/api.pyx":811
+    /* "halogen/api.pyx":817
  *     def substitutions(self, object value not None):
  *         if not PyMapping_Check(value):
  *             raise ValueError("substitutions must be a mapping type")             # <<<<<<<<<<<<<<
  *         self.__this__.substitutions = stringmap_t()
  *         for k, v in dict(value).items():
  */
-    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__17, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 811, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__17, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 817, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_Raise(__pyx_t_2, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __PYX_ERR(0, 811, __pyx_L1_error)
+    __PYX_ERR(0, 817, __pyx_L1_error)
 
-    /* "halogen/api.pyx":810
+    /* "halogen/api.pyx":816
  *     @substitutions.setter
  *     def substitutions(self, object value not None):
  *         if not PyMapping_Check(value):             # <<<<<<<<<<<<<<
@@ -17850,7 +17956,7 @@ static int __pyx_pf_7halogen_3api_11EmitOptions_13substitutions_2__set__(struct 
  */
   }
 
-  /* "halogen/api.pyx":812
+  /* "halogen/api.pyx":818
  *         if not PyMapping_Check(value):
  *             raise ValueError("substitutions must be a mapping type")
  *         self.__this__.substitutions = stringmap_t()             # <<<<<<<<<<<<<<
@@ -17861,11 +17967,11 @@ static int __pyx_pf_7halogen_3api_11EmitOptions_13substitutions_2__set__(struct 
     __pyx_t_3 = __pyx_t_7halogen_3ext_6halide_9generator_stringmap_t();
   } catch(...) {
     __Pyx_CppExn2PyErr();
-    __PYX_ERR(0, 812, __pyx_L1_error)
+    __PYX_ERR(0, 818, __pyx_L1_error)
   }
   __pyx_v_self->__pyx___this__.substitutions = __pyx_t_3;
 
-  /* "halogen/api.pyx":813
+  /* "halogen/api.pyx":819
  *             raise ValueError("substitutions must be a mapping type")
  *         self.__this__.substitutions = stringmap_t()
  *         for k, v in dict(value).items():             # <<<<<<<<<<<<<<
@@ -17873,9 +17979,9 @@ static int __pyx_pf_7halogen_3api_11EmitOptions_13substitutions_2__set__(struct 
  * 
  */
   __pyx_t_4 = 0;
-  __pyx_t_7 = __Pyx_PyObject_CallOneArg(((PyObject *)(&PyDict_Type)), __pyx_v_value); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 813, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyObject_CallOneArg(((PyObject *)(&PyDict_Type)), __pyx_v_value); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 819, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
-  __pyx_t_8 = __Pyx_dict_iterator(__pyx_t_7, 1, __pyx_n_s_items, (&__pyx_t_5), (&__pyx_t_6)); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 813, __pyx_L1_error)
+  __pyx_t_8 = __Pyx_dict_iterator(__pyx_t_7, 1, __pyx_n_s_items, (&__pyx_t_5), (&__pyx_t_6)); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 819, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
   __Pyx_XDECREF(__pyx_t_2);
@@ -17884,7 +17990,7 @@ static int __pyx_pf_7halogen_3api_11EmitOptions_13substitutions_2__set__(struct 
   while (1) {
     __pyx_t_9 = __Pyx_dict_iter_next(__pyx_t_2, __pyx_t_5, &__pyx_t_4, &__pyx_t_8, &__pyx_t_7, NULL, __pyx_t_6);
     if (unlikely(__pyx_t_9 == 0)) break;
-    if (unlikely(__pyx_t_9 == -1)) __PYX_ERR(0, 813, __pyx_L1_error)
+    if (unlikely(__pyx_t_9 == -1)) __PYX_ERR(0, 819, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
     __Pyx_GOTREF(__pyx_t_7);
     __Pyx_XDECREF_SET(__pyx_v_k, __pyx_t_8);
@@ -17892,26 +17998,26 @@ static int __pyx_pf_7halogen_3api_11EmitOptions_13substitutions_2__set__(struct 
     __Pyx_XDECREF_SET(__pyx_v_v, __pyx_t_7);
     __pyx_t_7 = 0;
 
-    /* "halogen/api.pyx":814
+    /* "halogen/api.pyx":820
  *         self.__this__.substitutions = stringmap_t()
  *         for k, v in dict(value).items():
  *             self.__this__.substitutions[<string>u8bytes(k)] = <string>u8bytes(v)             # <<<<<<<<<<<<<<
  * 
  *     def get_substitution(self, object default):
  */
-    __pyx_t_7 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_v, 0); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 814, __pyx_L1_error)
+    __pyx_t_7 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_v, 0); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 820, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
-    __pyx_t_10 = __pyx_convert_string_from_py_std__in_string(__pyx_t_7); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 814, __pyx_L1_error)
+    __pyx_t_10 = __pyx_convert_string_from_py_std__in_string(__pyx_t_7); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 820, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-    __pyx_t_7 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_k, 0); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 814, __pyx_L1_error)
+    __pyx_t_7 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_k, 0); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 820, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
-    __pyx_t_11 = __pyx_convert_string_from_py_std__in_string(__pyx_t_7); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 814, __pyx_L1_error)
+    __pyx_t_11 = __pyx_convert_string_from_py_std__in_string(__pyx_t_7); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 820, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
     (__pyx_v_self->__pyx___this__.substitutions[((std::string)__pyx_t_11)]) = ((std::string)__pyx_t_10);
   }
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "halogen/api.pyx":809
+  /* "halogen/api.pyx":815
  *         return dict(self.__this__.substitutions)
  *     @substitutions.setter
  *     def substitutions(self, object value not None):             # <<<<<<<<<<<<<<
@@ -17935,7 +18041,7 @@ static int __pyx_pf_7halogen_3api_11EmitOptions_13substitutions_2__set__(struct 
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":816
+/* "halogen/api.pyx":822
  *             self.__this__.substitutions[<string>u8bytes(k)] = <string>u8bytes(v)
  * 
  *     def get_substitution(self, object default):             # <<<<<<<<<<<<<<
@@ -17966,7 +18072,7 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_2get_substitution(struct _
   PyObject *__pyx_t_4 = NULL;
   __Pyx_RefNannySetupContext("get_substitution", 0);
 
-  /* "halogen/api.pyx":817
+  /* "halogen/api.pyx":823
  * 
  *     def get_substitution(self, object default):
  *         return u8bytes(dict(self.__this__.substitutions).get(u8bytes(default),             # <<<<<<<<<<<<<<
@@ -17974,44 +18080,44 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_2get_substitution(struct _
  * 
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_convert_map_to_py_std_3a__3a_string____std_3a__3a_string(__pyx_v_self->__pyx___this__.substitutions); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 817, __pyx_L1_error)
+  __pyx_t_1 = __pyx_convert_map_to_py_std_3a__3a_string____std_3a__3a_string(__pyx_v_self->__pyx___this__.substitutions); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 823, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_CallOneArg(((PyObject *)(&PyDict_Type)), __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 817, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_CallOneArg(((PyObject *)(&PyDict_Type)), __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 823, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_default, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 817, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_default, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 823, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
 
-  /* "halogen/api.pyx":818
+  /* "halogen/api.pyx":824
  *     def get_substitution(self, object default):
  *         return u8bytes(dict(self.__this__.substitutions).get(u8bytes(default),
  *                                                              u8bytes(default)))             # <<<<<<<<<<<<<<
  * 
  *     def compute_outputs_for_target_and_path(self,
  */
-  __pyx_t_3 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_default, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 818, __pyx_L1_error)
+  __pyx_t_3 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_default, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 824, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
 
-  /* "halogen/api.pyx":817
+  /* "halogen/api.pyx":823
  * 
  *     def get_substitution(self, object default):
  *         return u8bytes(dict(self.__this__.substitutions).get(u8bytes(default),             # <<<<<<<<<<<<<<
  *                                                              u8bytes(default)))
  * 
  */
-  __pyx_t_4 = __Pyx_PyDict_GetItemDefault(__pyx_t_2, __pyx_t_1, __pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 817, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyDict_GetItemDefault(__pyx_t_2, __pyx_t_1, __pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 823, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = __pyx_f_7halogen_3api_u8bytes(__pyx_t_4, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 817, __pyx_L1_error)
+  __pyx_t_3 = __pyx_f_7halogen_3api_u8bytes(__pyx_t_4, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 823, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __pyx_r = __pyx_t_3;
   __pyx_t_3 = 0;
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":816
+  /* "halogen/api.pyx":822
  *             self.__this__.substitutions[<string>u8bytes(k)] = <string>u8bytes(v)
  * 
  *     def get_substitution(self, object default):             # <<<<<<<<<<<<<<
@@ -18033,7 +18139,7 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_2get_substitution(struct _
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":820
+/* "halogen/api.pyx":826
  *                                                              u8bytes(default)))
  * 
  *     def compute_outputs_for_target_and_path(self,             # <<<<<<<<<<<<<<
@@ -18081,7 +18187,7 @@ static PyObject *__pyx_pw_7halogen_3api_11EmitOptions_5compute_outputs_for_targe
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "compute_outputs_for_target_and_path") < 0)) __PYX_ERR(0, 820, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "compute_outputs_for_target_and_path") < 0)) __PYX_ERR(0, 826, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -18098,13 +18204,13 @@ static PyObject *__pyx_pw_7halogen_3api_11EmitOptions_5compute_outputs_for_targe
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("compute_outputs_for_target_and_path", 0, 0, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 820, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("compute_outputs_for_target_and_path", 0, 0, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 826, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("halogen.api.EmitOptions.compute_outputs_for_target_and_path", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_target), __pyx_ptype_7halogen_3api_Target, 1, "target", 0))) __PYX_ERR(0, 821, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_target), __pyx_ptype_7halogen_3api_Target, 1, "target", 0))) __PYX_ERR(0, 827, __pyx_L1_error)
   __pyx_r = __pyx_pf_7halogen_3api_11EmitOptions_4compute_outputs_for_target_and_path(((struct __pyx_obj_7halogen_3api_EmitOptions *)__pyx_v_self), __pyx_v_target, __pyx_v_base_path);
 
   /* function exit code */
@@ -18134,29 +18240,29 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_4compute_outputs_for_targe
   int __pyx_t_10;
   __Pyx_RefNannySetupContext("compute_outputs_for_target_and_path", 0);
 
-  /* "halogen/api.pyx":833
+  /* "halogen/api.pyx":839
  *         # also the greater C++, Cython, and Halide communities in general).
  * 
  *         cdef string base_path_str = <string>u8bytes(base_path)             # <<<<<<<<<<<<<<
  *         is_windows_coff = bool(<size_t>target.os == <size_t>OS_Windows and not target.has_feature(<size_t>Feature_MinGW))
  *         output_files = Outputs()
  */
-  __pyx_t_1 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_base_path, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 833, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_base_path, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 839, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 833, __pyx_L1_error)
+  __pyx_t_2 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 839, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_base_path_str = ((std::string)__pyx_t_2);
 
-  /* "halogen/api.pyx":834
+  /* "halogen/api.pyx":840
  * 
  *         cdef string base_path_str = <string>u8bytes(base_path)
  *         is_windows_coff = bool(<size_t>target.os == <size_t>OS_Windows and not target.has_feature(<size_t>Feature_MinGW))             # <<<<<<<<<<<<<<
  *         output_files = Outputs()
  * 
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_target), __pyx_n_s_os); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 834, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_target), __pyx_n_s_os); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 840, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_4 = __Pyx_PyInt_As_size_t(__pyx_t_1); if (unlikely((__pyx_t_4 == (size_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 834, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyInt_As_size_t(__pyx_t_1); if (unlikely((__pyx_t_4 == (size_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 840, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_t_5 = ((((size_t)__pyx_t_4) == ((size_t)Halide::Target::OS::Windows)) != 0);
   if (__pyx_t_5) {
@@ -18164,9 +18270,9 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_4compute_outputs_for_targe
     __pyx_t_3 = __pyx_t_5;
     goto __pyx_L3_bool_binop_done;
   }
-  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_target), __pyx_n_s_has_feature); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 834, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_target), __pyx_n_s_has_feature); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 840, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  __pyx_t_7 = __Pyx_PyInt_FromSize_t(((size_t)Halide::Target::Feature::MinGW)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 834, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyInt_FromSize_t(((size_t)Halide::Target::Feature::MinGW)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 840, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __pyx_t_8 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_6))) {
@@ -18179,14 +18285,14 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_4compute_outputs_for_targe
     }
   }
   if (!__pyx_t_8) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_6, __pyx_t_7); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 834, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_6, __pyx_t_7); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 840, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
     __Pyx_GOTREF(__pyx_t_1);
   } else {
     #if CYTHON_FAST_PYCALL
     if (PyFunction_Check(__pyx_t_6)) {
       PyObject *__pyx_temp[2] = {__pyx_t_8, __pyx_t_7};
-      __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_6, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 834, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_6, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 840, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
@@ -18195,92 +18301,92 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_4compute_outputs_for_targe
     #if CYTHON_FAST_PYCCALL
     if (__Pyx_PyFastCFunction_Check(__pyx_t_6)) {
       PyObject *__pyx_temp[2] = {__pyx_t_8, __pyx_t_7};
-      __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_6, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 834, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_6, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 840, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
     } else
     #endif
     {
-      __pyx_t_9 = PyTuple_New(1+1); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 834, __pyx_L1_error)
+      __pyx_t_9 = PyTuple_New(1+1); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 840, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_9);
       __Pyx_GIVEREF(__pyx_t_8); PyTuple_SET_ITEM(__pyx_t_9, 0, __pyx_t_8); __pyx_t_8 = NULL;
       __Pyx_GIVEREF(__pyx_t_7);
       PyTuple_SET_ITEM(__pyx_t_9, 0+1, __pyx_t_7);
       __pyx_t_7 = 0;
-      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_t_9, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 834, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_t_9, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 840, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
     }
   }
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-  __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_5 < 0)) __PYX_ERR(0, 834, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_5 < 0)) __PYX_ERR(0, 840, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_t_10 = ((!__pyx_t_5) != 0);
   __pyx_t_3 = __pyx_t_10;
   __pyx_L3_bool_binop_done:;
-  __pyx_t_1 = __Pyx_PyBool_FromLong((!(!__pyx_t_3))); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 834, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyBool_FromLong((!(!__pyx_t_3))); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 840, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_is_windows_coff = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "halogen/api.pyx":835
+  /* "halogen/api.pyx":841
  *         cdef string base_path_str = <string>u8bytes(base_path)
  *         is_windows_coff = bool(<size_t>target.os == <size_t>OS_Windows and not target.has_feature(<size_t>Feature_MinGW))
  *         output_files = Outputs()             # <<<<<<<<<<<<<<
  * 
  *         if self.emit_o:
  */
-  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_7halogen_3api_Outputs)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 835, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_7halogen_3api_Outputs)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 841, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_output_files = ((struct __pyx_obj_7halogen_3api_Outputs *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "halogen/api.pyx":837
+  /* "halogen/api.pyx":843
  *         output_files = Outputs()
  * 
  *         if self.emit_o:             # <<<<<<<<<<<<<<
  *             if is_windows_coff:
  *                 output_files.object_name = base_path_str + self.get_substitution(".obj")
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_emit_o); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 837, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_emit_o); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 843, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 837, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 843, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   if (__pyx_t_3) {
 
-    /* "halogen/api.pyx":838
+    /* "halogen/api.pyx":844
  * 
  *         if self.emit_o:
  *             if is_windows_coff:             # <<<<<<<<<<<<<<
  *                 output_files.object_name = base_path_str + self.get_substitution(".obj")
  *             else:
  */
-    __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_v_is_windows_coff); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 838, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_v_is_windows_coff); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 844, __pyx_L1_error)
     if (__pyx_t_3) {
 
-      /* "halogen/api.pyx":839
+      /* "halogen/api.pyx":845
  *         if self.emit_o:
  *             if is_windows_coff:
  *                 output_files.object_name = base_path_str + self.get_substitution(".obj")             # <<<<<<<<<<<<<<
  *             else:
  *                 output_files.object_name = base_path_str + self.get_substitution(".o")
  */
-      __pyx_t_1 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_base_path_str); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 839, __pyx_L1_error)
+      __pyx_t_1 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_base_path_str); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 845, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      __pyx_t_6 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_get_substitution); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 839, __pyx_L1_error)
+      __pyx_t_6 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_get_substitution); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 845, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_6);
-      __pyx_t_9 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_tuple__19, NULL); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 839, __pyx_L1_error)
+      __pyx_t_9 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_tuple__19, NULL); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 845, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_9);
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-      __pyx_t_6 = PyNumber_Add(__pyx_t_1, __pyx_t_9); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 839, __pyx_L1_error)
+      __pyx_t_6 = PyNumber_Add(__pyx_t_1, __pyx_t_9); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 845, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_6);
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-      if (__Pyx_PyObject_SetAttrStr(((PyObject *)__pyx_v_output_files), __pyx_n_s_object_name, __pyx_t_6) < 0) __PYX_ERR(0, 839, __pyx_L1_error)
+      if (__Pyx_PyObject_SetAttrStr(((PyObject *)__pyx_v_output_files), __pyx_n_s_object_name, __pyx_t_6) < 0) __PYX_ERR(0, 845, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
 
-      /* "halogen/api.pyx":838
+      /* "halogen/api.pyx":844
  * 
  *         if self.emit_o:
  *             if is_windows_coff:             # <<<<<<<<<<<<<<
@@ -18290,7 +18396,7 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_4compute_outputs_for_targe
       goto __pyx_L6;
     }
 
-    /* "halogen/api.pyx":841
+    /* "halogen/api.pyx":847
  *                 output_files.object_name = base_path_str + self.get_substitution(".obj")
  *             else:
  *                 output_files.object_name = base_path_str + self.get_substitution(".o")             # <<<<<<<<<<<<<<
@@ -18298,23 +18404,23 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_4compute_outputs_for_targe
  *         if self.emit_assembly:
  */
     /*else*/ {
-      __pyx_t_6 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_base_path_str); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 841, __pyx_L1_error)
+      __pyx_t_6 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_base_path_str); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 847, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_6);
-      __pyx_t_9 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_get_substitution); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 841, __pyx_L1_error)
+      __pyx_t_9 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_get_substitution); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 847, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_9);
-      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_9, __pyx_tuple__20, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 841, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_9, __pyx_tuple__20, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 847, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-      __pyx_t_9 = PyNumber_Add(__pyx_t_6, __pyx_t_1); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 841, __pyx_L1_error)
+      __pyx_t_9 = PyNumber_Add(__pyx_t_6, __pyx_t_1); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 847, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_9);
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-      if (__Pyx_PyObject_SetAttrStr(((PyObject *)__pyx_v_output_files), __pyx_n_s_object_name, __pyx_t_9) < 0) __PYX_ERR(0, 841, __pyx_L1_error)
+      if (__Pyx_PyObject_SetAttrStr(((PyObject *)__pyx_v_output_files), __pyx_n_s_object_name, __pyx_t_9) < 0) __PYX_ERR(0, 847, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
     }
     __pyx_L6:;
 
-    /* "halogen/api.pyx":837
+    /* "halogen/api.pyx":843
  *         output_files = Outputs()
  * 
  *         if self.emit_o:             # <<<<<<<<<<<<<<
@@ -18323,41 +18429,41 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_4compute_outputs_for_targe
  */
   }
 
-  /* "halogen/api.pyx":843
+  /* "halogen/api.pyx":849
  *                 output_files.object_name = base_path_str + self.get_substitution(".o")
  * 
  *         if self.emit_assembly:             # <<<<<<<<<<<<<<
  *             output_files.assembly_name = base_path_str + self.get_substitution(".s")
  * 
  */
-  __pyx_t_9 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_emit_assembly); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 843, __pyx_L1_error)
+  __pyx_t_9 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_emit_assembly); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 849, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_9);
-  __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_t_9); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 843, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_t_9); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 849, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
   if (__pyx_t_3) {
 
-    /* "halogen/api.pyx":844
+    /* "halogen/api.pyx":850
  * 
  *         if self.emit_assembly:
  *             output_files.assembly_name = base_path_str + self.get_substitution(".s")             # <<<<<<<<<<<<<<
  * 
  *         if self.emit_bitcode:
  */
-    __pyx_t_9 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_base_path_str); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 844, __pyx_L1_error)
+    __pyx_t_9 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_base_path_str); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 850, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_9);
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_get_substitution); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 844, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_get_substitution); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 850, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_6 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_tuple__21, NULL); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 844, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_tuple__21, NULL); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 850, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_t_1 = PyNumber_Add(__pyx_t_9, __pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 844, __pyx_L1_error)
+    __pyx_t_1 = PyNumber_Add(__pyx_t_9, __pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 850, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    if (__Pyx_PyObject_SetAttrStr(((PyObject *)__pyx_v_output_files), __pyx_n_s_assembly_name, __pyx_t_1) < 0) __PYX_ERR(0, 844, __pyx_L1_error)
+    if (__Pyx_PyObject_SetAttrStr(((PyObject *)__pyx_v_output_files), __pyx_n_s_assembly_name, __pyx_t_1) < 0) __PYX_ERR(0, 850, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-    /* "halogen/api.pyx":843
+    /* "halogen/api.pyx":849
  *                 output_files.object_name = base_path_str + self.get_substitution(".o")
  * 
  *         if self.emit_assembly:             # <<<<<<<<<<<<<<
@@ -18366,170 +18472,170 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_4compute_outputs_for_targe
  */
   }
 
-  /* "halogen/api.pyx":846
- *             output_files.assembly_name = base_path_str + self.get_substitution(".s")
- * 
- *         if self.emit_bitcode:             # <<<<<<<<<<<<<<
- *             output_files.bitcode_name = base_path_str + self.get_substitution(".bc")
- *         if self.emit_h:
- */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_emit_bitcode); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 846, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 846, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  if (__pyx_t_3) {
-
-    /* "halogen/api.pyx":847
- * 
- *         if self.emit_bitcode:
- *             output_files.bitcode_name = base_path_str + self.get_substitution(".bc")             # <<<<<<<<<<<<<<
- *         if self.emit_h:
- *             output_files.c_header_name = base_path_str + self.get_substitution(".h")
- */
-    __pyx_t_1 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_base_path_str); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 847, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_6 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_get_substitution); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 847, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_6);
-    __pyx_t_9 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_tuple__22, NULL); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 847, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_9);
-    __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    __pyx_t_6 = PyNumber_Add(__pyx_t_1, __pyx_t_9); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 847, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_6);
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-    if (__Pyx_PyObject_SetAttrStr(((PyObject *)__pyx_v_output_files), __pyx_n_s_bitcode_name, __pyx_t_6) < 0) __PYX_ERR(0, 847, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-
-    /* "halogen/api.pyx":846
- *             output_files.assembly_name = base_path_str + self.get_substitution(".s")
- * 
- *         if self.emit_bitcode:             # <<<<<<<<<<<<<<
- *             output_files.bitcode_name = base_path_str + self.get_substitution(".bc")
- *         if self.emit_h:
- */
-  }
-
-  /* "halogen/api.pyx":848
- *         if self.emit_bitcode:
- *             output_files.bitcode_name = base_path_str + self.get_substitution(".bc")
- *         if self.emit_h:             # <<<<<<<<<<<<<<
- *             output_files.c_header_name = base_path_str + self.get_substitution(".h")
- *         if self.emit_cpp:
- */
-  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_emit_h); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 848, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_6);
-  __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_t_6); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 848, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-  if (__pyx_t_3) {
-
-    /* "halogen/api.pyx":849
- *             output_files.bitcode_name = base_path_str + self.get_substitution(".bc")
- *         if self.emit_h:
- *             output_files.c_header_name = base_path_str + self.get_substitution(".h")             # <<<<<<<<<<<<<<
- *         if self.emit_cpp:
- *             output_files.c_source_name = base_path_str + self.get_substitution(".cpp")
- */
-    __pyx_t_6 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_base_path_str); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 849, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_6);
-    __pyx_t_9 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_get_substitution); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 849, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_9);
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_9, __pyx_tuple__23, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 849, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-    __pyx_t_9 = PyNumber_Add(__pyx_t_6, __pyx_t_1); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 849, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_9);
-    __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    if (__Pyx_PyObject_SetAttrStr(((PyObject *)__pyx_v_output_files), __pyx_n_s_c_header_name, __pyx_t_9) < 0) __PYX_ERR(0, 849, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-
-    /* "halogen/api.pyx":848
- *         if self.emit_bitcode:
- *             output_files.bitcode_name = base_path_str + self.get_substitution(".bc")
- *         if self.emit_h:             # <<<<<<<<<<<<<<
- *             output_files.c_header_name = base_path_str + self.get_substitution(".h")
- *         if self.emit_cpp:
- */
-  }
-
-  /* "halogen/api.pyx":850
- *         if self.emit_h:
- *             output_files.c_header_name = base_path_str + self.get_substitution(".h")
- *         if self.emit_cpp:             # <<<<<<<<<<<<<<
- *             output_files.c_source_name = base_path_str + self.get_substitution(".cpp")
- *         if self.emit_python_extension:
- */
-  __pyx_t_9 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_emit_cpp); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 850, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_9);
-  __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_t_9); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 850, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-  if (__pyx_t_3) {
-
-    /* "halogen/api.pyx":851
- *             output_files.c_header_name = base_path_str + self.get_substitution(".h")
- *         if self.emit_cpp:
- *             output_files.c_source_name = base_path_str + self.get_substitution(".cpp")             # <<<<<<<<<<<<<<
- *         if self.emit_python_extension:
- *             output_files.stmt_html_name = base_path_str + self.get_substitution(".py.c")
- */
-    __pyx_t_9 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_base_path_str); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 851, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_9);
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_get_substitution); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 851, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_6 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_tuple__24, NULL); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 851, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_6);
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_t_1 = PyNumber_Add(__pyx_t_9, __pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 851, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-    __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    if (__Pyx_PyObject_SetAttrStr(((PyObject *)__pyx_v_output_files), __pyx_n_s_c_source_name, __pyx_t_1) < 0) __PYX_ERR(0, 851, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-
-    /* "halogen/api.pyx":850
- *         if self.emit_h:
- *             output_files.c_header_name = base_path_str + self.get_substitution(".h")
- *         if self.emit_cpp:             # <<<<<<<<<<<<<<
- *             output_files.c_source_name = base_path_str + self.get_substitution(".cpp")
- *         if self.emit_python_extension:
- */
-  }
-
   /* "halogen/api.pyx":852
- *         if self.emit_cpp:
- *             output_files.c_source_name = base_path_str + self.get_substitution(".cpp")
- *         if self.emit_python_extension:             # <<<<<<<<<<<<<<
- *             output_files.stmt_html_name = base_path_str + self.get_substitution(".py.c")
+ *             output_files.assembly_name = base_path_str + self.get_substitution(".s")
  * 
+ *         if self.emit_bitcode:             # <<<<<<<<<<<<<<
+ *             output_files.bitcode_name = base_path_str + self.get_substitution(".bc")
+ *         if self.emit_h:
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_emit_python_extension); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 852, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_emit_bitcode); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 852, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 852, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   if (__pyx_t_3) {
 
     /* "halogen/api.pyx":853
- *             output_files.c_source_name = base_path_str + self.get_substitution(".cpp")
- *         if self.emit_python_extension:
- *             output_files.stmt_html_name = base_path_str + self.get_substitution(".py.c")             # <<<<<<<<<<<<<<
  * 
- *         # N.B. Currently the Halide `compute_outputs()` version has no substitution logic
+ *         if self.emit_bitcode:
+ *             output_files.bitcode_name = base_path_str + self.get_substitution(".bc")             # <<<<<<<<<<<<<<
+ *         if self.emit_h:
+ *             output_files.c_header_name = base_path_str + self.get_substitution(".h")
  */
     __pyx_t_1 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_base_path_str); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 853, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __pyx_t_6 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_get_substitution); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 853, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
-    __pyx_t_9 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_tuple__25, NULL); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 853, __pyx_L1_error)
+    __pyx_t_9 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_tuple__22, NULL); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 853, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_9);
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
     __pyx_t_6 = PyNumber_Add(__pyx_t_1, __pyx_t_9); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 853, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-    if (__Pyx_PyObject_SetAttrStr(((PyObject *)__pyx_v_output_files), __pyx_n_s_stmt_html_name, __pyx_t_6) < 0) __PYX_ERR(0, 853, __pyx_L1_error)
+    if (__Pyx_PyObject_SetAttrStr(((PyObject *)__pyx_v_output_files), __pyx_n_s_bitcode_name, __pyx_t_6) < 0) __PYX_ERR(0, 853, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
 
     /* "halogen/api.pyx":852
+ *             output_files.assembly_name = base_path_str + self.get_substitution(".s")
+ * 
+ *         if self.emit_bitcode:             # <<<<<<<<<<<<<<
+ *             output_files.bitcode_name = base_path_str + self.get_substitution(".bc")
+ *         if self.emit_h:
+ */
+  }
+
+  /* "halogen/api.pyx":854
+ *         if self.emit_bitcode:
+ *             output_files.bitcode_name = base_path_str + self.get_substitution(".bc")
+ *         if self.emit_h:             # <<<<<<<<<<<<<<
+ *             output_files.c_header_name = base_path_str + self.get_substitution(".h")
+ *         if self.emit_cpp:
+ */
+  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_emit_h); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 854, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_6);
+  __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_t_6); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 854, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+  if (__pyx_t_3) {
+
+    /* "halogen/api.pyx":855
+ *             output_files.bitcode_name = base_path_str + self.get_substitution(".bc")
+ *         if self.emit_h:
+ *             output_files.c_header_name = base_path_str + self.get_substitution(".h")             # <<<<<<<<<<<<<<
+ *         if self.emit_cpp:
+ *             output_files.c_source_name = base_path_str + self.get_substitution(".cpp")
+ */
+    __pyx_t_6 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_base_path_str); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 855, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_6);
+    __pyx_t_9 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_get_substitution); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 855, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_9);
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_9, __pyx_tuple__23, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 855, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
+    __pyx_t_9 = PyNumber_Add(__pyx_t_6, __pyx_t_1); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 855, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_9);
+    __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    if (__Pyx_PyObject_SetAttrStr(((PyObject *)__pyx_v_output_files), __pyx_n_s_c_header_name, __pyx_t_9) < 0) __PYX_ERR(0, 855, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
+
+    /* "halogen/api.pyx":854
+ *         if self.emit_bitcode:
+ *             output_files.bitcode_name = base_path_str + self.get_substitution(".bc")
+ *         if self.emit_h:             # <<<<<<<<<<<<<<
+ *             output_files.c_header_name = base_path_str + self.get_substitution(".h")
+ *         if self.emit_cpp:
+ */
+  }
+
+  /* "halogen/api.pyx":856
+ *         if self.emit_h:
+ *             output_files.c_header_name = base_path_str + self.get_substitution(".h")
+ *         if self.emit_cpp:             # <<<<<<<<<<<<<<
+ *             output_files.c_source_name = base_path_str + self.get_substitution(".cpp")
+ *         if self.emit_python_extension:
+ */
+  __pyx_t_9 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_emit_cpp); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 856, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_9);
+  __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_t_9); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 856, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
+  if (__pyx_t_3) {
+
+    /* "halogen/api.pyx":857
+ *             output_files.c_header_name = base_path_str + self.get_substitution(".h")
+ *         if self.emit_cpp:
+ *             output_files.c_source_name = base_path_str + self.get_substitution(".cpp")             # <<<<<<<<<<<<<<
+ *         if self.emit_python_extension:
+ *             output_files.stmt_html_name = base_path_str + self.get_substitution(".py.c")
+ */
+    __pyx_t_9 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_base_path_str); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 857, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_9);
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_get_substitution); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 857, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    __pyx_t_6 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_tuple__24, NULL); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 857, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_6);
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __pyx_t_1 = PyNumber_Add(__pyx_t_9, __pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 857, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
+    __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+    if (__Pyx_PyObject_SetAttrStr(((PyObject *)__pyx_v_output_files), __pyx_n_s_c_source_name, __pyx_t_1) < 0) __PYX_ERR(0, 857, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+
+    /* "halogen/api.pyx":856
+ *         if self.emit_h:
+ *             output_files.c_header_name = base_path_str + self.get_substitution(".h")
+ *         if self.emit_cpp:             # <<<<<<<<<<<<<<
+ *             output_files.c_source_name = base_path_str + self.get_substitution(".cpp")
+ *         if self.emit_python_extension:
+ */
+  }
+
+  /* "halogen/api.pyx":858
+ *         if self.emit_cpp:
+ *             output_files.c_source_name = base_path_str + self.get_substitution(".cpp")
+ *         if self.emit_python_extension:             # <<<<<<<<<<<<<<
+ *             output_files.stmt_html_name = base_path_str + self.get_substitution(".py.c")
+ * 
+ */
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_emit_python_extension); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 858, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 858, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  if (__pyx_t_3) {
+
+    /* "halogen/api.pyx":859
+ *             output_files.c_source_name = base_path_str + self.get_substitution(".cpp")
+ *         if self.emit_python_extension:
+ *             output_files.stmt_html_name = base_path_str + self.get_substitution(".py.c")             # <<<<<<<<<<<<<<
+ * 
+ *         # N.B. Currently the Halide `compute_outputs()` version has no substitution logic
+ */
+    __pyx_t_1 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_base_path_str); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 859, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    __pyx_t_6 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_get_substitution); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 859, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_6);
+    __pyx_t_9 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_tuple__25, NULL); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 859, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_9);
+    __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+    __pyx_t_6 = PyNumber_Add(__pyx_t_1, __pyx_t_9); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 859, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_6);
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
+    if (__Pyx_PyObject_SetAttrStr(((PyObject *)__pyx_v_output_files), __pyx_n_s_stmt_html_name, __pyx_t_6) < 0) __PYX_ERR(0, 859, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+
+    /* "halogen/api.pyx":858
  *         if self.emit_cpp:
  *             output_files.c_source_name = base_path_str + self.get_substitution(".cpp")
  *         if self.emit_python_extension:             # <<<<<<<<<<<<<<
@@ -18538,41 +18644,41 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_4compute_outputs_for_targe
  */
   }
 
-  /* "halogen/api.pyx":858
+  /* "halogen/api.pyx":864
  *         # for `emit_cpp_stub` -- q.v. Halide/src/Generator.cpp lines 54-96 sub.
  * 
  *         if self.emit_stmt:             # <<<<<<<<<<<<<<
  *             output_files.stmt_name = base_path_str + self.get_substitution(".stmt")
  *         if self.emit_stmt_html:
  */
-  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_emit_stmt); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 858, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_emit_stmt); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 864, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_t_6); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 858, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_t_6); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 864, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   if (__pyx_t_3) {
 
-    /* "halogen/api.pyx":859
+    /* "halogen/api.pyx":865
  * 
  *         if self.emit_stmt:
  *             output_files.stmt_name = base_path_str + self.get_substitution(".stmt")             # <<<<<<<<<<<<<<
  *         if self.emit_stmt_html:
  *             output_files.stmt_html_name = base_path_str + self.get_substitution(".html")
  */
-    __pyx_t_6 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_base_path_str); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 859, __pyx_L1_error)
+    __pyx_t_6 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_base_path_str); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 865, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
-    __pyx_t_9 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_get_substitution); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 859, __pyx_L1_error)
+    __pyx_t_9 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_get_substitution); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 865, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_9);
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_9, __pyx_tuple__26, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 859, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_9, __pyx_tuple__26, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 865, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-    __pyx_t_9 = PyNumber_Add(__pyx_t_6, __pyx_t_1); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 859, __pyx_L1_error)
+    __pyx_t_9 = PyNumber_Add(__pyx_t_6, __pyx_t_1); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 865, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_9);
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    if (__Pyx_PyObject_SetAttrStr(((PyObject *)__pyx_v_output_files), __pyx_n_s_stmt_name, __pyx_t_9) < 0) __PYX_ERR(0, 859, __pyx_L1_error)
+    if (__Pyx_PyObject_SetAttrStr(((PyObject *)__pyx_v_output_files), __pyx_n_s_stmt_name, __pyx_t_9) < 0) __PYX_ERR(0, 865, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
 
-    /* "halogen/api.pyx":858
+    /* "halogen/api.pyx":864
  *         # for `emit_cpp_stub` -- q.v. Halide/src/Generator.cpp lines 54-96 sub.
  * 
  *         if self.emit_stmt:             # <<<<<<<<<<<<<<
@@ -18581,41 +18687,41 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_4compute_outputs_for_targe
  */
   }
 
-  /* "halogen/api.pyx":860
+  /* "halogen/api.pyx":866
  *         if self.emit_stmt:
  *             output_files.stmt_name = base_path_str + self.get_substitution(".stmt")
  *         if self.emit_stmt_html:             # <<<<<<<<<<<<<<
  *             output_files.stmt_html_name = base_path_str + self.get_substitution(".html")
  * 
  */
-  __pyx_t_9 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_emit_stmt_html); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 860, __pyx_L1_error)
+  __pyx_t_9 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_emit_stmt_html); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 866, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_9);
-  __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_t_9); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 860, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_t_9); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 866, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
   if (__pyx_t_3) {
 
-    /* "halogen/api.pyx":861
+    /* "halogen/api.pyx":867
  *             output_files.stmt_name = base_path_str + self.get_substitution(".stmt")
  *         if self.emit_stmt_html:
  *             output_files.stmt_html_name = base_path_str + self.get_substitution(".html")             # <<<<<<<<<<<<<<
  * 
  *         if self.emit_static_library:
  */
-    __pyx_t_9 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_base_path_str); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 861, __pyx_L1_error)
+    __pyx_t_9 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_base_path_str); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 867, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_9);
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_get_substitution); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 861, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_get_substitution); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 867, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_6 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_tuple__27, NULL); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 861, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_tuple__27, NULL); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 867, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_t_1 = PyNumber_Add(__pyx_t_9, __pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 861, __pyx_L1_error)
+    __pyx_t_1 = PyNumber_Add(__pyx_t_9, __pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 867, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    if (__Pyx_PyObject_SetAttrStr(((PyObject *)__pyx_v_output_files), __pyx_n_s_stmt_html_name, __pyx_t_1) < 0) __PYX_ERR(0, 861, __pyx_L1_error)
+    if (__Pyx_PyObject_SetAttrStr(((PyObject *)__pyx_v_output_files), __pyx_n_s_stmt_html_name, __pyx_t_1) < 0) __PYX_ERR(0, 867, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-    /* "halogen/api.pyx":860
+    /* "halogen/api.pyx":866
  *         if self.emit_stmt:
  *             output_files.stmt_name = base_path_str + self.get_substitution(".stmt")
  *         if self.emit_stmt_html:             # <<<<<<<<<<<<<<
@@ -18624,51 +18730,51 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_4compute_outputs_for_targe
  */
   }
 
-  /* "halogen/api.pyx":863
+  /* "halogen/api.pyx":869
  *             output_files.stmt_html_name = base_path_str + self.get_substitution(".html")
  * 
  *         if self.emit_static_library:             # <<<<<<<<<<<<<<
  *             if is_windows_coff:
  *                 output_files.static_library_name = base_path_str + self.get_substitution(".lib")
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_emit_static_library); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 863, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_emit_static_library); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 869, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 863, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 869, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   if (__pyx_t_3) {
 
-    /* "halogen/api.pyx":864
+    /* "halogen/api.pyx":870
  * 
  *         if self.emit_static_library:
  *             if is_windows_coff:             # <<<<<<<<<<<<<<
  *                 output_files.static_library_name = base_path_str + self.get_substitution(".lib")
  *             else:
  */
-    __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_v_is_windows_coff); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 864, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_v_is_windows_coff); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 870, __pyx_L1_error)
     if (__pyx_t_3) {
 
-      /* "halogen/api.pyx":865
+      /* "halogen/api.pyx":871
  *         if self.emit_static_library:
  *             if is_windows_coff:
  *                 output_files.static_library_name = base_path_str + self.get_substitution(".lib")             # <<<<<<<<<<<<<<
  *             else:
  *                 output_files.static_library_name = base_path_str + self.get_substitution(".a")
  */
-      __pyx_t_1 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_base_path_str); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 865, __pyx_L1_error)
+      __pyx_t_1 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_base_path_str); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 871, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      __pyx_t_6 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_get_substitution); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 865, __pyx_L1_error)
+      __pyx_t_6 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_get_substitution); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 871, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_6);
-      __pyx_t_9 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_tuple__28, NULL); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 865, __pyx_L1_error)
+      __pyx_t_9 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_tuple__28, NULL); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 871, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_9);
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-      __pyx_t_6 = PyNumber_Add(__pyx_t_1, __pyx_t_9); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 865, __pyx_L1_error)
+      __pyx_t_6 = PyNumber_Add(__pyx_t_1, __pyx_t_9); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 871, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_6);
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-      if (__Pyx_PyObject_SetAttrStr(((PyObject *)__pyx_v_output_files), __pyx_n_s_static_library_name, __pyx_t_6) < 0) __PYX_ERR(0, 865, __pyx_L1_error)
+      if (__Pyx_PyObject_SetAttrStr(((PyObject *)__pyx_v_output_files), __pyx_n_s_static_library_name, __pyx_t_6) < 0) __PYX_ERR(0, 871, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
 
-      /* "halogen/api.pyx":864
+      /* "halogen/api.pyx":870
  * 
  *         if self.emit_static_library:
  *             if is_windows_coff:             # <<<<<<<<<<<<<<
@@ -18678,7 +18784,7 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_4compute_outputs_for_targe
       goto __pyx_L15;
     }
 
-    /* "halogen/api.pyx":867
+    /* "halogen/api.pyx":873
  *                 output_files.static_library_name = base_path_str + self.get_substitution(".lib")
  *             else:
  *                 output_files.static_library_name = base_path_str + self.get_substitution(".a")             # <<<<<<<<<<<<<<
@@ -18686,23 +18792,23 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_4compute_outputs_for_targe
  *         if self.emit_schedule:
  */
     /*else*/ {
-      __pyx_t_6 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_base_path_str); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 867, __pyx_L1_error)
+      __pyx_t_6 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_base_path_str); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 873, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_6);
-      __pyx_t_9 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_get_substitution); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 867, __pyx_L1_error)
+      __pyx_t_9 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_get_substitution); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 873, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_9);
-      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_9, __pyx_tuple__29, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 867, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_9, __pyx_tuple__29, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 873, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-      __pyx_t_9 = PyNumber_Add(__pyx_t_6, __pyx_t_1); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 867, __pyx_L1_error)
+      __pyx_t_9 = PyNumber_Add(__pyx_t_6, __pyx_t_1); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 873, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_9);
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-      if (__Pyx_PyObject_SetAttrStr(((PyObject *)__pyx_v_output_files), __pyx_n_s_static_library_name, __pyx_t_9) < 0) __PYX_ERR(0, 867, __pyx_L1_error)
+      if (__Pyx_PyObject_SetAttrStr(((PyObject *)__pyx_v_output_files), __pyx_n_s_static_library_name, __pyx_t_9) < 0) __PYX_ERR(0, 873, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
     }
     __pyx_L15:;
 
-    /* "halogen/api.pyx":863
+    /* "halogen/api.pyx":869
  *             output_files.stmt_html_name = base_path_str + self.get_substitution(".html")
  * 
  *         if self.emit_static_library:             # <<<<<<<<<<<<<<
@@ -18711,41 +18817,41 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_4compute_outputs_for_targe
  */
   }
 
-  /* "halogen/api.pyx":869
+  /* "halogen/api.pyx":875
  *                 output_files.static_library_name = base_path_str + self.get_substitution(".a")
  * 
  *         if self.emit_schedule:             # <<<<<<<<<<<<<<
  *             output_files.schedule_name = base_path_str + self.get_substitution(".schedule")
  * 
  */
-  __pyx_t_9 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_emit_schedule); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 869, __pyx_L1_error)
+  __pyx_t_9 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_emit_schedule); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 875, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_9);
-  __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_t_9); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 869, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_t_9); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 875, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
   if (__pyx_t_3) {
 
-    /* "halogen/api.pyx":870
+    /* "halogen/api.pyx":876
  * 
  *         if self.emit_schedule:
  *             output_files.schedule_name = base_path_str + self.get_substitution(".schedule")             # <<<<<<<<<<<<<<
  * 
  *         return output_files
  */
-    __pyx_t_9 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_base_path_str); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 870, __pyx_L1_error)
+    __pyx_t_9 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_base_path_str); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 876, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_9);
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_get_substitution); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 870, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_get_substitution); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 876, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_6 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_tuple__30, NULL); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 870, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_tuple__30, NULL); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 876, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_t_1 = PyNumber_Add(__pyx_t_9, __pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 870, __pyx_L1_error)
+    __pyx_t_1 = PyNumber_Add(__pyx_t_9, __pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 876, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    if (__Pyx_PyObject_SetAttrStr(((PyObject *)__pyx_v_output_files), __pyx_n_s_schedule_name, __pyx_t_1) < 0) __PYX_ERR(0, 870, __pyx_L1_error)
+    if (__Pyx_PyObject_SetAttrStr(((PyObject *)__pyx_v_output_files), __pyx_n_s_schedule_name, __pyx_t_1) < 0) __PYX_ERR(0, 876, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-    /* "halogen/api.pyx":869
+    /* "halogen/api.pyx":875
  *                 output_files.static_library_name = base_path_str + self.get_substitution(".a")
  * 
  *         if self.emit_schedule:             # <<<<<<<<<<<<<<
@@ -18754,7 +18860,7 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_4compute_outputs_for_targe
  */
   }
 
-  /* "halogen/api.pyx":872
+  /* "halogen/api.pyx":878
  *             output_files.schedule_name = base_path_str + self.get_substitution(".schedule")
  * 
  *         return output_files             # <<<<<<<<<<<<<<
@@ -18766,7 +18872,7 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_4compute_outputs_for_targe
   __pyx_r = ((PyObject *)__pyx_v_output_files);
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":820
+  /* "halogen/api.pyx":826
  *                                                              u8bytes(default)))
  * 
  *     def compute_outputs_for_target_and_path(self,             # <<<<<<<<<<<<<<
@@ -18791,7 +18897,7 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_4compute_outputs_for_targe
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":874
+/* "halogen/api.pyx":880
  *         return output_files
  * 
  *     def to_string(self):             # <<<<<<<<<<<<<<
@@ -18824,7 +18930,7 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_6to_string(struct __pyx_ob
   int __pyx_t_6;
   __Pyx_RefNannySetupContext("to_string", 0);
 
-  /* "halogen/api.pyx":875
+  /* "halogen/api.pyx":881
  * 
  *     def to_string(self):
  *         return stringify(self, self.emit_defaults.keys())             # <<<<<<<<<<<<<<
@@ -18832,11 +18938,11 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_6to_string(struct __pyx_ob
  *     def __bytes__(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_stringify); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 875, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_stringify); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 881, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_emit_defaults); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 875, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_emit_defaults); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 881, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_keys); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 875, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_keys); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 881, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __pyx_t_4 = NULL;
@@ -18850,10 +18956,10 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_6to_string(struct __pyx_ob
     }
   }
   if (__pyx_t_4) {
-    __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 875, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 881, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   } else {
-    __pyx_t_3 = __Pyx_PyObject_CallNoArg(__pyx_t_5); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 875, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_CallNoArg(__pyx_t_5); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 881, __pyx_L1_error)
   }
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
@@ -18872,7 +18978,7 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_6to_string(struct __pyx_ob
   #if CYTHON_FAST_PYCALL
   if (PyFunction_Check(__pyx_t_2)) {
     PyObject *__pyx_temp[3] = {__pyx_t_5, ((PyObject *)__pyx_v_self), __pyx_t_3};
-    __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_6, 2+__pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 875, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_6, 2+__pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 881, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -18881,14 +18987,14 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_6to_string(struct __pyx_ob
   #if CYTHON_FAST_PYCCALL
   if (__Pyx_PyFastCFunction_Check(__pyx_t_2)) {
     PyObject *__pyx_temp[3] = {__pyx_t_5, ((PyObject *)__pyx_v_self), __pyx_t_3};
-    __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_6, 2+__pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 875, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_6, 2+__pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 881, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   } else
   #endif
   {
-    __pyx_t_4 = PyTuple_New(2+__pyx_t_6); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 875, __pyx_L1_error)
+    __pyx_t_4 = PyTuple_New(2+__pyx_t_6); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 881, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     if (__pyx_t_5) {
       __Pyx_GIVEREF(__pyx_t_5); PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_5); __pyx_t_5 = NULL;
@@ -18899,7 +19005,7 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_6to_string(struct __pyx_ob
     __Pyx_GIVEREF(__pyx_t_3);
     PyTuple_SET_ITEM(__pyx_t_4, 1+__pyx_t_6, __pyx_t_3);
     __pyx_t_3 = 0;
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_4, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 875, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_4, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 881, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   }
@@ -18908,7 +19014,7 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_6to_string(struct __pyx_ob
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":874
+  /* "halogen/api.pyx":880
  *         return output_files
  * 
  *     def to_string(self):             # <<<<<<<<<<<<<<
@@ -18931,7 +19037,7 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_6to_string(struct __pyx_ob
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":877
+/* "halogen/api.pyx":883
  *         return stringify(self, self.emit_defaults.keys())
  * 
  *     def __bytes__(self):             # <<<<<<<<<<<<<<
@@ -18961,7 +19067,7 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_8__bytes__(struct __pyx_ob
   PyObject *__pyx_t_3 = NULL;
   __Pyx_RefNannySetupContext("__bytes__", 0);
 
-  /* "halogen/api.pyx":878
+  /* "halogen/api.pyx":884
  * 
  *     def __bytes__(self):
  *         return self.to_string()             # <<<<<<<<<<<<<<
@@ -18969,7 +19075,7 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_8__bytes__(struct __pyx_ob
  *     def __str__(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_to_string); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 878, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_to_string); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 884, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
@@ -18982,10 +19088,10 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_8__bytes__(struct __pyx_ob
     }
   }
   if (__pyx_t_3) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 878, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 884, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   } else {
-    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 878, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 884, __pyx_L1_error)
   }
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
@@ -18993,7 +19099,7 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_8__bytes__(struct __pyx_ob
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":877
+  /* "halogen/api.pyx":883
  *         return stringify(self, self.emit_defaults.keys())
  * 
  *     def __bytes__(self):             # <<<<<<<<<<<<<<
@@ -19014,7 +19120,7 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_8__bytes__(struct __pyx_ob
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":880
+/* "halogen/api.pyx":886
  *         return self.to_string()
  * 
  *     def __str__(self):             # <<<<<<<<<<<<<<
@@ -19043,7 +19149,7 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_10__str__(struct __pyx_obj
   PyObject *__pyx_t_3 = NULL;
   __Pyx_RefNannySetupContext("__str__", 0);
 
-  /* "halogen/api.pyx":881
+  /* "halogen/api.pyx":887
  * 
  *     def __str__(self):
  *         return self.to_string().decode('UTF-8')             # <<<<<<<<<<<<<<
@@ -19051,7 +19157,7 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_10__str__(struct __pyx_obj
  *     def __repr__(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_to_string); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 881, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_to_string); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 887, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
@@ -19064,24 +19170,24 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_10__str__(struct __pyx_obj
     }
   }
   if (__pyx_t_3) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 881, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 887, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   } else {
-    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 881, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 887, __pyx_L1_error)
   }
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_decode); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 881, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_decode); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 887, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_tuple__31, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 881, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_tuple__31, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 887, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":880
+  /* "halogen/api.pyx":886
  *         return self.to_string()
  * 
  *     def __str__(self):             # <<<<<<<<<<<<<<
@@ -19102,7 +19208,7 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_10__str__(struct __pyx_obj
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":883
+/* "halogen/api.pyx":889
  *         return self.to_string().decode('UTF-8')
  * 
  *     def __repr__(self):             # <<<<<<<<<<<<<<
@@ -19131,7 +19237,7 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_12__repr__(struct __pyx_ob
   PyObject *__pyx_t_3 = NULL;
   __Pyx_RefNannySetupContext("__repr__", 0);
 
-  /* "halogen/api.pyx":884
+  /* "halogen/api.pyx":890
  * 
  *     def __repr__(self):
  *         return self.to_string().decode('UTF-8')             # <<<<<<<<<<<<<<
@@ -19139,7 +19245,7 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_12__repr__(struct __pyx_ob
  * 
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_to_string); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 884, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_to_string); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 890, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
@@ -19152,24 +19258,24 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_12__repr__(struct __pyx_ob
     }
   }
   if (__pyx_t_3) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 884, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 890, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   } else {
-    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 884, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 890, __pyx_L1_error)
   }
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_decode); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 884, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_decode); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 890, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_tuple__32, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 884, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_tuple__32, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 890, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":883
+  /* "halogen/api.pyx":889
  *         return self.to_string().decode('UTF-8')
  * 
  *     def __repr__(self):             # <<<<<<<<<<<<<<
@@ -19299,7 +19405,7 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_16__setstate_cython__(CYTH
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":896
+/* "halogen/api.pyx":902
  *         module_ptr_t __this__
  * 
  *     def __cinit__(self, *args, **kwargs):             # <<<<<<<<<<<<<<
@@ -19336,119 +19442,119 @@ static int __pyx_pf_7halogen_3api_6Module___cinit__(struct __pyx_obj_7halogen_3a
   Py_ssize_t __pyx_t_2;
   PyObject *__pyx_t_3 = NULL;
   int __pyx_t_4;
-  PyObject *__pyx_t_5 = NULL;
+  int __pyx_t_5;
   PyObject *__pyx_t_6 = NULL;
   PyObject *__pyx_t_7 = NULL;
-  std::string __pyx_t_8;
+  PyObject *__pyx_t_8 = NULL;
+  std::string __pyx_t_9;
   __Pyx_RefNannySetupContext("__cinit__", 0);
 
-  /* "halogen/api.pyx":898
+  /* "halogen/api.pyx":904
  *     def __cinit__(self, *args, **kwargs):
  *         cdef HalTarget htarg
  *         for arg in args:             # <<<<<<<<<<<<<<
- *             if type(arg) == type(self):
+ *             if type(arg) is type(self):
  *                 htarg = HalTarget(<string>arg.get_target().to_string())
  */
   __pyx_t_1 = __pyx_v_args; __Pyx_INCREF(__pyx_t_1); __pyx_t_2 = 0;
   for (;;) {
     if (__pyx_t_2 >= PyTuple_GET_SIZE(__pyx_t_1)) break;
     #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-    __pyx_t_3 = PyTuple_GET_ITEM(__pyx_t_1, __pyx_t_2); __Pyx_INCREF(__pyx_t_3); __pyx_t_2++; if (unlikely(0 < 0)) __PYX_ERR(0, 898, __pyx_L1_error)
+    __pyx_t_3 = PyTuple_GET_ITEM(__pyx_t_1, __pyx_t_2); __Pyx_INCREF(__pyx_t_3); __pyx_t_2++; if (unlikely(0 < 0)) __PYX_ERR(0, 904, __pyx_L1_error)
     #else
-    __pyx_t_3 = PySequence_ITEM(__pyx_t_1, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 898, __pyx_L1_error)
+    __pyx_t_3 = PySequence_ITEM(__pyx_t_1, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 904, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     #endif
     __Pyx_XDECREF_SET(__pyx_v_arg, __pyx_t_3);
     __pyx_t_3 = 0;
 
-    /* "halogen/api.pyx":899
+    /* "halogen/api.pyx":905
  *         cdef HalTarget htarg
  *         for arg in args:
- *             if type(arg) == type(self):             # <<<<<<<<<<<<<<
+ *             if type(arg) is type(self):             # <<<<<<<<<<<<<<
  *                 htarg = HalTarget(<string>arg.get_target().to_string())
  *                 self.__this__.reset(new HalModule(<string>arg.name, <HalTarget>htarg))
  */
-    __pyx_t_3 = PyObject_RichCompare(((PyObject *)Py_TYPE(__pyx_v_arg)), ((PyObject *)Py_TYPE(((PyObject *)__pyx_v_self))), Py_EQ); __Pyx_XGOTREF(__pyx_t_3); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 899, __pyx_L1_error)
-    __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 899, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    if (__pyx_t_4) {
+    __pyx_t_4 = (((PyObject *)Py_TYPE(__pyx_v_arg)) == ((PyObject *)Py_TYPE(((PyObject *)__pyx_v_self))));
+    __pyx_t_5 = (__pyx_t_4 != 0);
+    if (__pyx_t_5) {
 
-      /* "halogen/api.pyx":900
+      /* "halogen/api.pyx":906
  *         for arg in args:
- *             if type(arg) == type(self):
+ *             if type(arg) is type(self):
  *                 htarg = HalTarget(<string>arg.get_target().to_string())             # <<<<<<<<<<<<<<
  *                 self.__this__.reset(new HalModule(<string>arg.name, <HalTarget>htarg))
  *                 if self.__this__.get():
  */
-      __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_arg, __pyx_n_s_get_target); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 900, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_6);
-      __pyx_t_7 = NULL;
-      if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_6))) {
-        __pyx_t_7 = PyMethod_GET_SELF(__pyx_t_6);
-        if (likely(__pyx_t_7)) {
-          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_6);
-          __Pyx_INCREF(__pyx_t_7);
+      __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_v_arg, __pyx_n_s_get_target); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 906, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_7);
+      __pyx_t_8 = NULL;
+      if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_7))) {
+        __pyx_t_8 = PyMethod_GET_SELF(__pyx_t_7);
+        if (likely(__pyx_t_8)) {
+          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_7);
+          __Pyx_INCREF(__pyx_t_8);
           __Pyx_INCREF(function);
-          __Pyx_DECREF_SET(__pyx_t_6, function);
+          __Pyx_DECREF_SET(__pyx_t_7, function);
         }
       }
-      if (__pyx_t_7) {
-        __pyx_t_5 = __Pyx_PyObject_CallOneArg(__pyx_t_6, __pyx_t_7); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 900, __pyx_L1_error)
-        __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+      if (__pyx_t_8) {
+        __pyx_t_6 = __Pyx_PyObject_CallOneArg(__pyx_t_7, __pyx_t_8); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 906, __pyx_L1_error)
+        __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
       } else {
-        __pyx_t_5 = __Pyx_PyObject_CallNoArg(__pyx_t_6); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 900, __pyx_L1_error)
+        __pyx_t_6 = __Pyx_PyObject_CallNoArg(__pyx_t_7); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 906, __pyx_L1_error)
       }
-      __Pyx_GOTREF(__pyx_t_5);
+      __Pyx_GOTREF(__pyx_t_6);
+      __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+      __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_to_string); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 906, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_7);
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-      __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_to_string); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 900, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_6);
-      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-      __pyx_t_5 = NULL;
-      if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_6))) {
-        __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_6);
-        if (likely(__pyx_t_5)) {
-          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_6);
-          __Pyx_INCREF(__pyx_t_5);
+      __pyx_t_6 = NULL;
+      if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_7))) {
+        __pyx_t_6 = PyMethod_GET_SELF(__pyx_t_7);
+        if (likely(__pyx_t_6)) {
+          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_7);
+          __Pyx_INCREF(__pyx_t_6);
           __Pyx_INCREF(function);
-          __Pyx_DECREF_SET(__pyx_t_6, function);
+          __Pyx_DECREF_SET(__pyx_t_7, function);
         }
       }
-      if (__pyx_t_5) {
-        __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_t_6, __pyx_t_5); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 900, __pyx_L1_error)
-        __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+      if (__pyx_t_6) {
+        __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_t_7, __pyx_t_6); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 906, __pyx_L1_error)
+        __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
       } else {
-        __pyx_t_3 = __Pyx_PyObject_CallNoArg(__pyx_t_6); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 900, __pyx_L1_error)
+        __pyx_t_3 = __Pyx_PyObject_CallNoArg(__pyx_t_7); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 906, __pyx_L1_error)
       }
       __Pyx_GOTREF(__pyx_t_3);
-      __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-      __pyx_t_8 = __pyx_convert_string_from_py_std__in_string(__pyx_t_3); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 900, __pyx_L1_error)
+      __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+      __pyx_t_9 = __pyx_convert_string_from_py_std__in_string(__pyx_t_3); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 906, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __pyx_v_htarg = Halide::Target(((std::string)__pyx_t_8));
+      __pyx_v_htarg = Halide::Target(((std::string)__pyx_t_9));
 
-      /* "halogen/api.pyx":901
- *             if type(arg) == type(self):
+      /* "halogen/api.pyx":907
+ *             if type(arg) is type(self):
  *                 htarg = HalTarget(<string>arg.get_target().to_string())
  *                 self.__this__.reset(new HalModule(<string>arg.name, <HalTarget>htarg))             # <<<<<<<<<<<<<<
  *                 if self.__this__.get():
  *                     return
  */
-      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_arg, __pyx_n_s_name_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 901, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_arg, __pyx_n_s_name_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 907, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_8 = __pyx_convert_string_from_py_std__in_string(__pyx_t_3); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 901, __pyx_L1_error)
+      __pyx_t_9 = __pyx_convert_string_from_py_std__in_string(__pyx_t_3); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 907, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __pyx_v_self->__pyx___this__.reset(new Halide::Module(((std::string)__pyx_t_8), ((Halide::Target)__pyx_v_htarg)));
+      __pyx_v_self->__pyx___this__.reset(new Halide::Module(((std::string)__pyx_t_9), ((Halide::Target)__pyx_v_htarg)));
 
-      /* "halogen/api.pyx":902
+      /* "halogen/api.pyx":908
  *                 htarg = HalTarget(<string>arg.get_target().to_string())
  *                 self.__this__.reset(new HalModule(<string>arg.name, <HalTarget>htarg))
  *                 if self.__this__.get():             # <<<<<<<<<<<<<<
  *                     return
  * 
  */
-      __pyx_t_4 = (__pyx_v_self->__pyx___this__.get() != 0);
-      if (__pyx_t_4) {
+      __pyx_t_5 = (__pyx_v_self->__pyx___this__.get() != 0);
+      if (__pyx_t_5) {
 
-        /* "halogen/api.pyx":903
+        /* "halogen/api.pyx":909
  *                 self.__this__.reset(new HalModule(<string>arg.name, <HalTarget>htarg))
  *                 if self.__this__.get():
  *                     return             # <<<<<<<<<<<<<<
@@ -19459,7 +19565,7 @@ static int __pyx_pf_7halogen_3api_6Module___cinit__(struct __pyx_obj_7halogen_3a
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
         goto __pyx_L0;
 
-        /* "halogen/api.pyx":902
+        /* "halogen/api.pyx":908
  *                 htarg = HalTarget(<string>arg.get_target().to_string())
  *                 self.__this__.reset(new HalModule(<string>arg.name, <HalTarget>htarg))
  *                 if self.__this__.get():             # <<<<<<<<<<<<<<
@@ -19468,26 +19574,26 @@ static int __pyx_pf_7halogen_3api_6Module___cinit__(struct __pyx_obj_7halogen_3a
  */
       }
 
-      /* "halogen/api.pyx":899
+      /* "halogen/api.pyx":905
  *         cdef HalTarget htarg
  *         for arg in args:
- *             if type(arg) == type(self):             # <<<<<<<<<<<<<<
+ *             if type(arg) is type(self):             # <<<<<<<<<<<<<<
  *                 htarg = HalTarget(<string>arg.get_target().to_string())
  *                 self.__this__.reset(new HalModule(<string>arg.name, <HalTarget>htarg))
  */
     }
 
-    /* "halogen/api.pyx":898
+    /* "halogen/api.pyx":904
  *     def __cinit__(self, *args, **kwargs):
  *         cdef HalTarget htarg
  *         for arg in args:             # <<<<<<<<<<<<<<
- *             if type(arg) == type(self):
+ *             if type(arg) is type(self):
  *                 htarg = HalTarget(<string>arg.get_target().to_string())
  */
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "halogen/api.pyx":896
+  /* "halogen/api.pyx":902
  *         module_ptr_t __this__
  * 
  *     def __cinit__(self, *args, **kwargs):             # <<<<<<<<<<<<<<
@@ -19501,9 +19607,9 @@ static int __pyx_pf_7halogen_3api_6Module___cinit__(struct __pyx_obj_7halogen_3a
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
   __Pyx_XDECREF(__pyx_t_3);
-  __Pyx_XDECREF(__pyx_t_5);
   __Pyx_XDECREF(__pyx_t_6);
   __Pyx_XDECREF(__pyx_t_7);
+  __Pyx_XDECREF(__pyx_t_8);
   __Pyx_AddTraceback("halogen.api.Module.__cinit__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = -1;
   __pyx_L0:;
@@ -19512,7 +19618,7 @@ static int __pyx_pf_7halogen_3api_6Module___cinit__(struct __pyx_obj_7halogen_3a
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":905
+/* "halogen/api.pyx":911
  *                     return
  * 
  *     def __init__(self, *args, **kwargs):             # <<<<<<<<<<<<<<
@@ -19557,14 +19663,14 @@ static int __pyx_pf_7halogen_3api_6Module_2__init__(struct __pyx_obj_7halogen_3a
   PyObject *__pyx_t_7 = NULL;
   __Pyx_RefNannySetupContext("__init__", 0);
 
-  /* "halogen/api.pyx":909
+  /* "halogen/api.pyx":915
  *         cdef string name
  *         cdef string tstring
  *         if len(args) < 1 and not self.__this__.get():             # <<<<<<<<<<<<<<
  *             name = <string>u8bytes(kwargs.get('name', ''))
  *             tstring = Target(target_string=kwargs.get('target', 'host')).to_string()
  */
-  __pyx_t_2 = PyTuple_GET_SIZE(__pyx_v_args); if (unlikely(__pyx_t_2 == ((Py_ssize_t)-1))) __PYX_ERR(0, 909, __pyx_L1_error)
+  __pyx_t_2 = PyTuple_GET_SIZE(__pyx_v_args); if (unlikely(__pyx_t_2 == ((Py_ssize_t)-1))) __PYX_ERR(0, 915, __pyx_L1_error)
   __pyx_t_3 = ((__pyx_t_2 < 1) != 0);
   if (__pyx_t_3) {
   } else {
@@ -19576,39 +19682,39 @@ static int __pyx_pf_7halogen_3api_6Module_2__init__(struct __pyx_obj_7halogen_3a
   __pyx_L4_bool_binop_done:;
   if (__pyx_t_1) {
 
-    /* "halogen/api.pyx":910
+    /* "halogen/api.pyx":916
  *         cdef string tstring
  *         if len(args) < 1 and not self.__this__.get():
  *             name = <string>u8bytes(kwargs.get('name', ''))             # <<<<<<<<<<<<<<
  *             tstring = Target(target_string=kwargs.get('target', 'host')).to_string()
  *             htarg = HalTarget(tstring)
  */
-    __pyx_t_4 = __Pyx_PyDict_GetItemDefault(__pyx_v_kwargs, __pyx_n_s_name_2, __pyx_kp_s_); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 910, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyDict_GetItemDefault(__pyx_v_kwargs, __pyx_n_s_name_2, __pyx_kp_s_); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 916, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_5 = __pyx_f_7halogen_3api_u8bytes(__pyx_t_4, 0); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 910, __pyx_L1_error)
+    __pyx_t_5 = __pyx_f_7halogen_3api_u8bytes(__pyx_t_4, 0); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 916, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __pyx_t_6 = __pyx_convert_string_from_py_std__in_string(__pyx_t_5); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 910, __pyx_L1_error)
+    __pyx_t_6 = __pyx_convert_string_from_py_std__in_string(__pyx_t_5); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 916, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     __pyx_v_name = ((std::string)__pyx_t_6);
 
-    /* "halogen/api.pyx":911
+    /* "halogen/api.pyx":917
  *         if len(args) < 1 and not self.__this__.get():
  *             name = <string>u8bytes(kwargs.get('name', ''))
  *             tstring = Target(target_string=kwargs.get('target', 'host')).to_string()             # <<<<<<<<<<<<<<
  *             htarg = HalTarget(tstring)
  *             self.__this__.reset(new HalModule(name, <HalTarget>htarg))
  */
-    __pyx_t_4 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 911, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 917, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_7 = __Pyx_PyDict_GetItemDefault(__pyx_v_kwargs, __pyx_n_s_target, __pyx_n_s_host); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 911, __pyx_L1_error)
+    __pyx_t_7 = __Pyx_PyDict_GetItemDefault(__pyx_v_kwargs, __pyx_n_s_target, __pyx_n_s_host); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 917, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
-    if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_target_string, __pyx_t_7) < 0) __PYX_ERR(0, 911, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_target_string, __pyx_t_7) < 0) __PYX_ERR(0, 917, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-    __pyx_t_7 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_7halogen_3api_Target), __pyx_empty_tuple, __pyx_t_4); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 911, __pyx_L1_error)
+    __pyx_t_7 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_7halogen_3api_Target), __pyx_empty_tuple, __pyx_t_4); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 917, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_7, __pyx_n_s_to_string); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 911, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_7, __pyx_n_s_to_string); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 917, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
     __pyx_t_7 = NULL;
@@ -19622,18 +19728,18 @@ static int __pyx_pf_7halogen_3api_6Module_2__init__(struct __pyx_obj_7halogen_3a
       }
     }
     if (__pyx_t_7) {
-      __pyx_t_5 = __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_7); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 911, __pyx_L1_error)
+      __pyx_t_5 = __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_7); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 917, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
     } else {
-      __pyx_t_5 = __Pyx_PyObject_CallNoArg(__pyx_t_4); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 911, __pyx_L1_error)
+      __pyx_t_5 = __Pyx_PyObject_CallNoArg(__pyx_t_4); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 917, __pyx_L1_error)
     }
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __pyx_t_6 = __pyx_convert_string_from_py_std__in_string(__pyx_t_5); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 911, __pyx_L1_error)
+    __pyx_t_6 = __pyx_convert_string_from_py_std__in_string(__pyx_t_5); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 917, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     __pyx_v_tstring = __pyx_t_6;
 
-    /* "halogen/api.pyx":912
+    /* "halogen/api.pyx":918
  *             name = <string>u8bytes(kwargs.get('name', ''))
  *             tstring = Target(target_string=kwargs.get('target', 'host')).to_string()
  *             htarg = HalTarget(tstring)             # <<<<<<<<<<<<<<
@@ -19642,7 +19748,7 @@ static int __pyx_pf_7halogen_3api_6Module_2__init__(struct __pyx_obj_7halogen_3a
  */
     __pyx_v_htarg = Halide::Target(__pyx_v_tstring);
 
-    /* "halogen/api.pyx":913
+    /* "halogen/api.pyx":919
  *             tstring = Target(target_string=kwargs.get('target', 'host')).to_string()
  *             htarg = HalTarget(tstring)
  *             self.__this__.reset(new HalModule(name, <HalTarget>htarg))             # <<<<<<<<<<<<<<
@@ -19651,7 +19757,7 @@ static int __pyx_pf_7halogen_3api_6Module_2__init__(struct __pyx_obj_7halogen_3a
  */
     __pyx_v_self->__pyx___this__.reset(new Halide::Module(__pyx_v_name, ((Halide::Target)__pyx_v_htarg)));
 
-    /* "halogen/api.pyx":909
+    /* "halogen/api.pyx":915
  *         cdef string name
  *         cdef string tstring
  *         if len(args) < 1 and not self.__this__.get():             # <<<<<<<<<<<<<<
@@ -19660,7 +19766,7 @@ static int __pyx_pf_7halogen_3api_6Module_2__init__(struct __pyx_obj_7halogen_3a
  */
   }
 
-  /* "halogen/api.pyx":905
+  /* "halogen/api.pyx":911
  *                     return
  * 
  *     def __init__(self, *args, **kwargs):             # <<<<<<<<<<<<<<
@@ -19682,7 +19788,7 @@ static int __pyx_pf_7halogen_3api_6Module_2__init__(struct __pyx_obj_7halogen_3a
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":915
+/* "halogen/api.pyx":921
  *             self.__this__.reset(new HalModule(name, <HalTarget>htarg))
  * 
  *     def __dealloc__(self):             # <<<<<<<<<<<<<<
@@ -19705,7 +19811,7 @@ static void __pyx_pf_7halogen_3api_6Module_4__dealloc__(struct __pyx_obj_7haloge
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__dealloc__", 0);
 
-  /* "halogen/api.pyx":919
+  /* "halogen/api.pyx":925
  *         # is not necessary, strictly speaking, as it will reset itself upon
  *         # scoped stack-deallocation (but who the fuck really knows, rite? huh.)
  *         self.__this__.reset(NULL)             # <<<<<<<<<<<<<<
@@ -19714,7 +19820,7 @@ static void __pyx_pf_7halogen_3api_6Module_4__dealloc__(struct __pyx_obj_7haloge
  */
   __pyx_v_self->__pyx___this__.reset(NULL);
 
-  /* "halogen/api.pyx":915
+  /* "halogen/api.pyx":921
  *             self.__this__.reset(new HalModule(name, <HalTarget>htarg))
  * 
  *     def __dealloc__(self):             # <<<<<<<<<<<<<<
@@ -19726,7 +19832,7 @@ static void __pyx_pf_7halogen_3api_6Module_4__dealloc__(struct __pyx_obj_7haloge
   __Pyx_RefNannyFinishContext();
 }
 
-/* "halogen/api.pyx":922
+/* "halogen/api.pyx":928
  * 
  *     @property
  *     def name(self):             # <<<<<<<<<<<<<<
@@ -19753,7 +19859,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_4name___get__(struct __pyx_obj_7
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("__get__", 0);
 
-  /* "halogen/api.pyx":923
+  /* "halogen/api.pyx":929
  *     @property
  *     def name(self):
  *         return deref(self.__this__).name()             # <<<<<<<<<<<<<<
@@ -19761,13 +19867,13 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_4name___get__(struct __pyx_obj_7
  *     @property
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_convert_PyBytes_string_to_py_std__in_string((*__pyx_v_self->__pyx___this__).name()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 923, __pyx_L1_error)
+  __pyx_t_1 = __pyx_convert_PyBytes_string_to_py_std__in_string((*__pyx_v_self->__pyx___this__).name()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 929, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":922
+  /* "halogen/api.pyx":928
  * 
  *     @property
  *     def name(self):             # <<<<<<<<<<<<<<
@@ -19786,7 +19892,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_4name___get__(struct __pyx_obj_7
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":926
+/* "halogen/api.pyx":932
  * 
  *     @property
  *     def auto_schedule(self):             # <<<<<<<<<<<<<<
@@ -19813,7 +19919,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_13auto_schedule___get__(struct _
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("__get__", 0);
 
-  /* "halogen/api.pyx":927
+  /* "halogen/api.pyx":933
  *     @property
  *     def auto_schedule(self):
  *         return deref(self.__this__).auto_schedule()             # <<<<<<<<<<<<<<
@@ -19821,13 +19927,13 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_13auto_schedule___get__(struct _
  *     @property
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_convert_PyBytes_string_to_py_std__in_string((*__pyx_v_self->__pyx___this__).auto_schedule()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 927, __pyx_L1_error)
+  __pyx_t_1 = __pyx_convert_PyBytes_string_to_py_std__in_string((*__pyx_v_self->__pyx___this__).auto_schedule()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 933, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":926
+  /* "halogen/api.pyx":932
  * 
  *     @property
  *     def auto_schedule(self):             # <<<<<<<<<<<<<<
@@ -19846,7 +19952,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_13auto_schedule___get__(struct _
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":930
+/* "halogen/api.pyx":936
  * 
  *     @property
  *     def any_strict_float(self):             # <<<<<<<<<<<<<<
@@ -19874,7 +19980,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_16any_strict_float___get__(struc
   PyObject *__pyx_t_2 = NULL;
   __Pyx_RefNannySetupContext("__get__", 0);
 
-  /* "halogen/api.pyx":931
+  /* "halogen/api.pyx":937
  *     @property
  *     def any_strict_float(self):
  *         return bool(deref(self.__this__).any_strict_float())             # <<<<<<<<<<<<<<
@@ -19883,13 +19989,13 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_16any_strict_float___get__(struc
  */
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_1 = (*__pyx_v_self->__pyx___this__).any_strict_float();
-  __pyx_t_2 = __Pyx_PyBool_FromLong((!(!__pyx_t_1))); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 931, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyBool_FromLong((!(!__pyx_t_1))); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 937, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_r = __pyx_t_2;
   __pyx_t_2 = 0;
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":930
+  /* "halogen/api.pyx":936
  * 
  *     @property
  *     def any_strict_float(self):             # <<<<<<<<<<<<<<
@@ -19908,7 +20014,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_16any_strict_float___get__(struc
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":933
+/* "halogen/api.pyx":939
  *         return bool(deref(self.__this__).any_strict_float())
  * 
  *     def get_target(self):             # <<<<<<<<<<<<<<
@@ -19937,19 +20043,19 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_6get_target(struct __pyx_obj_7ha
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("get_target", 0);
 
-  /* "halogen/api.pyx":934
+  /* "halogen/api.pyx":940
  * 
  *     def get_target(self):
  *         out = Target()             # <<<<<<<<<<<<<<
  *         out.__this__ = deref(self.__this__).target()
  *         return out
  */
-  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_7halogen_3api_Target)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 934, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_7halogen_3api_Target)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 940, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_out = ((struct __pyx_obj_7halogen_3api_Target *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "halogen/api.pyx":935
+  /* "halogen/api.pyx":941
  *     def get_target(self):
  *         out = Target()
  *         out.__this__ = deref(self.__this__).target()             # <<<<<<<<<<<<<<
@@ -19958,7 +20064,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_6get_target(struct __pyx_obj_7ha
  */
   __pyx_v_out->__pyx___this__ = (*__pyx_v_self->__pyx___this__).target();
 
-  /* "halogen/api.pyx":936
+  /* "halogen/api.pyx":942
  *         out = Target()
  *         out.__this__ = deref(self.__this__).target()
  *         return out             # <<<<<<<<<<<<<<
@@ -19970,7 +20076,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_6get_target(struct __pyx_obj_7ha
   __pyx_r = ((PyObject *)__pyx_v_out);
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":933
+  /* "halogen/api.pyx":939
  *         return bool(deref(self.__this__).any_strict_float())
  * 
  *     def get_target(self):             # <<<<<<<<<<<<<<
@@ -19990,7 +20096,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_6get_target(struct __pyx_obj_7ha
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":939
+/* "halogen/api.pyx":945
  * 
  *     @property
  *     def target(self):             # <<<<<<<<<<<<<<
@@ -20019,7 +20125,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_6target___get__(struct __pyx_obj
   PyObject *__pyx_t_3 = NULL;
   __Pyx_RefNannySetupContext("__get__", 0);
 
-  /* "halogen/api.pyx":940
+  /* "halogen/api.pyx":946
  *     @property
  *     def target(self):
  *         return self.get_target()             # <<<<<<<<<<<<<<
@@ -20027,7 +20133,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_6target___get__(struct __pyx_obj
  *     @staticmethod
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_get_target); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 940, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_get_target); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 946, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
@@ -20040,10 +20146,10 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_6target___get__(struct __pyx_obj
     }
   }
   if (__pyx_t_3) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 940, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 946, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   } else {
-    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 940, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 946, __pyx_L1_error)
   }
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
@@ -20051,7 +20157,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_6target___get__(struct __pyx_obj
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":939
+  /* "halogen/api.pyx":945
  * 
  *     @property
  *     def target(self):             # <<<<<<<<<<<<<<
@@ -20072,7 +20178,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_6target___get__(struct __pyx_obj
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":943
+/* "halogen/api.pyx":949
  * 
  *     @staticmethod
  *     cdef Module with_instance(const HalModule& m):             # <<<<<<<<<<<<<<
@@ -20087,19 +20193,19 @@ static struct __pyx_obj_7halogen_3api_Module *__pyx_f_7halogen_3api_6Module_with
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("with_instance", 0);
 
-  /* "halogen/api.pyx":944
+  /* "halogen/api.pyx":950
  *     @staticmethod
  *     cdef Module with_instance(const HalModule& m):
  *         cdef Module out = Module()             # <<<<<<<<<<<<<<
  *         with nogil:
  *             out.__this__.reset(new HalModule(m))
  */
-  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_7halogen_3api_Module)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 944, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_7halogen_3api_Module)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 950, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_out = ((struct __pyx_obj_7halogen_3api_Module *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "halogen/api.pyx":945
+  /* "halogen/api.pyx":951
  *     cdef Module with_instance(const HalModule& m):
  *         cdef Module out = Module()
  *         with nogil:             # <<<<<<<<<<<<<<
@@ -20114,7 +20220,7 @@ static struct __pyx_obj_7halogen_3api_Module *__pyx_f_7halogen_3api_6Module_with
       #endif
       /*try:*/ {
 
-        /* "halogen/api.pyx":946
+        /* "halogen/api.pyx":952
  *         cdef Module out = Module()
  *         with nogil:
  *             out.__this__.reset(new HalModule(m))             # <<<<<<<<<<<<<<
@@ -20124,7 +20230,7 @@ static struct __pyx_obj_7halogen_3api_Module *__pyx_f_7halogen_3api_6Module_with
         __pyx_v_out->__pyx___this__.reset(new Halide::Module(__pyx_v_m));
       }
 
-      /* "halogen/api.pyx":945
+      /* "halogen/api.pyx":951
  *     cdef Module with_instance(const HalModule& m):
  *         cdef Module out = Module()
  *         with nogil:             # <<<<<<<<<<<<<<
@@ -20143,7 +20249,7 @@ static struct __pyx_obj_7halogen_3api_Module *__pyx_f_7halogen_3api_6Module_with
       }
   }
 
-  /* "halogen/api.pyx":947
+  /* "halogen/api.pyx":953
  *         with nogil:
  *             out.__this__.reset(new HalModule(m))
  *         return out             # <<<<<<<<<<<<<<
@@ -20155,7 +20261,7 @@ static struct __pyx_obj_7halogen_3api_Module *__pyx_f_7halogen_3api_6Module_with
   __pyx_r = __pyx_v_out;
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":943
+  /* "halogen/api.pyx":949
  * 
  *     @staticmethod
  *     cdef Module with_instance(const HalModule& m):             # <<<<<<<<<<<<<<
@@ -20175,7 +20281,7 @@ static struct __pyx_obj_7halogen_3api_Module *__pyx_f_7halogen_3api_6Module_with
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":949
+/* "halogen/api.pyx":955
  *         return out
  * 
  *     cdef buffervec_t get_buffers(Module self) nogil:             # <<<<<<<<<<<<<<
@@ -20187,7 +20293,7 @@ static __pyx_t_7halogen_3ext_6halide_7buffers_buffervec_t __pyx_f_7halogen_3api_
   __pyx_t_7halogen_3ext_6halide_7buffers_buffervec_t __pyx_v_out;
   __pyx_t_7halogen_3ext_6halide_7buffers_buffervec_t __pyx_r;
 
-  /* "halogen/api.pyx":950
+  /* "halogen/api.pyx":956
  * 
  *     cdef buffervec_t get_buffers(Module self) nogil:
  *         cdef buffervec_t out = deref(self.__this__).buffers()             # <<<<<<<<<<<<<<
@@ -20196,7 +20302,7 @@ static __pyx_t_7halogen_3ext_6halide_7buffers_buffervec_t __pyx_f_7halogen_3api_
  */
   __pyx_v_out = (*__pyx_v_self->__pyx___this__).buffers();
 
-  /* "halogen/api.pyx":951
+  /* "halogen/api.pyx":957
  *     cdef buffervec_t get_buffers(Module self) nogil:
  *         cdef buffervec_t out = deref(self.__this__).buffers()
  *         return out             # <<<<<<<<<<<<<<
@@ -20206,7 +20312,7 @@ static __pyx_t_7halogen_3ext_6halide_7buffers_buffervec_t __pyx_f_7halogen_3api_
   __pyx_r = __pyx_v_out;
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":949
+  /* "halogen/api.pyx":955
  *         return out
  * 
  *     cdef buffervec_t get_buffers(Module self) nogil:             # <<<<<<<<<<<<<<
@@ -20219,7 +20325,7 @@ static __pyx_t_7halogen_3ext_6halide_7buffers_buffervec_t __pyx_f_7halogen_3api_
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":953
+/* "halogen/api.pyx":959
  *         return out
  * 
  *     cdef funcvec_t get_functions(Module self) nogil:             # <<<<<<<<<<<<<<
@@ -20231,7 +20337,7 @@ static __pyx_t_7halogen_3ext_6halide_6module_funcvec_t __pyx_f_7halogen_3api_6Mo
   __pyx_t_7halogen_3ext_6halide_6module_funcvec_t __pyx_v_out;
   __pyx_t_7halogen_3ext_6halide_6module_funcvec_t __pyx_r;
 
-  /* "halogen/api.pyx":954
+  /* "halogen/api.pyx":960
  * 
  *     cdef funcvec_t get_functions(Module self) nogil:
  *         cdef funcvec_t out = deref(self.__this__).functions()             # <<<<<<<<<<<<<<
@@ -20240,7 +20346,7 @@ static __pyx_t_7halogen_3ext_6halide_6module_funcvec_t __pyx_f_7halogen_3api_6Mo
  */
   __pyx_v_out = (*__pyx_v_self->__pyx___this__).functions();
 
-  /* "halogen/api.pyx":955
+  /* "halogen/api.pyx":961
  *     cdef funcvec_t get_functions(Module self) nogil:
  *         cdef funcvec_t out = deref(self.__this__).functions()
  *         return out             # <<<<<<<<<<<<<<
@@ -20250,7 +20356,7 @@ static __pyx_t_7halogen_3ext_6halide_6module_funcvec_t __pyx_f_7halogen_3api_6Mo
   __pyx_r = __pyx_v_out;
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":953
+  /* "halogen/api.pyx":959
  *         return out
  * 
  *     cdef funcvec_t get_functions(Module self) nogil:             # <<<<<<<<<<<<<<
@@ -20263,7 +20369,7 @@ static __pyx_t_7halogen_3ext_6halide_6module_funcvec_t __pyx_f_7halogen_3api_6Mo
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":957
+/* "halogen/api.pyx":963
  *         return out
  * 
  *     cdef modulevec_t get_submodules(Module self) nogil:             # <<<<<<<<<<<<<<
@@ -20275,7 +20381,7 @@ static __pyx_t_7halogen_3ext_6halide_6module_modulevec_t __pyx_f_7halogen_3api_6
   __pyx_t_7halogen_3ext_6halide_6module_modulevec_t __pyx_v_out;
   __pyx_t_7halogen_3ext_6halide_6module_modulevec_t __pyx_r;
 
-  /* "halogen/api.pyx":958
+  /* "halogen/api.pyx":964
  * 
  *     cdef modulevec_t get_submodules(Module self) nogil:
  *         cdef modulevec_t out = deref(self.__this__).submodules()             # <<<<<<<<<<<<<<
@@ -20284,7 +20390,7 @@ static __pyx_t_7halogen_3ext_6halide_6module_modulevec_t __pyx_f_7halogen_3api_6
  */
   __pyx_v_out = (*__pyx_v_self->__pyx___this__).submodules();
 
-  /* "halogen/api.pyx":959
+  /* "halogen/api.pyx":965
  *     cdef modulevec_t get_submodules(Module self) nogil:
  *         cdef modulevec_t out = deref(self.__this__).submodules()
  *         return out             # <<<<<<<<<<<<<<
@@ -20294,7 +20400,7 @@ static __pyx_t_7halogen_3ext_6halide_6module_modulevec_t __pyx_f_7halogen_3api_6
   __pyx_r = __pyx_v_out;
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":957
+  /* "halogen/api.pyx":963
  *         return out
  * 
  *     cdef modulevec_t get_submodules(Module self) nogil:             # <<<<<<<<<<<<<<
@@ -20307,7 +20413,7 @@ static __pyx_t_7halogen_3ext_6halide_6module_modulevec_t __pyx_f_7halogen_3api_6
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":961
+/* "halogen/api.pyx":967
  *         return out
  * 
  *     def submodules(self):             # <<<<<<<<<<<<<<
@@ -20340,7 +20446,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_8submodules(struct __pyx_obj_7ha
   int __pyx_t_3;
   __Pyx_RefNannySetupContext("submodules", 0);
 
-  /* "halogen/api.pyx":962
+  /* "halogen/api.pyx":968
  * 
  *     def submodules(self):
  *         cdef modulevec_t modulevec = deref(self.__this__).submodules()             # <<<<<<<<<<<<<<
@@ -20349,19 +20455,19 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_8submodules(struct __pyx_obj_7ha
  */
   __pyx_v_modulevec = (*__pyx_v_self->__pyx___this__).submodules();
 
-  /* "halogen/api.pyx":963
+  /* "halogen/api.pyx":969
  *     def submodules(self):
  *         cdef modulevec_t modulevec = deref(self.__this__).submodules()
  *         out = []             # <<<<<<<<<<<<<<
  *         it = modulevec.begin()
  *         while it != modulevec.end():
  */
-  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 963, __pyx_L1_error)
+  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 969, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_out = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "halogen/api.pyx":964
+  /* "halogen/api.pyx":970
  *         cdef modulevec_t modulevec = deref(self.__this__).submodules()
  *         out = []
  *         it = modulevec.begin()             # <<<<<<<<<<<<<<
@@ -20370,7 +20476,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_8submodules(struct __pyx_obj_7ha
  */
   __pyx_v_it = __pyx_v_modulevec.begin();
 
-  /* "halogen/api.pyx":965
+  /* "halogen/api.pyx":971
  *         out = []
  *         it = modulevec.begin()
  *         while it != modulevec.end():             # <<<<<<<<<<<<<<
@@ -20381,19 +20487,19 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_8submodules(struct __pyx_obj_7ha
     __pyx_t_2 = ((__pyx_v_it != __pyx_v_modulevec.end()) != 0);
     if (!__pyx_t_2) break;
 
-    /* "halogen/api.pyx":966
+    /* "halogen/api.pyx":972
  *         it = modulevec.begin()
  *         while it != modulevec.end():
  *             out.append(Module.with_instance(deref(it)))             # <<<<<<<<<<<<<<
  *             incr(it)
  *         return tuple(out)
  */
-    __pyx_t_1 = ((PyObject *)__pyx_f_7halogen_3api_6Module_with_instance((*__pyx_v_it))); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 966, __pyx_L1_error)
+    __pyx_t_1 = ((PyObject *)__pyx_f_7halogen_3api_6Module_with_instance((*__pyx_v_it))); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 972, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_3 = __Pyx_PyList_Append(__pyx_v_out, __pyx_t_1); if (unlikely(__pyx_t_3 == ((int)-1))) __PYX_ERR(0, 966, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyList_Append(__pyx_v_out, __pyx_t_1); if (unlikely(__pyx_t_3 == ((int)-1))) __PYX_ERR(0, 972, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-    /* "halogen/api.pyx":967
+    /* "halogen/api.pyx":973
  *         while it != modulevec.end():
  *             out.append(Module.with_instance(deref(it)))
  *             incr(it)             # <<<<<<<<<<<<<<
@@ -20403,7 +20509,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_8submodules(struct __pyx_obj_7ha
     (void)((++__pyx_v_it));
   }
 
-  /* "halogen/api.pyx":968
+  /* "halogen/api.pyx":974
  *             out.append(Module.with_instance(deref(it)))
  *             incr(it)
  *         return tuple(out)             # <<<<<<<<<<<<<<
@@ -20411,13 +20517,13 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_8submodules(struct __pyx_obj_7ha
  *     def append(self, other not None):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyList_AsTuple(__pyx_v_out); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 968, __pyx_L1_error)
+  __pyx_t_1 = PyList_AsTuple(__pyx_v_out); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 974, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":961
+  /* "halogen/api.pyx":967
  *         return out
  * 
  *     def submodules(self):             # <<<<<<<<<<<<<<
@@ -20437,7 +20543,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_8submodules(struct __pyx_obj_7ha
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":970
+/* "halogen/api.pyx":976
  *         return tuple(out)
  * 
  *     def append(self, other not None):             # <<<<<<<<<<<<<<
@@ -20453,7 +20559,7 @@ static PyObject *__pyx_pw_7halogen_3api_6Module_11append(PyObject *__pyx_v_self,
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("append (wrapper)", 0);
   if (unlikely(((PyObject *)__pyx_v_other) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "other"); __PYX_ERR(0, 970, __pyx_L1_error)
+    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "other"); __PYX_ERR(0, 976, __pyx_L1_error)
   }
   __pyx_r = __pyx_pf_7halogen_3api_6Module_10append(((struct __pyx_obj_7halogen_3api_Module *)__pyx_v_self), ((PyObject *)__pyx_v_other));
 
@@ -20470,36 +20576,36 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_10append(struct __pyx_obj_7halog
   struct __pyx_obj_7halogen_3api_Module *__pyx_v_mother = 0;
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
-  PyObject *__pyx_t_1 = NULL;
+  int __pyx_t_1;
   int __pyx_t_2;
+  PyObject *__pyx_t_3 = NULL;
   __Pyx_RefNannySetupContext("append", 0);
 
-  /* "halogen/api.pyx":975
+  /* "halogen/api.pyx":981
  *         # which those (at time of writing) do not yet have wrapper cdef-class types:
  *         cdef Module mother
- *         if type(other) == type(self):             # <<<<<<<<<<<<<<
+ *         if type(other) is type(self):             # <<<<<<<<<<<<<<
  *             mother = <Module>other
  *             deref(self.__this__).append(deref(mother.__this__))
  */
-  __pyx_t_1 = PyObject_RichCompare(((PyObject *)Py_TYPE(__pyx_v_other)), ((PyObject *)Py_TYPE(((PyObject *)__pyx_v_self))), Py_EQ); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 975, __pyx_L1_error)
-  __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 975, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_1 = (((PyObject *)Py_TYPE(__pyx_v_other)) == ((PyObject *)Py_TYPE(((PyObject *)__pyx_v_self))));
+  __pyx_t_2 = (__pyx_t_1 != 0);
   if (__pyx_t_2) {
 
-    /* "halogen/api.pyx":976
+    /* "halogen/api.pyx":982
  *         cdef Module mother
- *         if type(other) == type(self):
+ *         if type(other) is type(self):
  *             mother = <Module>other             # <<<<<<<<<<<<<<
  *             deref(self.__this__).append(deref(mother.__this__))
  * 
  */
-    __pyx_t_1 = __pyx_v_other;
-    __Pyx_INCREF(__pyx_t_1);
-    __pyx_v_mother = ((struct __pyx_obj_7halogen_3api_Module *)__pyx_t_1);
-    __pyx_t_1 = 0;
+    __pyx_t_3 = __pyx_v_other;
+    __Pyx_INCREF(__pyx_t_3);
+    __pyx_v_mother = ((struct __pyx_obj_7halogen_3api_Module *)__pyx_t_3);
+    __pyx_t_3 = 0;
 
-    /* "halogen/api.pyx":977
- *         if type(other) == type(self):
+    /* "halogen/api.pyx":983
+ *         if type(other) is type(self):
  *             mother = <Module>other
  *             deref(self.__this__).append(deref(mother.__this__))             # <<<<<<<<<<<<<<
  * 
@@ -20507,16 +20613,16 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_10append(struct __pyx_obj_7halog
  */
     (*__pyx_v_self->__pyx___this__).append((*__pyx_v_mother->__pyx___this__));
 
-    /* "halogen/api.pyx":975
+    /* "halogen/api.pyx":981
  *         # which those (at time of writing) do not yet have wrapper cdef-class types:
  *         cdef Module mother
- *         if type(other) == type(self):             # <<<<<<<<<<<<<<
+ *         if type(other) is type(self):             # <<<<<<<<<<<<<<
  *             mother = <Module>other
  *             deref(self.__this__).append(deref(mother.__this__))
  */
   }
 
-  /* "halogen/api.pyx":970
+  /* "halogen/api.pyx":976
  *         return tuple(out)
  * 
  *     def append(self, other not None):             # <<<<<<<<<<<<<<
@@ -20526,19 +20632,13 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_10append(struct __pyx_obj_7halog
 
   /* function exit code */
   __pyx_r = Py_None; __Pyx_INCREF(Py_None);
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("halogen.api.Module.append", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __pyx_r = NULL;
-  __pyx_L0:;
   __Pyx_XDECREF((PyObject *)__pyx_v_mother);
   __Pyx_XGIVEREF(__pyx_r);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":979
+/* "halogen/api.pyx":985
  *             deref(self.__this__).append(deref(mother.__this__))
  * 
  *     cdef void replace_instance(Module self, HalModule&& m) nogil:             # <<<<<<<<<<<<<<
@@ -20548,7 +20648,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_10append(struct __pyx_obj_7halog
 
 static void __pyx_f_7halogen_3api_6Module_replace_instance(struct __pyx_obj_7halogen_3api_Module *__pyx_v_self, Halide::Module &&__pyx_v_m) {
 
-  /* "halogen/api.pyx":980
+  /* "halogen/api.pyx":986
  * 
  *     cdef void replace_instance(Module self, HalModule&& m) nogil:
  *         self.__this__.reset(new HalModule(m))             # <<<<<<<<<<<<<<
@@ -20557,7 +20657,7 @@ static void __pyx_f_7halogen_3api_6Module_replace_instance(struct __pyx_obj_7hal
  */
   __pyx_v_self->__pyx___this__.reset(new Halide::Module(__pyx_v_m));
 
-  /* "halogen/api.pyx":979
+  /* "halogen/api.pyx":985
  *             deref(self.__this__).append(deref(mother.__this__))
  * 
  *     cdef void replace_instance(Module self, HalModule&& m) nogil:             # <<<<<<<<<<<<<<
@@ -20568,7 +20668,7 @@ static void __pyx_f_7halogen_3api_6Module_replace_instance(struct __pyx_obj_7hal
   /* function exit code */
 }
 
-/* "halogen/api.pyx":982
+/* "halogen/api.pyx":988
  *         self.__this__.reset(new HalModule(m))
  * 
  *     def compile(self, Outputs outputs not None):             # <<<<<<<<<<<<<<
@@ -20583,7 +20683,7 @@ static PyObject *__pyx_pw_7halogen_3api_6Module_13compile(PyObject *__pyx_v_self
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("compile (wrapper)", 0);
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_outputs), __pyx_ptype_7halogen_3api_Outputs, 0, "outputs", 0))) __PYX_ERR(0, 982, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_outputs), __pyx_ptype_7halogen_3api_Outputs, 0, "outputs", 0))) __PYX_ERR(0, 988, __pyx_L1_error)
   __pyx_r = __pyx_pf_7halogen_3api_6Module_12compile(((struct __pyx_obj_7halogen_3api_Module *)__pyx_v_self), ((struct __pyx_obj_7halogen_3api_Outputs *)__pyx_v_outputs));
 
   /* function exit code */
@@ -20602,7 +20702,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_12compile(struct __pyx_obj_7halo
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("compile", 0);
 
-  /* "halogen/api.pyx":983
+  /* "halogen/api.pyx":989
  * 
  *     def compile(self, Outputs outputs not None):
  *         cdef HalModule* this = self.__this__.get()             # <<<<<<<<<<<<<<
@@ -20611,7 +20711,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_12compile(struct __pyx_obj_7halo
  */
   __pyx_v_this = __pyx_v_self->__pyx___this__.get();
 
-  /* "halogen/api.pyx":984
+  /* "halogen/api.pyx":990
  *     def compile(self, Outputs outputs not None):
  *         cdef HalModule* this = self.__this__.get()
  *         cdef HalOutputs outs = <HalOutputs>outputs.__this__             # <<<<<<<<<<<<<<
@@ -20620,7 +20720,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_12compile(struct __pyx_obj_7halo
  */
   __pyx_v_outs = ((Halide::Outputs)__pyx_v_outputs->__pyx___this__);
 
-  /* "halogen/api.pyx":985
+  /* "halogen/api.pyx":991
  *         cdef HalModule* this = self.__this__.get()
  *         cdef HalOutputs outs = <HalOutputs>outputs.__this__
  *         with nogil:             # <<<<<<<<<<<<<<
@@ -20635,7 +20735,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_12compile(struct __pyx_obj_7halo
       #endif
       /*try:*/ {
 
-        /* "halogen/api.pyx":986
+        /* "halogen/api.pyx":992
  *         cdef HalOutputs outs = <HalOutputs>outputs.__this__
  *         with nogil:
  *             this.compile(outs)             # <<<<<<<<<<<<<<
@@ -20645,7 +20745,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_12compile(struct __pyx_obj_7halo
         __pyx_v_this->compile(__pyx_v_outs);
       }
 
-      /* "halogen/api.pyx":985
+      /* "halogen/api.pyx":991
  *         cdef HalModule* this = self.__this__.get()
  *         cdef HalOutputs outs = <HalOutputs>outputs.__this__
  *         with nogil:             # <<<<<<<<<<<<<<
@@ -20664,7 +20764,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_12compile(struct __pyx_obj_7halo
       }
   }
 
-  /* "halogen/api.pyx":987
+  /* "halogen/api.pyx":993
  *         with nogil:
  *             this.compile(outs)
  *         return self             # <<<<<<<<<<<<<<
@@ -20676,7 +20776,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_12compile(struct __pyx_obj_7halo
   __pyx_r = ((PyObject *)__pyx_v_self);
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":982
+  /* "halogen/api.pyx":988
  *         self.__this__.reset(new HalModule(m))
  * 
  *     def compile(self, Outputs outputs not None):             # <<<<<<<<<<<<<<
@@ -20691,7 +20791,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_12compile(struct __pyx_obj_7halo
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":989
+/* "halogen/api.pyx":995
  *         return self
  * 
  *     def resolve_submodules(self):             # <<<<<<<<<<<<<<
@@ -20719,7 +20819,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_14resolve_submodules(struct __py
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("resolve_submodules", 0);
 
-  /* "halogen/api.pyx":990
+  /* "halogen/api.pyx":996
  * 
  *     def resolve_submodules(self):
  *         return Module.with_instance(             # <<<<<<<<<<<<<<
@@ -20728,20 +20828,20 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_14resolve_submodules(struct __py
  */
   __Pyx_XDECREF(__pyx_r);
 
-  /* "halogen/api.pyx":991
+  /* "halogen/api.pyx":997
  *     def resolve_submodules(self):
  *         return Module.with_instance(
  *             deref(self.__this__).resolve_submodules())             # <<<<<<<<<<<<<<
  * 
  *     def get_metadata(self):
  */
-  __pyx_t_1 = ((PyObject *)__pyx_f_7halogen_3api_6Module_with_instance((*__pyx_v_self->__pyx___this__).resolve_submodules())); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 990, __pyx_L1_error)
+  __pyx_t_1 = ((PyObject *)__pyx_f_7halogen_3api_6Module_with_instance((*__pyx_v_self->__pyx___this__).resolve_submodules())); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 996, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":989
+  /* "halogen/api.pyx":995
  *         return self
  * 
  *     def resolve_submodules(self):             # <<<<<<<<<<<<<<
@@ -20760,7 +20860,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_14resolve_submodules(struct __py
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":993
+/* "halogen/api.pyx":999
  *             deref(self.__this__).resolve_submodules())
  * 
  *     def get_metadata(self):             # <<<<<<<<<<<<<<
@@ -20790,7 +20890,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_16get_metadata(struct __pyx_obj_
   PyObject *__pyx_t_2 = NULL;
   __Pyx_RefNannySetupContext("get_metadata", 0);
 
-  /* "halogen/api.pyx":994
+  /* "halogen/api.pyx":1000
  * 
  *     def get_metadata(self):
  *         cdef stringmap_t metadata_map = deref(self.__this__).get_metadata_name_map()             # <<<<<<<<<<<<<<
@@ -20799,7 +20899,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_16get_metadata(struct __pyx_obj_
  */
   __pyx_v_metadata_map = (*__pyx_v_self->__pyx___this__).get_metadata_name_map();
 
-  /* "halogen/api.pyx":995
+  /* "halogen/api.pyx":1001
  *     def get_metadata(self):
  *         cdef stringmap_t metadata_map = deref(self.__this__).get_metadata_name_map()
  *         return dict(metadata_map)             # <<<<<<<<<<<<<<
@@ -20807,16 +20907,16 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_16get_metadata(struct __pyx_obj_
  *     def remap_metadatum_by_name(self, object name, object to_name):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_convert_map_to_py_std_3a__3a_string____std_3a__3a_string(__pyx_v_metadata_map); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 995, __pyx_L1_error)
+  __pyx_t_1 = __pyx_convert_map_to_py_std_3a__3a_string____std_3a__3a_string(__pyx_v_metadata_map); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1001, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_CallOneArg(((PyObject *)(&PyDict_Type)), __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 995, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_CallOneArg(((PyObject *)(&PyDict_Type)), __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1001, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_r = __pyx_t_2;
   __pyx_t_2 = 0;
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":993
+  /* "halogen/api.pyx":999
  *             deref(self.__this__).resolve_submodules())
  * 
  *     def get_metadata(self):             # <<<<<<<<<<<<<<
@@ -20836,7 +20936,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_16get_metadata(struct __pyx_obj_
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":997
+/* "halogen/api.pyx":1003
  *         return dict(metadata_map)
  * 
  *     def remap_metadatum_by_name(self, object name, object to_name):             # <<<<<<<<<<<<<<
@@ -20876,11 +20976,11 @@ static PyObject *__pyx_pw_7halogen_3api_6Module_19remap_metadatum_by_name(PyObje
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_to_name)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("remap_metadatum_by_name", 1, 2, 2, 1); __PYX_ERR(0, 997, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("remap_metadatum_by_name", 1, 2, 2, 1); __PYX_ERR(0, 1003, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "remap_metadatum_by_name") < 0)) __PYX_ERR(0, 997, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "remap_metadatum_by_name") < 0)) __PYX_ERR(0, 1003, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
@@ -20893,7 +20993,7 @@ static PyObject *__pyx_pw_7halogen_3api_6Module_19remap_metadatum_by_name(PyObje
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("remap_metadatum_by_name", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 997, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("remap_metadatum_by_name", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 1003, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("halogen.api.Module.remap_metadatum_by_name", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -20917,33 +21017,33 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_18remap_metadatum_by_name(struct
   PyObject *__pyx_t_3 = NULL;
   __Pyx_RefNannySetupContext("remap_metadatum_by_name", 0);
 
-  /* "halogen/api.pyx":998
+  /* "halogen/api.pyx":1004
  * 
  *     def remap_metadatum_by_name(self, object name, object to_name):
  *         cdef string name_string = <string>u8bytes(name)             # <<<<<<<<<<<<<<
  *         cdef string to_name_string = <string>u8bytes(to_name)
  *         deref(self.__this__).remap_metadata_name(name_string,
  */
-  __pyx_t_1 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_name, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 998, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_name, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1004, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 998, __pyx_L1_error)
+  __pyx_t_2 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 1004, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_name_string = ((std::string)__pyx_t_2);
 
-  /* "halogen/api.pyx":999
+  /* "halogen/api.pyx":1005
  *     def remap_metadatum_by_name(self, object name, object to_name):
  *         cdef string name_string = <string>u8bytes(name)
  *         cdef string to_name_string = <string>u8bytes(to_name)             # <<<<<<<<<<<<<<
  *         deref(self.__this__).remap_metadata_name(name_string,
  *                                               to_name_string)
  */
-  __pyx_t_1 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_to_name, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 999, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_to_name, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1005, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 999, __pyx_L1_error)
+  __pyx_t_2 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 1005, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_to_name_string = ((std::string)__pyx_t_2);
 
-  /* "halogen/api.pyx":1000
+  /* "halogen/api.pyx":1006
  *         cdef string name_string = <string>u8bytes(name)
  *         cdef string to_name_string = <string>u8bytes(to_name)
  *         deref(self.__this__).remap_metadata_name(name_string,             # <<<<<<<<<<<<<<
@@ -20952,7 +21052,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_18remap_metadatum_by_name(struct
  */
   (*__pyx_v_self->__pyx___this__).remap_metadata_name(__pyx_v_name_string, __pyx_v_to_name_string);
 
-  /* "halogen/api.pyx":1002
+  /* "halogen/api.pyx":1008
  *         deref(self.__this__).remap_metadata_name(name_string,
  *                                               to_name_string)
  *         cdef stringmap_t metadata_map = deref(self.__this__).get_metadata_name_map()             # <<<<<<<<<<<<<<
@@ -20961,7 +21061,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_18remap_metadatum_by_name(struct
  */
   __pyx_v_metadata_map = (*__pyx_v_self->__pyx___this__).get_metadata_name_map();
 
-  /* "halogen/api.pyx":1003
+  /* "halogen/api.pyx":1009
  *                                               to_name_string)
  *         cdef stringmap_t metadata_map = deref(self.__this__).get_metadata_name_map()
  *         return dict(metadata_map)             # <<<<<<<<<<<<<<
@@ -20969,16 +21069,16 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_18remap_metadatum_by_name(struct
  *     def to_string(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_convert_map_to_py_std_3a__3a_string____std_3a__3a_string(__pyx_v_metadata_map); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1003, __pyx_L1_error)
+  __pyx_t_1 = __pyx_convert_map_to_py_std_3a__3a_string____std_3a__3a_string(__pyx_v_metadata_map); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1009, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_3 = __Pyx_PyObject_CallOneArg(((PyObject *)(&PyDict_Type)), __pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1003, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_CallOneArg(((PyObject *)(&PyDict_Type)), __pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1009, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_r = __pyx_t_3;
   __pyx_t_3 = 0;
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":997
+  /* "halogen/api.pyx":1003
  *         return dict(metadata_map)
  * 
  *     def remap_metadatum_by_name(self, object name, object to_name):             # <<<<<<<<<<<<<<
@@ -20998,7 +21098,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_18remap_metadatum_by_name(struct
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":1005
+/* "halogen/api.pyx":1011
  *         return dict(metadata_map)
  * 
  *     def to_string(self):             # <<<<<<<<<<<<<<
@@ -21021,7 +21121,7 @@ static PyObject *__pyx_pw_7halogen_3api_6Module_21to_string(PyObject *__pyx_v_se
 }
 static PyObject *__pyx_gb_7halogen_3api_6Module_9to_string_2generator(__pyx_CoroutineObject *__pyx_generator, CYTHON_UNUSED PyThreadState *__pyx_tstate, PyObject *__pyx_sent_value); /* proto */
 
-/* "halogen/api.pyx":1024
+/* "halogen/api.pyx":1030
  *             #                                       for k, v in metadata_dict.items())
  *             # ... right now the keys and values look to be exactly the same always, sooo:
  *             metadata_str = b", ".join(b"%s" % k for k in metadata_dict.keys())             # <<<<<<<<<<<<<<
@@ -21038,7 +21138,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_9to_string_genexpr(PyObject *__p
   if (unlikely(!__pyx_cur_scope)) {
     __pyx_cur_scope = ((struct __pyx_obj_7halogen_3api___pyx_scope_struct_1_genexpr *)Py_None);
     __Pyx_INCREF(Py_None);
-    __PYX_ERR(0, 1024, __pyx_L1_error)
+    __PYX_ERR(0, 1030, __pyx_L1_error)
   } else {
     __Pyx_GOTREF(__pyx_cur_scope);
   }
@@ -21046,7 +21146,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_9to_string_genexpr(PyObject *__p
   __Pyx_INCREF(((PyObject *)__pyx_cur_scope->__pyx_outer_scope));
   __Pyx_GIVEREF(__pyx_cur_scope->__pyx_outer_scope);
   {
-    __pyx_CoroutineObject *gen = __Pyx_Generator_New((__pyx_coroutine_body_t) __pyx_gb_7halogen_3api_6Module_9to_string_2generator, NULL, (PyObject *) __pyx_cur_scope, __pyx_n_s_genexpr, __pyx_n_s_to_string_locals_genexpr, __pyx_n_s_halogen_api); if (unlikely(!gen)) __PYX_ERR(0, 1024, __pyx_L1_error)
+    __pyx_CoroutineObject *gen = __Pyx_Generator_New((__pyx_coroutine_body_t) __pyx_gb_7halogen_3api_6Module_9to_string_2generator, NULL, (PyObject *) __pyx_cur_scope, __pyx_n_s_genexpr, __pyx_n_s_to_string_locals_genexpr, __pyx_n_s_halogen_api); if (unlikely(!gen)) __PYX_ERR(0, 1030, __pyx_L1_error)
     __Pyx_DECREF(__pyx_cur_scope);
     __Pyx_RefNannyFinishContext();
     return (PyObject *) gen;
@@ -21080,21 +21180,21 @@ static PyObject *__pyx_gb_7halogen_3api_6Module_9to_string_2generator(__pyx_Coro
     return NULL;
   }
   __pyx_L3_first_run:;
-  if (unlikely(!__pyx_sent_value)) __PYX_ERR(0, 1024, __pyx_L1_error)
-  if (unlikely(!__pyx_cur_scope->__pyx_outer_scope->__pyx_v_metadata_dict)) { __Pyx_RaiseClosureNameError("metadata_dict"); __PYX_ERR(0, 1024, __pyx_L1_error) }
+  if (unlikely(!__pyx_sent_value)) __PYX_ERR(0, 1030, __pyx_L1_error)
+  if (unlikely(!__pyx_cur_scope->__pyx_outer_scope->__pyx_v_metadata_dict)) { __Pyx_RaiseClosureNameError("metadata_dict"); __PYX_ERR(0, 1030, __pyx_L1_error) }
   if (unlikely(__pyx_cur_scope->__pyx_outer_scope->__pyx_v_metadata_dict == Py_None)) {
     PyErr_Format(PyExc_AttributeError, "'NoneType' object has no attribute '%.30s'", "keys");
-    __PYX_ERR(0, 1024, __pyx_L1_error)
+    __PYX_ERR(0, 1030, __pyx_L1_error)
   }
-  __pyx_t_1 = __Pyx_PyDict_Keys(__pyx_cur_scope->__pyx_outer_scope->__pyx_v_metadata_dict); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1024, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyDict_Keys(__pyx_cur_scope->__pyx_outer_scope->__pyx_v_metadata_dict); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1030, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   if (likely(PyList_CheckExact(__pyx_t_1)) || PyTuple_CheckExact(__pyx_t_1)) {
     __pyx_t_2 = __pyx_t_1; __Pyx_INCREF(__pyx_t_2); __pyx_t_3 = 0;
     __pyx_t_4 = NULL;
   } else {
-    __pyx_t_3 = -1; __pyx_t_2 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1024, __pyx_L1_error)
+    __pyx_t_3 = -1; __pyx_t_2 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1030, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_4 = Py_TYPE(__pyx_t_2)->tp_iternext; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1024, __pyx_L1_error)
+    __pyx_t_4 = Py_TYPE(__pyx_t_2)->tp_iternext; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1030, __pyx_L1_error)
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   for (;;) {
@@ -21102,17 +21202,17 @@ static PyObject *__pyx_gb_7halogen_3api_6Module_9to_string_2generator(__pyx_Coro
       if (likely(PyList_CheckExact(__pyx_t_2))) {
         if (__pyx_t_3 >= PyList_GET_SIZE(__pyx_t_2)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_1 = PyList_GET_ITEM(__pyx_t_2, __pyx_t_3); __Pyx_INCREF(__pyx_t_1); __pyx_t_3++; if (unlikely(0 < 0)) __PYX_ERR(0, 1024, __pyx_L1_error)
+        __pyx_t_1 = PyList_GET_ITEM(__pyx_t_2, __pyx_t_3); __Pyx_INCREF(__pyx_t_1); __pyx_t_3++; if (unlikely(0 < 0)) __PYX_ERR(0, 1030, __pyx_L1_error)
         #else
-        __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1024, __pyx_L1_error)
+        __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1030, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         #endif
       } else {
         if (__pyx_t_3 >= PyTuple_GET_SIZE(__pyx_t_2)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_1 = PyTuple_GET_ITEM(__pyx_t_2, __pyx_t_3); __Pyx_INCREF(__pyx_t_1); __pyx_t_3++; if (unlikely(0 < 0)) __PYX_ERR(0, 1024, __pyx_L1_error)
+        __pyx_t_1 = PyTuple_GET_ITEM(__pyx_t_2, __pyx_t_3); __Pyx_INCREF(__pyx_t_1); __pyx_t_3++; if (unlikely(0 < 0)) __PYX_ERR(0, 1030, __pyx_L1_error)
         #else
-        __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1024, __pyx_L1_error)
+        __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1030, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         #endif
       }
@@ -21122,7 +21222,7 @@ static PyObject *__pyx_gb_7halogen_3api_6Module_9to_string_2generator(__pyx_Coro
         PyObject* exc_type = PyErr_Occurred();
         if (exc_type) {
           if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-          else __PYX_ERR(0, 1024, __pyx_L1_error)
+          else __PYX_ERR(0, 1030, __pyx_L1_error)
         }
         break;
       }
@@ -21132,7 +21232,7 @@ static PyObject *__pyx_gb_7halogen_3api_6Module_9to_string_2generator(__pyx_Coro
     __Pyx_XDECREF_SET(__pyx_cur_scope->__pyx_v_k, __pyx_t_1);
     __Pyx_GIVEREF(__pyx_t_1);
     __pyx_t_1 = 0;
-    __pyx_t_1 = PyNumber_Remainder(__pyx_kp_b_s_3, __pyx_cur_scope->__pyx_v_k); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1024, __pyx_L1_error)
+    __pyx_t_1 = PyNumber_Remainder(__pyx_kp_b_s_3, __pyx_cur_scope->__pyx_v_k); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1030, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __pyx_r = __pyx_t_1;
     __pyx_t_1 = 0;
@@ -21152,7 +21252,7 @@ static PyObject *__pyx_gb_7halogen_3api_6Module_9to_string_2generator(__pyx_Coro
     __Pyx_XGOTREF(__pyx_t_2);
     __pyx_t_3 = __pyx_cur_scope->__pyx_t_1;
     __pyx_t_4 = __pyx_cur_scope->__pyx_t_2;
-    if (unlikely(!__pyx_sent_value)) __PYX_ERR(0, 1024, __pyx_L1_error)
+    if (unlikely(!__pyx_sent_value)) __PYX_ERR(0, 1030, __pyx_L1_error)
   }
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   CYTHON_MAYBE_UNUSED_VAR(__pyx_cur_scope);
@@ -21174,7 +21274,7 @@ static PyObject *__pyx_gb_7halogen_3api_6Module_9to_string_2generator(__pyx_Coro
 }
 static PyObject *__pyx_gb_7halogen_3api_6Module_9to_string_5generator1(__pyx_CoroutineObject *__pyx_generator, CYTHON_UNUSED PyThreadState *__pyx_tstate, PyObject *__pyx_sent_value); /* proto */
 
-/* "halogen/api.pyx":1027
+/* "halogen/api.pyx":1033
  *             field_values += (b""" metadata={ %s } """ % metadata_str,)
  *         return b"%s(%s) @ %s" % (u8bytes(type(self).__name__),
  *                                  b", ".join(field_value.strip() for field_value in field_values),             # <<<<<<<<<<<<<<
@@ -21191,7 +21291,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_9to_string_3genexpr(PyObject *__
   if (unlikely(!__pyx_cur_scope)) {
     __pyx_cur_scope = ((struct __pyx_obj_7halogen_3api___pyx_scope_struct_2_genexpr *)Py_None);
     __Pyx_INCREF(Py_None);
-    __PYX_ERR(0, 1027, __pyx_L1_error)
+    __PYX_ERR(0, 1033, __pyx_L1_error)
   } else {
     __Pyx_GOTREF(__pyx_cur_scope);
   }
@@ -21199,7 +21299,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_9to_string_3genexpr(PyObject *__
   __Pyx_INCREF(((PyObject *)__pyx_cur_scope->__pyx_outer_scope));
   __Pyx_GIVEREF(__pyx_cur_scope->__pyx_outer_scope);
   {
-    __pyx_CoroutineObject *gen = __Pyx_Generator_New((__pyx_coroutine_body_t) __pyx_gb_7halogen_3api_6Module_9to_string_5generator1, NULL, (PyObject *) __pyx_cur_scope, __pyx_n_s_genexpr, __pyx_n_s_to_string_locals_genexpr, __pyx_n_s_halogen_api); if (unlikely(!gen)) __PYX_ERR(0, 1027, __pyx_L1_error)
+    __pyx_CoroutineObject *gen = __Pyx_Generator_New((__pyx_coroutine_body_t) __pyx_gb_7halogen_3api_6Module_9to_string_5generator1, NULL, (PyObject *) __pyx_cur_scope, __pyx_n_s_genexpr, __pyx_n_s_to_string_locals_genexpr, __pyx_n_s_halogen_api); if (unlikely(!gen)) __PYX_ERR(0, 1033, __pyx_L1_error)
     __Pyx_DECREF(__pyx_cur_scope);
     __Pyx_RefNannyFinishContext();
     return (PyObject *) gen;
@@ -21234,26 +21334,26 @@ static PyObject *__pyx_gb_7halogen_3api_6Module_9to_string_5generator1(__pyx_Cor
     return NULL;
   }
   __pyx_L3_first_run:;
-  if (unlikely(!__pyx_sent_value)) __PYX_ERR(0, 1027, __pyx_L1_error)
-  if (unlikely(!__pyx_cur_scope->__pyx_outer_scope->__pyx_v_field_values)) { __Pyx_RaiseClosureNameError("field_values"); __PYX_ERR(0, 1027, __pyx_L1_error) }
+  if (unlikely(!__pyx_sent_value)) __PYX_ERR(0, 1033, __pyx_L1_error)
+  if (unlikely(!__pyx_cur_scope->__pyx_outer_scope->__pyx_v_field_values)) { __Pyx_RaiseClosureNameError("field_values"); __PYX_ERR(0, 1033, __pyx_L1_error) }
   if (unlikely(__pyx_cur_scope->__pyx_outer_scope->__pyx_v_field_values == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not iterable");
-    __PYX_ERR(0, 1027, __pyx_L1_error)
+    __PYX_ERR(0, 1033, __pyx_L1_error)
   }
   __pyx_t_1 = __pyx_cur_scope->__pyx_outer_scope->__pyx_v_field_values; __Pyx_INCREF(__pyx_t_1); __pyx_t_2 = 0;
   for (;;) {
     if (__pyx_t_2 >= PyTuple_GET_SIZE(__pyx_t_1)) break;
     #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-    __pyx_t_3 = PyTuple_GET_ITEM(__pyx_t_1, __pyx_t_2); __Pyx_INCREF(__pyx_t_3); __pyx_t_2++; if (unlikely(0 < 0)) __PYX_ERR(0, 1027, __pyx_L1_error)
+    __pyx_t_3 = PyTuple_GET_ITEM(__pyx_t_1, __pyx_t_2); __Pyx_INCREF(__pyx_t_3); __pyx_t_2++; if (unlikely(0 < 0)) __PYX_ERR(0, 1033, __pyx_L1_error)
     #else
-    __pyx_t_3 = PySequence_ITEM(__pyx_t_1, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1027, __pyx_L1_error)
+    __pyx_t_3 = PySequence_ITEM(__pyx_t_1, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1033, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     #endif
     __Pyx_XGOTREF(__pyx_cur_scope->__pyx_v_field_value);
     __Pyx_XDECREF_SET(__pyx_cur_scope->__pyx_v_field_value, __pyx_t_3);
     __Pyx_GIVEREF(__pyx_t_3);
     __pyx_t_3 = 0;
-    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_field_value, __pyx_n_s_strip); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1027, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_field_value, __pyx_n_s_strip); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1033, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __pyx_t_5 = NULL;
     if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_4))) {
@@ -21266,10 +21366,10 @@ static PyObject *__pyx_gb_7halogen_3api_6Module_9to_string_5generator1(__pyx_Cor
       }
     }
     if (__pyx_t_5) {
-      __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_5); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1027, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_5); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1033, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     } else {
-      __pyx_t_3 = __Pyx_PyObject_CallNoArg(__pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1027, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyObject_CallNoArg(__pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1033, __pyx_L1_error)
     }
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
@@ -21289,7 +21389,7 @@ static PyObject *__pyx_gb_7halogen_3api_6Module_9to_string_5generator1(__pyx_Cor
     __pyx_cur_scope->__pyx_t_0 = 0;
     __Pyx_XGOTREF(__pyx_t_1);
     __pyx_t_2 = __pyx_cur_scope->__pyx_t_1;
-    if (unlikely(!__pyx_sent_value)) __PYX_ERR(0, 1027, __pyx_L1_error)
+    if (unlikely(!__pyx_sent_value)) __PYX_ERR(0, 1033, __pyx_L1_error)
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   CYTHON_MAYBE_UNUSED_VAR(__pyx_cur_scope);
@@ -21312,7 +21412,7 @@ static PyObject *__pyx_gb_7halogen_3api_6Module_9to_string_5generator1(__pyx_Cor
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":1005
+/* "halogen/api.pyx":1011
  *         return dict(metadata_map)
  * 
  *     def to_string(self):             # <<<<<<<<<<<<<<
@@ -21343,12 +21443,12 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_20to_string(struct __pyx_obj_7ha
   if (unlikely(!__pyx_cur_scope)) {
     __pyx_cur_scope = ((struct __pyx_obj_7halogen_3api___pyx_scope_struct__to_string *)Py_None);
     __Pyx_INCREF(Py_None);
-    __PYX_ERR(0, 1005, __pyx_L1_error)
+    __PYX_ERR(0, 1011, __pyx_L1_error)
   } else {
     __Pyx_GOTREF(__pyx_cur_scope);
   }
 
-  /* "halogen/api.pyx":1006
+  /* "halogen/api.pyx":1012
  * 
  *     def to_string(self):
  *         cdef string name = <string>deref(self.__this__).name()             # <<<<<<<<<<<<<<
@@ -21357,7 +21457,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_20to_string(struct __pyx_obj_7ha
  */
   __pyx_v_name = ((std::string)(*__pyx_v_self->__pyx___this__).name());
 
-  /* "halogen/api.pyx":1007
+  /* "halogen/api.pyx":1013
  *     def to_string(self):
  *         cdef string name = <string>deref(self.__this__).name()
  *         cdef string targ = <string>deref(self.__this__).target().to_string()             # <<<<<<<<<<<<<<
@@ -21366,7 +21466,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_20to_string(struct __pyx_obj_7ha
  */
   __pyx_v_targ = ((std::string)(*__pyx_v_self->__pyx___this__).target().to_string());
 
-  /* "halogen/api.pyx":1008
+  /* "halogen/api.pyx":1014
  *         cdef string name = <string>deref(self.__this__).name()
  *         cdef string targ = <string>deref(self.__this__).target().to_string()
  *         cdef string auto_schedule = <string>deref(self.__this__).auto_schedule()             # <<<<<<<<<<<<<<
@@ -21375,7 +21475,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_20to_string(struct __pyx_obj_7ha
  */
   __pyx_v_auto_schedule = ((std::string)(*__pyx_v_self->__pyx___this__).auto_schedule());
 
-  /* "halogen/api.pyx":1009
+  /* "halogen/api.pyx":1015
  *         cdef string targ = <string>deref(self.__this__).target().to_string()
  *         cdef string auto_schedule = <string>deref(self.__this__).auto_schedule()
  *         cdef stringmap_t metadata_map = deref(self.__this__).get_metadata_name_map()             # <<<<<<<<<<<<<<
@@ -21384,7 +21484,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_20to_string(struct __pyx_obj_7ha
  */
   __pyx_v_metadata_map = (*__pyx_v_self->__pyx___this__).get_metadata_name_map();
 
-  /* "halogen/api.pyx":1011
+  /* "halogen/api.pyx":1017
  *         cdef stringmap_t metadata_map = deref(self.__this__).get_metadata_name_map()
  *         cdef string any_strict_float
  *         any_strict_float_boolean = bool(deref(self.__this__).any_strict_float())             # <<<<<<<<<<<<<<
@@ -21392,45 +21492,45 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_20to_string(struct __pyx_obj_7ha
  *                         b""" target="%s" """             % targ)
  */
   __pyx_t_1 = (*__pyx_v_self->__pyx___this__).any_strict_float();
-  __pyx_t_2 = __Pyx_PyBool_FromLong((!(!__pyx_t_1))); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1011, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyBool_FromLong((!(!__pyx_t_1))); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1017, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_v_any_strict_float_boolean = __pyx_t_2;
   __pyx_t_2 = 0;
 
-  /* "halogen/api.pyx":1012
+  /* "halogen/api.pyx":1018
  *         cdef string any_strict_float
  *         any_strict_float_boolean = bool(deref(self.__this__).any_strict_float())
  *         field_values = (b""" name="%s" """               % name,             # <<<<<<<<<<<<<<
  *                         b""" target="%s" """             % targ)
  *         if any_strict_float_boolean: # only print if true:
  */
-  __pyx_t_2 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_name); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1012, __pyx_L1_error)
+  __pyx_t_2 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_name); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1018, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = PyNumber_Remainder(__pyx_kp_b_name_s, __pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1012, __pyx_L1_error)
+  __pyx_t_3 = PyNumber_Remainder(__pyx_kp_b_name_s, __pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1018, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "halogen/api.pyx":1013
+  /* "halogen/api.pyx":1019
  *         any_strict_float_boolean = bool(deref(self.__this__).any_strict_float())
  *         field_values = (b""" name="%s" """               % name,
  *                         b""" target="%s" """             % targ)             # <<<<<<<<<<<<<<
  *         if any_strict_float_boolean: # only print if true:
  *             any_strict_float = any_strict_float_boolean and b"True" or b"False"
  */
-  __pyx_t_2 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_targ); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1013, __pyx_L1_error)
+  __pyx_t_2 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_targ); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1019, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_4 = PyNumber_Remainder(__pyx_kp_b_target_s, __pyx_t_2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1013, __pyx_L1_error)
+  __pyx_t_4 = PyNumber_Remainder(__pyx_kp_b_target_s, __pyx_t_2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1019, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "halogen/api.pyx":1012
+  /* "halogen/api.pyx":1018
  *         cdef string any_strict_float
  *         any_strict_float_boolean = bool(deref(self.__this__).any_strict_float())
  *         field_values = (b""" name="%s" """               % name,             # <<<<<<<<<<<<<<
  *                         b""" target="%s" """             % targ)
  *         if any_strict_float_boolean: # only print if true:
  */
-  __pyx_t_2 = PyTuple_New(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1012, __pyx_L1_error)
+  __pyx_t_2 = PyTuple_New(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1018, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_GIVEREF(__pyx_t_3);
   PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_t_3);
@@ -21442,59 +21542,59 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_20to_string(struct __pyx_obj_7ha
   __pyx_cur_scope->__pyx_v_field_values = ((PyObject*)__pyx_t_2);
   __pyx_t_2 = 0;
 
-  /* "halogen/api.pyx":1014
+  /* "halogen/api.pyx":1020
  *         field_values = (b""" name="%s" """               % name,
  *                         b""" target="%s" """             % targ)
  *         if any_strict_float_boolean: # only print if true:             # <<<<<<<<<<<<<<
  *             any_strict_float = any_strict_float_boolean and b"True" or b"False"
  *             field_values += (b""" any_strict_float=%s """   % any_strict_float,)
  */
-  __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_v_any_strict_float_boolean); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 1014, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_v_any_strict_float_boolean); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 1020, __pyx_L1_error)
   if (__pyx_t_1) {
 
-    /* "halogen/api.pyx":1015
+    /* "halogen/api.pyx":1021
  *                         b""" target="%s" """             % targ)
  *         if any_strict_float_boolean: # only print if true:
  *             any_strict_float = any_strict_float_boolean and b"True" or b"False"             # <<<<<<<<<<<<<<
  *             field_values += (b""" any_strict_float=%s """   % any_strict_float,)
  *         if auto_schedule.size() > 0: # only print if theres something:
  */
-    __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_v_any_strict_float_boolean); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 1015, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_v_any_strict_float_boolean); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 1021, __pyx_L1_error)
     if (!__pyx_t_1) {
       goto __pyx_L5_next_or;
     } else {
     }
-    __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_n_b_True); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 1015, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_n_b_True); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 1021, __pyx_L1_error)
     if (!__pyx_t_1) {
     } else {
-      __pyx_t_6 = __pyx_convert_string_from_py_std__in_string(__pyx_n_b_True); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 1015, __pyx_L1_error)
+      __pyx_t_6 = __pyx_convert_string_from_py_std__in_string(__pyx_n_b_True); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 1021, __pyx_L1_error)
       __pyx_t_5 = __pyx_t_6;
       goto __pyx_L4_bool_binop_done;
     }
     __pyx_L5_next_or:;
-    __pyx_t_6 = __pyx_convert_string_from_py_std__in_string(__pyx_n_b_False); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 1015, __pyx_L1_error)
+    __pyx_t_6 = __pyx_convert_string_from_py_std__in_string(__pyx_n_b_False); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 1021, __pyx_L1_error)
     __pyx_t_5 = __pyx_t_6;
     __pyx_L4_bool_binop_done:;
     __pyx_v_any_strict_float = __pyx_t_5;
 
-    /* "halogen/api.pyx":1016
+    /* "halogen/api.pyx":1022
  *         if any_strict_float_boolean: # only print if true:
  *             any_strict_float = any_strict_float_boolean and b"True" or b"False"
  *             field_values += (b""" any_strict_float=%s """   % any_strict_float,)             # <<<<<<<<<<<<<<
  *         if auto_schedule.size() > 0: # only print if theres something:
  *             field_values += (b""" auto_schedule="%s" """ % auto_schedule,)
  */
-    __pyx_t_2 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_any_strict_float); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1016, __pyx_L1_error)
+    __pyx_t_2 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_any_strict_float); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1022, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_4 = PyNumber_Remainder(__pyx_kp_b_any_strict_float_s, __pyx_t_2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1016, __pyx_L1_error)
+    __pyx_t_4 = PyNumber_Remainder(__pyx_kp_b_any_strict_float_s, __pyx_t_2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1022, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1016, __pyx_L1_error)
+    __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1022, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_GIVEREF(__pyx_t_4);
     PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_t_4);
     __pyx_t_4 = 0;
-    __pyx_t_4 = PyNumber_InPlaceAdd(__pyx_cur_scope->__pyx_v_field_values, __pyx_t_2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1016, __pyx_L1_error)
+    __pyx_t_4 = PyNumber_InPlaceAdd(__pyx_cur_scope->__pyx_v_field_values, __pyx_t_2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1022, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __Pyx_GOTREF(__pyx_cur_scope->__pyx_v_field_values);
@@ -21502,7 +21602,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_20to_string(struct __pyx_obj_7ha
     __Pyx_GIVEREF(__pyx_t_4);
     __pyx_t_4 = 0;
 
-    /* "halogen/api.pyx":1014
+    /* "halogen/api.pyx":1020
  *         field_values = (b""" name="%s" """               % name,
  *                         b""" target="%s" """             % targ)
  *         if any_strict_float_boolean: # only print if true:             # <<<<<<<<<<<<<<
@@ -21511,7 +21611,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_20to_string(struct __pyx_obj_7ha
  */
   }
 
-  /* "halogen/api.pyx":1017
+  /* "halogen/api.pyx":1023
  *             any_strict_float = any_strict_float_boolean and b"True" or b"False"
  *             field_values += (b""" any_strict_float=%s """   % any_strict_float,)
  *         if auto_schedule.size() > 0: # only print if theres something:             # <<<<<<<<<<<<<<
@@ -21521,24 +21621,24 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_20to_string(struct __pyx_obj_7ha
   __pyx_t_1 = ((__pyx_v_auto_schedule.size() > 0) != 0);
   if (__pyx_t_1) {
 
-    /* "halogen/api.pyx":1018
+    /* "halogen/api.pyx":1024
  *             field_values += (b""" any_strict_float=%s """   % any_strict_float,)
  *         if auto_schedule.size() > 0: # only print if theres something:
  *             field_values += (b""" auto_schedule="%s" """ % auto_schedule,)             # <<<<<<<<<<<<<<
  *         if metadata_map.size() > 0: # only print if theres something:
  *             metadata_dict = dict(metadata_map)
  */
-    __pyx_t_4 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_auto_schedule); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1018, __pyx_L1_error)
+    __pyx_t_4 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_auto_schedule); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1024, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_2 = PyNumber_Remainder(__pyx_kp_b_auto_schedule_s, __pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1018, __pyx_L1_error)
+    __pyx_t_2 = PyNumber_Remainder(__pyx_kp_b_auto_schedule_s, __pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1024, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __pyx_t_4 = PyTuple_New(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1018, __pyx_L1_error)
+    __pyx_t_4 = PyTuple_New(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1024, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_GIVEREF(__pyx_t_2);
     PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_2);
     __pyx_t_2 = 0;
-    __pyx_t_2 = PyNumber_InPlaceAdd(__pyx_cur_scope->__pyx_v_field_values, __pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1018, __pyx_L1_error)
+    __pyx_t_2 = PyNumber_InPlaceAdd(__pyx_cur_scope->__pyx_v_field_values, __pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1024, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_GOTREF(__pyx_cur_scope->__pyx_v_field_values);
@@ -21546,7 +21646,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_20to_string(struct __pyx_obj_7ha
     __Pyx_GIVEREF(__pyx_t_2);
     __pyx_t_2 = 0;
 
-    /* "halogen/api.pyx":1017
+    /* "halogen/api.pyx":1023
  *             any_strict_float = any_strict_float_boolean and b"True" or b"False"
  *             field_values += (b""" any_strict_float=%s """   % any_strict_float,)
  *         if auto_schedule.size() > 0: # only print if theres something:             # <<<<<<<<<<<<<<
@@ -21555,7 +21655,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_20to_string(struct __pyx_obj_7ha
  */
   }
 
-  /* "halogen/api.pyx":1019
+  /* "halogen/api.pyx":1025
  *         if auto_schedule.size() > 0: # only print if theres something:
  *             field_values += (b""" auto_schedule="%s" """ % auto_schedule,)
  *         if metadata_map.size() > 0: # only print if theres something:             # <<<<<<<<<<<<<<
@@ -21565,52 +21665,52 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_20to_string(struct __pyx_obj_7ha
   __pyx_t_1 = ((__pyx_v_metadata_map.size() > 0) != 0);
   if (__pyx_t_1) {
 
-    /* "halogen/api.pyx":1020
+    /* "halogen/api.pyx":1026
  *             field_values += (b""" auto_schedule="%s" """ % auto_schedule,)
  *         if metadata_map.size() > 0: # only print if theres something:
  *             metadata_dict = dict(metadata_map)             # <<<<<<<<<<<<<<
  *             # metadata_str = b", ".join(b"%s : %s" % (k, v) \
  *             #                                       for k, v in metadata_dict.items())
  */
-    __pyx_t_2 = __pyx_convert_map_to_py_std_3a__3a_string____std_3a__3a_string(__pyx_v_metadata_map); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1020, __pyx_L1_error)
+    __pyx_t_2 = __pyx_convert_map_to_py_std_3a__3a_string____std_3a__3a_string(__pyx_v_metadata_map); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1026, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_4 = __Pyx_PyObject_CallOneArg(((PyObject *)(&PyDict_Type)), __pyx_t_2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1020, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_CallOneArg(((PyObject *)(&PyDict_Type)), __pyx_t_2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1026, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __Pyx_GIVEREF(__pyx_t_4);
     __pyx_cur_scope->__pyx_v_metadata_dict = ((PyObject*)__pyx_t_4);
     __pyx_t_4 = 0;
 
-    /* "halogen/api.pyx":1024
+    /* "halogen/api.pyx":1030
  *             #                                       for k, v in metadata_dict.items())
  *             # ... right now the keys and values look to be exactly the same always, sooo:
  *             metadata_str = b", ".join(b"%s" % k for k in metadata_dict.keys())             # <<<<<<<<<<<<<<
  *             field_values += (b""" metadata={ %s } """ % metadata_str,)
  *         return b"%s(%s) @ %s" % (u8bytes(type(self).__name__),
  */
-    __pyx_t_4 = __pyx_pf_7halogen_3api_6Module_9to_string_genexpr(((PyObject*)__pyx_cur_scope)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1024, __pyx_L1_error)
+    __pyx_t_4 = __pyx_pf_7halogen_3api_6Module_9to_string_genexpr(((PyObject*)__pyx_cur_scope)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1030, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_2 = __Pyx_PyBytes_Join(__pyx_kp_b__2, __pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1024, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyBytes_Join(__pyx_kp_b__2, __pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1030, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __pyx_v_metadata_str = __pyx_t_2;
     __pyx_t_2 = 0;
 
-    /* "halogen/api.pyx":1025
+    /* "halogen/api.pyx":1031
  *             # ... right now the keys and values look to be exactly the same always, sooo:
  *             metadata_str = b", ".join(b"%s" % k for k in metadata_dict.keys())
  *             field_values += (b""" metadata={ %s } """ % metadata_str,)             # <<<<<<<<<<<<<<
  *         return b"%s(%s) @ %s" % (u8bytes(type(self).__name__),
  *                                  b", ".join(field_value.strip() for field_value in field_values),
  */
-    __pyx_t_2 = PyNumber_Remainder(__pyx_kp_b_metadata_s, __pyx_v_metadata_str); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1025, __pyx_L1_error)
+    __pyx_t_2 = PyNumber_Remainder(__pyx_kp_b_metadata_s, __pyx_v_metadata_str); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1031, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_4 = PyTuple_New(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1025, __pyx_L1_error)
+    __pyx_t_4 = PyTuple_New(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1031, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_GIVEREF(__pyx_t_2);
     PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_2);
     __pyx_t_2 = 0;
-    __pyx_t_2 = PyNumber_InPlaceAdd(__pyx_cur_scope->__pyx_v_field_values, __pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1025, __pyx_L1_error)
+    __pyx_t_2 = PyNumber_InPlaceAdd(__pyx_cur_scope->__pyx_v_field_values, __pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1031, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_GOTREF(__pyx_cur_scope->__pyx_v_field_values);
@@ -21618,7 +21718,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_20to_string(struct __pyx_obj_7ha
     __Pyx_GIVEREF(__pyx_t_2);
     __pyx_t_2 = 0;
 
-    /* "halogen/api.pyx":1019
+    /* "halogen/api.pyx":1025
  *         if auto_schedule.size() > 0: # only print if theres something:
  *             field_values += (b""" auto_schedule="%s" """ % auto_schedule,)
  *         if metadata_map.size() > 0: # only print if theres something:             # <<<<<<<<<<<<<<
@@ -21627,7 +21727,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_20to_string(struct __pyx_obj_7ha
  */
   }
 
-  /* "halogen/api.pyx":1026
+  /* "halogen/api.pyx":1032
  *             metadata_str = b", ".join(b"%s" % k for k in metadata_dict.keys())
  *             field_values += (b""" metadata={ %s } """ % metadata_str,)
  *         return b"%s(%s) @ %s" % (u8bytes(type(self).__name__),             # <<<<<<<<<<<<<<
@@ -21635,49 +21735,49 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_20to_string(struct __pyx_obj_7ha
  *                                  u8bytes(hex(id(self))))
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)Py_TYPE(((PyObject *)__pyx_v_self))), __pyx_n_s_name); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1026, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)Py_TYPE(((PyObject *)__pyx_v_self))), __pyx_n_s_name); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1032, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_4 = __pyx_f_7halogen_3api_u8bytes(__pyx_t_2, 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1026, __pyx_L1_error)
+  __pyx_t_4 = __pyx_f_7halogen_3api_u8bytes(__pyx_t_2, 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1032, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "halogen/api.pyx":1027
+  /* "halogen/api.pyx":1033
  *             field_values += (b""" metadata={ %s } """ % metadata_str,)
  *         return b"%s(%s) @ %s" % (u8bytes(type(self).__name__),
  *                                  b", ".join(field_value.strip() for field_value in field_values),             # <<<<<<<<<<<<<<
  *                                  u8bytes(hex(id(self))))
  * 
  */
-  __pyx_t_2 = __pyx_pf_7halogen_3api_6Module_9to_string_3genexpr(((PyObject*)__pyx_cur_scope)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1027, __pyx_L1_error)
+  __pyx_t_2 = __pyx_pf_7halogen_3api_6Module_9to_string_3genexpr(((PyObject*)__pyx_cur_scope)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1033, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyBytes_Join(__pyx_kp_b__2, __pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1027, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyBytes_Join(__pyx_kp_b__2, __pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1033, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "halogen/api.pyx":1028
+  /* "halogen/api.pyx":1034
  *         return b"%s(%s) @ %s" % (u8bytes(type(self).__name__),
  *                                  b", ".join(field_value.strip() for field_value in field_values),
  *                                  u8bytes(hex(id(self))))             # <<<<<<<<<<<<<<
  * 
  *     def __bytes__(self):
  */
-  __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_builtin_id, ((PyObject *)__pyx_v_self)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1028, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_builtin_id, ((PyObject *)__pyx_v_self)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1034, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_7 = __Pyx_PyObject_CallOneArg(__pyx_builtin_hex, __pyx_t_2); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1028, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyObject_CallOneArg(__pyx_builtin_hex, __pyx_t_2); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1034, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __pyx_f_7halogen_3api_u8bytes(__pyx_t_7, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1028, __pyx_L1_error)
+  __pyx_t_2 = __pyx_f_7halogen_3api_u8bytes(__pyx_t_7, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1034, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
 
-  /* "halogen/api.pyx":1026
+  /* "halogen/api.pyx":1032
  *             metadata_str = b", ".join(b"%s" % k for k in metadata_dict.keys())
  *             field_values += (b""" metadata={ %s } """ % metadata_str,)
  *         return b"%s(%s) @ %s" % (u8bytes(type(self).__name__),             # <<<<<<<<<<<<<<
  *                                  b", ".join(field_value.strip() for field_value in field_values),
  *                                  u8bytes(hex(id(self))))
  */
-  __pyx_t_7 = PyTuple_New(3); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1026, __pyx_L1_error)
+  __pyx_t_7 = PyTuple_New(3); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1032, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __Pyx_GIVEREF(__pyx_t_4);
   PyTuple_SET_ITEM(__pyx_t_7, 0, __pyx_t_4);
@@ -21688,14 +21788,14 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_20to_string(struct __pyx_obj_7ha
   __pyx_t_4 = 0;
   __pyx_t_3 = 0;
   __pyx_t_2 = 0;
-  __pyx_t_2 = PyNumber_Remainder(__pyx_kp_b_s_s_s, __pyx_t_7); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1026, __pyx_L1_error)
+  __pyx_t_2 = PyNumber_Remainder(__pyx_kp_b_s_s_s, __pyx_t_7); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1032, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
   __pyx_r = __pyx_t_2;
   __pyx_t_2 = 0;
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":1005
+  /* "halogen/api.pyx":1011
  *         return dict(metadata_map)
  * 
  *     def to_string(self):             # <<<<<<<<<<<<<<
@@ -21720,7 +21820,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_20to_string(struct __pyx_obj_7ha
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":1030
+/* "halogen/api.pyx":1036
  *                                  u8bytes(hex(id(self))))
  * 
  *     def __bytes__(self):             # <<<<<<<<<<<<<<
@@ -21750,7 +21850,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_22__bytes__(struct __pyx_obj_7ha
   PyObject *__pyx_t_3 = NULL;
   __Pyx_RefNannySetupContext("__bytes__", 0);
 
-  /* "halogen/api.pyx":1031
+  /* "halogen/api.pyx":1037
  * 
  *     def __bytes__(self):
  *         return self.to_string()             # <<<<<<<<<<<<<<
@@ -21758,7 +21858,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_22__bytes__(struct __pyx_obj_7ha
  *     def __str__(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_to_string); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1031, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_to_string); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1037, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
@@ -21771,10 +21871,10 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_22__bytes__(struct __pyx_obj_7ha
     }
   }
   if (__pyx_t_3) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1031, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1037, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   } else {
-    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1031, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1037, __pyx_L1_error)
   }
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
@@ -21782,7 +21882,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_22__bytes__(struct __pyx_obj_7ha
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":1030
+  /* "halogen/api.pyx":1036
  *                                  u8bytes(hex(id(self))))
  * 
  *     def __bytes__(self):             # <<<<<<<<<<<<<<
@@ -21803,7 +21903,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_22__bytes__(struct __pyx_obj_7ha
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":1033
+/* "halogen/api.pyx":1039
  *         return self.to_string()
  * 
  *     def __str__(self):             # <<<<<<<<<<<<<<
@@ -21832,7 +21932,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_24__str__(struct __pyx_obj_7halo
   PyObject *__pyx_t_3 = NULL;
   __Pyx_RefNannySetupContext("__str__", 0);
 
-  /* "halogen/api.pyx":1034
+  /* "halogen/api.pyx":1040
  * 
  *     def __str__(self):
  *         return self.to_string().decode('UTF-8')             # <<<<<<<<<<<<<<
@@ -21840,7 +21940,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_24__str__(struct __pyx_obj_7halo
  *     def __repr__(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_to_string); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1034, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_to_string); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1040, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
@@ -21853,24 +21953,24 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_24__str__(struct __pyx_obj_7halo
     }
   }
   if (__pyx_t_3) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1034, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1040, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   } else {
-    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1034, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1040, __pyx_L1_error)
   }
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_decode); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1034, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_decode); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1040, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_tuple__35, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1034, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_tuple__35, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1040, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":1033
+  /* "halogen/api.pyx":1039
  *         return self.to_string()
  * 
  *     def __str__(self):             # <<<<<<<<<<<<<<
@@ -21891,7 +21991,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_24__str__(struct __pyx_obj_7halo
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":1036
+/* "halogen/api.pyx":1042
  *         return self.to_string().decode('UTF-8')
  * 
  *     def __repr__(self):             # <<<<<<<<<<<<<<
@@ -21920,7 +22020,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_26__repr__(struct __pyx_obj_7hal
   PyObject *__pyx_t_3 = NULL;
   __Pyx_RefNannySetupContext("__repr__", 0);
 
-  /* "halogen/api.pyx":1037
+  /* "halogen/api.pyx":1043
  * 
  *     def __repr__(self):
  *         return self.to_string().decode('UTF-8')             # <<<<<<<<<<<<<<
@@ -21928,7 +22028,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_26__repr__(struct __pyx_obj_7hal
  * 
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_to_string); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1037, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_to_string); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1043, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
@@ -21941,24 +22041,24 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_26__repr__(struct __pyx_obj_7hal
     }
   }
   if (__pyx_t_3) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1037, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1043, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   } else {
-    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1037, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1043, __pyx_L1_error)
   }
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_decode); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1037, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_decode); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1043, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_tuple__36, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1037, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_tuple__36, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1043, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":1036
+  /* "halogen/api.pyx":1042
  *         return self.to_string().decode('UTF-8')
  * 
  *     def __repr__(self):             # <<<<<<<<<<<<<<
@@ -22088,7 +22188,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_30__setstate_cython__(CYTHON_UNU
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":1042
+/* "halogen/api.pyx":1048
  * ## FUNCTION WRAPPERS:
  * 
  * def get_host_target():             # <<<<<<<<<<<<<<
@@ -22119,7 +22219,7 @@ static PyObject *__pyx_pf_7halogen_3api_6get_host_target(CYTHON_UNUSED PyObject 
   PyObject *__pyx_t_3 = NULL;
   __Pyx_RefNannySetupContext("get_host_target", 0);
 
-  /* "halogen/api.pyx":1044
+  /* "halogen/api.pyx":1050
  * def get_host_target():
  *     """ Halide::get_host_target() wrapper call. """
  *     return Target.host_target()             # <<<<<<<<<<<<<<
@@ -22127,7 +22227,7 @@ static PyObject *__pyx_pf_7halogen_3api_6get_host_target(CYTHON_UNUSED PyObject 
  * def get_target_from_environment():
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_ptype_7halogen_3api_Target), __pyx_n_s_host_target); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1044, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_ptype_7halogen_3api_Target), __pyx_n_s_host_target); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1050, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
@@ -22140,10 +22240,10 @@ static PyObject *__pyx_pf_7halogen_3api_6get_host_target(CYTHON_UNUSED PyObject 
     }
   }
   if (__pyx_t_3) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1044, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1050, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   } else {
-    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1044, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1050, __pyx_L1_error)
   }
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
@@ -22151,7 +22251,7 @@ static PyObject *__pyx_pf_7halogen_3api_6get_host_target(CYTHON_UNUSED PyObject 
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":1042
+  /* "halogen/api.pyx":1048
  * ## FUNCTION WRAPPERS:
  * 
  * def get_host_target():             # <<<<<<<<<<<<<<
@@ -22172,7 +22272,7 @@ static PyObject *__pyx_pf_7halogen_3api_6get_host_target(CYTHON_UNUSED PyObject 
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":1046
+/* "halogen/api.pyx":1052
  *     return Target.host_target()
  * 
  * def get_target_from_environment():             # <<<<<<<<<<<<<<
@@ -22203,7 +22303,7 @@ static PyObject *__pyx_pf_7halogen_3api_8get_target_from_environment(CYTHON_UNUS
   PyObject *__pyx_t_3 = NULL;
   __Pyx_RefNannySetupContext("get_target_from_environment", 0);
 
-  /* "halogen/api.pyx":1048
+  /* "halogen/api.pyx":1054
  * def get_target_from_environment():
  *     """ Halide::get_target_from_environment() wrapper call. """
  *     return Target.target_from_environment()             # <<<<<<<<<<<<<<
@@ -22211,7 +22311,7 @@ static PyObject *__pyx_pf_7halogen_3api_8get_target_from_environment(CYTHON_UNUS
  * def get_jit_target_from_environment():
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_ptype_7halogen_3api_Target), __pyx_n_s_target_from_environment); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1048, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_ptype_7halogen_3api_Target), __pyx_n_s_target_from_environment); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1054, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
@@ -22224,10 +22324,10 @@ static PyObject *__pyx_pf_7halogen_3api_8get_target_from_environment(CYTHON_UNUS
     }
   }
   if (__pyx_t_3) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1048, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1054, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   } else {
-    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1048, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1054, __pyx_L1_error)
   }
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
@@ -22235,7 +22335,7 @@ static PyObject *__pyx_pf_7halogen_3api_8get_target_from_environment(CYTHON_UNUS
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":1046
+  /* "halogen/api.pyx":1052
  *     return Target.host_target()
  * 
  * def get_target_from_environment():             # <<<<<<<<<<<<<<
@@ -22256,7 +22356,7 @@ static PyObject *__pyx_pf_7halogen_3api_8get_target_from_environment(CYTHON_UNUS
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":1050
+/* "halogen/api.pyx":1056
  *     return Target.target_from_environment()
  * 
  * def get_jit_target_from_environment():             # <<<<<<<<<<<<<<
@@ -22287,7 +22387,7 @@ static PyObject *__pyx_pf_7halogen_3api_10get_jit_target_from_environment(CYTHON
   PyObject *__pyx_t_3 = NULL;
   __Pyx_RefNannySetupContext("get_jit_target_from_environment", 0);
 
-  /* "halogen/api.pyx":1052
+  /* "halogen/api.pyx":1058
  * def get_jit_target_from_environment():
  *     """ Halide::get_jit_target_from_environment() wrapper call. """
  *     return Target.jit_target_from_environment()             # <<<<<<<<<<<<<<
@@ -22295,7 +22395,7 @@ static PyObject *__pyx_pf_7halogen_3api_10get_jit_target_from_environment(CYTHON
  * cpdef bint validate_target_string(object target_string):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_ptype_7halogen_3api_Target), __pyx_n_s_jit_target_from_environment); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1052, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_ptype_7halogen_3api_Target), __pyx_n_s_jit_target_from_environment); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1058, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
@@ -22308,10 +22408,10 @@ static PyObject *__pyx_pf_7halogen_3api_10get_jit_target_from_environment(CYTHON
     }
   }
   if (__pyx_t_3) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1052, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1058, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   } else {
-    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1052, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1058, __pyx_L1_error)
   }
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
@@ -22319,7 +22419,7 @@ static PyObject *__pyx_pf_7halogen_3api_10get_jit_target_from_environment(CYTHON
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":1050
+  /* "halogen/api.pyx":1056
  *     return Target.target_from_environment()
  * 
  * def get_jit_target_from_environment():             # <<<<<<<<<<<<<<
@@ -22340,7 +22440,7 @@ static PyObject *__pyx_pf_7halogen_3api_10get_jit_target_from_environment(CYTHON
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":1054
+/* "halogen/api.pyx":1060
  *     return Target.jit_target_from_environment()
  * 
  * cpdef bint validate_target_string(object target_string):             # <<<<<<<<<<<<<<
@@ -22356,21 +22456,21 @@ static int __pyx_f_7halogen_3api_validate_target_string(PyObject *__pyx_v_target
   std::string __pyx_t_2;
   __Pyx_RefNannySetupContext("validate_target_string", 0);
 
-  /* "halogen/api.pyx":1056
+  /* "halogen/api.pyx":1062
  * cpdef bint validate_target_string(object target_string):
  *     """ Halide::Target::validate_target_string(s) static method wrapper call. """
  *     return HalTarget.validate_target_string(<string>u8bytes(target_string))             # <<<<<<<<<<<<<<
  * 
  * cpdef set registered_generators():
  */
-  __pyx_t_1 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_target_string, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1056, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_target_string, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1062, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 1056, __pyx_L1_error)
+  __pyx_t_2 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 1062, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_r = Halide::Target::validate_target_string(((std::string)__pyx_t_2));
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":1054
+  /* "halogen/api.pyx":1060
  *     return Target.jit_target_from_environment()
  * 
  * cpdef bint validate_target_string(object target_string):             # <<<<<<<<<<<<<<
@@ -22408,7 +22508,7 @@ static PyObject *__pyx_pf_7halogen_3api_12validate_target_string(CYTHON_UNUSED P
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("validate_target_string", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_f_7halogen_3api_validate_target_string(__pyx_v_target_string, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1054, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_f_7halogen_3api_validate_target_string(__pyx_v_target_string, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1060, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -22425,7 +22525,7 @@ static PyObject *__pyx_pf_7halogen_3api_12validate_target_string(CYTHON_UNUSED P
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":1058
+/* "halogen/api.pyx":1064
  *     return HalTarget.validate_target_string(<string>u8bytes(target_string))
  * 
  * cpdef set registered_generators():             # <<<<<<<<<<<<<<
@@ -22446,34 +22546,34 @@ static PyObject *__pyx_f_7halogen_3api_registered_generators(CYTHON_UNUSED int _
   PyObject *__pyx_t_4 = NULL;
   __Pyx_RefNannySetupContext("registered_generators", 0);
 
-  /* "halogen/api.pyx":1060
+  /* "halogen/api.pyx":1066
  * cpdef set registered_generators():
  *     """ Enumerate registered generators using Halide::GeneratorRegistry. """
  *     cdef set out = set()             # <<<<<<<<<<<<<<
  *     cdef tuple names = tuple(GeneratorRegistry.enumerate())
  *     for enumerated_name in names:
  */
-  __pyx_t_1 = PySet_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1060, __pyx_L1_error)
+  __pyx_t_1 = PySet_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1066, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_out = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "halogen/api.pyx":1061
+  /* "halogen/api.pyx":1067
  *     """ Enumerate registered generators using Halide::GeneratorRegistry. """
  *     cdef set out = set()
  *     cdef tuple names = tuple(GeneratorRegistry.enumerate())             # <<<<<<<<<<<<<<
  *     for enumerated_name in names:
  *         out |= { u8str(enumerated_name) }
  */
-  __pyx_t_1 = __pyx_convert_vector_to_py_std_3a__3a_string(Halide::Internal::GeneratorRegistry::enumerate()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1061, __pyx_L1_error)
+  __pyx_t_1 = __pyx_convert_vector_to_py_std_3a__3a_string(Halide::Internal::GeneratorRegistry::enumerate()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1067, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PySequence_Tuple(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1061, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PySequence_Tuple(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1067, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_names = ((PyObject*)__pyx_t_2);
   __pyx_t_2 = 0;
 
-  /* "halogen/api.pyx":1062
+  /* "halogen/api.pyx":1068
  *     cdef set out = set()
  *     cdef tuple names = tuple(GeneratorRegistry.enumerate())
  *     for enumerated_name in names:             # <<<<<<<<<<<<<<
@@ -22484,34 +22584,34 @@ static PyObject *__pyx_f_7halogen_3api_registered_generators(CYTHON_UNUSED int _
   for (;;) {
     if (__pyx_t_3 >= PyTuple_GET_SIZE(__pyx_t_2)) break;
     #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-    __pyx_t_1 = PyTuple_GET_ITEM(__pyx_t_2, __pyx_t_3); __Pyx_INCREF(__pyx_t_1); __pyx_t_3++; if (unlikely(0 < 0)) __PYX_ERR(0, 1062, __pyx_L1_error)
+    __pyx_t_1 = PyTuple_GET_ITEM(__pyx_t_2, __pyx_t_3); __Pyx_INCREF(__pyx_t_1); __pyx_t_3++; if (unlikely(0 < 0)) __PYX_ERR(0, 1068, __pyx_L1_error)
     #else
-    __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1062, __pyx_L1_error)
+    __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1068, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     #endif
     __Pyx_XDECREF_SET(__pyx_v_enumerated_name, __pyx_t_1);
     __pyx_t_1 = 0;
 
-    /* "halogen/api.pyx":1063
+    /* "halogen/api.pyx":1069
  *     cdef tuple names = tuple(GeneratorRegistry.enumerate())
  *     for enumerated_name in names:
  *         out |= { u8str(enumerated_name) }             # <<<<<<<<<<<<<<
  *     return out
  * 
  */
-    __pyx_t_1 = __pyx_f_7halogen_3api_u8str(__pyx_v_enumerated_name, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1063, __pyx_L1_error)
+    __pyx_t_1 = __pyx_f_7halogen_3api_u8str(__pyx_v_enumerated_name, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1069, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_4 = PySet_New(0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1063, __pyx_L1_error)
+    __pyx_t_4 = PySet_New(0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1069, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    if (PySet_Add(__pyx_t_4, __pyx_t_1) < 0) __PYX_ERR(0, 1063, __pyx_L1_error)
+    if (PySet_Add(__pyx_t_4, __pyx_t_1) < 0) __PYX_ERR(0, 1069, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_t_1 = PyNumber_InPlaceOr(__pyx_v_out, __pyx_t_4); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1063, __pyx_L1_error)
+    __pyx_t_1 = PyNumber_InPlaceOr(__pyx_v_out, __pyx_t_4); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1069, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_DECREF_SET(__pyx_v_out, ((PyObject*)__pyx_t_1));
     __pyx_t_1 = 0;
 
-    /* "halogen/api.pyx":1062
+    /* "halogen/api.pyx":1068
  *     cdef set out = set()
  *     cdef tuple names = tuple(GeneratorRegistry.enumerate())
  *     for enumerated_name in names:             # <<<<<<<<<<<<<<
@@ -22521,7 +22621,7 @@ static PyObject *__pyx_f_7halogen_3api_registered_generators(CYTHON_UNUSED int _
   }
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "halogen/api.pyx":1064
+  /* "halogen/api.pyx":1070
  *     for enumerated_name in names:
  *         out |= { u8str(enumerated_name) }
  *     return out             # <<<<<<<<<<<<<<
@@ -22533,7 +22633,7 @@ static PyObject *__pyx_f_7halogen_3api_registered_generators(CYTHON_UNUSED int _
   __pyx_r = __pyx_v_out;
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":1058
+  /* "halogen/api.pyx":1064
  *     return HalTarget.validate_target_string(<string>u8bytes(target_string))
  * 
  * cpdef set registered_generators():             # <<<<<<<<<<<<<<
@@ -22577,7 +22677,7 @@ static PyObject *__pyx_pf_7halogen_3api_14registered_generators(CYTHON_UNUSED Py
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("registered_generators", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_7halogen_3api_registered_generators(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1058, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_7halogen_3api_registered_generators(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1064, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -22594,7 +22694,7 @@ static PyObject *__pyx_pf_7halogen_3api_14registered_generators(CYTHON_UNUSED Py
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":1066
+/* "halogen/api.pyx":1072
  *     return out
  * 
  * cdef string halide_compute_base_path(string& output_dir,             # <<<<<<<<<<<<<<
@@ -22609,7 +22709,7 @@ static std::string __pyx_f_7halogen_3api_halide_compute_base_path(std::string &_
   std::string __pyx_r;
   int __pyx_t_1;
 
-  /* "halogen/api.pyx":1070
+  /* "halogen/api.pyx":1076
  *                                      string& file_base_name) nogil:
  *     cdef stringvec_t namespaces
  *     cdef string simple_name = halide_extract_namespaces(function_name, namespaces)             # <<<<<<<<<<<<<<
@@ -22618,7 +22718,7 @@ static std::string __pyx_f_7halogen_3api_halide_compute_base_path(std::string &_
  */
   __pyx_v_simple_name = Halide::Internal::extract_namespaces(__pyx_v_function_name, __pyx_v_namespaces);
 
-  /* "halogen/api.pyx":1072
+  /* "halogen/api.pyx":1078
  *     cdef string simple_name = halide_extract_namespaces(function_name, namespaces)
  *     cdef string base_path
  *     if output_dir.back() == '/':             # <<<<<<<<<<<<<<
@@ -22628,7 +22728,7 @@ static std::string __pyx_f_7halogen_3api_halide_compute_base_path(std::string &_
   __pyx_t_1 = ((__pyx_v_output_dir.back() == '/') != 0);
   if (__pyx_t_1) {
 
-    /* "halogen/api.pyx":1073
+    /* "halogen/api.pyx":1079
  *     cdef string base_path
  *     if output_dir.back() == '/':
  *         base_path = output_dir             # <<<<<<<<<<<<<<
@@ -22637,7 +22737,7 @@ static std::string __pyx_f_7halogen_3api_halide_compute_base_path(std::string &_
  */
     __pyx_v_base_path = __pyx_v_output_dir;
 
-    /* "halogen/api.pyx":1072
+    /* "halogen/api.pyx":1078
  *     cdef string simple_name = halide_extract_namespaces(function_name, namespaces)
  *     cdef string base_path
  *     if output_dir.back() == '/':             # <<<<<<<<<<<<<<
@@ -22647,7 +22747,7 @@ static std::string __pyx_f_7halogen_3api_halide_compute_base_path(std::string &_
     goto __pyx_L3;
   }
 
-  /* "halogen/api.pyx":1075
+  /* "halogen/api.pyx":1081
  *         base_path = output_dir
  *     else:
  *         base_path = output_dir.append('/')             # <<<<<<<<<<<<<<
@@ -22659,7 +22759,7 @@ static std::string __pyx_f_7halogen_3api_halide_compute_base_path(std::string &_
   }
   __pyx_L3:;
 
-  /* "halogen/api.pyx":1076
+  /* "halogen/api.pyx":1082
  *     else:
  *         base_path = output_dir.append('/')
  *     if file_base_name.empty():             # <<<<<<<<<<<<<<
@@ -22669,7 +22769,7 @@ static std::string __pyx_f_7halogen_3api_halide_compute_base_path(std::string &_
   __pyx_t_1 = (__pyx_v_file_base_name.empty() != 0);
   if (__pyx_t_1) {
 
-    /* "halogen/api.pyx":1077
+    /* "halogen/api.pyx":1083
  *         base_path = output_dir.append('/')
  *     if file_base_name.empty():
  *         base_path.append(simple_name)             # <<<<<<<<<<<<<<
@@ -22678,7 +22778,7 @@ static std::string __pyx_f_7halogen_3api_halide_compute_base_path(std::string &_
  */
     (void)(__pyx_v_base_path.append(__pyx_v_simple_name));
 
-    /* "halogen/api.pyx":1076
+    /* "halogen/api.pyx":1082
  *     else:
  *         base_path = output_dir.append('/')
  *     if file_base_name.empty():             # <<<<<<<<<<<<<<
@@ -22688,7 +22788,7 @@ static std::string __pyx_f_7halogen_3api_halide_compute_base_path(std::string &_
     goto __pyx_L4;
   }
 
-  /* "halogen/api.pyx":1079
+  /* "halogen/api.pyx":1085
  *         base_path.append(simple_name)
  *     else:
  *         base_path.append(file_base_name)             # <<<<<<<<<<<<<<
@@ -22700,7 +22800,7 @@ static std::string __pyx_f_7halogen_3api_halide_compute_base_path(std::string &_
   }
   __pyx_L4:;
 
-  /* "halogen/api.pyx":1080
+  /* "halogen/api.pyx":1086
  *     else:
  *         base_path.append(file_base_name)
  *     return base_path             # <<<<<<<<<<<<<<
@@ -22710,7 +22810,7 @@ static std::string __pyx_f_7halogen_3api_halide_compute_base_path(std::string &_
   __pyx_r = __pyx_v_base_path;
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":1066
+  /* "halogen/api.pyx":1072
  *     return out
  * 
  * cdef string halide_compute_base_path(string& output_dir,             # <<<<<<<<<<<<<<
@@ -22723,7 +22823,7 @@ static std::string __pyx_f_7halogen_3api_halide_compute_base_path(std::string &_
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":1082
+/* "halogen/api.pyx":1088
  *     return base_path
  * 
  * def compute_base_path(object output_dir not None,             # <<<<<<<<<<<<<<
@@ -22746,7 +22846,7 @@ static PyObject *__pyx_pw_7halogen_3api_17compute_base_path(PyObject *__pyx_self
     static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_output_dir,&__pyx_n_s_function_name,&__pyx_n_s_file_base_name,0};
     PyObject* values[3] = {0,0,0};
 
-    /* "halogen/api.pyx":1084
+    /* "halogen/api.pyx":1090
  * def compute_base_path(object output_dir not None,
  *                       object function_name not None,
  *                       object file_base_name=None):             # <<<<<<<<<<<<<<
@@ -22776,7 +22876,7 @@ static PyObject *__pyx_pw_7halogen_3api_17compute_base_path(PyObject *__pyx_self
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_function_name)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("compute_base_path", 0, 2, 3, 1); __PYX_ERR(0, 1082, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("compute_base_path", 0, 2, 3, 1); __PYX_ERR(0, 1088, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
@@ -22786,7 +22886,7 @@ static PyObject *__pyx_pw_7halogen_3api_17compute_base_path(PyObject *__pyx_self
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "compute_base_path") < 0)) __PYX_ERR(0, 1082, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "compute_base_path") < 0)) __PYX_ERR(0, 1088, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -22804,21 +22904,21 @@ static PyObject *__pyx_pw_7halogen_3api_17compute_base_path(PyObject *__pyx_self
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("compute_base_path", 0, 2, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 1082, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("compute_base_path", 0, 2, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 1088, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("halogen.api.compute_base_path", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
   if (unlikely(((PyObject *)__pyx_v_output_dir) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "output_dir"); __PYX_ERR(0, 1082, __pyx_L1_error)
+    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "output_dir"); __PYX_ERR(0, 1088, __pyx_L1_error)
   }
   if (unlikely(((PyObject *)__pyx_v_function_name) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "function_name"); __PYX_ERR(0, 1083, __pyx_L1_error)
+    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "function_name"); __PYX_ERR(0, 1089, __pyx_L1_error)
   }
   __pyx_r = __pyx_pf_7halogen_3api_16compute_base_path(__pyx_self, __pyx_v_output_dir, __pyx_v_function_name, __pyx_v_file_base_name);
 
-  /* "halogen/api.pyx":1082
+  /* "halogen/api.pyx":1088
  *     return base_path
  * 
  * def compute_base_path(object output_dir not None,             # <<<<<<<<<<<<<<
@@ -22848,33 +22948,33 @@ static PyObject *__pyx_pf_7halogen_3api_16compute_base_path(CYTHON_UNUSED PyObje
   __Pyx_RefNannySetupContext("compute_base_path", 0);
   __Pyx_INCREF(__pyx_v_file_base_name);
 
-  /* "halogen/api.pyx":1087
+  /* "halogen/api.pyx":1093
  *     """ Reimplementation of Halide::Internal::compute_base_path(...)
  *         (a private function found in Halide/src/Generator.cpp). """
  *     cdef string output_dir_string = <string>u8bytes(output_dir)             # <<<<<<<<<<<<<<
  *     cdef string function_name_string = <string>u8bytes(function_name)
  *     if file_base_name is None:
  */
-  __pyx_t_1 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_output_dir, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1087, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_output_dir, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1093, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 1087, __pyx_L1_error)
+  __pyx_t_2 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 1093, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_output_dir_string = ((std::string)__pyx_t_2);
 
-  /* "halogen/api.pyx":1088
+  /* "halogen/api.pyx":1094
  *         (a private function found in Halide/src/Generator.cpp). """
  *     cdef string output_dir_string = <string>u8bytes(output_dir)
  *     cdef string function_name_string = <string>u8bytes(function_name)             # <<<<<<<<<<<<<<
  *     if file_base_name is None:
  *         file_base_name = ""
  */
-  __pyx_t_1 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_function_name, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1088, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_function_name, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1094, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 1088, __pyx_L1_error)
+  __pyx_t_2 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 1094, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_function_name_string = ((std::string)__pyx_t_2);
 
-  /* "halogen/api.pyx":1089
+  /* "halogen/api.pyx":1095
  *     cdef string output_dir_string = <string>u8bytes(output_dir)
  *     cdef string function_name_string = <string>u8bytes(function_name)
  *     if file_base_name is None:             # <<<<<<<<<<<<<<
@@ -22885,7 +22985,7 @@ static PyObject *__pyx_pf_7halogen_3api_16compute_base_path(CYTHON_UNUSED PyObje
   __pyx_t_4 = (__pyx_t_3 != 0);
   if (__pyx_t_4) {
 
-    /* "halogen/api.pyx":1090
+    /* "halogen/api.pyx":1096
  *     cdef string function_name_string = <string>u8bytes(function_name)
  *     if file_base_name is None:
  *         file_base_name = ""             # <<<<<<<<<<<<<<
@@ -22895,7 +22995,7 @@ static PyObject *__pyx_pf_7halogen_3api_16compute_base_path(CYTHON_UNUSED PyObje
     __Pyx_INCREF(__pyx_kp_s_);
     __Pyx_DECREF_SET(__pyx_v_file_base_name, __pyx_kp_s_);
 
-    /* "halogen/api.pyx":1089
+    /* "halogen/api.pyx":1095
  *     cdef string output_dir_string = <string>u8bytes(output_dir)
  *     cdef string function_name_string = <string>u8bytes(function_name)
  *     if file_base_name is None:             # <<<<<<<<<<<<<<
@@ -22904,20 +23004,20 @@ static PyObject *__pyx_pf_7halogen_3api_16compute_base_path(CYTHON_UNUSED PyObje
  */
   }
 
-  /* "halogen/api.pyx":1091
+  /* "halogen/api.pyx":1097
  *     if file_base_name is None:
  *         file_base_name = ""
  *     cdef string file_base_name_string = <string>u8bytes(file_base_name)             # <<<<<<<<<<<<<<
  *     return halide_compute_base_path(output_dir_string,
  *                                     function_name_string,
  */
-  __pyx_t_1 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_file_base_name, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1091, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_file_base_name, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1097, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 1091, __pyx_L1_error)
+  __pyx_t_2 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 1097, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_file_base_name_string = ((std::string)__pyx_t_2);
 
-  /* "halogen/api.pyx":1092
+  /* "halogen/api.pyx":1098
  *         file_base_name = ""
  *     cdef string file_base_name_string = <string>u8bytes(file_base_name)
  *     return halide_compute_base_path(output_dir_string,             # <<<<<<<<<<<<<<
@@ -22926,20 +23026,20 @@ static PyObject *__pyx_pf_7halogen_3api_16compute_base_path(CYTHON_UNUSED PyObje
  */
   __Pyx_XDECREF(__pyx_r);
 
-  /* "halogen/api.pyx":1094
+  /* "halogen/api.pyx":1100
  *     return halide_compute_base_path(output_dir_string,
  *                                     function_name_string,
  *                                     file_base_name_string)             # <<<<<<<<<<<<<<
  * 
  * cpdef Module get_generator_module(object name, object arguments={}):
  */
-  __pyx_t_1 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_f_7halogen_3api_halide_compute_base_path(__pyx_v_output_dir_string, __pyx_v_function_name_string, __pyx_v_file_base_name_string)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1092, __pyx_L1_error)
+  __pyx_t_1 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_f_7halogen_3api_halide_compute_base_path(__pyx_v_output_dir_string, __pyx_v_function_name_string, __pyx_v_file_base_name_string)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1098, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":1082
+  /* "halogen/api.pyx":1088
  *     return base_path
  * 
  * def compute_base_path(object output_dir not None,             # <<<<<<<<<<<<<<
@@ -22959,7 +23059,7 @@ static PyObject *__pyx_pf_7halogen_3api_16compute_base_path(CYTHON_UNUSED PyObje
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":1096
+/* "halogen/api.pyx":1102
  *                                     file_base_name_string)
  * 
  * cpdef Module get_generator_module(object name, object arguments={}):             # <<<<<<<<<<<<<<
@@ -23001,47 +23101,47 @@ static struct __pyx_obj_7halogen_3api_Module *__pyx_f_7halogen_3api_get_generato
     }
   }
 
-  /* "halogen/api.pyx":1100
+  /* "halogen/api.pyx":1106
  *         corresponding to the registered generator instance (by name). """
  *     # first, check name against registered generators:
  *     if u8str(name) not in registered_generators():             # <<<<<<<<<<<<<<
  *         raise ValueError("""can't find a registered generator named "%s" """ % u8str(name))
  * 
  */
-  __pyx_t_1 = __pyx_f_7halogen_3api_u8str(__pyx_v_name, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1100, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_7halogen_3api_u8str(__pyx_v_name, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1106, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __pyx_f_7halogen_3api_registered_generators(0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1100, __pyx_L1_error)
+  __pyx_t_2 = __pyx_f_7halogen_3api_registered_generators(0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1106, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   if (unlikely(__pyx_t_2 == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not iterable");
-    __PYX_ERR(0, 1100, __pyx_L1_error)
+    __PYX_ERR(0, 1106, __pyx_L1_error)
   }
-  __pyx_t_3 = (__Pyx_PySet_ContainsTF(__pyx_t_1, __pyx_t_2, Py_NE)); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 1100, __pyx_L1_error)
+  __pyx_t_3 = (__Pyx_PySet_ContainsTF(__pyx_t_1, __pyx_t_2, Py_NE)); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 1106, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_t_4 = (__pyx_t_3 != 0);
   if (unlikely(__pyx_t_4)) {
 
-    /* "halogen/api.pyx":1101
+    /* "halogen/api.pyx":1107
  *     # first, check name against registered generators:
  *     if u8str(name) not in registered_generators():
  *         raise ValueError("""can't find a registered generator named "%s" """ % u8str(name))             # <<<<<<<<<<<<<<
  * 
  *     # next, check that `arguments` is a mapping type:
  */
-    __pyx_t_2 = __pyx_f_7halogen_3api_u8str(__pyx_v_name, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1101, __pyx_L1_error)
+    __pyx_t_2 = __pyx_f_7halogen_3api_u8str(__pyx_v_name, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1107, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_1 = __Pyx_PyString_Format(__pyx_kp_s_can_t_find_a_registered_generato, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1101, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyString_Format(__pyx_kp_s_can_t_find_a_registered_generato, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1107, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_builtin_ValueError, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1101, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_builtin_ValueError, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1107, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __Pyx_Raise(__pyx_t_2, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __PYX_ERR(0, 1101, __pyx_L1_error)
+    __PYX_ERR(0, 1107, __pyx_L1_error)
 
-    /* "halogen/api.pyx":1100
+    /* "halogen/api.pyx":1106
  *         corresponding to the registered generator instance (by name). """
  *     # first, check name against registered generators:
  *     if u8str(name) not in registered_generators():             # <<<<<<<<<<<<<<
@@ -23050,7 +23150,7 @@ static struct __pyx_obj_7halogen_3api_Module *__pyx_f_7halogen_3api_get_generato
  */
   }
 
-  /* "halogen/api.pyx":1104
+  /* "halogen/api.pyx":1110
  * 
  *     # next, check that `arguments` is a mapping type:
  *     if not PyMapping_Check(arguments):             # <<<<<<<<<<<<<<
@@ -23060,20 +23160,20 @@ static struct __pyx_obj_7halogen_3api_Module *__pyx_f_7halogen_3api_get_generato
   __pyx_t_4 = ((!(PyMapping_Check(__pyx_v_arguments) != 0)) != 0);
   if (unlikely(__pyx_t_4)) {
 
-    /* "halogen/api.pyx":1105
+    /* "halogen/api.pyx":1111
  *     # next, check that `arguments` is a mapping type:
  *     if not PyMapping_Check(arguments):
  *         raise ValueError(""""arguments" must be a mapping (dict-ish) type""")             # <<<<<<<<<<<<<<
  * 
  *     # Stack-allocate std::strings for the generator name and target,
  */
-    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__40, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1105, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__40, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1111, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_Raise(__pyx_t_2, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __PYX_ERR(0, 1105, __pyx_L1_error)
+    __PYX_ERR(0, 1111, __pyx_L1_error)
 
-    /* "halogen/api.pyx":1104
+    /* "halogen/api.pyx":1110
  * 
  *     # next, check that `arguments` is a mapping type:
  *     if not PyMapping_Check(arguments):             # <<<<<<<<<<<<<<
@@ -23082,53 +23182,53 @@ static struct __pyx_obj_7halogen_3api_Module *__pyx_f_7halogen_3api_get_generato
  */
   }
 
-  /* "halogen/api.pyx":1118
+  /* "halogen/api.pyx":1124
  * 
  *     # Create a new named halogen.api.Module object to return, per the name argument:
  *     out = Module(name=name)             # <<<<<<<<<<<<<<
  * 
  *     # Convert the Python string value of name to a std::string and assign to generator_name,
  */
-  __pyx_t_2 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1118, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1124, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_name_2, __pyx_v_name) < 0) __PYX_ERR(0, 1118, __pyx_L1_error)
-  __pyx_t_1 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_7halogen_3api_Module), __pyx_empty_tuple, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1118, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_name_2, __pyx_v_name) < 0) __PYX_ERR(0, 1124, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_7halogen_3api_Module), __pyx_empty_tuple, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1124, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v_out = ((struct __pyx_obj_7halogen_3api_Module *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "halogen/api.pyx":1123
+  /* "halogen/api.pyx":1129
  *     # and do the same with the potential value arguments['target'] -- defaulting to the string
  *     # value of halogen.api.Target.target_from_environment():
  *     generator_name = <string>u8bytes(name)             # <<<<<<<<<<<<<<
  *     generator_target = <string>u8bytes(arguments.pop('target',
  *                                                Target.target_from_environment().to_string()))
  */
-  __pyx_t_1 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_name, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1123, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_name, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1129, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_5 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 1123, __pyx_L1_error)
+  __pyx_t_5 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 1129, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_generator_name = ((std::string)__pyx_t_5);
 
-  /* "halogen/api.pyx":1124
+  /* "halogen/api.pyx":1130
  *     # value of halogen.api.Target.target_from_environment():
  *     generator_name = <string>u8bytes(name)
  *     generator_target = <string>u8bytes(arguments.pop('target',             # <<<<<<<<<<<<<<
  *                                                Target.target_from_environment().to_string()))
  * 
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_arguments, __pyx_n_s_pop); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1124, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_arguments, __pyx_n_s_pop); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1130, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
 
-  /* "halogen/api.pyx":1125
+  /* "halogen/api.pyx":1131
  *     generator_name = <string>u8bytes(name)
  *     generator_target = <string>u8bytes(arguments.pop('target',
  *                                                Target.target_from_environment().to_string()))             # <<<<<<<<<<<<<<
  * 
  *     # Copy arguments from the Python dict to the STL map:
  */
-  __pyx_t_8 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_ptype_7halogen_3api_Target), __pyx_n_s_target_from_environment); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1125, __pyx_L1_error)
+  __pyx_t_8 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_ptype_7halogen_3api_Target), __pyx_n_s_target_from_environment); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1131, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
   __pyx_t_9 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_8))) {
@@ -23141,14 +23241,14 @@ static struct __pyx_obj_7halogen_3api_Module *__pyx_f_7halogen_3api_get_generato
     }
   }
   if (__pyx_t_9) {
-    __pyx_t_7 = __Pyx_PyObject_CallOneArg(__pyx_t_8, __pyx_t_9); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1125, __pyx_L1_error)
+    __pyx_t_7 = __Pyx_PyObject_CallOneArg(__pyx_t_8, __pyx_t_9); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1131, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
   } else {
-    __pyx_t_7 = __Pyx_PyObject_CallNoArg(__pyx_t_8); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1125, __pyx_L1_error)
+    __pyx_t_7 = __Pyx_PyObject_CallNoArg(__pyx_t_8); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1131, __pyx_L1_error)
   }
   __Pyx_GOTREF(__pyx_t_7);
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-  __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_7, __pyx_n_s_to_string); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1125, __pyx_L1_error)
+  __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_7, __pyx_n_s_to_string); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1131, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
   __pyx_t_7 = NULL;
@@ -23162,10 +23262,10 @@ static struct __pyx_obj_7halogen_3api_Module *__pyx_f_7halogen_3api_get_generato
     }
   }
   if (__pyx_t_7) {
-    __pyx_t_6 = __Pyx_PyObject_CallOneArg(__pyx_t_8, __pyx_t_7); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1125, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyObject_CallOneArg(__pyx_t_8, __pyx_t_7); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1131, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
   } else {
-    __pyx_t_6 = __Pyx_PyObject_CallNoArg(__pyx_t_8); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1125, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyObject_CallNoArg(__pyx_t_8); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1131, __pyx_L1_error)
   }
   __Pyx_GOTREF(__pyx_t_6);
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
@@ -23184,7 +23284,7 @@ static struct __pyx_obj_7halogen_3api_Module *__pyx_f_7halogen_3api_get_generato
   #if CYTHON_FAST_PYCALL
   if (PyFunction_Check(__pyx_t_2)) {
     PyObject *__pyx_temp[3] = {__pyx_t_8, __pyx_n_s_target, __pyx_t_6};
-    __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_10, 2+__pyx_t_10); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1124, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_10, 2+__pyx_t_10); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1130, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
@@ -23193,14 +23293,14 @@ static struct __pyx_obj_7halogen_3api_Module *__pyx_f_7halogen_3api_get_generato
   #if CYTHON_FAST_PYCCALL
   if (__Pyx_PyFastCFunction_Check(__pyx_t_2)) {
     PyObject *__pyx_temp[3] = {__pyx_t_8, __pyx_n_s_target, __pyx_t_6};
-    __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_10, 2+__pyx_t_10); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1124, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_10, 2+__pyx_t_10); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1130, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   } else
   #endif
   {
-    __pyx_t_7 = PyTuple_New(2+__pyx_t_10); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1124, __pyx_L1_error)
+    __pyx_t_7 = PyTuple_New(2+__pyx_t_10); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1130, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
     if (__pyx_t_8) {
       __Pyx_GIVEREF(__pyx_t_8); PyTuple_SET_ITEM(__pyx_t_7, 0, __pyx_t_8); __pyx_t_8 = NULL;
@@ -23211,34 +23311,34 @@ static struct __pyx_obj_7halogen_3api_Module *__pyx_f_7halogen_3api_get_generato
     __Pyx_GIVEREF(__pyx_t_6);
     PyTuple_SET_ITEM(__pyx_t_7, 1+__pyx_t_10, __pyx_t_6);
     __pyx_t_6 = 0;
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_7, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1124, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_7, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1130, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
   }
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "halogen/api.pyx":1124
+  /* "halogen/api.pyx":1130
  *     # value of halogen.api.Target.target_from_environment():
  *     generator_name = <string>u8bytes(name)
  *     generator_target = <string>u8bytes(arguments.pop('target',             # <<<<<<<<<<<<<<
  *                                                Target.target_from_environment().to_string()))
  * 
  */
-  __pyx_t_2 = __pyx_f_7halogen_3api_u8bytes(__pyx_t_1, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1124, __pyx_L1_error)
+  __pyx_t_2 = __pyx_f_7halogen_3api_u8bytes(__pyx_t_1, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1130, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_5 = __pyx_convert_string_from_py_std__in_string(__pyx_t_2); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 1124, __pyx_L1_error)
+  __pyx_t_5 = __pyx_convert_string_from_py_std__in_string(__pyx_t_2); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 1130, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v_generator_target = ((std::string)__pyx_t_5);
 
-  /* "halogen/api.pyx":1128
+  /* "halogen/api.pyx":1134
  * 
  *     # Copy arguments from the Python dict to the STL map:
  *     for k, v in arguments.items():             # <<<<<<<<<<<<<<
  *         argmap[<string>u8bytes(k)] = StringOrLoopLevel(<string>u8bytes(v))
  * 
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_arguments, __pyx_n_s_items); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1128, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_arguments, __pyx_n_s_items); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1134, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_t_7 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_1))) {
@@ -23251,10 +23351,10 @@ static struct __pyx_obj_7halogen_3api_Module *__pyx_f_7halogen_3api_get_generato
     }
   }
   if (__pyx_t_7) {
-    __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_7); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1128, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_7); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1134, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
   } else {
-    __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1128, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1134, __pyx_L1_error)
   }
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -23262,9 +23362,9 @@ static struct __pyx_obj_7halogen_3api_Module *__pyx_f_7halogen_3api_get_generato
     __pyx_t_1 = __pyx_t_2; __Pyx_INCREF(__pyx_t_1); __pyx_t_11 = 0;
     __pyx_t_12 = NULL;
   } else {
-    __pyx_t_11 = -1; __pyx_t_1 = PyObject_GetIter(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1128, __pyx_L1_error)
+    __pyx_t_11 = -1; __pyx_t_1 = PyObject_GetIter(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1134, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_12 = Py_TYPE(__pyx_t_1)->tp_iternext; if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1128, __pyx_L1_error)
+    __pyx_t_12 = Py_TYPE(__pyx_t_1)->tp_iternext; if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1134, __pyx_L1_error)
   }
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   for (;;) {
@@ -23272,17 +23372,17 @@ static struct __pyx_obj_7halogen_3api_Module *__pyx_f_7halogen_3api_get_generato
       if (likely(PyList_CheckExact(__pyx_t_1))) {
         if (__pyx_t_11 >= PyList_GET_SIZE(__pyx_t_1)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_2 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_11); __Pyx_INCREF(__pyx_t_2); __pyx_t_11++; if (unlikely(0 < 0)) __PYX_ERR(0, 1128, __pyx_L1_error)
+        __pyx_t_2 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_11); __Pyx_INCREF(__pyx_t_2); __pyx_t_11++; if (unlikely(0 < 0)) __PYX_ERR(0, 1134, __pyx_L1_error)
         #else
-        __pyx_t_2 = PySequence_ITEM(__pyx_t_1, __pyx_t_11); __pyx_t_11++; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1128, __pyx_L1_error)
+        __pyx_t_2 = PySequence_ITEM(__pyx_t_1, __pyx_t_11); __pyx_t_11++; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1134, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         #endif
       } else {
         if (__pyx_t_11 >= PyTuple_GET_SIZE(__pyx_t_1)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_2 = PyTuple_GET_ITEM(__pyx_t_1, __pyx_t_11); __Pyx_INCREF(__pyx_t_2); __pyx_t_11++; if (unlikely(0 < 0)) __PYX_ERR(0, 1128, __pyx_L1_error)
+        __pyx_t_2 = PyTuple_GET_ITEM(__pyx_t_1, __pyx_t_11); __Pyx_INCREF(__pyx_t_2); __pyx_t_11++; if (unlikely(0 < 0)) __PYX_ERR(0, 1134, __pyx_L1_error)
         #else
-        __pyx_t_2 = PySequence_ITEM(__pyx_t_1, __pyx_t_11); __pyx_t_11++; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1128, __pyx_L1_error)
+        __pyx_t_2 = PySequence_ITEM(__pyx_t_1, __pyx_t_11); __pyx_t_11++; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1134, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         #endif
       }
@@ -23292,7 +23392,7 @@ static struct __pyx_obj_7halogen_3api_Module *__pyx_f_7halogen_3api_get_generato
         PyObject* exc_type = PyErr_Occurred();
         if (exc_type) {
           if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-          else __PYX_ERR(0, 1128, __pyx_L1_error)
+          else __PYX_ERR(0, 1134, __pyx_L1_error)
         }
         break;
       }
@@ -23304,7 +23404,7 @@ static struct __pyx_obj_7halogen_3api_Module *__pyx_f_7halogen_3api_get_generato
       if (unlikely(size != 2)) {
         if (size > 2) __Pyx_RaiseTooManyValuesError(2);
         else if (size >= 0) __Pyx_RaiseNeedMoreValuesError(size);
-        __PYX_ERR(0, 1128, __pyx_L1_error)
+        __PYX_ERR(0, 1134, __pyx_L1_error)
       }
       #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
       if (likely(PyTuple_CheckExact(sequence))) {
@@ -23317,15 +23417,15 @@ static struct __pyx_obj_7halogen_3api_Module *__pyx_f_7halogen_3api_get_generato
       __Pyx_INCREF(__pyx_t_7);
       __Pyx_INCREF(__pyx_t_6);
       #else
-      __pyx_t_7 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1128, __pyx_L1_error)
+      __pyx_t_7 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1134, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_7);
-      __pyx_t_6 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1128, __pyx_L1_error)
+      __pyx_t_6 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1134, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_6);
       #endif
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     } else {
       Py_ssize_t index = -1;
-      __pyx_t_8 = PyObject_GetIter(__pyx_t_2); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1128, __pyx_L1_error)
+      __pyx_t_8 = PyObject_GetIter(__pyx_t_2); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1134, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_8);
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
       __pyx_t_13 = Py_TYPE(__pyx_t_8)->tp_iternext;
@@ -23333,7 +23433,7 @@ static struct __pyx_obj_7halogen_3api_Module *__pyx_f_7halogen_3api_get_generato
       __Pyx_GOTREF(__pyx_t_7);
       index = 1; __pyx_t_6 = __pyx_t_13(__pyx_t_8); if (unlikely(!__pyx_t_6)) goto __pyx_L7_unpacking_failed;
       __Pyx_GOTREF(__pyx_t_6);
-      if (__Pyx_IternextUnpackEndCheck(__pyx_t_13(__pyx_t_8), 2) < 0) __PYX_ERR(0, 1128, __pyx_L1_error)
+      if (__Pyx_IternextUnpackEndCheck(__pyx_t_13(__pyx_t_8), 2) < 0) __PYX_ERR(0, 1134, __pyx_L1_error)
       __pyx_t_13 = NULL;
       __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
       goto __pyx_L8_unpacking_done;
@@ -23341,7 +23441,7 @@ static struct __pyx_obj_7halogen_3api_Module *__pyx_f_7halogen_3api_get_generato
       __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
       __pyx_t_13 = NULL;
       if (__Pyx_IterFinish() == 0) __Pyx_RaiseNeedMoreValuesError(index);
-      __PYX_ERR(0, 1128, __pyx_L1_error)
+      __PYX_ERR(0, 1134, __pyx_L1_error)
       __pyx_L8_unpacking_done:;
     }
     __Pyx_XDECREF_SET(__pyx_v_k, __pyx_t_7);
@@ -23349,24 +23449,24 @@ static struct __pyx_obj_7halogen_3api_Module *__pyx_f_7halogen_3api_get_generato
     __Pyx_XDECREF_SET(__pyx_v_v, __pyx_t_6);
     __pyx_t_6 = 0;
 
-    /* "halogen/api.pyx":1129
+    /* "halogen/api.pyx":1135
  *     # Copy arguments from the Python dict to the STL map:
  *     for k, v in arguments.items():
  *         argmap[<string>u8bytes(k)] = StringOrLoopLevel(<string>u8bytes(v))             # <<<<<<<<<<<<<<
  * 
  *     with nogil:
  */
-    __pyx_t_2 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_v, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1129, __pyx_L1_error)
+    __pyx_t_2 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_v, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1135, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_5 = __pyx_convert_string_from_py_std__in_string(__pyx_t_2); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 1129, __pyx_L1_error)
+    __pyx_t_5 = __pyx_convert_string_from_py_std__in_string(__pyx_t_2); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 1135, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_t_2 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_k, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1129, __pyx_L1_error)
+    __pyx_t_2 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_k, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1135, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_14 = __pyx_convert_string_from_py_std__in_string(__pyx_t_2); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 1129, __pyx_L1_error)
+    __pyx_t_14 = __pyx_convert_string_from_py_std__in_string(__pyx_t_2); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 1135, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     (__pyx_v_argmap[((std::string)__pyx_t_14)]) = Halide::Internal::StringOrLoopLevel(((std::string)__pyx_t_5));
 
-    /* "halogen/api.pyx":1128
+    /* "halogen/api.pyx":1134
  * 
  *     # Copy arguments from the Python dict to the STL map:
  *     for k, v in arguments.items():             # <<<<<<<<<<<<<<
@@ -23376,7 +23476,7 @@ static struct __pyx_obj_7halogen_3api_Module *__pyx_f_7halogen_3api_get_generato
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "halogen/api.pyx":1131
+  /* "halogen/api.pyx":1137
  *         argmap[<string>u8bytes(k)] = StringOrLoopLevel(<string>u8bytes(v))
  * 
  *     with nogil:             # <<<<<<<<<<<<<<
@@ -23391,7 +23491,7 @@ static struct __pyx_obj_7halogen_3api_Module *__pyx_f_7halogen_3api_get_generato
       #endif
       /*try:*/ {
 
-        /* "halogen/api.pyx":1134
+        /* "halogen/api.pyx":1140
  *         # Heap-allocate a Target object (from either the environment or
  *         # as per the argument dict) held in a unique pointer:
  *         generator_target_ptr.reset(             # <<<<<<<<<<<<<<
@@ -23400,7 +23500,7 @@ static struct __pyx_obj_7halogen_3api_Module *__pyx_f_7halogen_3api_get_generato
  */
         __pyx_v_generator_target_ptr.reset(new Halide::Target(__pyx_v_generator_target));
 
-        /* "halogen/api.pyx":1138
+        /* "halogen/api.pyx":1144
  * 
  *         # Actually get an instance of the named generator:
  *         generator_instance = halide_generator_registry_get(generator_name,             # <<<<<<<<<<<<<<
@@ -23409,7 +23509,7 @@ static struct __pyx_obj_7halogen_3api_Module *__pyx_f_7halogen_3api_get_generato
  */
         __pyx_v_generator_instance = __pyx_f_7halogen_3ext_6halide_9generator_generator_registry_get(__pyx_v_generator_name, (*__pyx_v_generator_target_ptr));
 
-        /* "halogen/api.pyx":1142
+        /* "halogen/api.pyx":1148
  * 
  *         # Set the generator instances argument param values:
  *         deref(generator_instance).set_generator_param_values(argmap)             # <<<<<<<<<<<<<<
@@ -23418,7 +23518,7 @@ static struct __pyx_obj_7halogen_3api_Module *__pyx_f_7halogen_3api_get_generato
  */
         (*__pyx_v_generator_instance).set_generator_param_values(__pyx_v_argmap);
 
-        /* "halogen/api.pyx":1145
+        /* "halogen/api.pyx":1151
  * 
  *         # Modulize and return the generator instance (which that is a Halide thing, modulization):
  *         out.replace_instance(             # <<<<<<<<<<<<<<
@@ -23428,7 +23528,7 @@ static struct __pyx_obj_7halogen_3api_Module *__pyx_f_7halogen_3api_get_generato
         ((struct __pyx_vtabstruct_7halogen_3api_Module *)__pyx_v_out->__pyx_vtab)->replace_instance(__pyx_v_out, ((Halide::Module)(*__pyx_v_generator_instance).build_module(__pyx_v_generator_name, Halide::LinkageType::Internal)));
       }
 
-      /* "halogen/api.pyx":1131
+      /* "halogen/api.pyx":1137
  *         argmap[<string>u8bytes(k)] = StringOrLoopLevel(<string>u8bytes(v))
  * 
  *     with nogil:             # <<<<<<<<<<<<<<
@@ -23447,7 +23547,7 @@ static struct __pyx_obj_7halogen_3api_Module *__pyx_f_7halogen_3api_get_generato
       }
   }
 
-  /* "halogen/api.pyx":1150
+  /* "halogen/api.pyx":1156
  * 
  *     # return the newly built module:
  *     return out             # <<<<<<<<<<<<<<
@@ -23459,7 +23559,7 @@ static struct __pyx_obj_7halogen_3api_Module *__pyx_f_7halogen_3api_get_generato
   __pyx_r = __pyx_v_out;
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":1096
+  /* "halogen/api.pyx":1102
  *                                     file_base_name_string)
  * 
  * cpdef Module get_generator_module(object name, object arguments={}):             # <<<<<<<<<<<<<<
@@ -23523,7 +23623,7 @@ static PyObject *__pyx_pw_7halogen_3api_19get_generator_module(PyObject *__pyx_s
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "get_generator_module") < 0)) __PYX_ERR(0, 1096, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "get_generator_module") < 0)) __PYX_ERR(0, 1102, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -23539,7 +23639,7 @@ static PyObject *__pyx_pw_7halogen_3api_19get_generator_module(PyObject *__pyx_s
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("get_generator_module", 0, 1, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 1096, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("get_generator_module", 0, 1, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 1102, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("halogen.api.get_generator_module", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -23561,7 +23661,7 @@ static PyObject *__pyx_pf_7halogen_3api_18get_generator_module(CYTHON_UNUSED PyO
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_2.__pyx_n = 1;
   __pyx_t_2.arguments = __pyx_v_arguments;
-  __pyx_t_1 = ((PyObject *)__pyx_f_7halogen_3api_get_generator_module(__pyx_v_name, 0, &__pyx_t_2)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1096, __pyx_L1_error)
+  __pyx_t_1 = ((PyObject *)__pyx_f_7halogen_3api_get_generator_module(__pyx_v_name, 0, &__pyx_t_2)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1102, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -23578,7 +23678,7 @@ static PyObject *__pyx_pf_7halogen_3api_18get_generator_module(CYTHON_UNUSED PyO
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":1152
+/* "halogen/api.pyx":1158
  *     return out
  * 
  * cdef void f_insert_into(Module module, modulevec_t& modulevec) nogil:             # <<<<<<<<<<<<<<
@@ -23588,7 +23688,7 @@ static PyObject *__pyx_pf_7halogen_3api_18get_generator_module(CYTHON_UNUSED PyO
 
 static void __pyx_f_7halogen_3api_f_insert_into(struct __pyx_obj_7halogen_3api_Module *__pyx_v_module, __pyx_t_7halogen_3ext_6halide_6module_modulevec_t &__pyx_v_modulevec) {
 
-  /* "halogen/api.pyx":1153
+  /* "halogen/api.pyx":1159
  * 
  * cdef void f_insert_into(Module module, modulevec_t& modulevec) nogil:
  *     modulevec.push_back(deref(module.__this__))             # <<<<<<<<<<<<<<
@@ -23605,10 +23705,10 @@ static void __pyx_f_7halogen_3api_f_insert_into(struct __pyx_obj_7halogen_3api_M
     #ifdef WITH_THREAD
     __Pyx_PyGILState_Release(__pyx_gilstate_save);
     #endif
-    __PYX_ERR(0, 1153, __pyx_L1_error)
+    __PYX_ERR(0, 1159, __pyx_L1_error)
   }
 
-  /* "halogen/api.pyx":1152
+  /* "halogen/api.pyx":1158
  *     return out
  * 
  * cdef void f_insert_into(Module module, modulevec_t& modulevec) nogil:             # <<<<<<<<<<<<<<
@@ -23623,7 +23723,7 @@ static void __pyx_f_7halogen_3api_f_insert_into(struct __pyx_obj_7halogen_3api_M
   __pyx_L0:;
 }
 
-/* "halogen/api.pyx":1155
+/* "halogen/api.pyx":1161
  *     modulevec.push_back(deref(module.__this__))
  * 
  * def link_modules(module_name not None, *modules):             # <<<<<<<<<<<<<<
@@ -23671,7 +23771,7 @@ static PyObject *__pyx_pw_7halogen_3api_21link_modules(PyObject *__pyx_self, PyO
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t used_pos_args = (pos_args < 1) ? pos_args : 1;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, used_pos_args, "link_modules") < 0)) __PYX_ERR(0, 1155, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, used_pos_args, "link_modules") < 0)) __PYX_ERR(0, 1161, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) < 1) {
       goto __pyx_L5_argtuple_error;
@@ -23682,7 +23782,7 @@ static PyObject *__pyx_pw_7halogen_3api_21link_modules(PyObject *__pyx_self, PyO
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("link_modules", 0, 1, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 1155, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("link_modules", 0, 1, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 1161, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_DECREF(__pyx_v_modules); __pyx_v_modules = 0;
   __Pyx_AddTraceback("halogen.api.link_modules", __pyx_clineno, __pyx_lineno, __pyx_filename);
@@ -23690,7 +23790,7 @@ static PyObject *__pyx_pw_7halogen_3api_21link_modules(PyObject *__pyx_self, PyO
   return NULL;
   __pyx_L4_argument_unpacking_done:;
   if (unlikely(((PyObject *)__pyx_v_module_name) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "module_name"); __PYX_ERR(0, 1155, __pyx_L1_error)
+    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "module_name"); __PYX_ERR(0, 1161, __pyx_L1_error)
   }
   __pyx_r = __pyx_pf_7halogen_3api_20link_modules(__pyx_self, __pyx_v_module_name, __pyx_v_modules);
 
@@ -23718,60 +23818,60 @@ static PyObject *__pyx_pf_7halogen_3api_20link_modules(CYTHON_UNUSED PyObject *_
   int __pyx_t_5;
   __Pyx_RefNannySetupContext("link_modules", 0);
 
-  /* "halogen/api.pyx":1158
+  /* "halogen/api.pyx":1164
  *     """ Python wrapper for Halide::link_modules() from src/Module.h """
  *     cdef modulevec_t modulevec
  *     cdef string name = <string>u8bytes(module_name)             # <<<<<<<<<<<<<<
  *     cdef Module out = Module(name=module_name)
  * 
  */
-  __pyx_t_1 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_module_name, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1158, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_module_name, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1164, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 1158, __pyx_L1_error)
+  __pyx_t_2 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 1164, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_name = ((std::string)__pyx_t_2);
 
-  /* "halogen/api.pyx":1159
+  /* "halogen/api.pyx":1165
  *     cdef modulevec_t modulevec
  *     cdef string name = <string>u8bytes(module_name)
  *     cdef Module out = Module(name=module_name)             # <<<<<<<<<<<<<<
  * 
  *     # check that we got some stuff:
  */
-  __pyx_t_1 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1159, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1165, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_name_2, __pyx_v_module_name) < 0) __PYX_ERR(0, 1159, __pyx_L1_error)
-  __pyx_t_3 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_7halogen_3api_Module), __pyx_empty_tuple, __pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1159, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_name_2, __pyx_v_module_name) < 0) __PYX_ERR(0, 1165, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_7halogen_3api_Module), __pyx_empty_tuple, __pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1165, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_out = ((struct __pyx_obj_7halogen_3api_Module *)__pyx_t_3);
   __pyx_t_3 = 0;
 
-  /* "halogen/api.pyx":1162
+  /* "halogen/api.pyx":1168
  * 
  *     # check that we got some stuff:
  *     if len(modules) < 1:             # <<<<<<<<<<<<<<
  *         raise ValueError("""link_modules() called without modules to link""")
  * 
  */
-  __pyx_t_4 = PyTuple_GET_SIZE(__pyx_v_modules); if (unlikely(__pyx_t_4 == ((Py_ssize_t)-1))) __PYX_ERR(0, 1162, __pyx_L1_error)
+  __pyx_t_4 = PyTuple_GET_SIZE(__pyx_v_modules); if (unlikely(__pyx_t_4 == ((Py_ssize_t)-1))) __PYX_ERR(0, 1168, __pyx_L1_error)
   __pyx_t_5 = ((__pyx_t_4 < 1) != 0);
   if (unlikely(__pyx_t_5)) {
 
-    /* "halogen/api.pyx":1163
+    /* "halogen/api.pyx":1169
  *     # check that we got some stuff:
  *     if len(modules) < 1:
  *         raise ValueError("""link_modules() called without modules to link""")             # <<<<<<<<<<<<<<
  * 
  *     # check the type of all positional arguments:
  */
-    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__41, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1163, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__41, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1169, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_Raise(__pyx_t_3, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __PYX_ERR(0, 1163, __pyx_L1_error)
+    __PYX_ERR(0, 1169, __pyx_L1_error)
 
-    /* "halogen/api.pyx":1162
+    /* "halogen/api.pyx":1168
  * 
  *     # check that we got some stuff:
  *     if len(modules) < 1:             # <<<<<<<<<<<<<<
@@ -23780,7 +23880,7 @@ static PyObject *__pyx_pf_7halogen_3api_20link_modules(CYTHON_UNUSED PyObject *_
  */
   }
 
-  /* "halogen/api.pyx":1166
+  /* "halogen/api.pyx":1172
  * 
  *     # check the type of all positional arguments:
  *     for module in modules:             # <<<<<<<<<<<<<<
@@ -23791,40 +23891,40 @@ static PyObject *__pyx_pf_7halogen_3api_20link_modules(CYTHON_UNUSED PyObject *_
   for (;;) {
     if (__pyx_t_4 >= PyTuple_GET_SIZE(__pyx_t_3)) break;
     #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-    __pyx_t_1 = PyTuple_GET_ITEM(__pyx_t_3, __pyx_t_4); __Pyx_INCREF(__pyx_t_1); __pyx_t_4++; if (unlikely(0 < 0)) __PYX_ERR(0, 1166, __pyx_L1_error)
+    __pyx_t_1 = PyTuple_GET_ITEM(__pyx_t_3, __pyx_t_4); __Pyx_INCREF(__pyx_t_1); __pyx_t_4++; if (unlikely(0 < 0)) __PYX_ERR(0, 1172, __pyx_L1_error)
     #else
-    __pyx_t_1 = PySequence_ITEM(__pyx_t_3, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1166, __pyx_L1_error)
+    __pyx_t_1 = PySequence_ITEM(__pyx_t_3, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1172, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     #endif
     __Pyx_XDECREF_SET(__pyx_v_module, __pyx_t_1);
     __pyx_t_1 = 0;
 
-    /* "halogen/api.pyx":1167
+    /* "halogen/api.pyx":1173
  *     # check the type of all positional arguments:
  *     for module in modules:
  *         if type(module) != Module:             # <<<<<<<<<<<<<<
  *             raise TypeError("""All positional args must be halogen.api.Module""")
  *         f_insert_into(module, modulevec)
  */
-    __pyx_t_1 = PyObject_RichCompare(((PyObject *)Py_TYPE(__pyx_v_module)), ((PyObject *)__pyx_ptype_7halogen_3api_Module), Py_NE); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1167, __pyx_L1_error)
-    __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_5 < 0)) __PYX_ERR(0, 1167, __pyx_L1_error)
+    __pyx_t_1 = PyObject_RichCompare(((PyObject *)Py_TYPE(__pyx_v_module)), ((PyObject *)__pyx_ptype_7halogen_3api_Module), Py_NE); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1173, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_5 < 0)) __PYX_ERR(0, 1173, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     if (unlikely(__pyx_t_5)) {
 
-      /* "halogen/api.pyx":1168
+      /* "halogen/api.pyx":1174
  *     for module in modules:
  *         if type(module) != Module:
  *             raise TypeError("""All positional args must be halogen.api.Module""")             # <<<<<<<<<<<<<<
  *         f_insert_into(module, modulevec)
  * 
  */
-      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__42, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1168, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__42, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1174, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_Raise(__pyx_t_1, 0, 0, 0);
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-      __PYX_ERR(0, 1168, __pyx_L1_error)
+      __PYX_ERR(0, 1174, __pyx_L1_error)
 
-      /* "halogen/api.pyx":1167
+      /* "halogen/api.pyx":1173
  *     # check the type of all positional arguments:
  *     for module in modules:
  *         if type(module) != Module:             # <<<<<<<<<<<<<<
@@ -23833,17 +23933,17 @@ static PyObject *__pyx_pf_7halogen_3api_20link_modules(CYTHON_UNUSED PyObject *_
  */
     }
 
-    /* "halogen/api.pyx":1169
+    /* "halogen/api.pyx":1175
  *         if type(module) != Module:
  *             raise TypeError("""All positional args must be halogen.api.Module""")
  *         f_insert_into(module, modulevec)             # <<<<<<<<<<<<<<
  * 
  *     with nogil:
  */
-    if (!(likely(((__pyx_v_module) == Py_None) || likely(__Pyx_TypeTest(__pyx_v_module, __pyx_ptype_7halogen_3api_Module))))) __PYX_ERR(0, 1169, __pyx_L1_error)
+    if (!(likely(((__pyx_v_module) == Py_None) || likely(__Pyx_TypeTest(__pyx_v_module, __pyx_ptype_7halogen_3api_Module))))) __PYX_ERR(0, 1175, __pyx_L1_error)
     __pyx_f_7halogen_3api_f_insert_into(((struct __pyx_obj_7halogen_3api_Module *)__pyx_v_module), __pyx_v_modulevec);
 
-    /* "halogen/api.pyx":1166
+    /* "halogen/api.pyx":1172
  * 
  *     # check the type of all positional arguments:
  *     for module in modules:             # <<<<<<<<<<<<<<
@@ -23853,7 +23953,7 @@ static PyObject *__pyx_pf_7halogen_3api_20link_modules(CYTHON_UNUSED PyObject *_
   }
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "halogen/api.pyx":1171
+  /* "halogen/api.pyx":1177
  *         f_insert_into(module, modulevec)
  * 
  *     with nogil:             # <<<<<<<<<<<<<<
@@ -23868,7 +23968,7 @@ static PyObject *__pyx_pf_7halogen_3api_20link_modules(CYTHON_UNUSED PyObject *_
       #endif
       /*try:*/ {
 
-        /* "halogen/api.pyx":1172
+        /* "halogen/api.pyx":1178
  * 
  *     with nogil:
  *         out.replace_instance(             # <<<<<<<<<<<<<<
@@ -23878,7 +23978,7 @@ static PyObject *__pyx_pf_7halogen_3api_20link_modules(CYTHON_UNUSED PyObject *_
         ((struct __pyx_vtabstruct_7halogen_3api_Module *)__pyx_v_out->__pyx_vtab)->replace_instance(__pyx_v_out, ((Halide::Module)Halide::link_modules(__pyx_v_name, __pyx_v_modulevec)));
       }
 
-      /* "halogen/api.pyx":1171
+      /* "halogen/api.pyx":1177
  *         f_insert_into(module, modulevec)
  * 
  *     with nogil:             # <<<<<<<<<<<<<<
@@ -23897,7 +23997,7 @@ static PyObject *__pyx_pf_7halogen_3api_20link_modules(CYTHON_UNUSED PyObject *_
       }
   }
 
-  /* "halogen/api.pyx":1175
+  /* "halogen/api.pyx":1181
  *             <HalModule>halide_link_modules(name, modulevec))
  * 
  *     return out             # <<<<<<<<<<<<<<
@@ -23909,7 +24009,7 @@ static PyObject *__pyx_pf_7halogen_3api_20link_modules(CYTHON_UNUSED PyObject *_
   __pyx_r = ((PyObject *)__pyx_v_out);
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":1155
+  /* "halogen/api.pyx":1161
  *     modulevec.push_back(deref(module.__this__))
  * 
  * def link_modules(module_name not None, *modules):             # <<<<<<<<<<<<<<
@@ -23931,7 +24031,7 @@ static PyObject *__pyx_pf_7halogen_3api_20link_modules(CYTHON_UNUSED PyObject *_
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":1177
+/* "halogen/api.pyx":1183
  *     return out
  * 
  * def compile_standalone_runtime(Target target=Target.target_from_environment(),             # <<<<<<<<<<<<<<
@@ -23955,7 +24055,7 @@ static PyObject *__pyx_pw_7halogen_3api_23compile_standalone_runtime(PyObject *_
     PyObject* values[3] = {0,0,0};
     values[0] = (PyObject *)__pyx_k__43;
 
-    /* "halogen/api.pyx":1178
+    /* "halogen/api.pyx":1184
  * 
  * def compile_standalone_runtime(Target target=Target.target_from_environment(),
  *                                   object pth=None,             # <<<<<<<<<<<<<<
@@ -23964,7 +24064,7 @@ static PyObject *__pyx_pw_7halogen_3api_23compile_standalone_runtime(PyObject *_
  */
     values[1] = ((PyObject *)Py_None);
 
-    /* "halogen/api.pyx":1179
+    /* "halogen/api.pyx":1185
  * def compile_standalone_runtime(Target target=Target.target_from_environment(),
  *                                   object pth=None,
  *                              Outputs outputs=None):             # <<<<<<<<<<<<<<
@@ -24006,7 +24106,7 @@ static PyObject *__pyx_pw_7halogen_3api_23compile_standalone_runtime(PyObject *_
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "compile_standalone_runtime") < 0)) __PYX_ERR(0, 1177, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "compile_standalone_runtime") < 0)) __PYX_ERR(0, 1183, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -24026,17 +24126,17 @@ static PyObject *__pyx_pw_7halogen_3api_23compile_standalone_runtime(PyObject *_
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("compile_standalone_runtime", 0, 0, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 1177, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("compile_standalone_runtime", 0, 0, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 1183, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("halogen.api.compile_standalone_runtime", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_target), __pyx_ptype_7halogen_3api_Target, 1, "target", 0))) __PYX_ERR(0, 1177, __pyx_L1_error)
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_outputs), __pyx_ptype_7halogen_3api_Outputs, 1, "outputs", 0))) __PYX_ERR(0, 1179, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_target), __pyx_ptype_7halogen_3api_Target, 1, "target", 0))) __PYX_ERR(0, 1183, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_outputs), __pyx_ptype_7halogen_3api_Outputs, 1, "outputs", 0))) __PYX_ERR(0, 1185, __pyx_L1_error)
   __pyx_r = __pyx_pf_7halogen_3api_22compile_standalone_runtime(__pyx_self, __pyx_v_target, __pyx_v_pth, __pyx_v_outputs);
 
-  /* "halogen/api.pyx":1177
+  /* "halogen/api.pyx":1183
  *     return out
  * 
  * def compile_standalone_runtime(Target target=Target.target_from_environment(),             # <<<<<<<<<<<<<<
@@ -24069,7 +24169,7 @@ static PyObject *__pyx_pf_7halogen_3api_22compile_standalone_runtime(CYTHON_UNUS
   std::string __pyx_t_8;
   __Pyx_RefNannySetupContext("compile_standalone_runtime", 0);
 
-  /* "halogen/api.pyx":1186
+  /* "halogen/api.pyx":1192
  * 
  *     # OPTION 1: WE GOT A PATH STRING:
  *     if pth is not None:             # <<<<<<<<<<<<<<
@@ -24080,36 +24180,36 @@ static PyObject *__pyx_pf_7halogen_3api_22compile_standalone_runtime(CYTHON_UNUS
   __pyx_t_2 = (__pyx_t_1 != 0);
   if (__pyx_t_2) {
 
-    /* "halogen/api.pyx":1188
+    /* "halogen/api.pyx":1194
  *     if pth is not None:
  *         # real-ify the path - this will raise if problematic:
  *         from os.path import realpath             # <<<<<<<<<<<<<<
  *         realpth = realpath(u8str(pth))
  *         if not realpth.lower().endswith('.o'):
  */
-    __pyx_t_3 = PyList_New(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1188, __pyx_L1_error)
+    __pyx_t_3 = PyList_New(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1194, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_INCREF(__pyx_n_s_realpath);
     __Pyx_GIVEREF(__pyx_n_s_realpath);
     PyList_SET_ITEM(__pyx_t_3, 0, __pyx_n_s_realpath);
-    __pyx_t_4 = __Pyx_Import(__pyx_n_s_os_path, __pyx_t_3, -1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1188, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_Import(__pyx_n_s_os_path, __pyx_t_3, -1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1194, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_3 = __Pyx_ImportFrom(__pyx_t_4, __pyx_n_s_realpath); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1188, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_ImportFrom(__pyx_t_4, __pyx_n_s_realpath); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1194, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_INCREF(__pyx_t_3);
     __pyx_v_realpath = __pyx_t_3;
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-    /* "halogen/api.pyx":1189
+    /* "halogen/api.pyx":1195
  *         # real-ify the path - this will raise if problematic:
  *         from os.path import realpath
  *         realpth = realpath(u8str(pth))             # <<<<<<<<<<<<<<
  *         if not realpth.lower().endswith('.o'):
  *             realpth += ".o"
  */
-    __pyx_t_3 = __pyx_f_7halogen_3api_u8str(__pyx_v_pth, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1189, __pyx_L1_error)
+    __pyx_t_3 = __pyx_f_7halogen_3api_u8str(__pyx_v_pth, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1195, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_INCREF(__pyx_v_realpath);
     __pyx_t_5 = __pyx_v_realpath; __pyx_t_6 = NULL;
@@ -24123,14 +24223,14 @@ static PyObject *__pyx_pf_7halogen_3api_22compile_standalone_runtime(CYTHON_UNUS
       }
     }
     if (!__pyx_t_6) {
-      __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1189, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1195, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
       __Pyx_GOTREF(__pyx_t_4);
     } else {
       #if CYTHON_FAST_PYCALL
       if (PyFunction_Check(__pyx_t_5)) {
         PyObject *__pyx_temp[2] = {__pyx_t_6, __pyx_t_3};
-        __pyx_t_4 = __Pyx_PyFunction_FastCall(__pyx_t_5, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1189, __pyx_L1_error)
+        __pyx_t_4 = __Pyx_PyFunction_FastCall(__pyx_t_5, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1195, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
         __Pyx_GOTREF(__pyx_t_4);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -24139,20 +24239,20 @@ static PyObject *__pyx_pf_7halogen_3api_22compile_standalone_runtime(CYTHON_UNUS
       #if CYTHON_FAST_PYCCALL
       if (__Pyx_PyFastCFunction_Check(__pyx_t_5)) {
         PyObject *__pyx_temp[2] = {__pyx_t_6, __pyx_t_3};
-        __pyx_t_4 = __Pyx_PyCFunction_FastCall(__pyx_t_5, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1189, __pyx_L1_error)
+        __pyx_t_4 = __Pyx_PyCFunction_FastCall(__pyx_t_5, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1195, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
         __Pyx_GOTREF(__pyx_t_4);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
       } else
       #endif
       {
-        __pyx_t_7 = PyTuple_New(1+1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1189, __pyx_L1_error)
+        __pyx_t_7 = PyTuple_New(1+1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1195, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_7);
         __Pyx_GIVEREF(__pyx_t_6); PyTuple_SET_ITEM(__pyx_t_7, 0, __pyx_t_6); __pyx_t_6 = NULL;
         __Pyx_GIVEREF(__pyx_t_3);
         PyTuple_SET_ITEM(__pyx_t_7, 0+1, __pyx_t_3);
         __pyx_t_3 = 0;
-        __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_7, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1189, __pyx_L1_error)
+        __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_7, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1195, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_4);
         __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
       }
@@ -24161,14 +24261,14 @@ static PyObject *__pyx_pf_7halogen_3api_22compile_standalone_runtime(CYTHON_UNUS
     __pyx_v_realpth = __pyx_t_4;
     __pyx_t_4 = 0;
 
-    /* "halogen/api.pyx":1190
+    /* "halogen/api.pyx":1196
  *         from os.path import realpath
  *         realpth = realpath(u8str(pth))
  *         if not realpth.lower().endswith('.o'):             # <<<<<<<<<<<<<<
  *             realpth += ".o"
  * 
  */
-    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_realpth, __pyx_n_s_lower); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1190, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_realpth, __pyx_n_s_lower); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1196, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __pyx_t_7 = NULL;
     if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_5))) {
@@ -24181,37 +24281,37 @@ static PyObject *__pyx_pf_7halogen_3api_22compile_standalone_runtime(CYTHON_UNUS
       }
     }
     if (__pyx_t_7) {
-      __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_t_7); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1190, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_t_7); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1196, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
     } else {
-      __pyx_t_4 = __Pyx_PyObject_CallNoArg(__pyx_t_5); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1190, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyObject_CallNoArg(__pyx_t_5); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1196, __pyx_L1_error)
     }
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_endswith); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1190, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_endswith); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1196, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_tuple__44, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1190, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_tuple__44, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1196, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-    __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 1190, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 1196, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __pyx_t_1 = ((!__pyx_t_2) != 0);
     if (__pyx_t_1) {
 
-      /* "halogen/api.pyx":1191
+      /* "halogen/api.pyx":1197
  *         realpth = realpath(u8str(pth))
  *         if not realpth.lower().endswith('.o'):
  *             realpth += ".o"             # <<<<<<<<<<<<<<
  * 
  *         # make the actual call:
  */
-      __pyx_t_4 = PyNumber_InPlaceAdd(__pyx_v_realpth, __pyx_kp_s_o); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1191, __pyx_L1_error)
+      __pyx_t_4 = PyNumber_InPlaceAdd(__pyx_v_realpth, __pyx_kp_s_o); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1197, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_DECREF_SET(__pyx_v_realpth, __pyx_t_4);
       __pyx_t_4 = 0;
 
-      /* "halogen/api.pyx":1190
+      /* "halogen/api.pyx":1196
  *         from os.path import realpath
  *         realpth = realpath(u8str(pth))
  *         if not realpth.lower().endswith('.o'):             # <<<<<<<<<<<<<<
@@ -24220,19 +24320,19 @@ static PyObject *__pyx_pf_7halogen_3api_22compile_standalone_runtime(CYTHON_UNUS
  */
     }
 
-    /* "halogen/api.pyx":1194
+    /* "halogen/api.pyx":1200
  * 
  *         # make the actual call:
  *         halide_compile_standalone_runtime_for_path(<string>u8bytes(realpth),             # <<<<<<<<<<<<<<
  *                                                    <HalTarget>target.__this__)
  * 
  */
-    __pyx_t_4 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_realpth, 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1194, __pyx_L1_error)
+    __pyx_t_4 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_realpth, 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1200, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_8 = __pyx_convert_string_from_py_std__in_string(__pyx_t_4); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 1194, __pyx_L1_error)
+    __pyx_t_8 = __pyx_convert_string_from_py_std__in_string(__pyx_t_4); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 1200, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-    /* "halogen/api.pyx":1195
+    /* "halogen/api.pyx":1201
  *         # make the actual call:
  *         halide_compile_standalone_runtime_for_path(<string>u8bytes(realpth),
  *                                                    <HalTarget>target.__this__)             # <<<<<<<<<<<<<<
@@ -24241,7 +24341,7 @@ static PyObject *__pyx_pf_7halogen_3api_22compile_standalone_runtime(CYTHON_UNUS
  */
     compile_standalone_runtime(((std::string)__pyx_t_8), ((Halide::Target)__pyx_v_target->__pyx___this__));
 
-    /* "halogen/api.pyx":1198
+    /* "halogen/api.pyx":1204
  * 
  *         # return the real-ified path:
  *         return u8bytes(realpth)             # <<<<<<<<<<<<<<
@@ -24249,13 +24349,13 @@ static PyObject *__pyx_pf_7halogen_3api_22compile_standalone_runtime(CYTHON_UNUS
  *     # OPTION 2: WE GOT A FULL-BLOWN OUTPUTS OBJECT:
  */
     __Pyx_XDECREF(__pyx_r);
-    __pyx_t_4 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_realpth, 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1198, __pyx_L1_error)
+    __pyx_t_4 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_realpth, 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1204, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __pyx_r = __pyx_t_4;
     __pyx_t_4 = 0;
     goto __pyx_L0;
 
-    /* "halogen/api.pyx":1186
+    /* "halogen/api.pyx":1192
  * 
  *     # OPTION 1: WE GOT A PATH STRING:
  *     if pth is not None:             # <<<<<<<<<<<<<<
@@ -24264,7 +24364,7 @@ static PyObject *__pyx_pf_7halogen_3api_22compile_standalone_runtime(CYTHON_UNUS
  */
   }
 
-  /* "halogen/api.pyx":1201
+  /* "halogen/api.pyx":1207
  * 
  *     # OPTION 2: WE GOT A FULL-BLOWN OUTPUTS OBJECT:
  *     elif outputs is not None:             # <<<<<<<<<<<<<<
@@ -24275,14 +24375,14 @@ static PyObject *__pyx_pf_7halogen_3api_22compile_standalone_runtime(CYTHON_UNUS
   __pyx_t_2 = (__pyx_t_1 != 0);
   if (__pyx_t_2) {
 
-    /* "halogen/api.pyx":1203
+    /* "halogen/api.pyx":1209
  *     elif outputs is not None:
  *         # confirm the type of the outputs object:
  *         if not Outputs.check(outputs):             # <<<<<<<<<<<<<<
  *             raise TypeError("type(outputs) must be Outputs, not %s" % type(outputs).__name__)
  * 
  */
-    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_ptype_7halogen_3api_Outputs), __pyx_n_s_check); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1203, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_ptype_7halogen_3api_Outputs), __pyx_n_s_check); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1209, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __pyx_t_7 = NULL;
     if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_5))) {
@@ -24295,13 +24395,13 @@ static PyObject *__pyx_pf_7halogen_3api_22compile_standalone_runtime(CYTHON_UNUS
       }
     }
     if (!__pyx_t_7) {
-      __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_t_5, ((PyObject *)__pyx_v_outputs)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1203, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_t_5, ((PyObject *)__pyx_v_outputs)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1209, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
     } else {
       #if CYTHON_FAST_PYCALL
       if (PyFunction_Check(__pyx_t_5)) {
         PyObject *__pyx_temp[2] = {__pyx_t_7, ((PyObject *)__pyx_v_outputs)};
-        __pyx_t_4 = __Pyx_PyFunction_FastCall(__pyx_t_5, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1203, __pyx_L1_error)
+        __pyx_t_4 = __Pyx_PyFunction_FastCall(__pyx_t_5, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1209, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
         __Pyx_GOTREF(__pyx_t_4);
       } else
@@ -24309,49 +24409,49 @@ static PyObject *__pyx_pf_7halogen_3api_22compile_standalone_runtime(CYTHON_UNUS
       #if CYTHON_FAST_PYCCALL
       if (__Pyx_PyFastCFunction_Check(__pyx_t_5)) {
         PyObject *__pyx_temp[2] = {__pyx_t_7, ((PyObject *)__pyx_v_outputs)};
-        __pyx_t_4 = __Pyx_PyCFunction_FastCall(__pyx_t_5, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1203, __pyx_L1_error)
+        __pyx_t_4 = __Pyx_PyCFunction_FastCall(__pyx_t_5, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1209, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
         __Pyx_GOTREF(__pyx_t_4);
       } else
       #endif
       {
-        __pyx_t_3 = PyTuple_New(1+1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1203, __pyx_L1_error)
+        __pyx_t_3 = PyTuple_New(1+1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1209, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
         __Pyx_GIVEREF(__pyx_t_7); PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_t_7); __pyx_t_7 = NULL;
         __Pyx_INCREF(((PyObject *)__pyx_v_outputs));
         __Pyx_GIVEREF(((PyObject *)__pyx_v_outputs));
         PyTuple_SET_ITEM(__pyx_t_3, 0+1, ((PyObject *)__pyx_v_outputs));
-        __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_3, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1203, __pyx_L1_error)
+        __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_3, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1209, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_4);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
       }
     }
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-    __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 1203, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 1209, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __pyx_t_1 = ((!__pyx_t_2) != 0);
     if (unlikely(__pyx_t_1)) {
 
-      /* "halogen/api.pyx":1204
+      /* "halogen/api.pyx":1210
  *         # confirm the type of the outputs object:
  *         if not Outputs.check(outputs):
  *             raise TypeError("type(outputs) must be Outputs, not %s" % type(outputs).__name__)             # <<<<<<<<<<<<<<
  * 
  *         # make the actual call, returning another native Options object:
  */
-      __pyx_t_4 = __Pyx_PyObject_GetAttrStr(((PyObject *)Py_TYPE(((PyObject *)__pyx_v_outputs))), __pyx_n_s_name); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1204, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyObject_GetAttrStr(((PyObject *)Py_TYPE(((PyObject *)__pyx_v_outputs))), __pyx_n_s_name); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1210, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
-      __pyx_t_5 = __Pyx_PyString_Format(__pyx_kp_s_type_outputs_must_be_Outputs_not, __pyx_t_4); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1204, __pyx_L1_error)
+      __pyx_t_5 = __Pyx_PyString_Format(__pyx_kp_s_type_outputs_must_be_Outputs_not, __pyx_t_4); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1210, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_5);
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-      __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_builtin_TypeError, __pyx_t_5); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1204, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_builtin_TypeError, __pyx_t_5); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1210, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
       __Pyx_Raise(__pyx_t_4, 0, 0, 0);
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-      __PYX_ERR(0, 1204, __pyx_L1_error)
+      __PYX_ERR(0, 1210, __pyx_L1_error)
 
-      /* "halogen/api.pyx":1203
+      /* "halogen/api.pyx":1209
  *     elif outputs is not None:
  *         # confirm the type of the outputs object:
  *         if not Outputs.check(outputs):             # <<<<<<<<<<<<<<
@@ -24360,7 +24460,7 @@ static PyObject *__pyx_pf_7halogen_3api_22compile_standalone_runtime(CYTHON_UNUS
  */
     }
 
-    /* "halogen/api.pyx":1207
+    /* "halogen/api.pyx":1213
  * 
  *         # make the actual call, returning another native Options object:
  *         with nogil:             # <<<<<<<<<<<<<<
@@ -24375,7 +24475,7 @@ static PyObject *__pyx_pf_7halogen_3api_22compile_standalone_runtime(CYTHON_UNUS
         #endif
         /*try:*/ {
 
-          /* "halogen/api.pyx":1208
+          /* "halogen/api.pyx":1214
  *         # make the actual call, returning another native Options object:
  *         with nogil:
  *             out = halide_compile_standalone_runtime_with_outputs(<HalOutputs>outputs.__this__,             # <<<<<<<<<<<<<<
@@ -24385,7 +24485,7 @@ static PyObject *__pyx_pf_7halogen_3api_22compile_standalone_runtime(CYTHON_UNUS
           __pyx_v_out = compile_standalone_runtime(((Halide::Outputs)__pyx_v_outputs->__pyx___this__), ((Halide::Target)__pyx_v_target->__pyx___this__));
         }
 
-        /* "halogen/api.pyx":1207
+        /* "halogen/api.pyx":1213
  * 
  *         # make the actual call, returning another native Options object:
  *         with nogil:             # <<<<<<<<<<<<<<
@@ -24404,7 +24504,7 @@ static PyObject *__pyx_pf_7halogen_3api_22compile_standalone_runtime(CYTHON_UNUS
         }
     }
 
-    /* "halogen/api.pyx":1212
+    /* "halogen/api.pyx":1218
  * 
  *         # return a new halogen.api.Outputs matching the returned value above:
  *         return Outputs(             # <<<<<<<<<<<<<<
@@ -24413,131 +24513,131 @@ static PyObject *__pyx_pf_7halogen_3api_22compile_standalone_runtime(CYTHON_UNUS
  */
     __Pyx_XDECREF(__pyx_r);
 
-    /* "halogen/api.pyx":1213
+    /* "halogen/api.pyx":1219
  *         # return a new halogen.api.Outputs matching the returned value above:
  *         return Outputs(
  *             object_name=out.object_name,             # <<<<<<<<<<<<<<
  *             assembly_name=out.assembly_name,
  *             bitcode_name=out.bitcode_name,
  */
-    __pyx_t_4 = __Pyx_PyDict_NewPresized(9); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1213, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyDict_NewPresized(9); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1219, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_5 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_out.object_name); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1213, __pyx_L1_error)
+    __pyx_t_5 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_out.object_name); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1219, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
-    if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_object_name, __pyx_t_5) < 0) __PYX_ERR(0, 1213, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_object_name, __pyx_t_5) < 0) __PYX_ERR(0, 1219, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-    /* "halogen/api.pyx":1214
+    /* "halogen/api.pyx":1220
  *         return Outputs(
  *             object_name=out.object_name,
  *             assembly_name=out.assembly_name,             # <<<<<<<<<<<<<<
  *             bitcode_name=out.bitcode_name,
  *             llvm_assembly_name=out.llvm_assembly_name,
  */
-    __pyx_t_5 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_out.assembly_name); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1214, __pyx_L1_error)
+    __pyx_t_5 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_out.assembly_name); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1220, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
-    if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_assembly_name, __pyx_t_5) < 0) __PYX_ERR(0, 1213, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_assembly_name, __pyx_t_5) < 0) __PYX_ERR(0, 1219, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-    /* "halogen/api.pyx":1215
+    /* "halogen/api.pyx":1221
  *             object_name=out.object_name,
  *             assembly_name=out.assembly_name,
  *             bitcode_name=out.bitcode_name,             # <<<<<<<<<<<<<<
  *             llvm_assembly_name=out.llvm_assembly_name,
  *             c_header_name=out.c_header_name,
  */
-    __pyx_t_5 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_out.bitcode_name); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1215, __pyx_L1_error)
+    __pyx_t_5 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_out.bitcode_name); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1221, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
-    if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_bitcode_name, __pyx_t_5) < 0) __PYX_ERR(0, 1213, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_bitcode_name, __pyx_t_5) < 0) __PYX_ERR(0, 1219, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-    /* "halogen/api.pyx":1216
+    /* "halogen/api.pyx":1222
  *             assembly_name=out.assembly_name,
  *             bitcode_name=out.bitcode_name,
  *             llvm_assembly_name=out.llvm_assembly_name,             # <<<<<<<<<<<<<<
  *             c_header_name=out.c_header_name,
  *             c_source_name=out.c_source_name,
  */
-    __pyx_t_5 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_out.llvm_assembly_name); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1216, __pyx_L1_error)
+    __pyx_t_5 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_out.llvm_assembly_name); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1222, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
-    if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_llvm_assembly_name, __pyx_t_5) < 0) __PYX_ERR(0, 1213, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_llvm_assembly_name, __pyx_t_5) < 0) __PYX_ERR(0, 1219, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-    /* "halogen/api.pyx":1217
+    /* "halogen/api.pyx":1223
  *             bitcode_name=out.bitcode_name,
  *             llvm_assembly_name=out.llvm_assembly_name,
  *             c_header_name=out.c_header_name,             # <<<<<<<<<<<<<<
  *             c_source_name=out.c_source_name,
  *             stmt_name=out.stmt_name,
  */
-    __pyx_t_5 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_out.c_header_name); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1217, __pyx_L1_error)
+    __pyx_t_5 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_out.c_header_name); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1223, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
-    if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_c_header_name, __pyx_t_5) < 0) __PYX_ERR(0, 1213, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_c_header_name, __pyx_t_5) < 0) __PYX_ERR(0, 1219, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-    /* "halogen/api.pyx":1218
+    /* "halogen/api.pyx":1224
  *             llvm_assembly_name=out.llvm_assembly_name,
  *             c_header_name=out.c_header_name,
  *             c_source_name=out.c_source_name,             # <<<<<<<<<<<<<<
  *             stmt_name=out.stmt_name,
  *             stmt_html_name=out.stmt_html_name,
  */
-    __pyx_t_5 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_out.c_source_name); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1218, __pyx_L1_error)
+    __pyx_t_5 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_out.c_source_name); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1224, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
-    if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_c_source_name, __pyx_t_5) < 0) __PYX_ERR(0, 1213, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_c_source_name, __pyx_t_5) < 0) __PYX_ERR(0, 1219, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-    /* "halogen/api.pyx":1219
+    /* "halogen/api.pyx":1225
  *             c_header_name=out.c_header_name,
  *             c_source_name=out.c_source_name,
  *             stmt_name=out.stmt_name,             # <<<<<<<<<<<<<<
  *             stmt_html_name=out.stmt_html_name,
  *             static_library_name=out.static_library_name)
  */
-    __pyx_t_5 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_out.stmt_name); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1219, __pyx_L1_error)
+    __pyx_t_5 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_out.stmt_name); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1225, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
-    if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_stmt_name, __pyx_t_5) < 0) __PYX_ERR(0, 1213, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_stmt_name, __pyx_t_5) < 0) __PYX_ERR(0, 1219, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-    /* "halogen/api.pyx":1220
+    /* "halogen/api.pyx":1226
  *             c_source_name=out.c_source_name,
  *             stmt_name=out.stmt_name,
  *             stmt_html_name=out.stmt_html_name,             # <<<<<<<<<<<<<<
  *             static_library_name=out.static_library_name)
  * 
  */
-    __pyx_t_5 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_out.stmt_html_name); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1220, __pyx_L1_error)
+    __pyx_t_5 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_out.stmt_html_name); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1226, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
-    if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_stmt_html_name, __pyx_t_5) < 0) __PYX_ERR(0, 1213, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_stmt_html_name, __pyx_t_5) < 0) __PYX_ERR(0, 1219, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-    /* "halogen/api.pyx":1221
+    /* "halogen/api.pyx":1227
  *             stmt_name=out.stmt_name,
  *             stmt_html_name=out.stmt_html_name,
  *             static_library_name=out.static_library_name)             # <<<<<<<<<<<<<<
  * 
  *     # OPTION 3: WE GOT NEITHER OF THE ABOVE,
  */
-    __pyx_t_5 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_out.static_library_name); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1221, __pyx_L1_error)
+    __pyx_t_5 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_out.static_library_name); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1227, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
-    if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_static_library_name, __pyx_t_5) < 0) __PYX_ERR(0, 1213, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_static_library_name, __pyx_t_5) < 0) __PYX_ERR(0, 1219, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-    /* "halogen/api.pyx":1212
+    /* "halogen/api.pyx":1218
  * 
  *         # return a new halogen.api.Outputs matching the returned value above:
  *         return Outputs(             # <<<<<<<<<<<<<<
  *             object_name=out.object_name,
  *             assembly_name=out.assembly_name,
  */
-    __pyx_t_5 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_7halogen_3api_Outputs), __pyx_empty_tuple, __pyx_t_4); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1212, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_7halogen_3api_Outputs), __pyx_empty_tuple, __pyx_t_4); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1218, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __pyx_r = __pyx_t_5;
     __pyx_t_5 = 0;
     goto __pyx_L0;
 
-    /* "halogen/api.pyx":1201
+    /* "halogen/api.pyx":1207
  * 
  *     # OPTION 2: WE GOT A FULL-BLOWN OUTPUTS OBJECT:
  *     elif outputs is not None:             # <<<<<<<<<<<<<<
@@ -24546,20 +24646,20 @@ static PyObject *__pyx_pf_7halogen_3api_22compile_standalone_runtime(CYTHON_UNUS
  */
   }
 
-  /* "halogen/api.pyx":1225
+  /* "halogen/api.pyx":1231
  *     # OPTION 3: WE GOT NEITHER OF THE ABOVE,
  *     # WHICH MEANS BASICALLY WE CAN DO FUCK-ALL:
  *     raise ValueError("Either the 'pth' or 'outputs' args must be non-None")             # <<<<<<<<<<<<<<
  * 
  * def make_standalone_runtime(Target target=Target.target_from_environment(),
  */
-  __pyx_t_5 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__45, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1225, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__45, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1231, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_Raise(__pyx_t_5, 0, 0, 0);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __PYX_ERR(0, 1225, __pyx_L1_error)
+  __PYX_ERR(0, 1231, __pyx_L1_error)
 
-  /* "halogen/api.pyx":1177
+  /* "halogen/api.pyx":1183
  *     return out
  * 
  * def compile_standalone_runtime(Target target=Target.target_from_environment(),             # <<<<<<<<<<<<<<
@@ -24584,7 +24684,7 @@ static PyObject *__pyx_pf_7halogen_3api_22compile_standalone_runtime(CYTHON_UNUS
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":1227
+/* "halogen/api.pyx":1233
  *     raise ValueError("Either the 'pth' or 'outputs' args must be non-None")
  * 
  * def make_standalone_runtime(Target target=Target.target_from_environment(),             # <<<<<<<<<<<<<<
@@ -24610,7 +24710,7 @@ static PyObject *__pyx_pw_7halogen_3api_25make_standalone_runtime(PyObject *__py
     PyObject* values[2] = {0,0};
     values[0] = (PyObject *)__pyx_k__46;
 
-    /* "halogen/api.pyx":1228
+    /* "halogen/api.pyx":1234
  * 
  * def make_standalone_runtime(Target target=Target.target_from_environment(),
  *                             object pth=None,             # <<<<<<<<<<<<<<
@@ -24644,7 +24744,7 @@ static PyObject *__pyx_pw_7halogen_3api_25make_standalone_runtime(PyObject *__py
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, __pyx_v_emitopts, values, pos_args, "make_standalone_runtime") < 0)) __PYX_ERR(0, 1227, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, __pyx_v_emitopts, values, pos_args, "make_standalone_runtime") < 0)) __PYX_ERR(0, 1233, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -24661,17 +24761,17 @@ static PyObject *__pyx_pw_7halogen_3api_25make_standalone_runtime(PyObject *__py
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("make_standalone_runtime", 0, 0, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 1227, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("make_standalone_runtime", 0, 0, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 1233, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_DECREF(__pyx_v_emitopts); __pyx_v_emitopts = 0;
   __Pyx_AddTraceback("halogen.api.make_standalone_runtime", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_target), __pyx_ptype_7halogen_3api_Target, 1, "target", 0))) __PYX_ERR(0, 1227, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_target), __pyx_ptype_7halogen_3api_Target, 1, "target", 0))) __PYX_ERR(0, 1233, __pyx_L1_error)
   __pyx_r = __pyx_pf_7halogen_3api_24make_standalone_runtime(__pyx_self, __pyx_v_target, __pyx_v_pth, __pyx_v_emitopts);
 
-  /* "halogen/api.pyx":1227
+  /* "halogen/api.pyx":1233
  *     raise ValueError("Either the 'pth' or 'outputs' args must be non-None")
  * 
  * def make_standalone_runtime(Target target=Target.target_from_environment(),             # <<<<<<<<<<<<<<
@@ -24705,7 +24805,7 @@ static PyObject *__pyx_pf_7halogen_3api_24make_standalone_runtime(CYTHON_UNUSED 
   PyObject *__pyx_t_7 = NULL;
   __Pyx_RefNannySetupContext("make_standalone_runtime", 0);
 
-  /* "halogen/api.pyx":1236
+  /* "halogen/api.pyx":1242
  * 
  *     # Sanity-check the passed-in base-path value:
  *     if pth is None:             # <<<<<<<<<<<<<<
@@ -24716,20 +24816,20 @@ static PyObject *__pyx_pf_7halogen_3api_24make_standalone_runtime(CYTHON_UNUSED 
   __pyx_t_2 = (__pyx_t_1 != 0);
   if (unlikely(__pyx_t_2)) {
 
-    /* "halogen/api.pyx":1237
+    /* "halogen/api.pyx":1243
  *     # Sanity-check the passed-in base-path value:
  *     if pth is None:
  *         raise ValueError("Must specify 'pth'")             # <<<<<<<<<<<<<<
  * 
  *     from os.path import realpath
  */
-    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__47, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1237, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__47, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1243, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_Raise(__pyx_t_3, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __PYX_ERR(0, 1237, __pyx_L1_error)
+    __PYX_ERR(0, 1243, __pyx_L1_error)
 
-    /* "halogen/api.pyx":1236
+    /* "halogen/api.pyx":1242
  * 
  *     # Sanity-check the passed-in base-path value:
  *     if pth is None:             # <<<<<<<<<<<<<<
@@ -24738,36 +24838,36 @@ static PyObject *__pyx_pf_7halogen_3api_24make_standalone_runtime(CYTHON_UNUSED 
  */
   }
 
-  /* "halogen/api.pyx":1239
+  /* "halogen/api.pyx":1245
  *         raise ValueError("Must specify 'pth'")
  * 
  *     from os.path import realpath             # <<<<<<<<<<<<<<
  *     realpth = realpath(u8str(pth))
  * 
  */
-  __pyx_t_3 = PyList_New(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1239, __pyx_L1_error)
+  __pyx_t_3 = PyList_New(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1245, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_INCREF(__pyx_n_s_realpath);
   __Pyx_GIVEREF(__pyx_n_s_realpath);
   PyList_SET_ITEM(__pyx_t_3, 0, __pyx_n_s_realpath);
-  __pyx_t_4 = __Pyx_Import(__pyx_n_s_os_path, __pyx_t_3, -1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1239, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_Import(__pyx_n_s_os_path, __pyx_t_3, -1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1245, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = __Pyx_ImportFrom(__pyx_t_4, __pyx_n_s_realpath); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1239, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_ImportFrom(__pyx_t_4, __pyx_n_s_realpath); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1245, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_INCREF(__pyx_t_3);
   __pyx_v_realpath = __pyx_t_3;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-  /* "halogen/api.pyx":1240
+  /* "halogen/api.pyx":1246
  * 
  *     from os.path import realpath
  *     realpth = realpath(u8str(pth))             # <<<<<<<<<<<<<<
  * 
  *     # Compute the outputs using halogen.api.EmitOptions -- the EmitOptions defaults
  */
-  __pyx_t_3 = __pyx_f_7halogen_3api_u8str(__pyx_v_pth, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1240, __pyx_L1_error)
+  __pyx_t_3 = __pyx_f_7halogen_3api_u8str(__pyx_v_pth, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1246, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_INCREF(__pyx_v_realpath);
   __pyx_t_5 = __pyx_v_realpath; __pyx_t_6 = NULL;
@@ -24781,14 +24881,14 @@ static PyObject *__pyx_pf_7halogen_3api_24make_standalone_runtime(CYTHON_UNUSED 
     }
   }
   if (!__pyx_t_6) {
-    __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1240, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1246, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_GOTREF(__pyx_t_4);
   } else {
     #if CYTHON_FAST_PYCALL
     if (PyFunction_Check(__pyx_t_5)) {
       PyObject *__pyx_temp[2] = {__pyx_t_6, __pyx_t_3};
-      __pyx_t_4 = __Pyx_PyFunction_FastCall(__pyx_t_5, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1240, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyFunction_FastCall(__pyx_t_5, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1246, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -24797,20 +24897,20 @@ static PyObject *__pyx_pf_7halogen_3api_24make_standalone_runtime(CYTHON_UNUSED 
     #if CYTHON_FAST_PYCCALL
     if (__Pyx_PyFastCFunction_Check(__pyx_t_5)) {
       PyObject *__pyx_temp[2] = {__pyx_t_6, __pyx_t_3};
-      __pyx_t_4 = __Pyx_PyCFunction_FastCall(__pyx_t_5, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1240, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyCFunction_FastCall(__pyx_t_5, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1246, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     } else
     #endif
     {
-      __pyx_t_7 = PyTuple_New(1+1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1240, __pyx_L1_error)
+      __pyx_t_7 = PyTuple_New(1+1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1246, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_7);
       __Pyx_GIVEREF(__pyx_t_6); PyTuple_SET_ITEM(__pyx_t_7, 0, __pyx_t_6); __pyx_t_6 = NULL;
       __Pyx_GIVEREF(__pyx_t_3);
       PyTuple_SET_ITEM(__pyx_t_7, 0+1, __pyx_t_3);
       __pyx_t_3 = 0;
-      __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_7, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1240, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_7, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1246, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
     }
@@ -24819,50 +24919,50 @@ static PyObject *__pyx_pf_7halogen_3api_24make_standalone_runtime(CYTHON_UNUSED 
   __pyx_v_realpth = __pyx_t_4;
   __pyx_t_4 = 0;
 
-  /* "halogen/api.pyx":1247
+  /* "halogen/api.pyx":1253
  *     # HOWEVER, Halide::compile_standalone_runtime() in Module.cpp recreates
  *     # the Outputs object with only object files and archives (.o, .a) enabled:
  *     outputs = EmitOptions(**emitopts).compute_outputs_for_target_and_path(t=target,             # <<<<<<<<<<<<<<
  *                                                                   base_path=u8bytes(realpth))
  * 
  */
-  __pyx_t_4 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_7halogen_3api_EmitOptions), __pyx_empty_tuple, __pyx_v_emitopts); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1247, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_7halogen_3api_EmitOptions), __pyx_empty_tuple, __pyx_v_emitopts); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1253, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_compute_outputs_for_target_and_p); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1247, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_compute_outputs_for_target_and_p); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1253, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = __Pyx_PyDict_NewPresized(2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1247, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyDict_NewPresized(2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1253, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_t, ((PyObject *)__pyx_v_target)) < 0) __PYX_ERR(0, 1247, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_t, ((PyObject *)__pyx_v_target)) < 0) __PYX_ERR(0, 1253, __pyx_L1_error)
 
-  /* "halogen/api.pyx":1248
+  /* "halogen/api.pyx":1254
  *     # the Outputs object with only object files and archives (.o, .a) enabled:
  *     outputs = EmitOptions(**emitopts).compute_outputs_for_target_and_path(t=target,
  *                                                                   base_path=u8bytes(realpth))             # <<<<<<<<<<<<<<
  * 
  *     # make the actual call, returning another native Options object:
  */
-  __pyx_t_7 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_realpth, 0); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1248, __pyx_L1_error)
+  __pyx_t_7 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_realpth, 0); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1254, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
-  if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_base_path, __pyx_t_7) < 0) __PYX_ERR(0, 1247, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_base_path, __pyx_t_7) < 0) __PYX_ERR(0, 1253, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
 
-  /* "halogen/api.pyx":1247
+  /* "halogen/api.pyx":1253
  *     # HOWEVER, Halide::compile_standalone_runtime() in Module.cpp recreates
  *     # the Outputs object with only object files and archives (.o, .a) enabled:
  *     outputs = EmitOptions(**emitopts).compute_outputs_for_target_and_path(t=target,             # <<<<<<<<<<<<<<
  *                                                                   base_path=u8bytes(realpth))
  * 
  */
-  __pyx_t_7 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_empty_tuple, __pyx_t_4); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1247, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_empty_tuple, __pyx_t_4); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1253, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  if (!(likely(((__pyx_t_7) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_7, __pyx_ptype_7halogen_3api_Outputs))))) __PYX_ERR(0, 1247, __pyx_L1_error)
+  if (!(likely(((__pyx_t_7) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_7, __pyx_ptype_7halogen_3api_Outputs))))) __PYX_ERR(0, 1253, __pyx_L1_error)
   __pyx_v_outputs = ((struct __pyx_obj_7halogen_3api_Outputs *)__pyx_t_7);
   __pyx_t_7 = 0;
 
-  /* "halogen/api.pyx":1251
+  /* "halogen/api.pyx":1257
  * 
  *     # make the actual call, returning another native Options object:
  *     with nogil:             # <<<<<<<<<<<<<<
@@ -24877,7 +24977,7 @@ static PyObject *__pyx_pf_7halogen_3api_24make_standalone_runtime(CYTHON_UNUSED 
       #endif
       /*try:*/ {
 
-        /* "halogen/api.pyx":1252
+        /* "halogen/api.pyx":1258
  *     # make the actual call, returning another native Options object:
  *     with nogil:
  *         out = halide_compile_standalone_runtime_with_outputs(<HalOutputs>outputs.__this__,             # <<<<<<<<<<<<<<
@@ -24887,7 +24987,7 @@ static PyObject *__pyx_pf_7halogen_3api_24make_standalone_runtime(CYTHON_UNUSED 
         __pyx_v_out = compile_standalone_runtime(((Halide::Outputs)__pyx_v_outputs->__pyx___this__), ((Halide::Target)__pyx_v_target->__pyx___this__));
       }
 
-      /* "halogen/api.pyx":1251
+      /* "halogen/api.pyx":1257
  * 
  *     # make the actual call, returning another native Options object:
  *     with nogil:             # <<<<<<<<<<<<<<
@@ -24906,7 +25006,7 @@ static PyObject *__pyx_pf_7halogen_3api_24make_standalone_runtime(CYTHON_UNUSED 
       }
   }
 
-  /* "halogen/api.pyx":1256
+  /* "halogen/api.pyx":1262
  * 
  *     # return a new halogen.api.Outputs matching the returned value above:
  *     return Outputs(             # <<<<<<<<<<<<<<
@@ -24915,131 +25015,131 @@ static PyObject *__pyx_pf_7halogen_3api_24make_standalone_runtime(CYTHON_UNUSED 
  */
   __Pyx_XDECREF(__pyx_r);
 
-  /* "halogen/api.pyx":1257
+  /* "halogen/api.pyx":1263
  *     # return a new halogen.api.Outputs matching the returned value above:
  *     return Outputs(
  *         object_name=out.object_name,             # <<<<<<<<<<<<<<
  *         assembly_name=out.assembly_name,
  *         bitcode_name=out.bitcode_name,
  */
-  __pyx_t_7 = __Pyx_PyDict_NewPresized(9); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1257, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyDict_NewPresized(9); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1263, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
-  __pyx_t_4 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_out.object_name); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1257, __pyx_L1_error)
+  __pyx_t_4 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_out.object_name); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1263, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  if (PyDict_SetItem(__pyx_t_7, __pyx_n_s_object_name, __pyx_t_4) < 0) __PYX_ERR(0, 1257, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_7, __pyx_n_s_object_name, __pyx_t_4) < 0) __PYX_ERR(0, 1263, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-  /* "halogen/api.pyx":1258
+  /* "halogen/api.pyx":1264
  *     return Outputs(
  *         object_name=out.object_name,
  *         assembly_name=out.assembly_name,             # <<<<<<<<<<<<<<
  *         bitcode_name=out.bitcode_name,
  *         llvm_assembly_name=out.llvm_assembly_name,
  */
-  __pyx_t_4 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_out.assembly_name); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1258, __pyx_L1_error)
+  __pyx_t_4 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_out.assembly_name); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1264, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  if (PyDict_SetItem(__pyx_t_7, __pyx_n_s_assembly_name, __pyx_t_4) < 0) __PYX_ERR(0, 1257, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_7, __pyx_n_s_assembly_name, __pyx_t_4) < 0) __PYX_ERR(0, 1263, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-  /* "halogen/api.pyx":1259
+  /* "halogen/api.pyx":1265
  *         object_name=out.object_name,
  *         assembly_name=out.assembly_name,
  *         bitcode_name=out.bitcode_name,             # <<<<<<<<<<<<<<
  *         llvm_assembly_name=out.llvm_assembly_name,
  *         c_header_name=out.c_header_name,
  */
-  __pyx_t_4 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_out.bitcode_name); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1259, __pyx_L1_error)
+  __pyx_t_4 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_out.bitcode_name); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1265, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  if (PyDict_SetItem(__pyx_t_7, __pyx_n_s_bitcode_name, __pyx_t_4) < 0) __PYX_ERR(0, 1257, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_7, __pyx_n_s_bitcode_name, __pyx_t_4) < 0) __PYX_ERR(0, 1263, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-  /* "halogen/api.pyx":1260
+  /* "halogen/api.pyx":1266
  *         assembly_name=out.assembly_name,
  *         bitcode_name=out.bitcode_name,
  *         llvm_assembly_name=out.llvm_assembly_name,             # <<<<<<<<<<<<<<
  *         c_header_name=out.c_header_name,
  *         c_source_name=out.c_source_name,
  */
-  __pyx_t_4 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_out.llvm_assembly_name); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1260, __pyx_L1_error)
+  __pyx_t_4 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_out.llvm_assembly_name); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1266, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  if (PyDict_SetItem(__pyx_t_7, __pyx_n_s_llvm_assembly_name, __pyx_t_4) < 0) __PYX_ERR(0, 1257, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_7, __pyx_n_s_llvm_assembly_name, __pyx_t_4) < 0) __PYX_ERR(0, 1263, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-  /* "halogen/api.pyx":1261
+  /* "halogen/api.pyx":1267
  *         bitcode_name=out.bitcode_name,
  *         llvm_assembly_name=out.llvm_assembly_name,
  *         c_header_name=out.c_header_name,             # <<<<<<<<<<<<<<
  *         c_source_name=out.c_source_name,
  *         stmt_name=out.stmt_name,
  */
-  __pyx_t_4 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_out.c_header_name); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1261, __pyx_L1_error)
+  __pyx_t_4 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_out.c_header_name); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1267, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  if (PyDict_SetItem(__pyx_t_7, __pyx_n_s_c_header_name, __pyx_t_4) < 0) __PYX_ERR(0, 1257, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_7, __pyx_n_s_c_header_name, __pyx_t_4) < 0) __PYX_ERR(0, 1263, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-  /* "halogen/api.pyx":1262
+  /* "halogen/api.pyx":1268
  *         llvm_assembly_name=out.llvm_assembly_name,
  *         c_header_name=out.c_header_name,
  *         c_source_name=out.c_source_name,             # <<<<<<<<<<<<<<
  *         stmt_name=out.stmt_name,
  *         stmt_html_name=out.stmt_html_name,
  */
-  __pyx_t_4 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_out.c_source_name); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1262, __pyx_L1_error)
+  __pyx_t_4 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_out.c_source_name); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1268, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  if (PyDict_SetItem(__pyx_t_7, __pyx_n_s_c_source_name, __pyx_t_4) < 0) __PYX_ERR(0, 1257, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_7, __pyx_n_s_c_source_name, __pyx_t_4) < 0) __PYX_ERR(0, 1263, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-  /* "halogen/api.pyx":1263
+  /* "halogen/api.pyx":1269
  *         c_header_name=out.c_header_name,
  *         c_source_name=out.c_source_name,
  *         stmt_name=out.stmt_name,             # <<<<<<<<<<<<<<
  *         stmt_html_name=out.stmt_html_name,
  *         static_library_name=out.static_library_name)
  */
-  __pyx_t_4 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_out.stmt_name); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1263, __pyx_L1_error)
+  __pyx_t_4 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_out.stmt_name); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1269, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  if (PyDict_SetItem(__pyx_t_7, __pyx_n_s_stmt_name, __pyx_t_4) < 0) __PYX_ERR(0, 1257, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_7, __pyx_n_s_stmt_name, __pyx_t_4) < 0) __PYX_ERR(0, 1263, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-  /* "halogen/api.pyx":1264
+  /* "halogen/api.pyx":1270
  *         c_source_name=out.c_source_name,
  *         stmt_name=out.stmt_name,
  *         stmt_html_name=out.stmt_html_name,             # <<<<<<<<<<<<<<
  *         static_library_name=out.static_library_name)
  * 
  */
-  __pyx_t_4 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_out.stmt_html_name); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1264, __pyx_L1_error)
+  __pyx_t_4 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_out.stmt_html_name); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1270, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  if (PyDict_SetItem(__pyx_t_7, __pyx_n_s_stmt_html_name, __pyx_t_4) < 0) __PYX_ERR(0, 1257, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_7, __pyx_n_s_stmt_html_name, __pyx_t_4) < 0) __PYX_ERR(0, 1263, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-  /* "halogen/api.pyx":1265
+  /* "halogen/api.pyx":1271
  *         stmt_name=out.stmt_name,
  *         stmt_html_name=out.stmt_html_name,
  *         static_library_name=out.static_library_name)             # <<<<<<<<<<<<<<
  * 
  * def running_program_name():
  */
-  __pyx_t_4 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_out.static_library_name); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1265, __pyx_L1_error)
+  __pyx_t_4 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_out.static_library_name); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1271, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  if (PyDict_SetItem(__pyx_t_7, __pyx_n_s_static_library_name, __pyx_t_4) < 0) __PYX_ERR(0, 1257, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_7, __pyx_n_s_static_library_name, __pyx_t_4) < 0) __PYX_ERR(0, 1263, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-  /* "halogen/api.pyx":1256
+  /* "halogen/api.pyx":1262
  * 
  *     # return a new halogen.api.Outputs matching the returned value above:
  *     return Outputs(             # <<<<<<<<<<<<<<
  *         object_name=out.object_name,
  *         assembly_name=out.assembly_name,
  */
-  __pyx_t_4 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_7halogen_3api_Outputs), __pyx_empty_tuple, __pyx_t_7); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1256, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_7halogen_3api_Outputs), __pyx_empty_tuple, __pyx_t_7); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1262, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
   __pyx_r = __pyx_t_4;
   __pyx_t_4 = 0;
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":1227
+  /* "halogen/api.pyx":1233
  *     raise ValueError("Either the 'pth' or 'outputs' args must be non-None")
  * 
  * def make_standalone_runtime(Target target=Target.target_from_environment(),             # <<<<<<<<<<<<<<
@@ -25065,7 +25165,7 @@ static PyObject *__pyx_pf_7halogen_3api_24make_standalone_runtime(CYTHON_UNUSED 
   return __pyx_r;
 }
 
-/* "halogen/api.pyx":1267
+/* "halogen/api.pyx":1273
  *         static_library_name=out.static_library_name)
  * 
  * def running_program_name():             # <<<<<<<<<<<<<<
@@ -25094,19 +25194,19 @@ static PyObject *__pyx_pf_7halogen_3api_26running_program_name(CYTHON_UNUSED PyO
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("running_program_name", 0);
 
-  /* "halogen/api.pyx":1269
+  /* "halogen/api.pyx":1275
  * def running_program_name():
  *     """ Return the name of the running program as a string. """
  *     return halide_running_program_name().decode('UTF-8')             # <<<<<<<<<<<<<<
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_decode_cpp_string(Halide::Internal::running_program_name(), 0, PY_SSIZE_T_MAX, NULL, NULL, PyUnicode_DecodeUTF8); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1269, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_decode_cpp_string(Halide::Internal::running_program_name(), 0, PY_SSIZE_T_MAX, NULL, NULL, PyUnicode_DecodeUTF8); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1275, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "halogen/api.pyx":1267
+  /* "halogen/api.pyx":1273
  *         static_library_name=out.static_library_name)
  * 
  * def running_program_name():             # <<<<<<<<<<<<<<
@@ -27236,12 +27336,12 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {0, 0, 0, 0, 0, 0, 0}
 };
 static int __Pyx_InitCachedBuiltins(void) {
-  __pyx_builtin_staticmethod = __Pyx_GetBuiltinName(__pyx_n_s_staticmethod); if (!__pyx_builtin_staticmethod) __PYX_ERR(0, 141, __pyx_L1_error)
-  __pyx_builtin_hex = __Pyx_GetBuiltinName(__pyx_n_s_hex); if (!__pyx_builtin_hex) __PYX_ERR(0, 131, __pyx_L1_error)
-  __pyx_builtin_id = __Pyx_GetBuiltinName(__pyx_n_s_id); if (!__pyx_builtin_id) __PYX_ERR(0, 131, __pyx_L1_error)
-  __pyx_builtin_IndexError = __Pyx_GetBuiltinName(__pyx_n_s_IndexError); if (!__pyx_builtin_IndexError) __PYX_ERR(0, 246, __pyx_L1_error)
+  __pyx_builtin_staticmethod = __Pyx_GetBuiltinName(__pyx_n_s_staticmethod); if (!__pyx_builtin_staticmethod) __PYX_ERR(0, 146, __pyx_L1_error)
+  __pyx_builtin_hex = __Pyx_GetBuiltinName(__pyx_n_s_hex); if (!__pyx_builtin_hex) __PYX_ERR(0, 136, __pyx_L1_error)
+  __pyx_builtin_id = __Pyx_GetBuiltinName(__pyx_n_s_id); if (!__pyx_builtin_id) __PYX_ERR(0, 136, __pyx_L1_error)
+  __pyx_builtin_IndexError = __Pyx_GetBuiltinName(__pyx_n_s_IndexError); if (!__pyx_builtin_IndexError) __PYX_ERR(0, 253, __pyx_L1_error)
   __pyx_builtin_TypeError = __Pyx_GetBuiltinName(__pyx_n_s_TypeError); if (!__pyx_builtin_TypeError) __PYX_ERR(1, 2, __pyx_L1_error)
-  __pyx_builtin_ValueError = __Pyx_GetBuiltinName(__pyx_n_s_ValueError); if (!__pyx_builtin_ValueError) __PYX_ERR(0, 338, __pyx_L1_error)
+  __pyx_builtin_ValueError = __Pyx_GetBuiltinName(__pyx_n_s_ValueError); if (!__pyx_builtin_ValueError) __PYX_ERR(0, 345, __pyx_L1_error)
   __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(1, 61, __pyx_L1_error)
   return 0;
   __pyx_L1_error:;
@@ -27271,31 +27371,31 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__4);
   __Pyx_GIVEREF(__pyx_tuple__4);
 
-  /* "halogen/api.pyx":374
+  /* "halogen/api.pyx":381
  *     def includes_halide_runtime(self):
  *         try:
  *             return self.to_string().decode('UTF-8').lower().index('no_runtime') < 0             # <<<<<<<<<<<<<<
  *         except ValueError:
  *             return True
  */
-  __pyx_tuple__5 = PyTuple_Pack(1, __pyx_kp_s_UTF_8); if (unlikely(!__pyx_tuple__5)) __PYX_ERR(0, 374, __pyx_L1_error)
+  __pyx_tuple__5 = PyTuple_Pack(1, __pyx_kp_s_UTF_8); if (unlikely(!__pyx_tuple__5)) __PYX_ERR(0, 381, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__5);
   __Pyx_GIVEREF(__pyx_tuple__5);
-  __pyx_tuple__6 = PyTuple_Pack(1, __pyx_n_s_no_runtime); if (unlikely(!__pyx_tuple__6)) __PYX_ERR(0, 374, __pyx_L1_error)
+  __pyx_tuple__6 = PyTuple_Pack(1, __pyx_n_s_no_runtime); if (unlikely(!__pyx_tuple__6)) __PYX_ERR(0, 381, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__6);
   __Pyx_GIVEREF(__pyx_tuple__6);
 
-  /* "halogen/api.pyx":400
+  /* "halogen/api.pyx":407
  * 
  *     def __repr__(self):
  *         return stringify(self, ('os', 'arch', 'bits')).decode('UTF-8')             # <<<<<<<<<<<<<<
  * 
- *     def __richcmp__(self,
+ *     def __richcmp__(self, Target other not None,
  */
-  __pyx_tuple__7 = PyTuple_Pack(3, __pyx_n_s_os, __pyx_n_s_arch, __pyx_n_s_bits); if (unlikely(!__pyx_tuple__7)) __PYX_ERR(0, 400, __pyx_L1_error)
+  __pyx_tuple__7 = PyTuple_Pack(3, __pyx_n_s_os, __pyx_n_s_arch, __pyx_n_s_bits); if (unlikely(!__pyx_tuple__7)) __PYX_ERR(0, 407, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__7);
   __Pyx_GIVEREF(__pyx_tuple__7);
-  __pyx_tuple__8 = PyTuple_Pack(1, __pyx_kp_s_UTF_8); if (unlikely(!__pyx_tuple__8)) __PYX_ERR(0, 400, __pyx_L1_error)
+  __pyx_tuple__8 = PyTuple_Pack(1, __pyx_kp_s_UTF_8); if (unlikely(!__pyx_tuple__8)) __PYX_ERR(0, 407, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__8);
   __Pyx_GIVEREF(__pyx_tuple__8);
 
@@ -27318,36 +27418,36 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__10);
   __Pyx_GIVEREF(__pyx_tuple__10);
 
-  /* "halogen/api.pyx":639
+  /* "halogen/api.pyx":645
  * 
  *     def to_string(self):
  *         return stringify(self, ("object_name", "assembly_name", "bitcode_name",             # <<<<<<<<<<<<<<
  *                                 "llvm_assembly_name", "c_header_name", "c_source_name",
  *                                 "python_extension_name", "stmt_name", "stmt_html_name",
  */
-  __pyx_tuple__11 = PyTuple_Pack(11, __pyx_n_s_object_name, __pyx_n_s_assembly_name, __pyx_n_s_bitcode_name, __pyx_n_s_llvm_assembly_name, __pyx_n_s_c_header_name, __pyx_n_s_c_source_name, __pyx_n_s_python_extension_name, __pyx_n_s_stmt_name, __pyx_n_s_stmt_html_name, __pyx_n_s_static_library_name, __pyx_n_s_schedule_name); if (unlikely(!__pyx_tuple__11)) __PYX_ERR(0, 639, __pyx_L1_error)
+  __pyx_tuple__11 = PyTuple_Pack(11, __pyx_n_s_object_name, __pyx_n_s_assembly_name, __pyx_n_s_bitcode_name, __pyx_n_s_llvm_assembly_name, __pyx_n_s_c_header_name, __pyx_n_s_c_source_name, __pyx_n_s_python_extension_name, __pyx_n_s_stmt_name, __pyx_n_s_stmt_html_name, __pyx_n_s_static_library_name, __pyx_n_s_schedule_name); if (unlikely(!__pyx_tuple__11)) __PYX_ERR(0, 645, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__11);
   __Pyx_GIVEREF(__pyx_tuple__11);
 
-  /* "halogen/api.pyx":648
+  /* "halogen/api.pyx":654
  * 
  *     def __str__(self):
  *         return self.to_string().decode('UTF-8')             # <<<<<<<<<<<<<<
  * 
  *     def __repr__(self):
  */
-  __pyx_tuple__12 = PyTuple_Pack(1, __pyx_kp_s_UTF_8); if (unlikely(!__pyx_tuple__12)) __PYX_ERR(0, 648, __pyx_L1_error)
+  __pyx_tuple__12 = PyTuple_Pack(1, __pyx_kp_s_UTF_8); if (unlikely(!__pyx_tuple__12)) __PYX_ERR(0, 654, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__12);
   __Pyx_GIVEREF(__pyx_tuple__12);
 
-  /* "halogen/api.pyx":651
+  /* "halogen/api.pyx":657
  * 
  *     def __repr__(self):
  *         return self.to_string().decode('UTF-8')             # <<<<<<<<<<<<<<
  * 
  * 
  */
-  __pyx_tuple__13 = PyTuple_Pack(1, __pyx_kp_s_UTF_8); if (unlikely(!__pyx_tuple__13)) __PYX_ERR(0, 651, __pyx_L1_error)
+  __pyx_tuple__13 = PyTuple_Pack(1, __pyx_kp_s_UTF_8); if (unlikely(!__pyx_tuple__13)) __PYX_ERR(0, 657, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__13);
   __Pyx_GIVEREF(__pyx_tuple__13);
 
@@ -27370,179 +27470,179 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__15);
   __Pyx_GIVEREF(__pyx_tuple__15);
 
-  /* "halogen/api.pyx":711
+  /* "halogen/api.pyx":717
  * 
  *         if not PyMapping_Check(substitutions):
  *             raise ValueError("substitutions must be a mapping type")             # <<<<<<<<<<<<<<
  * 
  *         self.__this__.emit_o = PyObject_IsTrue(emit_o)
  */
-  __pyx_tuple__16 = PyTuple_Pack(1, __pyx_kp_s_substitutions_must_be_a_mapping); if (unlikely(!__pyx_tuple__16)) __PYX_ERR(0, 711, __pyx_L1_error)
+  __pyx_tuple__16 = PyTuple_Pack(1, __pyx_kp_s_substitutions_must_be_a_mapping); if (unlikely(!__pyx_tuple__16)) __PYX_ERR(0, 717, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__16);
   __Pyx_GIVEREF(__pyx_tuple__16);
 
-  /* "halogen/api.pyx":811
+  /* "halogen/api.pyx":817
  *     def substitutions(self, object value not None):
  *         if not PyMapping_Check(value):
  *             raise ValueError("substitutions must be a mapping type")             # <<<<<<<<<<<<<<
  *         self.__this__.substitutions = stringmap_t()
  *         for k, v in dict(value).items():
  */
-  __pyx_tuple__17 = PyTuple_Pack(1, __pyx_kp_s_substitutions_must_be_a_mapping); if (unlikely(!__pyx_tuple__17)) __PYX_ERR(0, 811, __pyx_L1_error)
+  __pyx_tuple__17 = PyTuple_Pack(1, __pyx_kp_s_substitutions_must_be_a_mapping); if (unlikely(!__pyx_tuple__17)) __PYX_ERR(0, 817, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__17);
   __Pyx_GIVEREF(__pyx_tuple__17);
 
-  /* "halogen/api.pyx":839
+  /* "halogen/api.pyx":845
  *         if self.emit_o:
  *             if is_windows_coff:
  *                 output_files.object_name = base_path_str + self.get_substitution(".obj")             # <<<<<<<<<<<<<<
  *             else:
  *                 output_files.object_name = base_path_str + self.get_substitution(".o")
  */
-  __pyx_tuple__19 = PyTuple_Pack(1, __pyx_kp_s_obj); if (unlikely(!__pyx_tuple__19)) __PYX_ERR(0, 839, __pyx_L1_error)
+  __pyx_tuple__19 = PyTuple_Pack(1, __pyx_kp_s_obj); if (unlikely(!__pyx_tuple__19)) __PYX_ERR(0, 845, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__19);
   __Pyx_GIVEREF(__pyx_tuple__19);
 
-  /* "halogen/api.pyx":841
+  /* "halogen/api.pyx":847
  *                 output_files.object_name = base_path_str + self.get_substitution(".obj")
  *             else:
  *                 output_files.object_name = base_path_str + self.get_substitution(".o")             # <<<<<<<<<<<<<<
  * 
  *         if self.emit_assembly:
  */
-  __pyx_tuple__20 = PyTuple_Pack(1, __pyx_kp_s_o); if (unlikely(!__pyx_tuple__20)) __PYX_ERR(0, 841, __pyx_L1_error)
+  __pyx_tuple__20 = PyTuple_Pack(1, __pyx_kp_s_o); if (unlikely(!__pyx_tuple__20)) __PYX_ERR(0, 847, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__20);
   __Pyx_GIVEREF(__pyx_tuple__20);
 
-  /* "halogen/api.pyx":844
+  /* "halogen/api.pyx":850
  * 
  *         if self.emit_assembly:
  *             output_files.assembly_name = base_path_str + self.get_substitution(".s")             # <<<<<<<<<<<<<<
  * 
  *         if self.emit_bitcode:
  */
-  __pyx_tuple__21 = PyTuple_Pack(1, __pyx_kp_s_s_2); if (unlikely(!__pyx_tuple__21)) __PYX_ERR(0, 844, __pyx_L1_error)
+  __pyx_tuple__21 = PyTuple_Pack(1, __pyx_kp_s_s_2); if (unlikely(!__pyx_tuple__21)) __PYX_ERR(0, 850, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__21);
   __Pyx_GIVEREF(__pyx_tuple__21);
 
-  /* "halogen/api.pyx":847
+  /* "halogen/api.pyx":853
  * 
  *         if self.emit_bitcode:
  *             output_files.bitcode_name = base_path_str + self.get_substitution(".bc")             # <<<<<<<<<<<<<<
  *         if self.emit_h:
  *             output_files.c_header_name = base_path_str + self.get_substitution(".h")
  */
-  __pyx_tuple__22 = PyTuple_Pack(1, __pyx_kp_s_bc); if (unlikely(!__pyx_tuple__22)) __PYX_ERR(0, 847, __pyx_L1_error)
+  __pyx_tuple__22 = PyTuple_Pack(1, __pyx_kp_s_bc); if (unlikely(!__pyx_tuple__22)) __PYX_ERR(0, 853, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__22);
   __Pyx_GIVEREF(__pyx_tuple__22);
 
-  /* "halogen/api.pyx":849
+  /* "halogen/api.pyx":855
  *             output_files.bitcode_name = base_path_str + self.get_substitution(".bc")
  *         if self.emit_h:
  *             output_files.c_header_name = base_path_str + self.get_substitution(".h")             # <<<<<<<<<<<<<<
  *         if self.emit_cpp:
  *             output_files.c_source_name = base_path_str + self.get_substitution(".cpp")
  */
-  __pyx_tuple__23 = PyTuple_Pack(1, __pyx_kp_s_h); if (unlikely(!__pyx_tuple__23)) __PYX_ERR(0, 849, __pyx_L1_error)
+  __pyx_tuple__23 = PyTuple_Pack(1, __pyx_kp_s_h); if (unlikely(!__pyx_tuple__23)) __PYX_ERR(0, 855, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__23);
   __Pyx_GIVEREF(__pyx_tuple__23);
 
-  /* "halogen/api.pyx":851
+  /* "halogen/api.pyx":857
  *             output_files.c_header_name = base_path_str + self.get_substitution(".h")
  *         if self.emit_cpp:
  *             output_files.c_source_name = base_path_str + self.get_substitution(".cpp")             # <<<<<<<<<<<<<<
  *         if self.emit_python_extension:
  *             output_files.stmt_html_name = base_path_str + self.get_substitution(".py.c")
  */
-  __pyx_tuple__24 = PyTuple_Pack(1, __pyx_kp_s_cpp); if (unlikely(!__pyx_tuple__24)) __PYX_ERR(0, 851, __pyx_L1_error)
+  __pyx_tuple__24 = PyTuple_Pack(1, __pyx_kp_s_cpp); if (unlikely(!__pyx_tuple__24)) __PYX_ERR(0, 857, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__24);
   __Pyx_GIVEREF(__pyx_tuple__24);
 
-  /* "halogen/api.pyx":853
+  /* "halogen/api.pyx":859
  *             output_files.c_source_name = base_path_str + self.get_substitution(".cpp")
  *         if self.emit_python_extension:
  *             output_files.stmt_html_name = base_path_str + self.get_substitution(".py.c")             # <<<<<<<<<<<<<<
  * 
  *         # N.B. Currently the Halide `compute_outputs()` version has no substitution logic
  */
-  __pyx_tuple__25 = PyTuple_Pack(1, __pyx_kp_s_py_c); if (unlikely(!__pyx_tuple__25)) __PYX_ERR(0, 853, __pyx_L1_error)
+  __pyx_tuple__25 = PyTuple_Pack(1, __pyx_kp_s_py_c); if (unlikely(!__pyx_tuple__25)) __PYX_ERR(0, 859, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__25);
   __Pyx_GIVEREF(__pyx_tuple__25);
 
-  /* "halogen/api.pyx":859
+  /* "halogen/api.pyx":865
  * 
  *         if self.emit_stmt:
  *             output_files.stmt_name = base_path_str + self.get_substitution(".stmt")             # <<<<<<<<<<<<<<
  *         if self.emit_stmt_html:
  *             output_files.stmt_html_name = base_path_str + self.get_substitution(".html")
  */
-  __pyx_tuple__26 = PyTuple_Pack(1, __pyx_kp_s_stmt); if (unlikely(!__pyx_tuple__26)) __PYX_ERR(0, 859, __pyx_L1_error)
+  __pyx_tuple__26 = PyTuple_Pack(1, __pyx_kp_s_stmt); if (unlikely(!__pyx_tuple__26)) __PYX_ERR(0, 865, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__26);
   __Pyx_GIVEREF(__pyx_tuple__26);
 
-  /* "halogen/api.pyx":861
+  /* "halogen/api.pyx":867
  *             output_files.stmt_name = base_path_str + self.get_substitution(".stmt")
  *         if self.emit_stmt_html:
  *             output_files.stmt_html_name = base_path_str + self.get_substitution(".html")             # <<<<<<<<<<<<<<
  * 
  *         if self.emit_static_library:
  */
-  __pyx_tuple__27 = PyTuple_Pack(1, __pyx_kp_s_html); if (unlikely(!__pyx_tuple__27)) __PYX_ERR(0, 861, __pyx_L1_error)
+  __pyx_tuple__27 = PyTuple_Pack(1, __pyx_kp_s_html); if (unlikely(!__pyx_tuple__27)) __PYX_ERR(0, 867, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__27);
   __Pyx_GIVEREF(__pyx_tuple__27);
 
-  /* "halogen/api.pyx":865
+  /* "halogen/api.pyx":871
  *         if self.emit_static_library:
  *             if is_windows_coff:
  *                 output_files.static_library_name = base_path_str + self.get_substitution(".lib")             # <<<<<<<<<<<<<<
  *             else:
  *                 output_files.static_library_name = base_path_str + self.get_substitution(".a")
  */
-  __pyx_tuple__28 = PyTuple_Pack(1, __pyx_kp_s_lib); if (unlikely(!__pyx_tuple__28)) __PYX_ERR(0, 865, __pyx_L1_error)
+  __pyx_tuple__28 = PyTuple_Pack(1, __pyx_kp_s_lib); if (unlikely(!__pyx_tuple__28)) __PYX_ERR(0, 871, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__28);
   __Pyx_GIVEREF(__pyx_tuple__28);
 
-  /* "halogen/api.pyx":867
+  /* "halogen/api.pyx":873
  *                 output_files.static_library_name = base_path_str + self.get_substitution(".lib")
  *             else:
  *                 output_files.static_library_name = base_path_str + self.get_substitution(".a")             # <<<<<<<<<<<<<<
  * 
  *         if self.emit_schedule:
  */
-  __pyx_tuple__29 = PyTuple_Pack(1, __pyx_kp_s_a); if (unlikely(!__pyx_tuple__29)) __PYX_ERR(0, 867, __pyx_L1_error)
+  __pyx_tuple__29 = PyTuple_Pack(1, __pyx_kp_s_a); if (unlikely(!__pyx_tuple__29)) __PYX_ERR(0, 873, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__29);
   __Pyx_GIVEREF(__pyx_tuple__29);
 
-  /* "halogen/api.pyx":870
+  /* "halogen/api.pyx":876
  * 
  *         if self.emit_schedule:
  *             output_files.schedule_name = base_path_str + self.get_substitution(".schedule")             # <<<<<<<<<<<<<<
  * 
  *         return output_files
  */
-  __pyx_tuple__30 = PyTuple_Pack(1, __pyx_kp_s_schedule); if (unlikely(!__pyx_tuple__30)) __PYX_ERR(0, 870, __pyx_L1_error)
+  __pyx_tuple__30 = PyTuple_Pack(1, __pyx_kp_s_schedule); if (unlikely(!__pyx_tuple__30)) __PYX_ERR(0, 876, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__30);
   __Pyx_GIVEREF(__pyx_tuple__30);
 
-  /* "halogen/api.pyx":881
+  /* "halogen/api.pyx":887
  * 
  *     def __str__(self):
  *         return self.to_string().decode('UTF-8')             # <<<<<<<<<<<<<<
  * 
  *     def __repr__(self):
  */
-  __pyx_tuple__31 = PyTuple_Pack(1, __pyx_kp_s_UTF_8); if (unlikely(!__pyx_tuple__31)) __PYX_ERR(0, 881, __pyx_L1_error)
+  __pyx_tuple__31 = PyTuple_Pack(1, __pyx_kp_s_UTF_8); if (unlikely(!__pyx_tuple__31)) __PYX_ERR(0, 887, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__31);
   __Pyx_GIVEREF(__pyx_tuple__31);
 
-  /* "halogen/api.pyx":884
+  /* "halogen/api.pyx":890
  * 
  *     def __repr__(self):
  *         return self.to_string().decode('UTF-8')             # <<<<<<<<<<<<<<
  * 
  * 
  */
-  __pyx_tuple__32 = PyTuple_Pack(1, __pyx_kp_s_UTF_8); if (unlikely(!__pyx_tuple__32)) __PYX_ERR(0, 884, __pyx_L1_error)
+  __pyx_tuple__32 = PyTuple_Pack(1, __pyx_kp_s_UTF_8); if (unlikely(!__pyx_tuple__32)) __PYX_ERR(0, 890, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__32);
   __Pyx_GIVEREF(__pyx_tuple__32);
 
@@ -27565,25 +27665,25 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__34);
   __Pyx_GIVEREF(__pyx_tuple__34);
 
-  /* "halogen/api.pyx":1034
+  /* "halogen/api.pyx":1040
  * 
  *     def __str__(self):
  *         return self.to_string().decode('UTF-8')             # <<<<<<<<<<<<<<
  * 
  *     def __repr__(self):
  */
-  __pyx_tuple__35 = PyTuple_Pack(1, __pyx_kp_s_UTF_8); if (unlikely(!__pyx_tuple__35)) __PYX_ERR(0, 1034, __pyx_L1_error)
+  __pyx_tuple__35 = PyTuple_Pack(1, __pyx_kp_s_UTF_8); if (unlikely(!__pyx_tuple__35)) __PYX_ERR(0, 1040, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__35);
   __Pyx_GIVEREF(__pyx_tuple__35);
 
-  /* "halogen/api.pyx":1037
+  /* "halogen/api.pyx":1043
  * 
  *     def __repr__(self):
  *         return self.to_string().decode('UTF-8')             # <<<<<<<<<<<<<<
  * 
  * 
  */
-  __pyx_tuple__36 = PyTuple_Pack(1, __pyx_kp_s_UTF_8); if (unlikely(!__pyx_tuple__36)) __PYX_ERR(0, 1037, __pyx_L1_error)
+  __pyx_tuple__36 = PyTuple_Pack(1, __pyx_kp_s_UTF_8); if (unlikely(!__pyx_tuple__36)) __PYX_ERR(0, 1043, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__36);
   __Pyx_GIVEREF(__pyx_tuple__36);
 
@@ -27606,287 +27706,287 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__38);
   __Pyx_GIVEREF(__pyx_tuple__38);
 
-  /* "halogen/api.pyx":1105
+  /* "halogen/api.pyx":1111
  *     # next, check that `arguments` is a mapping type:
  *     if not PyMapping_Check(arguments):
  *         raise ValueError(""""arguments" must be a mapping (dict-ish) type""")             # <<<<<<<<<<<<<<
  * 
  *     # Stack-allocate std::strings for the generator name and target,
  */
-  __pyx_tuple__40 = PyTuple_Pack(1, __pyx_kp_s_arguments_must_be_a_mapping_dic); if (unlikely(!__pyx_tuple__40)) __PYX_ERR(0, 1105, __pyx_L1_error)
+  __pyx_tuple__40 = PyTuple_Pack(1, __pyx_kp_s_arguments_must_be_a_mapping_dic); if (unlikely(!__pyx_tuple__40)) __PYX_ERR(0, 1111, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__40);
   __Pyx_GIVEREF(__pyx_tuple__40);
 
-  /* "halogen/api.pyx":1163
+  /* "halogen/api.pyx":1169
  *     # check that we got some stuff:
  *     if len(modules) < 1:
  *         raise ValueError("""link_modules() called without modules to link""")             # <<<<<<<<<<<<<<
  * 
  *     # check the type of all positional arguments:
  */
-  __pyx_tuple__41 = PyTuple_Pack(1, __pyx_kp_s_link_modules_called_without_modu); if (unlikely(!__pyx_tuple__41)) __PYX_ERR(0, 1163, __pyx_L1_error)
+  __pyx_tuple__41 = PyTuple_Pack(1, __pyx_kp_s_link_modules_called_without_modu); if (unlikely(!__pyx_tuple__41)) __PYX_ERR(0, 1169, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__41);
   __Pyx_GIVEREF(__pyx_tuple__41);
 
-  /* "halogen/api.pyx":1168
+  /* "halogen/api.pyx":1174
  *     for module in modules:
  *         if type(module) != Module:
  *             raise TypeError("""All positional args must be halogen.api.Module""")             # <<<<<<<<<<<<<<
  *         f_insert_into(module, modulevec)
  * 
  */
-  __pyx_tuple__42 = PyTuple_Pack(1, __pyx_kp_s_All_positional_args_must_be_halo); if (unlikely(!__pyx_tuple__42)) __PYX_ERR(0, 1168, __pyx_L1_error)
+  __pyx_tuple__42 = PyTuple_Pack(1, __pyx_kp_s_All_positional_args_must_be_halo); if (unlikely(!__pyx_tuple__42)) __PYX_ERR(0, 1174, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__42);
   __Pyx_GIVEREF(__pyx_tuple__42);
 
-  /* "halogen/api.pyx":1190
+  /* "halogen/api.pyx":1196
  *         from os.path import realpath
  *         realpth = realpath(u8str(pth))
  *         if not realpth.lower().endswith('.o'):             # <<<<<<<<<<<<<<
  *             realpth += ".o"
  * 
  */
-  __pyx_tuple__44 = PyTuple_Pack(1, __pyx_kp_s_o); if (unlikely(!__pyx_tuple__44)) __PYX_ERR(0, 1190, __pyx_L1_error)
+  __pyx_tuple__44 = PyTuple_Pack(1, __pyx_kp_s_o); if (unlikely(!__pyx_tuple__44)) __PYX_ERR(0, 1196, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__44);
   __Pyx_GIVEREF(__pyx_tuple__44);
 
-  /* "halogen/api.pyx":1225
+  /* "halogen/api.pyx":1231
  *     # OPTION 3: WE GOT NEITHER OF THE ABOVE,
  *     # WHICH MEANS BASICALLY WE CAN DO FUCK-ALL:
  *     raise ValueError("Either the 'pth' or 'outputs' args must be non-None")             # <<<<<<<<<<<<<<
  * 
  * def make_standalone_runtime(Target target=Target.target_from_environment(),
  */
-  __pyx_tuple__45 = PyTuple_Pack(1, __pyx_kp_s_Either_the_pth_or_outputs_args_m); if (unlikely(!__pyx_tuple__45)) __PYX_ERR(0, 1225, __pyx_L1_error)
+  __pyx_tuple__45 = PyTuple_Pack(1, __pyx_kp_s_Either_the_pth_or_outputs_args_m); if (unlikely(!__pyx_tuple__45)) __PYX_ERR(0, 1231, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__45);
   __Pyx_GIVEREF(__pyx_tuple__45);
 
-  /* "halogen/api.pyx":1237
+  /* "halogen/api.pyx":1243
  *     # Sanity-check the passed-in base-path value:
  *     if pth is None:
  *         raise ValueError("Must specify 'pth'")             # <<<<<<<<<<<<<<
  * 
  *     from os.path import realpath
  */
-  __pyx_tuple__47 = PyTuple_Pack(1, __pyx_kp_s_Must_specify_pth); if (unlikely(!__pyx_tuple__47)) __PYX_ERR(0, 1237, __pyx_L1_error)
+  __pyx_tuple__47 = PyTuple_Pack(1, __pyx_kp_s_Must_specify_pth); if (unlikely(!__pyx_tuple__47)) __PYX_ERR(0, 1243, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__47);
   __Pyx_GIVEREF(__pyx_tuple__47);
 
-  /* "halogen/api.pyx":118
+  /* "halogen/api.pyx":122
  *     return u8bytes(source).decode('UTF-8')
  * 
- * def stringify(object instance not None, object fields not None):             # <<<<<<<<<<<<<<
+ * def stringify(object instance not None,             # <<<<<<<<<<<<<<
+ *               object fields not None):
  *     """ Custom version of stringify(instance, fields) for use in Cython extensions: """
- *     field_dict = {}
  */
-  __pyx_tuple__48 = PyTuple_Pack(8, __pyx_n_s_instance, __pyx_n_s_fields, __pyx_n_s_field_dict, __pyx_n_s_field, __pyx_n_s_field_value, __pyx_n_s_field_dict_items, __pyx_n_s_k, __pyx_n_s_v); if (unlikely(!__pyx_tuple__48)) __PYX_ERR(0, 118, __pyx_L1_error)
+  __pyx_tuple__48 = PyTuple_Pack(8, __pyx_n_s_instance, __pyx_n_s_fields, __pyx_n_s_field_dict, __pyx_n_s_field, __pyx_n_s_field_value, __pyx_n_s_field_dict_items, __pyx_n_s_k, __pyx_n_s_v); if (unlikely(!__pyx_tuple__48)) __PYX_ERR(0, 122, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__48);
   __Pyx_GIVEREF(__pyx_tuple__48);
-  __pyx_codeobj__49 = (PyObject*)__Pyx_PyCode_New(2, 0, 8, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__48, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_halogen_api_pyx, __pyx_n_s_stringify, 118, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__49)) __PYX_ERR(0, 118, __pyx_L1_error)
+  __pyx_codeobj__49 = (PyObject*)__Pyx_PyCode_New(2, 0, 8, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__48, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_halogen_api_pyx, __pyx_n_s_stringify, 122, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__49)) __PYX_ERR(0, 122, __pyx_L1_error)
 
-  /* "halogen/api.pyx":142
+  /* "halogen/api.pyx":147
  * 
  *     @staticmethod
  *     def fromother(Type other not None):             # <<<<<<<<<<<<<<
  *         out = Type()
  *         out.__this__ = HalType(other.__this__)
  */
-  __pyx_tuple__50 = PyTuple_Pack(2, __pyx_n_s_other, __pyx_n_s_out); if (unlikely(!__pyx_tuple__50)) __PYX_ERR(0, 142, __pyx_L1_error)
+  __pyx_tuple__50 = PyTuple_Pack(2, __pyx_n_s_other, __pyx_n_s_out); if (unlikely(!__pyx_tuple__50)) __PYX_ERR(0, 147, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__50);
   __Pyx_GIVEREF(__pyx_tuple__50);
-  __pyx_codeobj__51 = (PyObject*)__Pyx_PyCode_New(1, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__50, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_halogen_api_pyx, __pyx_n_s_fromother, 142, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__51)) __PYX_ERR(0, 142, __pyx_L1_error)
+  __pyx_codeobj__51 = (PyObject*)__Pyx_PyCode_New(1, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__50, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_halogen_api_pyx, __pyx_n_s_fromother, 147, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__51)) __PYX_ERR(0, 147, __pyx_L1_error)
 
-  /* "halogen/api.pyx":290
+  /* "halogen/api.pyx":297
  * 
  *     @staticmethod
  *     def Int(int bits, int lanes=1):             # <<<<<<<<<<<<<<
  *         out = Type()
  *         out.__this__ = HalType_Int(bits, lanes)
  */
-  __pyx_tuple__52 = PyTuple_Pack(3, __pyx_n_s_bits, __pyx_n_s_lanes, __pyx_n_s_out); if (unlikely(!__pyx_tuple__52)) __PYX_ERR(0, 290, __pyx_L1_error)
+  __pyx_tuple__52 = PyTuple_Pack(3, __pyx_n_s_bits, __pyx_n_s_lanes, __pyx_n_s_out); if (unlikely(!__pyx_tuple__52)) __PYX_ERR(0, 297, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__52);
   __Pyx_GIVEREF(__pyx_tuple__52);
-  __pyx_codeobj__53 = (PyObject*)__Pyx_PyCode_New(2, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__52, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_halogen_api_pyx, __pyx_n_s_Int, 290, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__53)) __PYX_ERR(0, 290, __pyx_L1_error)
+  __pyx_codeobj__53 = (PyObject*)__Pyx_PyCode_New(2, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__52, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_halogen_api_pyx, __pyx_n_s_Int, 297, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__53)) __PYX_ERR(0, 297, __pyx_L1_error)
 
-  /* "halogen/api.pyx":296
+  /* "halogen/api.pyx":303
  * 
  *     @staticmethod
  *     def UInt(int bits, int lanes=1):             # <<<<<<<<<<<<<<
  *         out = Type()
  *         out.__this__ = HalType_UInt(bits, lanes)
  */
-  __pyx_tuple__54 = PyTuple_Pack(3, __pyx_n_s_bits, __pyx_n_s_lanes, __pyx_n_s_out); if (unlikely(!__pyx_tuple__54)) __PYX_ERR(0, 296, __pyx_L1_error)
+  __pyx_tuple__54 = PyTuple_Pack(3, __pyx_n_s_bits, __pyx_n_s_lanes, __pyx_n_s_out); if (unlikely(!__pyx_tuple__54)) __PYX_ERR(0, 303, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__54);
   __Pyx_GIVEREF(__pyx_tuple__54);
-  __pyx_codeobj__55 = (PyObject*)__Pyx_PyCode_New(2, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__54, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_halogen_api_pyx, __pyx_n_s_UInt, 296, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__55)) __PYX_ERR(0, 296, __pyx_L1_error)
+  __pyx_codeobj__55 = (PyObject*)__Pyx_PyCode_New(2, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__54, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_halogen_api_pyx, __pyx_n_s_UInt, 303, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__55)) __PYX_ERR(0, 303, __pyx_L1_error)
 
-  /* "halogen/api.pyx":302
+  /* "halogen/api.pyx":309
  * 
  *     @staticmethod
  *     def Float(int bits, int lanes=1):             # <<<<<<<<<<<<<<
  *         out = Type()
  *         out.__this__ = HalType_Float(bits, lanes)
  */
-  __pyx_tuple__56 = PyTuple_Pack(3, __pyx_n_s_bits, __pyx_n_s_lanes, __pyx_n_s_out); if (unlikely(!__pyx_tuple__56)) __PYX_ERR(0, 302, __pyx_L1_error)
+  __pyx_tuple__56 = PyTuple_Pack(3, __pyx_n_s_bits, __pyx_n_s_lanes, __pyx_n_s_out); if (unlikely(!__pyx_tuple__56)) __PYX_ERR(0, 309, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__56);
   __Pyx_GIVEREF(__pyx_tuple__56);
-  __pyx_codeobj__57 = (PyObject*)__Pyx_PyCode_New(2, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__56, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_halogen_api_pyx, __pyx_n_s_Float, 302, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__57)) __PYX_ERR(0, 302, __pyx_L1_error)
+  __pyx_codeobj__57 = (PyObject*)__Pyx_PyCode_New(2, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__56, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_halogen_api_pyx, __pyx_n_s_Float, 309, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__57)) __PYX_ERR(0, 309, __pyx_L1_error)
 
-  /* "halogen/api.pyx":308
+  /* "halogen/api.pyx":315
  * 
  *     @staticmethod
  *     def Bool(int lanes=1):             # <<<<<<<<<<<<<<
  *         out = Type()
  *         out.__this__ = HalType_Bool(lanes)
  */
-  __pyx_tuple__58 = PyTuple_Pack(2, __pyx_n_s_lanes, __pyx_n_s_out); if (unlikely(!__pyx_tuple__58)) __PYX_ERR(0, 308, __pyx_L1_error)
+  __pyx_tuple__58 = PyTuple_Pack(2, __pyx_n_s_lanes, __pyx_n_s_out); if (unlikely(!__pyx_tuple__58)) __PYX_ERR(0, 315, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__58);
   __Pyx_GIVEREF(__pyx_tuple__58);
-  __pyx_codeobj__59 = (PyObject*)__Pyx_PyCode_New(1, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__58, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_halogen_api_pyx, __pyx_n_s_Bool, 308, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__59)) __PYX_ERR(0, 308, __pyx_L1_error)
+  __pyx_codeobj__59 = (PyObject*)__Pyx_PyCode_New(1, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__58, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_halogen_api_pyx, __pyx_n_s_Bool, 315, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__59)) __PYX_ERR(0, 315, __pyx_L1_error)
 
-  /* "halogen/api.pyx":314
+  /* "halogen/api.pyx":321
  * 
  *     @staticmethod
  *     def Handle(int lanes=1):             # <<<<<<<<<<<<<<
  *         out = Type()
  *         out.__this__ = HalType_Handle(lanes, NULL)
  */
-  __pyx_tuple__60 = PyTuple_Pack(2, __pyx_n_s_lanes, __pyx_n_s_out); if (unlikely(!__pyx_tuple__60)) __PYX_ERR(0, 314, __pyx_L1_error)
+  __pyx_tuple__60 = PyTuple_Pack(2, __pyx_n_s_lanes, __pyx_n_s_out); if (unlikely(!__pyx_tuple__60)) __PYX_ERR(0, 321, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__60);
   __Pyx_GIVEREF(__pyx_tuple__60);
-  __pyx_codeobj__61 = (PyObject*)__Pyx_PyCode_New(1, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__60, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_halogen_api_pyx, __pyx_n_s_Handle, 314, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__61)) __PYX_ERR(0, 314, __pyx_L1_error)
+  __pyx_codeobj__61 = (PyObject*)__Pyx_PyCode_New(1, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__60, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_halogen_api_pyx, __pyx_n_s_Handle, 321, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__61)) __PYX_ERR(0, 321, __pyx_L1_error)
 
-  /* "halogen/api.pyx":328
+  /* "halogen/api.pyx":335
  * 
  *     @staticmethod
  *     def validate_target_string(object target_string not None):             # <<<<<<<<<<<<<<
  *         return HalTarget.validate_target_string(<string>u8bytes(target_string))
  * 
  */
-  __pyx_tuple__62 = PyTuple_Pack(1, __pyx_n_s_target_string); if (unlikely(!__pyx_tuple__62)) __PYX_ERR(0, 328, __pyx_L1_error)
+  __pyx_tuple__62 = PyTuple_Pack(1, __pyx_n_s_target_string); if (unlikely(!__pyx_tuple__62)) __PYX_ERR(0, 335, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__62);
   __Pyx_GIVEREF(__pyx_tuple__62);
-  __pyx_codeobj__63 = (PyObject*)__Pyx_PyCode_New(1, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__62, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_halogen_api_pyx, __pyx_n_s_validate_target_string, 328, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__63)) __PYX_ERR(0, 328, __pyx_L1_error)
+  __pyx_codeobj__63 = (PyObject*)__Pyx_PyCode_New(1, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__62, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_halogen_api_pyx, __pyx_n_s_validate_target_string, 335, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__63)) __PYX_ERR(0, 335, __pyx_L1_error)
 
-  /* "halogen/api.pyx":412
+  /* "halogen/api.pyx":418
  * 
  *     @staticmethod
  *     def host_target():             # <<<<<<<<<<<<<<
  *         out = Target()
  *         with nogil:
  */
-  __pyx_tuple__64 = PyTuple_Pack(1, __pyx_n_s_out); if (unlikely(!__pyx_tuple__64)) __PYX_ERR(0, 412, __pyx_L1_error)
+  __pyx_tuple__64 = PyTuple_Pack(1, __pyx_n_s_out); if (unlikely(!__pyx_tuple__64)) __PYX_ERR(0, 418, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__64);
   __Pyx_GIVEREF(__pyx_tuple__64);
-  __pyx_codeobj__65 = (PyObject*)__Pyx_PyCode_New(0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__64, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_halogen_api_pyx, __pyx_n_s_host_target, 412, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__65)) __PYX_ERR(0, 412, __pyx_L1_error)
+  __pyx_codeobj__65 = (PyObject*)__Pyx_PyCode_New(0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__64, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_halogen_api_pyx, __pyx_n_s_host_target, 418, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__65)) __PYX_ERR(0, 418, __pyx_L1_error)
 
-  /* "halogen/api.pyx":419
+  /* "halogen/api.pyx":425
  * 
  *     @staticmethod
  *     def target_from_environment():             # <<<<<<<<<<<<<<
  *         out = Target()
  *         with nogil:
  */
-  __pyx_tuple__66 = PyTuple_Pack(1, __pyx_n_s_out); if (unlikely(!__pyx_tuple__66)) __PYX_ERR(0, 419, __pyx_L1_error)
+  __pyx_tuple__66 = PyTuple_Pack(1, __pyx_n_s_out); if (unlikely(!__pyx_tuple__66)) __PYX_ERR(0, 425, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__66);
   __Pyx_GIVEREF(__pyx_tuple__66);
-  __pyx_codeobj__67 = (PyObject*)__Pyx_PyCode_New(0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__66, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_halogen_api_pyx, __pyx_n_s_target_from_environment, 419, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__67)) __PYX_ERR(0, 419, __pyx_L1_error)
+  __pyx_codeobj__67 = (PyObject*)__Pyx_PyCode_New(0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__66, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_halogen_api_pyx, __pyx_n_s_target_from_environment, 425, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__67)) __PYX_ERR(0, 425, __pyx_L1_error)
 
-  /* "halogen/api.pyx":426
+  /* "halogen/api.pyx":432
  * 
  *     @staticmethod
  *     def jit_target_from_environment():             # <<<<<<<<<<<<<<
  *         out = Target()
  *         with nogil:
  */
-  __pyx_tuple__68 = PyTuple_Pack(1, __pyx_n_s_out); if (unlikely(!__pyx_tuple__68)) __PYX_ERR(0, 426, __pyx_L1_error)
+  __pyx_tuple__68 = PyTuple_Pack(1, __pyx_n_s_out); if (unlikely(!__pyx_tuple__68)) __PYX_ERR(0, 432, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__68);
   __Pyx_GIVEREF(__pyx_tuple__68);
-  __pyx_codeobj__69 = (PyObject*)__Pyx_PyCode_New(0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__68, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_halogen_api_pyx, __pyx_n_s_jit_target_from_environment, 426, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__69)) __PYX_ERR(0, 426, __pyx_L1_error)
+  __pyx_codeobj__69 = (PyObject*)__Pyx_PyCode_New(0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__68, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_halogen_api_pyx, __pyx_n_s_jit_target_from_environment, 432, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__69)) __PYX_ERR(0, 432, __pyx_L1_error)
 
-  /* "halogen/api.pyx":1042
+  /* "halogen/api.pyx":1048
  * ## FUNCTION WRAPPERS:
  * 
  * def get_host_target():             # <<<<<<<<<<<<<<
  *     """ Halide::get_host_target() wrapper call. """
  *     return Target.host_target()
  */
-  __pyx_codeobj__70 = (PyObject*)__Pyx_PyCode_New(0, 0, 0, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_halogen_api_pyx, __pyx_n_s_get_host_target, 1042, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__70)) __PYX_ERR(0, 1042, __pyx_L1_error)
+  __pyx_codeobj__70 = (PyObject*)__Pyx_PyCode_New(0, 0, 0, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_halogen_api_pyx, __pyx_n_s_get_host_target, 1048, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__70)) __PYX_ERR(0, 1048, __pyx_L1_error)
 
-  /* "halogen/api.pyx":1046
+  /* "halogen/api.pyx":1052
  *     return Target.host_target()
  * 
  * def get_target_from_environment():             # <<<<<<<<<<<<<<
  *     """ Halide::get_target_from_environment() wrapper call. """
  *     return Target.target_from_environment()
  */
-  __pyx_codeobj__71 = (PyObject*)__Pyx_PyCode_New(0, 0, 0, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_halogen_api_pyx, __pyx_n_s_get_target_from_environment, 1046, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__71)) __PYX_ERR(0, 1046, __pyx_L1_error)
+  __pyx_codeobj__71 = (PyObject*)__Pyx_PyCode_New(0, 0, 0, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_halogen_api_pyx, __pyx_n_s_get_target_from_environment, 1052, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__71)) __PYX_ERR(0, 1052, __pyx_L1_error)
 
-  /* "halogen/api.pyx":1050
+  /* "halogen/api.pyx":1056
  *     return Target.target_from_environment()
  * 
  * def get_jit_target_from_environment():             # <<<<<<<<<<<<<<
  *     """ Halide::get_jit_target_from_environment() wrapper call. """
  *     return Target.jit_target_from_environment()
  */
-  __pyx_codeobj__72 = (PyObject*)__Pyx_PyCode_New(0, 0, 0, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_halogen_api_pyx, __pyx_n_s_get_jit_target_from_environment, 1050, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__72)) __PYX_ERR(0, 1050, __pyx_L1_error)
+  __pyx_codeobj__72 = (PyObject*)__Pyx_PyCode_New(0, 0, 0, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_halogen_api_pyx, __pyx_n_s_get_jit_target_from_environment, 1056, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__72)) __PYX_ERR(0, 1056, __pyx_L1_error)
 
-  /* "halogen/api.pyx":1082
+  /* "halogen/api.pyx":1088
  *     return base_path
  * 
  * def compute_base_path(object output_dir not None,             # <<<<<<<<<<<<<<
  *                       object function_name not None,
  *                       object file_base_name=None):
  */
-  __pyx_tuple__73 = PyTuple_Pack(6, __pyx_n_s_output_dir, __pyx_n_s_function_name, __pyx_n_s_file_base_name, __pyx_n_s_output_dir_string, __pyx_n_s_function_name_string, __pyx_n_s_file_base_name_string); if (unlikely(!__pyx_tuple__73)) __PYX_ERR(0, 1082, __pyx_L1_error)
+  __pyx_tuple__73 = PyTuple_Pack(6, __pyx_n_s_output_dir, __pyx_n_s_function_name, __pyx_n_s_file_base_name, __pyx_n_s_output_dir_string, __pyx_n_s_function_name_string, __pyx_n_s_file_base_name_string); if (unlikely(!__pyx_tuple__73)) __PYX_ERR(0, 1088, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__73);
   __Pyx_GIVEREF(__pyx_tuple__73);
-  __pyx_codeobj__74 = (PyObject*)__Pyx_PyCode_New(3, 0, 6, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__73, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_halogen_api_pyx, __pyx_n_s_compute_base_path, 1082, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__74)) __PYX_ERR(0, 1082, __pyx_L1_error)
+  __pyx_codeobj__74 = (PyObject*)__Pyx_PyCode_New(3, 0, 6, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__73, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_halogen_api_pyx, __pyx_n_s_compute_base_path, 1088, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__74)) __PYX_ERR(0, 1088, __pyx_L1_error)
 
-  /* "halogen/api.pyx":1155
+  /* "halogen/api.pyx":1161
  *     modulevec.push_back(deref(module.__this__))
  * 
  * def link_modules(module_name not None, *modules):             # <<<<<<<<<<<<<<
  *     """ Python wrapper for Halide::link_modules() from src/Module.h """
  *     cdef modulevec_t modulevec
  */
-  __pyx_tuple__75 = PyTuple_Pack(6, __pyx_n_s_module_name, __pyx_n_s_modules, __pyx_n_s_modulevec, __pyx_n_s_name_2, __pyx_n_s_out, __pyx_n_s_module); if (unlikely(!__pyx_tuple__75)) __PYX_ERR(0, 1155, __pyx_L1_error)
+  __pyx_tuple__75 = PyTuple_Pack(6, __pyx_n_s_module_name, __pyx_n_s_modules, __pyx_n_s_modulevec, __pyx_n_s_name_2, __pyx_n_s_out, __pyx_n_s_module); if (unlikely(!__pyx_tuple__75)) __PYX_ERR(0, 1161, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__75);
   __Pyx_GIVEREF(__pyx_tuple__75);
-  __pyx_codeobj__76 = (PyObject*)__Pyx_PyCode_New(1, 0, 6, 0, CO_OPTIMIZED|CO_NEWLOCALS|CO_VARARGS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__75, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_halogen_api_pyx, __pyx_n_s_link_modules, 1155, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__76)) __PYX_ERR(0, 1155, __pyx_L1_error)
+  __pyx_codeobj__76 = (PyObject*)__Pyx_PyCode_New(1, 0, 6, 0, CO_OPTIMIZED|CO_NEWLOCALS|CO_VARARGS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__75, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_halogen_api_pyx, __pyx_n_s_link_modules, 1161, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__76)) __PYX_ERR(0, 1161, __pyx_L1_error)
 
-  /* "halogen/api.pyx":1177
+  /* "halogen/api.pyx":1183
  *     return out
  * 
  * def compile_standalone_runtime(Target target=Target.target_from_environment(),             # <<<<<<<<<<<<<<
  *                                   object pth=None,
  *                              Outputs outputs=None):
  */
-  __pyx_tuple__77 = PyTuple_Pack(6, __pyx_n_s_target, __pyx_n_s_pth, __pyx_n_s_outputs, __pyx_n_s_out, __pyx_n_s_realpth, __pyx_n_s_realpath); if (unlikely(!__pyx_tuple__77)) __PYX_ERR(0, 1177, __pyx_L1_error)
+  __pyx_tuple__77 = PyTuple_Pack(6, __pyx_n_s_target, __pyx_n_s_pth, __pyx_n_s_outputs, __pyx_n_s_out, __pyx_n_s_realpth, __pyx_n_s_realpath); if (unlikely(!__pyx_tuple__77)) __PYX_ERR(0, 1183, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__77);
   __Pyx_GIVEREF(__pyx_tuple__77);
-  __pyx_codeobj__78 = (PyObject*)__Pyx_PyCode_New(3, 0, 6, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__77, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_halogen_api_pyx, __pyx_n_s_compile_standalone_runtime, 1177, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__78)) __PYX_ERR(0, 1177, __pyx_L1_error)
+  __pyx_codeobj__78 = (PyObject*)__Pyx_PyCode_New(3, 0, 6, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__77, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_halogen_api_pyx, __pyx_n_s_compile_standalone_runtime, 1183, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__78)) __PYX_ERR(0, 1183, __pyx_L1_error)
 
-  /* "halogen/api.pyx":1227
+  /* "halogen/api.pyx":1233
  *     raise ValueError("Either the 'pth' or 'outputs' args must be non-None")
  * 
  * def make_standalone_runtime(Target target=Target.target_from_environment(),             # <<<<<<<<<<<<<<
  *                             object pth=None,
  *                                  **emitopts):
  */
-  __pyx_tuple__79 = PyTuple_Pack(7, __pyx_n_s_target, __pyx_n_s_pth, __pyx_n_s_emitopts, __pyx_n_s_outputs, __pyx_n_s_out, __pyx_n_s_realpth, __pyx_n_s_realpath); if (unlikely(!__pyx_tuple__79)) __PYX_ERR(0, 1227, __pyx_L1_error)
+  __pyx_tuple__79 = PyTuple_Pack(7, __pyx_n_s_target, __pyx_n_s_pth, __pyx_n_s_emitopts, __pyx_n_s_outputs, __pyx_n_s_out, __pyx_n_s_realpth, __pyx_n_s_realpath); if (unlikely(!__pyx_tuple__79)) __PYX_ERR(0, 1233, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__79);
   __Pyx_GIVEREF(__pyx_tuple__79);
-  __pyx_codeobj__80 = (PyObject*)__Pyx_PyCode_New(2, 0, 7, 0, CO_OPTIMIZED|CO_NEWLOCALS|CO_VARKEYWORDS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__79, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_halogen_api_pyx, __pyx_n_s_make_standalone_runtime, 1227, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__80)) __PYX_ERR(0, 1227, __pyx_L1_error)
+  __pyx_codeobj__80 = (PyObject*)__Pyx_PyCode_New(2, 0, 7, 0, CO_OPTIMIZED|CO_NEWLOCALS|CO_VARKEYWORDS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__79, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_halogen_api_pyx, __pyx_n_s_make_standalone_runtime, 1233, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__80)) __PYX_ERR(0, 1233, __pyx_L1_error)
 
-  /* "halogen/api.pyx":1267
+  /* "halogen/api.pyx":1273
  *         static_library_name=out.static_library_name)
  * 
  * def running_program_name():             # <<<<<<<<<<<<<<
  *     """ Return the name of the running program as a string. """
  *     return halide_running_program_name().decode('UTF-8')
  */
-  __pyx_codeobj__81 = (PyObject*)__Pyx_PyCode_New(0, 0, 0, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_halogen_api_pyx, __pyx_n_s_running_program_name, 1267, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__81)) __PYX_ERR(0, 1267, __pyx_L1_error)
+  __pyx_codeobj__81 = (PyObject*)__Pyx_PyCode_New(0, 0, 0, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_halogen_api_pyx, __pyx_n_s_running_program_name, 1273, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__81)) __PYX_ERR(0, 1273, __pyx_L1_error)
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
@@ -27947,38 +28047,38 @@ static int __Pyx_modinit_type_init_code(void) {
   __pyx_vtable_7halogen_3api_Type.can_represent_type = (PyObject *(*)(struct __pyx_obj_7halogen_3api_Type *, struct __pyx_obj_7halogen_3api_Type *, int __pyx_skip_dispatch))__pyx_f_7halogen_3api_4Type_can_represent_type;
   __pyx_vtable_7halogen_3api_Type.can_represent_float = (PyObject *(*)(struct __pyx_obj_7halogen_3api_Type *, float, int __pyx_skip_dispatch))__pyx_f_7halogen_3api_4Type_can_represent_float;
   __pyx_vtable_7halogen_3api_Type.can_represent_long = (PyObject *(*)(struct __pyx_obj_7halogen_3api_Type *, long, int __pyx_skip_dispatch))__pyx_f_7halogen_3api_4Type_can_represent_long;
-  if (PyType_Ready(&__pyx_type_7halogen_3api_Type) < 0) __PYX_ERR(0, 135, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_7halogen_3api_Type) < 0) __PYX_ERR(0, 140, __pyx_L1_error)
   __pyx_type_7halogen_3api_Type.tp_print = 0;
   if ((CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP) && likely(!__pyx_type_7halogen_3api_Type.tp_dictoffset && __pyx_type_7halogen_3api_Type.tp_getattro == PyObject_GenericGetAttr)) {
     __pyx_type_7halogen_3api_Type.tp_getattro = __Pyx_PyObject_GenericGetAttr;
   }
-  if (__Pyx_SetVtable(__pyx_type_7halogen_3api_Type.tp_dict, __pyx_vtabptr_7halogen_3api_Type) < 0) __PYX_ERR(0, 135, __pyx_L1_error)
-  if (PyObject_SetAttrString(__pyx_m, "Type", (PyObject *)&__pyx_type_7halogen_3api_Type) < 0) __PYX_ERR(0, 135, __pyx_L1_error)
-  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_7halogen_3api_Type) < 0) __PYX_ERR(0, 135, __pyx_L1_error)
+  if (__Pyx_SetVtable(__pyx_type_7halogen_3api_Type.tp_dict, __pyx_vtabptr_7halogen_3api_Type) < 0) __PYX_ERR(0, 140, __pyx_L1_error)
+  if (PyObject_SetAttrString(__pyx_m, "Type", (PyObject *)&__pyx_type_7halogen_3api_Type) < 0) __PYX_ERR(0, 140, __pyx_L1_error)
+  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_7halogen_3api_Type) < 0) __PYX_ERR(0, 140, __pyx_L1_error)
   __pyx_ptype_7halogen_3api_Type = &__pyx_type_7halogen_3api_Type;
-  if (PyType_Ready(&__pyx_type_7halogen_3api_Target) < 0) __PYX_ERR(0, 321, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_7halogen_3api_Target) < 0) __PYX_ERR(0, 328, __pyx_L1_error)
   __pyx_type_7halogen_3api_Target.tp_print = 0;
   if ((CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP) && likely(!__pyx_type_7halogen_3api_Target.tp_dictoffset && __pyx_type_7halogen_3api_Target.tp_getattro == PyObject_GenericGetAttr)) {
     __pyx_type_7halogen_3api_Target.tp_getattro = __Pyx_PyObject_GenericGetAttr;
   }
-  if (PyObject_SetAttrString(__pyx_m, "Target", (PyObject *)&__pyx_type_7halogen_3api_Target) < 0) __PYX_ERR(0, 321, __pyx_L1_error)
-  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_7halogen_3api_Target) < 0) __PYX_ERR(0, 321, __pyx_L1_error)
+  if (PyObject_SetAttrString(__pyx_m, "Target", (PyObject *)&__pyx_type_7halogen_3api_Target) < 0) __PYX_ERR(0, 328, __pyx_L1_error)
+  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_7halogen_3api_Target) < 0) __PYX_ERR(0, 328, __pyx_L1_error)
   __pyx_ptype_7halogen_3api_Target = &__pyx_type_7halogen_3api_Target;
-  if (PyType_Ready(&__pyx_type_7halogen_3api_Outputs) < 0) __PYX_ERR(0, 434, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_7halogen_3api_Outputs) < 0) __PYX_ERR(0, 440, __pyx_L1_error)
   __pyx_type_7halogen_3api_Outputs.tp_print = 0;
   if ((CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP) && likely(!__pyx_type_7halogen_3api_Outputs.tp_dictoffset && __pyx_type_7halogen_3api_Outputs.tp_getattro == PyObject_GenericGetAttr)) {
     __pyx_type_7halogen_3api_Outputs.tp_getattro = __Pyx_PyObject_GenericGetAttr;
   }
-  if (PyObject_SetAttrString(__pyx_m, "Outputs", (PyObject *)&__pyx_type_7halogen_3api_Outputs) < 0) __PYX_ERR(0, 434, __pyx_L1_error)
-  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_7halogen_3api_Outputs) < 0) __PYX_ERR(0, 434, __pyx_L1_error)
+  if (PyObject_SetAttrString(__pyx_m, "Outputs", (PyObject *)&__pyx_type_7halogen_3api_Outputs) < 0) __PYX_ERR(0, 440, __pyx_L1_error)
+  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_7halogen_3api_Outputs) < 0) __PYX_ERR(0, 440, __pyx_L1_error)
   __pyx_ptype_7halogen_3api_Outputs = &__pyx_type_7halogen_3api_Outputs;
-  if (PyType_Ready(&__pyx_type_7halogen_3api_EmitOptions) < 0) __PYX_ERR(0, 657, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_7halogen_3api_EmitOptions) < 0) __PYX_ERR(0, 663, __pyx_L1_error)
   __pyx_type_7halogen_3api_EmitOptions.tp_print = 0;
   if ((CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP) && likely(!__pyx_type_7halogen_3api_EmitOptions.tp_dictoffset && __pyx_type_7halogen_3api_EmitOptions.tp_getattro == PyObject_GenericGetAttr)) {
     __pyx_type_7halogen_3api_EmitOptions.tp_getattro = __Pyx_PyObject_GenericGetAttr;
   }
-  if (PyObject_SetAttrString(__pyx_m, "EmitOptions", (PyObject *)&__pyx_type_7halogen_3api_EmitOptions) < 0) __PYX_ERR(0, 657, __pyx_L1_error)
-  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_7halogen_3api_EmitOptions) < 0) __PYX_ERR(0, 657, __pyx_L1_error)
+  if (PyObject_SetAttrString(__pyx_m, "EmitOptions", (PyObject *)&__pyx_type_7halogen_3api_EmitOptions) < 0) __PYX_ERR(0, 663, __pyx_L1_error)
+  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_7halogen_3api_EmitOptions) < 0) __PYX_ERR(0, 663, __pyx_L1_error)
   __pyx_ptype_7halogen_3api_EmitOptions = &__pyx_type_7halogen_3api_EmitOptions;
   __pyx_vtabptr_7halogen_3api_Module = &__pyx_vtable_7halogen_3api_Module;
   __pyx_vtable_7halogen_3api_Module.with_instance = (struct __pyx_obj_7halogen_3api_Module *(*)(Halide::Module const &))__pyx_f_7halogen_3api_6Module_with_instance;
@@ -27986,28 +28086,28 @@ static int __Pyx_modinit_type_init_code(void) {
   __pyx_vtable_7halogen_3api_Module.get_functions = (__pyx_t_7halogen_3ext_6halide_6module_funcvec_t (*)(struct __pyx_obj_7halogen_3api_Module *))__pyx_f_7halogen_3api_6Module_get_functions;
   __pyx_vtable_7halogen_3api_Module.get_submodules = (__pyx_t_7halogen_3ext_6halide_6module_modulevec_t (*)(struct __pyx_obj_7halogen_3api_Module *))__pyx_f_7halogen_3api_6Module_get_submodules;
   __pyx_vtable_7halogen_3api_Module.replace_instance = (void (*)(struct __pyx_obj_7halogen_3api_Module *, Halide::Module &&))__pyx_f_7halogen_3api_6Module_replace_instance;
-  if (PyType_Ready(&__pyx_type_7halogen_3api_Module) < 0) __PYX_ERR(0, 889, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_7halogen_3api_Module) < 0) __PYX_ERR(0, 895, __pyx_L1_error)
   __pyx_type_7halogen_3api_Module.tp_print = 0;
   if ((CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP) && likely(!__pyx_type_7halogen_3api_Module.tp_dictoffset && __pyx_type_7halogen_3api_Module.tp_getattro == PyObject_GenericGetAttr)) {
     __pyx_type_7halogen_3api_Module.tp_getattro = __Pyx_PyObject_GenericGetAttr;
   }
-  if (__Pyx_SetVtable(__pyx_type_7halogen_3api_Module.tp_dict, __pyx_vtabptr_7halogen_3api_Module) < 0) __PYX_ERR(0, 889, __pyx_L1_error)
-  if (PyObject_SetAttrString(__pyx_m, "Module", (PyObject *)&__pyx_type_7halogen_3api_Module) < 0) __PYX_ERR(0, 889, __pyx_L1_error)
-  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_7halogen_3api_Module) < 0) __PYX_ERR(0, 889, __pyx_L1_error)
+  if (__Pyx_SetVtable(__pyx_type_7halogen_3api_Module.tp_dict, __pyx_vtabptr_7halogen_3api_Module) < 0) __PYX_ERR(0, 895, __pyx_L1_error)
+  if (PyObject_SetAttrString(__pyx_m, "Module", (PyObject *)&__pyx_type_7halogen_3api_Module) < 0) __PYX_ERR(0, 895, __pyx_L1_error)
+  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_7halogen_3api_Module) < 0) __PYX_ERR(0, 895, __pyx_L1_error)
   __pyx_ptype_7halogen_3api_Module = &__pyx_type_7halogen_3api_Module;
-  if (PyType_Ready(&__pyx_type_7halogen_3api___pyx_scope_struct__to_string) < 0) __PYX_ERR(0, 1005, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_7halogen_3api___pyx_scope_struct__to_string) < 0) __PYX_ERR(0, 1011, __pyx_L1_error)
   __pyx_type_7halogen_3api___pyx_scope_struct__to_string.tp_print = 0;
   if ((CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP) && likely(!__pyx_type_7halogen_3api___pyx_scope_struct__to_string.tp_dictoffset && __pyx_type_7halogen_3api___pyx_scope_struct__to_string.tp_getattro == PyObject_GenericGetAttr)) {
     __pyx_type_7halogen_3api___pyx_scope_struct__to_string.tp_getattro = __Pyx_PyObject_GenericGetAttrNoDict;
   }
   __pyx_ptype_7halogen_3api___pyx_scope_struct__to_string = &__pyx_type_7halogen_3api___pyx_scope_struct__to_string;
-  if (PyType_Ready(&__pyx_type_7halogen_3api___pyx_scope_struct_1_genexpr) < 0) __PYX_ERR(0, 1024, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_7halogen_3api___pyx_scope_struct_1_genexpr) < 0) __PYX_ERR(0, 1030, __pyx_L1_error)
   __pyx_type_7halogen_3api___pyx_scope_struct_1_genexpr.tp_print = 0;
   if ((CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP) && likely(!__pyx_type_7halogen_3api___pyx_scope_struct_1_genexpr.tp_dictoffset && __pyx_type_7halogen_3api___pyx_scope_struct_1_genexpr.tp_getattro == PyObject_GenericGetAttr)) {
     __pyx_type_7halogen_3api___pyx_scope_struct_1_genexpr.tp_getattro = __Pyx_PyObject_GenericGetAttrNoDict;
   }
   __pyx_ptype_7halogen_3api___pyx_scope_struct_1_genexpr = &__pyx_type_7halogen_3api___pyx_scope_struct_1_genexpr;
-  if (PyType_Ready(&__pyx_type_7halogen_3api___pyx_scope_struct_2_genexpr) < 0) __PYX_ERR(0, 1027, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_7halogen_3api___pyx_scope_struct_2_genexpr) < 0) __PYX_ERR(0, 1033, __pyx_L1_error)
   __pyx_type_7halogen_3api___pyx_scope_struct_2_genexpr.tp_print = 0;
   if ((CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP) && likely(!__pyx_type_7halogen_3api___pyx_scope_struct_2_genexpr.tp_dictoffset && __pyx_type_7halogen_3api___pyx_scope_struct_2_genexpr.tp_getattro == PyObject_GenericGetAttr)) {
     __pyx_type_7halogen_3api___pyx_scope_struct_2_genexpr.tp_getattro = __Pyx_PyObject_GenericGetAttrNoDict;
@@ -28250,591 +28350,591 @@ if (!__Pyx_RefNanny) {
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "halogen/api.pyx":118
+  /* "halogen/api.pyx":122
  *     return u8bytes(source).decode('UTF-8')
  * 
- * def stringify(object instance not None, object fields not None):             # <<<<<<<<<<<<<<
+ * def stringify(object instance not None,             # <<<<<<<<<<<<<<
+ *               object fields not None):
  *     """ Custom version of stringify(instance, fields) for use in Cython extensions: """
- *     field_dict = {}
  */
-  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_7halogen_3api_5stringify, NULL, __pyx_n_s_halogen_api); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 118, __pyx_L1_error)
+  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_7halogen_3api_5stringify, NULL, __pyx_n_s_halogen_api); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 122, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_stringify, __pyx_t_2) < 0) __PYX_ERR(0, 118, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_stringify, __pyx_t_2) < 0) __PYX_ERR(0, 122, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "halogen/api.pyx":142
+  /* "halogen/api.pyx":147
  * 
  *     @staticmethod
  *     def fromother(Type other not None):             # <<<<<<<<<<<<<<
  *         out = Type()
  *         out.__this__ = HalType(other.__this__)
  */
-  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_7halogen_3api_4Type_1fromother, NULL, __pyx_n_s_halogen_api); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 142, __pyx_L1_error)
+  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_7halogen_3api_4Type_1fromother, NULL, __pyx_n_s_halogen_api); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 147, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem((PyObject *)__pyx_ptype_7halogen_3api_Type->tp_dict, __pyx_n_s_fromother, __pyx_t_2) < 0) __PYX_ERR(0, 142, __pyx_L1_error)
+  if (PyDict_SetItem((PyObject *)__pyx_ptype_7halogen_3api_Type->tp_dict, __pyx_n_s_fromother, __pyx_t_2) < 0) __PYX_ERR(0, 147, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   PyType_Modified(__pyx_ptype_7halogen_3api_Type);
 
-  /* "halogen/api.pyx":141
+  /* "halogen/api.pyx":146
  *         HalType __this__
  * 
  *     @staticmethod             # <<<<<<<<<<<<<<
  *     def fromother(Type other not None):
  *         out = Type()
  */
-  __pyx_t_2 = __Pyx_GetNameInClass((PyObject *)__pyx_ptype_7halogen_3api_Type, __pyx_n_s_fromother); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 142, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_GetNameInClass((PyObject *)__pyx_ptype_7halogen_3api_Type, __pyx_n_s_fromother); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 147, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_builtin_staticmethod, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 141, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_builtin_staticmethod, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 146, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (PyDict_SetItem((PyObject *)__pyx_ptype_7halogen_3api_Type->tp_dict, __pyx_n_s_fromother, __pyx_t_1) < 0) __PYX_ERR(0, 142, __pyx_L1_error)
+  if (PyDict_SetItem((PyObject *)__pyx_ptype_7halogen_3api_Type->tp_dict, __pyx_n_s_fromother, __pyx_t_1) < 0) __PYX_ERR(0, 147, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   PyType_Modified(__pyx_ptype_7halogen_3api_Type);
 
-  /* "halogen/api.pyx":290
+  /* "halogen/api.pyx":297
  * 
  *     @staticmethod
  *     def Int(int bits, int lanes=1):             # <<<<<<<<<<<<<<
  *         out = Type()
  *         out.__this__ = HalType_Int(bits, lanes)
  */
-  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_7halogen_3api_4Type_59Int, NULL, __pyx_n_s_halogen_api); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 290, __pyx_L1_error)
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_7halogen_3api_4Type_59Int, NULL, __pyx_n_s_halogen_api); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 297, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem((PyObject *)__pyx_ptype_7halogen_3api_Type->tp_dict, __pyx_n_s_Int, __pyx_t_1) < 0) __PYX_ERR(0, 290, __pyx_L1_error)
+  if (PyDict_SetItem((PyObject *)__pyx_ptype_7halogen_3api_Type->tp_dict, __pyx_n_s_Int, __pyx_t_1) < 0) __PYX_ERR(0, 297, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   PyType_Modified(__pyx_ptype_7halogen_3api_Type);
 
-  /* "halogen/api.pyx":289
+  /* "halogen/api.pyx":296
  *         return c_type
  * 
  *     @staticmethod             # <<<<<<<<<<<<<<
  *     def Int(int bits, int lanes=1):
  *         out = Type()
  */
-  __pyx_t_1 = __Pyx_GetNameInClass((PyObject *)__pyx_ptype_7halogen_3api_Type, __pyx_n_s_Int); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 290, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_GetNameInClass((PyObject *)__pyx_ptype_7halogen_3api_Type, __pyx_n_s_Int); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 297, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_builtin_staticmethod, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 289, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_builtin_staticmethod, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 296, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  if (PyDict_SetItem((PyObject *)__pyx_ptype_7halogen_3api_Type->tp_dict, __pyx_n_s_Int, __pyx_t_2) < 0) __PYX_ERR(0, 290, __pyx_L1_error)
+  if (PyDict_SetItem((PyObject *)__pyx_ptype_7halogen_3api_Type->tp_dict, __pyx_n_s_Int, __pyx_t_2) < 0) __PYX_ERR(0, 297, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   PyType_Modified(__pyx_ptype_7halogen_3api_Type);
 
-  /* "halogen/api.pyx":296
+  /* "halogen/api.pyx":303
  * 
  *     @staticmethod
  *     def UInt(int bits, int lanes=1):             # <<<<<<<<<<<<<<
  *         out = Type()
  *         out.__this__ = HalType_UInt(bits, lanes)
  */
-  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_7halogen_3api_4Type_61UInt, NULL, __pyx_n_s_halogen_api); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 296, __pyx_L1_error)
+  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_7halogen_3api_4Type_61UInt, NULL, __pyx_n_s_halogen_api); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 303, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem((PyObject *)__pyx_ptype_7halogen_3api_Type->tp_dict, __pyx_n_s_UInt, __pyx_t_2) < 0) __PYX_ERR(0, 296, __pyx_L1_error)
+  if (PyDict_SetItem((PyObject *)__pyx_ptype_7halogen_3api_Type->tp_dict, __pyx_n_s_UInt, __pyx_t_2) < 0) __PYX_ERR(0, 303, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   PyType_Modified(__pyx_ptype_7halogen_3api_Type);
 
-  /* "halogen/api.pyx":295
+  /* "halogen/api.pyx":302
  *         return out
  * 
  *     @staticmethod             # <<<<<<<<<<<<<<
  *     def UInt(int bits, int lanes=1):
  *         out = Type()
  */
-  __pyx_t_2 = __Pyx_GetNameInClass((PyObject *)__pyx_ptype_7halogen_3api_Type, __pyx_n_s_UInt); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 296, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_GetNameInClass((PyObject *)__pyx_ptype_7halogen_3api_Type, __pyx_n_s_UInt); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 303, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_builtin_staticmethod, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 295, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_builtin_staticmethod, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 302, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (PyDict_SetItem((PyObject *)__pyx_ptype_7halogen_3api_Type->tp_dict, __pyx_n_s_UInt, __pyx_t_1) < 0) __PYX_ERR(0, 296, __pyx_L1_error)
+  if (PyDict_SetItem((PyObject *)__pyx_ptype_7halogen_3api_Type->tp_dict, __pyx_n_s_UInt, __pyx_t_1) < 0) __PYX_ERR(0, 303, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   PyType_Modified(__pyx_ptype_7halogen_3api_Type);
 
-  /* "halogen/api.pyx":302
+  /* "halogen/api.pyx":309
  * 
  *     @staticmethod
  *     def Float(int bits, int lanes=1):             # <<<<<<<<<<<<<<
  *         out = Type()
  *         out.__this__ = HalType_Float(bits, lanes)
  */
-  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_7halogen_3api_4Type_63Float, NULL, __pyx_n_s_halogen_api); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 302, __pyx_L1_error)
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_7halogen_3api_4Type_63Float, NULL, __pyx_n_s_halogen_api); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 309, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem((PyObject *)__pyx_ptype_7halogen_3api_Type->tp_dict, __pyx_n_s_Float, __pyx_t_1) < 0) __PYX_ERR(0, 302, __pyx_L1_error)
+  if (PyDict_SetItem((PyObject *)__pyx_ptype_7halogen_3api_Type->tp_dict, __pyx_n_s_Float, __pyx_t_1) < 0) __PYX_ERR(0, 309, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   PyType_Modified(__pyx_ptype_7halogen_3api_Type);
 
-  /* "halogen/api.pyx":301
+  /* "halogen/api.pyx":308
  *         return out
  * 
  *     @staticmethod             # <<<<<<<<<<<<<<
  *     def Float(int bits, int lanes=1):
  *         out = Type()
  */
-  __pyx_t_1 = __Pyx_GetNameInClass((PyObject *)__pyx_ptype_7halogen_3api_Type, __pyx_n_s_Float); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 302, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_GetNameInClass((PyObject *)__pyx_ptype_7halogen_3api_Type, __pyx_n_s_Float); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 309, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_builtin_staticmethod, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 301, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_builtin_staticmethod, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 308, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  if (PyDict_SetItem((PyObject *)__pyx_ptype_7halogen_3api_Type->tp_dict, __pyx_n_s_Float, __pyx_t_2) < 0) __PYX_ERR(0, 302, __pyx_L1_error)
+  if (PyDict_SetItem((PyObject *)__pyx_ptype_7halogen_3api_Type->tp_dict, __pyx_n_s_Float, __pyx_t_2) < 0) __PYX_ERR(0, 309, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   PyType_Modified(__pyx_ptype_7halogen_3api_Type);
 
-  /* "halogen/api.pyx":308
+  /* "halogen/api.pyx":315
  * 
  *     @staticmethod
  *     def Bool(int lanes=1):             # <<<<<<<<<<<<<<
  *         out = Type()
  *         out.__this__ = HalType_Bool(lanes)
  */
-  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_7halogen_3api_4Type_65Bool, NULL, __pyx_n_s_halogen_api); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 308, __pyx_L1_error)
+  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_7halogen_3api_4Type_65Bool, NULL, __pyx_n_s_halogen_api); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 315, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem((PyObject *)__pyx_ptype_7halogen_3api_Type->tp_dict, __pyx_n_s_Bool, __pyx_t_2) < 0) __PYX_ERR(0, 308, __pyx_L1_error)
+  if (PyDict_SetItem((PyObject *)__pyx_ptype_7halogen_3api_Type->tp_dict, __pyx_n_s_Bool, __pyx_t_2) < 0) __PYX_ERR(0, 315, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   PyType_Modified(__pyx_ptype_7halogen_3api_Type);
 
-  /* "halogen/api.pyx":307
+  /* "halogen/api.pyx":314
  *         return out
  * 
  *     @staticmethod             # <<<<<<<<<<<<<<
  *     def Bool(int lanes=1):
  *         out = Type()
  */
-  __pyx_t_2 = __Pyx_GetNameInClass((PyObject *)__pyx_ptype_7halogen_3api_Type, __pyx_n_s_Bool); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 308, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_GetNameInClass((PyObject *)__pyx_ptype_7halogen_3api_Type, __pyx_n_s_Bool); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 315, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_builtin_staticmethod, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 307, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_builtin_staticmethod, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 314, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (PyDict_SetItem((PyObject *)__pyx_ptype_7halogen_3api_Type->tp_dict, __pyx_n_s_Bool, __pyx_t_1) < 0) __PYX_ERR(0, 308, __pyx_L1_error)
+  if (PyDict_SetItem((PyObject *)__pyx_ptype_7halogen_3api_Type->tp_dict, __pyx_n_s_Bool, __pyx_t_1) < 0) __PYX_ERR(0, 315, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   PyType_Modified(__pyx_ptype_7halogen_3api_Type);
 
-  /* "halogen/api.pyx":314
+  /* "halogen/api.pyx":321
  * 
  *     @staticmethod
  *     def Handle(int lanes=1):             # <<<<<<<<<<<<<<
  *         out = Type()
  *         out.__this__ = HalType_Handle(lanes, NULL)
  */
-  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_7halogen_3api_4Type_67Handle, NULL, __pyx_n_s_halogen_api); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 314, __pyx_L1_error)
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_7halogen_3api_4Type_67Handle, NULL, __pyx_n_s_halogen_api); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 321, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem((PyObject *)__pyx_ptype_7halogen_3api_Type->tp_dict, __pyx_n_s_Handle, __pyx_t_1) < 0) __PYX_ERR(0, 314, __pyx_L1_error)
+  if (PyDict_SetItem((PyObject *)__pyx_ptype_7halogen_3api_Type->tp_dict, __pyx_n_s_Handle, __pyx_t_1) < 0) __PYX_ERR(0, 321, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   PyType_Modified(__pyx_ptype_7halogen_3api_Type);
 
-  /* "halogen/api.pyx":313
+  /* "halogen/api.pyx":320
  *         return out
  * 
  *     @staticmethod             # <<<<<<<<<<<<<<
  *     def Handle(int lanes=1):
  *         out = Type()
  */
-  __pyx_t_1 = __Pyx_GetNameInClass((PyObject *)__pyx_ptype_7halogen_3api_Type, __pyx_n_s_Handle); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 314, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_GetNameInClass((PyObject *)__pyx_ptype_7halogen_3api_Type, __pyx_n_s_Handle); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 321, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_builtin_staticmethod, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 313, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_builtin_staticmethod, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 320, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  if (PyDict_SetItem((PyObject *)__pyx_ptype_7halogen_3api_Type->tp_dict, __pyx_n_s_Handle, __pyx_t_2) < 0) __PYX_ERR(0, 314, __pyx_L1_error)
+  if (PyDict_SetItem((PyObject *)__pyx_ptype_7halogen_3api_Type->tp_dict, __pyx_n_s_Handle, __pyx_t_2) < 0) __PYX_ERR(0, 321, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   PyType_Modified(__pyx_ptype_7halogen_3api_Type);
 
-  /* "halogen/api.pyx":328
+  /* "halogen/api.pyx":335
  * 
  *     @staticmethod
  *     def validate_target_string(object target_string not None):             # <<<<<<<<<<<<<<
  *         return HalTarget.validate_target_string(<string>u8bytes(target_string))
  * 
  */
-  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_7halogen_3api_6Target_1validate_target_string, NULL, __pyx_n_s_halogen_api); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 328, __pyx_L1_error)
+  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_7halogen_3api_6Target_1validate_target_string, NULL, __pyx_n_s_halogen_api); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 335, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem((PyObject *)__pyx_ptype_7halogen_3api_Target->tp_dict, __pyx_n_s_validate_target_string, __pyx_t_2) < 0) __PYX_ERR(0, 328, __pyx_L1_error)
+  if (PyDict_SetItem((PyObject *)__pyx_ptype_7halogen_3api_Target->tp_dict, __pyx_n_s_validate_target_string, __pyx_t_2) < 0) __PYX_ERR(0, 335, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   PyType_Modified(__pyx_ptype_7halogen_3api_Target);
 
-  /* "halogen/api.pyx":327
+  /* "halogen/api.pyx":334
  *         HalTarget __this__
  * 
  *     @staticmethod             # <<<<<<<<<<<<<<
  *     def validate_target_string(object target_string not None):
  *         return HalTarget.validate_target_string(<string>u8bytes(target_string))
  */
-  __pyx_t_2 = __Pyx_GetNameInClass((PyObject *)__pyx_ptype_7halogen_3api_Target, __pyx_n_s_validate_target_string); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 328, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_GetNameInClass((PyObject *)__pyx_ptype_7halogen_3api_Target, __pyx_n_s_validate_target_string); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 335, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_builtin_staticmethod, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 327, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_builtin_staticmethod, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 334, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (PyDict_SetItem((PyObject *)__pyx_ptype_7halogen_3api_Target->tp_dict, __pyx_n_s_validate_target_string, __pyx_t_1) < 0) __PYX_ERR(0, 328, __pyx_L1_error)
+  if (PyDict_SetItem((PyObject *)__pyx_ptype_7halogen_3api_Target->tp_dict, __pyx_n_s_validate_target_string, __pyx_t_1) < 0) __PYX_ERR(0, 335, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   PyType_Modified(__pyx_ptype_7halogen_3api_Target);
 
-  /* "halogen/api.pyx":412
+  /* "halogen/api.pyx":418
  * 
  *     @staticmethod
  *     def host_target():             # <<<<<<<<<<<<<<
  *         out = Target()
  *         with nogil:
  */
-  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_7halogen_3api_6Target_29host_target, NULL, __pyx_n_s_halogen_api); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 412, __pyx_L1_error)
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_7halogen_3api_6Target_29host_target, NULL, __pyx_n_s_halogen_api); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 418, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem((PyObject *)__pyx_ptype_7halogen_3api_Target->tp_dict, __pyx_n_s_host_target, __pyx_t_1) < 0) __PYX_ERR(0, 412, __pyx_L1_error)
+  if (PyDict_SetItem((PyObject *)__pyx_ptype_7halogen_3api_Target->tp_dict, __pyx_n_s_host_target, __pyx_t_1) < 0) __PYX_ERR(0, 418, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   PyType_Modified(__pyx_ptype_7halogen_3api_Target);
 
-  /* "halogen/api.pyx":411
+  /* "halogen/api.pyx":417
  *         return False
  * 
  *     @staticmethod             # <<<<<<<<<<<<<<
  *     def host_target():
  *         out = Target()
  */
-  __pyx_t_1 = __Pyx_GetNameInClass((PyObject *)__pyx_ptype_7halogen_3api_Target, __pyx_n_s_host_target); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 412, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_GetNameInClass((PyObject *)__pyx_ptype_7halogen_3api_Target, __pyx_n_s_host_target); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 418, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_builtin_staticmethod, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 411, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_builtin_staticmethod, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 417, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  if (PyDict_SetItem((PyObject *)__pyx_ptype_7halogen_3api_Target->tp_dict, __pyx_n_s_host_target, __pyx_t_2) < 0) __PYX_ERR(0, 412, __pyx_L1_error)
+  if (PyDict_SetItem((PyObject *)__pyx_ptype_7halogen_3api_Target->tp_dict, __pyx_n_s_host_target, __pyx_t_2) < 0) __PYX_ERR(0, 418, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   PyType_Modified(__pyx_ptype_7halogen_3api_Target);
 
-  /* "halogen/api.pyx":419
+  /* "halogen/api.pyx":425
  * 
  *     @staticmethod
  *     def target_from_environment():             # <<<<<<<<<<<<<<
  *         out = Target()
  *         with nogil:
  */
-  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_7halogen_3api_6Target_31target_from_environment, NULL, __pyx_n_s_halogen_api); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 419, __pyx_L1_error)
+  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_7halogen_3api_6Target_31target_from_environment, NULL, __pyx_n_s_halogen_api); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 425, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem((PyObject *)__pyx_ptype_7halogen_3api_Target->tp_dict, __pyx_n_s_target_from_environment, __pyx_t_2) < 0) __PYX_ERR(0, 419, __pyx_L1_error)
+  if (PyDict_SetItem((PyObject *)__pyx_ptype_7halogen_3api_Target->tp_dict, __pyx_n_s_target_from_environment, __pyx_t_2) < 0) __PYX_ERR(0, 425, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   PyType_Modified(__pyx_ptype_7halogen_3api_Target);
 
-  /* "halogen/api.pyx":418
+  /* "halogen/api.pyx":424
  *         return out
  * 
  *     @staticmethod             # <<<<<<<<<<<<<<
  *     def target_from_environment():
  *         out = Target()
  */
-  __pyx_t_2 = __Pyx_GetNameInClass((PyObject *)__pyx_ptype_7halogen_3api_Target, __pyx_n_s_target_from_environment); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 419, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_GetNameInClass((PyObject *)__pyx_ptype_7halogen_3api_Target, __pyx_n_s_target_from_environment); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 425, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_builtin_staticmethod, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 418, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_builtin_staticmethod, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 424, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (PyDict_SetItem((PyObject *)__pyx_ptype_7halogen_3api_Target->tp_dict, __pyx_n_s_target_from_environment, __pyx_t_1) < 0) __PYX_ERR(0, 419, __pyx_L1_error)
+  if (PyDict_SetItem((PyObject *)__pyx_ptype_7halogen_3api_Target->tp_dict, __pyx_n_s_target_from_environment, __pyx_t_1) < 0) __PYX_ERR(0, 425, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   PyType_Modified(__pyx_ptype_7halogen_3api_Target);
 
-  /* "halogen/api.pyx":426
+  /* "halogen/api.pyx":432
  * 
  *     @staticmethod
  *     def jit_target_from_environment():             # <<<<<<<<<<<<<<
  *         out = Target()
  *         with nogil:
  */
-  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_7halogen_3api_6Target_33jit_target_from_environment, NULL, __pyx_n_s_halogen_api); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 426, __pyx_L1_error)
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_7halogen_3api_6Target_33jit_target_from_environment, NULL, __pyx_n_s_halogen_api); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 432, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem((PyObject *)__pyx_ptype_7halogen_3api_Target->tp_dict, __pyx_n_s_jit_target_from_environment, __pyx_t_1) < 0) __PYX_ERR(0, 426, __pyx_L1_error)
+  if (PyDict_SetItem((PyObject *)__pyx_ptype_7halogen_3api_Target->tp_dict, __pyx_n_s_jit_target_from_environment, __pyx_t_1) < 0) __PYX_ERR(0, 432, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   PyType_Modified(__pyx_ptype_7halogen_3api_Target);
 
-  /* "halogen/api.pyx":425
+  /* "halogen/api.pyx":431
  *         return out
  * 
  *     @staticmethod             # <<<<<<<<<<<<<<
  *     def jit_target_from_environment():
  *         out = Target()
  */
-  __pyx_t_1 = __Pyx_GetNameInClass((PyObject *)__pyx_ptype_7halogen_3api_Target, __pyx_n_s_jit_target_from_environment); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 426, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_GetNameInClass((PyObject *)__pyx_ptype_7halogen_3api_Target, __pyx_n_s_jit_target_from_environment); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 432, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_builtin_staticmethod, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 425, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_builtin_staticmethod, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 431, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  if (PyDict_SetItem((PyObject *)__pyx_ptype_7halogen_3api_Target->tp_dict, __pyx_n_s_jit_target_from_environment, __pyx_t_2) < 0) __PYX_ERR(0, 426, __pyx_L1_error)
+  if (PyDict_SetItem((PyObject *)__pyx_ptype_7halogen_3api_Target->tp_dict, __pyx_n_s_jit_target_from_environment, __pyx_t_2) < 0) __PYX_ERR(0, 432, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   PyType_Modified(__pyx_ptype_7halogen_3api_Target);
 
-  /* "halogen/api.pyx":441
+  /* "halogen/api.pyx":447
  * 
  *     @classmethod
  *     def check(cls, instance):             # <<<<<<<<<<<<<<
  *         return getattr(instance, '__class__', None) == cls
  * 
  */
-  __pyx_t_2 = __Pyx_GetNameInClass((PyObject *)__pyx_ptype_7halogen_3api_Outputs, __pyx_n_s_check); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 441, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_GetNameInClass((PyObject *)__pyx_ptype_7halogen_3api_Outputs, __pyx_n_s_check); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 447, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
 
-  /* "halogen/api.pyx":440
+  /* "halogen/api.pyx":446
  *         HalOutputs __this__
  * 
  *     @classmethod             # <<<<<<<<<<<<<<
  *     def check(cls, instance):
  *         return getattr(instance, '__class__', None) == cls
  */
-  __pyx_t_1 = __Pyx_Method_ClassMethod(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 440, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_Method_ClassMethod(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 446, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (PyDict_SetItem((PyObject *)__pyx_ptype_7halogen_3api_Outputs->tp_dict, __pyx_n_s_check, __pyx_t_1) < 0) __PYX_ERR(0, 441, __pyx_L1_error)
+  if (PyDict_SetItem((PyObject *)__pyx_ptype_7halogen_3api_Outputs->tp_dict, __pyx_n_s_check, __pyx_t_1) < 0) __PYX_ERR(0, 447, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   PyType_Modified(__pyx_ptype_7halogen_3api_Outputs);
 
-  /* "halogen/api.pyx":664
+  /* "halogen/api.pyx":670
  * 
  *     emit_defaults = {
  *         'emit_o'                : True,             # <<<<<<<<<<<<<<
  *         'emit_h'                : True,
  *         'emit_cpp'              : False,
  */
-  __pyx_t_1 = __Pyx_PyDict_NewPresized(12); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 664, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyDict_NewPresized(12); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 670, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_emit_o, Py_True) < 0) __PYX_ERR(0, 664, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_emit_o, Py_True) < 0) __PYX_ERR(0, 670, __pyx_L1_error)
 
-  /* "halogen/api.pyx":665
+  /* "halogen/api.pyx":671
  *     emit_defaults = {
  *         'emit_o'                : True,
  *         'emit_h'                : True,             # <<<<<<<<<<<<<<
  *         'emit_cpp'              : False,
  *         'emit_assembly'         : False,
  */
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_emit_h, Py_True) < 0) __PYX_ERR(0, 664, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_emit_h, Py_True) < 0) __PYX_ERR(0, 670, __pyx_L1_error)
 
-  /* "halogen/api.pyx":666
+  /* "halogen/api.pyx":672
  *         'emit_o'                : True,
  *         'emit_h'                : True,
  *         'emit_cpp'              : False,             # <<<<<<<<<<<<<<
  *         'emit_assembly'         : False,
  *         'emit_bitcode'          : False,
  */
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_emit_cpp, Py_False) < 0) __PYX_ERR(0, 664, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_emit_cpp, Py_False) < 0) __PYX_ERR(0, 670, __pyx_L1_error)
 
-  /* "halogen/api.pyx":667
+  /* "halogen/api.pyx":673
  *         'emit_h'                : True,
  *         'emit_cpp'              : False,
  *         'emit_assembly'         : False,             # <<<<<<<<<<<<<<
  *         'emit_bitcode'          : False,
  *         'emit_stmt'             : False,
  */
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_emit_assembly, Py_False) < 0) __PYX_ERR(0, 664, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_emit_assembly, Py_False) < 0) __PYX_ERR(0, 670, __pyx_L1_error)
 
-  /* "halogen/api.pyx":668
+  /* "halogen/api.pyx":674
  *         'emit_cpp'              : False,
  *         'emit_assembly'         : False,
  *         'emit_bitcode'          : False,             # <<<<<<<<<<<<<<
  *         'emit_stmt'             : False,
  *         'emit_stmt_html'        : False,
  */
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_emit_bitcode, Py_False) < 0) __PYX_ERR(0, 664, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_emit_bitcode, Py_False) < 0) __PYX_ERR(0, 670, __pyx_L1_error)
 
-  /* "halogen/api.pyx":669
+  /* "halogen/api.pyx":675
  *         'emit_assembly'         : False,
  *         'emit_bitcode'          : False,
  *         'emit_stmt'             : False,             # <<<<<<<<<<<<<<
  *         'emit_stmt_html'        : False,
  *         'emit_python_extension' : False,
  */
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_emit_stmt, Py_False) < 0) __PYX_ERR(0, 664, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_emit_stmt, Py_False) < 0) __PYX_ERR(0, 670, __pyx_L1_error)
 
-  /* "halogen/api.pyx":670
+  /* "halogen/api.pyx":676
  *         'emit_bitcode'          : False,
  *         'emit_stmt'             : False,
  *         'emit_stmt_html'        : False,             # <<<<<<<<<<<<<<
  *         'emit_python_extension' : False,
  *         'emit_static_library'   : True,
  */
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_emit_stmt_html, Py_False) < 0) __PYX_ERR(0, 664, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_emit_stmt_html, Py_False) < 0) __PYX_ERR(0, 670, __pyx_L1_error)
 
-  /* "halogen/api.pyx":671
+  /* "halogen/api.pyx":677
  *         'emit_stmt'             : False,
  *         'emit_stmt_html'        : False,
  *         'emit_python_extension' : False,             # <<<<<<<<<<<<<<
  *         'emit_static_library'   : True,
  *         'emit_cpp_stub'         : False,
  */
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_emit_python_extension, Py_False) < 0) __PYX_ERR(0, 664, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_emit_python_extension, Py_False) < 0) __PYX_ERR(0, 670, __pyx_L1_error)
 
-  /* "halogen/api.pyx":672
+  /* "halogen/api.pyx":678
  *         'emit_stmt_html'        : False,
  *         'emit_python_extension' : False,
  *         'emit_static_library'   : True,             # <<<<<<<<<<<<<<
  *         'emit_cpp_stub'         : False,
  *         'emit_schedule'         : False,
  */
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_emit_static_library, Py_True) < 0) __PYX_ERR(0, 664, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_emit_static_library, Py_True) < 0) __PYX_ERR(0, 670, __pyx_L1_error)
 
-  /* "halogen/api.pyx":673
+  /* "halogen/api.pyx":679
  *         'emit_python_extension' : False,
  *         'emit_static_library'   : True,
  *         'emit_cpp_stub'         : False,             # <<<<<<<<<<<<<<
  *         'emit_schedule'         : False,
  *         'substitutions'         : {}
  */
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_emit_cpp_stub, Py_False) < 0) __PYX_ERR(0, 664, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_emit_cpp_stub, Py_False) < 0) __PYX_ERR(0, 670, __pyx_L1_error)
 
-  /* "halogen/api.pyx":674
+  /* "halogen/api.pyx":680
  *         'emit_static_library'   : True,
  *         'emit_cpp_stub'         : False,
  *         'emit_schedule'         : False,             # <<<<<<<<<<<<<<
  *         'substitutions'         : {}
  *     }
  */
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_emit_schedule, Py_False) < 0) __PYX_ERR(0, 664, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_emit_schedule, Py_False) < 0) __PYX_ERR(0, 670, __pyx_L1_error)
 
-  /* "halogen/api.pyx":675
+  /* "halogen/api.pyx":681
  *         'emit_cpp_stub'         : False,
  *         'emit_schedule'         : False,
  *         'substitutions'         : {}             # <<<<<<<<<<<<<<
  *     }
  * 
  */
-  __pyx_t_2 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 675, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 681, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_substitutions, __pyx_t_2) < 0) __PYX_ERR(0, 664, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_substitutions, __pyx_t_2) < 0) __PYX_ERR(0, 670, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (PyDict_SetItem((PyObject *)__pyx_ptype_7halogen_3api_EmitOptions->tp_dict, __pyx_n_s_emit_defaults, __pyx_t_1) < 0) __PYX_ERR(0, 663, __pyx_L1_error)
+  if (PyDict_SetItem((PyObject *)__pyx_ptype_7halogen_3api_EmitOptions->tp_dict, __pyx_n_s_emit_defaults, __pyx_t_1) < 0) __PYX_ERR(0, 669, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   PyType_Modified(__pyx_ptype_7halogen_3api_EmitOptions);
 
-  /* "halogen/api.pyx":821
+  /* "halogen/api.pyx":827
  * 
  *     def compute_outputs_for_target_and_path(self,
  *                                             Target target=Target(),             # <<<<<<<<<<<<<<
  *                                             object base_path=""):
  *         """ A reimplementation of `compute_outputs()`, private to Halides Generator.cpp """
  */
-  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_7halogen_3api_Target)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 821, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_7halogen_3api_Target)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 827, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_k__18 = ((struct __pyx_obj_7halogen_3api_Target *)__pyx_t_1);
   __Pyx_GIVEREF(__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "halogen/api.pyx":1042
+  /* "halogen/api.pyx":1048
  * ## FUNCTION WRAPPERS:
  * 
  * def get_host_target():             # <<<<<<<<<<<<<<
  *     """ Halide::get_host_target() wrapper call. """
  *     return Target.host_target()
  */
-  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_7halogen_3api_7get_host_target, NULL, __pyx_n_s_halogen_api); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1042, __pyx_L1_error)
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_7halogen_3api_7get_host_target, NULL, __pyx_n_s_halogen_api); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1048, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_get_host_target, __pyx_t_1) < 0) __PYX_ERR(0, 1042, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_get_host_target, __pyx_t_1) < 0) __PYX_ERR(0, 1048, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "halogen/api.pyx":1046
+  /* "halogen/api.pyx":1052
  *     return Target.host_target()
  * 
  * def get_target_from_environment():             # <<<<<<<<<<<<<<
  *     """ Halide::get_target_from_environment() wrapper call. """
  *     return Target.target_from_environment()
  */
-  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_7halogen_3api_9get_target_from_environment, NULL, __pyx_n_s_halogen_api); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1046, __pyx_L1_error)
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_7halogen_3api_9get_target_from_environment, NULL, __pyx_n_s_halogen_api); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1052, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_get_target_from_environment, __pyx_t_1) < 0) __PYX_ERR(0, 1046, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_get_target_from_environment, __pyx_t_1) < 0) __PYX_ERR(0, 1052, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "halogen/api.pyx":1050
+  /* "halogen/api.pyx":1056
  *     return Target.target_from_environment()
  * 
  * def get_jit_target_from_environment():             # <<<<<<<<<<<<<<
  *     """ Halide::get_jit_target_from_environment() wrapper call. """
  *     return Target.jit_target_from_environment()
  */
-  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_7halogen_3api_11get_jit_target_from_environment, NULL, __pyx_n_s_halogen_api); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1050, __pyx_L1_error)
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_7halogen_3api_11get_jit_target_from_environment, NULL, __pyx_n_s_halogen_api); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1056, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_get_jit_target_from_environment, __pyx_t_1) < 0) __PYX_ERR(0, 1050, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_get_jit_target_from_environment, __pyx_t_1) < 0) __PYX_ERR(0, 1056, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "halogen/api.pyx":1082
+  /* "halogen/api.pyx":1088
  *     return base_path
  * 
  * def compute_base_path(object output_dir not None,             # <<<<<<<<<<<<<<
  *                       object function_name not None,
  *                       object file_base_name=None):
  */
-  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_7halogen_3api_17compute_base_path, NULL, __pyx_n_s_halogen_api); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1082, __pyx_L1_error)
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_7halogen_3api_17compute_base_path, NULL, __pyx_n_s_halogen_api); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1088, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_compute_base_path, __pyx_t_1) < 0) __PYX_ERR(0, 1082, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_compute_base_path, __pyx_t_1) < 0) __PYX_ERR(0, 1088, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "halogen/api.pyx":1096
+  /* "halogen/api.pyx":1102
  *                                     file_base_name_string)
  * 
  * cpdef Module get_generator_module(object name, object arguments={}):             # <<<<<<<<<<<<<<
  *     """ Retrieve a Halide::Module, wrapped as halogen.api.Module,
  *         corresponding to the registered generator instance (by name). """
  */
-  __pyx_t_1 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1096, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1102, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_k__39 = __pyx_t_1;
   __Pyx_GIVEREF(__pyx_t_1);
   __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1096, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1102, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_k__39 = __pyx_t_1;
   __Pyx_GIVEREF(__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "halogen/api.pyx":1155
+  /* "halogen/api.pyx":1161
  *     modulevec.push_back(deref(module.__this__))
  * 
  * def link_modules(module_name not None, *modules):             # <<<<<<<<<<<<<<
  *     """ Python wrapper for Halide::link_modules() from src/Module.h """
  *     cdef modulevec_t modulevec
  */
-  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_7halogen_3api_21link_modules, NULL, __pyx_n_s_halogen_api); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1155, __pyx_L1_error)
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_7halogen_3api_21link_modules, NULL, __pyx_n_s_halogen_api); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1161, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_link_modules, __pyx_t_1) < 0) __PYX_ERR(0, 1155, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_link_modules, __pyx_t_1) < 0) __PYX_ERR(0, 1161, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "halogen/api.pyx":1177
+  /* "halogen/api.pyx":1183
  *     return out
  * 
  * def compile_standalone_runtime(Target target=Target.target_from_environment(),             # <<<<<<<<<<<<<<
  *                                   object pth=None,
  *                              Outputs outputs=None):
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_ptype_7halogen_3api_Target), __pyx_n_s_target_from_environment); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1177, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_ptype_7halogen_3api_Target), __pyx_n_s_target_from_environment); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1183, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1177, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1183, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  if (!(likely(((__pyx_t_2) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_2, __pyx_ptype_7halogen_3api_Target))))) __PYX_ERR(0, 1177, __pyx_L1_error)
+  if (!(likely(((__pyx_t_2) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_2, __pyx_ptype_7halogen_3api_Target))))) __PYX_ERR(0, 1183, __pyx_L1_error)
   __pyx_k__43 = ((struct __pyx_obj_7halogen_3api_Target *)__pyx_t_2);
   __Pyx_GIVEREF(__pyx_t_2);
   __pyx_t_2 = 0;
-  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_7halogen_3api_23compile_standalone_runtime, NULL, __pyx_n_s_halogen_api); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1177, __pyx_L1_error)
+  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_7halogen_3api_23compile_standalone_runtime, NULL, __pyx_n_s_halogen_api); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1183, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_compile_standalone_runtime, __pyx_t_2) < 0) __PYX_ERR(0, 1177, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_compile_standalone_runtime, __pyx_t_2) < 0) __PYX_ERR(0, 1183, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "halogen/api.pyx":1227
+  /* "halogen/api.pyx":1233
  *     raise ValueError("Either the 'pth' or 'outputs' args must be non-None")
  * 
  * def make_standalone_runtime(Target target=Target.target_from_environment(),             # <<<<<<<<<<<<<<
  *                             object pth=None,
  *                                  **emitopts):
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_ptype_7halogen_3api_Target), __pyx_n_s_target_from_environment); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1227, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_ptype_7halogen_3api_Target), __pyx_n_s_target_from_environment); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1233, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1227, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1233, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_7halogen_3api_Target))))) __PYX_ERR(0, 1227, __pyx_L1_error)
+  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_7halogen_3api_Target))))) __PYX_ERR(0, 1233, __pyx_L1_error)
   __pyx_k__46 = ((struct __pyx_obj_7halogen_3api_Target *)__pyx_t_1);
   __Pyx_GIVEREF(__pyx_t_1);
   __pyx_t_1 = 0;
-  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_7halogen_3api_25make_standalone_runtime, NULL, __pyx_n_s_halogen_api); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1227, __pyx_L1_error)
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_7halogen_3api_25make_standalone_runtime, NULL, __pyx_n_s_halogen_api); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1233, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_make_standalone_runtime, __pyx_t_1) < 0) __PYX_ERR(0, 1227, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_make_standalone_runtime, __pyx_t_1) < 0) __PYX_ERR(0, 1233, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "halogen/api.pyx":1267
+  /* "halogen/api.pyx":1273
  *         static_library_name=out.static_library_name)
  * 
  * def running_program_name():             # <<<<<<<<<<<<<<
  *     """ Return the name of the running program as a string. """
  *     return halide_running_program_name().decode('UTF-8')
  */
-  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_7halogen_3api_27running_program_name, NULL, __pyx_n_s_halogen_api); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1267, __pyx_L1_error)
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_7halogen_3api_27running_program_name, NULL, __pyx_n_s_halogen_api); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1273, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_running_program_name, __pyx_t_1) < 0) __PYX_ERR(0, 1267, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_running_program_name, __pyx_t_1) < 0) __PYX_ERR(0, 1273, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "halogen/api.pyx":1
