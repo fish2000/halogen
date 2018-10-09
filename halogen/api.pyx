@@ -445,7 +445,7 @@ cdef class Outputs:
     
     @classmethod
     def check(cls, instance):
-        return getattr(instance, '__class__', None) == cls
+        return getattr(instance, '__class__', None) is cls
     
     def __cinit__(self, *args, **kwargs):
         for arg in args:
