@@ -144,7 +144,7 @@ cdef class Type:
         out.__this__ = HalType(other.__this__)
         return out
     
-    def __cinit__(Type self not None, Type other=None, **kwargs):
+    def __cinit__(self, Type other=None, **kwargs):
         # FIRST: examine `other` argument, looking for an existing Type object,
         # from which we can copy-construct:
         if other is not None:
@@ -166,63 +166,63 @@ cdef class Type:
             # default to “uint8_t”:
             self.__this__ = HalType_UInt(8, 1)
     
-    def code(Type self not None):
+    def code(self):
         return self.__this__.code()
     
-    def bytes(Type self not None):
+    def bytes(self):
         return self.__this__.bytes()
     
-    def bits(Type self not None):
+    def bits(self):
         return self.__this__.bits()
     
-    def lanes(Type self not None):
+    def lanes(self):
         return self.__this__.lanes()
     
-    def with_code(Type self not None, code):
+    def with_code(self, code):
         out = Type()
         out.__this__ = self.__this__.with_code(code)
         return out
     
-    def with_bits(Type self not None, bits):
+    def with_bits(self, bits):
         out = Type()
         out.__this__ = self.__this__.with_bits(<uint8_t>bits)
         return out
     
-    def with_lanes(Type self not None, lanes):
+    def with_lanes(self, lanes):
         out = Type()
         out.__this__ = self.__this__.with_lanes(<uint16_t>lanes)
         return out
     
-    def is_bool(Type self not None):
+    def is_bool(self):
         return self.__this__.is_bool()
     
-    def is_vector(Type self not None):
+    def is_vector(self):
         return self.__this__.is_vector()
     
-    def is_scalar(Type self not None):
+    def is_scalar(self):
         return self.__this__.is_scalar()
     
-    def is_float(Type self not None):
+    def is_float(self):
         return self.__this__.is_float()
     
-    def is_int(Type self not None):
+    def is_int(self):
         return self.__this__.is_int()
     
-    def is_uint(Type self not None):
+    def is_uint(self):
         return self.__this__.is_uint()
     
-    def is_handle(Type self not None):
+    def is_handle(self):
         return self.__this__.is_handle()
     
-    def same_handle_type(Type self not None, Type other not None):
+    def same_handle_type(self, Type other not None):
         return self.__this__.same_handle_type(other.__this__)
     
-    def element_of(Type self not None):
+    def element_of(self):
         out = Type()
         out.__this__ = self.__this__.element_of()
         return out
     
-    def can_represent(Type self not None, other):
+    def can_represent(self, other):
         if type(other) == type(self):
             return self.can_represent_type(other)
         elif type(other) == float:
@@ -240,19 +240,19 @@ cdef class Type:
     cpdef object can_represent_long(Type self, long other):
         return self.__this__.can_represent(<int64_t>other)
     
-    def repr_c_source(Type self not None):
+    def repr_c_source(self):
         try:
             return halide_type_to_c_source(self.__this__)
         except IndexError:
             return b"Halide::type_sink<void>"
     
-    def repr_c_type(Type self not None):
+    def repr_c_type(self):
         try:
             return halide_type_to_c_type(self.__this__)
         except IndexError:
             return b"void"
     
-    def repr_enum_string(Type self not None):
+    def repr_enum_string(self):
         try:
             return halide_type_to_enum_string(self.__this__)
         except IndexError:
@@ -264,7 +264,7 @@ cdef class Type:
         except IndexError:
             return b"void"
     
-    def __repr__(Type self not None):
+    def __repr__(self):
         try:
             c_source = <bytes>halide_type_to_c_source(self.__this__)
         except IndexError:
@@ -272,14 +272,14 @@ cdef class Type:
         return "<%s @ %s>" % (c_source.decode('UTF-8'),
                               hex(id(self)))
     
-    def __str__(Type self not None):
+    def __str__(self):
         try:
             c_type = <bytes>halide_type_to_c_type(self.__this__)
         except IndexError:
             c_type = b"void"
         return c_type.decode('UTF-8')
     
-    def __bytes__(Type self not None):
+    def __bytes__(self):
         try:
             c_type = <bytes>halide_type_to_c_type(self.__this__)
         except IndexError:
@@ -328,7 +328,7 @@ cdef class Target:
     def validate_target_string(object target_string not None):
         return HalTarget.validate_target_string(<string>u8bytes(target_string))
     
-    def __cinit__(Target self not None, *args, **kwargs):
+    def __cinit__(self, *args, **kwargs):
         cdef string target_string = b'host'
         if 'target_string' in kwargs:
             target_string = <string>u8bytes(kwargs.get('target_string', target_string))
@@ -340,66 +340,66 @@ cdef class Target:
         # INSERT FEATURE CHECK HERE
     
     @property
-    def os(Target self not None):
+    def os(self):
         return PyInt_FromLong(<long>(self.__this__.os))
     
     @os.setter
-    def os(Target self not None, value):
+    def os(self, value not None):
         self.__this__.os = <OS>PyInt_AsLong(int(value))
     
     @property
-    def arch(Target self not None):
+    def arch(self):
         return PyInt_FromLong(<long>(self.__this__.arch))
     
     @arch.setter
-    def arch(Target self not None, value):
+    def arch(self, value not None):
         self.__this__.arch = <Arch>PyInt_AsLong(int(value))
     
     @property
-    def bits(Target self not None):
+    def bits(self):
         return PyInt_FromLong(self.__this__.bits)
     
     @bits.setter
-    def bits(Target self not None, value):
+    def bits(self, value not None):
         self.__this__.bits = <int>PyInt_AsLong(int(value))
     
-    def has_gpu_feature(Target self not None):
+    def has_gpu_feature(self):
         return self.__this__.has_gpu_feature()
     
-    def has_feature(Target self not None, feature):
+    def has_feature(self, feature):
         return self.__this__.has_feature(<Feature>PyInt_AsLong(int(feature)))
     
-    def includes_halide_runtime(Target self not None):
+    def includes_halide_runtime(self):
         try:
             return self.to_string().decode('UTF-8').lower().index('no_runtime') < 0
         except ValueError:
             return True
     
-    def to_string(Target self not None):
+    def to_string(self):
         return self.__this__.to_string()
     
-    def maximum_buffer_size(Target self not None):
+    def maximum_buffer_size(self):
         return self.__this__.maximum_buffer_size()
     
-    def supported(Target self not None):
+    def supported(self):
         return self.__this__.supported()
     
-    def supports_type(Target self not None, Type t not None):
+    def supports_type(self, Type t not None):
         return self.__this__.supports_type(t.__this__)
     
-    def natural_vector_size(Target self not None, Type t not None):
+    def natural_vector_size(self, Type t not None):
         return self.__this__.natural_vector_size(t.__this__)
     
-    def __str__(Target self not None):
+    def __str__(self):
         return self.__this__.to_string().decode('UTF-8')
     
-    def __bytes__(Target self not None):
+    def __bytes__(self):
         return self.__this__.to_string()
     
-    def __repr__(Target self not None):
+    def __repr__(self):
         return stringify(self, ('os', 'arch', 'bits')).decode('UTF-8')
     
-    def __richcmp__(Target self not None,
+    def __richcmp__(self,
                     Target other not None,
                     int op):
         if op == 2: # ==
@@ -438,10 +438,10 @@ cdef class Outputs:
         HalOutputs __this__
     
     @classmethod
-    def check(cls not None, instance):
+    def check(cls, instance):
         return getattr(instance, '__class__', None) == cls
     
-    def __cinit__(Outputs self not None, *args, **kwargs):
+    def __cinit__(self, *args, **kwargs):
         for arg in args:
             if type(arg) == type(self):
                 self.__this__ = self.__this__.object(arg.object_name) \
@@ -482,172 +482,172 @@ cdef class Outputs:
         self.__this__.schedule_name = <string>u8bytes(schedule_name)
     
     @property
-    def object_name(Outputs self not None):
+    def object_name(self):
         return <string>self.__this__.object_name
     @object_name.setter
-    def object_name(Outputs self not None, object value not None):
+    def object_name(self, object value not None):
         self.__this__.object_name = <string>u8bytes(value)
     
     @property
-    def assembly_name(Outputs self not None):
+    def assembly_name(self):
         return <string>self.__this__.assembly_name
     @assembly_name.setter
-    def assembly_name(Outputs self not None, object value not None):
+    def assembly_name(self, object value not None):
         self.__this__.assembly_name = <string>u8bytes(value)
     
     @property
-    def bitcode_name(Outputs self not None):
+    def bitcode_name(self):
         return <string>self.__this__.bitcode_name
     @bitcode_name.setter
-    def bitcode_name(Outputs self not None, object value not None):
+    def bitcode_name(self, object value not None):
         self.__this__.bitcode_name = <string>u8bytes(value)
     
     @property
-    def llvm_assembly_name(Outputs self not None):
+    def llvm_assembly_name(self):
         return <string>self.__this__.llvm_assembly_name
     @llvm_assembly_name.setter
-    def llvm_assembly_name(Outputs self not None, object value not None):
+    def llvm_assembly_name(self, object value not None):
         self.__this__.llvm_assembly_name = <string>u8bytes(value)
     
     @property
-    def c_header_name(Outputs self not None):
+    def c_header_name(self):
         return <string>self.__this__.c_header_name
     @c_header_name.setter
-    def c_header_name(Outputs self not None, object value not None):
+    def c_header_name(self, object value not None):
         self.__this__.c_header_name = <string>u8bytes(value)
     
     @property
-    def c_source_name(Outputs self not None):
+    def c_source_name(self):
         return <string>self.__this__.c_source_name
     @c_source_name.setter
-    def c_source_name(Outputs self not None, object value not None):
+    def c_source_name(self, object value not None):
         self.__this__.c_source_name = <string>u8bytes(value)
     
     @property
-    def python_extension_name(Outputs self not None):
+    def python_extension_name(self):
         return <string>self.__this__.python_extension_name
     @python_extension_name.setter
-    def python_extension_name(Outputs self not None, object value not None):
+    def python_extension_name(self, object value not None):
         self.__this__.python_extension_name = <string>u8bytes(value)
     
     @property
-    def stmt_name(Outputs self not None):
+    def stmt_name(self):
         return <string>self.__this__.stmt_name
     @stmt_name.setter
-    def stmt_name(Outputs self not None, object value not None):
+    def stmt_name(self, object value not None):
         self.__this__.stmt_name = <string>u8bytes(value)
     
     @property
-    def stmt_html_name(Outputs self not None):
+    def stmt_html_name(self):
         return <string>self.__this__.stmt_html_name
     @stmt_html_name.setter
-    def stmt_html_name(Outputs self not None, object value):
+    def stmt_html_name(self, object value not None):
         self.__this__.stmt_html_name = <string>u8bytes(value)
     
     @property
-    def static_library_name(Outputs self not None):
+    def static_library_name(self):
         return <string>self.__this__.static_library_name
     @static_library_name.setter
-    def static_library_name(Outputs self not None, object value not None):
+    def static_library_name(self, object value not None):
         self.__this__.static_library_name = <string>u8bytes(value)
     
     @property
-    def schedule_name(Outputs self not None):
+    def schedule_name(self):
         return <string>self.__this__.schedule_name
     @schedule_name.setter
-    def schedule_name(Outputs self not None, object value not None):
+    def schedule_name(self, object value not None):
         self.__this__.schedule_name = <string>u8bytes(value)
     
-    def object(Outputs self not None, object s=None):
+    def object(self, object s=None):
         out = Outputs()
         if s is None:
             s = ''
         out.__this__ = self.__this__.object(u8bytes(s))
         return out
     
-    def assembly(Outputs self not None, object s=None):
+    def assembly(self, object s=None):
         out = Outputs()
         if s is None:
             s = ''
         out.__this__ = self.__this__.assembly(u8bytes(s))
         return out
     
-    def bitcode(Outputs self not None, object s=None):
+    def bitcode(self, object s=None):
         out = Outputs()
         if s is None:
             s = ''
         out.__this__ = self.__this__.bitcode(u8bytes(s))
         return out
     
-    def llvm_assembly(Outputs self not None, object s=None):
+    def llvm_assembly(self, object s=None):
         out = Outputs()
         if s is None:
             s = ''
         out.__this__ = self.__this__.llvm_assembly(u8bytes(s))
         return out
     
-    def c_header(Outputs self not None, object s=None):
+    def c_header(self, object s=None):
         out = Outputs()
         if s is None:
             s = ''
         out.__this__ = self.__this__.c_header(u8bytes(s))
         return out
     
-    def c_source(Outputs self not None, object s=None):
+    def c_source(self, object s=None):
         out = Outputs()
         if s is None:
             s = ''
         out.__this__ = self.__this__.c_source(u8bytes(s))
         return out
     
-    def python_extension(Outputs self not None, object s=None):
+    def python_extension(self, object s=None):
         out = Outputs()
         if s is None:
             s = ''
         out.__this__ = self.__this__.python_extension(u8bytes(s))
         return out
     
-    def stmt(Outputs self not None, object s=None):
+    def stmt(self, object s=None):
         out = Outputs()
         if s is None:
             s = ''
         out.__this__ = self.__this__.stmt(u8bytes(s))
         return out
     
-    def stmt_html(Outputs self not None, object s=None):
+    def stmt_html(self, object s=None):
         out = Outputs()
         if s is None:
             s = ''
         out.__this__ = self.__this__.stmt_html(u8bytes(s))
         return out
     
-    def static_library(Outputs self not None, object s=None):
+    def static_library(self, object s=None):
         out = Outputs()
         if s is None:
             s = ''
         out.__this__ = self.__this__.static_library(u8bytes(s))
         return out
     
-    def schedule(Outputs self not None, object s=None):
+    def schedule(self, object s=None):
         out = Outputs()
         if s is None:
             s = ''
         out.__this__ = self.__this__.schedule(u8bytes(s))
         return out
     
-    def to_string(Outputs self not None):
+    def to_string(self):
         return stringify(self, ("object_name", "assembly_name", "bitcode_name",
                                 "llvm_assembly_name", "c_header_name", "c_source_name",
                                 "python_extension_name", "stmt_name", "stmt_html_name",
                                 "static_library_name", "schedule_name"))
     
-    def __bytes__(Outputs self not None):
+    def __bytes__(self):
         return self.to_string()
     
-    def __str__(Outputs self not None):
+    def __str__(self):
         return self.to_string().decode('UTF-8')
     
-    def __repr__(Outputs self not None):
+    def __repr__(self):
         return self.to_string().decode('UTF-8')
 
 
@@ -675,7 +675,7 @@ cdef class EmitOptions:
         'substitutions'         : {}
     }
     
-    def __cinit__(EmitOptions self not None, *args, **kwargs):
+    def __cinit__(self, *args, **kwargs):
         for arg in args:
             if type(arg) == type(self):
                 self.__this__ = EmOpts()
@@ -726,98 +726,98 @@ cdef class EmitOptions:
             self.__this__.substitutions[<string>u8bytes(k)] = <string>u8bytes(v)
     
     @property
-    def emit_o(EmitOptions self not None):
+    def emit_o(self):
         return PyBool_FromLong(self.__this__.emit_o)
     @emit_o.setter
-    def emit_o(EmitOptions self not None, value not None):
+    def emit_o(self, value not None):
         self.__this__.emit_o = PyObject_IsTrue(value)
     
     @property
-    def emit_h(EmitOptions self not None):
+    def emit_h(self):
         return PyBool_FromLong(self.__this__.emit_h)
     @emit_h.setter
-    def emit_h(EmitOptions self not None, value not None):
+    def emit_h(self, value not None):
         self.__this__.emit_h = PyObject_IsTrue(value)
     
     @property
-    def emit_cpp(EmitOptions self not None):
+    def emit_cpp(self):
         return PyBool_FromLong(self.__this__.emit_cpp)
     @emit_cpp.setter
-    def emit_cpp(EmitOptions self not None, value not None):
+    def emit_cpp(self, value not None):
         self.__this__.emit_cpp = PyObject_IsTrue(value)
     
     @property
-    def emit_assembly(EmitOptions self not None):
+    def emit_assembly(self):
         return PyBool_FromLong(self.__this__.emit_assembly)
     @emit_assembly.setter
-    def emit_assembly(EmitOptions self not None, value not None):
+    def emit_assembly(self, value not None):
         self.__this__.emit_assembly = PyObject_IsTrue(value)
     
     @property
-    def emit_bitcode(EmitOptions self not None):
+    def emit_bitcode(self):
         return PyBool_FromLong(self.__this__.emit_bitcode)
     @emit_bitcode.setter
-    def emit_bitcode(EmitOptions self not None, value not None):
+    def emit_bitcode(self, value not None):
         self.__this__.emit_bitcode = PyObject_IsTrue(value)
     
     @property
-    def emit_stmt(EmitOptions self not None):
+    def emit_stmt(self):
         return PyBool_FromLong(self.__this__.emit_stmt)
     @emit_stmt.setter
-    def emit_stmt(EmitOptions self not None, value not None):
+    def emit_stmt(self, value not None):
         self.__this__.emit_stmt = PyObject_IsTrue(value)
     
     @property
-    def emit_stmt_html(EmitOptions self not None):
+    def emit_stmt_html(self):
         return PyBool_FromLong(self.__this__.emit_stmt_html)
     @emit_stmt_html.setter
-    def emit_stmt_html(EmitOptions self not None, value not None):
+    def emit_stmt_html(self, value not None):
         self.__this__.emit_stmt_html = PyObject_IsTrue(value)
     
     @property
-    def emit_python_extension(EmitOptions self not None):
+    def emit_python_extension(self):
         return PyBool_FromLong(self.__this__.emit_python_extension)
     @emit_python_extension.setter
-    def emit_python_extension(EmitOptions self not None, value not None):
+    def emit_python_extension(self, value not None):
         self.__this__.emit_python_extension = PyObject_IsTrue(value)
     
     @property
-    def emit_static_library(EmitOptions self not None):
+    def emit_static_library(self):
         return PyBool_FromLong(self.__this__.emit_static_library)
     @emit_static_library.setter
-    def emit_static_library(EmitOptions self not None, value not None):
+    def emit_static_library(self, value not None):
         self.__this__.emit_static_library = PyObject_IsTrue(value)
     
     @property
-    def emit_cpp_stub(EmitOptions self not None):
+    def emit_cpp_stub(self):
         return PyBool_FromLong(self.__this__.emit_cpp_stub)
     @emit_cpp_stub.setter
-    def emit_cpp_stub(EmitOptions self not None, value not None):
+    def emit_cpp_stub(self, value not None):
         self.__this__.emit_cpp_stub = PyObject_IsTrue(value)
     
     @property
-    def emit_schedule(EmitOptions self not None):
+    def emit_schedule(self):
         return PyBool_FromLong(self.__this__.emit_schedule)
     @emit_schedule.setter
-    def emit_schedule(EmitOptions self not None, value not None):
+    def emit_schedule(self, value not None):
         self.__this__.emit_schedule = PyObject_IsTrue(value)
     
     @property
-    def substitutions(EmitOptions self not None):
+    def substitutions(self):
         return dict(self.__this__.substitutions)
     @substitutions.setter
-    def substitutions(EmitOptions self not None, object value not None):
+    def substitutions(self, object value not None):
         if not PyMapping_Check(value):
             raise ValueError("substitutions must be a mapping type")
         self.__this__.substitutions = stringmap_t()
         for k, v in dict(value).items():
             self.__this__.substitutions[<string>u8bytes(k)] = <string>u8bytes(v)
     
-    def get_substitution(EmitOptions self not None, object default):
+    def get_substitution(self, object default):
         return u8bytes(dict(self.__this__.substitutions).get(u8bytes(default),
                                                              u8bytes(default)))
     
-    def compute_outputs_for_target_and_path(EmitOptions self not None,
+    def compute_outputs_for_target_and_path(self,
                                             Target target=Target(),
                                             object base_path=""):
         """ A reimplementation of `compute_outputs()`, private to Halide’s Generator.cpp """
@@ -871,16 +871,16 @@ cdef class EmitOptions:
         
         return output_files
     
-    def to_string(EmitOptions self not None):
+    def to_string(self):
         return stringify(self, self.emit_defaults.keys())
     
-    def __bytes__(EmitOptions self not None):
+    def __bytes__(self):
         return self.to_string()
     
-    def __str__(EmitOptions self not None):
+    def __str__(self):
         return self.to_string().decode('UTF-8')
     
-    def __repr__(EmitOptions self not None):
+    def __repr__(self):
         return self.to_string().decode('UTF-8')
 
 
@@ -893,7 +893,7 @@ cdef class Module:
     cdef:
         module_ptr_t __this__
     
-    def __cinit__(Module self not None, *args, **kwargs):
+    def __cinit__(self, *args, **kwargs):
         cdef HalTarget htarg
         for arg in args:
             if type(arg) == type(self):
@@ -902,7 +902,7 @@ cdef class Module:
                 if self.__this__.get():
                     return
     
-    def __init__(Module self not None, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
         cdef HalTarget htarg
         cdef string name
         cdef string tstring
@@ -912,31 +912,31 @@ cdef class Module:
             htarg = HalTarget(tstring)
             self.__this__.reset(new HalModule(name, <HalTarget>htarg))
     
-    def __dealloc__(Module self not None):
+    def __dealloc__(self):
         # Manually calling `reset()` on the internal std::unique_ptr here
         # is not necessary, strictly speaking, as it will reset itself upon
         # scoped stack-deallocation (but who the fuck really knows, rite? huh.)
         self.__this__.reset(NULL)
     
     @property
-    def name(Module self not None):
+    def name(self):
         return deref(self.__this__).name()
     
     @property
-    def auto_schedule(Module self not None):
+    def auto_schedule(self):
         return deref(self.__this__).auto_schedule()
     
     @property
-    def any_strict_float(Module self not None):
+    def any_strict_float(self):
         return bool(deref(self.__this__).any_strict_float())
     
-    def get_target(Module self not None):
+    def get_target(self):
         out = Target()
         out.__this__ = deref(self.__this__).target()
         return out
     
     @property
-    def target(Module self not None):
+    def target(self):
         return self.get_target()
     
     @staticmethod
@@ -958,7 +958,7 @@ cdef class Module:
         cdef modulevec_t out = deref(self.__this__).submodules()
         return out
     
-    def submodules(Module self not None):
+    def submodules(self):
         cdef modulevec_t modulevec = deref(self.__this__).submodules()
         out = []
         it = modulevec.begin()
@@ -967,7 +967,7 @@ cdef class Module:
             incr(it)
         return tuple(out)
     
-    def append(Module self not None, other):
+    def append(self, other not None):
         # Eventually this’ll cover the other Halide::Module::append(…) overloads:
         # Halide::Buffer<void>, Halide::LoweredFunc, and Halide::ExternalCode --
         # which those (at time of writing) do not yet have wrapper cdef-class types:
@@ -979,22 +979,22 @@ cdef class Module:
     cdef void replace_instance(Module self, HalModule&& m) nogil:
         self.__this__.reset(new HalModule(m))
     
-    def compile(Module self not None, Outputs outputs not None):
+    def compile(self, Outputs outputs not None):
         cdef HalModule* this = self.__this__.get()
         cdef HalOutputs outs = <HalOutputs>outputs.__this__
         with nogil:
             this.compile(outs)
         return self
     
-    def resolve_submodules(Module self not None):
+    def resolve_submodules(self):
         return Module.with_instance(
             deref(self.__this__).resolve_submodules())
     
-    def get_metadata(Module self not None):
+    def get_metadata(self):
         cdef stringmap_t metadata_map = deref(self.__this__).get_metadata_name_map()
         return dict(metadata_map)
     
-    def remap_metadatum_by_name(Module self not None, object name, object to_name):
+    def remap_metadatum_by_name(self, object name, object to_name):
         cdef string name_string = <string>u8bytes(name)
         cdef string to_name_string = <string>u8bytes(to_name)
         deref(self.__this__).remap_metadata_name(name_string,
@@ -1002,7 +1002,7 @@ cdef class Module:
         cdef stringmap_t metadata_map = deref(self.__this__).get_metadata_name_map()
         return dict(metadata_map)
     
-    def to_string(Module self not None):
+    def to_string(self):
         cdef string name = <string>deref(self.__this__).name()
         cdef string targ = <string>deref(self.__this__).target().to_string()
         cdef string auto_schedule = <string>deref(self.__this__).auto_schedule()
@@ -1027,13 +1027,13 @@ cdef class Module:
                                  b", ".join(field_value.strip() for field_value in field_values),
                                  u8bytes(hex(id(self))))
     
-    def __bytes__(Module self not None):
+    def __bytes__(self):
         return self.to_string()
     
-    def __str__(Module self not None):
+    def __str__(self):
         return self.to_string().decode('UTF-8')
     
-    def __repr__(Module self not None):
+    def __repr__(self):
         return self.to_string().decode('UTF-8')
 
 

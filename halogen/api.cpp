@@ -1762,7 +1762,7 @@ struct __pyx_obj_7halogen_3api_Module {
 /* "halogen/api.pyx":1005
  *         return dict(metadata_map)
  * 
- *     def to_string(Module self not None):             # <<<<<<<<<<<<<<
+ *     def to_string(self):             # <<<<<<<<<<<<<<
  *         cdef string name = <string>deref(self.__this__).name()
  *         cdef string targ = <string>deref(self.__this__).target().to_string()
  */
@@ -4673,7 +4673,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_fromother(struct __pyx_obj_7haloge
  *         out.__this__ = HalType(other.__this__)
  *         return out             # <<<<<<<<<<<<<<
  * 
- *     def __cinit__(Type self not None, Type other=None, **kwargs):
+ *     def __cinit__(self, Type other=None, **kwargs):
  */
   __Pyx_XDECREF(__pyx_r);
   __Pyx_INCREF(((PyObject *)__pyx_v_out));
@@ -4703,7 +4703,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_fromother(struct __pyx_obj_7haloge
 /* "halogen/api.pyx":147
  *         return out
  * 
- *     def __cinit__(Type self not None, Type other=None, **kwargs):             # <<<<<<<<<<<<<<
+ *     def __cinit__(self, Type other=None, **kwargs):             # <<<<<<<<<<<<<<
  *         # FIRST: examine `other` argument, looking for an existing Type object,
  *         # from which we can copy-construct:
  */
@@ -4761,9 +4761,6 @@ static int __pyx_pw_7halogen_3api_4Type_3__cinit__(PyObject *__pyx_v_self, PyObj
   __Pyx_RefNannyFinishContext();
   return -1;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 147, __pyx_L1_error)
-  }
   if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_other), __pyx_ptype_7halogen_3api_Type, 1, "other", 0))) __PYX_ERR(0, 147, __pyx_L1_error)
   __pyx_r = __pyx_pf_7halogen_3api_4Type_2__cinit__(((struct __pyx_obj_7halogen_3api_Type *)__pyx_v_self), __pyx_v_other, __pyx_v_kwargs);
 
@@ -4974,7 +4971,7 @@ static int __pyx_pf_7halogen_3api_4Type_2__cinit__(struct __pyx_obj_7halogen_3ap
  *             # default to uint8_t:
  *             self.__this__ = HalType_UInt(8, 1)             # <<<<<<<<<<<<<<
  * 
- *     def code(Type self not None):
+ *     def code(self):
  */
   /*else*/ {
     try {
@@ -4990,7 +4987,7 @@ static int __pyx_pf_7halogen_3api_4Type_2__cinit__(struct __pyx_obj_7halogen_3ap
   /* "halogen/api.pyx":147
  *         return out
  * 
- *     def __cinit__(Type self not None, Type other=None, **kwargs):             # <<<<<<<<<<<<<<
+ *     def __cinit__(self, Type other=None, **kwargs):             # <<<<<<<<<<<<<<
  *         # FIRST: examine `other` argument, looking for an existing Type object,
  *         # from which we can copy-construct:
  */
@@ -5010,7 +5007,7 @@ static int __pyx_pf_7halogen_3api_4Type_2__cinit__(struct __pyx_obj_7halogen_3ap
 /* "halogen/api.pyx":169
  *             self.__this__ = HalType_UInt(8, 1)
  * 
- *     def code(Type self not None):             # <<<<<<<<<<<<<<
+ *     def code(self):             # <<<<<<<<<<<<<<
  *         return self.__this__.code()
  * 
  */
@@ -5022,16 +5019,9 @@ static PyObject *__pyx_pw_7halogen_3api_4Type_5code(PyObject *__pyx_v_self, CYTH
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("code (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 169, __pyx_L1_error)
-  }
   __pyx_r = __pyx_pf_7halogen_3api_4Type_4code(((struct __pyx_obj_7halogen_3api_Type *)__pyx_v_self));
 
   /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = NULL;
-  __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -5044,10 +5034,10 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_4code(struct __pyx_obj_7halogen_3a
 
   /* "halogen/api.pyx":170
  * 
- *     def code(Type self not None):
+ *     def code(self):
  *         return self.__this__.code()             # <<<<<<<<<<<<<<
  * 
- *     def bytes(Type self not None):
+ *     def bytes(self):
  */
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_1 = __Pyx_PyInt_From_halide_type_code_t(__pyx_v_self->__pyx___this__.code()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 170, __pyx_L1_error)
@@ -5059,7 +5049,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_4code(struct __pyx_obj_7halogen_3a
   /* "halogen/api.pyx":169
  *             self.__this__ = HalType_UInt(8, 1)
  * 
- *     def code(Type self not None):             # <<<<<<<<<<<<<<
+ *     def code(self):             # <<<<<<<<<<<<<<
  *         return self.__this__.code()
  * 
  */
@@ -5078,7 +5068,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_4code(struct __pyx_obj_7halogen_3a
 /* "halogen/api.pyx":172
  *         return self.__this__.code()
  * 
- *     def bytes(Type self not None):             # <<<<<<<<<<<<<<
+ *     def bytes(self):             # <<<<<<<<<<<<<<
  *         return self.__this__.bytes()
  * 
  */
@@ -5090,16 +5080,9 @@ static PyObject *__pyx_pw_7halogen_3api_4Type_7bytes(PyObject *__pyx_v_self, CYT
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("bytes (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 172, __pyx_L1_error)
-  }
   __pyx_r = __pyx_pf_7halogen_3api_4Type_6bytes(((struct __pyx_obj_7halogen_3api_Type *)__pyx_v_self));
 
   /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = NULL;
-  __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -5112,10 +5095,10 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_6bytes(struct __pyx_obj_7halogen_3
 
   /* "halogen/api.pyx":173
  * 
- *     def bytes(Type self not None):
+ *     def bytes(self):
  *         return self.__this__.bytes()             # <<<<<<<<<<<<<<
  * 
- *     def bits(Type self not None):
+ *     def bits(self):
  */
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->__pyx___this__.bytes()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 173, __pyx_L1_error)
@@ -5127,7 +5110,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_6bytes(struct __pyx_obj_7halogen_3
   /* "halogen/api.pyx":172
  *         return self.__this__.code()
  * 
- *     def bytes(Type self not None):             # <<<<<<<<<<<<<<
+ *     def bytes(self):             # <<<<<<<<<<<<<<
  *         return self.__this__.bytes()
  * 
  */
@@ -5146,7 +5129,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_6bytes(struct __pyx_obj_7halogen_3
 /* "halogen/api.pyx":175
  *         return self.__this__.bytes()
  * 
- *     def bits(Type self not None):             # <<<<<<<<<<<<<<
+ *     def bits(self):             # <<<<<<<<<<<<<<
  *         return self.__this__.bits()
  * 
  */
@@ -5158,16 +5141,9 @@ static PyObject *__pyx_pw_7halogen_3api_4Type_9bits(PyObject *__pyx_v_self, CYTH
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("bits (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 175, __pyx_L1_error)
-  }
   __pyx_r = __pyx_pf_7halogen_3api_4Type_8bits(((struct __pyx_obj_7halogen_3api_Type *)__pyx_v_self));
 
   /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = NULL;
-  __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -5180,10 +5156,10 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_8bits(struct __pyx_obj_7halogen_3a
 
   /* "halogen/api.pyx":176
  * 
- *     def bits(Type self not None):
+ *     def bits(self):
  *         return self.__this__.bits()             # <<<<<<<<<<<<<<
  * 
- *     def lanes(Type self not None):
+ *     def lanes(self):
  */
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->__pyx___this__.bits()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 176, __pyx_L1_error)
@@ -5195,7 +5171,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_8bits(struct __pyx_obj_7halogen_3a
   /* "halogen/api.pyx":175
  *         return self.__this__.bytes()
  * 
- *     def bits(Type self not None):             # <<<<<<<<<<<<<<
+ *     def bits(self):             # <<<<<<<<<<<<<<
  *         return self.__this__.bits()
  * 
  */
@@ -5214,7 +5190,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_8bits(struct __pyx_obj_7halogen_3a
 /* "halogen/api.pyx":178
  *         return self.__this__.bits()
  * 
- *     def lanes(Type self not None):             # <<<<<<<<<<<<<<
+ *     def lanes(self):             # <<<<<<<<<<<<<<
  *         return self.__this__.lanes()
  * 
  */
@@ -5226,16 +5202,9 @@ static PyObject *__pyx_pw_7halogen_3api_4Type_11lanes(PyObject *__pyx_v_self, CY
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("lanes (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 178, __pyx_L1_error)
-  }
   __pyx_r = __pyx_pf_7halogen_3api_4Type_10lanes(((struct __pyx_obj_7halogen_3api_Type *)__pyx_v_self));
 
   /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = NULL;
-  __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -5248,10 +5217,10 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_10lanes(struct __pyx_obj_7halogen_
 
   /* "halogen/api.pyx":179
  * 
- *     def lanes(Type self not None):
+ *     def lanes(self):
  *         return self.__this__.lanes()             # <<<<<<<<<<<<<<
  * 
- *     def with_code(Type self not None, code):
+ *     def with_code(self, code):
  */
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->__pyx___this__.lanes()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 179, __pyx_L1_error)
@@ -5263,7 +5232,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_10lanes(struct __pyx_obj_7halogen_
   /* "halogen/api.pyx":178
  *         return self.__this__.bits()
  * 
- *     def lanes(Type self not None):             # <<<<<<<<<<<<<<
+ *     def lanes(self):             # <<<<<<<<<<<<<<
  *         return self.__this__.lanes()
  * 
  */
@@ -5282,7 +5251,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_10lanes(struct __pyx_obj_7halogen_
 /* "halogen/api.pyx":181
  *         return self.__this__.lanes()
  * 
- *     def with_code(Type self not None, code):             # <<<<<<<<<<<<<<
+ *     def with_code(self, code):             # <<<<<<<<<<<<<<
  *         out = Type()
  *         out.__this__ = self.__this__.with_code(code)
  */
@@ -5294,16 +5263,9 @@ static PyObject *__pyx_pw_7halogen_3api_4Type_13with_code(PyObject *__pyx_v_self
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("with_code (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 181, __pyx_L1_error)
-  }
   __pyx_r = __pyx_pf_7halogen_3api_4Type_12with_code(((struct __pyx_obj_7halogen_3api_Type *)__pyx_v_self), ((PyObject *)__pyx_v_code));
 
   /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = NULL;
-  __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -5319,7 +5281,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_12with_code(struct __pyx_obj_7halo
 
   /* "halogen/api.pyx":182
  * 
- *     def with_code(Type self not None, code):
+ *     def with_code(self, code):
  *         out = Type()             # <<<<<<<<<<<<<<
  *         out.__this__ = self.__this__.with_code(code)
  *         return out
@@ -5330,7 +5292,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_12with_code(struct __pyx_obj_7halo
   __pyx_t_1 = 0;
 
   /* "halogen/api.pyx":183
- *     def with_code(Type self not None, code):
+ *     def with_code(self, code):
  *         out = Type()
  *         out.__this__ = self.__this__.with_code(code)             # <<<<<<<<<<<<<<
  *         return out
@@ -5350,7 +5312,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_12with_code(struct __pyx_obj_7halo
  *         out.__this__ = self.__this__.with_code(code)
  *         return out             # <<<<<<<<<<<<<<
  * 
- *     def with_bits(Type self not None, bits):
+ *     def with_bits(self, bits):
  */
   __Pyx_XDECREF(__pyx_r);
   __Pyx_INCREF(((PyObject *)__pyx_v_out));
@@ -5360,7 +5322,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_12with_code(struct __pyx_obj_7halo
   /* "halogen/api.pyx":181
  *         return self.__this__.lanes()
  * 
- *     def with_code(Type self not None, code):             # <<<<<<<<<<<<<<
+ *     def with_code(self, code):             # <<<<<<<<<<<<<<
  *         out = Type()
  *         out.__this__ = self.__this__.with_code(code)
  */
@@ -5380,7 +5342,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_12with_code(struct __pyx_obj_7halo
 /* "halogen/api.pyx":186
  *         return out
  * 
- *     def with_bits(Type self not None, bits):             # <<<<<<<<<<<<<<
+ *     def with_bits(self, bits):             # <<<<<<<<<<<<<<
  *         out = Type()
  *         out.__this__ = self.__this__.with_bits(<uint8_t>bits)
  */
@@ -5392,16 +5354,9 @@ static PyObject *__pyx_pw_7halogen_3api_4Type_15with_bits(PyObject *__pyx_v_self
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("with_bits (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 186, __pyx_L1_error)
-  }
   __pyx_r = __pyx_pf_7halogen_3api_4Type_14with_bits(((struct __pyx_obj_7halogen_3api_Type *)__pyx_v_self), ((PyObject *)__pyx_v_bits));
 
   /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = NULL;
-  __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -5417,7 +5372,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_14with_bits(struct __pyx_obj_7halo
 
   /* "halogen/api.pyx":187
  * 
- *     def with_bits(Type self not None, bits):
+ *     def with_bits(self, bits):
  *         out = Type()             # <<<<<<<<<<<<<<
  *         out.__this__ = self.__this__.with_bits(<uint8_t>bits)
  *         return out
@@ -5428,7 +5383,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_14with_bits(struct __pyx_obj_7halo
   __pyx_t_1 = 0;
 
   /* "halogen/api.pyx":188
- *     def with_bits(Type self not None, bits):
+ *     def with_bits(self, bits):
  *         out = Type()
  *         out.__this__ = self.__this__.with_bits(<uint8_t>bits)             # <<<<<<<<<<<<<<
  *         return out
@@ -5448,7 +5403,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_14with_bits(struct __pyx_obj_7halo
  *         out.__this__ = self.__this__.with_bits(<uint8_t>bits)
  *         return out             # <<<<<<<<<<<<<<
  * 
- *     def with_lanes(Type self not None, lanes):
+ *     def with_lanes(self, lanes):
  */
   __Pyx_XDECREF(__pyx_r);
   __Pyx_INCREF(((PyObject *)__pyx_v_out));
@@ -5458,7 +5413,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_14with_bits(struct __pyx_obj_7halo
   /* "halogen/api.pyx":186
  *         return out
  * 
- *     def with_bits(Type self not None, bits):             # <<<<<<<<<<<<<<
+ *     def with_bits(self, bits):             # <<<<<<<<<<<<<<
  *         out = Type()
  *         out.__this__ = self.__this__.with_bits(<uint8_t>bits)
  */
@@ -5478,7 +5433,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_14with_bits(struct __pyx_obj_7halo
 /* "halogen/api.pyx":191
  *         return out
  * 
- *     def with_lanes(Type self not None, lanes):             # <<<<<<<<<<<<<<
+ *     def with_lanes(self, lanes):             # <<<<<<<<<<<<<<
  *         out = Type()
  *         out.__this__ = self.__this__.with_lanes(<uint16_t>lanes)
  */
@@ -5490,16 +5445,9 @@ static PyObject *__pyx_pw_7halogen_3api_4Type_17with_lanes(PyObject *__pyx_v_sel
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("with_lanes (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 191, __pyx_L1_error)
-  }
   __pyx_r = __pyx_pf_7halogen_3api_4Type_16with_lanes(((struct __pyx_obj_7halogen_3api_Type *)__pyx_v_self), ((PyObject *)__pyx_v_lanes));
 
   /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = NULL;
-  __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -5515,7 +5463,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_16with_lanes(struct __pyx_obj_7hal
 
   /* "halogen/api.pyx":192
  * 
- *     def with_lanes(Type self not None, lanes):
+ *     def with_lanes(self, lanes):
  *         out = Type()             # <<<<<<<<<<<<<<
  *         out.__this__ = self.__this__.with_lanes(<uint16_t>lanes)
  *         return out
@@ -5526,7 +5474,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_16with_lanes(struct __pyx_obj_7hal
   __pyx_t_1 = 0;
 
   /* "halogen/api.pyx":193
- *     def with_lanes(Type self not None, lanes):
+ *     def with_lanes(self, lanes):
  *         out = Type()
  *         out.__this__ = self.__this__.with_lanes(<uint16_t>lanes)             # <<<<<<<<<<<<<<
  *         return out
@@ -5546,7 +5494,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_16with_lanes(struct __pyx_obj_7hal
  *         out.__this__ = self.__this__.with_lanes(<uint16_t>lanes)
  *         return out             # <<<<<<<<<<<<<<
  * 
- *     def is_bool(Type self not None):
+ *     def is_bool(self):
  */
   __Pyx_XDECREF(__pyx_r);
   __Pyx_INCREF(((PyObject *)__pyx_v_out));
@@ -5556,7 +5504,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_16with_lanes(struct __pyx_obj_7hal
   /* "halogen/api.pyx":191
  *         return out
  * 
- *     def with_lanes(Type self not None, lanes):             # <<<<<<<<<<<<<<
+ *     def with_lanes(self, lanes):             # <<<<<<<<<<<<<<
  *         out = Type()
  *         out.__this__ = self.__this__.with_lanes(<uint16_t>lanes)
  */
@@ -5576,7 +5524,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_16with_lanes(struct __pyx_obj_7hal
 /* "halogen/api.pyx":196
  *         return out
  * 
- *     def is_bool(Type self not None):             # <<<<<<<<<<<<<<
+ *     def is_bool(self):             # <<<<<<<<<<<<<<
  *         return self.__this__.is_bool()
  * 
  */
@@ -5588,16 +5536,9 @@ static PyObject *__pyx_pw_7halogen_3api_4Type_19is_bool(PyObject *__pyx_v_self, 
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("is_bool (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 196, __pyx_L1_error)
-  }
   __pyx_r = __pyx_pf_7halogen_3api_4Type_18is_bool(((struct __pyx_obj_7halogen_3api_Type *)__pyx_v_self));
 
   /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = NULL;
-  __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -5610,10 +5551,10 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_18is_bool(struct __pyx_obj_7haloge
 
   /* "halogen/api.pyx":197
  * 
- *     def is_bool(Type self not None):
+ *     def is_bool(self):
  *         return self.__this__.is_bool()             # <<<<<<<<<<<<<<
  * 
- *     def is_vector(Type self not None):
+ *     def is_vector(self):
  */
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_v_self->__pyx___this__.is_bool()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 197, __pyx_L1_error)
@@ -5625,7 +5566,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_18is_bool(struct __pyx_obj_7haloge
   /* "halogen/api.pyx":196
  *         return out
  * 
- *     def is_bool(Type self not None):             # <<<<<<<<<<<<<<
+ *     def is_bool(self):             # <<<<<<<<<<<<<<
  *         return self.__this__.is_bool()
  * 
  */
@@ -5644,7 +5585,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_18is_bool(struct __pyx_obj_7haloge
 /* "halogen/api.pyx":199
  *         return self.__this__.is_bool()
  * 
- *     def is_vector(Type self not None):             # <<<<<<<<<<<<<<
+ *     def is_vector(self):             # <<<<<<<<<<<<<<
  *         return self.__this__.is_vector()
  * 
  */
@@ -5656,16 +5597,9 @@ static PyObject *__pyx_pw_7halogen_3api_4Type_21is_vector(PyObject *__pyx_v_self
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("is_vector (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 199, __pyx_L1_error)
-  }
   __pyx_r = __pyx_pf_7halogen_3api_4Type_20is_vector(((struct __pyx_obj_7halogen_3api_Type *)__pyx_v_self));
 
   /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = NULL;
-  __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -5678,10 +5612,10 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_20is_vector(struct __pyx_obj_7halo
 
   /* "halogen/api.pyx":200
  * 
- *     def is_vector(Type self not None):
+ *     def is_vector(self):
  *         return self.__this__.is_vector()             # <<<<<<<<<<<<<<
  * 
- *     def is_scalar(Type self not None):
+ *     def is_scalar(self):
  */
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_v_self->__pyx___this__.is_vector()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 200, __pyx_L1_error)
@@ -5693,7 +5627,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_20is_vector(struct __pyx_obj_7halo
   /* "halogen/api.pyx":199
  *         return self.__this__.is_bool()
  * 
- *     def is_vector(Type self not None):             # <<<<<<<<<<<<<<
+ *     def is_vector(self):             # <<<<<<<<<<<<<<
  *         return self.__this__.is_vector()
  * 
  */
@@ -5712,7 +5646,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_20is_vector(struct __pyx_obj_7halo
 /* "halogen/api.pyx":202
  *         return self.__this__.is_vector()
  * 
- *     def is_scalar(Type self not None):             # <<<<<<<<<<<<<<
+ *     def is_scalar(self):             # <<<<<<<<<<<<<<
  *         return self.__this__.is_scalar()
  * 
  */
@@ -5724,16 +5658,9 @@ static PyObject *__pyx_pw_7halogen_3api_4Type_23is_scalar(PyObject *__pyx_v_self
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("is_scalar (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 202, __pyx_L1_error)
-  }
   __pyx_r = __pyx_pf_7halogen_3api_4Type_22is_scalar(((struct __pyx_obj_7halogen_3api_Type *)__pyx_v_self));
 
   /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = NULL;
-  __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -5746,10 +5673,10 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_22is_scalar(struct __pyx_obj_7halo
 
   /* "halogen/api.pyx":203
  * 
- *     def is_scalar(Type self not None):
+ *     def is_scalar(self):
  *         return self.__this__.is_scalar()             # <<<<<<<<<<<<<<
  * 
- *     def is_float(Type self not None):
+ *     def is_float(self):
  */
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_v_self->__pyx___this__.is_scalar()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 203, __pyx_L1_error)
@@ -5761,7 +5688,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_22is_scalar(struct __pyx_obj_7halo
   /* "halogen/api.pyx":202
  *         return self.__this__.is_vector()
  * 
- *     def is_scalar(Type self not None):             # <<<<<<<<<<<<<<
+ *     def is_scalar(self):             # <<<<<<<<<<<<<<
  *         return self.__this__.is_scalar()
  * 
  */
@@ -5780,7 +5707,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_22is_scalar(struct __pyx_obj_7halo
 /* "halogen/api.pyx":205
  *         return self.__this__.is_scalar()
  * 
- *     def is_float(Type self not None):             # <<<<<<<<<<<<<<
+ *     def is_float(self):             # <<<<<<<<<<<<<<
  *         return self.__this__.is_float()
  * 
  */
@@ -5792,16 +5719,9 @@ static PyObject *__pyx_pw_7halogen_3api_4Type_25is_float(PyObject *__pyx_v_self,
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("is_float (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 205, __pyx_L1_error)
-  }
   __pyx_r = __pyx_pf_7halogen_3api_4Type_24is_float(((struct __pyx_obj_7halogen_3api_Type *)__pyx_v_self));
 
   /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = NULL;
-  __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -5814,10 +5734,10 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_24is_float(struct __pyx_obj_7halog
 
   /* "halogen/api.pyx":206
  * 
- *     def is_float(Type self not None):
+ *     def is_float(self):
  *         return self.__this__.is_float()             # <<<<<<<<<<<<<<
  * 
- *     def is_int(Type self not None):
+ *     def is_int(self):
  */
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_v_self->__pyx___this__.is_float()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 206, __pyx_L1_error)
@@ -5829,7 +5749,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_24is_float(struct __pyx_obj_7halog
   /* "halogen/api.pyx":205
  *         return self.__this__.is_scalar()
  * 
- *     def is_float(Type self not None):             # <<<<<<<<<<<<<<
+ *     def is_float(self):             # <<<<<<<<<<<<<<
  *         return self.__this__.is_float()
  * 
  */
@@ -5848,7 +5768,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_24is_float(struct __pyx_obj_7halog
 /* "halogen/api.pyx":208
  *         return self.__this__.is_float()
  * 
- *     def is_int(Type self not None):             # <<<<<<<<<<<<<<
+ *     def is_int(self):             # <<<<<<<<<<<<<<
  *         return self.__this__.is_int()
  * 
  */
@@ -5860,16 +5780,9 @@ static PyObject *__pyx_pw_7halogen_3api_4Type_27is_int(PyObject *__pyx_v_self, C
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("is_int (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 208, __pyx_L1_error)
-  }
   __pyx_r = __pyx_pf_7halogen_3api_4Type_26is_int(((struct __pyx_obj_7halogen_3api_Type *)__pyx_v_self));
 
   /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = NULL;
-  __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -5882,10 +5795,10 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_26is_int(struct __pyx_obj_7halogen
 
   /* "halogen/api.pyx":209
  * 
- *     def is_int(Type self not None):
+ *     def is_int(self):
  *         return self.__this__.is_int()             # <<<<<<<<<<<<<<
  * 
- *     def is_uint(Type self not None):
+ *     def is_uint(self):
  */
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_v_self->__pyx___this__.is_int()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 209, __pyx_L1_error)
@@ -5897,7 +5810,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_26is_int(struct __pyx_obj_7halogen
   /* "halogen/api.pyx":208
  *         return self.__this__.is_float()
  * 
- *     def is_int(Type self not None):             # <<<<<<<<<<<<<<
+ *     def is_int(self):             # <<<<<<<<<<<<<<
  *         return self.__this__.is_int()
  * 
  */
@@ -5916,7 +5829,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_26is_int(struct __pyx_obj_7halogen
 /* "halogen/api.pyx":211
  *         return self.__this__.is_int()
  * 
- *     def is_uint(Type self not None):             # <<<<<<<<<<<<<<
+ *     def is_uint(self):             # <<<<<<<<<<<<<<
  *         return self.__this__.is_uint()
  * 
  */
@@ -5928,16 +5841,9 @@ static PyObject *__pyx_pw_7halogen_3api_4Type_29is_uint(PyObject *__pyx_v_self, 
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("is_uint (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 211, __pyx_L1_error)
-  }
   __pyx_r = __pyx_pf_7halogen_3api_4Type_28is_uint(((struct __pyx_obj_7halogen_3api_Type *)__pyx_v_self));
 
   /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = NULL;
-  __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -5950,10 +5856,10 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_28is_uint(struct __pyx_obj_7haloge
 
   /* "halogen/api.pyx":212
  * 
- *     def is_uint(Type self not None):
+ *     def is_uint(self):
  *         return self.__this__.is_uint()             # <<<<<<<<<<<<<<
  * 
- *     def is_handle(Type self not None):
+ *     def is_handle(self):
  */
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_v_self->__pyx___this__.is_uint()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 212, __pyx_L1_error)
@@ -5965,7 +5871,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_28is_uint(struct __pyx_obj_7haloge
   /* "halogen/api.pyx":211
  *         return self.__this__.is_int()
  * 
- *     def is_uint(Type self not None):             # <<<<<<<<<<<<<<
+ *     def is_uint(self):             # <<<<<<<<<<<<<<
  *         return self.__this__.is_uint()
  * 
  */
@@ -5984,7 +5890,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_28is_uint(struct __pyx_obj_7haloge
 /* "halogen/api.pyx":214
  *         return self.__this__.is_uint()
  * 
- *     def is_handle(Type self not None):             # <<<<<<<<<<<<<<
+ *     def is_handle(self):             # <<<<<<<<<<<<<<
  *         return self.__this__.is_handle()
  * 
  */
@@ -5996,16 +5902,9 @@ static PyObject *__pyx_pw_7halogen_3api_4Type_31is_handle(PyObject *__pyx_v_self
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("is_handle (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 214, __pyx_L1_error)
-  }
   __pyx_r = __pyx_pf_7halogen_3api_4Type_30is_handle(((struct __pyx_obj_7halogen_3api_Type *)__pyx_v_self));
 
   /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = NULL;
-  __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -6018,10 +5917,10 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_30is_handle(struct __pyx_obj_7halo
 
   /* "halogen/api.pyx":215
  * 
- *     def is_handle(Type self not None):
+ *     def is_handle(self):
  *         return self.__this__.is_handle()             # <<<<<<<<<<<<<<
  * 
- *     def same_handle_type(Type self not None, Type other not None):
+ *     def same_handle_type(self, Type other not None):
  */
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_v_self->__pyx___this__.is_handle()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 215, __pyx_L1_error)
@@ -6033,7 +5932,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_30is_handle(struct __pyx_obj_7halo
   /* "halogen/api.pyx":214
  *         return self.__this__.is_uint()
  * 
- *     def is_handle(Type self not None):             # <<<<<<<<<<<<<<
+ *     def is_handle(self):             # <<<<<<<<<<<<<<
  *         return self.__this__.is_handle()
  * 
  */
@@ -6052,7 +5951,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_30is_handle(struct __pyx_obj_7halo
 /* "halogen/api.pyx":217
  *         return self.__this__.is_handle()
  * 
- *     def same_handle_type(Type self not None, Type other not None):             # <<<<<<<<<<<<<<
+ *     def same_handle_type(self, Type other not None):             # <<<<<<<<<<<<<<
  *         return self.__this__.same_handle_type(other.__this__)
  * 
  */
@@ -6064,9 +5963,6 @@ static PyObject *__pyx_pw_7halogen_3api_4Type_33same_handle_type(PyObject *__pyx
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("same_handle_type (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 217, __pyx_L1_error)
-  }
   if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_other), __pyx_ptype_7halogen_3api_Type, 0, "other", 0))) __PYX_ERR(0, 217, __pyx_L1_error)
   __pyx_r = __pyx_pf_7halogen_3api_4Type_32same_handle_type(((struct __pyx_obj_7halogen_3api_Type *)__pyx_v_self), ((struct __pyx_obj_7halogen_3api_Type *)__pyx_v_other));
 
@@ -6087,10 +5983,10 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_32same_handle_type(struct __pyx_ob
 
   /* "halogen/api.pyx":218
  * 
- *     def same_handle_type(Type self not None, Type other not None):
+ *     def same_handle_type(self, Type other not None):
  *         return self.__this__.same_handle_type(other.__this__)             # <<<<<<<<<<<<<<
  * 
- *     def element_of(Type self not None):
+ *     def element_of(self):
  */
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_v_self->__pyx___this__.same_handle_type(__pyx_v_other->__pyx___this__)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 218, __pyx_L1_error)
@@ -6102,7 +5998,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_32same_handle_type(struct __pyx_ob
   /* "halogen/api.pyx":217
  *         return self.__this__.is_handle()
  * 
- *     def same_handle_type(Type self not None, Type other not None):             # <<<<<<<<<<<<<<
+ *     def same_handle_type(self, Type other not None):             # <<<<<<<<<<<<<<
  *         return self.__this__.same_handle_type(other.__this__)
  * 
  */
@@ -6121,7 +6017,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_32same_handle_type(struct __pyx_ob
 /* "halogen/api.pyx":220
  *         return self.__this__.same_handle_type(other.__this__)
  * 
- *     def element_of(Type self not None):             # <<<<<<<<<<<<<<
+ *     def element_of(self):             # <<<<<<<<<<<<<<
  *         out = Type()
  *         out.__this__ = self.__this__.element_of()
  */
@@ -6133,16 +6029,9 @@ static PyObject *__pyx_pw_7halogen_3api_4Type_35element_of(PyObject *__pyx_v_sel
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("element_of (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 220, __pyx_L1_error)
-  }
   __pyx_r = __pyx_pf_7halogen_3api_4Type_34element_of(((struct __pyx_obj_7halogen_3api_Type *)__pyx_v_self));
 
   /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = NULL;
-  __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -6156,7 +6045,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_34element_of(struct __pyx_obj_7hal
 
   /* "halogen/api.pyx":221
  * 
- *     def element_of(Type self not None):
+ *     def element_of(self):
  *         out = Type()             # <<<<<<<<<<<<<<
  *         out.__this__ = self.__this__.element_of()
  *         return out
@@ -6167,7 +6056,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_34element_of(struct __pyx_obj_7hal
   __pyx_t_1 = 0;
 
   /* "halogen/api.pyx":222
- *     def element_of(Type self not None):
+ *     def element_of(self):
  *         out = Type()
  *         out.__this__ = self.__this__.element_of()             # <<<<<<<<<<<<<<
  *         return out
@@ -6180,7 +6069,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_34element_of(struct __pyx_obj_7hal
  *         out.__this__ = self.__this__.element_of()
  *         return out             # <<<<<<<<<<<<<<
  * 
- *     def can_represent(Type self not None, other):
+ *     def can_represent(self, other):
  */
   __Pyx_XDECREF(__pyx_r);
   __Pyx_INCREF(((PyObject *)__pyx_v_out));
@@ -6190,7 +6079,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_34element_of(struct __pyx_obj_7hal
   /* "halogen/api.pyx":220
  *         return self.__this__.same_handle_type(other.__this__)
  * 
- *     def element_of(Type self not None):             # <<<<<<<<<<<<<<
+ *     def element_of(self):             # <<<<<<<<<<<<<<
  *         out = Type()
  *         out.__this__ = self.__this__.element_of()
  */
@@ -6210,7 +6099,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_34element_of(struct __pyx_obj_7hal
 /* "halogen/api.pyx":225
  *         return out
  * 
- *     def can_represent(Type self not None, other):             # <<<<<<<<<<<<<<
+ *     def can_represent(self, other):             # <<<<<<<<<<<<<<
  *         if type(other) == type(self):
  *             return self.can_represent_type(other)
  */
@@ -6222,16 +6111,9 @@ static PyObject *__pyx_pw_7halogen_3api_4Type_37can_represent(PyObject *__pyx_v_
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("can_represent (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 225, __pyx_L1_error)
-  }
   __pyx_r = __pyx_pf_7halogen_3api_4Type_36can_represent(((struct __pyx_obj_7halogen_3api_Type *)__pyx_v_self), ((PyObject *)__pyx_v_other));
 
   /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = NULL;
-  __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -6249,7 +6131,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_36can_represent(struct __pyx_obj_7
 
   /* "halogen/api.pyx":226
  * 
- *     def can_represent(Type self not None, other):
+ *     def can_represent(self, other):
  *         if type(other) == type(self):             # <<<<<<<<<<<<<<
  *             return self.can_represent_type(other)
  *         elif type(other) == float:
@@ -6260,7 +6142,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_36can_represent(struct __pyx_obj_7
   if (__pyx_t_2) {
 
     /* "halogen/api.pyx":227
- *     def can_represent(Type self not None, other):
+ *     def can_represent(self, other):
  *         if type(other) == type(self):
  *             return self.can_represent_type(other)             # <<<<<<<<<<<<<<
  *         elif type(other) == float:
@@ -6276,7 +6158,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_36can_represent(struct __pyx_obj_7
 
     /* "halogen/api.pyx":226
  * 
- *     def can_represent(Type self not None, other):
+ *     def can_represent(self, other):
  *         if type(other) == type(self):             # <<<<<<<<<<<<<<
  *             return self.can_represent_type(other)
  *         elif type(other) == float:
@@ -6387,7 +6269,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_36can_represent(struct __pyx_obj_7
   /* "halogen/api.pyx":225
  *         return out
  * 
- *     def can_represent(Type self not None, other):             # <<<<<<<<<<<<<<
+ *     def can_represent(self, other):             # <<<<<<<<<<<<<<
  *         if type(other) == type(self):
  *             return self.can_represent_type(other)
  */
@@ -6819,7 +6701,7 @@ static PyObject *__pyx_f_7halogen_3api_4Type_can_represent_long(struct __pyx_obj
  *     cpdef object can_represent_long(Type self, long other):
  *         return self.__this__.can_represent(<int64_t>other)             # <<<<<<<<<<<<<<
  * 
- *     def repr_c_source(Type self not None):
+ *     def repr_c_source(self):
  */
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_v_self->__pyx___this__.can_represent(((int64_t)__pyx_v_other))); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 241, __pyx_L1_error)
@@ -6902,7 +6784,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_42can_represent_long(struct __pyx_
 /* "halogen/api.pyx":243
  *         return self.__this__.can_represent(<int64_t>other)
  * 
- *     def repr_c_source(Type self not None):             # <<<<<<<<<<<<<<
+ *     def repr_c_source(self):             # <<<<<<<<<<<<<<
  *         try:
  *             return halide_type_to_c_source(self.__this__)
  */
@@ -6914,16 +6796,9 @@ static PyObject *__pyx_pw_7halogen_3api_4Type_45repr_c_source(PyObject *__pyx_v_
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("repr_c_source (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 243, __pyx_L1_error)
-  }
   __pyx_r = __pyx_pf_7halogen_3api_4Type_44repr_c_source(((struct __pyx_obj_7halogen_3api_Type *)__pyx_v_self));
 
   /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = NULL;
-  __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -6943,7 +6818,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_44repr_c_source(struct __pyx_obj_7
 
   /* "halogen/api.pyx":244
  * 
- *     def repr_c_source(Type self not None):
+ *     def repr_c_source(self):
  *         try:             # <<<<<<<<<<<<<<
  *             return halide_type_to_c_source(self.__this__)
  *         except IndexError:
@@ -6958,7 +6833,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_44repr_c_source(struct __pyx_obj_7
     /*try:*/ {
 
       /* "halogen/api.pyx":245
- *     def repr_c_source(Type self not None):
+ *     def repr_c_source(self):
  *         try:
  *             return halide_type_to_c_source(self.__this__)             # <<<<<<<<<<<<<<
  *         except IndexError:
@@ -6979,7 +6854,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_44repr_c_source(struct __pyx_obj_7
 
       /* "halogen/api.pyx":244
  * 
- *     def repr_c_source(Type self not None):
+ *     def repr_c_source(self):
  *         try:             # <<<<<<<<<<<<<<
  *             return halide_type_to_c_source(self.__this__)
  *         except IndexError:
@@ -7008,7 +6883,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_44repr_c_source(struct __pyx_obj_7
  *         except IndexError:
  *             return b"Halide::type_sink<void>"             # <<<<<<<<<<<<<<
  * 
- *     def repr_c_type(Type self not None):
+ *     def repr_c_type(self):
  */
       __Pyx_XDECREF(__pyx_r);
       __Pyx_INCREF(__pyx_kp_b_Halide_type_sink_void);
@@ -7023,7 +6898,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_44repr_c_source(struct __pyx_obj_7
 
     /* "halogen/api.pyx":244
  * 
- *     def repr_c_source(Type self not None):
+ *     def repr_c_source(self):
  *         try:             # <<<<<<<<<<<<<<
  *             return halide_type_to_c_source(self.__this__)
  *         except IndexError:
@@ -7050,7 +6925,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_44repr_c_source(struct __pyx_obj_7
   /* "halogen/api.pyx":243
  *         return self.__this__.can_represent(<int64_t>other)
  * 
- *     def repr_c_source(Type self not None):             # <<<<<<<<<<<<<<
+ *     def repr_c_source(self):             # <<<<<<<<<<<<<<
  *         try:
  *             return halide_type_to_c_source(self.__this__)
  */
@@ -7071,7 +6946,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_44repr_c_source(struct __pyx_obj_7
 /* "halogen/api.pyx":249
  *             return b"Halide::type_sink<void>"
  * 
- *     def repr_c_type(Type self not None):             # <<<<<<<<<<<<<<
+ *     def repr_c_type(self):             # <<<<<<<<<<<<<<
  *         try:
  *             return halide_type_to_c_type(self.__this__)
  */
@@ -7083,16 +6958,9 @@ static PyObject *__pyx_pw_7halogen_3api_4Type_47repr_c_type(PyObject *__pyx_v_se
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("repr_c_type (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 249, __pyx_L1_error)
-  }
   __pyx_r = __pyx_pf_7halogen_3api_4Type_46repr_c_type(((struct __pyx_obj_7halogen_3api_Type *)__pyx_v_self));
 
   /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = NULL;
-  __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -7112,7 +6980,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_46repr_c_type(struct __pyx_obj_7ha
 
   /* "halogen/api.pyx":250
  * 
- *     def repr_c_type(Type self not None):
+ *     def repr_c_type(self):
  *         try:             # <<<<<<<<<<<<<<
  *             return halide_type_to_c_type(self.__this__)
  *         except IndexError:
@@ -7127,7 +6995,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_46repr_c_type(struct __pyx_obj_7ha
     /*try:*/ {
 
       /* "halogen/api.pyx":251
- *     def repr_c_type(Type self not None):
+ *     def repr_c_type(self):
  *         try:
  *             return halide_type_to_c_type(self.__this__)             # <<<<<<<<<<<<<<
  *         except IndexError:
@@ -7148,7 +7016,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_46repr_c_type(struct __pyx_obj_7ha
 
       /* "halogen/api.pyx":250
  * 
- *     def repr_c_type(Type self not None):
+ *     def repr_c_type(self):
  *         try:             # <<<<<<<<<<<<<<
  *             return halide_type_to_c_type(self.__this__)
  *         except IndexError:
@@ -7177,7 +7045,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_46repr_c_type(struct __pyx_obj_7ha
  *         except IndexError:
  *             return b"void"             # <<<<<<<<<<<<<<
  * 
- *     def repr_enum_string(Type self not None):
+ *     def repr_enum_string(self):
  */
       __Pyx_XDECREF(__pyx_r);
       __Pyx_INCREF(__pyx_n_b_void);
@@ -7192,7 +7060,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_46repr_c_type(struct __pyx_obj_7ha
 
     /* "halogen/api.pyx":250
  * 
- *     def repr_c_type(Type self not None):
+ *     def repr_c_type(self):
  *         try:             # <<<<<<<<<<<<<<
  *             return halide_type_to_c_type(self.__this__)
  *         except IndexError:
@@ -7219,7 +7087,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_46repr_c_type(struct __pyx_obj_7ha
   /* "halogen/api.pyx":249
  *             return b"Halide::type_sink<void>"
  * 
- *     def repr_c_type(Type self not None):             # <<<<<<<<<<<<<<
+ *     def repr_c_type(self):             # <<<<<<<<<<<<<<
  *         try:
  *             return halide_type_to_c_type(self.__this__)
  */
@@ -7240,7 +7108,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_46repr_c_type(struct __pyx_obj_7ha
 /* "halogen/api.pyx":255
  *             return b"void"
  * 
- *     def repr_enum_string(Type self not None):             # <<<<<<<<<<<<<<
+ *     def repr_enum_string(self):             # <<<<<<<<<<<<<<
  *         try:
  *             return halide_type_to_enum_string(self.__this__)
  */
@@ -7252,16 +7120,9 @@ static PyObject *__pyx_pw_7halogen_3api_4Type_49repr_enum_string(PyObject *__pyx
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("repr_enum_string (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 255, __pyx_L1_error)
-  }
   __pyx_r = __pyx_pf_7halogen_3api_4Type_48repr_enum_string(((struct __pyx_obj_7halogen_3api_Type *)__pyx_v_self));
 
   /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = NULL;
-  __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -7281,7 +7142,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_48repr_enum_string(struct __pyx_ob
 
   /* "halogen/api.pyx":256
  * 
- *     def repr_enum_string(Type self not None):
+ *     def repr_enum_string(self):
  *         try:             # <<<<<<<<<<<<<<
  *             return halide_type_to_enum_string(self.__this__)
  *         except IndexError:
@@ -7296,7 +7157,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_48repr_enum_string(struct __pyx_ob
     /*try:*/ {
 
       /* "halogen/api.pyx":257
- *     def repr_enum_string(Type self not None):
+ *     def repr_enum_string(self):
  *         try:
  *             return halide_type_to_enum_string(self.__this__)             # <<<<<<<<<<<<<<
  *         except IndexError:
@@ -7317,7 +7178,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_48repr_enum_string(struct __pyx_ob
 
       /* "halogen/api.pyx":256
  * 
- *     def repr_enum_string(Type self not None):
+ *     def repr_enum_string(self):
  *         try:             # <<<<<<<<<<<<<<
  *             return halide_type_to_enum_string(self.__this__)
  *         except IndexError:
@@ -7361,7 +7222,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_48repr_enum_string(struct __pyx_ob
 
     /* "halogen/api.pyx":256
  * 
- *     def repr_enum_string(Type self not None):
+ *     def repr_enum_string(self):
  *         try:             # <<<<<<<<<<<<<<
  *             return halide_type_to_enum_string(self.__this__)
  *         except IndexError:
@@ -7388,7 +7249,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_48repr_enum_string(struct __pyx_ob
   /* "halogen/api.pyx":255
  *             return b"void"
  * 
- *     def repr_enum_string(Type self not None):             # <<<<<<<<<<<<<<
+ *     def repr_enum_string(self):             # <<<<<<<<<<<<<<
  *         try:
  *             return halide_type_to_enum_string(self.__this__)
  */
@@ -7515,7 +7376,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_50to_string(struct __pyx_obj_7halo
  *         except IndexError:
  *             return b"void"             # <<<<<<<<<<<<<<
  * 
- *     def __repr__(Type self not None):
+ *     def __repr__(self):
  */
       __Pyx_XDECREF(__pyx_r);
       __Pyx_INCREF(__pyx_n_b_void);
@@ -7578,7 +7439,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_50to_string(struct __pyx_obj_7halo
 /* "halogen/api.pyx":267
  *             return b"void"
  * 
- *     def __repr__(Type self not None):             # <<<<<<<<<<<<<<
+ *     def __repr__(self):             # <<<<<<<<<<<<<<
  *         try:
  *             c_source = <bytes>halide_type_to_c_source(self.__this__)
  */
@@ -7589,16 +7450,9 @@ static PyObject *__pyx_pw_7halogen_3api_4Type_53__repr__(PyObject *__pyx_v_self)
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__repr__ (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 267, __pyx_L1_error)
-  }
   __pyx_r = __pyx_pf_7halogen_3api_4Type_52__repr__(((struct __pyx_obj_7halogen_3api_Type *)__pyx_v_self));
 
   /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = NULL;
-  __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -7619,7 +7473,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_52__repr__(struct __pyx_obj_7halog
 
   /* "halogen/api.pyx":268
  * 
- *     def __repr__(Type self not None):
+ *     def __repr__(self):
  *         try:             # <<<<<<<<<<<<<<
  *             c_source = <bytes>halide_type_to_c_source(self.__this__)
  *         except IndexError:
@@ -7634,7 +7488,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_52__repr__(struct __pyx_obj_7halog
     /*try:*/ {
 
       /* "halogen/api.pyx":269
- *     def __repr__(Type self not None):
+ *     def __repr__(self):
  *         try:
  *             c_source = <bytes>halide_type_to_c_source(self.__this__)             # <<<<<<<<<<<<<<
  *         except IndexError:
@@ -7656,7 +7510,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_52__repr__(struct __pyx_obj_7halog
 
       /* "halogen/api.pyx":268
  * 
- *     def __repr__(Type self not None):
+ *     def __repr__(self):
  *         try:             # <<<<<<<<<<<<<<
  *             c_source = <bytes>halide_type_to_c_source(self.__this__)
  *         except IndexError:
@@ -7704,7 +7558,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_52__repr__(struct __pyx_obj_7halog
 
     /* "halogen/api.pyx":268
  * 
- *     def __repr__(Type self not None):
+ *     def __repr__(self):
  *         try:             # <<<<<<<<<<<<<<
  *             c_source = <bytes>halide_type_to_c_source(self.__this__)
  *         except IndexError:
@@ -7742,7 +7596,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_52__repr__(struct __pyx_obj_7halog
  *         return "<%s @ %s>" % (c_source.decode('UTF-8'),
  *                               hex(id(self)))             # <<<<<<<<<<<<<<
  * 
- *     def __str__(Type self not None):
+ *     def __str__(self):
  */
   __pyx_t_5 = __Pyx_PyObject_CallOneArg(__pyx_builtin_id, ((PyObject *)__pyx_v_self)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 273, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
@@ -7775,7 +7629,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_52__repr__(struct __pyx_obj_7halog
   /* "halogen/api.pyx":267
  *             return b"void"
  * 
- *     def __repr__(Type self not None):             # <<<<<<<<<<<<<<
+ *     def __repr__(self):             # <<<<<<<<<<<<<<
  *         try:
  *             c_source = <bytes>halide_type_to_c_source(self.__this__)
  */
@@ -7797,7 +7651,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_52__repr__(struct __pyx_obj_7halog
 /* "halogen/api.pyx":275
  *                               hex(id(self)))
  * 
- *     def __str__(Type self not None):             # <<<<<<<<<<<<<<
+ *     def __str__(self):             # <<<<<<<<<<<<<<
  *         try:
  *             c_type = <bytes>halide_type_to_c_type(self.__this__)
  */
@@ -7808,16 +7662,9 @@ static PyObject *__pyx_pw_7halogen_3api_4Type_55__str__(PyObject *__pyx_v_self) 
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__str__ (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 275, __pyx_L1_error)
-  }
   __pyx_r = __pyx_pf_7halogen_3api_4Type_54__str__(((struct __pyx_obj_7halogen_3api_Type *)__pyx_v_self));
 
   /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = NULL;
-  __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -7838,7 +7685,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_54__str__(struct __pyx_obj_7haloge
 
   /* "halogen/api.pyx":276
  * 
- *     def __str__(Type self not None):
+ *     def __str__(self):
  *         try:             # <<<<<<<<<<<<<<
  *             c_type = <bytes>halide_type_to_c_type(self.__this__)
  *         except IndexError:
@@ -7853,7 +7700,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_54__str__(struct __pyx_obj_7haloge
     /*try:*/ {
 
       /* "halogen/api.pyx":277
- *     def __str__(Type self not None):
+ *     def __str__(self):
  *         try:
  *             c_type = <bytes>halide_type_to_c_type(self.__this__)             # <<<<<<<<<<<<<<
  *         except IndexError:
@@ -7875,7 +7722,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_54__str__(struct __pyx_obj_7haloge
 
       /* "halogen/api.pyx":276
  * 
- *     def __str__(Type self not None):
+ *     def __str__(self):
  *         try:             # <<<<<<<<<<<<<<
  *             c_type = <bytes>halide_type_to_c_type(self.__this__)
  *         except IndexError:
@@ -7923,7 +7770,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_54__str__(struct __pyx_obj_7haloge
 
     /* "halogen/api.pyx":276
  * 
- *     def __str__(Type self not None):
+ *     def __str__(self):
  *         try:             # <<<<<<<<<<<<<<
  *             c_type = <bytes>halide_type_to_c_type(self.__this__)
  *         except IndexError:
@@ -7946,7 +7793,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_54__str__(struct __pyx_obj_7haloge
  *             c_type = b"void"
  *         return c_type.decode('UTF-8')             # <<<<<<<<<<<<<<
  * 
- *     def __bytes__(Type self not None):
+ *     def __bytes__(self):
  */
   __Pyx_XDECREF(__pyx_r);
   if (unlikely(__pyx_v_c_type == Py_None)) {
@@ -7962,7 +7809,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_54__str__(struct __pyx_obj_7haloge
   /* "halogen/api.pyx":275
  *                               hex(id(self)))
  * 
- *     def __str__(Type self not None):             # <<<<<<<<<<<<<<
+ *     def __str__(self):             # <<<<<<<<<<<<<<
  *         try:
  *             c_type = <bytes>halide_type_to_c_type(self.__this__)
  */
@@ -7984,7 +7831,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_54__str__(struct __pyx_obj_7haloge
 /* "halogen/api.pyx":282
  *         return c_type.decode('UTF-8')
  * 
- *     def __bytes__(Type self not None):             # <<<<<<<<<<<<<<
+ *     def __bytes__(self):             # <<<<<<<<<<<<<<
  *         try:
  *             c_type = <bytes>halide_type_to_c_type(self.__this__)
  */
@@ -7996,16 +7843,9 @@ static PyObject *__pyx_pw_7halogen_3api_4Type_57__bytes__(PyObject *__pyx_v_self
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__bytes__ (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 282, __pyx_L1_error)
-  }
   __pyx_r = __pyx_pf_7halogen_3api_4Type_56__bytes__(((struct __pyx_obj_7halogen_3api_Type *)__pyx_v_self));
 
   /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = NULL;
-  __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -8026,7 +7866,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_56__bytes__(struct __pyx_obj_7halo
 
   /* "halogen/api.pyx":283
  * 
- *     def __bytes__(Type self not None):
+ *     def __bytes__(self):
  *         try:             # <<<<<<<<<<<<<<
  *             c_type = <bytes>halide_type_to_c_type(self.__this__)
  *         except IndexError:
@@ -8041,7 +7881,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_56__bytes__(struct __pyx_obj_7halo
     /*try:*/ {
 
       /* "halogen/api.pyx":284
- *     def __bytes__(Type self not None):
+ *     def __bytes__(self):
  *         try:
  *             c_type = <bytes>halide_type_to_c_type(self.__this__)             # <<<<<<<<<<<<<<
  *         except IndexError:
@@ -8063,7 +7903,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_56__bytes__(struct __pyx_obj_7halo
 
       /* "halogen/api.pyx":283
  * 
- *     def __bytes__(Type self not None):
+ *     def __bytes__(self):
  *         try:             # <<<<<<<<<<<<<<
  *             c_type = <bytes>halide_type_to_c_type(self.__this__)
  *         except IndexError:
@@ -8111,7 +7951,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_56__bytes__(struct __pyx_obj_7halo
 
     /* "halogen/api.pyx":283
  * 
- *     def __bytes__(Type self not None):
+ *     def __bytes__(self):
  *         try:             # <<<<<<<<<<<<<<
  *             c_type = <bytes>halide_type_to_c_type(self.__this__)
  *         except IndexError:
@@ -8144,7 +7984,7 @@ static PyObject *__pyx_pf_7halogen_3api_4Type_56__bytes__(struct __pyx_obj_7halo
   /* "halogen/api.pyx":282
  *         return c_type.decode('UTF-8')
  * 
- *     def __bytes__(Type self not None):             # <<<<<<<<<<<<<<
+ *     def __bytes__(self):             # <<<<<<<<<<<<<<
  *         try:
  *             c_type = <bytes>halide_type_to_c_type(self.__this__)
  */
@@ -9058,7 +8898,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_validate_target_string(PyObject 
  *     def validate_target_string(object target_string not None):
  *         return HalTarget.validate_target_string(<string>u8bytes(target_string))             # <<<<<<<<<<<<<<
  * 
- *     def __cinit__(Target self not None, *args, **kwargs):
+ *     def __cinit__(self, *args, **kwargs):
  */
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_1 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_target_string, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 329, __pyx_L1_error)
@@ -9093,7 +8933,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_validate_target_string(PyObject 
 /* "halogen/api.pyx":331
  *         return HalTarget.validate_target_string(<string>u8bytes(target_string))
  * 
- *     def __cinit__(Target self not None, *args, **kwargs):             # <<<<<<<<<<<<<<
+ *     def __cinit__(self, *args, **kwargs):             # <<<<<<<<<<<<<<
  *         cdef string target_string = b'host'
  *         if 'target_string' in kwargs:
  */
@@ -9111,16 +8951,9 @@ static int __pyx_pw_7halogen_3api_6Target_3__cinit__(PyObject *__pyx_v_self, PyO
   __Pyx_GOTREF(__pyx_v_kwargs);
   __Pyx_INCREF(__pyx_args);
   __pyx_v_args = __pyx_args;
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 331, __pyx_L1_error)
-  }
   __pyx_r = __pyx_pf_7halogen_3api_6Target_2__cinit__(((struct __pyx_obj_7halogen_3api_Target *)__pyx_v_self), __pyx_v_args, __pyx_v_kwargs);
 
   /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = -1;
-  __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_args);
   __Pyx_XDECREF(__pyx_v_kwargs);
   __Pyx_RefNannyFinishContext();
@@ -9141,7 +8974,7 @@ static int __pyx_pf_7halogen_3api_6Target_2__cinit__(struct __pyx_obj_7halogen_3
 
   /* "halogen/api.pyx":332
  * 
- *     def __cinit__(Target self not None, *args, **kwargs):
+ *     def __cinit__(self, *args, **kwargs):
  *         cdef string target_string = b'host'             # <<<<<<<<<<<<<<
  *         if 'target_string' in kwargs:
  *             target_string = <string>u8bytes(kwargs.get('target_string', target_string))
@@ -9150,7 +8983,7 @@ static int __pyx_pf_7halogen_3api_6Target_2__cinit__(struct __pyx_obj_7halogen_3
   __pyx_v_target_string = __pyx_t_1;
 
   /* "halogen/api.pyx":333
- *     def __cinit__(Target self not None, *args, **kwargs):
+ *     def __cinit__(self, *args, **kwargs):
  *         cdef string target_string = b'host'
  *         if 'target_string' in kwargs:             # <<<<<<<<<<<<<<
  *             target_string = <string>u8bytes(kwargs.get('target_string', target_string))
@@ -9180,7 +9013,7 @@ static int __pyx_pf_7halogen_3api_6Target_2__cinit__(struct __pyx_obj_7halogen_3
     __pyx_v_target_string = ((std::string)__pyx_t_1);
 
     /* "halogen/api.pyx":333
- *     def __cinit__(Target self not None, *args, **kwargs):
+ *     def __cinit__(self, *args, **kwargs):
  *         cdef string target_string = b'host'
  *         if 'target_string' in kwargs:             # <<<<<<<<<<<<<<
  *             target_string = <string>u8bytes(kwargs.get('target_string', target_string))
@@ -9279,7 +9112,7 @@ static int __pyx_pf_7halogen_3api_6Target_2__cinit__(struct __pyx_obj_7halogen_3
   /* "halogen/api.pyx":331
  *         return HalTarget.validate_target_string(<string>u8bytes(target_string))
  * 
- *     def __cinit__(Target self not None, *args, **kwargs):             # <<<<<<<<<<<<<<
+ *     def __cinit__(self, *args, **kwargs):             # <<<<<<<<<<<<<<
  *         cdef string target_string = b'host'
  *         if 'target_string' in kwargs:
  */
@@ -9300,7 +9133,7 @@ static int __pyx_pf_7halogen_3api_6Target_2__cinit__(struct __pyx_obj_7halogen_3
 /* "halogen/api.pyx":343
  * 
  *     @property
- *     def os(Target self not None):             # <<<<<<<<<<<<<<
+ *     def os(self):             # <<<<<<<<<<<<<<
  *         return PyInt_FromLong(<long>(self.__this__.os))
  * 
  */
@@ -9311,16 +9144,9 @@ static PyObject *__pyx_pw_7halogen_3api_6Target_2os_1__get__(PyObject *__pyx_v_s
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__get__ (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 343, __pyx_L1_error)
-  }
   __pyx_r = __pyx_pf_7halogen_3api_6Target_2os___get__(((struct __pyx_obj_7halogen_3api_Target *)__pyx_v_self));
 
   /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = NULL;
-  __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -9333,7 +9159,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_2os___get__(struct __pyx_obj_7ha
 
   /* "halogen/api.pyx":344
  *     @property
- *     def os(Target self not None):
+ *     def os(self):
  *         return PyInt_FromLong(<long>(self.__this__.os))             # <<<<<<<<<<<<<<
  * 
  *     @os.setter
@@ -9348,7 +9174,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_2os___get__(struct __pyx_obj_7ha
   /* "halogen/api.pyx":343
  * 
  *     @property
- *     def os(Target self not None):             # <<<<<<<<<<<<<<
+ *     def os(self):             # <<<<<<<<<<<<<<
  *         return PyInt_FromLong(<long>(self.__this__.os))
  * 
  */
@@ -9367,7 +9193,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_2os___get__(struct __pyx_obj_7ha
 /* "halogen/api.pyx":347
  * 
  *     @os.setter
- *     def os(Target self not None, value):             # <<<<<<<<<<<<<<
+ *     def os(self, value not None):             # <<<<<<<<<<<<<<
  *         self.__this__.os = <OS>PyInt_AsLong(int(value))
  * 
  */
@@ -9378,8 +9204,8 @@ static int __pyx_pw_7halogen_3api_6Target_2os_3__set__(PyObject *__pyx_v_self, P
   int __pyx_r;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__set__ (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 347, __pyx_L1_error)
+  if (unlikely(((PyObject *)__pyx_v_value) == Py_None)) {
+    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "value"); __PYX_ERR(0, 347, __pyx_L1_error)
   }
   __pyx_r = __pyx_pf_7halogen_3api_6Target_2os_2__set__(((struct __pyx_obj_7halogen_3api_Target *)__pyx_v_self), ((PyObject *)__pyx_v_value));
 
@@ -9401,7 +9227,7 @@ static int __pyx_pf_7halogen_3api_6Target_2os_2__set__(struct __pyx_obj_7halogen
 
   /* "halogen/api.pyx":348
  *     @os.setter
- *     def os(Target self not None, value):
+ *     def os(self, value not None):
  *         self.__this__.os = <OS>PyInt_AsLong(int(value))             # <<<<<<<<<<<<<<
  * 
  *     @property
@@ -9415,7 +9241,7 @@ static int __pyx_pf_7halogen_3api_6Target_2os_2__set__(struct __pyx_obj_7halogen
   /* "halogen/api.pyx":347
  * 
  *     @os.setter
- *     def os(Target self not None, value):             # <<<<<<<<<<<<<<
+ *     def os(self, value not None):             # <<<<<<<<<<<<<<
  *         self.__this__.os = <OS>PyInt_AsLong(int(value))
  * 
  */
@@ -9435,7 +9261,7 @@ static int __pyx_pf_7halogen_3api_6Target_2os_2__set__(struct __pyx_obj_7halogen
 /* "halogen/api.pyx":351
  * 
  *     @property
- *     def arch(Target self not None):             # <<<<<<<<<<<<<<
+ *     def arch(self):             # <<<<<<<<<<<<<<
  *         return PyInt_FromLong(<long>(self.__this__.arch))
  * 
  */
@@ -9446,16 +9272,9 @@ static PyObject *__pyx_pw_7halogen_3api_6Target_4arch_1__get__(PyObject *__pyx_v
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__get__ (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 351, __pyx_L1_error)
-  }
   __pyx_r = __pyx_pf_7halogen_3api_6Target_4arch___get__(((struct __pyx_obj_7halogen_3api_Target *)__pyx_v_self));
 
   /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = NULL;
-  __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -9468,7 +9287,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_4arch___get__(struct __pyx_obj_7
 
   /* "halogen/api.pyx":352
  *     @property
- *     def arch(Target self not None):
+ *     def arch(self):
  *         return PyInt_FromLong(<long>(self.__this__.arch))             # <<<<<<<<<<<<<<
  * 
  *     @arch.setter
@@ -9483,7 +9302,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_4arch___get__(struct __pyx_obj_7
   /* "halogen/api.pyx":351
  * 
  *     @property
- *     def arch(Target self not None):             # <<<<<<<<<<<<<<
+ *     def arch(self):             # <<<<<<<<<<<<<<
  *         return PyInt_FromLong(<long>(self.__this__.arch))
  * 
  */
@@ -9502,7 +9321,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_4arch___get__(struct __pyx_obj_7
 /* "halogen/api.pyx":355
  * 
  *     @arch.setter
- *     def arch(Target self not None, value):             # <<<<<<<<<<<<<<
+ *     def arch(self, value not None):             # <<<<<<<<<<<<<<
  *         self.__this__.arch = <Arch>PyInt_AsLong(int(value))
  * 
  */
@@ -9513,8 +9332,8 @@ static int __pyx_pw_7halogen_3api_6Target_4arch_3__set__(PyObject *__pyx_v_self,
   int __pyx_r;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__set__ (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 355, __pyx_L1_error)
+  if (unlikely(((PyObject *)__pyx_v_value) == Py_None)) {
+    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "value"); __PYX_ERR(0, 355, __pyx_L1_error)
   }
   __pyx_r = __pyx_pf_7halogen_3api_6Target_4arch_2__set__(((struct __pyx_obj_7halogen_3api_Target *)__pyx_v_self), ((PyObject *)__pyx_v_value));
 
@@ -9536,7 +9355,7 @@ static int __pyx_pf_7halogen_3api_6Target_4arch_2__set__(struct __pyx_obj_7halog
 
   /* "halogen/api.pyx":356
  *     @arch.setter
- *     def arch(Target self not None, value):
+ *     def arch(self, value not None):
  *         self.__this__.arch = <Arch>PyInt_AsLong(int(value))             # <<<<<<<<<<<<<<
  * 
  *     @property
@@ -9550,7 +9369,7 @@ static int __pyx_pf_7halogen_3api_6Target_4arch_2__set__(struct __pyx_obj_7halog
   /* "halogen/api.pyx":355
  * 
  *     @arch.setter
- *     def arch(Target self not None, value):             # <<<<<<<<<<<<<<
+ *     def arch(self, value not None):             # <<<<<<<<<<<<<<
  *         self.__this__.arch = <Arch>PyInt_AsLong(int(value))
  * 
  */
@@ -9570,7 +9389,7 @@ static int __pyx_pf_7halogen_3api_6Target_4arch_2__set__(struct __pyx_obj_7halog
 /* "halogen/api.pyx":359
  * 
  *     @property
- *     def bits(Target self not None):             # <<<<<<<<<<<<<<
+ *     def bits(self):             # <<<<<<<<<<<<<<
  *         return PyInt_FromLong(self.__this__.bits)
  * 
  */
@@ -9581,16 +9400,9 @@ static PyObject *__pyx_pw_7halogen_3api_6Target_4bits_1__get__(PyObject *__pyx_v
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__get__ (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 359, __pyx_L1_error)
-  }
   __pyx_r = __pyx_pf_7halogen_3api_6Target_4bits___get__(((struct __pyx_obj_7halogen_3api_Target *)__pyx_v_self));
 
   /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = NULL;
-  __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -9603,7 +9415,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_4bits___get__(struct __pyx_obj_7
 
   /* "halogen/api.pyx":360
  *     @property
- *     def bits(Target self not None):
+ *     def bits(self):
  *         return PyInt_FromLong(self.__this__.bits)             # <<<<<<<<<<<<<<
  * 
  *     @bits.setter
@@ -9618,7 +9430,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_4bits___get__(struct __pyx_obj_7
   /* "halogen/api.pyx":359
  * 
  *     @property
- *     def bits(Target self not None):             # <<<<<<<<<<<<<<
+ *     def bits(self):             # <<<<<<<<<<<<<<
  *         return PyInt_FromLong(self.__this__.bits)
  * 
  */
@@ -9637,7 +9449,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_4bits___get__(struct __pyx_obj_7
 /* "halogen/api.pyx":363
  * 
  *     @bits.setter
- *     def bits(Target self not None, value):             # <<<<<<<<<<<<<<
+ *     def bits(self, value not None):             # <<<<<<<<<<<<<<
  *         self.__this__.bits = <int>PyInt_AsLong(int(value))
  * 
  */
@@ -9648,8 +9460,8 @@ static int __pyx_pw_7halogen_3api_6Target_4bits_3__set__(PyObject *__pyx_v_self,
   int __pyx_r;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__set__ (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 363, __pyx_L1_error)
+  if (unlikely(((PyObject *)__pyx_v_value) == Py_None)) {
+    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "value"); __PYX_ERR(0, 363, __pyx_L1_error)
   }
   __pyx_r = __pyx_pf_7halogen_3api_6Target_4bits_2__set__(((struct __pyx_obj_7halogen_3api_Target *)__pyx_v_self), ((PyObject *)__pyx_v_value));
 
@@ -9671,10 +9483,10 @@ static int __pyx_pf_7halogen_3api_6Target_4bits_2__set__(struct __pyx_obj_7halog
 
   /* "halogen/api.pyx":364
  *     @bits.setter
- *     def bits(Target self not None, value):
+ *     def bits(self, value not None):
  *         self.__this__.bits = <int>PyInt_AsLong(int(value))             # <<<<<<<<<<<<<<
  * 
- *     def has_gpu_feature(Target self not None):
+ *     def has_gpu_feature(self):
  */
   __pyx_t_1 = __Pyx_PyNumber_Int(__pyx_v_value); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 364, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
@@ -9685,7 +9497,7 @@ static int __pyx_pf_7halogen_3api_6Target_4bits_2__set__(struct __pyx_obj_7halog
   /* "halogen/api.pyx":363
  * 
  *     @bits.setter
- *     def bits(Target self not None, value):             # <<<<<<<<<<<<<<
+ *     def bits(self, value not None):             # <<<<<<<<<<<<<<
  *         self.__this__.bits = <int>PyInt_AsLong(int(value))
  * 
  */
@@ -9705,7 +9517,7 @@ static int __pyx_pf_7halogen_3api_6Target_4bits_2__set__(struct __pyx_obj_7halog
 /* "halogen/api.pyx":366
  *         self.__this__.bits = <int>PyInt_AsLong(int(value))
  * 
- *     def has_gpu_feature(Target self not None):             # <<<<<<<<<<<<<<
+ *     def has_gpu_feature(self):             # <<<<<<<<<<<<<<
  *         return self.__this__.has_gpu_feature()
  * 
  */
@@ -9717,16 +9529,9 @@ static PyObject *__pyx_pw_7halogen_3api_6Target_5has_gpu_feature(PyObject *__pyx
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("has_gpu_feature (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 366, __pyx_L1_error)
-  }
   __pyx_r = __pyx_pf_7halogen_3api_6Target_4has_gpu_feature(((struct __pyx_obj_7halogen_3api_Target *)__pyx_v_self));
 
   /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = NULL;
-  __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -9739,10 +9544,10 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_4has_gpu_feature(struct __pyx_ob
 
   /* "halogen/api.pyx":367
  * 
- *     def has_gpu_feature(Target self not None):
+ *     def has_gpu_feature(self):
  *         return self.__this__.has_gpu_feature()             # <<<<<<<<<<<<<<
  * 
- *     def has_feature(Target self not None, feature):
+ *     def has_feature(self, feature):
  */
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_v_self->__pyx___this__.has_gpu_feature()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 367, __pyx_L1_error)
@@ -9754,7 +9559,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_4has_gpu_feature(struct __pyx_ob
   /* "halogen/api.pyx":366
  *         self.__this__.bits = <int>PyInt_AsLong(int(value))
  * 
- *     def has_gpu_feature(Target self not None):             # <<<<<<<<<<<<<<
+ *     def has_gpu_feature(self):             # <<<<<<<<<<<<<<
  *         return self.__this__.has_gpu_feature()
  * 
  */
@@ -9773,7 +9578,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_4has_gpu_feature(struct __pyx_ob
 /* "halogen/api.pyx":369
  *         return self.__this__.has_gpu_feature()
  * 
- *     def has_feature(Target self not None, feature):             # <<<<<<<<<<<<<<
+ *     def has_feature(self, feature):             # <<<<<<<<<<<<<<
  *         return self.__this__.has_feature(<Feature>PyInt_AsLong(int(feature)))
  * 
  */
@@ -9785,16 +9590,9 @@ static PyObject *__pyx_pw_7halogen_3api_6Target_7has_feature(PyObject *__pyx_v_s
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("has_feature (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 369, __pyx_L1_error)
-  }
   __pyx_r = __pyx_pf_7halogen_3api_6Target_6has_feature(((struct __pyx_obj_7halogen_3api_Target *)__pyx_v_self), ((PyObject *)__pyx_v_feature));
 
   /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = NULL;
-  __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -9808,10 +9606,10 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_6has_feature(struct __pyx_obj_7h
 
   /* "halogen/api.pyx":370
  * 
- *     def has_feature(Target self not None, feature):
+ *     def has_feature(self, feature):
  *         return self.__this__.has_feature(<Feature>PyInt_AsLong(int(feature)))             # <<<<<<<<<<<<<<
  * 
- *     def includes_halide_runtime(Target self not None):
+ *     def includes_halide_runtime(self):
  */
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_1 = __Pyx_PyNumber_Int(__pyx_v_feature); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 370, __pyx_L1_error)
@@ -9827,7 +9625,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_6has_feature(struct __pyx_obj_7h
   /* "halogen/api.pyx":369
  *         return self.__this__.has_gpu_feature()
  * 
- *     def has_feature(Target self not None, feature):             # <<<<<<<<<<<<<<
+ *     def has_feature(self, feature):             # <<<<<<<<<<<<<<
  *         return self.__this__.has_feature(<Feature>PyInt_AsLong(int(feature)))
  * 
  */
@@ -9846,7 +9644,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_6has_feature(struct __pyx_obj_7h
 /* "halogen/api.pyx":372
  *         return self.__this__.has_feature(<Feature>PyInt_AsLong(int(feature)))
  * 
- *     def includes_halide_runtime(Target self not None):             # <<<<<<<<<<<<<<
+ *     def includes_halide_runtime(self):             # <<<<<<<<<<<<<<
  *         try:
  *             return self.to_string().decode('UTF-8').lower().index('no_runtime') < 0
  */
@@ -9858,16 +9656,9 @@ static PyObject *__pyx_pw_7halogen_3api_6Target_9includes_halide_runtime(PyObjec
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("includes_halide_runtime (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 372, __pyx_L1_error)
-  }
   __pyx_r = __pyx_pf_7halogen_3api_6Target_8includes_halide_runtime(((struct __pyx_obj_7halogen_3api_Target *)__pyx_v_self));
 
   /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = NULL;
-  __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -9887,7 +9678,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_8includes_halide_runtime(struct 
 
   /* "halogen/api.pyx":373
  * 
- *     def includes_halide_runtime(Target self not None):
+ *     def includes_halide_runtime(self):
  *         try:             # <<<<<<<<<<<<<<
  *             return self.to_string().decode('UTF-8').lower().index('no_runtime') < 0
  *         except ValueError:
@@ -9902,7 +9693,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_8includes_halide_runtime(struct 
     /*try:*/ {
 
       /* "halogen/api.pyx":374
- *     def includes_halide_runtime(Target self not None):
+ *     def includes_halide_runtime(self):
  *         try:
  *             return self.to_string().decode('UTF-8').lower().index('no_runtime') < 0             # <<<<<<<<<<<<<<
  *         except ValueError:
@@ -9970,7 +9761,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_8includes_halide_runtime(struct 
 
       /* "halogen/api.pyx":373
  * 
- *     def includes_halide_runtime(Target self not None):
+ *     def includes_halide_runtime(self):
  *         try:             # <<<<<<<<<<<<<<
  *             return self.to_string().decode('UTF-8').lower().index('no_runtime') < 0
  *         except ValueError:
@@ -10002,7 +9793,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_8includes_halide_runtime(struct 
  *         except ValueError:
  *             return True             # <<<<<<<<<<<<<<
  * 
- *     def to_string(Target self not None):
+ *     def to_string(self):
  */
       __Pyx_XDECREF(__pyx_r);
       __Pyx_INCREF(Py_True);
@@ -10017,7 +9808,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_8includes_halide_runtime(struct 
 
     /* "halogen/api.pyx":373
  * 
- *     def includes_halide_runtime(Target self not None):
+ *     def includes_halide_runtime(self):
  *         try:             # <<<<<<<<<<<<<<
  *             return self.to_string().decode('UTF-8').lower().index('no_runtime') < 0
  *         except ValueError:
@@ -10044,7 +9835,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_8includes_halide_runtime(struct 
   /* "halogen/api.pyx":372
  *         return self.__this__.has_feature(<Feature>PyInt_AsLong(int(feature)))
  * 
- *     def includes_halide_runtime(Target self not None):             # <<<<<<<<<<<<<<
+ *     def includes_halide_runtime(self):             # <<<<<<<<<<<<<<
  *         try:
  *             return self.to_string().decode('UTF-8').lower().index('no_runtime') < 0
  */
@@ -10066,7 +9857,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_8includes_halide_runtime(struct 
 /* "halogen/api.pyx":378
  *             return True
  * 
- *     def to_string(Target self not None):             # <<<<<<<<<<<<<<
+ *     def to_string(self):             # <<<<<<<<<<<<<<
  *         return self.__this__.to_string()
  * 
  */
@@ -10078,16 +9869,9 @@ static PyObject *__pyx_pw_7halogen_3api_6Target_11to_string(PyObject *__pyx_v_se
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("to_string (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 378, __pyx_L1_error)
-  }
   __pyx_r = __pyx_pf_7halogen_3api_6Target_10to_string(((struct __pyx_obj_7halogen_3api_Target *)__pyx_v_self));
 
   /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = NULL;
-  __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -10100,10 +9884,10 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_10to_string(struct __pyx_obj_7ha
 
   /* "halogen/api.pyx":379
  * 
- *     def to_string(Target self not None):
+ *     def to_string(self):
  *         return self.__this__.to_string()             # <<<<<<<<<<<<<<
  * 
- *     def maximum_buffer_size(Target self not None):
+ *     def maximum_buffer_size(self):
  */
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_1 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_self->__pyx___this__.to_string()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 379, __pyx_L1_error)
@@ -10115,7 +9899,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_10to_string(struct __pyx_obj_7ha
   /* "halogen/api.pyx":378
  *             return True
  * 
- *     def to_string(Target self not None):             # <<<<<<<<<<<<<<
+ *     def to_string(self):             # <<<<<<<<<<<<<<
  *         return self.__this__.to_string()
  * 
  */
@@ -10134,7 +9918,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_10to_string(struct __pyx_obj_7ha
 /* "halogen/api.pyx":381
  *         return self.__this__.to_string()
  * 
- *     def maximum_buffer_size(Target self not None):             # <<<<<<<<<<<<<<
+ *     def maximum_buffer_size(self):             # <<<<<<<<<<<<<<
  *         return self.__this__.maximum_buffer_size()
  * 
  */
@@ -10146,16 +9930,9 @@ static PyObject *__pyx_pw_7halogen_3api_6Target_13maximum_buffer_size(PyObject *
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("maximum_buffer_size (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 381, __pyx_L1_error)
-  }
   __pyx_r = __pyx_pf_7halogen_3api_6Target_12maximum_buffer_size(((struct __pyx_obj_7halogen_3api_Target *)__pyx_v_self));
 
   /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = NULL;
-  __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -10168,10 +9945,10 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_12maximum_buffer_size(struct __p
 
   /* "halogen/api.pyx":382
  * 
- *     def maximum_buffer_size(Target self not None):
+ *     def maximum_buffer_size(self):
  *         return self.__this__.maximum_buffer_size()             # <<<<<<<<<<<<<<
  * 
- *     def supported(Target self not None):
+ *     def supported(self):
  */
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_1 = __Pyx_PyInt_From_int64_t(__pyx_v_self->__pyx___this__.maximum_buffer_size()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 382, __pyx_L1_error)
@@ -10183,7 +9960,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_12maximum_buffer_size(struct __p
   /* "halogen/api.pyx":381
  *         return self.__this__.to_string()
  * 
- *     def maximum_buffer_size(Target self not None):             # <<<<<<<<<<<<<<
+ *     def maximum_buffer_size(self):             # <<<<<<<<<<<<<<
  *         return self.__this__.maximum_buffer_size()
  * 
  */
@@ -10202,7 +9979,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_12maximum_buffer_size(struct __p
 /* "halogen/api.pyx":384
  *         return self.__this__.maximum_buffer_size()
  * 
- *     def supported(Target self not None):             # <<<<<<<<<<<<<<
+ *     def supported(self):             # <<<<<<<<<<<<<<
  *         return self.__this__.supported()
  * 
  */
@@ -10214,16 +9991,9 @@ static PyObject *__pyx_pw_7halogen_3api_6Target_15supported(PyObject *__pyx_v_se
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("supported (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 384, __pyx_L1_error)
-  }
   __pyx_r = __pyx_pf_7halogen_3api_6Target_14supported(((struct __pyx_obj_7halogen_3api_Target *)__pyx_v_self));
 
   /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = NULL;
-  __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -10236,10 +10006,10 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_14supported(struct __pyx_obj_7ha
 
   /* "halogen/api.pyx":385
  * 
- *     def supported(Target self not None):
+ *     def supported(self):
  *         return self.__this__.supported()             # <<<<<<<<<<<<<<
  * 
- *     def supports_type(Target self not None, Type t not None):
+ *     def supports_type(self, Type t not None):
  */
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_v_self->__pyx___this__.supported()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 385, __pyx_L1_error)
@@ -10251,7 +10021,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_14supported(struct __pyx_obj_7ha
   /* "halogen/api.pyx":384
  *         return self.__this__.maximum_buffer_size()
  * 
- *     def supported(Target self not None):             # <<<<<<<<<<<<<<
+ *     def supported(self):             # <<<<<<<<<<<<<<
  *         return self.__this__.supported()
  * 
  */
@@ -10270,7 +10040,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_14supported(struct __pyx_obj_7ha
 /* "halogen/api.pyx":387
  *         return self.__this__.supported()
  * 
- *     def supports_type(Target self not None, Type t not None):             # <<<<<<<<<<<<<<
+ *     def supports_type(self, Type t not None):             # <<<<<<<<<<<<<<
  *         return self.__this__.supports_type(t.__this__)
  * 
  */
@@ -10282,9 +10052,6 @@ static PyObject *__pyx_pw_7halogen_3api_6Target_17supports_type(PyObject *__pyx_
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("supports_type (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 387, __pyx_L1_error)
-  }
   if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_t), __pyx_ptype_7halogen_3api_Type, 0, "t", 0))) __PYX_ERR(0, 387, __pyx_L1_error)
   __pyx_r = __pyx_pf_7halogen_3api_6Target_16supports_type(((struct __pyx_obj_7halogen_3api_Target *)__pyx_v_self), ((struct __pyx_obj_7halogen_3api_Type *)__pyx_v_t));
 
@@ -10305,10 +10072,10 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_16supports_type(struct __pyx_obj
 
   /* "halogen/api.pyx":388
  * 
- *     def supports_type(Target self not None, Type t not None):
+ *     def supports_type(self, Type t not None):
  *         return self.__this__.supports_type(t.__this__)             # <<<<<<<<<<<<<<
  * 
- *     def natural_vector_size(Target self not None, Type t not None):
+ *     def natural_vector_size(self, Type t not None):
  */
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_v_self->__pyx___this__.supports_type(__pyx_v_t->__pyx___this__)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 388, __pyx_L1_error)
@@ -10320,7 +10087,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_16supports_type(struct __pyx_obj
   /* "halogen/api.pyx":387
  *         return self.__this__.supported()
  * 
- *     def supports_type(Target self not None, Type t not None):             # <<<<<<<<<<<<<<
+ *     def supports_type(self, Type t not None):             # <<<<<<<<<<<<<<
  *         return self.__this__.supports_type(t.__this__)
  * 
  */
@@ -10339,7 +10106,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_16supports_type(struct __pyx_obj
 /* "halogen/api.pyx":390
  *         return self.__this__.supports_type(t.__this__)
  * 
- *     def natural_vector_size(Target self not None, Type t not None):             # <<<<<<<<<<<<<<
+ *     def natural_vector_size(self, Type t not None):             # <<<<<<<<<<<<<<
  *         return self.__this__.natural_vector_size(t.__this__)
  * 
  */
@@ -10351,9 +10118,6 @@ static PyObject *__pyx_pw_7halogen_3api_6Target_19natural_vector_size(PyObject *
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("natural_vector_size (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 390, __pyx_L1_error)
-  }
   if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_t), __pyx_ptype_7halogen_3api_Type, 0, "t", 0))) __PYX_ERR(0, 390, __pyx_L1_error)
   __pyx_r = __pyx_pf_7halogen_3api_6Target_18natural_vector_size(((struct __pyx_obj_7halogen_3api_Target *)__pyx_v_self), ((struct __pyx_obj_7halogen_3api_Type *)__pyx_v_t));
 
@@ -10374,10 +10138,10 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_18natural_vector_size(struct __p
 
   /* "halogen/api.pyx":391
  * 
- *     def natural_vector_size(Target self not None, Type t not None):
+ *     def natural_vector_size(self, Type t not None):
  *         return self.__this__.natural_vector_size(t.__this__)             # <<<<<<<<<<<<<<
  * 
- *     def __str__(Target self not None):
+ *     def __str__(self):
  */
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->__pyx___this__.natural_vector_size(__pyx_v_t->__pyx___this__)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 391, __pyx_L1_error)
@@ -10389,7 +10153,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_18natural_vector_size(struct __p
   /* "halogen/api.pyx":390
  *         return self.__this__.supports_type(t.__this__)
  * 
- *     def natural_vector_size(Target self not None, Type t not None):             # <<<<<<<<<<<<<<
+ *     def natural_vector_size(self, Type t not None):             # <<<<<<<<<<<<<<
  *         return self.__this__.natural_vector_size(t.__this__)
  * 
  */
@@ -10408,7 +10172,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_18natural_vector_size(struct __p
 /* "halogen/api.pyx":393
  *         return self.__this__.natural_vector_size(t.__this__)
  * 
- *     def __str__(Target self not None):             # <<<<<<<<<<<<<<
+ *     def __str__(self):             # <<<<<<<<<<<<<<
  *         return self.__this__.to_string().decode('UTF-8')
  * 
  */
@@ -10419,16 +10183,9 @@ static PyObject *__pyx_pw_7halogen_3api_6Target_21__str__(PyObject *__pyx_v_self
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__str__ (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 393, __pyx_L1_error)
-  }
   __pyx_r = __pyx_pf_7halogen_3api_6Target_20__str__(((struct __pyx_obj_7halogen_3api_Target *)__pyx_v_self));
 
   /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = NULL;
-  __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -10441,10 +10198,10 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_20__str__(struct __pyx_obj_7halo
 
   /* "halogen/api.pyx":394
  * 
- *     def __str__(Target self not None):
+ *     def __str__(self):
  *         return self.__this__.to_string().decode('UTF-8')             # <<<<<<<<<<<<<<
  * 
- *     def __bytes__(Target self not None):
+ *     def __bytes__(self):
  */
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_1 = __Pyx_decode_cpp_string(__pyx_v_self->__pyx___this__.to_string(), 0, PY_SSIZE_T_MAX, NULL, NULL, PyUnicode_DecodeUTF8); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 394, __pyx_L1_error)
@@ -10456,7 +10213,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_20__str__(struct __pyx_obj_7halo
   /* "halogen/api.pyx":393
  *         return self.__this__.natural_vector_size(t.__this__)
  * 
- *     def __str__(Target self not None):             # <<<<<<<<<<<<<<
+ *     def __str__(self):             # <<<<<<<<<<<<<<
  *         return self.__this__.to_string().decode('UTF-8')
  * 
  */
@@ -10475,7 +10232,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_20__str__(struct __pyx_obj_7halo
 /* "halogen/api.pyx":396
  *         return self.__this__.to_string().decode('UTF-8')
  * 
- *     def __bytes__(Target self not None):             # <<<<<<<<<<<<<<
+ *     def __bytes__(self):             # <<<<<<<<<<<<<<
  *         return self.__this__.to_string()
  * 
  */
@@ -10487,16 +10244,9 @@ static PyObject *__pyx_pw_7halogen_3api_6Target_23__bytes__(PyObject *__pyx_v_se
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__bytes__ (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 396, __pyx_L1_error)
-  }
   __pyx_r = __pyx_pf_7halogen_3api_6Target_22__bytes__(((struct __pyx_obj_7halogen_3api_Target *)__pyx_v_self));
 
   /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = NULL;
-  __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -10509,10 +10259,10 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_22__bytes__(struct __pyx_obj_7ha
 
   /* "halogen/api.pyx":397
  * 
- *     def __bytes__(Target self not None):
+ *     def __bytes__(self):
  *         return self.__this__.to_string()             # <<<<<<<<<<<<<<
  * 
- *     def __repr__(Target self not None):
+ *     def __repr__(self):
  */
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_1 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_self->__pyx___this__.to_string()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 397, __pyx_L1_error)
@@ -10524,7 +10274,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_22__bytes__(struct __pyx_obj_7ha
   /* "halogen/api.pyx":396
  *         return self.__this__.to_string().decode('UTF-8')
  * 
- *     def __bytes__(Target self not None):             # <<<<<<<<<<<<<<
+ *     def __bytes__(self):             # <<<<<<<<<<<<<<
  *         return self.__this__.to_string()
  * 
  */
@@ -10543,7 +10293,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_22__bytes__(struct __pyx_obj_7ha
 /* "halogen/api.pyx":399
  *         return self.__this__.to_string()
  * 
- *     def __repr__(Target self not None):             # <<<<<<<<<<<<<<
+ *     def __repr__(self):             # <<<<<<<<<<<<<<
  *         return stringify(self, ('os', 'arch', 'bits')).decode('UTF-8')
  * 
  */
@@ -10554,16 +10304,9 @@ static PyObject *__pyx_pw_7halogen_3api_6Target_25__repr__(PyObject *__pyx_v_sel
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__repr__ (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 399, __pyx_L1_error)
-  }
   __pyx_r = __pyx_pf_7halogen_3api_6Target_24__repr__(((struct __pyx_obj_7halogen_3api_Target *)__pyx_v_self));
 
   /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = NULL;
-  __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -10580,10 +10323,10 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_24__repr__(struct __pyx_obj_7hal
 
   /* "halogen/api.pyx":400
  * 
- *     def __repr__(Target self not None):
+ *     def __repr__(self):
  *         return stringify(self, ('os', 'arch', 'bits')).decode('UTF-8')             # <<<<<<<<<<<<<<
  * 
- *     def __richcmp__(Target self not None,
+ *     def __richcmp__(self,
  */
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_stringify); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 400, __pyx_L1_error)
@@ -10646,7 +10389,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_24__repr__(struct __pyx_obj_7hal
   /* "halogen/api.pyx":399
  *         return self.__this__.to_string()
  * 
- *     def __repr__(Target self not None):             # <<<<<<<<<<<<<<
+ *     def __repr__(self):             # <<<<<<<<<<<<<<
  *         return stringify(self, ('os', 'arch', 'bits')).decode('UTF-8')
  * 
  */
@@ -10668,7 +10411,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_24__repr__(struct __pyx_obj_7hal
 /* "halogen/api.pyx":402
  *         return stringify(self, ('os', 'arch', 'bits')).decode('UTF-8')
  * 
- *     def __richcmp__(Target self not None,             # <<<<<<<<<<<<<<
+ *     def __richcmp__(self,             # <<<<<<<<<<<<<<
  *                     Target other not None,
  *                     int op):
  */
@@ -10679,9 +10422,6 @@ static PyObject *__pyx_pw_7halogen_3api_6Target_27__richcmp__(PyObject *__pyx_v_
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__richcmp__ (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 402, __pyx_L1_error)
-  }
   if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_other), __pyx_ptype_7halogen_3api_Target, 0, "other", 0))) __PYX_ERR(0, 403, __pyx_L1_error)
   __pyx_r = __pyx_pf_7halogen_3api_6Target_26__richcmp__(((struct __pyx_obj_7halogen_3api_Target *)__pyx_v_self), ((struct __pyx_obj_7halogen_3api_Target *)__pyx_v_other), ((int)__pyx_v_op));
 
@@ -10785,7 +10525,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_26__richcmp__(struct __pyx_obj_7
   /* "halogen/api.pyx":402
  *         return stringify(self, ('os', 'arch', 'bits')).decode('UTF-8')
  * 
- *     def __richcmp__(Target self not None,             # <<<<<<<<<<<<<<
+ *     def __richcmp__(self,             # <<<<<<<<<<<<<<
  *                     Target other not None,
  *                     int op):
  */
@@ -11276,7 +11016,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Target_36__setstate_cython__(CYTHON_UNU
 /* "halogen/api.pyx":441
  * 
  *     @classmethod
- *     def check(cls not None, instance):             # <<<<<<<<<<<<<<
+ *     def check(cls, instance):             # <<<<<<<<<<<<<<
  *         return getattr(instance, '__class__', None) == cls
  * 
  */
@@ -11288,16 +11028,9 @@ static PyObject *__pyx_pw_7halogen_3api_7Outputs_1check(PyObject *__pyx_v_cls, P
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("check (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_cls) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "cls"); __PYX_ERR(0, 441, __pyx_L1_error)
-  }
   __pyx_r = __pyx_pf_7halogen_3api_7Outputs_check(((PyTypeObject*)__pyx_v_cls), ((PyObject *)__pyx_v_instance));
 
   /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = NULL;
-  __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -11311,10 +11044,10 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_check(PyTypeObject *__pyx_v_cls
 
   /* "halogen/api.pyx":442
  *     @classmethod
- *     def check(cls not None, instance):
+ *     def check(cls, instance):
  *         return getattr(instance, '__class__', None) == cls             # <<<<<<<<<<<<<<
  * 
- *     def __cinit__(Outputs self not None, *args, **kwargs):
+ *     def __cinit__(self, *args, **kwargs):
  */
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_1 = __Pyx_GetAttr3(__pyx_v_instance, __pyx_n_s_class, Py_None); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 442, __pyx_L1_error)
@@ -11328,7 +11061,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_check(PyTypeObject *__pyx_v_cls
   /* "halogen/api.pyx":441
  * 
  *     @classmethod
- *     def check(cls not None, instance):             # <<<<<<<<<<<<<<
+ *     def check(cls, instance):             # <<<<<<<<<<<<<<
  *         return getattr(instance, '__class__', None) == cls
  * 
  */
@@ -11348,7 +11081,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_check(PyTypeObject *__pyx_v_cls
 /* "halogen/api.pyx":444
  *         return getattr(instance, '__class__', None) == cls
  * 
- *     def __cinit__(Outputs self not None, *args, **kwargs):             # <<<<<<<<<<<<<<
+ *     def __cinit__(self, *args, **kwargs):             # <<<<<<<<<<<<<<
  *         for arg in args:
  *             if type(arg) == type(self):
  */
@@ -11366,16 +11099,9 @@ static int __pyx_pw_7halogen_3api_7Outputs_3__cinit__(PyObject *__pyx_v_self, Py
   __Pyx_GOTREF(__pyx_v_kwargs);
   __Pyx_INCREF(__pyx_args);
   __pyx_v_args = __pyx_args;
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 444, __pyx_L1_error)
-  }
   __pyx_r = __pyx_pf_7halogen_3api_7Outputs_2__cinit__(((struct __pyx_obj_7halogen_3api_Outputs *)__pyx_v_self), __pyx_v_args, __pyx_v_kwargs);
 
   /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = -1;
-  __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_args);
   __Pyx_XDECREF(__pyx_v_kwargs);
   __Pyx_RefNannyFinishContext();
@@ -11416,7 +11142,7 @@ static int __pyx_pf_7halogen_3api_7Outputs_2__cinit__(struct __pyx_obj_7halogen_
 
   /* "halogen/api.pyx":445
  * 
- *     def __cinit__(Outputs self not None, *args, **kwargs):
+ *     def __cinit__(self, *args, **kwargs):
  *         for arg in args:             # <<<<<<<<<<<<<<
  *             if type(arg) == type(self):
  *                 self.__this__ = self.__this__.object(arg.object_name) \
@@ -11434,7 +11160,7 @@ static int __pyx_pf_7halogen_3api_7Outputs_2__cinit__(struct __pyx_obj_7halogen_
     __pyx_t_3 = 0;
 
     /* "halogen/api.pyx":446
- *     def __cinit__(Outputs self not None, *args, **kwargs):
+ *     def __cinit__(self, *args, **kwargs):
  *         for arg in args:
  *             if type(arg) == type(self):             # <<<<<<<<<<<<<<
  *                 self.__this__ = self.__this__.object(arg.object_name) \
@@ -11598,7 +11324,7 @@ static int __pyx_pf_7halogen_3api_7Outputs_2__cinit__(struct __pyx_obj_7halogen_
       goto __pyx_L0;
 
       /* "halogen/api.pyx":446
- *     def __cinit__(Outputs self not None, *args, **kwargs):
+ *     def __cinit__(self, *args, **kwargs):
  *         for arg in args:
  *             if type(arg) == type(self):             # <<<<<<<<<<<<<<
  *                 self.__this__ = self.__this__.object(arg.object_name) \
@@ -11608,7 +11334,7 @@ static int __pyx_pf_7halogen_3api_7Outputs_2__cinit__(struct __pyx_obj_7halogen_
 
     /* "halogen/api.pyx":445
  * 
- *     def __cinit__(Outputs self not None, *args, **kwargs):
+ *     def __cinit__(self, *args, **kwargs):
  *         for arg in args:             # <<<<<<<<<<<<<<
  *             if type(arg) == type(self):
  *                 self.__this__ = self.__this__.object(arg.object_name) \
@@ -11894,7 +11620,7 @@ static int __pyx_pf_7halogen_3api_7Outputs_2__cinit__(struct __pyx_obj_7halogen_
   /* "halogen/api.pyx":444
  *         return getattr(instance, '__class__', None) == cls
  * 
- *     def __cinit__(Outputs self not None, *args, **kwargs):             # <<<<<<<<<<<<<<
+ *     def __cinit__(self, *args, **kwargs):             # <<<<<<<<<<<<<<
  *         for arg in args:
  *             if type(arg) == type(self):
  */
@@ -11927,7 +11653,7 @@ static int __pyx_pf_7halogen_3api_7Outputs_2__cinit__(struct __pyx_obj_7halogen_
 /* "halogen/api.pyx":485
  * 
  *     @property
- *     def object_name(Outputs self not None):             # <<<<<<<<<<<<<<
+ *     def object_name(self):             # <<<<<<<<<<<<<<
  *         return <string>self.__this__.object_name
  *     @object_name.setter
  */
@@ -11938,16 +11664,9 @@ static PyObject *__pyx_pw_7halogen_3api_7Outputs_11object_name_1__get__(PyObject
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__get__ (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 485, __pyx_L1_error)
-  }
   __pyx_r = __pyx_pf_7halogen_3api_7Outputs_11object_name___get__(((struct __pyx_obj_7halogen_3api_Outputs *)__pyx_v_self));
 
   /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = NULL;
-  __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -11960,10 +11679,10 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_11object_name___get__(struct __
 
   /* "halogen/api.pyx":486
  *     @property
- *     def object_name(Outputs self not None):
+ *     def object_name(self):
  *         return <string>self.__this__.object_name             # <<<<<<<<<<<<<<
  *     @object_name.setter
- *     def object_name(Outputs self not None, object value not None):
+ *     def object_name(self, object value not None):
  */
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_1 = __pyx_convert_PyBytes_string_to_py_std__in_string(((std::string)__pyx_v_self->__pyx___this__.object_name)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 486, __pyx_L1_error)
@@ -11975,7 +11694,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_11object_name___get__(struct __
   /* "halogen/api.pyx":485
  * 
  *     @property
- *     def object_name(Outputs self not None):             # <<<<<<<<<<<<<<
+ *     def object_name(self):             # <<<<<<<<<<<<<<
  *         return <string>self.__this__.object_name
  *     @object_name.setter
  */
@@ -11994,7 +11713,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_11object_name___get__(struct __
 /* "halogen/api.pyx":488
  *         return <string>self.__this__.object_name
  *     @object_name.setter
- *     def object_name(Outputs self not None, object value not None):             # <<<<<<<<<<<<<<
+ *     def object_name(self, object value not None):             # <<<<<<<<<<<<<<
  *         self.__this__.object_name = <string>u8bytes(value)
  * 
  */
@@ -12005,9 +11724,6 @@ static int __pyx_pw_7halogen_3api_7Outputs_11object_name_3__set__(PyObject *__py
   int __pyx_r;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__set__ (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 488, __pyx_L1_error)
-  }
   if (unlikely(((PyObject *)__pyx_v_value) == Py_None)) {
     PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "value"); __PYX_ERR(0, 488, __pyx_L1_error)
   }
@@ -12031,7 +11747,7 @@ static int __pyx_pf_7halogen_3api_7Outputs_11object_name_2__set__(struct __pyx_o
 
   /* "halogen/api.pyx":489
  *     @object_name.setter
- *     def object_name(Outputs self not None, object value not None):
+ *     def object_name(self, object value not None):
  *         self.__this__.object_name = <string>u8bytes(value)             # <<<<<<<<<<<<<<
  * 
  *     @property
@@ -12045,7 +11761,7 @@ static int __pyx_pf_7halogen_3api_7Outputs_11object_name_2__set__(struct __pyx_o
   /* "halogen/api.pyx":488
  *         return <string>self.__this__.object_name
  *     @object_name.setter
- *     def object_name(Outputs self not None, object value not None):             # <<<<<<<<<<<<<<
+ *     def object_name(self, object value not None):             # <<<<<<<<<<<<<<
  *         self.__this__.object_name = <string>u8bytes(value)
  * 
  */
@@ -12065,7 +11781,7 @@ static int __pyx_pf_7halogen_3api_7Outputs_11object_name_2__set__(struct __pyx_o
 /* "halogen/api.pyx":492
  * 
  *     @property
- *     def assembly_name(Outputs self not None):             # <<<<<<<<<<<<<<
+ *     def assembly_name(self):             # <<<<<<<<<<<<<<
  *         return <string>self.__this__.assembly_name
  *     @assembly_name.setter
  */
@@ -12076,16 +11792,9 @@ static PyObject *__pyx_pw_7halogen_3api_7Outputs_13assembly_name_1__get__(PyObje
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__get__ (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 492, __pyx_L1_error)
-  }
   __pyx_r = __pyx_pf_7halogen_3api_7Outputs_13assembly_name___get__(((struct __pyx_obj_7halogen_3api_Outputs *)__pyx_v_self));
 
   /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = NULL;
-  __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -12098,10 +11807,10 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_13assembly_name___get__(struct 
 
   /* "halogen/api.pyx":493
  *     @property
- *     def assembly_name(Outputs self not None):
+ *     def assembly_name(self):
  *         return <string>self.__this__.assembly_name             # <<<<<<<<<<<<<<
  *     @assembly_name.setter
- *     def assembly_name(Outputs self not None, object value not None):
+ *     def assembly_name(self, object value not None):
  */
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_1 = __pyx_convert_PyBytes_string_to_py_std__in_string(((std::string)__pyx_v_self->__pyx___this__.assembly_name)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 493, __pyx_L1_error)
@@ -12113,7 +11822,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_13assembly_name___get__(struct 
   /* "halogen/api.pyx":492
  * 
  *     @property
- *     def assembly_name(Outputs self not None):             # <<<<<<<<<<<<<<
+ *     def assembly_name(self):             # <<<<<<<<<<<<<<
  *         return <string>self.__this__.assembly_name
  *     @assembly_name.setter
  */
@@ -12132,7 +11841,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_13assembly_name___get__(struct 
 /* "halogen/api.pyx":495
  *         return <string>self.__this__.assembly_name
  *     @assembly_name.setter
- *     def assembly_name(Outputs self not None, object value not None):             # <<<<<<<<<<<<<<
+ *     def assembly_name(self, object value not None):             # <<<<<<<<<<<<<<
  *         self.__this__.assembly_name = <string>u8bytes(value)
  * 
  */
@@ -12143,9 +11852,6 @@ static int __pyx_pw_7halogen_3api_7Outputs_13assembly_name_3__set__(PyObject *__
   int __pyx_r;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__set__ (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 495, __pyx_L1_error)
-  }
   if (unlikely(((PyObject *)__pyx_v_value) == Py_None)) {
     PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "value"); __PYX_ERR(0, 495, __pyx_L1_error)
   }
@@ -12169,7 +11875,7 @@ static int __pyx_pf_7halogen_3api_7Outputs_13assembly_name_2__set__(struct __pyx
 
   /* "halogen/api.pyx":496
  *     @assembly_name.setter
- *     def assembly_name(Outputs self not None, object value not None):
+ *     def assembly_name(self, object value not None):
  *         self.__this__.assembly_name = <string>u8bytes(value)             # <<<<<<<<<<<<<<
  * 
  *     @property
@@ -12183,7 +11889,7 @@ static int __pyx_pf_7halogen_3api_7Outputs_13assembly_name_2__set__(struct __pyx
   /* "halogen/api.pyx":495
  *         return <string>self.__this__.assembly_name
  *     @assembly_name.setter
- *     def assembly_name(Outputs self not None, object value not None):             # <<<<<<<<<<<<<<
+ *     def assembly_name(self, object value not None):             # <<<<<<<<<<<<<<
  *         self.__this__.assembly_name = <string>u8bytes(value)
  * 
  */
@@ -12203,7 +11909,7 @@ static int __pyx_pf_7halogen_3api_7Outputs_13assembly_name_2__set__(struct __pyx
 /* "halogen/api.pyx":499
  * 
  *     @property
- *     def bitcode_name(Outputs self not None):             # <<<<<<<<<<<<<<
+ *     def bitcode_name(self):             # <<<<<<<<<<<<<<
  *         return <string>self.__this__.bitcode_name
  *     @bitcode_name.setter
  */
@@ -12214,16 +11920,9 @@ static PyObject *__pyx_pw_7halogen_3api_7Outputs_12bitcode_name_1__get__(PyObjec
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__get__ (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 499, __pyx_L1_error)
-  }
   __pyx_r = __pyx_pf_7halogen_3api_7Outputs_12bitcode_name___get__(((struct __pyx_obj_7halogen_3api_Outputs *)__pyx_v_self));
 
   /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = NULL;
-  __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -12236,10 +11935,10 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_12bitcode_name___get__(struct _
 
   /* "halogen/api.pyx":500
  *     @property
- *     def bitcode_name(Outputs self not None):
+ *     def bitcode_name(self):
  *         return <string>self.__this__.bitcode_name             # <<<<<<<<<<<<<<
  *     @bitcode_name.setter
- *     def bitcode_name(Outputs self not None, object value not None):
+ *     def bitcode_name(self, object value not None):
  */
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_1 = __pyx_convert_PyBytes_string_to_py_std__in_string(((std::string)__pyx_v_self->__pyx___this__.bitcode_name)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 500, __pyx_L1_error)
@@ -12251,7 +11950,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_12bitcode_name___get__(struct _
   /* "halogen/api.pyx":499
  * 
  *     @property
- *     def bitcode_name(Outputs self not None):             # <<<<<<<<<<<<<<
+ *     def bitcode_name(self):             # <<<<<<<<<<<<<<
  *         return <string>self.__this__.bitcode_name
  *     @bitcode_name.setter
  */
@@ -12270,7 +11969,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_12bitcode_name___get__(struct _
 /* "halogen/api.pyx":502
  *         return <string>self.__this__.bitcode_name
  *     @bitcode_name.setter
- *     def bitcode_name(Outputs self not None, object value not None):             # <<<<<<<<<<<<<<
+ *     def bitcode_name(self, object value not None):             # <<<<<<<<<<<<<<
  *         self.__this__.bitcode_name = <string>u8bytes(value)
  * 
  */
@@ -12281,9 +11980,6 @@ static int __pyx_pw_7halogen_3api_7Outputs_12bitcode_name_3__set__(PyObject *__p
   int __pyx_r;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__set__ (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 502, __pyx_L1_error)
-  }
   if (unlikely(((PyObject *)__pyx_v_value) == Py_None)) {
     PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "value"); __PYX_ERR(0, 502, __pyx_L1_error)
   }
@@ -12307,7 +12003,7 @@ static int __pyx_pf_7halogen_3api_7Outputs_12bitcode_name_2__set__(struct __pyx_
 
   /* "halogen/api.pyx":503
  *     @bitcode_name.setter
- *     def bitcode_name(Outputs self not None, object value not None):
+ *     def bitcode_name(self, object value not None):
  *         self.__this__.bitcode_name = <string>u8bytes(value)             # <<<<<<<<<<<<<<
  * 
  *     @property
@@ -12321,7 +12017,7 @@ static int __pyx_pf_7halogen_3api_7Outputs_12bitcode_name_2__set__(struct __pyx_
   /* "halogen/api.pyx":502
  *         return <string>self.__this__.bitcode_name
  *     @bitcode_name.setter
- *     def bitcode_name(Outputs self not None, object value not None):             # <<<<<<<<<<<<<<
+ *     def bitcode_name(self, object value not None):             # <<<<<<<<<<<<<<
  *         self.__this__.bitcode_name = <string>u8bytes(value)
  * 
  */
@@ -12341,7 +12037,7 @@ static int __pyx_pf_7halogen_3api_7Outputs_12bitcode_name_2__set__(struct __pyx_
 /* "halogen/api.pyx":506
  * 
  *     @property
- *     def llvm_assembly_name(Outputs self not None):             # <<<<<<<<<<<<<<
+ *     def llvm_assembly_name(self):             # <<<<<<<<<<<<<<
  *         return <string>self.__this__.llvm_assembly_name
  *     @llvm_assembly_name.setter
  */
@@ -12352,16 +12048,9 @@ static PyObject *__pyx_pw_7halogen_3api_7Outputs_18llvm_assembly_name_1__get__(P
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__get__ (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 506, __pyx_L1_error)
-  }
   __pyx_r = __pyx_pf_7halogen_3api_7Outputs_18llvm_assembly_name___get__(((struct __pyx_obj_7halogen_3api_Outputs *)__pyx_v_self));
 
   /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = NULL;
-  __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -12374,10 +12063,10 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_18llvm_assembly_name___get__(st
 
   /* "halogen/api.pyx":507
  *     @property
- *     def llvm_assembly_name(Outputs self not None):
+ *     def llvm_assembly_name(self):
  *         return <string>self.__this__.llvm_assembly_name             # <<<<<<<<<<<<<<
  *     @llvm_assembly_name.setter
- *     def llvm_assembly_name(Outputs self not None, object value not None):
+ *     def llvm_assembly_name(self, object value not None):
  */
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_1 = __pyx_convert_PyBytes_string_to_py_std__in_string(((std::string)__pyx_v_self->__pyx___this__.llvm_assembly_name)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 507, __pyx_L1_error)
@@ -12389,7 +12078,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_18llvm_assembly_name___get__(st
   /* "halogen/api.pyx":506
  * 
  *     @property
- *     def llvm_assembly_name(Outputs self not None):             # <<<<<<<<<<<<<<
+ *     def llvm_assembly_name(self):             # <<<<<<<<<<<<<<
  *         return <string>self.__this__.llvm_assembly_name
  *     @llvm_assembly_name.setter
  */
@@ -12408,7 +12097,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_18llvm_assembly_name___get__(st
 /* "halogen/api.pyx":509
  *         return <string>self.__this__.llvm_assembly_name
  *     @llvm_assembly_name.setter
- *     def llvm_assembly_name(Outputs self not None, object value not None):             # <<<<<<<<<<<<<<
+ *     def llvm_assembly_name(self, object value not None):             # <<<<<<<<<<<<<<
  *         self.__this__.llvm_assembly_name = <string>u8bytes(value)
  * 
  */
@@ -12419,9 +12108,6 @@ static int __pyx_pw_7halogen_3api_7Outputs_18llvm_assembly_name_3__set__(PyObjec
   int __pyx_r;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__set__ (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 509, __pyx_L1_error)
-  }
   if (unlikely(((PyObject *)__pyx_v_value) == Py_None)) {
     PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "value"); __PYX_ERR(0, 509, __pyx_L1_error)
   }
@@ -12445,7 +12131,7 @@ static int __pyx_pf_7halogen_3api_7Outputs_18llvm_assembly_name_2__set__(struct 
 
   /* "halogen/api.pyx":510
  *     @llvm_assembly_name.setter
- *     def llvm_assembly_name(Outputs self not None, object value not None):
+ *     def llvm_assembly_name(self, object value not None):
  *         self.__this__.llvm_assembly_name = <string>u8bytes(value)             # <<<<<<<<<<<<<<
  * 
  *     @property
@@ -12459,7 +12145,7 @@ static int __pyx_pf_7halogen_3api_7Outputs_18llvm_assembly_name_2__set__(struct 
   /* "halogen/api.pyx":509
  *         return <string>self.__this__.llvm_assembly_name
  *     @llvm_assembly_name.setter
- *     def llvm_assembly_name(Outputs self not None, object value not None):             # <<<<<<<<<<<<<<
+ *     def llvm_assembly_name(self, object value not None):             # <<<<<<<<<<<<<<
  *         self.__this__.llvm_assembly_name = <string>u8bytes(value)
  * 
  */
@@ -12479,7 +12165,7 @@ static int __pyx_pf_7halogen_3api_7Outputs_18llvm_assembly_name_2__set__(struct 
 /* "halogen/api.pyx":513
  * 
  *     @property
- *     def c_header_name(Outputs self not None):             # <<<<<<<<<<<<<<
+ *     def c_header_name(self):             # <<<<<<<<<<<<<<
  *         return <string>self.__this__.c_header_name
  *     @c_header_name.setter
  */
@@ -12490,16 +12176,9 @@ static PyObject *__pyx_pw_7halogen_3api_7Outputs_13c_header_name_1__get__(PyObje
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__get__ (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 513, __pyx_L1_error)
-  }
   __pyx_r = __pyx_pf_7halogen_3api_7Outputs_13c_header_name___get__(((struct __pyx_obj_7halogen_3api_Outputs *)__pyx_v_self));
 
   /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = NULL;
-  __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -12512,10 +12191,10 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_13c_header_name___get__(struct 
 
   /* "halogen/api.pyx":514
  *     @property
- *     def c_header_name(Outputs self not None):
+ *     def c_header_name(self):
  *         return <string>self.__this__.c_header_name             # <<<<<<<<<<<<<<
  *     @c_header_name.setter
- *     def c_header_name(Outputs self not None, object value not None):
+ *     def c_header_name(self, object value not None):
  */
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_1 = __pyx_convert_PyBytes_string_to_py_std__in_string(((std::string)__pyx_v_self->__pyx___this__.c_header_name)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 514, __pyx_L1_error)
@@ -12527,7 +12206,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_13c_header_name___get__(struct 
   /* "halogen/api.pyx":513
  * 
  *     @property
- *     def c_header_name(Outputs self not None):             # <<<<<<<<<<<<<<
+ *     def c_header_name(self):             # <<<<<<<<<<<<<<
  *         return <string>self.__this__.c_header_name
  *     @c_header_name.setter
  */
@@ -12546,7 +12225,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_13c_header_name___get__(struct 
 /* "halogen/api.pyx":516
  *         return <string>self.__this__.c_header_name
  *     @c_header_name.setter
- *     def c_header_name(Outputs self not None, object value not None):             # <<<<<<<<<<<<<<
+ *     def c_header_name(self, object value not None):             # <<<<<<<<<<<<<<
  *         self.__this__.c_header_name = <string>u8bytes(value)
  * 
  */
@@ -12557,9 +12236,6 @@ static int __pyx_pw_7halogen_3api_7Outputs_13c_header_name_3__set__(PyObject *__
   int __pyx_r;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__set__ (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 516, __pyx_L1_error)
-  }
   if (unlikely(((PyObject *)__pyx_v_value) == Py_None)) {
     PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "value"); __PYX_ERR(0, 516, __pyx_L1_error)
   }
@@ -12583,7 +12259,7 @@ static int __pyx_pf_7halogen_3api_7Outputs_13c_header_name_2__set__(struct __pyx
 
   /* "halogen/api.pyx":517
  *     @c_header_name.setter
- *     def c_header_name(Outputs self not None, object value not None):
+ *     def c_header_name(self, object value not None):
  *         self.__this__.c_header_name = <string>u8bytes(value)             # <<<<<<<<<<<<<<
  * 
  *     @property
@@ -12597,7 +12273,7 @@ static int __pyx_pf_7halogen_3api_7Outputs_13c_header_name_2__set__(struct __pyx
   /* "halogen/api.pyx":516
  *         return <string>self.__this__.c_header_name
  *     @c_header_name.setter
- *     def c_header_name(Outputs self not None, object value not None):             # <<<<<<<<<<<<<<
+ *     def c_header_name(self, object value not None):             # <<<<<<<<<<<<<<
  *         self.__this__.c_header_name = <string>u8bytes(value)
  * 
  */
@@ -12617,7 +12293,7 @@ static int __pyx_pf_7halogen_3api_7Outputs_13c_header_name_2__set__(struct __pyx
 /* "halogen/api.pyx":520
  * 
  *     @property
- *     def c_source_name(Outputs self not None):             # <<<<<<<<<<<<<<
+ *     def c_source_name(self):             # <<<<<<<<<<<<<<
  *         return <string>self.__this__.c_source_name
  *     @c_source_name.setter
  */
@@ -12628,16 +12304,9 @@ static PyObject *__pyx_pw_7halogen_3api_7Outputs_13c_source_name_1__get__(PyObje
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__get__ (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 520, __pyx_L1_error)
-  }
   __pyx_r = __pyx_pf_7halogen_3api_7Outputs_13c_source_name___get__(((struct __pyx_obj_7halogen_3api_Outputs *)__pyx_v_self));
 
   /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = NULL;
-  __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -12650,10 +12319,10 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_13c_source_name___get__(struct 
 
   /* "halogen/api.pyx":521
  *     @property
- *     def c_source_name(Outputs self not None):
+ *     def c_source_name(self):
  *         return <string>self.__this__.c_source_name             # <<<<<<<<<<<<<<
  *     @c_source_name.setter
- *     def c_source_name(Outputs self not None, object value not None):
+ *     def c_source_name(self, object value not None):
  */
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_1 = __pyx_convert_PyBytes_string_to_py_std__in_string(((std::string)__pyx_v_self->__pyx___this__.c_source_name)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 521, __pyx_L1_error)
@@ -12665,7 +12334,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_13c_source_name___get__(struct 
   /* "halogen/api.pyx":520
  * 
  *     @property
- *     def c_source_name(Outputs self not None):             # <<<<<<<<<<<<<<
+ *     def c_source_name(self):             # <<<<<<<<<<<<<<
  *         return <string>self.__this__.c_source_name
  *     @c_source_name.setter
  */
@@ -12684,7 +12353,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_13c_source_name___get__(struct 
 /* "halogen/api.pyx":523
  *         return <string>self.__this__.c_source_name
  *     @c_source_name.setter
- *     def c_source_name(Outputs self not None, object value not None):             # <<<<<<<<<<<<<<
+ *     def c_source_name(self, object value not None):             # <<<<<<<<<<<<<<
  *         self.__this__.c_source_name = <string>u8bytes(value)
  * 
  */
@@ -12695,9 +12364,6 @@ static int __pyx_pw_7halogen_3api_7Outputs_13c_source_name_3__set__(PyObject *__
   int __pyx_r;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__set__ (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 523, __pyx_L1_error)
-  }
   if (unlikely(((PyObject *)__pyx_v_value) == Py_None)) {
     PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "value"); __PYX_ERR(0, 523, __pyx_L1_error)
   }
@@ -12721,7 +12387,7 @@ static int __pyx_pf_7halogen_3api_7Outputs_13c_source_name_2__set__(struct __pyx
 
   /* "halogen/api.pyx":524
  *     @c_source_name.setter
- *     def c_source_name(Outputs self not None, object value not None):
+ *     def c_source_name(self, object value not None):
  *         self.__this__.c_source_name = <string>u8bytes(value)             # <<<<<<<<<<<<<<
  * 
  *     @property
@@ -12735,7 +12401,7 @@ static int __pyx_pf_7halogen_3api_7Outputs_13c_source_name_2__set__(struct __pyx
   /* "halogen/api.pyx":523
  *         return <string>self.__this__.c_source_name
  *     @c_source_name.setter
- *     def c_source_name(Outputs self not None, object value not None):             # <<<<<<<<<<<<<<
+ *     def c_source_name(self, object value not None):             # <<<<<<<<<<<<<<
  *         self.__this__.c_source_name = <string>u8bytes(value)
  * 
  */
@@ -12755,7 +12421,7 @@ static int __pyx_pf_7halogen_3api_7Outputs_13c_source_name_2__set__(struct __pyx
 /* "halogen/api.pyx":527
  * 
  *     @property
- *     def python_extension_name(Outputs self not None):             # <<<<<<<<<<<<<<
+ *     def python_extension_name(self):             # <<<<<<<<<<<<<<
  *         return <string>self.__this__.python_extension_name
  *     @python_extension_name.setter
  */
@@ -12766,16 +12432,9 @@ static PyObject *__pyx_pw_7halogen_3api_7Outputs_21python_extension_name_1__get_
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__get__ (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 527, __pyx_L1_error)
-  }
   __pyx_r = __pyx_pf_7halogen_3api_7Outputs_21python_extension_name___get__(((struct __pyx_obj_7halogen_3api_Outputs *)__pyx_v_self));
 
   /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = NULL;
-  __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -12788,10 +12447,10 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_21python_extension_name___get__
 
   /* "halogen/api.pyx":528
  *     @property
- *     def python_extension_name(Outputs self not None):
+ *     def python_extension_name(self):
  *         return <string>self.__this__.python_extension_name             # <<<<<<<<<<<<<<
  *     @python_extension_name.setter
- *     def python_extension_name(Outputs self not None, object value not None):
+ *     def python_extension_name(self, object value not None):
  */
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_1 = __pyx_convert_PyBytes_string_to_py_std__in_string(((std::string)__pyx_v_self->__pyx___this__.python_extension_name)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 528, __pyx_L1_error)
@@ -12803,7 +12462,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_21python_extension_name___get__
   /* "halogen/api.pyx":527
  * 
  *     @property
- *     def python_extension_name(Outputs self not None):             # <<<<<<<<<<<<<<
+ *     def python_extension_name(self):             # <<<<<<<<<<<<<<
  *         return <string>self.__this__.python_extension_name
  *     @python_extension_name.setter
  */
@@ -12822,7 +12481,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_21python_extension_name___get__
 /* "halogen/api.pyx":530
  *         return <string>self.__this__.python_extension_name
  *     @python_extension_name.setter
- *     def python_extension_name(Outputs self not None, object value not None):             # <<<<<<<<<<<<<<
+ *     def python_extension_name(self, object value not None):             # <<<<<<<<<<<<<<
  *         self.__this__.python_extension_name = <string>u8bytes(value)
  * 
  */
@@ -12833,9 +12492,6 @@ static int __pyx_pw_7halogen_3api_7Outputs_21python_extension_name_3__set__(PyOb
   int __pyx_r;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__set__ (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 530, __pyx_L1_error)
-  }
   if (unlikely(((PyObject *)__pyx_v_value) == Py_None)) {
     PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "value"); __PYX_ERR(0, 530, __pyx_L1_error)
   }
@@ -12859,7 +12515,7 @@ static int __pyx_pf_7halogen_3api_7Outputs_21python_extension_name_2__set__(stru
 
   /* "halogen/api.pyx":531
  *     @python_extension_name.setter
- *     def python_extension_name(Outputs self not None, object value not None):
+ *     def python_extension_name(self, object value not None):
  *         self.__this__.python_extension_name = <string>u8bytes(value)             # <<<<<<<<<<<<<<
  * 
  *     @property
@@ -12873,7 +12529,7 @@ static int __pyx_pf_7halogen_3api_7Outputs_21python_extension_name_2__set__(stru
   /* "halogen/api.pyx":530
  *         return <string>self.__this__.python_extension_name
  *     @python_extension_name.setter
- *     def python_extension_name(Outputs self not None, object value not None):             # <<<<<<<<<<<<<<
+ *     def python_extension_name(self, object value not None):             # <<<<<<<<<<<<<<
  *         self.__this__.python_extension_name = <string>u8bytes(value)
  * 
  */
@@ -12893,7 +12549,7 @@ static int __pyx_pf_7halogen_3api_7Outputs_21python_extension_name_2__set__(stru
 /* "halogen/api.pyx":534
  * 
  *     @property
- *     def stmt_name(Outputs self not None):             # <<<<<<<<<<<<<<
+ *     def stmt_name(self):             # <<<<<<<<<<<<<<
  *         return <string>self.__this__.stmt_name
  *     @stmt_name.setter
  */
@@ -12904,16 +12560,9 @@ static PyObject *__pyx_pw_7halogen_3api_7Outputs_9stmt_name_1__get__(PyObject *_
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__get__ (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 534, __pyx_L1_error)
-  }
   __pyx_r = __pyx_pf_7halogen_3api_7Outputs_9stmt_name___get__(((struct __pyx_obj_7halogen_3api_Outputs *)__pyx_v_self));
 
   /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = NULL;
-  __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -12926,10 +12575,10 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_9stmt_name___get__(struct __pyx
 
   /* "halogen/api.pyx":535
  *     @property
- *     def stmt_name(Outputs self not None):
+ *     def stmt_name(self):
  *         return <string>self.__this__.stmt_name             # <<<<<<<<<<<<<<
  *     @stmt_name.setter
- *     def stmt_name(Outputs self not None, object value not None):
+ *     def stmt_name(self, object value not None):
  */
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_1 = __pyx_convert_PyBytes_string_to_py_std__in_string(((std::string)__pyx_v_self->__pyx___this__.stmt_name)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 535, __pyx_L1_error)
@@ -12941,7 +12590,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_9stmt_name___get__(struct __pyx
   /* "halogen/api.pyx":534
  * 
  *     @property
- *     def stmt_name(Outputs self not None):             # <<<<<<<<<<<<<<
+ *     def stmt_name(self):             # <<<<<<<<<<<<<<
  *         return <string>self.__this__.stmt_name
  *     @stmt_name.setter
  */
@@ -12960,7 +12609,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_9stmt_name___get__(struct __pyx
 /* "halogen/api.pyx":537
  *         return <string>self.__this__.stmt_name
  *     @stmt_name.setter
- *     def stmt_name(Outputs self not None, object value not None):             # <<<<<<<<<<<<<<
+ *     def stmt_name(self, object value not None):             # <<<<<<<<<<<<<<
  *         self.__this__.stmt_name = <string>u8bytes(value)
  * 
  */
@@ -12971,9 +12620,6 @@ static int __pyx_pw_7halogen_3api_7Outputs_9stmt_name_3__set__(PyObject *__pyx_v
   int __pyx_r;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__set__ (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 537, __pyx_L1_error)
-  }
   if (unlikely(((PyObject *)__pyx_v_value) == Py_None)) {
     PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "value"); __PYX_ERR(0, 537, __pyx_L1_error)
   }
@@ -12997,7 +12643,7 @@ static int __pyx_pf_7halogen_3api_7Outputs_9stmt_name_2__set__(struct __pyx_obj_
 
   /* "halogen/api.pyx":538
  *     @stmt_name.setter
- *     def stmt_name(Outputs self not None, object value not None):
+ *     def stmt_name(self, object value not None):
  *         self.__this__.stmt_name = <string>u8bytes(value)             # <<<<<<<<<<<<<<
  * 
  *     @property
@@ -13011,7 +12657,7 @@ static int __pyx_pf_7halogen_3api_7Outputs_9stmt_name_2__set__(struct __pyx_obj_
   /* "halogen/api.pyx":537
  *         return <string>self.__this__.stmt_name
  *     @stmt_name.setter
- *     def stmt_name(Outputs self not None, object value not None):             # <<<<<<<<<<<<<<
+ *     def stmt_name(self, object value not None):             # <<<<<<<<<<<<<<
  *         self.__this__.stmt_name = <string>u8bytes(value)
  * 
  */
@@ -13031,7 +12677,7 @@ static int __pyx_pf_7halogen_3api_7Outputs_9stmt_name_2__set__(struct __pyx_obj_
 /* "halogen/api.pyx":541
  * 
  *     @property
- *     def stmt_html_name(Outputs self not None):             # <<<<<<<<<<<<<<
+ *     def stmt_html_name(self):             # <<<<<<<<<<<<<<
  *         return <string>self.__this__.stmt_html_name
  *     @stmt_html_name.setter
  */
@@ -13042,16 +12688,9 @@ static PyObject *__pyx_pw_7halogen_3api_7Outputs_14stmt_html_name_1__get__(PyObj
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__get__ (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 541, __pyx_L1_error)
-  }
   __pyx_r = __pyx_pf_7halogen_3api_7Outputs_14stmt_html_name___get__(((struct __pyx_obj_7halogen_3api_Outputs *)__pyx_v_self));
 
   /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = NULL;
-  __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -13064,10 +12703,10 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_14stmt_html_name___get__(struct
 
   /* "halogen/api.pyx":542
  *     @property
- *     def stmt_html_name(Outputs self not None):
+ *     def stmt_html_name(self):
  *         return <string>self.__this__.stmt_html_name             # <<<<<<<<<<<<<<
  *     @stmt_html_name.setter
- *     def stmt_html_name(Outputs self not None, object value):
+ *     def stmt_html_name(self, object value not None):
  */
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_1 = __pyx_convert_PyBytes_string_to_py_std__in_string(((std::string)__pyx_v_self->__pyx___this__.stmt_html_name)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 542, __pyx_L1_error)
@@ -13079,7 +12718,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_14stmt_html_name___get__(struct
   /* "halogen/api.pyx":541
  * 
  *     @property
- *     def stmt_html_name(Outputs self not None):             # <<<<<<<<<<<<<<
+ *     def stmt_html_name(self):             # <<<<<<<<<<<<<<
  *         return <string>self.__this__.stmt_html_name
  *     @stmt_html_name.setter
  */
@@ -13098,7 +12737,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_14stmt_html_name___get__(struct
 /* "halogen/api.pyx":544
  *         return <string>self.__this__.stmt_html_name
  *     @stmt_html_name.setter
- *     def stmt_html_name(Outputs self not None, object value):             # <<<<<<<<<<<<<<
+ *     def stmt_html_name(self, object value not None):             # <<<<<<<<<<<<<<
  *         self.__this__.stmt_html_name = <string>u8bytes(value)
  * 
  */
@@ -13109,8 +12748,8 @@ static int __pyx_pw_7halogen_3api_7Outputs_14stmt_html_name_3__set__(PyObject *_
   int __pyx_r;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__set__ (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 544, __pyx_L1_error)
+  if (unlikely(((PyObject *)__pyx_v_value) == Py_None)) {
+    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "value"); __PYX_ERR(0, 544, __pyx_L1_error)
   }
   __pyx_r = __pyx_pf_7halogen_3api_7Outputs_14stmt_html_name_2__set__(((struct __pyx_obj_7halogen_3api_Outputs *)__pyx_v_self), ((PyObject *)__pyx_v_value));
 
@@ -13132,7 +12771,7 @@ static int __pyx_pf_7halogen_3api_7Outputs_14stmt_html_name_2__set__(struct __py
 
   /* "halogen/api.pyx":545
  *     @stmt_html_name.setter
- *     def stmt_html_name(Outputs self not None, object value):
+ *     def stmt_html_name(self, object value not None):
  *         self.__this__.stmt_html_name = <string>u8bytes(value)             # <<<<<<<<<<<<<<
  * 
  *     @property
@@ -13146,7 +12785,7 @@ static int __pyx_pf_7halogen_3api_7Outputs_14stmt_html_name_2__set__(struct __py
   /* "halogen/api.pyx":544
  *         return <string>self.__this__.stmt_html_name
  *     @stmt_html_name.setter
- *     def stmt_html_name(Outputs self not None, object value):             # <<<<<<<<<<<<<<
+ *     def stmt_html_name(self, object value not None):             # <<<<<<<<<<<<<<
  *         self.__this__.stmt_html_name = <string>u8bytes(value)
  * 
  */
@@ -13166,7 +12805,7 @@ static int __pyx_pf_7halogen_3api_7Outputs_14stmt_html_name_2__set__(struct __py
 /* "halogen/api.pyx":548
  * 
  *     @property
- *     def static_library_name(Outputs self not None):             # <<<<<<<<<<<<<<
+ *     def static_library_name(self):             # <<<<<<<<<<<<<<
  *         return <string>self.__this__.static_library_name
  *     @static_library_name.setter
  */
@@ -13177,16 +12816,9 @@ static PyObject *__pyx_pw_7halogen_3api_7Outputs_19static_library_name_1__get__(
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__get__ (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 548, __pyx_L1_error)
-  }
   __pyx_r = __pyx_pf_7halogen_3api_7Outputs_19static_library_name___get__(((struct __pyx_obj_7halogen_3api_Outputs *)__pyx_v_self));
 
   /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = NULL;
-  __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -13199,10 +12831,10 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_19static_library_name___get__(s
 
   /* "halogen/api.pyx":549
  *     @property
- *     def static_library_name(Outputs self not None):
+ *     def static_library_name(self):
  *         return <string>self.__this__.static_library_name             # <<<<<<<<<<<<<<
  *     @static_library_name.setter
- *     def static_library_name(Outputs self not None, object value not None):
+ *     def static_library_name(self, object value not None):
  */
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_1 = __pyx_convert_PyBytes_string_to_py_std__in_string(((std::string)__pyx_v_self->__pyx___this__.static_library_name)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 549, __pyx_L1_error)
@@ -13214,7 +12846,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_19static_library_name___get__(s
   /* "halogen/api.pyx":548
  * 
  *     @property
- *     def static_library_name(Outputs self not None):             # <<<<<<<<<<<<<<
+ *     def static_library_name(self):             # <<<<<<<<<<<<<<
  *         return <string>self.__this__.static_library_name
  *     @static_library_name.setter
  */
@@ -13233,7 +12865,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_19static_library_name___get__(s
 /* "halogen/api.pyx":551
  *         return <string>self.__this__.static_library_name
  *     @static_library_name.setter
- *     def static_library_name(Outputs self not None, object value not None):             # <<<<<<<<<<<<<<
+ *     def static_library_name(self, object value not None):             # <<<<<<<<<<<<<<
  *         self.__this__.static_library_name = <string>u8bytes(value)
  * 
  */
@@ -13244,9 +12876,6 @@ static int __pyx_pw_7halogen_3api_7Outputs_19static_library_name_3__set__(PyObje
   int __pyx_r;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__set__ (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 551, __pyx_L1_error)
-  }
   if (unlikely(((PyObject *)__pyx_v_value) == Py_None)) {
     PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "value"); __PYX_ERR(0, 551, __pyx_L1_error)
   }
@@ -13270,7 +12899,7 @@ static int __pyx_pf_7halogen_3api_7Outputs_19static_library_name_2__set__(struct
 
   /* "halogen/api.pyx":552
  *     @static_library_name.setter
- *     def static_library_name(Outputs self not None, object value not None):
+ *     def static_library_name(self, object value not None):
  *         self.__this__.static_library_name = <string>u8bytes(value)             # <<<<<<<<<<<<<<
  * 
  *     @property
@@ -13284,7 +12913,7 @@ static int __pyx_pf_7halogen_3api_7Outputs_19static_library_name_2__set__(struct
   /* "halogen/api.pyx":551
  *         return <string>self.__this__.static_library_name
  *     @static_library_name.setter
- *     def static_library_name(Outputs self not None, object value not None):             # <<<<<<<<<<<<<<
+ *     def static_library_name(self, object value not None):             # <<<<<<<<<<<<<<
  *         self.__this__.static_library_name = <string>u8bytes(value)
  * 
  */
@@ -13304,7 +12933,7 @@ static int __pyx_pf_7halogen_3api_7Outputs_19static_library_name_2__set__(struct
 /* "halogen/api.pyx":555
  * 
  *     @property
- *     def schedule_name(Outputs self not None):             # <<<<<<<<<<<<<<
+ *     def schedule_name(self):             # <<<<<<<<<<<<<<
  *         return <string>self.__this__.schedule_name
  *     @schedule_name.setter
  */
@@ -13315,16 +12944,9 @@ static PyObject *__pyx_pw_7halogen_3api_7Outputs_13schedule_name_1__get__(PyObje
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__get__ (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 555, __pyx_L1_error)
-  }
   __pyx_r = __pyx_pf_7halogen_3api_7Outputs_13schedule_name___get__(((struct __pyx_obj_7halogen_3api_Outputs *)__pyx_v_self));
 
   /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = NULL;
-  __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -13337,10 +12959,10 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_13schedule_name___get__(struct 
 
   /* "halogen/api.pyx":556
  *     @property
- *     def schedule_name(Outputs self not None):
+ *     def schedule_name(self):
  *         return <string>self.__this__.schedule_name             # <<<<<<<<<<<<<<
  *     @schedule_name.setter
- *     def schedule_name(Outputs self not None, object value not None):
+ *     def schedule_name(self, object value not None):
  */
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_1 = __pyx_convert_PyBytes_string_to_py_std__in_string(((std::string)__pyx_v_self->__pyx___this__.schedule_name)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 556, __pyx_L1_error)
@@ -13352,7 +12974,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_13schedule_name___get__(struct 
   /* "halogen/api.pyx":555
  * 
  *     @property
- *     def schedule_name(Outputs self not None):             # <<<<<<<<<<<<<<
+ *     def schedule_name(self):             # <<<<<<<<<<<<<<
  *         return <string>self.__this__.schedule_name
  *     @schedule_name.setter
  */
@@ -13371,7 +12993,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_13schedule_name___get__(struct 
 /* "halogen/api.pyx":558
  *         return <string>self.__this__.schedule_name
  *     @schedule_name.setter
- *     def schedule_name(Outputs self not None, object value not None):             # <<<<<<<<<<<<<<
+ *     def schedule_name(self, object value not None):             # <<<<<<<<<<<<<<
  *         self.__this__.schedule_name = <string>u8bytes(value)
  * 
  */
@@ -13382,9 +13004,6 @@ static int __pyx_pw_7halogen_3api_7Outputs_13schedule_name_3__set__(PyObject *__
   int __pyx_r;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__set__ (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 558, __pyx_L1_error)
-  }
   if (unlikely(((PyObject *)__pyx_v_value) == Py_None)) {
     PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "value"); __PYX_ERR(0, 558, __pyx_L1_error)
   }
@@ -13408,10 +13027,10 @@ static int __pyx_pf_7halogen_3api_7Outputs_13schedule_name_2__set__(struct __pyx
 
   /* "halogen/api.pyx":559
  *     @schedule_name.setter
- *     def schedule_name(Outputs self not None, object value not None):
+ *     def schedule_name(self, object value not None):
  *         self.__this__.schedule_name = <string>u8bytes(value)             # <<<<<<<<<<<<<<
  * 
- *     def object(Outputs self not None, object s=None):
+ *     def object(self, object s=None):
  */
   __pyx_t_1 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_value, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 559, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
@@ -13422,7 +13041,7 @@ static int __pyx_pf_7halogen_3api_7Outputs_13schedule_name_2__set__(struct __pyx
   /* "halogen/api.pyx":558
  *         return <string>self.__this__.schedule_name
  *     @schedule_name.setter
- *     def schedule_name(Outputs self not None, object value not None):             # <<<<<<<<<<<<<<
+ *     def schedule_name(self, object value not None):             # <<<<<<<<<<<<<<
  *         self.__this__.schedule_name = <string>u8bytes(value)
  * 
  */
@@ -13442,7 +13061,7 @@ static int __pyx_pf_7halogen_3api_7Outputs_13schedule_name_2__set__(struct __pyx
 /* "halogen/api.pyx":561
  *         self.__this__.schedule_name = <string>u8bytes(value)
  * 
- *     def object(Outputs self not None, object s=None):             # <<<<<<<<<<<<<<
+ *     def object(self, object s=None):             # <<<<<<<<<<<<<<
  *         out = Outputs()
  *         if s is None:
  */
@@ -13497,16 +13116,9 @@ static PyObject *__pyx_pw_7halogen_3api_7Outputs_5object(PyObject *__pyx_v_self,
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 561, __pyx_L1_error)
-  }
   __pyx_r = __pyx_pf_7halogen_3api_7Outputs_4object(((struct __pyx_obj_7halogen_3api_Outputs *)__pyx_v_self), __pyx_v_s);
 
   /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = NULL;
-  __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -13524,7 +13136,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_4object(struct __pyx_obj_7halog
 
   /* "halogen/api.pyx":562
  * 
- *     def object(Outputs self not None, object s=None):
+ *     def object(self, object s=None):
  *         out = Outputs()             # <<<<<<<<<<<<<<
  *         if s is None:
  *             s = ''
@@ -13535,7 +13147,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_4object(struct __pyx_obj_7halog
   __pyx_t_1 = 0;
 
   /* "halogen/api.pyx":563
- *     def object(Outputs self not None, object s=None):
+ *     def object(self, object s=None):
  *         out = Outputs()
  *         if s is None:             # <<<<<<<<<<<<<<
  *             s = ''
@@ -13556,7 +13168,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_4object(struct __pyx_obj_7halog
     __Pyx_DECREF_SET(__pyx_v_s, __pyx_kp_s_);
 
     /* "halogen/api.pyx":563
- *     def object(Outputs self not None, object s=None):
+ *     def object(self, object s=None):
  *         out = Outputs()
  *         if s is None:             # <<<<<<<<<<<<<<
  *             s = ''
@@ -13582,7 +13194,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_4object(struct __pyx_obj_7halog
  *         out.__this__ = self.__this__.object(u8bytes(s))
  *         return out             # <<<<<<<<<<<<<<
  * 
- *     def assembly(Outputs self not None, object s=None):
+ *     def assembly(self, object s=None):
  */
   __Pyx_XDECREF(__pyx_r);
   __Pyx_INCREF(((PyObject *)__pyx_v_out));
@@ -13592,7 +13204,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_4object(struct __pyx_obj_7halog
   /* "halogen/api.pyx":561
  *         self.__this__.schedule_name = <string>u8bytes(value)
  * 
- *     def object(Outputs self not None, object s=None):             # <<<<<<<<<<<<<<
+ *     def object(self, object s=None):             # <<<<<<<<<<<<<<
  *         out = Outputs()
  *         if s is None:
  */
@@ -13613,7 +13225,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_4object(struct __pyx_obj_7halog
 /* "halogen/api.pyx":568
  *         return out
  * 
- *     def assembly(Outputs self not None, object s=None):             # <<<<<<<<<<<<<<
+ *     def assembly(self, object s=None):             # <<<<<<<<<<<<<<
  *         out = Outputs()
  *         if s is None:
  */
@@ -13668,16 +13280,9 @@ static PyObject *__pyx_pw_7halogen_3api_7Outputs_7assembly(PyObject *__pyx_v_sel
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 568, __pyx_L1_error)
-  }
   __pyx_r = __pyx_pf_7halogen_3api_7Outputs_6assembly(((struct __pyx_obj_7halogen_3api_Outputs *)__pyx_v_self), __pyx_v_s);
 
   /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = NULL;
-  __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -13695,7 +13300,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_6assembly(struct __pyx_obj_7hal
 
   /* "halogen/api.pyx":569
  * 
- *     def assembly(Outputs self not None, object s=None):
+ *     def assembly(self, object s=None):
  *         out = Outputs()             # <<<<<<<<<<<<<<
  *         if s is None:
  *             s = ''
@@ -13706,7 +13311,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_6assembly(struct __pyx_obj_7hal
   __pyx_t_1 = 0;
 
   /* "halogen/api.pyx":570
- *     def assembly(Outputs self not None, object s=None):
+ *     def assembly(self, object s=None):
  *         out = Outputs()
  *         if s is None:             # <<<<<<<<<<<<<<
  *             s = ''
@@ -13727,7 +13332,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_6assembly(struct __pyx_obj_7hal
     __Pyx_DECREF_SET(__pyx_v_s, __pyx_kp_s_);
 
     /* "halogen/api.pyx":570
- *     def assembly(Outputs self not None, object s=None):
+ *     def assembly(self, object s=None):
  *         out = Outputs()
  *         if s is None:             # <<<<<<<<<<<<<<
  *             s = ''
@@ -13753,7 +13358,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_6assembly(struct __pyx_obj_7hal
  *         out.__this__ = self.__this__.assembly(u8bytes(s))
  *         return out             # <<<<<<<<<<<<<<
  * 
- *     def bitcode(Outputs self not None, object s=None):
+ *     def bitcode(self, object s=None):
  */
   __Pyx_XDECREF(__pyx_r);
   __Pyx_INCREF(((PyObject *)__pyx_v_out));
@@ -13763,7 +13368,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_6assembly(struct __pyx_obj_7hal
   /* "halogen/api.pyx":568
  *         return out
  * 
- *     def assembly(Outputs self not None, object s=None):             # <<<<<<<<<<<<<<
+ *     def assembly(self, object s=None):             # <<<<<<<<<<<<<<
  *         out = Outputs()
  *         if s is None:
  */
@@ -13784,7 +13389,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_6assembly(struct __pyx_obj_7hal
 /* "halogen/api.pyx":575
  *         return out
  * 
- *     def bitcode(Outputs self not None, object s=None):             # <<<<<<<<<<<<<<
+ *     def bitcode(self, object s=None):             # <<<<<<<<<<<<<<
  *         out = Outputs()
  *         if s is None:
  */
@@ -13839,16 +13444,9 @@ static PyObject *__pyx_pw_7halogen_3api_7Outputs_9bitcode(PyObject *__pyx_v_self
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 575, __pyx_L1_error)
-  }
   __pyx_r = __pyx_pf_7halogen_3api_7Outputs_8bitcode(((struct __pyx_obj_7halogen_3api_Outputs *)__pyx_v_self), __pyx_v_s);
 
   /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = NULL;
-  __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -13866,7 +13464,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_8bitcode(struct __pyx_obj_7halo
 
   /* "halogen/api.pyx":576
  * 
- *     def bitcode(Outputs self not None, object s=None):
+ *     def bitcode(self, object s=None):
  *         out = Outputs()             # <<<<<<<<<<<<<<
  *         if s is None:
  *             s = ''
@@ -13877,7 +13475,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_8bitcode(struct __pyx_obj_7halo
   __pyx_t_1 = 0;
 
   /* "halogen/api.pyx":577
- *     def bitcode(Outputs self not None, object s=None):
+ *     def bitcode(self, object s=None):
  *         out = Outputs()
  *         if s is None:             # <<<<<<<<<<<<<<
  *             s = ''
@@ -13898,7 +13496,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_8bitcode(struct __pyx_obj_7halo
     __Pyx_DECREF_SET(__pyx_v_s, __pyx_kp_s_);
 
     /* "halogen/api.pyx":577
- *     def bitcode(Outputs self not None, object s=None):
+ *     def bitcode(self, object s=None):
  *         out = Outputs()
  *         if s is None:             # <<<<<<<<<<<<<<
  *             s = ''
@@ -13924,7 +13522,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_8bitcode(struct __pyx_obj_7halo
  *         out.__this__ = self.__this__.bitcode(u8bytes(s))
  *         return out             # <<<<<<<<<<<<<<
  * 
- *     def llvm_assembly(Outputs self not None, object s=None):
+ *     def llvm_assembly(self, object s=None):
  */
   __Pyx_XDECREF(__pyx_r);
   __Pyx_INCREF(((PyObject *)__pyx_v_out));
@@ -13934,7 +13532,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_8bitcode(struct __pyx_obj_7halo
   /* "halogen/api.pyx":575
  *         return out
  * 
- *     def bitcode(Outputs self not None, object s=None):             # <<<<<<<<<<<<<<
+ *     def bitcode(self, object s=None):             # <<<<<<<<<<<<<<
  *         out = Outputs()
  *         if s is None:
  */
@@ -13955,7 +13553,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_8bitcode(struct __pyx_obj_7halo
 /* "halogen/api.pyx":582
  *         return out
  * 
- *     def llvm_assembly(Outputs self not None, object s=None):             # <<<<<<<<<<<<<<
+ *     def llvm_assembly(self, object s=None):             # <<<<<<<<<<<<<<
  *         out = Outputs()
  *         if s is None:
  */
@@ -14010,16 +13608,9 @@ static PyObject *__pyx_pw_7halogen_3api_7Outputs_11llvm_assembly(PyObject *__pyx
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 582, __pyx_L1_error)
-  }
   __pyx_r = __pyx_pf_7halogen_3api_7Outputs_10llvm_assembly(((struct __pyx_obj_7halogen_3api_Outputs *)__pyx_v_self), __pyx_v_s);
 
   /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = NULL;
-  __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -14037,7 +13628,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_10llvm_assembly(struct __pyx_ob
 
   /* "halogen/api.pyx":583
  * 
- *     def llvm_assembly(Outputs self not None, object s=None):
+ *     def llvm_assembly(self, object s=None):
  *         out = Outputs()             # <<<<<<<<<<<<<<
  *         if s is None:
  *             s = ''
@@ -14048,7 +13639,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_10llvm_assembly(struct __pyx_ob
   __pyx_t_1 = 0;
 
   /* "halogen/api.pyx":584
- *     def llvm_assembly(Outputs self not None, object s=None):
+ *     def llvm_assembly(self, object s=None):
  *         out = Outputs()
  *         if s is None:             # <<<<<<<<<<<<<<
  *             s = ''
@@ -14069,7 +13660,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_10llvm_assembly(struct __pyx_ob
     __Pyx_DECREF_SET(__pyx_v_s, __pyx_kp_s_);
 
     /* "halogen/api.pyx":584
- *     def llvm_assembly(Outputs self not None, object s=None):
+ *     def llvm_assembly(self, object s=None):
  *         out = Outputs()
  *         if s is None:             # <<<<<<<<<<<<<<
  *             s = ''
@@ -14095,7 +13686,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_10llvm_assembly(struct __pyx_ob
  *         out.__this__ = self.__this__.llvm_assembly(u8bytes(s))
  *         return out             # <<<<<<<<<<<<<<
  * 
- *     def c_header(Outputs self not None, object s=None):
+ *     def c_header(self, object s=None):
  */
   __Pyx_XDECREF(__pyx_r);
   __Pyx_INCREF(((PyObject *)__pyx_v_out));
@@ -14105,7 +13696,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_10llvm_assembly(struct __pyx_ob
   /* "halogen/api.pyx":582
  *         return out
  * 
- *     def llvm_assembly(Outputs self not None, object s=None):             # <<<<<<<<<<<<<<
+ *     def llvm_assembly(self, object s=None):             # <<<<<<<<<<<<<<
  *         out = Outputs()
  *         if s is None:
  */
@@ -14126,7 +13717,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_10llvm_assembly(struct __pyx_ob
 /* "halogen/api.pyx":589
  *         return out
  * 
- *     def c_header(Outputs self not None, object s=None):             # <<<<<<<<<<<<<<
+ *     def c_header(self, object s=None):             # <<<<<<<<<<<<<<
  *         out = Outputs()
  *         if s is None:
  */
@@ -14181,16 +13772,9 @@ static PyObject *__pyx_pw_7halogen_3api_7Outputs_13c_header(PyObject *__pyx_v_se
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 589, __pyx_L1_error)
-  }
   __pyx_r = __pyx_pf_7halogen_3api_7Outputs_12c_header(((struct __pyx_obj_7halogen_3api_Outputs *)__pyx_v_self), __pyx_v_s);
 
   /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = NULL;
-  __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -14208,7 +13792,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_12c_header(struct __pyx_obj_7ha
 
   /* "halogen/api.pyx":590
  * 
- *     def c_header(Outputs self not None, object s=None):
+ *     def c_header(self, object s=None):
  *         out = Outputs()             # <<<<<<<<<<<<<<
  *         if s is None:
  *             s = ''
@@ -14219,7 +13803,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_12c_header(struct __pyx_obj_7ha
   __pyx_t_1 = 0;
 
   /* "halogen/api.pyx":591
- *     def c_header(Outputs self not None, object s=None):
+ *     def c_header(self, object s=None):
  *         out = Outputs()
  *         if s is None:             # <<<<<<<<<<<<<<
  *             s = ''
@@ -14240,7 +13824,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_12c_header(struct __pyx_obj_7ha
     __Pyx_DECREF_SET(__pyx_v_s, __pyx_kp_s_);
 
     /* "halogen/api.pyx":591
- *     def c_header(Outputs self not None, object s=None):
+ *     def c_header(self, object s=None):
  *         out = Outputs()
  *         if s is None:             # <<<<<<<<<<<<<<
  *             s = ''
@@ -14266,7 +13850,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_12c_header(struct __pyx_obj_7ha
  *         out.__this__ = self.__this__.c_header(u8bytes(s))
  *         return out             # <<<<<<<<<<<<<<
  * 
- *     def c_source(Outputs self not None, object s=None):
+ *     def c_source(self, object s=None):
  */
   __Pyx_XDECREF(__pyx_r);
   __Pyx_INCREF(((PyObject *)__pyx_v_out));
@@ -14276,7 +13860,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_12c_header(struct __pyx_obj_7ha
   /* "halogen/api.pyx":589
  *         return out
  * 
- *     def c_header(Outputs self not None, object s=None):             # <<<<<<<<<<<<<<
+ *     def c_header(self, object s=None):             # <<<<<<<<<<<<<<
  *         out = Outputs()
  *         if s is None:
  */
@@ -14297,7 +13881,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_12c_header(struct __pyx_obj_7ha
 /* "halogen/api.pyx":596
  *         return out
  * 
- *     def c_source(Outputs self not None, object s=None):             # <<<<<<<<<<<<<<
+ *     def c_source(self, object s=None):             # <<<<<<<<<<<<<<
  *         out = Outputs()
  *         if s is None:
  */
@@ -14352,16 +13936,9 @@ static PyObject *__pyx_pw_7halogen_3api_7Outputs_15c_source(PyObject *__pyx_v_se
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 596, __pyx_L1_error)
-  }
   __pyx_r = __pyx_pf_7halogen_3api_7Outputs_14c_source(((struct __pyx_obj_7halogen_3api_Outputs *)__pyx_v_self), __pyx_v_s);
 
   /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = NULL;
-  __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -14379,7 +13956,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_14c_source(struct __pyx_obj_7ha
 
   /* "halogen/api.pyx":597
  * 
- *     def c_source(Outputs self not None, object s=None):
+ *     def c_source(self, object s=None):
  *         out = Outputs()             # <<<<<<<<<<<<<<
  *         if s is None:
  *             s = ''
@@ -14390,7 +13967,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_14c_source(struct __pyx_obj_7ha
   __pyx_t_1 = 0;
 
   /* "halogen/api.pyx":598
- *     def c_source(Outputs self not None, object s=None):
+ *     def c_source(self, object s=None):
  *         out = Outputs()
  *         if s is None:             # <<<<<<<<<<<<<<
  *             s = ''
@@ -14411,7 +13988,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_14c_source(struct __pyx_obj_7ha
     __Pyx_DECREF_SET(__pyx_v_s, __pyx_kp_s_);
 
     /* "halogen/api.pyx":598
- *     def c_source(Outputs self not None, object s=None):
+ *     def c_source(self, object s=None):
  *         out = Outputs()
  *         if s is None:             # <<<<<<<<<<<<<<
  *             s = ''
@@ -14437,7 +14014,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_14c_source(struct __pyx_obj_7ha
  *         out.__this__ = self.__this__.c_source(u8bytes(s))
  *         return out             # <<<<<<<<<<<<<<
  * 
- *     def python_extension(Outputs self not None, object s=None):
+ *     def python_extension(self, object s=None):
  */
   __Pyx_XDECREF(__pyx_r);
   __Pyx_INCREF(((PyObject *)__pyx_v_out));
@@ -14447,7 +14024,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_14c_source(struct __pyx_obj_7ha
   /* "halogen/api.pyx":596
  *         return out
  * 
- *     def c_source(Outputs self not None, object s=None):             # <<<<<<<<<<<<<<
+ *     def c_source(self, object s=None):             # <<<<<<<<<<<<<<
  *         out = Outputs()
  *         if s is None:
  */
@@ -14468,7 +14045,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_14c_source(struct __pyx_obj_7ha
 /* "halogen/api.pyx":603
  *         return out
  * 
- *     def python_extension(Outputs self not None, object s=None):             # <<<<<<<<<<<<<<
+ *     def python_extension(self, object s=None):             # <<<<<<<<<<<<<<
  *         out = Outputs()
  *         if s is None:
  */
@@ -14523,16 +14100,9 @@ static PyObject *__pyx_pw_7halogen_3api_7Outputs_17python_extension(PyObject *__
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 603, __pyx_L1_error)
-  }
   __pyx_r = __pyx_pf_7halogen_3api_7Outputs_16python_extension(((struct __pyx_obj_7halogen_3api_Outputs *)__pyx_v_self), __pyx_v_s);
 
   /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = NULL;
-  __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -14550,7 +14120,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_16python_extension(struct __pyx
 
   /* "halogen/api.pyx":604
  * 
- *     def python_extension(Outputs self not None, object s=None):
+ *     def python_extension(self, object s=None):
  *         out = Outputs()             # <<<<<<<<<<<<<<
  *         if s is None:
  *             s = ''
@@ -14561,7 +14131,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_16python_extension(struct __pyx
   __pyx_t_1 = 0;
 
   /* "halogen/api.pyx":605
- *     def python_extension(Outputs self not None, object s=None):
+ *     def python_extension(self, object s=None):
  *         out = Outputs()
  *         if s is None:             # <<<<<<<<<<<<<<
  *             s = ''
@@ -14582,7 +14152,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_16python_extension(struct __pyx
     __Pyx_DECREF_SET(__pyx_v_s, __pyx_kp_s_);
 
     /* "halogen/api.pyx":605
- *     def python_extension(Outputs self not None, object s=None):
+ *     def python_extension(self, object s=None):
  *         out = Outputs()
  *         if s is None:             # <<<<<<<<<<<<<<
  *             s = ''
@@ -14608,7 +14178,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_16python_extension(struct __pyx
  *         out.__this__ = self.__this__.python_extension(u8bytes(s))
  *         return out             # <<<<<<<<<<<<<<
  * 
- *     def stmt(Outputs self not None, object s=None):
+ *     def stmt(self, object s=None):
  */
   __Pyx_XDECREF(__pyx_r);
   __Pyx_INCREF(((PyObject *)__pyx_v_out));
@@ -14618,7 +14188,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_16python_extension(struct __pyx
   /* "halogen/api.pyx":603
  *         return out
  * 
- *     def python_extension(Outputs self not None, object s=None):             # <<<<<<<<<<<<<<
+ *     def python_extension(self, object s=None):             # <<<<<<<<<<<<<<
  *         out = Outputs()
  *         if s is None:
  */
@@ -14639,7 +14209,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_16python_extension(struct __pyx
 /* "halogen/api.pyx":610
  *         return out
  * 
- *     def stmt(Outputs self not None, object s=None):             # <<<<<<<<<<<<<<
+ *     def stmt(self, object s=None):             # <<<<<<<<<<<<<<
  *         out = Outputs()
  *         if s is None:
  */
@@ -14694,16 +14264,9 @@ static PyObject *__pyx_pw_7halogen_3api_7Outputs_19stmt(PyObject *__pyx_v_self, 
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 610, __pyx_L1_error)
-  }
   __pyx_r = __pyx_pf_7halogen_3api_7Outputs_18stmt(((struct __pyx_obj_7halogen_3api_Outputs *)__pyx_v_self), __pyx_v_s);
 
   /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = NULL;
-  __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -14721,7 +14284,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_18stmt(struct __pyx_obj_7haloge
 
   /* "halogen/api.pyx":611
  * 
- *     def stmt(Outputs self not None, object s=None):
+ *     def stmt(self, object s=None):
  *         out = Outputs()             # <<<<<<<<<<<<<<
  *         if s is None:
  *             s = ''
@@ -14732,7 +14295,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_18stmt(struct __pyx_obj_7haloge
   __pyx_t_1 = 0;
 
   /* "halogen/api.pyx":612
- *     def stmt(Outputs self not None, object s=None):
+ *     def stmt(self, object s=None):
  *         out = Outputs()
  *         if s is None:             # <<<<<<<<<<<<<<
  *             s = ''
@@ -14753,7 +14316,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_18stmt(struct __pyx_obj_7haloge
     __Pyx_DECREF_SET(__pyx_v_s, __pyx_kp_s_);
 
     /* "halogen/api.pyx":612
- *     def stmt(Outputs self not None, object s=None):
+ *     def stmt(self, object s=None):
  *         out = Outputs()
  *         if s is None:             # <<<<<<<<<<<<<<
  *             s = ''
@@ -14779,7 +14342,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_18stmt(struct __pyx_obj_7haloge
  *         out.__this__ = self.__this__.stmt(u8bytes(s))
  *         return out             # <<<<<<<<<<<<<<
  * 
- *     def stmt_html(Outputs self not None, object s=None):
+ *     def stmt_html(self, object s=None):
  */
   __Pyx_XDECREF(__pyx_r);
   __Pyx_INCREF(((PyObject *)__pyx_v_out));
@@ -14789,7 +14352,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_18stmt(struct __pyx_obj_7haloge
   /* "halogen/api.pyx":610
  *         return out
  * 
- *     def stmt(Outputs self not None, object s=None):             # <<<<<<<<<<<<<<
+ *     def stmt(self, object s=None):             # <<<<<<<<<<<<<<
  *         out = Outputs()
  *         if s is None:
  */
@@ -14810,7 +14373,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_18stmt(struct __pyx_obj_7haloge
 /* "halogen/api.pyx":617
  *         return out
  * 
- *     def stmt_html(Outputs self not None, object s=None):             # <<<<<<<<<<<<<<
+ *     def stmt_html(self, object s=None):             # <<<<<<<<<<<<<<
  *         out = Outputs()
  *         if s is None:
  */
@@ -14865,16 +14428,9 @@ static PyObject *__pyx_pw_7halogen_3api_7Outputs_21stmt_html(PyObject *__pyx_v_s
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 617, __pyx_L1_error)
-  }
   __pyx_r = __pyx_pf_7halogen_3api_7Outputs_20stmt_html(((struct __pyx_obj_7halogen_3api_Outputs *)__pyx_v_self), __pyx_v_s);
 
   /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = NULL;
-  __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -14892,7 +14448,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_20stmt_html(struct __pyx_obj_7h
 
   /* "halogen/api.pyx":618
  * 
- *     def stmt_html(Outputs self not None, object s=None):
+ *     def stmt_html(self, object s=None):
  *         out = Outputs()             # <<<<<<<<<<<<<<
  *         if s is None:
  *             s = ''
@@ -14903,7 +14459,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_20stmt_html(struct __pyx_obj_7h
   __pyx_t_1 = 0;
 
   /* "halogen/api.pyx":619
- *     def stmt_html(Outputs self not None, object s=None):
+ *     def stmt_html(self, object s=None):
  *         out = Outputs()
  *         if s is None:             # <<<<<<<<<<<<<<
  *             s = ''
@@ -14924,7 +14480,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_20stmt_html(struct __pyx_obj_7h
     __Pyx_DECREF_SET(__pyx_v_s, __pyx_kp_s_);
 
     /* "halogen/api.pyx":619
- *     def stmt_html(Outputs self not None, object s=None):
+ *     def stmt_html(self, object s=None):
  *         out = Outputs()
  *         if s is None:             # <<<<<<<<<<<<<<
  *             s = ''
@@ -14950,7 +14506,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_20stmt_html(struct __pyx_obj_7h
  *         out.__this__ = self.__this__.stmt_html(u8bytes(s))
  *         return out             # <<<<<<<<<<<<<<
  * 
- *     def static_library(Outputs self not None, object s=None):
+ *     def static_library(self, object s=None):
  */
   __Pyx_XDECREF(__pyx_r);
   __Pyx_INCREF(((PyObject *)__pyx_v_out));
@@ -14960,7 +14516,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_20stmt_html(struct __pyx_obj_7h
   /* "halogen/api.pyx":617
  *         return out
  * 
- *     def stmt_html(Outputs self not None, object s=None):             # <<<<<<<<<<<<<<
+ *     def stmt_html(self, object s=None):             # <<<<<<<<<<<<<<
  *         out = Outputs()
  *         if s is None:
  */
@@ -14981,7 +14537,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_20stmt_html(struct __pyx_obj_7h
 /* "halogen/api.pyx":624
  *         return out
  * 
- *     def static_library(Outputs self not None, object s=None):             # <<<<<<<<<<<<<<
+ *     def static_library(self, object s=None):             # <<<<<<<<<<<<<<
  *         out = Outputs()
  *         if s is None:
  */
@@ -15036,16 +14592,9 @@ static PyObject *__pyx_pw_7halogen_3api_7Outputs_23static_library(PyObject *__py
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 624, __pyx_L1_error)
-  }
   __pyx_r = __pyx_pf_7halogen_3api_7Outputs_22static_library(((struct __pyx_obj_7halogen_3api_Outputs *)__pyx_v_self), __pyx_v_s);
 
   /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = NULL;
-  __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -15063,7 +14612,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_22static_library(struct __pyx_o
 
   /* "halogen/api.pyx":625
  * 
- *     def static_library(Outputs self not None, object s=None):
+ *     def static_library(self, object s=None):
  *         out = Outputs()             # <<<<<<<<<<<<<<
  *         if s is None:
  *             s = ''
@@ -15074,7 +14623,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_22static_library(struct __pyx_o
   __pyx_t_1 = 0;
 
   /* "halogen/api.pyx":626
- *     def static_library(Outputs self not None, object s=None):
+ *     def static_library(self, object s=None):
  *         out = Outputs()
  *         if s is None:             # <<<<<<<<<<<<<<
  *             s = ''
@@ -15095,7 +14644,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_22static_library(struct __pyx_o
     __Pyx_DECREF_SET(__pyx_v_s, __pyx_kp_s_);
 
     /* "halogen/api.pyx":626
- *     def static_library(Outputs self not None, object s=None):
+ *     def static_library(self, object s=None):
  *         out = Outputs()
  *         if s is None:             # <<<<<<<<<<<<<<
  *             s = ''
@@ -15121,7 +14670,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_22static_library(struct __pyx_o
  *         out.__this__ = self.__this__.static_library(u8bytes(s))
  *         return out             # <<<<<<<<<<<<<<
  * 
- *     def schedule(Outputs self not None, object s=None):
+ *     def schedule(self, object s=None):
  */
   __Pyx_XDECREF(__pyx_r);
   __Pyx_INCREF(((PyObject *)__pyx_v_out));
@@ -15131,7 +14680,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_22static_library(struct __pyx_o
   /* "halogen/api.pyx":624
  *         return out
  * 
- *     def static_library(Outputs self not None, object s=None):             # <<<<<<<<<<<<<<
+ *     def static_library(self, object s=None):             # <<<<<<<<<<<<<<
  *         out = Outputs()
  *         if s is None:
  */
@@ -15152,7 +14701,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_22static_library(struct __pyx_o
 /* "halogen/api.pyx":631
  *         return out
  * 
- *     def schedule(Outputs self not None, object s=None):             # <<<<<<<<<<<<<<
+ *     def schedule(self, object s=None):             # <<<<<<<<<<<<<<
  *         out = Outputs()
  *         if s is None:
  */
@@ -15207,16 +14756,9 @@ static PyObject *__pyx_pw_7halogen_3api_7Outputs_25schedule(PyObject *__pyx_v_se
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 631, __pyx_L1_error)
-  }
   __pyx_r = __pyx_pf_7halogen_3api_7Outputs_24schedule(((struct __pyx_obj_7halogen_3api_Outputs *)__pyx_v_self), __pyx_v_s);
 
   /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = NULL;
-  __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -15234,7 +14776,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_24schedule(struct __pyx_obj_7ha
 
   /* "halogen/api.pyx":632
  * 
- *     def schedule(Outputs self not None, object s=None):
+ *     def schedule(self, object s=None):
  *         out = Outputs()             # <<<<<<<<<<<<<<
  *         if s is None:
  *             s = ''
@@ -15245,7 +14787,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_24schedule(struct __pyx_obj_7ha
   __pyx_t_1 = 0;
 
   /* "halogen/api.pyx":633
- *     def schedule(Outputs self not None, object s=None):
+ *     def schedule(self, object s=None):
  *         out = Outputs()
  *         if s is None:             # <<<<<<<<<<<<<<
  *             s = ''
@@ -15266,7 +14808,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_24schedule(struct __pyx_obj_7ha
     __Pyx_DECREF_SET(__pyx_v_s, __pyx_kp_s_);
 
     /* "halogen/api.pyx":633
- *     def schedule(Outputs self not None, object s=None):
+ *     def schedule(self, object s=None):
  *         out = Outputs()
  *         if s is None:             # <<<<<<<<<<<<<<
  *             s = ''
@@ -15292,7 +14834,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_24schedule(struct __pyx_obj_7ha
  *         out.__this__ = self.__this__.schedule(u8bytes(s))
  *         return out             # <<<<<<<<<<<<<<
  * 
- *     def to_string(Outputs self not None):
+ *     def to_string(self):
  */
   __Pyx_XDECREF(__pyx_r);
   __Pyx_INCREF(((PyObject *)__pyx_v_out));
@@ -15302,7 +14844,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_24schedule(struct __pyx_obj_7ha
   /* "halogen/api.pyx":631
  *         return out
  * 
- *     def schedule(Outputs self not None, object s=None):             # <<<<<<<<<<<<<<
+ *     def schedule(self, object s=None):             # <<<<<<<<<<<<<<
  *         out = Outputs()
  *         if s is None:
  */
@@ -15323,7 +14865,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_24schedule(struct __pyx_obj_7ha
 /* "halogen/api.pyx":638
  *         return out
  * 
- *     def to_string(Outputs self not None):             # <<<<<<<<<<<<<<
+ *     def to_string(self):             # <<<<<<<<<<<<<<
  *         return stringify(self, ("object_name", "assembly_name", "bitcode_name",
  *                                 "llvm_assembly_name", "c_header_name", "c_source_name",
  */
@@ -15335,16 +14877,9 @@ static PyObject *__pyx_pw_7halogen_3api_7Outputs_27to_string(PyObject *__pyx_v_s
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("to_string (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 638, __pyx_L1_error)
-  }
   __pyx_r = __pyx_pf_7halogen_3api_7Outputs_26to_string(((struct __pyx_obj_7halogen_3api_Outputs *)__pyx_v_self));
 
   /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = NULL;
-  __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -15361,7 +14896,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_26to_string(struct __pyx_obj_7h
 
   /* "halogen/api.pyx":639
  * 
- *     def to_string(Outputs self not None):
+ *     def to_string(self):
  *         return stringify(self, ("object_name", "assembly_name", "bitcode_name",             # <<<<<<<<<<<<<<
  *                                 "llvm_assembly_name", "c_header_name", "c_source_name",
  *                                 "python_extension_name", "stmt_name", "stmt_html_name",
@@ -15421,7 +14956,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_26to_string(struct __pyx_obj_7h
   /* "halogen/api.pyx":638
  *         return out
  * 
- *     def to_string(Outputs self not None):             # <<<<<<<<<<<<<<
+ *     def to_string(self):             # <<<<<<<<<<<<<<
  *         return stringify(self, ("object_name", "assembly_name", "bitcode_name",
  *                                 "llvm_assembly_name", "c_header_name", "c_source_name",
  */
@@ -15443,7 +14978,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_26to_string(struct __pyx_obj_7h
 /* "halogen/api.pyx":644
  *                                 "static_library_name", "schedule_name"))
  * 
- *     def __bytes__(Outputs self not None):             # <<<<<<<<<<<<<<
+ *     def __bytes__(self):             # <<<<<<<<<<<<<<
  *         return self.to_string()
  * 
  */
@@ -15455,16 +14990,9 @@ static PyObject *__pyx_pw_7halogen_3api_7Outputs_29__bytes__(PyObject *__pyx_v_s
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__bytes__ (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 644, __pyx_L1_error)
-  }
   __pyx_r = __pyx_pf_7halogen_3api_7Outputs_28__bytes__(((struct __pyx_obj_7halogen_3api_Outputs *)__pyx_v_self));
 
   /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = NULL;
-  __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -15479,10 +15007,10 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_28__bytes__(struct __pyx_obj_7h
 
   /* "halogen/api.pyx":645
  * 
- *     def __bytes__(Outputs self not None):
+ *     def __bytes__(self):
  *         return self.to_string()             # <<<<<<<<<<<<<<
  * 
- *     def __str__(Outputs self not None):
+ *     def __str__(self):
  */
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_to_string); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 645, __pyx_L1_error)
@@ -15512,7 +15040,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_28__bytes__(struct __pyx_obj_7h
   /* "halogen/api.pyx":644
  *                                 "static_library_name", "schedule_name"))
  * 
- *     def __bytes__(Outputs self not None):             # <<<<<<<<<<<<<<
+ *     def __bytes__(self):             # <<<<<<<<<<<<<<
  *         return self.to_string()
  * 
  */
@@ -15533,7 +15061,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_28__bytes__(struct __pyx_obj_7h
 /* "halogen/api.pyx":647
  *         return self.to_string()
  * 
- *     def __str__(Outputs self not None):             # <<<<<<<<<<<<<<
+ *     def __str__(self):             # <<<<<<<<<<<<<<
  *         return self.to_string().decode('UTF-8')
  * 
  */
@@ -15544,16 +15072,9 @@ static PyObject *__pyx_pw_7halogen_3api_7Outputs_31__str__(PyObject *__pyx_v_sel
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__str__ (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 647, __pyx_L1_error)
-  }
   __pyx_r = __pyx_pf_7halogen_3api_7Outputs_30__str__(((struct __pyx_obj_7halogen_3api_Outputs *)__pyx_v_self));
 
   /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = NULL;
-  __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -15568,10 +15089,10 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_30__str__(struct __pyx_obj_7hal
 
   /* "halogen/api.pyx":648
  * 
- *     def __str__(Outputs self not None):
+ *     def __str__(self):
  *         return self.to_string().decode('UTF-8')             # <<<<<<<<<<<<<<
  * 
- *     def __repr__(Outputs self not None):
+ *     def __repr__(self):
  */
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_to_string); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 648, __pyx_L1_error)
@@ -15607,7 +15128,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_30__str__(struct __pyx_obj_7hal
   /* "halogen/api.pyx":647
  *         return self.to_string()
  * 
- *     def __str__(Outputs self not None):             # <<<<<<<<<<<<<<
+ *     def __str__(self):             # <<<<<<<<<<<<<<
  *         return self.to_string().decode('UTF-8')
  * 
  */
@@ -15628,7 +15149,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_30__str__(struct __pyx_obj_7hal
 /* "halogen/api.pyx":650
  *         return self.to_string().decode('UTF-8')
  * 
- *     def __repr__(Outputs self not None):             # <<<<<<<<<<<<<<
+ *     def __repr__(self):             # <<<<<<<<<<<<<<
  *         return self.to_string().decode('UTF-8')
  * 
  */
@@ -15639,16 +15160,9 @@ static PyObject *__pyx_pw_7halogen_3api_7Outputs_33__repr__(PyObject *__pyx_v_se
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__repr__ (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 650, __pyx_L1_error)
-  }
   __pyx_r = __pyx_pf_7halogen_3api_7Outputs_32__repr__(((struct __pyx_obj_7halogen_3api_Outputs *)__pyx_v_self));
 
   /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = NULL;
-  __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -15663,7 +15177,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_32__repr__(struct __pyx_obj_7ha
 
   /* "halogen/api.pyx":651
  * 
- *     def __repr__(Outputs self not None):
+ *     def __repr__(self):
  *         return self.to_string().decode('UTF-8')             # <<<<<<<<<<<<<<
  * 
  * 
@@ -15702,7 +15216,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_32__repr__(struct __pyx_obj_7ha
   /* "halogen/api.pyx":650
  *         return self.to_string().decode('UTF-8')
  * 
- *     def __repr__(Outputs self not None):             # <<<<<<<<<<<<<<
+ *     def __repr__(self):             # <<<<<<<<<<<<<<
  *         return self.to_string().decode('UTF-8')
  * 
  */
@@ -15832,7 +15346,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_36__setstate_cython__(CYTHON_UN
 /* "halogen/api.pyx":678
  *     }
  * 
- *     def __cinit__(EmitOptions self not None, *args, **kwargs):             # <<<<<<<<<<<<<<
+ *     def __cinit__(self, *args, **kwargs):             # <<<<<<<<<<<<<<
  *         for arg in args:
  *             if type(arg) == type(self):
  */
@@ -15850,16 +15364,9 @@ static int __pyx_pw_7halogen_3api_11EmitOptions_1__cinit__(PyObject *__pyx_v_sel
   __Pyx_GOTREF(__pyx_v_kwargs);
   __Pyx_INCREF(__pyx_args);
   __pyx_v_args = __pyx_args;
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 678, __pyx_L1_error)
-  }
   __pyx_r = __pyx_pf_7halogen_3api_11EmitOptions___cinit__(((struct __pyx_obj_7halogen_3api_EmitOptions *)__pyx_v_self), __pyx_v_args, __pyx_v_kwargs);
 
   /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = -1;
-  __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_args);
   __Pyx_XDECREF(__pyx_v_kwargs);
   __Pyx_RefNannyFinishContext();
@@ -15901,7 +15408,7 @@ static int __pyx_pf_7halogen_3api_11EmitOptions___cinit__(struct __pyx_obj_7halo
 
   /* "halogen/api.pyx":679
  * 
- *     def __cinit__(EmitOptions self not None, *args, **kwargs):
+ *     def __cinit__(self, *args, **kwargs):
  *         for arg in args:             # <<<<<<<<<<<<<<
  *             if type(arg) == type(self):
  *                 self.__this__ = EmOpts()
@@ -15919,7 +15426,7 @@ static int __pyx_pf_7halogen_3api_11EmitOptions___cinit__(struct __pyx_obj_7halo
     __pyx_t_3 = 0;
 
     /* "halogen/api.pyx":680
- *     def __cinit__(EmitOptions self not None, *args, **kwargs):
+ *     def __cinit__(self, *args, **kwargs):
  *         for arg in args:
  *             if type(arg) == type(self):             # <<<<<<<<<<<<<<
  *                 self.__this__ = EmOpts()
@@ -16242,7 +15749,7 @@ static int __pyx_pf_7halogen_3api_11EmitOptions___cinit__(struct __pyx_obj_7halo
       goto __pyx_L0;
 
       /* "halogen/api.pyx":680
- *     def __cinit__(EmitOptions self not None, *args, **kwargs):
+ *     def __cinit__(self, *args, **kwargs):
  *         for arg in args:
  *             if type(arg) == type(self):             # <<<<<<<<<<<<<<
  *                 self.__this__ = EmOpts()
@@ -16252,7 +15759,7 @@ static int __pyx_pf_7halogen_3api_11EmitOptions___cinit__(struct __pyx_obj_7halo
 
     /* "halogen/api.pyx":679
  * 
- *     def __cinit__(EmitOptions self not None, *args, **kwargs):
+ *     def __cinit__(self, *args, **kwargs):
  *         for arg in args:             # <<<<<<<<<<<<<<
  *             if type(arg) == type(self):
  *                 self.__this__ = EmOpts()
@@ -16810,7 +16317,7 @@ static int __pyx_pf_7halogen_3api_11EmitOptions___cinit__(struct __pyx_obj_7halo
   /* "halogen/api.pyx":678
  *     }
  * 
- *     def __cinit__(EmitOptions self not None, *args, **kwargs):             # <<<<<<<<<<<<<<
+ *     def __cinit__(self, *args, **kwargs):             # <<<<<<<<<<<<<<
  *         for arg in args:
  *             if type(arg) == type(self):
  */
@@ -16850,7 +16357,7 @@ static int __pyx_pf_7halogen_3api_11EmitOptions___cinit__(struct __pyx_obj_7halo
 /* "halogen/api.pyx":729
  * 
  *     @property
- *     def emit_o(EmitOptions self not None):             # <<<<<<<<<<<<<<
+ *     def emit_o(self):             # <<<<<<<<<<<<<<
  *         return PyBool_FromLong(self.__this__.emit_o)
  *     @emit_o.setter
  */
@@ -16861,16 +16368,9 @@ static PyObject *__pyx_pw_7halogen_3api_11EmitOptions_6emit_o_1__get__(PyObject 
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__get__ (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 729, __pyx_L1_error)
-  }
   __pyx_r = __pyx_pf_7halogen_3api_11EmitOptions_6emit_o___get__(((struct __pyx_obj_7halogen_3api_EmitOptions *)__pyx_v_self));
 
   /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = NULL;
-  __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -16883,10 +16383,10 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_6emit_o___get__(struct __p
 
   /* "halogen/api.pyx":730
  *     @property
- *     def emit_o(EmitOptions self not None):
+ *     def emit_o(self):
  *         return PyBool_FromLong(self.__this__.emit_o)             # <<<<<<<<<<<<<<
  *     @emit_o.setter
- *     def emit_o(EmitOptions self not None, value not None):
+ *     def emit_o(self, value not None):
  */
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_1 = PyBool_FromLong(__pyx_v_self->__pyx___this__.emit_o); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 730, __pyx_L1_error)
@@ -16898,7 +16398,7 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_6emit_o___get__(struct __p
   /* "halogen/api.pyx":729
  * 
  *     @property
- *     def emit_o(EmitOptions self not None):             # <<<<<<<<<<<<<<
+ *     def emit_o(self):             # <<<<<<<<<<<<<<
  *         return PyBool_FromLong(self.__this__.emit_o)
  *     @emit_o.setter
  */
@@ -16917,7 +16417,7 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_6emit_o___get__(struct __p
 /* "halogen/api.pyx":732
  *         return PyBool_FromLong(self.__this__.emit_o)
  *     @emit_o.setter
- *     def emit_o(EmitOptions self not None, value not None):             # <<<<<<<<<<<<<<
+ *     def emit_o(self, value not None):             # <<<<<<<<<<<<<<
  *         self.__this__.emit_o = PyObject_IsTrue(value)
  * 
  */
@@ -16928,9 +16428,6 @@ static int __pyx_pw_7halogen_3api_11EmitOptions_6emit_o_3__set__(PyObject *__pyx
   int __pyx_r;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__set__ (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 732, __pyx_L1_error)
-  }
   if (unlikely(((PyObject *)__pyx_v_value) == Py_None)) {
     PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "value"); __PYX_ERR(0, 732, __pyx_L1_error)
   }
@@ -16953,7 +16450,7 @@ static int __pyx_pf_7halogen_3api_11EmitOptions_6emit_o_2__set__(struct __pyx_ob
 
   /* "halogen/api.pyx":733
  *     @emit_o.setter
- *     def emit_o(EmitOptions self not None, value not None):
+ *     def emit_o(self, value not None):
  *         self.__this__.emit_o = PyObject_IsTrue(value)             # <<<<<<<<<<<<<<
  * 
  *     @property
@@ -16964,7 +16461,7 @@ static int __pyx_pf_7halogen_3api_11EmitOptions_6emit_o_2__set__(struct __pyx_ob
   /* "halogen/api.pyx":732
  *         return PyBool_FromLong(self.__this__.emit_o)
  *     @emit_o.setter
- *     def emit_o(EmitOptions self not None, value not None):             # <<<<<<<<<<<<<<
+ *     def emit_o(self, value not None):             # <<<<<<<<<<<<<<
  *         self.__this__.emit_o = PyObject_IsTrue(value)
  * 
  */
@@ -16983,7 +16480,7 @@ static int __pyx_pf_7halogen_3api_11EmitOptions_6emit_o_2__set__(struct __pyx_ob
 /* "halogen/api.pyx":736
  * 
  *     @property
- *     def emit_h(EmitOptions self not None):             # <<<<<<<<<<<<<<
+ *     def emit_h(self):             # <<<<<<<<<<<<<<
  *         return PyBool_FromLong(self.__this__.emit_h)
  *     @emit_h.setter
  */
@@ -16994,16 +16491,9 @@ static PyObject *__pyx_pw_7halogen_3api_11EmitOptions_6emit_h_1__get__(PyObject 
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__get__ (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 736, __pyx_L1_error)
-  }
   __pyx_r = __pyx_pf_7halogen_3api_11EmitOptions_6emit_h___get__(((struct __pyx_obj_7halogen_3api_EmitOptions *)__pyx_v_self));
 
   /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = NULL;
-  __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -17016,10 +16506,10 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_6emit_h___get__(struct __p
 
   /* "halogen/api.pyx":737
  *     @property
- *     def emit_h(EmitOptions self not None):
+ *     def emit_h(self):
  *         return PyBool_FromLong(self.__this__.emit_h)             # <<<<<<<<<<<<<<
  *     @emit_h.setter
- *     def emit_h(EmitOptions self not None, value not None):
+ *     def emit_h(self, value not None):
  */
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_1 = PyBool_FromLong(__pyx_v_self->__pyx___this__.emit_h); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 737, __pyx_L1_error)
@@ -17031,7 +16521,7 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_6emit_h___get__(struct __p
   /* "halogen/api.pyx":736
  * 
  *     @property
- *     def emit_h(EmitOptions self not None):             # <<<<<<<<<<<<<<
+ *     def emit_h(self):             # <<<<<<<<<<<<<<
  *         return PyBool_FromLong(self.__this__.emit_h)
  *     @emit_h.setter
  */
@@ -17050,7 +16540,7 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_6emit_h___get__(struct __p
 /* "halogen/api.pyx":739
  *         return PyBool_FromLong(self.__this__.emit_h)
  *     @emit_h.setter
- *     def emit_h(EmitOptions self not None, value not None):             # <<<<<<<<<<<<<<
+ *     def emit_h(self, value not None):             # <<<<<<<<<<<<<<
  *         self.__this__.emit_h = PyObject_IsTrue(value)
  * 
  */
@@ -17061,9 +16551,6 @@ static int __pyx_pw_7halogen_3api_11EmitOptions_6emit_h_3__set__(PyObject *__pyx
   int __pyx_r;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__set__ (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 739, __pyx_L1_error)
-  }
   if (unlikely(((PyObject *)__pyx_v_value) == Py_None)) {
     PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "value"); __PYX_ERR(0, 739, __pyx_L1_error)
   }
@@ -17086,7 +16573,7 @@ static int __pyx_pf_7halogen_3api_11EmitOptions_6emit_h_2__set__(struct __pyx_ob
 
   /* "halogen/api.pyx":740
  *     @emit_h.setter
- *     def emit_h(EmitOptions self not None, value not None):
+ *     def emit_h(self, value not None):
  *         self.__this__.emit_h = PyObject_IsTrue(value)             # <<<<<<<<<<<<<<
  * 
  *     @property
@@ -17097,7 +16584,7 @@ static int __pyx_pf_7halogen_3api_11EmitOptions_6emit_h_2__set__(struct __pyx_ob
   /* "halogen/api.pyx":739
  *         return PyBool_FromLong(self.__this__.emit_h)
  *     @emit_h.setter
- *     def emit_h(EmitOptions self not None, value not None):             # <<<<<<<<<<<<<<
+ *     def emit_h(self, value not None):             # <<<<<<<<<<<<<<
  *         self.__this__.emit_h = PyObject_IsTrue(value)
  * 
  */
@@ -17116,7 +16603,7 @@ static int __pyx_pf_7halogen_3api_11EmitOptions_6emit_h_2__set__(struct __pyx_ob
 /* "halogen/api.pyx":743
  * 
  *     @property
- *     def emit_cpp(EmitOptions self not None):             # <<<<<<<<<<<<<<
+ *     def emit_cpp(self):             # <<<<<<<<<<<<<<
  *         return PyBool_FromLong(self.__this__.emit_cpp)
  *     @emit_cpp.setter
  */
@@ -17127,16 +16614,9 @@ static PyObject *__pyx_pw_7halogen_3api_11EmitOptions_8emit_cpp_1__get__(PyObjec
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__get__ (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 743, __pyx_L1_error)
-  }
   __pyx_r = __pyx_pf_7halogen_3api_11EmitOptions_8emit_cpp___get__(((struct __pyx_obj_7halogen_3api_EmitOptions *)__pyx_v_self));
 
   /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = NULL;
-  __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -17149,10 +16629,10 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_8emit_cpp___get__(struct _
 
   /* "halogen/api.pyx":744
  *     @property
- *     def emit_cpp(EmitOptions self not None):
+ *     def emit_cpp(self):
  *         return PyBool_FromLong(self.__this__.emit_cpp)             # <<<<<<<<<<<<<<
  *     @emit_cpp.setter
- *     def emit_cpp(EmitOptions self not None, value not None):
+ *     def emit_cpp(self, value not None):
  */
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_1 = PyBool_FromLong(__pyx_v_self->__pyx___this__.emit_cpp); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 744, __pyx_L1_error)
@@ -17164,7 +16644,7 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_8emit_cpp___get__(struct _
   /* "halogen/api.pyx":743
  * 
  *     @property
- *     def emit_cpp(EmitOptions self not None):             # <<<<<<<<<<<<<<
+ *     def emit_cpp(self):             # <<<<<<<<<<<<<<
  *         return PyBool_FromLong(self.__this__.emit_cpp)
  *     @emit_cpp.setter
  */
@@ -17183,7 +16663,7 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_8emit_cpp___get__(struct _
 /* "halogen/api.pyx":746
  *         return PyBool_FromLong(self.__this__.emit_cpp)
  *     @emit_cpp.setter
- *     def emit_cpp(EmitOptions self not None, value not None):             # <<<<<<<<<<<<<<
+ *     def emit_cpp(self, value not None):             # <<<<<<<<<<<<<<
  *         self.__this__.emit_cpp = PyObject_IsTrue(value)
  * 
  */
@@ -17194,9 +16674,6 @@ static int __pyx_pw_7halogen_3api_11EmitOptions_8emit_cpp_3__set__(PyObject *__p
   int __pyx_r;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__set__ (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 746, __pyx_L1_error)
-  }
   if (unlikely(((PyObject *)__pyx_v_value) == Py_None)) {
     PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "value"); __PYX_ERR(0, 746, __pyx_L1_error)
   }
@@ -17219,7 +16696,7 @@ static int __pyx_pf_7halogen_3api_11EmitOptions_8emit_cpp_2__set__(struct __pyx_
 
   /* "halogen/api.pyx":747
  *     @emit_cpp.setter
- *     def emit_cpp(EmitOptions self not None, value not None):
+ *     def emit_cpp(self, value not None):
  *         self.__this__.emit_cpp = PyObject_IsTrue(value)             # <<<<<<<<<<<<<<
  * 
  *     @property
@@ -17230,7 +16707,7 @@ static int __pyx_pf_7halogen_3api_11EmitOptions_8emit_cpp_2__set__(struct __pyx_
   /* "halogen/api.pyx":746
  *         return PyBool_FromLong(self.__this__.emit_cpp)
  *     @emit_cpp.setter
- *     def emit_cpp(EmitOptions self not None, value not None):             # <<<<<<<<<<<<<<
+ *     def emit_cpp(self, value not None):             # <<<<<<<<<<<<<<
  *         self.__this__.emit_cpp = PyObject_IsTrue(value)
  * 
  */
@@ -17249,7 +16726,7 @@ static int __pyx_pf_7halogen_3api_11EmitOptions_8emit_cpp_2__set__(struct __pyx_
 /* "halogen/api.pyx":750
  * 
  *     @property
- *     def emit_assembly(EmitOptions self not None):             # <<<<<<<<<<<<<<
+ *     def emit_assembly(self):             # <<<<<<<<<<<<<<
  *         return PyBool_FromLong(self.__this__.emit_assembly)
  *     @emit_assembly.setter
  */
@@ -17260,16 +16737,9 @@ static PyObject *__pyx_pw_7halogen_3api_11EmitOptions_13emit_assembly_1__get__(P
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__get__ (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 750, __pyx_L1_error)
-  }
   __pyx_r = __pyx_pf_7halogen_3api_11EmitOptions_13emit_assembly___get__(((struct __pyx_obj_7halogen_3api_EmitOptions *)__pyx_v_self));
 
   /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = NULL;
-  __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -17282,10 +16752,10 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_13emit_assembly___get__(st
 
   /* "halogen/api.pyx":751
  *     @property
- *     def emit_assembly(EmitOptions self not None):
+ *     def emit_assembly(self):
  *         return PyBool_FromLong(self.__this__.emit_assembly)             # <<<<<<<<<<<<<<
  *     @emit_assembly.setter
- *     def emit_assembly(EmitOptions self not None, value not None):
+ *     def emit_assembly(self, value not None):
  */
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_1 = PyBool_FromLong(__pyx_v_self->__pyx___this__.emit_assembly); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 751, __pyx_L1_error)
@@ -17297,7 +16767,7 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_13emit_assembly___get__(st
   /* "halogen/api.pyx":750
  * 
  *     @property
- *     def emit_assembly(EmitOptions self not None):             # <<<<<<<<<<<<<<
+ *     def emit_assembly(self):             # <<<<<<<<<<<<<<
  *         return PyBool_FromLong(self.__this__.emit_assembly)
  *     @emit_assembly.setter
  */
@@ -17316,7 +16786,7 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_13emit_assembly___get__(st
 /* "halogen/api.pyx":753
  *         return PyBool_FromLong(self.__this__.emit_assembly)
  *     @emit_assembly.setter
- *     def emit_assembly(EmitOptions self not None, value not None):             # <<<<<<<<<<<<<<
+ *     def emit_assembly(self, value not None):             # <<<<<<<<<<<<<<
  *         self.__this__.emit_assembly = PyObject_IsTrue(value)
  * 
  */
@@ -17327,9 +16797,6 @@ static int __pyx_pw_7halogen_3api_11EmitOptions_13emit_assembly_3__set__(PyObjec
   int __pyx_r;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__set__ (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 753, __pyx_L1_error)
-  }
   if (unlikely(((PyObject *)__pyx_v_value) == Py_None)) {
     PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "value"); __PYX_ERR(0, 753, __pyx_L1_error)
   }
@@ -17352,7 +16819,7 @@ static int __pyx_pf_7halogen_3api_11EmitOptions_13emit_assembly_2__set__(struct 
 
   /* "halogen/api.pyx":754
  *     @emit_assembly.setter
- *     def emit_assembly(EmitOptions self not None, value not None):
+ *     def emit_assembly(self, value not None):
  *         self.__this__.emit_assembly = PyObject_IsTrue(value)             # <<<<<<<<<<<<<<
  * 
  *     @property
@@ -17363,7 +16830,7 @@ static int __pyx_pf_7halogen_3api_11EmitOptions_13emit_assembly_2__set__(struct 
   /* "halogen/api.pyx":753
  *         return PyBool_FromLong(self.__this__.emit_assembly)
  *     @emit_assembly.setter
- *     def emit_assembly(EmitOptions self not None, value not None):             # <<<<<<<<<<<<<<
+ *     def emit_assembly(self, value not None):             # <<<<<<<<<<<<<<
  *         self.__this__.emit_assembly = PyObject_IsTrue(value)
  * 
  */
@@ -17382,7 +16849,7 @@ static int __pyx_pf_7halogen_3api_11EmitOptions_13emit_assembly_2__set__(struct 
 /* "halogen/api.pyx":757
  * 
  *     @property
- *     def emit_bitcode(EmitOptions self not None):             # <<<<<<<<<<<<<<
+ *     def emit_bitcode(self):             # <<<<<<<<<<<<<<
  *         return PyBool_FromLong(self.__this__.emit_bitcode)
  *     @emit_bitcode.setter
  */
@@ -17393,16 +16860,9 @@ static PyObject *__pyx_pw_7halogen_3api_11EmitOptions_12emit_bitcode_1__get__(Py
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__get__ (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 757, __pyx_L1_error)
-  }
   __pyx_r = __pyx_pf_7halogen_3api_11EmitOptions_12emit_bitcode___get__(((struct __pyx_obj_7halogen_3api_EmitOptions *)__pyx_v_self));
 
   /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = NULL;
-  __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -17415,10 +16875,10 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_12emit_bitcode___get__(str
 
   /* "halogen/api.pyx":758
  *     @property
- *     def emit_bitcode(EmitOptions self not None):
+ *     def emit_bitcode(self):
  *         return PyBool_FromLong(self.__this__.emit_bitcode)             # <<<<<<<<<<<<<<
  *     @emit_bitcode.setter
- *     def emit_bitcode(EmitOptions self not None, value not None):
+ *     def emit_bitcode(self, value not None):
  */
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_1 = PyBool_FromLong(__pyx_v_self->__pyx___this__.emit_bitcode); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 758, __pyx_L1_error)
@@ -17430,7 +16890,7 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_12emit_bitcode___get__(str
   /* "halogen/api.pyx":757
  * 
  *     @property
- *     def emit_bitcode(EmitOptions self not None):             # <<<<<<<<<<<<<<
+ *     def emit_bitcode(self):             # <<<<<<<<<<<<<<
  *         return PyBool_FromLong(self.__this__.emit_bitcode)
  *     @emit_bitcode.setter
  */
@@ -17449,7 +16909,7 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_12emit_bitcode___get__(str
 /* "halogen/api.pyx":760
  *         return PyBool_FromLong(self.__this__.emit_bitcode)
  *     @emit_bitcode.setter
- *     def emit_bitcode(EmitOptions self not None, value not None):             # <<<<<<<<<<<<<<
+ *     def emit_bitcode(self, value not None):             # <<<<<<<<<<<<<<
  *         self.__this__.emit_bitcode = PyObject_IsTrue(value)
  * 
  */
@@ -17460,9 +16920,6 @@ static int __pyx_pw_7halogen_3api_11EmitOptions_12emit_bitcode_3__set__(PyObject
   int __pyx_r;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__set__ (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 760, __pyx_L1_error)
-  }
   if (unlikely(((PyObject *)__pyx_v_value) == Py_None)) {
     PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "value"); __PYX_ERR(0, 760, __pyx_L1_error)
   }
@@ -17485,7 +16942,7 @@ static int __pyx_pf_7halogen_3api_11EmitOptions_12emit_bitcode_2__set__(struct _
 
   /* "halogen/api.pyx":761
  *     @emit_bitcode.setter
- *     def emit_bitcode(EmitOptions self not None, value not None):
+ *     def emit_bitcode(self, value not None):
  *         self.__this__.emit_bitcode = PyObject_IsTrue(value)             # <<<<<<<<<<<<<<
  * 
  *     @property
@@ -17496,7 +16953,7 @@ static int __pyx_pf_7halogen_3api_11EmitOptions_12emit_bitcode_2__set__(struct _
   /* "halogen/api.pyx":760
  *         return PyBool_FromLong(self.__this__.emit_bitcode)
  *     @emit_bitcode.setter
- *     def emit_bitcode(EmitOptions self not None, value not None):             # <<<<<<<<<<<<<<
+ *     def emit_bitcode(self, value not None):             # <<<<<<<<<<<<<<
  *         self.__this__.emit_bitcode = PyObject_IsTrue(value)
  * 
  */
@@ -17515,7 +16972,7 @@ static int __pyx_pf_7halogen_3api_11EmitOptions_12emit_bitcode_2__set__(struct _
 /* "halogen/api.pyx":764
  * 
  *     @property
- *     def emit_stmt(EmitOptions self not None):             # <<<<<<<<<<<<<<
+ *     def emit_stmt(self):             # <<<<<<<<<<<<<<
  *         return PyBool_FromLong(self.__this__.emit_stmt)
  *     @emit_stmt.setter
  */
@@ -17526,16 +16983,9 @@ static PyObject *__pyx_pw_7halogen_3api_11EmitOptions_9emit_stmt_1__get__(PyObje
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__get__ (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 764, __pyx_L1_error)
-  }
   __pyx_r = __pyx_pf_7halogen_3api_11EmitOptions_9emit_stmt___get__(((struct __pyx_obj_7halogen_3api_EmitOptions *)__pyx_v_self));
 
   /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = NULL;
-  __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -17548,10 +16998,10 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_9emit_stmt___get__(struct 
 
   /* "halogen/api.pyx":765
  *     @property
- *     def emit_stmt(EmitOptions self not None):
+ *     def emit_stmt(self):
  *         return PyBool_FromLong(self.__this__.emit_stmt)             # <<<<<<<<<<<<<<
  *     @emit_stmt.setter
- *     def emit_stmt(EmitOptions self not None, value not None):
+ *     def emit_stmt(self, value not None):
  */
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_1 = PyBool_FromLong(__pyx_v_self->__pyx___this__.emit_stmt); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 765, __pyx_L1_error)
@@ -17563,7 +17013,7 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_9emit_stmt___get__(struct 
   /* "halogen/api.pyx":764
  * 
  *     @property
- *     def emit_stmt(EmitOptions self not None):             # <<<<<<<<<<<<<<
+ *     def emit_stmt(self):             # <<<<<<<<<<<<<<
  *         return PyBool_FromLong(self.__this__.emit_stmt)
  *     @emit_stmt.setter
  */
@@ -17582,7 +17032,7 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_9emit_stmt___get__(struct 
 /* "halogen/api.pyx":767
  *         return PyBool_FromLong(self.__this__.emit_stmt)
  *     @emit_stmt.setter
- *     def emit_stmt(EmitOptions self not None, value not None):             # <<<<<<<<<<<<<<
+ *     def emit_stmt(self, value not None):             # <<<<<<<<<<<<<<
  *         self.__this__.emit_stmt = PyObject_IsTrue(value)
  * 
  */
@@ -17593,9 +17043,6 @@ static int __pyx_pw_7halogen_3api_11EmitOptions_9emit_stmt_3__set__(PyObject *__
   int __pyx_r;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__set__ (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 767, __pyx_L1_error)
-  }
   if (unlikely(((PyObject *)__pyx_v_value) == Py_None)) {
     PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "value"); __PYX_ERR(0, 767, __pyx_L1_error)
   }
@@ -17618,7 +17065,7 @@ static int __pyx_pf_7halogen_3api_11EmitOptions_9emit_stmt_2__set__(struct __pyx
 
   /* "halogen/api.pyx":768
  *     @emit_stmt.setter
- *     def emit_stmt(EmitOptions self not None, value not None):
+ *     def emit_stmt(self, value not None):
  *         self.__this__.emit_stmt = PyObject_IsTrue(value)             # <<<<<<<<<<<<<<
  * 
  *     @property
@@ -17629,7 +17076,7 @@ static int __pyx_pf_7halogen_3api_11EmitOptions_9emit_stmt_2__set__(struct __pyx
   /* "halogen/api.pyx":767
  *         return PyBool_FromLong(self.__this__.emit_stmt)
  *     @emit_stmt.setter
- *     def emit_stmt(EmitOptions self not None, value not None):             # <<<<<<<<<<<<<<
+ *     def emit_stmt(self, value not None):             # <<<<<<<<<<<<<<
  *         self.__this__.emit_stmt = PyObject_IsTrue(value)
  * 
  */
@@ -17648,7 +17095,7 @@ static int __pyx_pf_7halogen_3api_11EmitOptions_9emit_stmt_2__set__(struct __pyx
 /* "halogen/api.pyx":771
  * 
  *     @property
- *     def emit_stmt_html(EmitOptions self not None):             # <<<<<<<<<<<<<<
+ *     def emit_stmt_html(self):             # <<<<<<<<<<<<<<
  *         return PyBool_FromLong(self.__this__.emit_stmt_html)
  *     @emit_stmt_html.setter
  */
@@ -17659,16 +17106,9 @@ static PyObject *__pyx_pw_7halogen_3api_11EmitOptions_14emit_stmt_html_1__get__(
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__get__ (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 771, __pyx_L1_error)
-  }
   __pyx_r = __pyx_pf_7halogen_3api_11EmitOptions_14emit_stmt_html___get__(((struct __pyx_obj_7halogen_3api_EmitOptions *)__pyx_v_self));
 
   /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = NULL;
-  __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -17681,10 +17121,10 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_14emit_stmt_html___get__(s
 
   /* "halogen/api.pyx":772
  *     @property
- *     def emit_stmt_html(EmitOptions self not None):
+ *     def emit_stmt_html(self):
  *         return PyBool_FromLong(self.__this__.emit_stmt_html)             # <<<<<<<<<<<<<<
  *     @emit_stmt_html.setter
- *     def emit_stmt_html(EmitOptions self not None, value not None):
+ *     def emit_stmt_html(self, value not None):
  */
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_1 = PyBool_FromLong(__pyx_v_self->__pyx___this__.emit_stmt_html); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 772, __pyx_L1_error)
@@ -17696,7 +17136,7 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_14emit_stmt_html___get__(s
   /* "halogen/api.pyx":771
  * 
  *     @property
- *     def emit_stmt_html(EmitOptions self not None):             # <<<<<<<<<<<<<<
+ *     def emit_stmt_html(self):             # <<<<<<<<<<<<<<
  *         return PyBool_FromLong(self.__this__.emit_stmt_html)
  *     @emit_stmt_html.setter
  */
@@ -17715,7 +17155,7 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_14emit_stmt_html___get__(s
 /* "halogen/api.pyx":774
  *         return PyBool_FromLong(self.__this__.emit_stmt_html)
  *     @emit_stmt_html.setter
- *     def emit_stmt_html(EmitOptions self not None, value not None):             # <<<<<<<<<<<<<<
+ *     def emit_stmt_html(self, value not None):             # <<<<<<<<<<<<<<
  *         self.__this__.emit_stmt_html = PyObject_IsTrue(value)
  * 
  */
@@ -17726,9 +17166,6 @@ static int __pyx_pw_7halogen_3api_11EmitOptions_14emit_stmt_html_3__set__(PyObje
   int __pyx_r;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__set__ (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 774, __pyx_L1_error)
-  }
   if (unlikely(((PyObject *)__pyx_v_value) == Py_None)) {
     PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "value"); __PYX_ERR(0, 774, __pyx_L1_error)
   }
@@ -17751,7 +17188,7 @@ static int __pyx_pf_7halogen_3api_11EmitOptions_14emit_stmt_html_2__set__(struct
 
   /* "halogen/api.pyx":775
  *     @emit_stmt_html.setter
- *     def emit_stmt_html(EmitOptions self not None, value not None):
+ *     def emit_stmt_html(self, value not None):
  *         self.__this__.emit_stmt_html = PyObject_IsTrue(value)             # <<<<<<<<<<<<<<
  * 
  *     @property
@@ -17762,7 +17199,7 @@ static int __pyx_pf_7halogen_3api_11EmitOptions_14emit_stmt_html_2__set__(struct
   /* "halogen/api.pyx":774
  *         return PyBool_FromLong(self.__this__.emit_stmt_html)
  *     @emit_stmt_html.setter
- *     def emit_stmt_html(EmitOptions self not None, value not None):             # <<<<<<<<<<<<<<
+ *     def emit_stmt_html(self, value not None):             # <<<<<<<<<<<<<<
  *         self.__this__.emit_stmt_html = PyObject_IsTrue(value)
  * 
  */
@@ -17781,7 +17218,7 @@ static int __pyx_pf_7halogen_3api_11EmitOptions_14emit_stmt_html_2__set__(struct
 /* "halogen/api.pyx":778
  * 
  *     @property
- *     def emit_python_extension(EmitOptions self not None):             # <<<<<<<<<<<<<<
+ *     def emit_python_extension(self):             # <<<<<<<<<<<<<<
  *         return PyBool_FromLong(self.__this__.emit_python_extension)
  *     @emit_python_extension.setter
  */
@@ -17792,16 +17229,9 @@ static PyObject *__pyx_pw_7halogen_3api_11EmitOptions_21emit_python_extension_1_
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__get__ (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 778, __pyx_L1_error)
-  }
   __pyx_r = __pyx_pf_7halogen_3api_11EmitOptions_21emit_python_extension___get__(((struct __pyx_obj_7halogen_3api_EmitOptions *)__pyx_v_self));
 
   /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = NULL;
-  __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -17814,10 +17244,10 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_21emit_python_extension___
 
   /* "halogen/api.pyx":779
  *     @property
- *     def emit_python_extension(EmitOptions self not None):
+ *     def emit_python_extension(self):
  *         return PyBool_FromLong(self.__this__.emit_python_extension)             # <<<<<<<<<<<<<<
  *     @emit_python_extension.setter
- *     def emit_python_extension(EmitOptions self not None, value not None):
+ *     def emit_python_extension(self, value not None):
  */
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_1 = PyBool_FromLong(__pyx_v_self->__pyx___this__.emit_python_extension); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 779, __pyx_L1_error)
@@ -17829,7 +17259,7 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_21emit_python_extension___
   /* "halogen/api.pyx":778
  * 
  *     @property
- *     def emit_python_extension(EmitOptions self not None):             # <<<<<<<<<<<<<<
+ *     def emit_python_extension(self):             # <<<<<<<<<<<<<<
  *         return PyBool_FromLong(self.__this__.emit_python_extension)
  *     @emit_python_extension.setter
  */
@@ -17848,7 +17278,7 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_21emit_python_extension___
 /* "halogen/api.pyx":781
  *         return PyBool_FromLong(self.__this__.emit_python_extension)
  *     @emit_python_extension.setter
- *     def emit_python_extension(EmitOptions self not None, value not None):             # <<<<<<<<<<<<<<
+ *     def emit_python_extension(self, value not None):             # <<<<<<<<<<<<<<
  *         self.__this__.emit_python_extension = PyObject_IsTrue(value)
  * 
  */
@@ -17859,9 +17289,6 @@ static int __pyx_pw_7halogen_3api_11EmitOptions_21emit_python_extension_3__set__
   int __pyx_r;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__set__ (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 781, __pyx_L1_error)
-  }
   if (unlikely(((PyObject *)__pyx_v_value) == Py_None)) {
     PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "value"); __PYX_ERR(0, 781, __pyx_L1_error)
   }
@@ -17884,7 +17311,7 @@ static int __pyx_pf_7halogen_3api_11EmitOptions_21emit_python_extension_2__set__
 
   /* "halogen/api.pyx":782
  *     @emit_python_extension.setter
- *     def emit_python_extension(EmitOptions self not None, value not None):
+ *     def emit_python_extension(self, value not None):
  *         self.__this__.emit_python_extension = PyObject_IsTrue(value)             # <<<<<<<<<<<<<<
  * 
  *     @property
@@ -17895,7 +17322,7 @@ static int __pyx_pf_7halogen_3api_11EmitOptions_21emit_python_extension_2__set__
   /* "halogen/api.pyx":781
  *         return PyBool_FromLong(self.__this__.emit_python_extension)
  *     @emit_python_extension.setter
- *     def emit_python_extension(EmitOptions self not None, value not None):             # <<<<<<<<<<<<<<
+ *     def emit_python_extension(self, value not None):             # <<<<<<<<<<<<<<
  *         self.__this__.emit_python_extension = PyObject_IsTrue(value)
  * 
  */
@@ -17914,7 +17341,7 @@ static int __pyx_pf_7halogen_3api_11EmitOptions_21emit_python_extension_2__set__
 /* "halogen/api.pyx":785
  * 
  *     @property
- *     def emit_static_library(EmitOptions self not None):             # <<<<<<<<<<<<<<
+ *     def emit_static_library(self):             # <<<<<<<<<<<<<<
  *         return PyBool_FromLong(self.__this__.emit_static_library)
  *     @emit_static_library.setter
  */
@@ -17925,16 +17352,9 @@ static PyObject *__pyx_pw_7halogen_3api_11EmitOptions_19emit_static_library_1__g
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__get__ (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 785, __pyx_L1_error)
-  }
   __pyx_r = __pyx_pf_7halogen_3api_11EmitOptions_19emit_static_library___get__(((struct __pyx_obj_7halogen_3api_EmitOptions *)__pyx_v_self));
 
   /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = NULL;
-  __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -17947,10 +17367,10 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_19emit_static_library___ge
 
   /* "halogen/api.pyx":786
  *     @property
- *     def emit_static_library(EmitOptions self not None):
+ *     def emit_static_library(self):
  *         return PyBool_FromLong(self.__this__.emit_static_library)             # <<<<<<<<<<<<<<
  *     @emit_static_library.setter
- *     def emit_static_library(EmitOptions self not None, value not None):
+ *     def emit_static_library(self, value not None):
  */
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_1 = PyBool_FromLong(__pyx_v_self->__pyx___this__.emit_static_library); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 786, __pyx_L1_error)
@@ -17962,7 +17382,7 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_19emit_static_library___ge
   /* "halogen/api.pyx":785
  * 
  *     @property
- *     def emit_static_library(EmitOptions self not None):             # <<<<<<<<<<<<<<
+ *     def emit_static_library(self):             # <<<<<<<<<<<<<<
  *         return PyBool_FromLong(self.__this__.emit_static_library)
  *     @emit_static_library.setter
  */
@@ -17981,7 +17401,7 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_19emit_static_library___ge
 /* "halogen/api.pyx":788
  *         return PyBool_FromLong(self.__this__.emit_static_library)
  *     @emit_static_library.setter
- *     def emit_static_library(EmitOptions self not None, value not None):             # <<<<<<<<<<<<<<
+ *     def emit_static_library(self, value not None):             # <<<<<<<<<<<<<<
  *         self.__this__.emit_static_library = PyObject_IsTrue(value)
  * 
  */
@@ -17992,9 +17412,6 @@ static int __pyx_pw_7halogen_3api_11EmitOptions_19emit_static_library_3__set__(P
   int __pyx_r;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__set__ (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 788, __pyx_L1_error)
-  }
   if (unlikely(((PyObject *)__pyx_v_value) == Py_None)) {
     PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "value"); __PYX_ERR(0, 788, __pyx_L1_error)
   }
@@ -18017,7 +17434,7 @@ static int __pyx_pf_7halogen_3api_11EmitOptions_19emit_static_library_2__set__(s
 
   /* "halogen/api.pyx":789
  *     @emit_static_library.setter
- *     def emit_static_library(EmitOptions self not None, value not None):
+ *     def emit_static_library(self, value not None):
  *         self.__this__.emit_static_library = PyObject_IsTrue(value)             # <<<<<<<<<<<<<<
  * 
  *     @property
@@ -18028,7 +17445,7 @@ static int __pyx_pf_7halogen_3api_11EmitOptions_19emit_static_library_2__set__(s
   /* "halogen/api.pyx":788
  *         return PyBool_FromLong(self.__this__.emit_static_library)
  *     @emit_static_library.setter
- *     def emit_static_library(EmitOptions self not None, value not None):             # <<<<<<<<<<<<<<
+ *     def emit_static_library(self, value not None):             # <<<<<<<<<<<<<<
  *         self.__this__.emit_static_library = PyObject_IsTrue(value)
  * 
  */
@@ -18047,7 +17464,7 @@ static int __pyx_pf_7halogen_3api_11EmitOptions_19emit_static_library_2__set__(s
 /* "halogen/api.pyx":792
  * 
  *     @property
- *     def emit_cpp_stub(EmitOptions self not None):             # <<<<<<<<<<<<<<
+ *     def emit_cpp_stub(self):             # <<<<<<<<<<<<<<
  *         return PyBool_FromLong(self.__this__.emit_cpp_stub)
  *     @emit_cpp_stub.setter
  */
@@ -18058,16 +17475,9 @@ static PyObject *__pyx_pw_7halogen_3api_11EmitOptions_13emit_cpp_stub_1__get__(P
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__get__ (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 792, __pyx_L1_error)
-  }
   __pyx_r = __pyx_pf_7halogen_3api_11EmitOptions_13emit_cpp_stub___get__(((struct __pyx_obj_7halogen_3api_EmitOptions *)__pyx_v_self));
 
   /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = NULL;
-  __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -18080,10 +17490,10 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_13emit_cpp_stub___get__(st
 
   /* "halogen/api.pyx":793
  *     @property
- *     def emit_cpp_stub(EmitOptions self not None):
+ *     def emit_cpp_stub(self):
  *         return PyBool_FromLong(self.__this__.emit_cpp_stub)             # <<<<<<<<<<<<<<
  *     @emit_cpp_stub.setter
- *     def emit_cpp_stub(EmitOptions self not None, value not None):
+ *     def emit_cpp_stub(self, value not None):
  */
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_1 = PyBool_FromLong(__pyx_v_self->__pyx___this__.emit_cpp_stub); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 793, __pyx_L1_error)
@@ -18095,7 +17505,7 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_13emit_cpp_stub___get__(st
   /* "halogen/api.pyx":792
  * 
  *     @property
- *     def emit_cpp_stub(EmitOptions self not None):             # <<<<<<<<<<<<<<
+ *     def emit_cpp_stub(self):             # <<<<<<<<<<<<<<
  *         return PyBool_FromLong(self.__this__.emit_cpp_stub)
  *     @emit_cpp_stub.setter
  */
@@ -18114,7 +17524,7 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_13emit_cpp_stub___get__(st
 /* "halogen/api.pyx":795
  *         return PyBool_FromLong(self.__this__.emit_cpp_stub)
  *     @emit_cpp_stub.setter
- *     def emit_cpp_stub(EmitOptions self not None, value not None):             # <<<<<<<<<<<<<<
+ *     def emit_cpp_stub(self, value not None):             # <<<<<<<<<<<<<<
  *         self.__this__.emit_cpp_stub = PyObject_IsTrue(value)
  * 
  */
@@ -18125,9 +17535,6 @@ static int __pyx_pw_7halogen_3api_11EmitOptions_13emit_cpp_stub_3__set__(PyObjec
   int __pyx_r;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__set__ (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 795, __pyx_L1_error)
-  }
   if (unlikely(((PyObject *)__pyx_v_value) == Py_None)) {
     PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "value"); __PYX_ERR(0, 795, __pyx_L1_error)
   }
@@ -18150,7 +17557,7 @@ static int __pyx_pf_7halogen_3api_11EmitOptions_13emit_cpp_stub_2__set__(struct 
 
   /* "halogen/api.pyx":796
  *     @emit_cpp_stub.setter
- *     def emit_cpp_stub(EmitOptions self not None, value not None):
+ *     def emit_cpp_stub(self, value not None):
  *         self.__this__.emit_cpp_stub = PyObject_IsTrue(value)             # <<<<<<<<<<<<<<
  * 
  *     @property
@@ -18161,7 +17568,7 @@ static int __pyx_pf_7halogen_3api_11EmitOptions_13emit_cpp_stub_2__set__(struct 
   /* "halogen/api.pyx":795
  *         return PyBool_FromLong(self.__this__.emit_cpp_stub)
  *     @emit_cpp_stub.setter
- *     def emit_cpp_stub(EmitOptions self not None, value not None):             # <<<<<<<<<<<<<<
+ *     def emit_cpp_stub(self, value not None):             # <<<<<<<<<<<<<<
  *         self.__this__.emit_cpp_stub = PyObject_IsTrue(value)
  * 
  */
@@ -18180,7 +17587,7 @@ static int __pyx_pf_7halogen_3api_11EmitOptions_13emit_cpp_stub_2__set__(struct 
 /* "halogen/api.pyx":799
  * 
  *     @property
- *     def emit_schedule(EmitOptions self not None):             # <<<<<<<<<<<<<<
+ *     def emit_schedule(self):             # <<<<<<<<<<<<<<
  *         return PyBool_FromLong(self.__this__.emit_schedule)
  *     @emit_schedule.setter
  */
@@ -18191,16 +17598,9 @@ static PyObject *__pyx_pw_7halogen_3api_11EmitOptions_13emit_schedule_1__get__(P
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__get__ (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 799, __pyx_L1_error)
-  }
   __pyx_r = __pyx_pf_7halogen_3api_11EmitOptions_13emit_schedule___get__(((struct __pyx_obj_7halogen_3api_EmitOptions *)__pyx_v_self));
 
   /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = NULL;
-  __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -18213,10 +17613,10 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_13emit_schedule___get__(st
 
   /* "halogen/api.pyx":800
  *     @property
- *     def emit_schedule(EmitOptions self not None):
+ *     def emit_schedule(self):
  *         return PyBool_FromLong(self.__this__.emit_schedule)             # <<<<<<<<<<<<<<
  *     @emit_schedule.setter
- *     def emit_schedule(EmitOptions self not None, value not None):
+ *     def emit_schedule(self, value not None):
  */
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_1 = PyBool_FromLong(__pyx_v_self->__pyx___this__.emit_schedule); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 800, __pyx_L1_error)
@@ -18228,7 +17628,7 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_13emit_schedule___get__(st
   /* "halogen/api.pyx":799
  * 
  *     @property
- *     def emit_schedule(EmitOptions self not None):             # <<<<<<<<<<<<<<
+ *     def emit_schedule(self):             # <<<<<<<<<<<<<<
  *         return PyBool_FromLong(self.__this__.emit_schedule)
  *     @emit_schedule.setter
  */
@@ -18247,7 +17647,7 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_13emit_schedule___get__(st
 /* "halogen/api.pyx":802
  *         return PyBool_FromLong(self.__this__.emit_schedule)
  *     @emit_schedule.setter
- *     def emit_schedule(EmitOptions self not None, value not None):             # <<<<<<<<<<<<<<
+ *     def emit_schedule(self, value not None):             # <<<<<<<<<<<<<<
  *         self.__this__.emit_schedule = PyObject_IsTrue(value)
  * 
  */
@@ -18258,9 +17658,6 @@ static int __pyx_pw_7halogen_3api_11EmitOptions_13emit_schedule_3__set__(PyObjec
   int __pyx_r;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__set__ (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 802, __pyx_L1_error)
-  }
   if (unlikely(((PyObject *)__pyx_v_value) == Py_None)) {
     PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "value"); __PYX_ERR(0, 802, __pyx_L1_error)
   }
@@ -18283,7 +17680,7 @@ static int __pyx_pf_7halogen_3api_11EmitOptions_13emit_schedule_2__set__(struct 
 
   /* "halogen/api.pyx":803
  *     @emit_schedule.setter
- *     def emit_schedule(EmitOptions self not None, value not None):
+ *     def emit_schedule(self, value not None):
  *         self.__this__.emit_schedule = PyObject_IsTrue(value)             # <<<<<<<<<<<<<<
  * 
  *     @property
@@ -18294,7 +17691,7 @@ static int __pyx_pf_7halogen_3api_11EmitOptions_13emit_schedule_2__set__(struct 
   /* "halogen/api.pyx":802
  *         return PyBool_FromLong(self.__this__.emit_schedule)
  *     @emit_schedule.setter
- *     def emit_schedule(EmitOptions self not None, value not None):             # <<<<<<<<<<<<<<
+ *     def emit_schedule(self, value not None):             # <<<<<<<<<<<<<<
  *         self.__this__.emit_schedule = PyObject_IsTrue(value)
  * 
  */
@@ -18313,7 +17710,7 @@ static int __pyx_pf_7halogen_3api_11EmitOptions_13emit_schedule_2__set__(struct 
 /* "halogen/api.pyx":806
  * 
  *     @property
- *     def substitutions(EmitOptions self not None):             # <<<<<<<<<<<<<<
+ *     def substitutions(self):             # <<<<<<<<<<<<<<
  *         return dict(self.__this__.substitutions)
  *     @substitutions.setter
  */
@@ -18324,16 +17721,9 @@ static PyObject *__pyx_pw_7halogen_3api_11EmitOptions_13substitutions_1__get__(P
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__get__ (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 806, __pyx_L1_error)
-  }
   __pyx_r = __pyx_pf_7halogen_3api_11EmitOptions_13substitutions___get__(((struct __pyx_obj_7halogen_3api_EmitOptions *)__pyx_v_self));
 
   /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = NULL;
-  __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -18347,10 +17737,10 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_13substitutions___get__(st
 
   /* "halogen/api.pyx":807
  *     @property
- *     def substitutions(EmitOptions self not None):
+ *     def substitutions(self):
  *         return dict(self.__this__.substitutions)             # <<<<<<<<<<<<<<
  *     @substitutions.setter
- *     def substitutions(EmitOptions self not None, object value not None):
+ *     def substitutions(self, object value not None):
  */
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_1 = __pyx_convert_map_to_py_std_3a__3a_string____std_3a__3a_string(__pyx_v_self->__pyx___this__.substitutions); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 807, __pyx_L1_error)
@@ -18365,7 +17755,7 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_13substitutions___get__(st
   /* "halogen/api.pyx":806
  * 
  *     @property
- *     def substitutions(EmitOptions self not None):             # <<<<<<<<<<<<<<
+ *     def substitutions(self):             # <<<<<<<<<<<<<<
  *         return dict(self.__this__.substitutions)
  *     @substitutions.setter
  */
@@ -18385,7 +17775,7 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_13substitutions___get__(st
 /* "halogen/api.pyx":809
  *         return dict(self.__this__.substitutions)
  *     @substitutions.setter
- *     def substitutions(EmitOptions self not None, object value not None):             # <<<<<<<<<<<<<<
+ *     def substitutions(self, object value not None):             # <<<<<<<<<<<<<<
  *         if not PyMapping_Check(value):
  *             raise ValueError("substitutions must be a mapping type")
  */
@@ -18396,9 +17786,6 @@ static int __pyx_pw_7halogen_3api_11EmitOptions_13substitutions_3__set__(PyObjec
   int __pyx_r;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__set__ (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 809, __pyx_L1_error)
-  }
   if (unlikely(((PyObject *)__pyx_v_value) == Py_None)) {
     PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "value"); __PYX_ERR(0, 809, __pyx_L1_error)
   }
@@ -18433,7 +17820,7 @@ static int __pyx_pf_7halogen_3api_11EmitOptions_13substitutions_2__set__(struct 
 
   /* "halogen/api.pyx":810
  *     @substitutions.setter
- *     def substitutions(EmitOptions self not None, object value not None):
+ *     def substitutions(self, object value not None):
  *         if not PyMapping_Check(value):             # <<<<<<<<<<<<<<
  *             raise ValueError("substitutions must be a mapping type")
  *         self.__this__.substitutions = stringmap_t()
@@ -18442,7 +17829,7 @@ static int __pyx_pf_7halogen_3api_11EmitOptions_13substitutions_2__set__(struct 
   if (unlikely(__pyx_t_1)) {
 
     /* "halogen/api.pyx":811
- *     def substitutions(EmitOptions self not None, object value not None):
+ *     def substitutions(self, object value not None):
  *         if not PyMapping_Check(value):
  *             raise ValueError("substitutions must be a mapping type")             # <<<<<<<<<<<<<<
  *         self.__this__.substitutions = stringmap_t()
@@ -18456,7 +17843,7 @@ static int __pyx_pf_7halogen_3api_11EmitOptions_13substitutions_2__set__(struct 
 
     /* "halogen/api.pyx":810
  *     @substitutions.setter
- *     def substitutions(EmitOptions self not None, object value not None):
+ *     def substitutions(self, object value not None):
  *         if not PyMapping_Check(value):             # <<<<<<<<<<<<<<
  *             raise ValueError("substitutions must be a mapping type")
  *         self.__this__.substitutions = stringmap_t()
@@ -18510,7 +17897,7 @@ static int __pyx_pf_7halogen_3api_11EmitOptions_13substitutions_2__set__(struct 
  *         for k, v in dict(value).items():
  *             self.__this__.substitutions[<string>u8bytes(k)] = <string>u8bytes(v)             # <<<<<<<<<<<<<<
  * 
- *     def get_substitution(EmitOptions self not None, object default):
+ *     def get_substitution(self, object default):
  */
     __pyx_t_7 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_v, 0); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 814, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
@@ -18527,7 +17914,7 @@ static int __pyx_pf_7halogen_3api_11EmitOptions_13substitutions_2__set__(struct 
   /* "halogen/api.pyx":809
  *         return dict(self.__this__.substitutions)
  *     @substitutions.setter
- *     def substitutions(EmitOptions self not None, object value not None):             # <<<<<<<<<<<<<<
+ *     def substitutions(self, object value not None):             # <<<<<<<<<<<<<<
  *         if not PyMapping_Check(value):
  *             raise ValueError("substitutions must be a mapping type")
  */
@@ -18551,7 +17938,7 @@ static int __pyx_pf_7halogen_3api_11EmitOptions_13substitutions_2__set__(struct 
 /* "halogen/api.pyx":816
  *             self.__this__.substitutions[<string>u8bytes(k)] = <string>u8bytes(v)
  * 
- *     def get_substitution(EmitOptions self not None, object default):             # <<<<<<<<<<<<<<
+ *     def get_substitution(self, object default):             # <<<<<<<<<<<<<<
  *         return u8bytes(dict(self.__this__.substitutions).get(u8bytes(default),
  *                                                              u8bytes(default)))
  */
@@ -18563,16 +17950,9 @@ static PyObject *__pyx_pw_7halogen_3api_11EmitOptions_3get_substitution(PyObject
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("get_substitution (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 816, __pyx_L1_error)
-  }
   __pyx_r = __pyx_pf_7halogen_3api_11EmitOptions_2get_substitution(((struct __pyx_obj_7halogen_3api_EmitOptions *)__pyx_v_self), ((PyObject *)__pyx_v_default));
 
   /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = NULL;
-  __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -18588,7 +17968,7 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_2get_substitution(struct _
 
   /* "halogen/api.pyx":817
  * 
- *     def get_substitution(EmitOptions self not None, object default):
+ *     def get_substitution(self, object default):
  *         return u8bytes(dict(self.__this__.substitutions).get(u8bytes(default),             # <<<<<<<<<<<<<<
  *                                                              u8bytes(default)))
  * 
@@ -18603,18 +17983,18 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_2get_substitution(struct _
   __Pyx_GOTREF(__pyx_t_1);
 
   /* "halogen/api.pyx":818
- *     def get_substitution(EmitOptions self not None, object default):
+ *     def get_substitution(self, object default):
  *         return u8bytes(dict(self.__this__.substitutions).get(u8bytes(default),
  *                                                              u8bytes(default)))             # <<<<<<<<<<<<<<
  * 
- *     def compute_outputs_for_target_and_path(EmitOptions self not None,
+ *     def compute_outputs_for_target_and_path(self,
  */
   __pyx_t_3 = __pyx_f_7halogen_3api_u8bytes(__pyx_v_default, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 818, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
 
   /* "halogen/api.pyx":817
  * 
- *     def get_substitution(EmitOptions self not None, object default):
+ *     def get_substitution(self, object default):
  *         return u8bytes(dict(self.__this__.substitutions).get(u8bytes(default),             # <<<<<<<<<<<<<<
  *                                                              u8bytes(default)))
  * 
@@ -18634,7 +18014,7 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_2get_substitution(struct _
   /* "halogen/api.pyx":816
  *             self.__this__.substitutions[<string>u8bytes(k)] = <string>u8bytes(v)
  * 
- *     def get_substitution(EmitOptions self not None, object default):             # <<<<<<<<<<<<<<
+ *     def get_substitution(self, object default):             # <<<<<<<<<<<<<<
  *         return u8bytes(dict(self.__this__.substitutions).get(u8bytes(default),
  *                                                              u8bytes(default)))
  */
@@ -18656,7 +18036,7 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_2get_substitution(struct _
 /* "halogen/api.pyx":820
  *                                                              u8bytes(default)))
  * 
- *     def compute_outputs_for_target_and_path(EmitOptions self not None,             # <<<<<<<<<<<<<<
+ *     def compute_outputs_for_target_and_path(self,             # <<<<<<<<<<<<<<
  *                                             Target target=Target(),
  *                                             object base_path=""):
  */
@@ -18724,9 +18104,6 @@ static PyObject *__pyx_pw_7halogen_3api_11EmitOptions_5compute_outputs_for_targe
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 820, __pyx_L1_error)
-  }
   if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_target), __pyx_ptype_7halogen_3api_Target, 1, "target", 0))) __PYX_ERR(0, 821, __pyx_L1_error)
   __pyx_r = __pyx_pf_7halogen_3api_11EmitOptions_4compute_outputs_for_target_and_path(((struct __pyx_obj_7halogen_3api_EmitOptions *)__pyx_v_self), __pyx_v_target, __pyx_v_base_path);
 
@@ -19382,7 +18759,7 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_4compute_outputs_for_targe
  * 
  *         return output_files             # <<<<<<<<<<<<<<
  * 
- *     def to_string(EmitOptions self not None):
+ *     def to_string(self):
  */
   __Pyx_XDECREF(__pyx_r);
   __Pyx_INCREF(((PyObject *)__pyx_v_output_files));
@@ -19392,7 +18769,7 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_4compute_outputs_for_targe
   /* "halogen/api.pyx":820
  *                                                              u8bytes(default)))
  * 
- *     def compute_outputs_for_target_and_path(EmitOptions self not None,             # <<<<<<<<<<<<<<
+ *     def compute_outputs_for_target_and_path(self,             # <<<<<<<<<<<<<<
  *                                             Target target=Target(),
  *                                             object base_path=""):
  */
@@ -19417,7 +18794,7 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_4compute_outputs_for_targe
 /* "halogen/api.pyx":874
  *         return output_files
  * 
- *     def to_string(EmitOptions self not None):             # <<<<<<<<<<<<<<
+ *     def to_string(self):             # <<<<<<<<<<<<<<
  *         return stringify(self, self.emit_defaults.keys())
  * 
  */
@@ -19429,16 +18806,9 @@ static PyObject *__pyx_pw_7halogen_3api_11EmitOptions_7to_string(PyObject *__pyx
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("to_string (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 874, __pyx_L1_error)
-  }
   __pyx_r = __pyx_pf_7halogen_3api_11EmitOptions_6to_string(((struct __pyx_obj_7halogen_3api_EmitOptions *)__pyx_v_self));
 
   /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = NULL;
-  __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -19456,10 +18826,10 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_6to_string(struct __pyx_ob
 
   /* "halogen/api.pyx":875
  * 
- *     def to_string(EmitOptions self not None):
+ *     def to_string(self):
  *         return stringify(self, self.emit_defaults.keys())             # <<<<<<<<<<<<<<
  * 
- *     def __bytes__(EmitOptions self not None):
+ *     def __bytes__(self):
  */
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_stringify); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 875, __pyx_L1_error)
@@ -19541,7 +18911,7 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_6to_string(struct __pyx_ob
   /* "halogen/api.pyx":874
  *         return output_files
  * 
- *     def to_string(EmitOptions self not None):             # <<<<<<<<<<<<<<
+ *     def to_string(self):             # <<<<<<<<<<<<<<
  *         return stringify(self, self.emit_defaults.keys())
  * 
  */
@@ -19564,7 +18934,7 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_6to_string(struct __pyx_ob
 /* "halogen/api.pyx":877
  *         return stringify(self, self.emit_defaults.keys())
  * 
- *     def __bytes__(EmitOptions self not None):             # <<<<<<<<<<<<<<
+ *     def __bytes__(self):             # <<<<<<<<<<<<<<
  *         return self.to_string()
  * 
  */
@@ -19576,16 +18946,9 @@ static PyObject *__pyx_pw_7halogen_3api_11EmitOptions_9__bytes__(PyObject *__pyx
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__bytes__ (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 877, __pyx_L1_error)
-  }
   __pyx_r = __pyx_pf_7halogen_3api_11EmitOptions_8__bytes__(((struct __pyx_obj_7halogen_3api_EmitOptions *)__pyx_v_self));
 
   /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = NULL;
-  __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -19600,10 +18963,10 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_8__bytes__(struct __pyx_ob
 
   /* "halogen/api.pyx":878
  * 
- *     def __bytes__(EmitOptions self not None):
+ *     def __bytes__(self):
  *         return self.to_string()             # <<<<<<<<<<<<<<
  * 
- *     def __str__(EmitOptions self not None):
+ *     def __str__(self):
  */
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_to_string); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 878, __pyx_L1_error)
@@ -19633,7 +18996,7 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_8__bytes__(struct __pyx_ob
   /* "halogen/api.pyx":877
  *         return stringify(self, self.emit_defaults.keys())
  * 
- *     def __bytes__(EmitOptions self not None):             # <<<<<<<<<<<<<<
+ *     def __bytes__(self):             # <<<<<<<<<<<<<<
  *         return self.to_string()
  * 
  */
@@ -19654,7 +19017,7 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_8__bytes__(struct __pyx_ob
 /* "halogen/api.pyx":880
  *         return self.to_string()
  * 
- *     def __str__(EmitOptions self not None):             # <<<<<<<<<<<<<<
+ *     def __str__(self):             # <<<<<<<<<<<<<<
  *         return self.to_string().decode('UTF-8')
  * 
  */
@@ -19665,16 +19028,9 @@ static PyObject *__pyx_pw_7halogen_3api_11EmitOptions_11__str__(PyObject *__pyx_
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__str__ (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 880, __pyx_L1_error)
-  }
   __pyx_r = __pyx_pf_7halogen_3api_11EmitOptions_10__str__(((struct __pyx_obj_7halogen_3api_EmitOptions *)__pyx_v_self));
 
   /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = NULL;
-  __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -19689,10 +19045,10 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_10__str__(struct __pyx_obj
 
   /* "halogen/api.pyx":881
  * 
- *     def __str__(EmitOptions self not None):
+ *     def __str__(self):
  *         return self.to_string().decode('UTF-8')             # <<<<<<<<<<<<<<
  * 
- *     def __repr__(EmitOptions self not None):
+ *     def __repr__(self):
  */
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_to_string); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 881, __pyx_L1_error)
@@ -19728,7 +19084,7 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_10__str__(struct __pyx_obj
   /* "halogen/api.pyx":880
  *         return self.to_string()
  * 
- *     def __str__(EmitOptions self not None):             # <<<<<<<<<<<<<<
+ *     def __str__(self):             # <<<<<<<<<<<<<<
  *         return self.to_string().decode('UTF-8')
  * 
  */
@@ -19749,7 +19105,7 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_10__str__(struct __pyx_obj
 /* "halogen/api.pyx":883
  *         return self.to_string().decode('UTF-8')
  * 
- *     def __repr__(EmitOptions self not None):             # <<<<<<<<<<<<<<
+ *     def __repr__(self):             # <<<<<<<<<<<<<<
  *         return self.to_string().decode('UTF-8')
  * 
  */
@@ -19760,16 +19116,9 @@ static PyObject *__pyx_pw_7halogen_3api_11EmitOptions_13__repr__(PyObject *__pyx
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__repr__ (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 883, __pyx_L1_error)
-  }
   __pyx_r = __pyx_pf_7halogen_3api_11EmitOptions_12__repr__(((struct __pyx_obj_7halogen_3api_EmitOptions *)__pyx_v_self));
 
   /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = NULL;
-  __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -19784,7 +19133,7 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_12__repr__(struct __pyx_ob
 
   /* "halogen/api.pyx":884
  * 
- *     def __repr__(EmitOptions self not None):
+ *     def __repr__(self):
  *         return self.to_string().decode('UTF-8')             # <<<<<<<<<<<<<<
  * 
  * 
@@ -19823,7 +19172,7 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_12__repr__(struct __pyx_ob
   /* "halogen/api.pyx":883
  *         return self.to_string().decode('UTF-8')
  * 
- *     def __repr__(EmitOptions self not None):             # <<<<<<<<<<<<<<
+ *     def __repr__(self):             # <<<<<<<<<<<<<<
  *         return self.to_string().decode('UTF-8')
  * 
  */
@@ -19953,7 +19302,7 @@ static PyObject *__pyx_pf_7halogen_3api_11EmitOptions_16__setstate_cython__(CYTH
 /* "halogen/api.pyx":896
  *         module_ptr_t __this__
  * 
- *     def __cinit__(Module self not None, *args, **kwargs):             # <<<<<<<<<<<<<<
+ *     def __cinit__(self, *args, **kwargs):             # <<<<<<<<<<<<<<
  *         cdef HalTarget htarg
  *         for arg in args:
  */
@@ -19969,16 +19318,9 @@ static int __pyx_pw_7halogen_3api_6Module_1__cinit__(PyObject *__pyx_v_self, PyO
   if (unlikely(__pyx_kwds) && unlikely(!__Pyx_CheckKeywordStrings(__pyx_kwds, "__cinit__", 1))) return -1;
   __Pyx_INCREF(__pyx_args);
   __pyx_v_args = __pyx_args;
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 896, __pyx_L1_error)
-  }
   __pyx_r = __pyx_pf_7halogen_3api_6Module___cinit__(((struct __pyx_obj_7halogen_3api_Module *)__pyx_v_self), __pyx_v_args, __pyx_v_kwargs);
 
   /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = -1;
-  __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_args);
   __Pyx_XDECREF(__pyx_v_kwargs);
   __Pyx_RefNannyFinishContext();
@@ -20001,7 +19343,7 @@ static int __pyx_pf_7halogen_3api_6Module___cinit__(struct __pyx_obj_7halogen_3a
   __Pyx_RefNannySetupContext("__cinit__", 0);
 
   /* "halogen/api.pyx":898
- *     def __cinit__(Module self not None, *args, **kwargs):
+ *     def __cinit__(self, *args, **kwargs):
  *         cdef HalTarget htarg
  *         for arg in args:             # <<<<<<<<<<<<<<
  *             if type(arg) == type(self):
@@ -20111,7 +19453,7 @@ static int __pyx_pf_7halogen_3api_6Module___cinit__(struct __pyx_obj_7halogen_3a
  *                 if self.__this__.get():
  *                     return             # <<<<<<<<<<<<<<
  * 
- *     def __init__(Module self not None, *args, **kwargs):
+ *     def __init__(self, *args, **kwargs):
  */
         __pyx_r = 0;
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -20136,7 +19478,7 @@ static int __pyx_pf_7halogen_3api_6Module___cinit__(struct __pyx_obj_7halogen_3a
     }
 
     /* "halogen/api.pyx":898
- *     def __cinit__(Module self not None, *args, **kwargs):
+ *     def __cinit__(self, *args, **kwargs):
  *         cdef HalTarget htarg
  *         for arg in args:             # <<<<<<<<<<<<<<
  *             if type(arg) == type(self):
@@ -20148,7 +19490,7 @@ static int __pyx_pf_7halogen_3api_6Module___cinit__(struct __pyx_obj_7halogen_3a
   /* "halogen/api.pyx":896
  *         module_ptr_t __this__
  * 
- *     def __cinit__(Module self not None, *args, **kwargs):             # <<<<<<<<<<<<<<
+ *     def __cinit__(self, *args, **kwargs):             # <<<<<<<<<<<<<<
  *         cdef HalTarget htarg
  *         for arg in args:
  */
@@ -20173,7 +19515,7 @@ static int __pyx_pf_7halogen_3api_6Module___cinit__(struct __pyx_obj_7halogen_3a
 /* "halogen/api.pyx":905
  *                     return
  * 
- *     def __init__(Module self not None, *args, **kwargs):             # <<<<<<<<<<<<<<
+ *     def __init__(self, *args, **kwargs):             # <<<<<<<<<<<<<<
  *         cdef HalTarget htarg
  *         cdef string name
  */
@@ -20191,16 +19533,9 @@ static int __pyx_pw_7halogen_3api_6Module_3__init__(PyObject *__pyx_v_self, PyOb
   __Pyx_GOTREF(__pyx_v_kwargs);
   __Pyx_INCREF(__pyx_args);
   __pyx_v_args = __pyx_args;
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 905, __pyx_L1_error)
-  }
   __pyx_r = __pyx_pf_7halogen_3api_6Module_2__init__(((struct __pyx_obj_7halogen_3api_Module *)__pyx_v_self), __pyx_v_args, __pyx_v_kwargs);
 
   /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = -1;
-  __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_args);
   __Pyx_XDECREF(__pyx_v_kwargs);
   __Pyx_RefNannyFinishContext();
@@ -20312,7 +19647,7 @@ static int __pyx_pf_7halogen_3api_6Module_2__init__(struct __pyx_obj_7halogen_3a
  *             htarg = HalTarget(tstring)
  *             self.__this__.reset(new HalModule(name, <HalTarget>htarg))             # <<<<<<<<<<<<<<
  * 
- *     def __dealloc__(Module self not None):
+ *     def __dealloc__(self):
  */
     __pyx_v_self->__pyx___this__.reset(new Halide::Module(__pyx_v_name, ((Halide::Target)__pyx_v_htarg)));
 
@@ -20328,7 +19663,7 @@ static int __pyx_pf_7halogen_3api_6Module_2__init__(struct __pyx_obj_7halogen_3a
   /* "halogen/api.pyx":905
  *                     return
  * 
- *     def __init__(Module self not None, *args, **kwargs):             # <<<<<<<<<<<<<<
+ *     def __init__(self, *args, **kwargs):             # <<<<<<<<<<<<<<
  *         cdef HalTarget htarg
  *         cdef string name
  */
@@ -20350,7 +19685,7 @@ static int __pyx_pf_7halogen_3api_6Module_2__init__(struct __pyx_obj_7halogen_3a
 /* "halogen/api.pyx":915
  *             self.__this__.reset(new HalModule(name, <HalTarget>htarg))
  * 
- *     def __dealloc__(Module self not None):             # <<<<<<<<<<<<<<
+ *     def __dealloc__(self):             # <<<<<<<<<<<<<<
  *         # Manually calling `reset()` on the internal std::unique_ptr here
  *         # is not necessary, strictly speaking, as it will reset itself upon
  */
@@ -20360,15 +19695,9 @@ static void __pyx_pw_7halogen_3api_6Module_5__dealloc__(PyObject *__pyx_v_self);
 static void __pyx_pw_7halogen_3api_6Module_5__dealloc__(PyObject *__pyx_v_self) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__dealloc__ (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 915, __pyx_L1_error)
-  }
   __pyx_pf_7halogen_3api_6Module_4__dealloc__(((struct __pyx_obj_7halogen_3api_Module *)__pyx_v_self));
 
   /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_L0:;
   __Pyx_RefNannyFinishContext();
 }
 
@@ -20388,7 +19717,7 @@ static void __pyx_pf_7halogen_3api_6Module_4__dealloc__(struct __pyx_obj_7haloge
   /* "halogen/api.pyx":915
  *             self.__this__.reset(new HalModule(name, <HalTarget>htarg))
  * 
- *     def __dealloc__(Module self not None):             # <<<<<<<<<<<<<<
+ *     def __dealloc__(self):             # <<<<<<<<<<<<<<
  *         # Manually calling `reset()` on the internal std::unique_ptr here
  *         # is not necessary, strictly speaking, as it will reset itself upon
  */
@@ -20400,7 +19729,7 @@ static void __pyx_pf_7halogen_3api_6Module_4__dealloc__(struct __pyx_obj_7haloge
 /* "halogen/api.pyx":922
  * 
  *     @property
- *     def name(Module self not None):             # <<<<<<<<<<<<<<
+ *     def name(self):             # <<<<<<<<<<<<<<
  *         return deref(self.__this__).name()
  * 
  */
@@ -20411,16 +19740,9 @@ static PyObject *__pyx_pw_7halogen_3api_6Module_4name_1__get__(PyObject *__pyx_v
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__get__ (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 922, __pyx_L1_error)
-  }
   __pyx_r = __pyx_pf_7halogen_3api_6Module_4name___get__(((struct __pyx_obj_7halogen_3api_Module *)__pyx_v_self));
 
   /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = NULL;
-  __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -20433,7 +19755,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_4name___get__(struct __pyx_obj_7
 
   /* "halogen/api.pyx":923
  *     @property
- *     def name(Module self not None):
+ *     def name(self):
  *         return deref(self.__this__).name()             # <<<<<<<<<<<<<<
  * 
  *     @property
@@ -20448,7 +19770,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_4name___get__(struct __pyx_obj_7
   /* "halogen/api.pyx":922
  * 
  *     @property
- *     def name(Module self not None):             # <<<<<<<<<<<<<<
+ *     def name(self):             # <<<<<<<<<<<<<<
  *         return deref(self.__this__).name()
  * 
  */
@@ -20467,7 +19789,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_4name___get__(struct __pyx_obj_7
 /* "halogen/api.pyx":926
  * 
  *     @property
- *     def auto_schedule(Module self not None):             # <<<<<<<<<<<<<<
+ *     def auto_schedule(self):             # <<<<<<<<<<<<<<
  *         return deref(self.__this__).auto_schedule()
  * 
  */
@@ -20478,16 +19800,9 @@ static PyObject *__pyx_pw_7halogen_3api_6Module_13auto_schedule_1__get__(PyObjec
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__get__ (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 926, __pyx_L1_error)
-  }
   __pyx_r = __pyx_pf_7halogen_3api_6Module_13auto_schedule___get__(((struct __pyx_obj_7halogen_3api_Module *)__pyx_v_self));
 
   /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = NULL;
-  __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -20500,7 +19815,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_13auto_schedule___get__(struct _
 
   /* "halogen/api.pyx":927
  *     @property
- *     def auto_schedule(Module self not None):
+ *     def auto_schedule(self):
  *         return deref(self.__this__).auto_schedule()             # <<<<<<<<<<<<<<
  * 
  *     @property
@@ -20515,7 +19830,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_13auto_schedule___get__(struct _
   /* "halogen/api.pyx":926
  * 
  *     @property
- *     def auto_schedule(Module self not None):             # <<<<<<<<<<<<<<
+ *     def auto_schedule(self):             # <<<<<<<<<<<<<<
  *         return deref(self.__this__).auto_schedule()
  * 
  */
@@ -20534,7 +19849,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_13auto_schedule___get__(struct _
 /* "halogen/api.pyx":930
  * 
  *     @property
- *     def any_strict_float(Module self not None):             # <<<<<<<<<<<<<<
+ *     def any_strict_float(self):             # <<<<<<<<<<<<<<
  *         return bool(deref(self.__this__).any_strict_float())
  * 
  */
@@ -20545,16 +19860,9 @@ static PyObject *__pyx_pw_7halogen_3api_6Module_16any_strict_float_1__get__(PyOb
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__get__ (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 930, __pyx_L1_error)
-  }
   __pyx_r = __pyx_pf_7halogen_3api_6Module_16any_strict_float___get__(((struct __pyx_obj_7halogen_3api_Module *)__pyx_v_self));
 
   /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = NULL;
-  __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -20568,10 +19876,10 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_16any_strict_float___get__(struc
 
   /* "halogen/api.pyx":931
  *     @property
- *     def any_strict_float(Module self not None):
+ *     def any_strict_float(self):
  *         return bool(deref(self.__this__).any_strict_float())             # <<<<<<<<<<<<<<
  * 
- *     def get_target(Module self not None):
+ *     def get_target(self):
  */
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_1 = (*__pyx_v_self->__pyx___this__).any_strict_float();
@@ -20584,7 +19892,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_16any_strict_float___get__(struc
   /* "halogen/api.pyx":930
  * 
  *     @property
- *     def any_strict_float(Module self not None):             # <<<<<<<<<<<<<<
+ *     def any_strict_float(self):             # <<<<<<<<<<<<<<
  *         return bool(deref(self.__this__).any_strict_float())
  * 
  */
@@ -20603,7 +19911,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_16any_strict_float___get__(struc
 /* "halogen/api.pyx":933
  *         return bool(deref(self.__this__).any_strict_float())
  * 
- *     def get_target(Module self not None):             # <<<<<<<<<<<<<<
+ *     def get_target(self):             # <<<<<<<<<<<<<<
  *         out = Target()
  *         out.__this__ = deref(self.__this__).target()
  */
@@ -20615,16 +19923,9 @@ static PyObject *__pyx_pw_7halogen_3api_6Module_7get_target(PyObject *__pyx_v_se
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("get_target (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 933, __pyx_L1_error)
-  }
   __pyx_r = __pyx_pf_7halogen_3api_6Module_6get_target(((struct __pyx_obj_7halogen_3api_Module *)__pyx_v_self));
 
   /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = NULL;
-  __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -20638,7 +19939,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_6get_target(struct __pyx_obj_7ha
 
   /* "halogen/api.pyx":934
  * 
- *     def get_target(Module self not None):
+ *     def get_target(self):
  *         out = Target()             # <<<<<<<<<<<<<<
  *         out.__this__ = deref(self.__this__).target()
  *         return out
@@ -20649,7 +19950,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_6get_target(struct __pyx_obj_7ha
   __pyx_t_1 = 0;
 
   /* "halogen/api.pyx":935
- *     def get_target(Module self not None):
+ *     def get_target(self):
  *         out = Target()
  *         out.__this__ = deref(self.__this__).target()             # <<<<<<<<<<<<<<
  *         return out
@@ -20672,7 +19973,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_6get_target(struct __pyx_obj_7ha
   /* "halogen/api.pyx":933
  *         return bool(deref(self.__this__).any_strict_float())
  * 
- *     def get_target(Module self not None):             # <<<<<<<<<<<<<<
+ *     def get_target(self):             # <<<<<<<<<<<<<<
  *         out = Target()
  *         out.__this__ = deref(self.__this__).target()
  */
@@ -20692,7 +19993,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_6get_target(struct __pyx_obj_7ha
 /* "halogen/api.pyx":939
  * 
  *     @property
- *     def target(Module self not None):             # <<<<<<<<<<<<<<
+ *     def target(self):             # <<<<<<<<<<<<<<
  *         return self.get_target()
  * 
  */
@@ -20703,16 +20004,9 @@ static PyObject *__pyx_pw_7halogen_3api_6Module_6target_1__get__(PyObject *__pyx
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__get__ (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 939, __pyx_L1_error)
-  }
   __pyx_r = __pyx_pf_7halogen_3api_6Module_6target___get__(((struct __pyx_obj_7halogen_3api_Module *)__pyx_v_self));
 
   /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = NULL;
-  __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -20727,7 +20021,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_6target___get__(struct __pyx_obj
 
   /* "halogen/api.pyx":940
  *     @property
- *     def target(Module self not None):
+ *     def target(self):
  *         return self.get_target()             # <<<<<<<<<<<<<<
  * 
  *     @staticmethod
@@ -20760,7 +20054,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_6target___get__(struct __pyx_obj
   /* "halogen/api.pyx":939
  * 
  *     @property
- *     def target(Module self not None):             # <<<<<<<<<<<<<<
+ *     def target(self):             # <<<<<<<<<<<<<<
  *         return self.get_target()
  * 
  */
@@ -20995,7 +20289,7 @@ static __pyx_t_7halogen_3ext_6halide_6module_modulevec_t __pyx_f_7halogen_3api_6
  *         cdef modulevec_t out = deref(self.__this__).submodules()
  *         return out             # <<<<<<<<<<<<<<
  * 
- *     def submodules(Module self not None):
+ *     def submodules(self):
  */
   __pyx_r = __pyx_v_out;
   goto __pyx_L0;
@@ -21016,7 +20310,7 @@ static __pyx_t_7halogen_3ext_6halide_6module_modulevec_t __pyx_f_7halogen_3api_6
 /* "halogen/api.pyx":961
  *         return out
  * 
- *     def submodules(Module self not None):             # <<<<<<<<<<<<<<
+ *     def submodules(self):             # <<<<<<<<<<<<<<
  *         cdef modulevec_t modulevec = deref(self.__this__).submodules()
  *         out = []
  */
@@ -21028,16 +20322,9 @@ static PyObject *__pyx_pw_7halogen_3api_6Module_9submodules(PyObject *__pyx_v_se
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("submodules (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 961, __pyx_L1_error)
-  }
   __pyx_r = __pyx_pf_7halogen_3api_6Module_8submodules(((struct __pyx_obj_7halogen_3api_Module *)__pyx_v_self));
 
   /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = NULL;
-  __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -21055,7 +20342,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_8submodules(struct __pyx_obj_7ha
 
   /* "halogen/api.pyx":962
  * 
- *     def submodules(Module self not None):
+ *     def submodules(self):
  *         cdef modulevec_t modulevec = deref(self.__this__).submodules()             # <<<<<<<<<<<<<<
  *         out = []
  *         it = modulevec.begin()
@@ -21063,7 +20350,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_8submodules(struct __pyx_obj_7ha
   __pyx_v_modulevec = (*__pyx_v_self->__pyx___this__).submodules();
 
   /* "halogen/api.pyx":963
- *     def submodules(Module self not None):
+ *     def submodules(self):
  *         cdef modulevec_t modulevec = deref(self.__this__).submodules()
  *         out = []             # <<<<<<<<<<<<<<
  *         it = modulevec.begin()
@@ -21121,7 +20408,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_8submodules(struct __pyx_obj_7ha
  *             incr(it)
  *         return tuple(out)             # <<<<<<<<<<<<<<
  * 
- *     def append(Module self not None, other):
+ *     def append(self, other not None):
  */
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_1 = PyList_AsTuple(__pyx_v_out); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 968, __pyx_L1_error)
@@ -21133,7 +20420,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_8submodules(struct __pyx_obj_7ha
   /* "halogen/api.pyx":961
  *         return out
  * 
- *     def submodules(Module self not None):             # <<<<<<<<<<<<<<
+ *     def submodules(self):             # <<<<<<<<<<<<<<
  *         cdef modulevec_t modulevec = deref(self.__this__).submodules()
  *         out = []
  */
@@ -21153,7 +20440,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_8submodules(struct __pyx_obj_7ha
 /* "halogen/api.pyx":970
  *         return tuple(out)
  * 
- *     def append(Module self not None, other):             # <<<<<<<<<<<<<<
+ *     def append(self, other not None):             # <<<<<<<<<<<<<<
  *         # Eventually thisll cover the other Halide::Module::append() overloads:
  *         # Halide::Buffer<void>, Halide::LoweredFunc, and Halide::ExternalCode --
  */
@@ -21165,8 +20452,8 @@ static PyObject *__pyx_pw_7halogen_3api_6Module_11append(PyObject *__pyx_v_self,
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("append (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 970, __pyx_L1_error)
+  if (unlikely(((PyObject *)__pyx_v_other) == Py_None)) {
+    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "other"); __PYX_ERR(0, 970, __pyx_L1_error)
   }
   __pyx_r = __pyx_pf_7halogen_3api_6Module_10append(((struct __pyx_obj_7halogen_3api_Module *)__pyx_v_self), ((PyObject *)__pyx_v_other));
 
@@ -21232,7 +20519,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_10append(struct __pyx_obj_7halog
   /* "halogen/api.pyx":970
  *         return tuple(out)
  * 
- *     def append(Module self not None, other):             # <<<<<<<<<<<<<<
+ *     def append(self, other not None):             # <<<<<<<<<<<<<<
  *         # Eventually thisll cover the other Halide::Module::append() overloads:
  *         # Halide::Buffer<void>, Halide::LoweredFunc, and Halide::ExternalCode --
  */
@@ -21266,7 +20553,7 @@ static void __pyx_f_7halogen_3api_6Module_replace_instance(struct __pyx_obj_7hal
  *     cdef void replace_instance(Module self, HalModule&& m) nogil:
  *         self.__this__.reset(new HalModule(m))             # <<<<<<<<<<<<<<
  * 
- *     def compile(Module self not None, Outputs outputs not None):
+ *     def compile(self, Outputs outputs not None):
  */
   __pyx_v_self->__pyx___this__.reset(new Halide::Module(__pyx_v_m));
 
@@ -21284,7 +20571,7 @@ static void __pyx_f_7halogen_3api_6Module_replace_instance(struct __pyx_obj_7hal
 /* "halogen/api.pyx":982
  *         self.__this__.reset(new HalModule(m))
  * 
- *     def compile(Module self not None, Outputs outputs not None):             # <<<<<<<<<<<<<<
+ *     def compile(self, Outputs outputs not None):             # <<<<<<<<<<<<<<
  *         cdef HalModule* this = self.__this__.get()
  *         cdef HalOutputs outs = <HalOutputs>outputs.__this__
  */
@@ -21296,9 +20583,6 @@ static PyObject *__pyx_pw_7halogen_3api_6Module_13compile(PyObject *__pyx_v_self
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("compile (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 982, __pyx_L1_error)
-  }
   if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_outputs), __pyx_ptype_7halogen_3api_Outputs, 0, "outputs", 0))) __PYX_ERR(0, 982, __pyx_L1_error)
   __pyx_r = __pyx_pf_7halogen_3api_6Module_12compile(((struct __pyx_obj_7halogen_3api_Module *)__pyx_v_self), ((struct __pyx_obj_7halogen_3api_Outputs *)__pyx_v_outputs));
 
@@ -21320,7 +20604,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_12compile(struct __pyx_obj_7halo
 
   /* "halogen/api.pyx":983
  * 
- *     def compile(Module self not None, Outputs outputs not None):
+ *     def compile(self, Outputs outputs not None):
  *         cdef HalModule* this = self.__this__.get()             # <<<<<<<<<<<<<<
  *         cdef HalOutputs outs = <HalOutputs>outputs.__this__
  *         with nogil:
@@ -21328,7 +20612,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_12compile(struct __pyx_obj_7halo
   __pyx_v_this = __pyx_v_self->__pyx___this__.get();
 
   /* "halogen/api.pyx":984
- *     def compile(Module self not None, Outputs outputs not None):
+ *     def compile(self, Outputs outputs not None):
  *         cdef HalModule* this = self.__this__.get()
  *         cdef HalOutputs outs = <HalOutputs>outputs.__this__             # <<<<<<<<<<<<<<
  *         with nogil:
@@ -21385,7 +20669,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_12compile(struct __pyx_obj_7halo
  *             this.compile(outs)
  *         return self             # <<<<<<<<<<<<<<
  * 
- *     def resolve_submodules(Module self not None):
+ *     def resolve_submodules(self):
  */
   __Pyx_XDECREF(__pyx_r);
   __Pyx_INCREF(((PyObject *)__pyx_v_self));
@@ -21395,7 +20679,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_12compile(struct __pyx_obj_7halo
   /* "halogen/api.pyx":982
  *         self.__this__.reset(new HalModule(m))
  * 
- *     def compile(Module self not None, Outputs outputs not None):             # <<<<<<<<<<<<<<
+ *     def compile(self, Outputs outputs not None):             # <<<<<<<<<<<<<<
  *         cdef HalModule* this = self.__this__.get()
  *         cdef HalOutputs outs = <HalOutputs>outputs.__this__
  */
@@ -21410,7 +20694,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_12compile(struct __pyx_obj_7halo
 /* "halogen/api.pyx":989
  *         return self
  * 
- *     def resolve_submodules(Module self not None):             # <<<<<<<<<<<<<<
+ *     def resolve_submodules(self):             # <<<<<<<<<<<<<<
  *         return Module.with_instance(
  *             deref(self.__this__).resolve_submodules())
  */
@@ -21422,16 +20706,9 @@ static PyObject *__pyx_pw_7halogen_3api_6Module_15resolve_submodules(PyObject *_
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("resolve_submodules (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 989, __pyx_L1_error)
-  }
   __pyx_r = __pyx_pf_7halogen_3api_6Module_14resolve_submodules(((struct __pyx_obj_7halogen_3api_Module *)__pyx_v_self));
 
   /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = NULL;
-  __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -21444,7 +20721,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_14resolve_submodules(struct __py
 
   /* "halogen/api.pyx":990
  * 
- *     def resolve_submodules(Module self not None):
+ *     def resolve_submodules(self):
  *         return Module.with_instance(             # <<<<<<<<<<<<<<
  *             deref(self.__this__).resolve_submodules())
  * 
@@ -21452,11 +20729,11 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_14resolve_submodules(struct __py
   __Pyx_XDECREF(__pyx_r);
 
   /* "halogen/api.pyx":991
- *     def resolve_submodules(Module self not None):
+ *     def resolve_submodules(self):
  *         return Module.with_instance(
  *             deref(self.__this__).resolve_submodules())             # <<<<<<<<<<<<<<
  * 
- *     def get_metadata(Module self not None):
+ *     def get_metadata(self):
  */
   __pyx_t_1 = ((PyObject *)__pyx_f_7halogen_3api_6Module_with_instance((*__pyx_v_self->__pyx___this__).resolve_submodules())); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 990, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
@@ -21467,7 +20744,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_14resolve_submodules(struct __py
   /* "halogen/api.pyx":989
  *         return self
  * 
- *     def resolve_submodules(Module self not None):             # <<<<<<<<<<<<<<
+ *     def resolve_submodules(self):             # <<<<<<<<<<<<<<
  *         return Module.with_instance(
  *             deref(self.__this__).resolve_submodules())
  */
@@ -21486,7 +20763,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_14resolve_submodules(struct __py
 /* "halogen/api.pyx":993
  *             deref(self.__this__).resolve_submodules())
  * 
- *     def get_metadata(Module self not None):             # <<<<<<<<<<<<<<
+ *     def get_metadata(self):             # <<<<<<<<<<<<<<
  *         cdef stringmap_t metadata_map = deref(self.__this__).get_metadata_name_map()
  *         return dict(metadata_map)
  */
@@ -21498,16 +20775,9 @@ static PyObject *__pyx_pw_7halogen_3api_6Module_17get_metadata(PyObject *__pyx_v
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("get_metadata (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 993, __pyx_L1_error)
-  }
   __pyx_r = __pyx_pf_7halogen_3api_6Module_16get_metadata(((struct __pyx_obj_7halogen_3api_Module *)__pyx_v_self));
 
   /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = NULL;
-  __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -21522,7 +20792,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_16get_metadata(struct __pyx_obj_
 
   /* "halogen/api.pyx":994
  * 
- *     def get_metadata(Module self not None):
+ *     def get_metadata(self):
  *         cdef stringmap_t metadata_map = deref(self.__this__).get_metadata_name_map()             # <<<<<<<<<<<<<<
  *         return dict(metadata_map)
  * 
@@ -21530,11 +20800,11 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_16get_metadata(struct __pyx_obj_
   __pyx_v_metadata_map = (*__pyx_v_self->__pyx___this__).get_metadata_name_map();
 
   /* "halogen/api.pyx":995
- *     def get_metadata(Module self not None):
+ *     def get_metadata(self):
  *         cdef stringmap_t metadata_map = deref(self.__this__).get_metadata_name_map()
  *         return dict(metadata_map)             # <<<<<<<<<<<<<<
  * 
- *     def remap_metadatum_by_name(Module self not None, object name, object to_name):
+ *     def remap_metadatum_by_name(self, object name, object to_name):
  */
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_1 = __pyx_convert_map_to_py_std_3a__3a_string____std_3a__3a_string(__pyx_v_metadata_map); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 995, __pyx_L1_error)
@@ -21549,7 +20819,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_16get_metadata(struct __pyx_obj_
   /* "halogen/api.pyx":993
  *             deref(self.__this__).resolve_submodules())
  * 
- *     def get_metadata(Module self not None):             # <<<<<<<<<<<<<<
+ *     def get_metadata(self):             # <<<<<<<<<<<<<<
  *         cdef stringmap_t metadata_map = deref(self.__this__).get_metadata_name_map()
  *         return dict(metadata_map)
  */
@@ -21569,7 +20839,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_16get_metadata(struct __pyx_obj_
 /* "halogen/api.pyx":997
  *         return dict(metadata_map)
  * 
- *     def remap_metadatum_by_name(Module self not None, object name, object to_name):             # <<<<<<<<<<<<<<
+ *     def remap_metadatum_by_name(self, object name, object to_name):             # <<<<<<<<<<<<<<
  *         cdef string name_string = <string>u8bytes(name)
  *         cdef string to_name_string = <string>u8bytes(to_name)
  */
@@ -21629,16 +20899,9 @@ static PyObject *__pyx_pw_7halogen_3api_6Module_19remap_metadatum_by_name(PyObje
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 997, __pyx_L1_error)
-  }
   __pyx_r = __pyx_pf_7halogen_3api_6Module_18remap_metadatum_by_name(((struct __pyx_obj_7halogen_3api_Module *)__pyx_v_self), __pyx_v_name, __pyx_v_to_name);
 
   /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = NULL;
-  __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -21656,7 +20919,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_18remap_metadatum_by_name(struct
 
   /* "halogen/api.pyx":998
  * 
- *     def remap_metadatum_by_name(Module self not None, object name, object to_name):
+ *     def remap_metadatum_by_name(self, object name, object to_name):
  *         cdef string name_string = <string>u8bytes(name)             # <<<<<<<<<<<<<<
  *         cdef string to_name_string = <string>u8bytes(to_name)
  *         deref(self.__this__).remap_metadata_name(name_string,
@@ -21668,7 +20931,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_18remap_metadatum_by_name(struct
   __pyx_v_name_string = ((std::string)__pyx_t_2);
 
   /* "halogen/api.pyx":999
- *     def remap_metadatum_by_name(Module self not None, object name, object to_name):
+ *     def remap_metadatum_by_name(self, object name, object to_name):
  *         cdef string name_string = <string>u8bytes(name)
  *         cdef string to_name_string = <string>u8bytes(to_name)             # <<<<<<<<<<<<<<
  *         deref(self.__this__).remap_metadata_name(name_string,
@@ -21703,7 +20966,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_18remap_metadatum_by_name(struct
  *         cdef stringmap_t metadata_map = deref(self.__this__).get_metadata_name_map()
  *         return dict(metadata_map)             # <<<<<<<<<<<<<<
  * 
- *     def to_string(Module self not None):
+ *     def to_string(self):
  */
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_1 = __pyx_convert_map_to_py_std_3a__3a_string____std_3a__3a_string(__pyx_v_metadata_map); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1003, __pyx_L1_error)
@@ -21718,7 +20981,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_18remap_metadatum_by_name(struct
   /* "halogen/api.pyx":997
  *         return dict(metadata_map)
  * 
- *     def remap_metadatum_by_name(Module self not None, object name, object to_name):             # <<<<<<<<<<<<<<
+ *     def remap_metadatum_by_name(self, object name, object to_name):             # <<<<<<<<<<<<<<
  *         cdef string name_string = <string>u8bytes(name)
  *         cdef string to_name_string = <string>u8bytes(to_name)
  */
@@ -21738,7 +21001,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_18remap_metadatum_by_name(struct
 /* "halogen/api.pyx":1005
  *         return dict(metadata_map)
  * 
- *     def to_string(Module self not None):             # <<<<<<<<<<<<<<
+ *     def to_string(self):             # <<<<<<<<<<<<<<
  *         cdef string name = <string>deref(self.__this__).name()
  *         cdef string targ = <string>deref(self.__this__).target().to_string()
  */
@@ -21750,16 +21013,9 @@ static PyObject *__pyx_pw_7halogen_3api_6Module_21to_string(PyObject *__pyx_v_se
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("to_string (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 1005, __pyx_L1_error)
-  }
   __pyx_r = __pyx_pf_7halogen_3api_6Module_20to_string(((struct __pyx_obj_7halogen_3api_Module *)__pyx_v_self));
 
   /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = NULL;
-  __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -22059,7 +21315,7 @@ static PyObject *__pyx_gb_7halogen_3api_6Module_9to_string_5generator1(__pyx_Cor
 /* "halogen/api.pyx":1005
  *         return dict(metadata_map)
  * 
- *     def to_string(Module self not None):             # <<<<<<<<<<<<<<
+ *     def to_string(self):             # <<<<<<<<<<<<<<
  *         cdef string name = <string>deref(self.__this__).name()
  *         cdef string targ = <string>deref(self.__this__).target().to_string()
  */
@@ -22094,7 +21350,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_20to_string(struct __pyx_obj_7ha
 
   /* "halogen/api.pyx":1006
  * 
- *     def to_string(Module self not None):
+ *     def to_string(self):
  *         cdef string name = <string>deref(self.__this__).name()             # <<<<<<<<<<<<<<
  *         cdef string targ = <string>deref(self.__this__).target().to_string()
  *         cdef string auto_schedule = <string>deref(self.__this__).auto_schedule()
@@ -22102,7 +21358,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_20to_string(struct __pyx_obj_7ha
   __pyx_v_name = ((std::string)(*__pyx_v_self->__pyx___this__).name());
 
   /* "halogen/api.pyx":1007
- *     def to_string(Module self not None):
+ *     def to_string(self):
  *         cdef string name = <string>deref(self.__this__).name()
  *         cdef string targ = <string>deref(self.__this__).target().to_string()             # <<<<<<<<<<<<<<
  *         cdef string auto_schedule = <string>deref(self.__this__).auto_schedule()
@@ -22403,7 +21659,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_20to_string(struct __pyx_obj_7ha
  *                                  b", ".join(field_value.strip() for field_value in field_values),
  *                                  u8bytes(hex(id(self))))             # <<<<<<<<<<<<<<
  * 
- *     def __bytes__(Module self not None):
+ *     def __bytes__(self):
  */
   __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_builtin_id, ((PyObject *)__pyx_v_self)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1028, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
@@ -22442,7 +21698,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_20to_string(struct __pyx_obj_7ha
   /* "halogen/api.pyx":1005
  *         return dict(metadata_map)
  * 
- *     def to_string(Module self not None):             # <<<<<<<<<<<<<<
+ *     def to_string(self):             # <<<<<<<<<<<<<<
  *         cdef string name = <string>deref(self.__this__).name()
  *         cdef string targ = <string>deref(self.__this__).target().to_string()
  */
@@ -22467,7 +21723,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_20to_string(struct __pyx_obj_7ha
 /* "halogen/api.pyx":1030
  *                                  u8bytes(hex(id(self))))
  * 
- *     def __bytes__(Module self not None):             # <<<<<<<<<<<<<<
+ *     def __bytes__(self):             # <<<<<<<<<<<<<<
  *         return self.to_string()
  * 
  */
@@ -22479,16 +21735,9 @@ static PyObject *__pyx_pw_7halogen_3api_6Module_23__bytes__(PyObject *__pyx_v_se
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__bytes__ (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 1030, __pyx_L1_error)
-  }
   __pyx_r = __pyx_pf_7halogen_3api_6Module_22__bytes__(((struct __pyx_obj_7halogen_3api_Module *)__pyx_v_self));
 
   /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = NULL;
-  __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -22503,10 +21752,10 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_22__bytes__(struct __pyx_obj_7ha
 
   /* "halogen/api.pyx":1031
  * 
- *     def __bytes__(Module self not None):
+ *     def __bytes__(self):
  *         return self.to_string()             # <<<<<<<<<<<<<<
  * 
- *     def __str__(Module self not None):
+ *     def __str__(self):
  */
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_to_string); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1031, __pyx_L1_error)
@@ -22536,7 +21785,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_22__bytes__(struct __pyx_obj_7ha
   /* "halogen/api.pyx":1030
  *                                  u8bytes(hex(id(self))))
  * 
- *     def __bytes__(Module self not None):             # <<<<<<<<<<<<<<
+ *     def __bytes__(self):             # <<<<<<<<<<<<<<
  *         return self.to_string()
  * 
  */
@@ -22557,7 +21806,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_22__bytes__(struct __pyx_obj_7ha
 /* "halogen/api.pyx":1033
  *         return self.to_string()
  * 
- *     def __str__(Module self not None):             # <<<<<<<<<<<<<<
+ *     def __str__(self):             # <<<<<<<<<<<<<<
  *         return self.to_string().decode('UTF-8')
  * 
  */
@@ -22568,16 +21817,9 @@ static PyObject *__pyx_pw_7halogen_3api_6Module_25__str__(PyObject *__pyx_v_self
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__str__ (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 1033, __pyx_L1_error)
-  }
   __pyx_r = __pyx_pf_7halogen_3api_6Module_24__str__(((struct __pyx_obj_7halogen_3api_Module *)__pyx_v_self));
 
   /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = NULL;
-  __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -22592,10 +21834,10 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_24__str__(struct __pyx_obj_7halo
 
   /* "halogen/api.pyx":1034
  * 
- *     def __str__(Module self not None):
+ *     def __str__(self):
  *         return self.to_string().decode('UTF-8')             # <<<<<<<<<<<<<<
  * 
- *     def __repr__(Module self not None):
+ *     def __repr__(self):
  */
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_to_string); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1034, __pyx_L1_error)
@@ -22631,7 +21873,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_24__str__(struct __pyx_obj_7halo
   /* "halogen/api.pyx":1033
  *         return self.to_string()
  * 
- *     def __str__(Module self not None):             # <<<<<<<<<<<<<<
+ *     def __str__(self):             # <<<<<<<<<<<<<<
  *         return self.to_string().decode('UTF-8')
  * 
  */
@@ -22652,7 +21894,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_24__str__(struct __pyx_obj_7halo
 /* "halogen/api.pyx":1036
  *         return self.to_string().decode('UTF-8')
  * 
- *     def __repr__(Module self not None):             # <<<<<<<<<<<<<<
+ *     def __repr__(self):             # <<<<<<<<<<<<<<
  *         return self.to_string().decode('UTF-8')
  * 
  */
@@ -22663,16 +21905,9 @@ static PyObject *__pyx_pw_7halogen_3api_6Module_27__repr__(PyObject *__pyx_v_sel
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__repr__ (wrapper)", 0);
-  if (unlikely(((PyObject *)__pyx_v_self) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "self"); __PYX_ERR(0, 1036, __pyx_L1_error)
-  }
   __pyx_r = __pyx_pf_7halogen_3api_6Module_26__repr__(((struct __pyx_obj_7halogen_3api_Module *)__pyx_v_self));
 
   /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = NULL;
-  __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -22687,7 +21922,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_26__repr__(struct __pyx_obj_7hal
 
   /* "halogen/api.pyx":1037
  * 
- *     def __repr__(Module self not None):
+ *     def __repr__(self):
  *         return self.to_string().decode('UTF-8')             # <<<<<<<<<<<<<<
  * 
  * 
@@ -22726,7 +21961,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_26__repr__(struct __pyx_obj_7hal
   /* "halogen/api.pyx":1036
  *         return self.to_string().decode('UTF-8')
  * 
- *     def __repr__(Module self not None):             # <<<<<<<<<<<<<<
+ *     def __repr__(self):             # <<<<<<<<<<<<<<
  *         return self.to_string().decode('UTF-8')
  * 
  */
@@ -28037,7 +27272,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GIVEREF(__pyx_tuple__4);
 
   /* "halogen/api.pyx":374
- *     def includes_halide_runtime(Target self not None):
+ *     def includes_halide_runtime(self):
  *         try:
  *             return self.to_string().decode('UTF-8').lower().index('no_runtime') < 0             # <<<<<<<<<<<<<<
  *         except ValueError:
@@ -28052,10 +27287,10 @@ static int __Pyx_InitCachedConstants(void) {
 
   /* "halogen/api.pyx":400
  * 
- *     def __repr__(Target self not None):
+ *     def __repr__(self):
  *         return stringify(self, ('os', 'arch', 'bits')).decode('UTF-8')             # <<<<<<<<<<<<<<
  * 
- *     def __richcmp__(Target self not None,
+ *     def __richcmp__(self,
  */
   __pyx_tuple__7 = PyTuple_Pack(3, __pyx_n_s_os, __pyx_n_s_arch, __pyx_n_s_bits); if (unlikely(!__pyx_tuple__7)) __PYX_ERR(0, 400, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__7);
@@ -28085,7 +27320,7 @@ static int __Pyx_InitCachedConstants(void) {
 
   /* "halogen/api.pyx":639
  * 
- *     def to_string(Outputs self not None):
+ *     def to_string(self):
  *         return stringify(self, ("object_name", "assembly_name", "bitcode_name",             # <<<<<<<<<<<<<<
  *                                 "llvm_assembly_name", "c_header_name", "c_source_name",
  *                                 "python_extension_name", "stmt_name", "stmt_html_name",
@@ -28096,10 +27331,10 @@ static int __Pyx_InitCachedConstants(void) {
 
   /* "halogen/api.pyx":648
  * 
- *     def __str__(Outputs self not None):
+ *     def __str__(self):
  *         return self.to_string().decode('UTF-8')             # <<<<<<<<<<<<<<
  * 
- *     def __repr__(Outputs self not None):
+ *     def __repr__(self):
  */
   __pyx_tuple__12 = PyTuple_Pack(1, __pyx_kp_s_UTF_8); if (unlikely(!__pyx_tuple__12)) __PYX_ERR(0, 648, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__12);
@@ -28107,7 +27342,7 @@ static int __Pyx_InitCachedConstants(void) {
 
   /* "halogen/api.pyx":651
  * 
- *     def __repr__(Outputs self not None):
+ *     def __repr__(self):
  *         return self.to_string().decode('UTF-8')             # <<<<<<<<<<<<<<
  * 
  * 
@@ -28147,7 +27382,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GIVEREF(__pyx_tuple__16);
 
   /* "halogen/api.pyx":811
- *     def substitutions(EmitOptions self not None, object value not None):
+ *     def substitutions(self, object value not None):
  *         if not PyMapping_Check(value):
  *             raise ValueError("substitutions must be a mapping type")             # <<<<<<<<<<<<<<
  *         self.__this__.substitutions = stringmap_t()
@@ -28291,10 +27526,10 @@ static int __Pyx_InitCachedConstants(void) {
 
   /* "halogen/api.pyx":881
  * 
- *     def __str__(EmitOptions self not None):
+ *     def __str__(self):
  *         return self.to_string().decode('UTF-8')             # <<<<<<<<<<<<<<
  * 
- *     def __repr__(EmitOptions self not None):
+ *     def __repr__(self):
  */
   __pyx_tuple__31 = PyTuple_Pack(1, __pyx_kp_s_UTF_8); if (unlikely(!__pyx_tuple__31)) __PYX_ERR(0, 881, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__31);
@@ -28302,7 +27537,7 @@ static int __Pyx_InitCachedConstants(void) {
 
   /* "halogen/api.pyx":884
  * 
- *     def __repr__(EmitOptions self not None):
+ *     def __repr__(self):
  *         return self.to_string().decode('UTF-8')             # <<<<<<<<<<<<<<
  * 
  * 
@@ -28332,10 +27567,10 @@ static int __Pyx_InitCachedConstants(void) {
 
   /* "halogen/api.pyx":1034
  * 
- *     def __str__(Module self not None):
+ *     def __str__(self):
  *         return self.to_string().decode('UTF-8')             # <<<<<<<<<<<<<<
  * 
- *     def __repr__(Module self not None):
+ *     def __repr__(self):
  */
   __pyx_tuple__35 = PyTuple_Pack(1, __pyx_kp_s_UTF_8); if (unlikely(!__pyx_tuple__35)) __PYX_ERR(0, 1034, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__35);
@@ -28343,7 +27578,7 @@ static int __Pyx_InitCachedConstants(void) {
 
   /* "halogen/api.pyx":1037
  * 
- *     def __repr__(Module self not None):
+ *     def __repr__(self):
  *         return self.to_string().decode('UTF-8')             # <<<<<<<<<<<<<<
  * 
  * 
@@ -29320,7 +28555,7 @@ if (!__Pyx_RefNanny) {
   /* "halogen/api.pyx":441
  * 
  *     @classmethod
- *     def check(cls not None, instance):             # <<<<<<<<<<<<<<
+ *     def check(cls, instance):             # <<<<<<<<<<<<<<
  *         return getattr(instance, '__class__', None) == cls
  * 
  */
@@ -29331,7 +28566,7 @@ if (!__Pyx_RefNanny) {
  *         HalOutputs __this__
  * 
  *     @classmethod             # <<<<<<<<<<<<<<
- *     def check(cls not None, instance):
+ *     def check(cls, instance):
  *         return getattr(instance, '__class__', None) == cls
  */
   __pyx_t_1 = __Pyx_Method_ClassMethod(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 440, __pyx_L1_error)
@@ -29459,7 +28694,7 @@ if (!__Pyx_RefNanny) {
 
   /* "halogen/api.pyx":821
  * 
- *     def compute_outputs_for_target_and_path(EmitOptions self not None,
+ *     def compute_outputs_for_target_and_path(self,
  *                                             Target target=Target(),             # <<<<<<<<<<<<<<
  *                                             object base_path=""):
  *         """ A reimplementation of `compute_outputs()`, private to Halides Generator.cpp """

@@ -215,13 +215,13 @@ class Generators(contextlib.AbstractContextManager):
             'all' : valid_emits
     }
     
-    def __init__(self, conf, destination, directory=None, intermediate=None,
+    def __init__(self, conf, directory, destination=None, intermediate=None,
                                                           suffix="cpp",
                                                           prefix="yodogg",
                                                           use_cdb=True,
-                                          do_shared=True, do_static=True,
-                                          do_preload=True,
-                                        **kwargs):
+                                                          do_shared=True, do_static=True,
+                                                          do_preload=True,
+                                                        **kwargs):
         if not conf:
             raise CompilerError("A config-ish instance is required")
         if not suffix:
@@ -237,14 +237,14 @@ class Generators(contextlib.AbstractContextManager):
         self.do_static = do_static
         self.do_preload = do_shared and do_preload
         self.use_cdb = use_cdb
-        self.destination = Directory(pth=destination)
-        if not self.destination.exists:
-            raise CompilerError(f"Non-existant generator destination: {self.destination}")
-        self.library = self.destination.subpath(f"{self.prefix}{SHARED_LIBRARY_SUFFIX}")
-        self.archive = self.destination.subpath(f"{self.prefix}{STATIC_LIBRARY_SUFFIX}")
         self.directory = Directory(pth=directory)
         if not self.directory.exists:
             raise CompilerError(f"Non-existant generator source directory: {self.directory}")
+        self.destination = Directory(pth=destination)
+        if not self.destination.exists:
+            self.destination.makedirs()
+        self.library = self.destination.subpath(f"{self.prefix}{SHARED_LIBRARY_SUFFIX}")
+        self.archive = self.destination.subpath(f"{self.prefix}{STATIC_LIBRARY_SUFFIX}")
         self.intermediate = Intermediate(pth=intermediate)
         if not self.intermediate.exists:
             self.intermediate.makedirs()
