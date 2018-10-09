@@ -8,7 +8,7 @@ import json
 import os
 import six
 
-from abc import ABC, ABCMeta, abstractmethod
+from abc import ABC, ABCMeta, abstractmethod as abstract
 from errors import CDBError
 from filesystem import rm_rf, TemporaryName, Directory
 from utils import stringify, u8bytes, u8str
@@ -21,32 +21,32 @@ __dir__ = lambda: list(__all__)
 SubBaseAncestor = six.with_metaclass(ABCMeta, ABC)
 class CDBSubBase(SubBaseAncestor):
     
-    @abstractmethod
+    @abstract
     def push(self, filepth, command, directory=None,
                                      destination=None): pass
     
-    @abstractmethod
+    @abstract
     def __len__(self): pass
     
-    @abstractmethod
+    @abstract
     def __getitem__(self, key): pass
     
-    @abstractmethod
+    @abstract
     def to_string(self): pass
     
-    @abstractmethod
+    @abstract
     def __repr__(self): pass
     
-    @abstractmethod
+    @abstract
     def __str__(self): pass
     
-    @abstractmethod
+    @abstract
     def __bytes__(self): pass
     
-    @abstractmethod
+    @abstract
     def __unicode__(self): pass
     
-    @abstractmethod
+    @abstract
     def __bool__(self): pass
 
 
