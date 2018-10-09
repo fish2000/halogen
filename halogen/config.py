@@ -1212,7 +1212,7 @@ class ConfigUnion(ConfigBase, tx.Collection[ConfigType]):
                                                             'c++2a', 'gnu++2a'))
     
     @classmethod
-    def fake_optimization_flags(cls, flags: AnySet) -> OCDFrozenSet[str]:
+    def fake_optimization_flags(cls, flags: AnySet[str]) -> OCDFrozenSet[str]:
         """ Prune out fake optimization flags e.g. -O8, -O785 etc.
             N.B. Consider renaming this function to `false_flags`, 
             in order to search-engine optimize for the Google searches
@@ -1225,7 +1225,7 @@ class ConfigUnion(ConfigBase, tx.Collection[ConfigType]):
                                     (flag not in opt_set), flags))
     
     @classmethod
-    def nonexistent_path_flags(cls, flags: AnySet) -> OCDFrozenSet[str]:
+    def nonexistent_path_flags(cls, flags: AnySet[str]) -> OCDFrozenSet[str]:
         """ Filter out include- or lib-path flags pointing to directories
             that do not actually exist, from a set of flags:
         """
@@ -1236,12 +1236,12 @@ class ConfigUnion(ConfigBase, tx.Collection[ConfigType]):
                                     (not check_func(flag[1:])), flags))
     
     @classmethod
-    def highest_optimization_level(cls, flags: AnySet) -> AnySet:
+    def highest_optimization_level(cls, flags: AnySet[str]) -> AnySet[str]:
         """ Strip all but the highest optimization-level compiler flag
             from a set of (de-dashed) flags. Returns a new set.
         """
         # Which flags are optflags?
-        optflags: AnySet = flags.intersection(cls.optimization.set)
+        optflags: AnySet[str] = flags.intersection(cls.optimization.set)
         
         # Exit if the `flags` set contained no optflags:
         if len(optflags) < 1:
@@ -1253,7 +1253,7 @@ class ConfigUnion(ConfigBase, tx.Collection[ConfigType]):
                                   optflags))
         
         # Assemble all non-optflags in a new set:
-        out: AnySet = flags - cls.optimization.set
+        out: AnySet[str] = flags - cls.optimization.set
         out -= cls.fake_optimization_flags(flags)
         
         # Append the highest-indexed optflag we found, and return:
@@ -1261,12 +1261,12 @@ class ConfigUnion(ConfigBase, tx.Collection[ConfigType]):
         return out
     
     @classmethod
-    def highest_cxx_standard_level(cls, flags: AnySet) -> AnySet:
+    def highest_cxx_standard_level(cls, flags: AnySet[str]) -> AnySet[str]:
         """ Strip all but the highest C++-standard-level compiler flag
             from a set of (de-dashed) flags. Returns a new set.
         """
         # Which flags are stdflags?
-        stdflags: AnySet = flags.intersection(cls.cxx_standard.set)
+        stdflags: AnySet[str] = flags.intersection(cls.cxx_standard.set)
         
         # Exit if the `flags` set contained no stdflags:
         if len(stdflags) < 1:
@@ -1278,7 +1278,7 @@ class ConfigUnion(ConfigBase, tx.Collection[ConfigType]):
                                   stdflags))
         
         # Assemble all non-stdflags in a new set:
-        out: AnySet = flags - cls.cxx_standard.set
+        out: AnySet[str] = flags - cls.cxx_standard.set
         
         # Append the highest-indexed stdflag we found, and return:
         out |= { cls.cxx_standard[flags_index] }
