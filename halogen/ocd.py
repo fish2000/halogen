@@ -2,14 +2,12 @@
 
 from __future__ import print_function
 
-import abc
 import collections
 import collections.abc
 import types
 import typing as tx
 
-from utils import tuplize, u8str
-# from utils import Originator, Namespace as GenericNamespace
+from utils import KeyValue, Originator, tuplize
 
 __all__ = ('OCDType',
            'OCDSet', 'OCDFrozenSet',
@@ -30,7 +28,7 @@ NamedTupType = tx.TypeVar('NamedTupType', bound=tx.NamedTuple, covariant=True)
 ClassGetType = tx.Callable[[tx._GenericAlias, tx.Tuple[type, ...]],
                             tx._GenericAlias]
 
-class OCDType(abc.ABCMeta):
+class OCDType(Originator):
     
     """ OCDType is a templated Python type.
     
@@ -117,10 +115,10 @@ class OCDType(abc.ABCMeta):
            typename.__name__ in metacls.subtypes:
            raise TypeError("OCDType cannot be specialized on an "
                            "existant product of an OCDType specialization")
-        if type(typename) != type:
-            raise TypeError("OCDType is a templated type, "
-                            "it must be specialized using a Python typevar "
-                           f"(not a {type(typename)})")
+        # if type(typename) != type:
+        #     raise TypeError("OCDType is a templated type, "
+        #                     "it must be specialized using a Python typevar "
+        #                    f"(not a {type(typename)})")
         if not hasattr(typename, '__iter__'):
             raise TypeError("OCDType is a templated type, "
                             "it must be specialized on an iterable Python type "
@@ -220,8 +218,10 @@ class OCDType(abc.ABCMeta):
                        name: str,
                       bases: tx.Iterable[type],
                    **kwargs) -> tx.MutableMapping[str, tx.Any]:
-        """ Maintain declaration order in class members: """
-        return collections.OrderedDict()
+        """ Call out to super (currently utils.Originator): """
+        return super().__prepare__(name,
+                                   bases,
+                                 **kwargs)
     
     def __new__(metacls,
                    name: str,
@@ -259,11 +259,11 @@ class OCDType(abc.ABCMeta):
         # -- which, note, will fail if no bases were specified; if `subbase`
         # defaults to “object”, this call will raise a TypeError, as it requires
         # an iterable operand:
-        base = metacls.__class_getitem__(subbase,
-                                         subname,
-                                         factory, key=key,
-                                                  reverse=rev,
-                                                  baseset=baseset,
+        base = metacls.__class_getitem__((subbase,
+                                          subname,
+                                          factory), key=key,
+                                                    reverse=rev,
+                                                    baseset=baseset,
                                        **kwargs)
         
         # The return value of type.__new__(…), called with the amended
@@ -290,36 +290,36 @@ class SortedList(list, metaclass=OCDType):
 
 OCDList       = OCDType[list] # this emits the cached type from above
 
-class Namespace(types.SimpleNamespace):
+class Namespace(KeyValue[S, T], types.SimpleNamespace):
     
-    """ Not a generic class: """
+    """ Generic class, accepts two type parameters: """
     
     def __bool__(self) -> bool:
         return bool(self.__dict__)
     
-    def __iter__(self) -> tx.Iterator[tx.Any]:
+    def __iter__(self) -> tx.Iterator[T]:
         return iter(self.__dict__)
     
     def __len__(self) -> int:
         return len(self.__dict__)
     
-    def __contains__(self, key: str) -> bool:
+    def __contains__(self, key: S) -> bool:
         return key in self.__dict__
 
-class SortedNamespace(Namespace, collections.abc.MutableMapping,
-                                 collections.abc.Iterable,
-                                 collections.abc.Sized,
-                                 metaclass=OCDType):
+class SortedNamespace(Namespace[str, T], collections.abc.MutableMapping,
+                                         collections.abc.Iterable,
+                                         collections.abc.Sized,
+                                         metaclass=OCDType):
     
-    """ Generic class, accepts two type parameters: """
+    """ Generic class, accepts one type parameter: """
     
-    def __getitem__(self, key: str) -> tx.Any:
+    def __getitem__(self, key: str) -> T:
         if key in self.__dict__:
             return self.__dict__[key]
         return super().__getattr__(key)
     
-    def __setitem__(self, key: str, value: tx.Any):
-        if not u8str(key).isidentifier():
+    def __setitem__(self, key: str, value: T):
+        if not key.isidentifier():
             raise KeyError("key must be a valid identifier")
         super().__setattr__(key, value)
 
@@ -340,9 +340,9 @@ def test_namespace_types():
     }
     
     simpleNamespace: types.SimpleNamespace = types.SimpleNamespace(**nsdata)
-    namespace: Namespace = Namespace(**nsdata)
+    namespace: Namespace[str, str] = Namespace(**nsdata)
     ocdNamespace: OCDNamespace[str, str] = OCDNamespace(**nsdata)
-    sortedNamespace: SortedNamespace[str, str] = SortedNamespace(**nsdata)
+    sortedNamespace: SortedNamespace[str] = SortedNamespace(**nsdata)
     width: int = terminal_size().width
     
     print("=" * width)
@@ -409,10 +409,10 @@ def test():
     pprint(OCDSet.__origin__)
     pprint(OCDSet.__generic__)
     pprint(OCDSet[T].__origin__)
-    pprint(OCDNamespace[T, S])
+    pprint(OCDNamespace[S, T])
     pprint(OCDNamespace.__origin__)
     pprint(OCDNamespace.__generic__)
-    pprint(OCDNamespace[T, S].__origin__)
+    pprint(OCDNamespace[S, T].__origin__)
     
     assert OCDNumpyArray.__name__ == 'OCDNumpyArray'
     assert OCDNumpyArray.__base__ == numpy.ndarray

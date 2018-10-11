@@ -14,15 +14,13 @@ from multidict import MultiDict
 from multidict._abc import MultiMapping
 
 __all__ = ('tuplize', 'listify',
-           'Originator',
-           'Namespace', 'SimpleNamespace',
-                        'MultiNamespace',
-                        'TypeSpace',
-                        'ty',
+           'Originator', 'KeyValue', 'Namespace', 'SimpleNamespace',
+                                                  'MultiNamespace',
+                                                  'TypeSpace',
+                                                  'ty',
            'find_generic_for_type',
-           'TerminalSize', 'terminal_size',
-                           'terminal_width',
-                           'terminal_height',
+           'TerminalSize', 'terminal_size', 'terminal_width',
+                                            'terminal_height',
            'wrap_value', 'Memoizer', 'memoize',
            'current_umask', 'masked_permissions',
            'modulize',
@@ -40,6 +38,7 @@ __dir__ = lambda: list(__all__)
 abstract = None # SHUT UP, PYFLAKES!!
 PRINT_ORIGIN_TYPES = False
 
+S = tx.TypeVar('S', bound=str, covariant=True)
 T = tx.TypeVar('T', covariant=True)
 
 def tuplize(*items) -> tuple:
@@ -98,9 +97,10 @@ class Originator(abc.ABCMeta):
         # Return to zero:
         return cls
 
-class Namespace(tx.Generic[T],
-                      abc.ABC,
-                      metaclass=Originator):
+class KeyValue(tx.Generic[S, T], abc.ABC):
+    __slots__ = tuple()
+
+class Namespace(KeyValue[S, T], metaclass=Originator):
     __slots__ = tuple()
     
     @abstract
@@ -110,14 +110,14 @@ class Namespace(tx.Generic[T],
     def __len__(self) -> int: ...
     
     @abstract
-    def __contains__(self, key: str) -> bool: ...
+    def __contains__(self, key: S) -> bool: ...
     
     @abstract
     def __iter__(self) -> tx.Iterator[T]: ...
 
-class SimpleNamespace(Namespace[T], tx.Sized,
-                                    tx.Iterable[T],
-                                    tx.Container[T]):
+class SimpleNamespace(Namespace[str, T], tx.Sized,
+                                         tx.Iterable[T],
+                                         tx.Container[T]):
     __slots__ = tuplize('__dict__')
     
     def __init__(self, **kwargs):
@@ -143,7 +143,7 @@ class SimpleNamespace(Namespace[T], tx.Sized,
         items = ("{}={!r}".format(k, self.__dict__[k]) for k in keys)
         return "{}({})".format(type(self).__name__, ", ".join(items))
 
-class MultiNamespace(Namespace[T], tx.Collection[T]):
+class MultiNamespace(Namespace[str, T], tx.Collection[T]):
     __slots__ = tuplize('_dict',
                         '_initialized')
     
@@ -232,6 +232,7 @@ for key in tx.__dir__():
     txattr = getattr(tx, key)
     ty.add_original(txattr)
 
+ty.add_original(KeyValue)
 ty.add_original(Namespace)
 ty.add_original(SimpleNamespace)
 ty.add_original(MultiNamespace)
