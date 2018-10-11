@@ -62,10 +62,6 @@ AnySet = tx.Union[tx.Set[TC],   tx.FrozenSet[TC],
 # Ancestor type variable annotation:
 Ancestor = tx.TypeVar('Ancestor', bound=abc.ABC, covariant=True)
 
-# Type variable for creating homogenously-typed tuple
-# typing values factory-stype (q.v. TupleType function sub.):
-HomogenousTypeVar = tx.TypeVar('HomogenousTypeVar')
-
 class ConfigSubBase(abc.ABC, metaclass=abc.ABCMeta):
     
     """ The abstract base class ancestor of all Config-ish classes we define here.
@@ -1441,7 +1437,6 @@ modulize({
                'MaybeStr' : MaybeStr,
                  'AnySet' : AnySet,
                'Ancestor' : Ancestor,
-      'HomogenousTypeVar' : HomogenousTypeVar,
              'ConfigType' : ConfigType
 }, 'config.ts', "Typenames local to the config module", __file__)
 
@@ -1452,7 +1447,6 @@ del TC
 # del MaybeStr
 # del AnySet
 del Ancestor
-del HomogenousTypeVar
 # del ConfigType
 
 def test():
