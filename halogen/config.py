@@ -997,7 +997,9 @@ class BrewedConfig(ConfigBase):
     def __init__(self, brew_name=None):
         """ Initialize BrewedConfig, optionally naming a formula (the default is “halide”) """
         if self.brew is None:
-            self.brew = which('brew')
+            if BrewedPythonConfig.brew is None:
+                BrewedPythonConfig.brew = which('brew')
+            self.brew = BrewedPythonConfig.brew
         if not brew_name:
             brew_name = 'halide'
         self.brew_name: str = brew_name
