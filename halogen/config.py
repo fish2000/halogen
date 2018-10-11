@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 from __future__ import print_function
@@ -21,7 +22,7 @@ from functools import wraps
 
 import filesystem
 import compiledb
-from errors import ConfigurationError, ConfigCommandError
+from errors import ConfigurationError
 from filesystem import back_tick, script_path, which
 from filesystem import Directory
 from ocd import OCDSet, OCDFrozenSet
@@ -575,7 +576,7 @@ class PythonConfig(ConfigBase):
     
     # Name of the `python-config` binary (nearly always just `python-config`):
     pyconfig: str = "python-config"
-    pyconfigpath: str = which(pyconfig)
+    pyconfigpath: MaybeStr = None
     
     # String of python major-minor version e.g. "2.7", "3.7" etc.
     python_version: str = f"{sys.version_info.major}{os.extsep}{sys.version_info.minor}"
@@ -597,6 +598,8 @@ class PythonConfig(ConfigBase):
     
     def __init__(self, prefix: filesystem.ts.MaybeDirectoryLike = None):
         """ Initialize PythonConfig, optionally specifying a system prefix """
+        if self.pyconfigpath is None:
+            self.pyconfigpath = which(self.pyconfig)
         if not prefix:
             prefix = Directory(sys.prefix)
         self.prefix = prefix
@@ -681,12 +684,12 @@ class BrewedPythonConfig(PythonConfig):
                         dir_fields=True)
     
     # Path to the Homebrew executable CLT `brew`
-    brew: MaybeStr = which("brew")
+    brew: MaybeStr = None
     
     def __init__(self, brew_name: MaybeStr = None):
         """ Initialize BrewedPythonConfig, optionally naming a homebrew formula """
-        if not self.brew:
-            raise ConfigCommandError("Can't find Homebrew “brew” executable")
+        if self.brew is None:
+            self.brew = which("brew")
         if not brew_name:
             brew_name = 'python'
         self.brew_name: str = brew_name
@@ -821,7 +824,7 @@ class PkgConfig(ConfigBase):
                                                            "O3"))
     
     # Location of the `pkg-config` binary:
-    pkgconfig: str = which('pkg-config')
+    pkgconfig: MaybeStr = None
     
     # Cache of complete package list:
     packages: tx.ClassVar[OCDSet[str]] = OCDSet()
@@ -853,6 +856,8 @@ class PkgConfig(ConfigBase):
     
     def __init__(self, pkg_name: MaybeStr = None):
         """ Initialize PkgConfig, optionally naming a package (the default is “python3”) """
+        if self.pkgconfig is None:
+            self.pkgconfig = which('pkg-config')
         if not pkg_name:
             pkg_name = 'python3'
         self.pkg_name: str = pkg_name
@@ -980,7 +985,9 @@ class BrewedConfig(ConfigBase):
                         dir_fields=False)
     
     # Name of, and prefix for, the Homebrew installation:
-    brew: str = which('brew')
+    # brew: MaybeStr = which('brew')
+    # brew: MaybeStr = BrewedPythonConfig.brew
+    brew: MaybeStr = None
     
     # List of cflags to use with all Homebrew-based config classes:
     cflags: tx.ClassVar[OCDFrozenSet[str]] = OCDFrozenSet(("funroll-loops",
@@ -989,6 +996,8 @@ class BrewedConfig(ConfigBase):
     
     def __init__(self, brew_name=None):
         """ Initialize BrewedConfig, optionally naming a formula (the default is “halide”) """
+        if self.brew is None:
+            self.brew = which('brew')
         if not brew_name:
             brew_name = 'halide'
         self.brew_name: str = brew_name
@@ -1081,10 +1090,12 @@ class BrewedImreadConfig(BrewedConfig):
     brew_name: str = 'libimread'
     
     # Name of, and path to, the `imread-config` utility:
-    imread_config: str = which('imread-config')
+    imread_config: MaybeStr = None
     
     def __init__(self):
         """ Complete override of BrewedConfig’s __init__ method: """
+        if self.imread_config is None:
+            self.imread_config = which('imread-config')
         self.prefix: filesystem.ts.DirectoryLike = back_tick(f"{self.imread_config} --prefix", ret_err=False)
     
     @property
