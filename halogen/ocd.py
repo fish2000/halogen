@@ -67,7 +67,6 @@ class OCDType(Originator):
         @classmethod
         def for_type(cls,
                   newcls: tx.Type[ConcreteType]) -> NamedTupType:
-            # from utils import ty
             basenames: list = []
             for base in newcls.__bases__:
                 name: str = getattr(base, '__qualname__',
@@ -76,7 +75,6 @@ class OCDType(Originator):
                 if len(mod) > 1:
                     mod += '.'
                 basenames.append(f"{mod}{name}")
-            # ty.add_original(newcls)
             return cls(newcls, tuple(basenames))
     
     # The metaclass-internal dictionaries of all generated types:
@@ -409,10 +407,18 @@ def test():
     pprint(OCDSet.__origin__)
     pprint(OCDSet.__generic__)
     pprint(OCDSet[T].__origin__)
+    pprint(SortedList[T])
+    pprint(SortedList.__origin__)
+    pprint(SortedList.__generic__)
+    pprint(SortedList[T].__origin__)
     pprint(OCDNamespace[S, T])
     pprint(OCDNamespace.__origin__)
     pprint(OCDNamespace.__generic__)
     pprint(OCDNamespace[S, T].__origin__)
+    pprint(SortedNamespace[S, T])
+    pprint(SortedNamespace.__origin__)
+    pprint(SortedNamespace.__generic__)
+    pprint(SortedNamespace[S, T].__origin__)
     
     assert OCDNumpyArray.__name__ == 'OCDNumpyArray'
     assert OCDNumpyArray.__base__ == numpy.ndarray
