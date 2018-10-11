@@ -15,17 +15,18 @@ try:
 except ImportError:
     pass
 
+from abc import abstractmethod as abstract
 from ctypes.util import find_library
 from functools import wraps
 
 import filesystem
 import compiledb
-from abc import abstractmethod as abstract
 from errors import ConfigurationError, ConfigCommandError
-from filesystem import which, back_tick, script_path
+from filesystem import back_tick, script_path, which
 from filesystem import Directory
 from ocd import OCDSet, OCDFrozenSet
-from utils import is_string, modulize, stringify, tuplize, u8bytes, u8str
+from utils import is_string, modulize, stringify, tuplize
+from utils import u8bytes, u8str
 
 __all__ = ('SHARED_LIBRARY_SUFFIX', 'STATIC_LIBRARY_SUFFIX',
            'DEFAULT_VERBOSITY',
@@ -167,6 +168,61 @@ class ConfigSubBase(abc.ABC, metaclass=abc.ABCMeta):
     def get_ldflags(self) -> str: ...
 
 
+class FieldList(object):
+    
+    """ This class enables a sort-of inheritance scheme for the “fields” attribute.
+        The “stringify(…)” function, typically used in __repr__() and __str__() methods,
+        uses the “fields” attribute (an iterable of strings) to determine what fields of
+        the instance to introspect in order to print. By assigning a FieldList instance
+        to “fields” on classes whose metaclass is ConfigBaseMeta (q.v. class definition
+        supra), each FieldList builds its list of fields using the class ancestors’
+        FieldLists as well as the current class.
+        
+        This is accomplished by FieldList, which follows the descriptor protocol and thus
+        has __set__() and __get__() methods governing what happens when a FieldList is
+        accessed as an instance attribute, uses set logic to sum the names of all the
+        relevant ancestor fields with those with which it was defined before returning
+        a value.
+        
+        Does that make sense? I hope it makes some sense. If not, read the code and get
+        back to me if you are still confused. Thanks! -Alex
+    """
+    
+    __slots__: tx.ClassVar[tx.Tuple[str, ...]] = ('stored_fields',
+                                                  'exclude_fields',
+                                                  'include_dir_fields')
+    
+    def store(self, *fields):
+        self.stored_fields: frozenset = frozenset(fields)
+        if self.include_dir_fields:
+            self.stored_fields |= frozenset(ConfigBase.dir_fields)
+    
+    def __init__(self, *more_fields, **kwargs):
+        self.include_dir_fields: bool = bool(kwargs.pop('dir_fields', False))
+        self.exclude_fields: frozenset = frozenset(kwargs.pop('exclude', tuple()))
+        self.store(*more_fields)
+    
+    def __get__(self,
+                instance: tx.Any,
+                cls: tx.Optional[type] = None) -> tx.Tuple[str, ...]:
+        if cls is None:
+            cls = type(instance)
+        out: OCDSet[str] = OCDSet(self.stored_fields)
+        if hasattr(cls, 'base_fields'):
+            out |= frozenset(cls.base_fields)
+        out -= self.exclude_fields
+        return tuple(out)
+    
+    def __set__(self,
+                instance: tx.Any,
+                iterable: tx.Iterable[str]):
+        self.store(*iterable)
+    
+    def __delete__(self,
+                   instance: tx.Any):
+        raise AttributeError("Can't delete a FieldList attribute")
+
+
 class ConfigBaseMeta(abc.ABCMeta):
     
     """ The metaclass for all Config-ish classes we define here; used with
@@ -174,6 +230,7 @@ class ConfigBaseMeta(abc.ABCMeta):
     """
     
     def __new__(metacls, name, bases, attributes, **kwargs) -> type:
+        attributes['FieldList'] = FieldList
         if not 'base_fields' in attributes:
             attributes['base_fields'] = tuple()
         base_fields: OCDSet[str] = OCDSet(attributes['base_fields'])
@@ -215,7 +272,7 @@ class ConfigBase(ConfigSubBase, metaclass=ConfigBaseMeta):
         * Definitions for __repr__(), __str__(), and a “to_string(…)” method --
           all of which should be adequate for, like, 99 percent of all of the
           possible subclasses’ introspection-printing needs; also see docstrings
-          and definitions below of FieldList for related internals.
+          and definitions above of FieldList for related internals.
     """
     
     base_fields: tx.ClassVar[tx.Tuple[str, ...]] = ('prefix', 'get_includes',
@@ -226,60 +283,6 @@ class ConfigBase(ConfigSubBase, metaclass=ConfigBaseMeta):
     dir_fields: tx.ClassVar[tx.Tuple[str, ...]] = ('bin', 'include',
                                                    'lib', 'libexec', 'libexecbin',
                                                    'share')
-    
-    class FieldList(object):
-        
-        """ This class enables a sort-of inheritance scheme for the “fields” attribute.
-            The “stringify(…)” function, typically used in __repr__() and __str__() methods,
-            uses the “fields” attribute (an iterable of strings) to determine what fields of
-            the instance to introspect in order to print. By assigning a FieldList instance
-            to “fields” on classes whose metaclass is ConfigBaseMeta (q.v. class definition
-            supra), each FieldList builds its list of fields using the class ancestors’
-            FieldLists as well as the current class.
-            
-            This is accomplished by FieldList, which follows the descriptor protocol and thus
-            has __set__() and __get__() methods governing what happens when a FieldList is
-            accessed as an instance attribute, uses set logic to sum the names of all the
-            relevant ancestor fields with those with which it was defined before returning
-            a value.
-            
-            Does that make sense? I hope it makes some sense. If not, read the code and get
-            back to me if you are still confused. Thanks! -Alex
-        """
-        
-        __slots__: tx.ClassVar[tx.Tuple[str, ...]] = ('stored_fields',
-                                                      'exclude_fields',
-                                                      'include_dir_fields')
-        
-        def store(self, *fields):
-            self.stored_fields: frozenset = frozenset(fields)
-            if self.include_dir_fields:
-                self.stored_fields |= frozenset(ConfigBase.dir_fields)
-        
-        def __init__(self, *more_fields, **kwargs):
-            self.include_dir_fields: bool = bool(kwargs.pop('dir_fields', False))
-            self.exclude_fields: frozenset = frozenset(kwargs.pop('exclude', tuple()))
-            self.store(*more_fields)
-        
-        def __get__(self,
-                    instance: tx.Any,
-                    cls: tx.Optional[type] = None) -> tx.Tuple[str, ...]:
-            if cls is None:
-                cls = type(instance)
-            out: OCDSet[str] = OCDSet(self.stored_fields)
-            if hasattr(cls, 'base_fields'):
-                out |= frozenset(cls.base_fields)
-            out -= self.exclude_fields
-            return tuple(out)
-        
-        def __set__(self,
-                    instance: tx.Any,
-                    iterable: tx.Iterable[str]):
-            self.store(*iterable)
-        
-        def __delete__(self,
-                       instance: tx.Any):
-            raise AttributeError("Can't delete a FieldList attribute")
     
     @property
     def prefix(self) -> Directory:
@@ -358,11 +361,11 @@ ConfigType = tx.TypeVar('ConfigType', bound=ConfigBase, covariant=True)
 
 class SetWrap(ConfigBase):
     
-    fields = ConfigBase.FieldList('sub_config_type', 'includes_set',
-                                                     'libs_set',
-                                                     'cflags_set',
-                                                     'ldflags_set', exclude=['prefix'],
-                                                                    dir_fields=False)
+    fields = FieldList('sub_config_type', 'includes_set',
+                                          'libs_set',
+                                          'cflags_set',
+                                          'ldflags_set', exclude=['prefix'],
+                                                         dir_fields=False)
     def __init__(self, config: ConfigType):
         if not isinstance(config, (ConfigBase, ConfigSubBase)):
             raise TypeError("OCDSetWrap.__init__(…) requires a ConfigBase or ConfigSubBase argument")
@@ -562,13 +565,13 @@ class PythonConfig(ConfigBase):
     
     # 'Frameworks', 'Headers', 'Resources', 'framework'
     
-    fields = ConfigBase.FieldList('pyconfig', 'pyconfigpath',
-                                  'library_name', 'library_file', 'header_file',
-                                  'framework_name',
-                                  'framework_path',
-                                  # 'Frameworks',
-                                  # 'Headers', 'Resources',
-                                   dir_fields=False)
+    fields = FieldList('pyconfig', 'pyconfigpath',
+                                   'library_name', 'library_file', 'header_file',
+                                   'framework_name',
+                                   'framework_path',
+                                   # 'Frameworks',
+                                   # 'Headers', 'Resources',
+                                    dir_fields=False)
     
     # Name of the `python-config` binary (nearly always just `python-config`):
     pyconfig: str = "python-config"
@@ -673,8 +676,9 @@ class BrewedPythonConfig(PythonConfig):
         command-line `brew` tool (with fallback calls to the PythonConfig class).
     """
     
-    fields = ConfigBase.FieldList('brew',
-                                  'brew_name', dir_fields=True)
+    fields = FieldList('brew',
+                       'brew_name',
+                        dir_fields=True)
     
     # Path to the Homebrew executable CLT `brew`
     brew: MaybeStr = which("brew")
@@ -704,9 +708,10 @@ class BrewedPythonConfig(PythonConfig):
 
 class SysConfig(PythonConfig):
     
-    fields = ConfigBase.FieldList('Frameworks', 'Headers',
-                                                'Resources',
-                                                'with_openssl', dir_fields=True)
+    fields = FieldList('Frameworks', 'Headers',
+                                     'Resources',
+                                     'with_openssl',
+                                      dir_fields=True)
     
     """ A config class that provides its values using the Python `sysconfig` module,
         with fallback calls to PythonConfig, and environment variable overrides
@@ -797,9 +802,10 @@ class PkgConfig(ConfigBase):
         command-line tool, for a package name recognized by same.
     """
     
-    fields = ConfigBase.FieldList('cflags',
-                                  'pkgconfig',
-                                  'pkg_name', dir_fields=True)
+    fields = FieldList('cflags',
+                       'pkgconfig',
+                       'pkg_name',
+                        dir_fields=True)
     
     # List of cflags to use with all pkg-config-based classes:
     cflags: tx.ClassVar[OCDFrozenSet[str]] = OCDFrozenSet(("funroll-loops",
@@ -893,10 +899,11 @@ class NumpyConfig(ConfigBase):
     
     subpackages: tx.ClassVar[tx.Tuple[str, ...]] = ('npymath', 'mlib')
     
-    fields = ConfigBase.FieldList('subpackages',
-                                  'get_numpy_include_directory',
-                                  'info', 'macros',
-                                  'include', 'lib', dir_fields=False)
+    fields = FieldList('subpackages',
+                       'get_numpy_include_directory',
+                       'info', 'macros',
+                       'include', 'lib',
+                        dir_fields=False)
     
     @classmethod
     def get_numpy_include_directory(cls) -> Directory:
@@ -958,9 +965,10 @@ class BrewedConfig(ConfigBase):
         command-line `brew` tool, for arbitrary named Homebrew formulae.
     """
     
-    fields = ConfigBase.FieldList('brew',
-                                  'brew_name',
-                                  'cflags', dir_fields=False)
+    fields = FieldList('brew',
+                       'brew_name',
+                       'cflags',
+                        dir_fields=False)
     
     # Name of, and prefix for, the Homebrew installation:
     brew: str = which('brew')
@@ -1023,7 +1031,7 @@ class BrewedHalideConfig(BrewedConfig):
         command-line `brew` tool, specifically pertaining to the Halide formula.
     """
     
-    fields = ConfigBase.FieldList('library', dir_fields=True)
+    fields = FieldList('library', dir_fields=True)
     
     # Name of the Halide library (sans “lib” prefix and file extension):
     library: str = "Halide"
@@ -1054,8 +1062,9 @@ class BrewedImreadConfig(BrewedConfig):
         command-line `brew` tool, specifically pertaining to the “libimread” formula.
     """
     
-    fields = ConfigBase.FieldList('library',
-                                  'imread_config', dir_fields=True)
+    fields = FieldList('library',
+                       'imread_config',
+                        dir_fields=True)
     
     # Name of the libimread library (sans “lib” prefix and file extension)
     # and the name of the corresponding Homebrew formula:
@@ -1098,8 +1107,8 @@ class ConfigUnion(ConfigBase, tx.Collection[ConfigType]):
     """
     
     # Unlike most Config-ish classes, “prefix” is irrelevant for ConfigUnions.
-    fields = ConfigBase.FieldList('sub_config_types', exclude=['prefix'],
-                                                      dir_fields=False)
+    fields = FieldList('sub_config_types', exclude=['prefix'],
+                                           dir_fields=False)
     
     class union_of(object):
         
