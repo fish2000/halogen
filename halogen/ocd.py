@@ -259,11 +259,11 @@ class OCDType(Originator):
         # -- which, note, will fail if no bases were specified; if `subbase`
         # defaults to “object”, this call will raise a TypeError, as it requires
         # an iterable operand:
-        base = metacls.__class_getitem__((subbase,
-                                          subname,
-                                          factory), key=key,
-                                                    reverse=rev,
-                                                    baseset=baseset,
+        base = metacls.__class_getitem__(subbase,
+                                         subname,
+                                         factory, key=key,
+                                                  reverse=rev,
+                                                  baseset=baseset,
                                        **kwargs)
         
         # The return value of type.__new__(…), called with the amended
