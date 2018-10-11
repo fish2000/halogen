@@ -67,6 +67,7 @@ class OCDType(Originator):
         @classmethod
         def for_type(cls,
                   newcls: tx.Type[ConcreteType]) -> NamedTupType:
+            # from utils import ty
             basenames: list = []
             for base in newcls.__bases__:
                 name: str = getattr(base, '__qualname__',
@@ -75,6 +76,7 @@ class OCDType(Originator):
                 if len(mod) > 1:
                     mod += '.'
                 basenames.append(f"{mod}{name}")
+            # ty.add_original(newcls)
             return cls(newcls, tuple(basenames))
     
     # The metaclass-internal dictionaries of all generated types:
@@ -251,9 +253,7 @@ class OCDType(Originator):
         key = kwargs.pop('key', None)
         rev = kwargs.pop('reverse', False)
         
-        baseset = (len(bases) > 1) \
-                   and [chien for chien in bases if chien not in debaser] \
-                   or []
+        baseset = [chien for chien in bases if chien not in debaser]
         
         # Create the base ancestor with a direct call to “__class_getitem__(…)”
         # -- which, note, will fail if no bases were specified; if `subbase`
