@@ -394,8 +394,6 @@ if __name__ == '__main__' and PRINT_ORIGIN_TYPES:
     print("-" * terminal_width)
     print()
 
-# print(f"width: {terminal_width}, height: {terminal_height}")
-
 StringType = tx.TypeVar('StringType', bound=type, covariant=True)
 
 string_types: tx.Tuple[tx.Type[StringType], ...] = (type(''),

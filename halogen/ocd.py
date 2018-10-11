@@ -285,22 +285,25 @@ OCDFrozenSet  = OCDType[frozenset, 'OCDFrozenSet']
 OCDTuple      = OCDType[tuple]
 
 class SortedList(list, metaclass=OCDType):
+    """ Generic class, accepts a type parameter """
     pass
 
 OCDList       = OCDType[list] # this emits the cached type from above
 
 class Namespace(types.SimpleNamespace):
     
+    """ Not a generic class: """
+    
     def __bool__(self) -> bool:
         return bool(self.__dict__)
     
-    def __iter__(self) -> tx.Iterator[T]:
+    def __iter__(self) -> tx.Iterator[tx.Any]:
         return iter(self.__dict__)
     
     def __len__(self) -> int:
         return len(self.__dict__)
     
-    def __contains__(self, key) -> bool:
+    def __contains__(self, key: str) -> bool:
         return key in self.__dict__
 
 class SortedNamespace(Namespace, collections.abc.MutableMapping,
@@ -308,17 +311,19 @@ class SortedNamespace(Namespace, collections.abc.MutableMapping,
                                  collections.abc.Sized,
                                  metaclass=OCDType):
     
-    def __getitem__(self, key):
+    """ Generic class, accepts two type parameters: """
+    
+    def __getitem__(self, key: str) -> tx.Any:
         if key in self.__dict__:
             return self.__dict__[key]
-        return super(SortedNamespace, self).__getitem__(key)
+        return super().__getattr__(key)
     
-    def __setitem__(self, key, value):
+    def __setitem__(self, key: str, value: tx.Any):
         if not u8str(key).isidentifier():
             raise KeyError("key must be a valid identifier")
-        super(SortedNamespace, self).__setattr__(key, value)
+        super().__setattr__(key, value)
 
-OCDNamespace  = OCDType[Namespace]
+OCDNamespace  = OCDType[Namespace] # Also generic, with two type params
 
 
 def test_namespace_types():
@@ -336,8 +341,8 @@ def test_namespace_types():
     
     simpleNamespace: types.SimpleNamespace = types.SimpleNamespace(**nsdata)
     namespace: Namespace = Namespace(**nsdata)
-    ocdNamespace: OCDNamespace = OCDNamespace(**nsdata)
-    sortedNamespace: SortedNamespace = SortedNamespace(**nsdata)
+    ocdNamespace: OCDNamespace[str, str] = OCDNamespace(**nsdata)
+    sortedNamespace: SortedNamespace[str, str] = SortedNamespace(**nsdata)
     width: int = terminal_size().width
     
     print("=" * width)
