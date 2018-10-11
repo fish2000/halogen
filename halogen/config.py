@@ -357,7 +357,7 @@ class ConfigBase(ConfigSubBase, metaclass=ConfigBaseMeta):
     def __bytes__(self) -> bytes:
         return u8bytes(repr(self))
 
-ConfigType = tx.TypeVar('ConfigType', bound=ConfigBase, covariant=True)
+ConfigType = tx.TypeVar('ConfigType', bound=ConfigSubBase, covariant=True)
 
 class SetWrap(ConfigBase):
     
@@ -368,7 +368,7 @@ class SetWrap(ConfigBase):
                                                          dir_fields=False)
     def __init__(self, config: ConfigType):
         if not isinstance(config, (ConfigBase, ConfigSubBase)):
-            raise TypeError("OCDSetWrap.__init__(…) requires a ConfigBase or ConfigSubBase argument")
+            raise TypeError("SetWrap.__init__(…) requires a ConfigBase or ConfigSubBase argument")
         self.config: ConfigType = config
         self.prefix = config.prefix
     
@@ -397,19 +397,19 @@ class SetWrap(ConfigBase):
     def get_ldflags(self) -> str:
         return self.config.get_ldflags()
     
-    def includes_set(self) -> set:
+    def includes_set(self) -> tx.Set[str]:
         includes: str = self.get_includes()
         return { flag.strip() for flag in f" {includes}".split(TOKEN) if len(flag.strip()) }
     
-    def libs_set(self) -> set:
+    def libs_set(self) -> tx.Set[str]:
         libs: str = self.get_libs()
         return { flag.strip() for flag in f" {libs}".split(TOKEN) if len(flag.strip()) }
     
-    def cflags_set(self) -> set:
+    def cflags_set(self) -> tx.Set[str]:
         cflags: str = self.get_cflags()
         return { flag.strip() for flag in f" {cflags}".split(TOKEN) if len(flag.strip()) }
     
-    def ldflags_set(self) -> set:
+    def ldflags_set(self) -> tx.Set[str]:
         ldflags: str = self.get_ldflags()
         return { flag.strip() for flag in f" {ldflags}".split(TOKEN) if len(flag.strip()) }
 
@@ -762,7 +762,9 @@ class SysConfig(PythonConfig):
         return out.strip()
     
     def get_libs(self) -> str:
-        out: str = f"-l{self.library_name} {environ_override('LIBS')} {environ_override('SYSLIBS')}"
+        out: str = f"-l{self.library_name} " \
+                   f"{environ_override('LIBS')} " \
+                   f"{environ_override('SYSLIBS')}"
         if not environ_override('PYTHONFRAMEWORK'):
             out += f" {environ_override('LINKFORSHARED')}".strip()
         if self.with_openssl:
@@ -770,10 +772,13 @@ class SysConfig(PythonConfig):
         return out.strip()
     
     def get_cflags(self) -> str:
-        out: str = f"-I{sysconfig.get_path('include')} {environ_override('CFLAGS')} {environ_override('CXXFLAGS')}".strip()
+        out: str = f"-I{sysconfig.get_path('include')} " \
+                   f"{environ_override('CFLAGS')} " \
+                   f"{environ_override('CXXFLAGS')}".strip()
         if sysconfig.get_path("include") != \
            sysconfig.get_path("platinclude"):
-            out = f"-I{sysconfig.get_path('platinclude')} {out.strip()}".strip()
+            out = f"-I{sysconfig.get_path('platinclude')} " \
+                  f"{out.strip()}".strip()
         if self.with_openssl:
             out += f" {environ_override('OPENSSL_INCLUDES')}"
         return out.strip()
@@ -788,7 +793,10 @@ class SysConfig(PythonConfig):
                 ldstring += f"{TOKEN}L{pth}"
         if self.with_openssl:
             ldstring += f" {environ_override('OPENSSL_LDFLAGS')}"
-        out: str = f"{ldstring.strip()} -l{self.library_name} {environ_override('LIBS')} {environ_override('SYSLIBS')}"
+        out: str = f"{ldstring.strip()} " \
+                   f"-l{self.library_name} " \
+                   f"{environ_override('LIBS')} " \
+                   f"{environ_override('SYSLIBS')}"
         if not environ_override('PYTHONFRAMEWORK'):
             out += f" {environ_override('LINKFORSHARED')}"
         if self.with_openssl:
