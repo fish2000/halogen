@@ -932,7 +932,7 @@ class NumpyConfig(ConfigBase):
             for k, v in infodict.items():
                 self.info[k] |= frozenset(v)
         self.info['include_dirs'] |= { os.fspath(self.get_numpy_include_directory()) }
-        self.info['library_dirs'] != { os.fspath(self.prefix.subdirectory("lib")) }
+        self.info['library_dirs'] |= { os.fspath(self.prefix.subdirectory("lib")) }
         for macro_tuple in self.info['define_macros']:
             self.macros.define(*macro_tuple)
         self.macros.define('NUMPY')
