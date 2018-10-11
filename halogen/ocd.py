@@ -289,15 +289,6 @@ class SortedList(list, metaclass=OCDType):
 
 OCDList       = OCDType[list] # this emits the cached type from above
 
-# class MetaType(Originator, OCDType):
-#
-#     def __new__(metacls,
-#                    name: str,
-#                   bases: tx.Iterable[type],
-#              attributes: tx.MutableMapping[str, tx.Any],
-#                **kwargs) -> type:
-#         return OCDType.__new__(metacls, name, tuplize(bases), dict(attributes), **kwargs)
-
 class Namespace(types.SimpleNamespace):
     
     def __bool__(self) -> bool:

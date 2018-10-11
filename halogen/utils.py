@@ -2,7 +2,6 @@
 
 from __future__ import print_function
 
-# import builtins
 import abc
 import collections
 import six
@@ -233,18 +232,10 @@ for key in tx.__dir__():
     txattr = getattr(tx, key)
     ty.add_original(txattr)
 
-# ty.add('type', TypeSpace)
 ty.add_original(Namespace)
 ty.add_original(SimpleNamespace)
 ty.add_original(MultiNamespace)
 ty.add_original(TypeSpace)
-
-# build a “for_name” dict in the “ty” namespace:
-# ty.for_name: tx.Dict[str, type] = {}
-# for tup in builtins.__dict__.items():
-#     if type(tup[1]) == type:
-#         builtin = tup[1]
-#         ty.for_name[]
 
 def find_generic_for_type(cls: tx.Type[ConcreteType],
                           missing: tx.Optional[
@@ -352,12 +343,12 @@ class TerminalSize(object):
         # in which our process is ensconced, open a descriptor on it for reaing,
         # and use that descriptor to once again attempt to read CGWINSZ values 
         # for the terminal:
-        descriptor: int = 0
+        descriptor: self.Descriptor = 0
         if not sz:
             try:
-                descriptor: self.Descriptor = os.open(os.ctermid(),
-                                                      os.O_RDONLY)
-                sz: tx.Optional[self.Size] = self.ioctl_GWINSZ(descriptor)
+                descriptor = os.open(os.ctermid(),
+                                     os.O_RDONLY)
+                sz = self.ioctl_GWINSZ(descriptor)
             except:
                 pass
             finally:
