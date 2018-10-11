@@ -25,7 +25,7 @@ from errors import ConfigurationError, ConfigCommandError
 from filesystem import which, back_tick, script_path
 from filesystem import Directory
 from ocd import OCDSet, OCDFrozenSet
-from utils import is_string, modulize, stringify, u8bytes, u8str
+from utils import is_string, modulize, stringify, tuplize, u8bytes, u8str
 
 __all__ = ('SHARED_LIBRARY_SUFFIX', 'STATIC_LIBRARY_SUFFIX',
            'DEFAULT_VERBOSITY',
@@ -56,8 +56,8 @@ MaybeStr = tx.Optional[str]
 
 # Any kind of set:
 TC = tx.TypeVar('TC', covariant=True)
-AnySet = tx.Union[tx.Set[TC],   tx.FrozenSet[TC],
-                  OCDSet[TC],   OCDFrozenSet[TC]]
+AnySet = tx.Union[tx.Set[TC], tx.FrozenSet[TC],
+                  OCDSet[TC], OCDFrozenSet[TC]]
 
 # Ancestor type variable annotation:
 Ancestor = tx.TypeVar('Ancestor', bound=abc.ABC, covariant=True)
@@ -1114,7 +1114,7 @@ class ConfigUnion(ConfigBase, tx.Collection[ConfigType]):
                                                     # and return it
         """
         
-        __slots__: tx.ClassVar[tx.Tuple[str, ...]] = ('name',)
+        __slots__: tx.ClassVar[tx.Tuple[str, ...]] = tuplize('name')
         
         def __init__(self, name: str):
             """ Initialize the @union_of decorator, stashing the name of the function
