@@ -147,7 +147,7 @@ class ConfigSubBase(abc.ABC, metaclass=abc.ABCMeta):
     def ld_flag_string(self) -> str: ...
     
     @abstract
-    def ar_flag_string(self) -> str: pass
+    def ar_flag_string(self) -> str: ...
     
     # Stringification and representation methods:
     
@@ -1481,11 +1481,11 @@ def test():
     numpyConfigSetWrap: SetWrap = SetWrap(numpyConfig)
     
     configUnionOne: ts.ConfigType = ConfigUnion(SysConfig(with_openssl=True))
-    configUnion: ts.ConfigType = ConfigUnion(brewedHalideConfig, sysConfig)
+    configUnion: ts.ConfigType    = ConfigUnion(brewedHalideConfig, sysConfig)
     configUnionAll: ts.ConfigType = ConfigUnion(brewedHalideConfig, sysConfig,
-                                             brewedPythonConfig, pythonConfig,
-                                                                 pkgConfig,
-                                                                 numpyConfig)
+                                                brewedPythonConfig, pythonConfig,
+                                                                    pkgConfig,
+                                                                    numpyConfig)
     
     configUnionSetWrap: SetWrap = SetWrap(configUnion)
     
@@ -1546,8 +1546,8 @@ def corefoundation_check():
     is_python_bundle: bool = lambda bundle: FUNC_NAME_WTF(bundle, 'CFBundleIdentifier') == bundle_id
     python_bundle_set: tx.Set[str] = set(filter(is_python_bundle, CFBundleGetAllBundles()))
     # python_bundle_set -= { CFBundleGetMainBundle() }
-    python_bundle = python_bundle_set.pop()
-    nsbundle = NSBundle.alloc().initWithURL_(CFBundleCopyBundleURL(python_bundle))
+    python_bundle: str = python_bundle_set.pop()
+    nsbundle: NSBundle = NSBundle.alloc().initWithURL_(CFBundleCopyBundleURL(python_bundle))
     bundlepath: Directory = Directory(nsbundle.bundlePath())
     # prefix = os.path.dirname(os.path.dirname(bundlepath))
     prefix: Directory = bundlepath.parent().parent()

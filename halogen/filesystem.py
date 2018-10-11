@@ -286,7 +286,7 @@ class TemporaryFileWrapper(TemporaryFileWrapperBase,
         the `os.PathLike` abstract base class -- the latter requires
         that we implement an __fspath__(…) method (q.v. implementation,
         sub.) -- and we also have specified the `filesystem.TypeLocker`
-        metaclass, q.v. metaclass __new__(…) implementation supra.)
+        metaclass (q.v. metaclass __new__(…) implementation supra.)
         to cache its type and register it as an os.PathLike subclass.
         
         … Basically a better deal than the original ancestor, like
@@ -1199,6 +1199,7 @@ def test():
         # that it no longer exists - that it has been correctly
         # deleted on scope exit:
         tfp = tfn.name
+        assert os.path.exists(tfp)
         print("* TemporaryName file object tests completed OK")
         print("")
     
@@ -1310,6 +1311,7 @@ def test():
         # instance, to later assert that it no longer exists –
         # that it has been correctly deleted on scope exit:
         tdp = Directory(ttd)
+        assert tdp.exists
         print("* TemporaryDirectory object tests completed OK")
         print("")
     
