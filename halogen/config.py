@@ -932,6 +932,7 @@ class NumpyConfig(ConfigBase):
             for k, v in infodict.items():
                 self.info[k] |= frozenset(v)
         self.info['include_dirs'] |= { os.fspath(self.get_numpy_include_directory()) }
+        self.info['library_dirs'] != { os.fspath(self.prefix.subdirectory("lib")) }
         for macro_tuple in self.info['define_macros']:
             self.macros.define(*macro_tuple)
         self.macros.define('NUMPY')
@@ -1138,7 +1139,7 @@ class ConfigUnion(ConfigBase, tx.Collection[ConfigType]):
                 to call upon those config-class instances wrapped by the ConfigUnion
                 instance in question.
             """
-            self.name: str = f"get_{str(name)}"
+            self.name: str = f"get_{name}"
         
         def __call__(self, base_function):
             """ Process the decorated method, passed in as `base_function` --
@@ -1166,19 +1167,19 @@ class ConfigUnion(ConfigBase, tx.Collection[ConfigType]):
             self.flags: tx.List[str] = [template % flag for flag in flaglist]
             self.set: tx.FrozenSet[str] = frozenset(self.flags)
         
-        def __contains__(self, key: str) -> bool:
-            return key in self.set
+        def __contains__(self, value: str) -> bool:
+            return value in self.set
         
         def __bool__(self) -> bool:
             return True
         
-        def __iter__(self) -> tx.Iterable[str]:
+        def __iter__(self) -> tx.Iterator[str]:
             return iter(self.flags)
         
         def __len__(self) -> int:
             return len(self.flags)
         
-        def __getitem__(self, key) -> str:
+        def __getitem__(self, key: int) -> str:
             return self.flags[key]
         
         def index(self, value: str) -> int:
@@ -1321,7 +1322,7 @@ class ConfigUnion(ConfigBase, tx.Collection[ConfigType]):
         """ The length of a ConfigUnion instance is equal to the number of its sub-configs """
         return len(self.configs)
     
-    def __iter__(self) -> tx.Iterable[ConfigType]:
+    def __iter__(self) -> tx.Iterator[ConfigType]:
         return iter(self.configs)
     
     def __getitem__(self, key: int) -> ConfigType:
