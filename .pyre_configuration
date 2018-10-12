@@ -1,0 +1,7 @@
+{
+  "analysis_directories": [
+    "."
+  ],
+  "binary": "/usr/local/bin/pyre.bin",
+  "typeshed": "/usr/local/lib/pyre_check/typeshed/"
+}
