@@ -11,7 +11,8 @@ import typing as tx
 
 from functools import wraps
 from multidict import MultiDict
-from multidict._abc import MultiMapping
+from multidict._abc import _TypingMeta as TypingMeta
+from multidict._abc import MultiMapping, MutableMultiMapping
 
 __all__ = ('tuplize', 'listify',
            'Originator', 'KeyValue', 'Namespace', 'SimpleNamespace',
@@ -36,7 +37,7 @@ __all__ = ('tuplize', 'listify',
 __dir__ = lambda: list(__all__)
 
 abstract = None # SHUT UP, PYFLAKES!!
-PRINT_ORIGIN_TYPES = False
+PRINT_ORIGIN_TYPES = True
 
 S = tx.TypeVar('S', bound=str, covariant=True)
 T = tx.TypeVar('T', covariant=True)
@@ -47,7 +48,7 @@ def tuplize(*items) -> tuple:
 def listify(*items) -> list:
     return list(item for item in items if item is not None)
 
-class Originator(abc.ABCMeta):
+class Originator(TypingMeta):
     
     @classmethod
     def __prepare__(metacls,
@@ -115,7 +116,8 @@ class Namespace(KeyValue[S, T], metaclass=Originator):
     @abstract
     def __iter__(self) -> tx.Iterator[T]: ...
 
-class SimpleNamespace(Namespace[str, T], tx.Sized,
+class SimpleNamespace(Namespace[str, T], tx.MutableMapping[str, T],
+                                         tx.Sized,
                                          tx.Iterable[T],
                                          tx.Container[T]):
     __slots__ = tuplize('__dict__')
@@ -132,6 +134,15 @@ class SimpleNamespace(Namespace[str, T], tx.Sized,
     def __contains__(self, key: str) -> bool:
         return key in self.__dict__
     
+    def __getitem__(self, key: str) -> T:
+        return self.__dict__[key]
+    
+    def __setitem__(self, key: str, val: T):
+        self.__dict__[key] = val
+    
+    def __delitem__(self, key: str):
+        del self.__dict__[key]
+    
     def __iter__(self) -> tx.Iterator[T]:
         return iter(self.__dict__)
     
@@ -143,12 +154,14 @@ class SimpleNamespace(Namespace[str, T], tx.Sized,
         items = ("{}={!r}".format(k, self.__dict__[k]) for k in keys)
         return "{}({})".format(type(self).__name__, ", ".join(items))
 
-class MultiNamespace(Namespace[str, T], tx.Collection[T]):
+class MultiNamespace(Namespace[str, T], MultiMapping[str, T],
+                                        tx.MutableMapping[str, T],
+                                        tx.Collection[T]):
     __slots__ = tuplize('_dict',
                         '_initialized')
     
     def __init__(self, **kwargs):
-        self._dict: MultiMapping[str, T] = MultiDict()
+        self._dict: MutableMultiMapping[str, T] = MultiDict()
         self._dict.update(kwargs)
         self._initialized: bool = True
     
@@ -170,12 +183,22 @@ class MultiNamespace(Namespace[str, T], tx.Collection[T]):
     def __contains__(self, key: str) -> bool:
         return key in self.mdict()
     
+    def __getitem__(self, key: str) -> T:
+        return self.mdict()[key]
+    
+    def __setitem__(self, key: str, val: T):
+        self.mdict()[key] = val
+    
+    def __delitem__(self, key: str):
+        del self.mdict()[key]
+    
     def __iter__(self) -> tx.Iterator[T]:
         return iter(dict(self.mdict()))
     
-    def __getattr__(self, key: str) -> tx.Optional[T]:
-        d = self.mdict()
-        return (key in d) and d.getone(key) or d.__getitem__(key)
+    def __getattr__(self, key: str) -> T:
+        if not self.initialized():
+            raise KeyError('multidict uninitialized')
+        return self.mdict().getone(key)
     
     def __setattr__(self, key: str, val: T):
         if self.initialized():
@@ -188,7 +211,14 @@ class MultiNamespace(Namespace[str, T], tx.Collection[T]):
             raise KeyError('multidict uninitialized')
         self.mdict().add(key, val)
     
-    def allof(self, key: str) -> tx.Tuple[T, ...]:
+    def getone(self, key: str) -> T:
+        if not self.initialized():
+            raise KeyError('multidict uninitialized')
+        return self.mdict().getone(key)
+    
+    def getall(self, key: str) -> tx.Tuple[T, ...]:
+        if not self.initialized():
+            raise KeyError('multidict uninitialized')
         return self.mdict().getall(key)
     
     def count(self, key: str) -> int:
@@ -384,13 +414,13 @@ terminal_height: int        = terminal_size().height
 if __name__ == '__main__' and PRINT_ORIGIN_TYPES:
     from pprint import pprint
     print("=" * terminal_width)
-    print(f'Typing Index: {len(ty)} types, {len(ty.mdict())} in mdict, {len(ty.for_origin)} in for_origin')
+    print(f'Typing Index: {len(ty)} types, {len(ty.mdict())} in ty.mdict, {len(ty.for_origin)} in ty.for_origin')
+    print()
+    print(ty)
     print()
     pprint(dict(ty.mdict()))
     print()
     pprint(ty.for_origin)
-    print()
-    print(ty)
     print()
     print("-" * terminal_width)
     print()
@@ -461,7 +491,7 @@ def current_umask():
 def masked_permissions(perms=0o666):
     return perms & ~current_umask()
 
-def modulize(namespace: tx.MutableMapping[str, tx.Any],
+def modulize(namespace: tx.Dict[str, tx.Any],
              modulename: str,
              moduledocs: tx.Optional[str] = None,
              modulefile: tx.Optional[str] = None) -> types.ModuleType:
