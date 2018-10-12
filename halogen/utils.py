@@ -259,9 +259,9 @@ class TypeSpace(MultiNamespace[ConcreteType]):
         return True
     
     def NewType(self, name: str, basetype: tx.Type[BaseType]) -> NewTypeCallable:
-        cls: NewTypeCallable = tx.NewType(name, basetype)
-        self.add(name, cls)
-        return cls
+        func: NewTypeCallable = tx.NewType(name, basetype)
+        self.add(name, func)
+        return func
 
 ty: TypeSpace[ConcreteType] = TypeSpace()
 
