@@ -93,3 +93,6 @@ ENV/
 
 # MyPy
 .mypy_cache/
+
+# Pyre
+.pyre
