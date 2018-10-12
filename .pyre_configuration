@@ -1,7 +1,14 @@
 {
   "analysis_directories": [
-    "."
+    "./halogen/"
+  ],
+  "source_directories": [
+    "./halogen/"
   ],
   "binary": "/usr/local/bin/pyre.bin",
-  "typeshed": "/usr/local/lib/pyre_check/typeshed/"
+  "typeshed": "/usr/local/lib/pyre_check/typeshed/",
+  "search_path": [
+    "/usr/local/lib/python3.7/site-packages/typeshed/stdlib/",
+    "/usr/local/lib/python3.7/site-packages/typeshed/third_party/"
+  ]
 }

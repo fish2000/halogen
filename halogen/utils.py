@@ -91,10 +91,10 @@ class Originator(TypingMeta):
         })
         
         # Do the beard:
-        cls = super(Originator, metacls).__new__(metacls, name,
-                                                          bases,
-                                                          dict(attributes),
-                                                        **kwargs)
+        cls = super().__new__(metacls, name,  # type: ignore
+                                       bases,
+                                       dict(attributes),
+                                     **kwargs)
         
         # Return to zero:
         return cls
@@ -153,7 +153,7 @@ class SimpleNamespace(Namespace[str, T], tx.MutableMapping[str, T],
     def __repr__(self) -> str:
         keys = sorted(self.__dict__)
         items = ("{}={!r}".format(k, self.__dict__[k]) for k in keys)
-        return "{}({})".format(type(self).__name__, ", ".join(items))
+        return "{}({})".format(type(self).__name__, ", ".join(items)) # type: ignore
 
 class MultiNamespace(Namespace[str, T], MultiMapping[str, T],
                                         tx.MutableMapping[str, T],
@@ -344,11 +344,11 @@ class TerminalSize(object):
                                        fcntl.ioctl(
                                            tx.cast(int, descriptor),
                                                    termios.TIOCGWINSZ,
-                                                  '1234'))
+                                                  '1234')) # type: ignore
         except:
             return None
         
-        return cls.Size(*cr)
+        return cls.Size(*cr) # type: ignore
     
     def __init__(self, DEFAULT_LINES:   tx.Optional[int] = None,
                        DEFAULT_COLUMNS: tx.Optional[int] = None):
@@ -700,7 +700,7 @@ def suffix_searcher(suffix: str) -> tx.Callable[[tx.AnyStr], bool]:
     else:
         regex_str += rf"\{os.extsep}{suffix}$"
     searcher = re.compile(regex_str, re.IGNORECASE).search
-    return lambda searching_for: bool(searcher(searching_for))
+    return lambda searching_for: bool(searcher(searching_for)) # type: ignore
 
 def terminal_print(message: str,
                    handle: tx.Any = sys.stdout,
@@ -708,8 +708,8 @@ def terminal_print(message: str,
                    asterisk: str = '*'):
     """ Print a string to the terminal, centered and bookended with asterisks
     """
-    from clint.textui.colored import red
-    from clint.textui import colored
+    from clint.textui.colored import red  # type: ignore
+    from clint.textui import colored      # type: ignore
     
     colorizer = getattr(colored, color.lower(), red)
     message: str = f" {message.strip()} "
@@ -880,7 +880,7 @@ def test():
     }
     
     modulize(ns, 'wat', "WHAT THE HELL PEOPLE", __file__)
-    import wat
+    import wat # type: ignore
     
     # Call module functions:
     wat.func()

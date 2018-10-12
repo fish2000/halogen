@@ -13,7 +13,7 @@ import sys
 import typing as tx
 
 try:
-    from scandir import scandir, walk
+    from scandir import scandir, walk # type: ignore
 except ImportError:
     from os import scandir, walk
 
@@ -539,7 +539,7 @@ class TemporaryName(collections.abc.Hashable,
         return hash((self._name, self.exists))
 
 non_dotfile_match = re.compile(r"^[^\.]").match
-non_dotfile_matcher = lambda p: non_dotfile_match(p.name)
+non_dotfile_matcher = lambda p: non_dotfile_match(p.name) # type: ignore
 
 class Directory(collections.abc.Hashable,
                 collections.abc.Mapping,
@@ -1141,9 +1141,9 @@ def NamedTemporaryFile(mode='w+b', buffer_size=-1,
 modulize({
          'DirectoryLike' : DirectoryLike,
     'MaybeDirectoryLike' : MaybeDirectoryLike
-}, 'filesystem.ts', "Typenames local to the filesystem module", __file__)
+}, 'filesystem.ts', """Typenames local to the filesystem module""", __file__)
 
-import filesystem.ts as ts
+import filesystem.ts as ts # type: ignore
 
 del TemporaryFileWrapperBase
 del DirectoryLike

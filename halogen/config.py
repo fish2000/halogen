@@ -1471,7 +1471,7 @@ modulize({
              'ConfigType' : ConfigType
 }, 'config.ts', "Typenames local to the config module", __file__)
 
-import config.ts as ts
+import config.ts as ts # type: ignore
 
 del find_library
 del TC
@@ -1584,7 +1584,7 @@ def corefoundation_check():
 if __name__ == '__main__':
     test()
     try:
-        import objc
+        import objc # type: ignore
     except ImportError:
         print("SKIPPING: PyObjC-based CoreFoundation test (PyObjC not installed)")
     else:

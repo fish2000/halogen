@@ -4,6 +4,7 @@
 from __future__ import print_function
 from types import MappingProxyType as mappingproxy
 from ocd import OCDFrozenSet
+import typing as tx
 
 __all__ = ('valid_emits', 'emit_defaults',
                           'default_emits',
@@ -12,7 +13,7 @@ __all__ = ('valid_emits', 'emit_defaults',
 
 __dir__ = lambda: list(__all__)
 
-valid_emits: OCDFrozenSet[str] = OCDFrozenSet((
+valid_emits: tx.FrozenSet[str] = OCDFrozenSet((
     'assembly',
     'bitcode',
     'cpp', 'cpp_stub',
@@ -69,7 +70,7 @@ def generate(*generators, **arguments):
     """ Invoke halogen.api.Module.compile(…) with the proper arguments. This function
         was concieved with replacing GenGen.cpp’s options in mind. """
     import os
-    import api
+    import api # type: ignore
     from config import DEFAULT_VERBOSITY
     from errors import GenerationError
     from filesystem import Directory
@@ -173,7 +174,7 @@ def test():
     
     """ Run the inline tests for the halogen.generate module """
     
-    import api
+    import api # type: ignore
     import tempfile
     from config import DEFAULT_VERBOSITY
     

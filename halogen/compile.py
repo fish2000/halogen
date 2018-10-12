@@ -548,7 +548,7 @@ class Generators(contextlib.AbstractContextManager):
             just toss back an empty set without making any calls into Halide whatsoever.
         """
         if self.preloaded:
-            import api
+            import api # type: ignore
             return OCDFrozenSet(api.registered_generators())
         return OCDFrozenSet()
     
@@ -683,7 +683,7 @@ def test(MAXIMUM_GENERATORS=255):
     from contextlib import ExitStack
     from utils import terminal_width
     from pprint import pprint
-    import api
+    import api # type: ignore
     
     directory: filesystem.ts.DirectoryLike = Directory(pth="/Users/fish/Dropbox/halogen/tests/generators")
     destination: filesystem.ts.DirectoryLike = Directory(pth=os.path.join(tempfile.gettempdir(), "yodogg"))

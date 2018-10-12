@@ -26,8 +26,8 @@ F = tx.TypeVar('F', bound=TypeFactory, covariant=True)
 
 ConcreteType = tx.TypeVar('ConcreteType', bound=type, covariant=True)
 NamedTupType = tx.TypeVar('NamedTupType', bound=tx.NamedTuple, covariant=True)
-ClassGetType = tx.Callable[[tx._GenericAlias, tx.Tuple[type, ...]],
-                            tx._GenericAlias]
+ClassGetType = tx.Callable[[tx._GenericAlias, tx.Tuple[type, ...]], # type: ignore
+                            tx._GenericAlias]                       # type: ignore
 
 class OCDType(Originator):
     
@@ -62,13 +62,13 @@ class OCDType(Originator):
     prefix: str = "OCD"
     
     class TypeAndBases(tx.NamedTuple):
-        Type:   tx.Type[type]
-        Bases:  tx.Tuple[str, ...] = tuple()
+        Type:   tx.Type[ConcreteType]
+        Bases:  tx.Tuple[str, ...]
         
         @classmethod
         def for_type(cls,
-                  newcls: tx.Type[ConcreteType]) -> NamedTupType:
-            basenames: list = []
+                  newcls: tx.Type[ConcreteType]) -> "OCDType.TypeAndBases":
+            basenames: tx.List[str] = []
             for base in newcls.__bases__:
                 name: str = getattr(base, '__qualname__',
                             getattr(base, '__name__'))
@@ -76,7 +76,7 @@ class OCDType(Originator):
                 if len(mod) > 1:
                     mod += '.'
                 basenames.append(f"{mod}{name}")
-            return cls(newcls, tuple(basenames))
+            return cls(newcls, tuplize(*basenames)) # type: ignore
     
     # The metaclass-internal dictionaries of all generated types:
     types:    tx.Dict[str, TypeAndBases] = collections.OrderedDict()
@@ -100,14 +100,18 @@ class OCDType(Originator):
             raise KeyError("OCDType is a templated type, "
                            "it requires a Python type on which to specialize")
         if type(typename) == tuple:
-            tup: tx.Tuple = tx.cast(tx.Tuple, typename)
+            tup: tuple = tx.cast(tuple, typename)
             if len(tup) == 2:
-                typename, clsname = tup
+                typename: type = tx.cast(type, tup[0])
+                clsname: str = tx.cast(str, tup[1])
             elif len(tup) == 3:
-                typename, clsname, factory = tup
+                typename: type = tx.cast(type, tup[0])
+                clsname: str = tx.cast(str, tup[1])
+                factory: TypeFactory = tx.cast(TypeFactory, tup[2])
             elif len(tup) > 3:
                 raise KeyError("Too many arguments passed to OCDType template "
                               f"specialization: {tup}")
+        typename = tx.cast(type, typename)
         if not hasattr(typename, '__name__'):
             raise TypeError("OCDType is a templated type, "
                             "it must be specialized using a Python typevar "
@@ -116,10 +120,6 @@ class OCDType(Originator):
            typename.__name__ in metacls.subtypes:
            raise TypeError("OCDType cannot be specialized on an "
                            "existant product of an OCDType specialization")
-        # if type(typename) != type:
-        #     raise TypeError("OCDType is a templated type, "
-        #                     "it must be specialized using a Python typevar "
-        #                    f"(not a {type(typename)})")
         if not hasattr(typename, '__iter__'):
             raise TypeError("OCDType is a templated type, "
                             "it must be specialized on an iterable Python type "
@@ -153,14 +153,13 @@ class OCDType(Originator):
         # implementation and wraps the results in a `sorted()` iterator before
         # returning them:
         
-        it: tx.Iterable = tx.cast(tx.Iterable, typename)
         # modulename: str = getattr(metacls, '__module__', 'ocd')
         modulename: str = 'ocd'
         generic: type = find_generic_for_type(typename, missing=tx.Generic)
         get: ClassGetType = getattr(generic, '__class_getitem__',
                             getattr(generic, '__getitem__',
                             classmethod(
-                            lambda cls, *args: tx.Generic.__class_getitem__(*args))))
+                            lambda cls, *args: tx.Generic.__getitem__(*args))))
         
         key = kwargs.pop('key', None)
         rev = kwargs.pop('reverse', False)
@@ -172,8 +171,8 @@ class OCDType(Originator):
                   '__module__' : modulename,
                     '__name__' : clsname,
                     '__iter__' : lambda self: iter(
-                                              sorted(it.__iter__(self), key=key,
-                                                                        reverse=rev)),
+                                              sorted(typename.__iter__(self), key=key,
+                                                                              reverse=rev)),
             
             # q.v. inline notes to the Python 3 `typing` module
             # supra: https://git.io/fAsNO
@@ -195,7 +194,7 @@ class OCDType(Originator):
         
         if callable(factory):
             attributes.update({
-                     '__new__' : lambda cls, *args, **kw: factory(*args, **kw),
+                     '__new__' : lambda cls, *args, **kw: factory(*args, **kw),  # type: ignore
                  '__factory__' : staticmethod(factory)
             })
         
@@ -207,7 +206,7 @@ class OCDType(Originator):
         
         cls = type(clsname, tuplize(typename,
                                    *baseset,
-                                    collections.abc.Iterable),
+                                    collections.abc.Iterable), # type: ignore
                             dict(attributes),
                           **kwargs)
         
@@ -244,8 +243,8 @@ class OCDType(Originator):
         
         # DON’T KNOW ABOUT YOU BUT I AM UN:
         debaser = tuplize(subbase,
-                          collections.abc.Iterable,
-                          collections.abc.Iterator)
+                          collections.abc.Iterable, # type: ignore
+                          collections.abc.Iterator) # type: ignore
         
         subname = kwargs.pop('subname', None)
         factory = kwargs.pop('factory', None)
@@ -267,10 +266,10 @@ class OCDType(Originator):
         
         # The return value of type.__new__(…), called with the amended
         # inheritance-chain values, is what we pass off to Python:
-        cls = super(OCDType, metacls).__new__(metacls, name,
-                                                       tuplize(base),
-                                                       dict(attributes),
-                                                     **kwargs)
+        cls = super().__new__(metacls, name, # type: ignore
+                                       tuplize(base),
+                                       dict(attributes),
+                                     **kwargs)
         
         metacls.subtypes[name] = metacls.TypeAndBases.for_type(cls)
         return cls
@@ -315,7 +314,7 @@ class SortedNamespace(Namespace[str, T], collections.abc.MutableMapping,
     def __getitem__(self, key: str) -> T:
         if key in self.__dict__:
             return self.__dict__[key]
-        return super().__getattr__(key)
+        return super().__getattr__(key) # type: ignore
     
     def __setitem__(self, key: str, value: T):
         if not key.isidentifier():
@@ -378,7 +377,7 @@ def test():
     import array
     OCDArray      = OCDType[array.array]
     
-    import numpy
+    import numpy # type: ignore
     OCDNumpyArray = OCDType[numpy.ndarray, 'OCDNumpyArray',
                             numpy.array]
     
@@ -405,6 +404,7 @@ def test():
     # print(type(OCDSet[T, S]))
     # pprint(type(OCDSet[S]))
     pprint(OCDSet[T])
+    pprint(OCDFrozenSet[str])
     pprint(OCDSet.__origin__)
     pprint(OCDSet.__generic__)
     pprint(OCDSet[T].__origin__)

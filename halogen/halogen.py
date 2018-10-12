@@ -10,7 +10,7 @@ from __future__ import print_function
 
 import os, sys, re
 from os.path import basename, dirname
-from docopt import docopt
+from docopt import docopt # type: ignore
 
 __version__ = '0.1.0'
 
