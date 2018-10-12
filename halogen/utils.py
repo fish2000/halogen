@@ -414,15 +414,38 @@ terminal_height: int        = terminal_size().height
 
 if __name__ == '__main__' and PRINT_ORIGIN_TYPES:
     from pprint import pprint
+    
     print("=" * terminal_width)
     print(f'Typing Index: {len(ty)} types, {len(ty.mdict())} in ty.mdict, {len(ty.for_origin)} in ty.for_origin')
+    
     print()
     print(ty)
     print()
-    pprint(dict(ty.mdict()))
+    
+    # for k, v in ty.mdict().items():
+    #     strk = f"{k}"
+    #     if len(strk) < 8:
+    #         strk += "\t"
+    #     print(f"{strk}\t\t\t: {v}")
+    
+    TOTAL = 30
+    lines = []
+    
+    for k, v in ty.mdict().items():
+        strk = f"{k}"
+        padds = TOTAL - len(strk)
+        padding = padds * " "
+        lines.append(f"{padding}{strk} : {v}")
+    
+    for line in reversed(lines):
+        print(line)
+    
+    # pprint(ty.mdict(), indent=4, depth=10, width=terminal_width)
+    
     print()
     pprint(ty.for_origin)
     print()
+    
     print("-" * terminal_width)
     print()
 

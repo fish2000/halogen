@@ -13,7 +13,8 @@ import filesystem
 from compiledb import CDBJsonFile
 from config import SHARED_LIBRARY_SUFFIX, STATIC_LIBRARY_SUFFIX, DEFAULT_VERBOSITY
 from errors import HalogenError, GeneratorLoaderError, GenerationError
-from generate import default_emits, valid_emits, generate, preload
+from generate import default_emits, valid_emits
+from generate import generate, preload
 from filesystem import rm_rf, temporary, TemporaryName
 from filesystem import Directory, cd
 from filesystem import TemporaryDirectory, Intermediate
