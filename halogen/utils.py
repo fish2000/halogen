@@ -240,6 +240,8 @@ class MultiNamespace(Namespace[str, T], MultiMapping[str, T],
         return repr(self.mdict())
 
 ConcreteType = tx.TypeVar('ConcreteType', bound=type, covariant=True)
+BaseType = tx.TypeVar('BaseType', covariant=True)
+NewTypeCallable = tx.Callable[[BaseType], BaseType]
 
 class TypeSpace(MultiNamespace[ConcreteType]):
     __slots__ = tuplize('for_origin')
@@ -255,6 +257,11 @@ class TypeSpace(MultiNamespace[ConcreteType]):
         self.for_origin[origin] = cls
         self.add(origin.__name__, cls)
         return True
+    
+    def NewType(self, name: str, basetype: tx.Type[BaseType]) -> NewTypeCallable:
+        cls: NewTypeCallable = tx.NewType(name, basetype)
+        self.add(name, cls)
+        return cls
 
 ty: TypeSpace[ConcreteType] = TypeSpace()
 
@@ -313,7 +320,7 @@ class TerminalSize(object):
             return self._replace(
                  **self._asdict())
     
-    Descriptor = tx.NewType('Descriptor', int)
+    Descriptor = ty.NewType('Descriptor', int)
     
     DEFAULT_LINES:   int = 25
     DEFAULT_COLUMNS: int = 130
