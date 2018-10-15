@@ -588,8 +588,8 @@ class Directory(collections.abc.Hashable,
     @property
     def name(self):
         """ The instances’ target directory path. """
-        return getattr(self, 'new', None) or \
-               getattr(self, 'target')
+        return getattr(self, 'target', None) or \
+               getattr(self, 'new')
     
     @property
     def basename(self):
@@ -611,6 +611,14 @@ class Directory(collections.abc.Hashable,
         return os.path.isdir(self.name)
     
     @property
+    def initialized(self):
+        """ Whether or not the instance has been “initialized” -- as in, the
+            `target` instance value has been set (q.v. `ctx_initialize(…)`
+            help sub.) as it stands immediately after `__init__(…)` has run.
+        """
+        return hasattr(self, 'target')
+    
+    @property
     def targets_set(self):
         """ Whether or not the instance has had targets set (the `new` and `old`
             instance values, q.v. `ctx_set_targets(…)` help sub.) and is ready
@@ -621,7 +629,7 @@ class Directory(collections.abc.Hashable,
     @property
     def prepared(self):
         """ Whether or not the instance has been internally prepared for use
-            (q.v. `ctx_initialize()` help sub.) and is in a valid state.
+            (q.v. `ctx_prepare()` help sub.) and is in a valid state.
         """
         return hasattr(self, 'will_change') and \
                hasattr(self, 'will_change_back') and \
@@ -652,7 +660,7 @@ class Directory(collections.abc.Hashable,
             needed by the internal workings of a Directory instance.
         """
         if self.targets_set:
-            self.target = u8str(self.new)
+            self.target = u8str(self.new or self.old)
             del self.old
             del self.new
         if self.prepared:
@@ -680,14 +688,14 @@ class Directory(collections.abc.Hashable,
             `Directory.ctx_prepare(self)` (q.v. doctext help sub.) which
             that will call `Directory.ctx_set_targets(self, …)` itself.)
         """
-        if not hasattr(self, 'target'):
+        if not self.initialized:
             if old is not None:
                 setattr(self, 'old', old)
                 setattr(self, 'new', old)
             return self
         setattr(self, 'old', old is not None and old or self.target)
-        setattr(self, 'new', getattr(self, 'target',
-                             getattr(self, 'old')))
+        setattr(self, 'new', self.target)
+        del self.target
         return self
     
     def ctx_prepare(self):
@@ -707,8 +715,6 @@ class Directory(collections.abc.Hashable,
             in a variety of circumstances. 
         """
         self.ctx_set_targets(old=os.getcwd())
-        if hasattr(self, 'target'):
-            del self.target
         if os.path.isdir(self.new):
             self.will_change = not os.path.samefile(self.old,
                                                     self.new)
