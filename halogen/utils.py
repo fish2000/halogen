@@ -495,6 +495,8 @@ none_function = wrap_value(None)
 
 class Memoizer(dict):
     
+    """ Very simple memoizer (only works with positional args) """
+    
     def __init__(self, function):
         super(Memoizer, self).__init__()
         self.original = function
