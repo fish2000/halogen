@@ -611,11 +611,22 @@ class Directory(collections.abc.Hashable,
         return os.path.isdir(self.name)
     
     @property
+    def targets_set(self):
+        """ Whether or not the instance has had targets set (the `new` and `old`
+            instance values, q.v. `ctx_set_targets(…)` help sub.) and is ready
+            for context-managed use.
+        """
+        return hasattr(self, 'old') and hasattr(self, 'new')
+    
+    @property
     def prepared(self):
         """ Whether or not the instance has been internally prepared for use
             (q.v. `ctx_initialize()` help sub.) and is in a valid state.
         """
-        return hasattr(self, 'new')
+        return hasattr(self, 'will_change') and \
+               hasattr(self, 'will_change_back') and \
+               hasattr(self, 'did_change') and \
+               hasattr(self, 'did_change_back')
     
     def split(self):
         """ Return a two-tuple containing `(dirname, basename)` – like e.g.
@@ -640,18 +651,14 @@ class Directory(collections.abc.Hashable,
             subset of, or the full complement of) the member-variable values
             needed by the internal workings of a Directory instance.
         """
-        if hasattr(self, 'new'):
+        if self.targets_set:
             self.target = u8str(self.new)
-            del self.new
-        if hasattr(self, 'old'):
             del self.old
-        if hasattr(self, 'will_change'):
+            del self.new
+        if self.prepared:
             del self.will_change
-        if hasattr(self, 'will_change_back'):
             del self.will_change_back
-        if hasattr(self, 'did_change'):
             del self.did_change
-        if hasattr(self, 'did_change_back'):
             del self.did_change_back
         return self
     
@@ -731,6 +738,8 @@ class Directory(collections.abc.Hashable,
                 # return to pristine state:
                 self.ctx_initialize()
                 return exc_type is None
+        # return to pristine state:
+        self.ctx_initialize()
         return False
     
     def realpath(self, pth=None):

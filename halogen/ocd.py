@@ -154,7 +154,7 @@ class OCDType(Originator):
         # returning them:
         
         # modulename: str = getattr(metacls, '__module__', 'ocd')
-        modulename: str = 'ocd'
+        modulename: str = metacls.prefix.lower()
         generic: type = find_generic_for_type(typename, missing=tx.Generic)
         get: ClassGetType = getattr(generic, '__class_getitem__',
                             getattr(generic, '__getitem__',
