@@ -491,43 +491,51 @@ def wrap_value(value: tx.Any) -> tx.Callable[[tx.Optional[tx.Iterable[tx.Any]],
                                              tx.Any]:
     return lambda *args, **kwargs: value
 
+none_function = wrap_value(None)
+
 class Memoizer(dict):
     
-    def __init__(self, function=None):
+    def __init__(self, function):
         super(Memoizer, self).__init__()
-        if function is None:
-            function = wrap_value(function)
-        self.original_function = (function,)
+        self.original = function
     
     def __missing__(self, key):
-        function = self.original_function[0]
+        function = self.original
         self[key] = out = function(*key)
         return out
     
     @property
     def original(self):
-        return self.original_function[0]
+        return self.original_function
     
     @original.setter
     def original(self, value):
-        if not callable(value):
-            value = wrap_value(value)
-        self.original_function = (value,)
+        if value is None:
+            value = none_function
+        if callable(value):
+            self.original_function = value
+        else:
+            self.original_function = wrap_value(value)
     
-    def __call__(self, function):
+    def __call__(self, function=None):
+        if function is None:
+            function = self.original
+        else:
+            self.original = function
         @wraps(function)
         def memoized(*args):
-            return self[args]
-        self.original = function
-        memoized.original = function
+            return self[tuplize(*args)]
+        memoized.__original__ = function
+        memoized.__instance__ = self
         return memoized
 
 def memoize(function):
     memoinstance = Memoizer(function)
     @wraps(function)
     def memoized(*args):
-        return memoinstance[args]
-    memoized.original = function
+        return memoinstance[tuplize(*args)]
+    memoized.__original__ = function
+    memoized.__instance__ = memoinstance
     return memoized
 
 @memoize
@@ -881,6 +889,26 @@ def test_compile(conf, test_source: str, print_cdb: bool = False) -> bool:
 def test():
     import os
     from pprint import pformat
+    
+    print("test memoized current_umask() * 3")
+    assert current_umask() == current_umask()
+    assert current_umask() == current_umask()
+    assert current_umask() == current_umask()
+    print("… success")
+    
+    def yo(dogg):
+        return dogg.upper()
+    
+    yoyo = memoize(yo)
+    print("test memoized function * 2*2")
+    assert yoyo('dogg') == yoyo('dogg')
+    assert yoyo('dogg') == yoyo('dogg')
+    assert yoyo('doigg') == yoyo('doigg')
+    assert yoyo('doigg') == yoyo('doigg')
+    print("… success")
+    
+    print()
+    print("-" * terminal_width)
     
     print(f"PACKAGE: {__package__}")
     # print(f" MODULE: {__module__})")
