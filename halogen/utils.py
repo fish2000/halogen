@@ -11,9 +11,9 @@ import types
 import typing as tx
 
 from functools import wraps
-from multidict import MultiDict
-from multidict._abc import _TypingMeta as TypingMeta
-from multidict._abc import MultiMapping, MutableMultiMapping
+from multidict import MultiDict                              # type: ignore
+from multidict._abc import _TypingMeta as TypingMeta         # type: ignore
+from multidict._abc import MultiMapping, MutableMultiMapping # type: ignore
 
 __all__ = ('tuplize', 'listify',
            'Originator', 'KeyValue', 'Namespace', 'SimpleNamespace',
@@ -50,6 +50,24 @@ def listify(*items) -> list:
     return list(item for item in items if item is not None)
 
 class Originator(TypingMeta):
+    
+    @staticmethod
+    def type_repr(obj):
+        """ Adapted from `_type_repr(…)`, an internal helper function
+            from the “typing” module:
+        """
+        if isinstance(obj, type):
+            if obj.__module__ == 'builtins':
+                return obj.__qualname__
+            return f'{obj.__module__}.{obj.__qualname__}'
+        if obj is ...:
+            return('...')
+        if isinstance(obj, types.FunctionType):
+            return obj.__name__
+        return repr(obj)
+    
+    def __repr__(cls):
+        return cls.type_repr(cls)
     
     @classmethod
     def __prepare__(metacls,
@@ -172,7 +190,7 @@ class MultiNamespace(Namespace[str, T], MultiMapping[str, T],
         except:
             return False
     
-    def mdict(self) -> MultiMapping[str, T]:
+    def mdict(self) -> MutableMultiMapping[str, T]:
         return super().__getattribute__('_dict')
     
     def __bool__(self) -> bool:
@@ -250,7 +268,7 @@ class TypeSpace(MultiNamespace[ConcreteType]):
         self.for_origin: tx.Dict[str, ConcreteType] = {}
         super().__init__(**kwargs)
     
-    def add_original(self, cls: tx.Type[ConcreteType]) -> bool:
+    def add_original(self, cls: tx.Type[tx.Any]) -> bool:
         origin: tx.Optional[ConcreteType] = getattr(cls, '__origin__', None)
         if not origin:
             return False
@@ -266,7 +284,7 @@ class TypeSpace(MultiNamespace[ConcreteType]):
 ty: TypeSpace[ConcreteType] = TypeSpace()
 
 # build a “for_origin” dict in the “ty” namespace:
-for key in tx.__dir__():
+for key in dir(tx):
     txattr = getattr(tx, key)
     ty.add_original(txattr)
 
@@ -423,31 +441,26 @@ if __name__ == '__main__' and PRINT_ORIGIN_TYPES:
     from pprint import pprint
     
     print("=" * terminal_width)
-    print(f'Typing Index: {len(ty)} types, {len(ty.mdict())} in ty.mdict, {len(ty.for_origin)} in ty.for_origin')
+    print('Typing Index: ' \
+         f'{len(ty)} types, ' \
+         f'{len(ty.mdict())} in ty.mdict, ' \
+         f'{len(ty.for_origin)} in ty.for_origin')
     
     print()
     print(ty)
     print()
-    
-    # for k, v in ty.mdict().items():
-    #     strk = f"{k}"
-    #     if len(strk) < 8:
-    #         strk += "\t"
-    #     print(f"{strk}\t\t\t: {v}")
     
     TOTAL = 30
     lines = []
     
     for k, v in ty.mdict().items():
         strk = f"{k}"
-        padds = TOTAL - len(strk)
-        padding = padds * " "
+        pads = TOTAL - len(strk)
+        padding = pads * " "
         lines.append(f"{padding}{strk} : {v}")
     
     for line in reversed(lines):
         print(line)
-    
-    # pprint(ty.mdict(), indent=4, depth=10, width=terminal_width)
     
     print()
     pprint(ty.for_origin)
@@ -631,15 +644,15 @@ def u8bytes(source: tx.Any) -> bytes:
     """ Encode a source as bytes using the UTF-8 codec, guaranteeing a
         proper return value without raising an error
     """
-    if type(source) == bytes:
+    if type(source) is bytes:
         return source
-    elif type(source) == str:
+    elif type(source) is str:
         return u8encode(source)
     elif isinstance(source, six.string_types):
         return u8encode(source)
     elif isinstance(source, (int, float)):
         return u8encode(str(source))
-    elif type(source) == bool:
+    elif type(source) is bool:
         return source and b'True' or b'False'
     elif source is None:
         return b'None'

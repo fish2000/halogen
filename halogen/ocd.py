@@ -171,8 +171,9 @@ class OCDType(Originator):
                   '__module__' : modulename,
                     '__name__' : clsname,
                     '__iter__' : lambda self: iter(
-                                              sorted(typename.__iter__(self), key=key,
-                                                                              reverse=rev)),
+                                              sorted(typename.__iter__(self),
+                                                     key=key,
+                                                     reverse=rev)),
             
             # q.v. inline notes to the Python 3 `typing` module
             # supra: https://git.io/fAsNO
@@ -194,7 +195,7 @@ class OCDType(Originator):
         
         if callable(factory):
             attributes.update({
-                     '__new__' : lambda cls, *args, **kw: factory(*args, **kw),  # type: ignore
+                     '__new__' : lambda cls, *args, **kw: factory(*args, **kw), # type: ignore
                  '__factory__' : staticmethod(factory)
             })
         
@@ -416,10 +417,10 @@ def test():
     pprint(OCDNamespace.__origin__)
     pprint(OCDNamespace.__generic__)
     pprint(OCDNamespace[S, T].__origin__)
-    pprint(SortedNamespace[S, T])
+    pprint(SortedNamespace[T])
     pprint(SortedNamespace.__origin__)
     pprint(SortedNamespace.__generic__)
-    pprint(SortedNamespace[S, T].__origin__)
+    pprint(SortedNamespace[T].__origin__)
     
     assert OCDNumpyArray.__name__ == 'OCDNumpyArray'
     assert OCDNumpyArray.__base__ == numpy.ndarray

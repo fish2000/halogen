@@ -55,8 +55,8 @@ include_dirs = [
     numpy.get_include(),
     halogen_base_path,
     os.path.join(halogen_base_path, 'ext'),
-    # os.path.join(halogen_base_path, 'ext', 'haldol'),
     # os.path.join(halogen_base_path, 'ext', 'halide'),
+    # os.path.join(halogen_base_path, 'ext', 'haldol'),
     # os.path.join(halogen_base_path, 'ext', 'libcpp'),
     os.path.abspath(os.path.join('haldol', 'include')),
     os.path.curdir]
