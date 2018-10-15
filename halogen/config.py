@@ -440,6 +440,7 @@ class Macro(object):
         return intdef == int(value)
     
     def __init__(self, name: str, definition: MaybeStr = None,
+                                  *,
                                   undefine: bool = False):
         """ Initialize a new Macro instance, specifiying a name, a definition (optionally),
             and a boolean flag (optionally) indicating that the macro is “undefined” --
@@ -498,6 +499,7 @@ class Macros(SimpleNamespace[str]):
     __slots__: tx.ClassVar[tx.Tuple[str, ...]] = tuple()
     
     def define(self, name: str, definition: MaybeStr = None,
+                                *,
                                 undefine: bool = False) -> Macro:
         return self.add(Macro(name,
                               definition,
@@ -987,8 +989,6 @@ class BrewedConfig(ConfigBase):
                         dir_fields=False)
     
     # Name of, and prefix for, the Homebrew installation:
-    # brew: MaybeStr = which('brew')
-    # brew: MaybeStr = BrewedPythonConfig.brew
     brew: MaybeStr = None
     
     # List of cflags to use with all Homebrew-based config classes:
