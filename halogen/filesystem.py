@@ -689,9 +689,10 @@ class Directory(collections.abc.Hashable,
             that will call `Directory.ctx_set_targets(self, …)` itself.)
         """
         if not self.initialized:
-            if old is not None:
-                setattr(self, 'old', old)
-                setattr(self, 'new', old)
+            if old is None:
+                old = os.getcwd()
+            setattr(self, 'old', old)
+            setattr(self, 'new', old)
             return self
         setattr(self, 'old', old is not None and old or self.target)
         setattr(self, 'new', self.target)
