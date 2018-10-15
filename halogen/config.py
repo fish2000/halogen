@@ -496,6 +496,7 @@ class Macro(object):
         return not self.undefine
 
 class Macros(SimpleNamespace[str]):
+    
     __slots__: tx.ClassVar[tx.Tuple[str, ...]] = tuple()
     
     def define(self, name: str, definition: MaybeStr = None,

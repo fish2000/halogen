@@ -88,25 +88,30 @@ class Originator(TypingMeta):
         
         """ Set the __origin__ class attribute to the un-subscripted base class value """
         
-        # find the first generic base:
-        genericbase: tx.Optional[type] = None
-        for basecls in bases:
-            if basecls is tx.Generic:
-                genericbase = basecls
-                break
-            if hasattr(basecls, '__parameters__'):
-                genericbase = basecls
-                break
-        
-        # Raise if no generics are happened upon:
-        if not genericbase:
-            raise TypeError("couldn't find a generic base class")
-        
-        # Jam it in:
-        attributes.update({
-            '__originator__' : metacls,
-                '__origin__' : genericbase
-        })
+        if not '__origin__' in attributes:
+            
+            # find the first generic base:
+            genericbase: tx.Optional[type] = None
+            for basecls in bases:
+                if hasattr(basecls, '__parameters__'):
+                    genericbase = basecls
+                    break
+                if hasattr(basecls, '__origin__'):
+                    genericbase = basecls.__origin__
+                    break
+                if basecls is tx.Generic:
+                    genericbase = basecls
+                    break
+            
+            # Raise if no generics are happened upon:
+            if not genericbase:
+                raise TypeError("couldn't find a generic base class")
+            
+            # Jam it in:
+            attributes.update({
+                '__originator__' : metacls,
+                    '__origin__' : genericbase
+            })
         
         # Do the beard:
         cls = super().__new__(metacls, name,  # type: ignore

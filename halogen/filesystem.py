@@ -584,7 +584,6 @@ class Directory(collections.abc.Hashable,
             self.target = u8str(os.fspath(pth))
         else:
             self.target = os.getcwd()
-        self.ctx_set_targets()
     
     @property
     def name(self):
@@ -679,7 +678,7 @@ class Directory(collections.abc.Hashable,
                 setattr(self, 'old', old)
                 setattr(self, 'new', old)
             return self
-        setattr(self, 'old', old or getattr(self, 'target'))
+        setattr(self, 'old', old is not None and old or self.target)
         setattr(self, 'new', getattr(self, 'target',
                              getattr(self, 'old')))
         return self
@@ -726,12 +725,11 @@ class Directory(collections.abc.Hashable,
         # N.B. return False to throw, True to supress:
         if self.will_change_back and os.path.isdir(self.old):
             os.chdir(self.old)
-            backto = os.getcwd()
             self.did_change_back = os.path.samefile(self.old,
-                                                    backto)
+                                                    os.getcwd())
             if self.did_change_back:
-                # return to pristine state, and minimally reconfigure:
-                self.ctx_initialize().ctx_set_targets(backto)
+                # return to pristine state:
+                self.ctx_initialize()
                 return exc_type is None
         return False
     
