@@ -174,8 +174,8 @@ class SimpleNamespace(Namespace[str, T], tx.MutableMapping[str, T],
         return type(self)(**self.__dict__)
     
     def __repr__(self) -> str:
-        keys = sorted(self.__dict__)
-        items = ("{}={!r}".format(k, self.__dict__[k]) for k in keys)
+        keys = sorted(self.__dict__, key=lambda k: str(k))
+        items = ("{} = {!r}".format(k, self.__dict__[k]) for k in keys)
         return "{}({})".format(type(self).__name__, ", ".join(items)) # type: ignore
 
 class MultiNamespace(Namespace[str, T], MultiMapping[str, T],
@@ -270,7 +270,7 @@ class TypeSpace(MultiNamespace[ConcreteType]):
     __slots__ = tuplize('for_origin')
     
     def __init__(self, **kwargs):
-        self.for_origin: tx.Dict[str, ConcreteType] = {}
+        self.for_origin: SimpleNamespace[ConcreteType] = SimpleNamespace()
         super().__init__(**kwargs)
     
     def add_original(self, cls: tx.Type[tx.Any]) -> bool:
