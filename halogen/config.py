@@ -26,8 +26,9 @@ from errors import ConfigurationError
 from filesystem import back_tick, script_path, which
 from filesystem import Directory
 from ocd import OCDSet, OCDFrozenSet
-from utils import is_string, modulize, stringify, tuplize
-from utils import u8bytes, u8str
+from utils import SimpleNamespace
+from utils import is_string, modulize, stringify
+from utils import tuplize, u8bytes, u8str
 
 __all__ = ('SHARED_LIBRARY_SUFFIX', 'STATIC_LIBRARY_SUFFIX',
            'DEFAULT_VERBOSITY',
@@ -414,6 +415,7 @@ class SetWrap(ConfigBase):
         ldflags: str = self.get_ldflags()
         return { flag.strip() for flag in f" {ldflags}".split(TOKEN) if len(flag.strip()) }
 
+MacroTuple = tx.Tuple[str, str]
 
 class Macro(object):
     
@@ -463,7 +465,7 @@ class Macro(object):
             return f"D{u8str(self.name)}={u8str(self.definition)}"
         return f"D{u8str(self.name)}"
     
-    def to_tuple(self) -> tx.Tuple[str, str]:
+    def to_tuple(self) -> MacroTuple:
         """ Tuple-ize the macro instance -- return a tuple in the form (name, value)
             as per the macro’s contents. The returned tuple always has a value field;
             in the case of undefined macros, the value is '0' -- stringified zero --
@@ -492,8 +494,8 @@ class Macro(object):
         """ An instance of Macro is considered Falsey if undefined, Truthy if not. """
         return not self.undefine
 
-
-class Macros(dict):
+class Macros(SimpleNamespace[str]):
+    __slots__: tx.ClassVar[tx.Tuple[str, ...]] = tuple()
     
     def define(self, name: str, definition: MaybeStr = None,
                                 undefine: bool = False) -> Macro:
@@ -525,8 +527,8 @@ class Macros(dict):
             return Macro(name, undefine=True)
         return Macro(name, self[name])
     
-    def to_tuple(self) -> tx.Tuple[Macro, ...]:
-        out: tx.List[Macro] = []
+    def to_tuple(self) -> tx.Tuple[MacroTuple, ...]:
+        out: tx.List[MacroTuple] = []
         for k, v in self.items():
             out.append(Macro(k, v).to_tuple())
         return tuple(out)
@@ -1466,6 +1468,9 @@ def AR(conf: ConfigType,
 
 modulize({
                'MaybeStr' : MaybeStr,
+             'MacroTuple' : MacroTuple,
+                  'Macro' : Macro,
+                 'Macros' : Macros,
                  'AnySet' : AnySet,
                'Ancestor' : Ancestor,
              'ConfigType' : ConfigType
@@ -1478,6 +1483,7 @@ del TC
 # del MaybeStr
 # del AnySet
 del Ancestor
+# del MacroTuple
 # del ConfigType
 
 def test():
