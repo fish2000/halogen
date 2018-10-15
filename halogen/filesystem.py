@@ -1087,7 +1087,7 @@ class Intermediate(TemporaryDirectory, Directory):
         """ The constructor simply delegates to the creation of either a new
             Directory or a new TemporaryDirectory.
         """
-        if pth:
+        if pth is not None:
             return Directory(pth=pth)
         return TemporaryDirectory(prefix=f"{cls.__name__}-",
                                   change=False)
