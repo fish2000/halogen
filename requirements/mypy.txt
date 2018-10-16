@@ -3,5 +3,6 @@ mypy
 mypy_extensions
 typeshed
 typed-ast
-# typing
+typing
+typing_extensions
 typing_inspect
