@@ -8,7 +8,15 @@
   "binary": "/usr/local/bin/pyre.bin",
   "typeshed": "/usr/local/lib/pyre_check/typeshed/",
   "search_path": [
-    "/usr/local/lib/python3.7/site-packages/typeshed/stdlib/",
-    "/usr/local/lib/python3.7/site-packages/typeshed/third_party/"
+    "/usr/local/lib/pyre_check/typeshed/stdlib/2and3/",
+    "/usr/local/lib/pyre_check/typeshed/stdlib/3/",
+    "/usr/local/lib/pyre_check/typeshed/stdlib/3/collections/",
+    "/usr/local/lib/python3.7/site-packages/typeshed/stdlib/3.3/",
+    "/usr/local/lib/python3.7/site-packages/typeshed/stdlib/3.4/",
+    "/usr/local/lib/python3.7/site-packages/typeshed/stdlib/3.5/",
+    "/usr/local/lib/python3.7/site-packages/typeshed/stdlib/3.6/",
+    "/usr/local/lib/python3.7/site-packages/typeshed/third_party/2and3/",
+    "/usr/local/lib/python3.7/site-packages/typeshed/third_party/3/",
+    "/usr/local/lib/python3.7/site-packages/multidict/"
   ]
 }

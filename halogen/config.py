@@ -278,13 +278,13 @@ class ConfigBase(ConfigSubBase, metaclass=ConfigBaseMeta):
     """
     
     base_fields: tx.ClassVar[tx.Tuple[str, ...]] = ('prefix', 'get_includes',
-                                                    'get_libs',
-                                                    'get_cflags',
-                                                    'get_ldflags')
+                                                              'get_libs',
+                                                              'get_cflags',
+                                                              'get_ldflags')
     
-    dir_fields: tx.ClassVar[tx.Tuple[str, ...]] = ('bin', 'include',
-                                                   'lib', 'libexec', 'libexecbin',
-                                                   'share')
+    dir_fields:  tx.ClassVar[tx.Tuple[str, ...]] = ('bin', 'include',
+                                                    'lib', 'libexec', 'libexecbin',
+                                                    'share')
     
     @property
     def prefix(self) -> Directory:
@@ -1165,7 +1165,7 @@ class ConfigUnion(ConfigBase, tx.Collection[ConfigType]):
             # N.B. the curly-brace expression below is a set comprehension:
             @wraps(base_function)
             def getter(this) -> str:
-                out: OCDSet[str] = OCDSet()
+                out: OCDFrozenSet[str] = OCDFrozenSet()
                 for config in this.configs:
                     function_to_call = getattr(config, self.name)
                     out |= { flag.strip() for flag in f" {function_to_call()}".split(TOKEN) }
@@ -1370,22 +1370,21 @@ class ConfigUnion(ConfigBase, tx.Collection[ConfigType]):
         return f"{typename}<{typelist}>"
     
     @union_of(name='includes')
-    def get_includes(self, includes: OCDSet[str]) -> OCDSet[str]:
+    def get_includes(self, includes: OCDFrozenSet[str]) -> OCDFrozenSet[str]:
         """ Return the union of all flags amassed from the calling
             of all base Config objects' `get_includes()`:
         """
-        out = includes - self.nonexistent_path_flags(includes)
-        return out
+        return includes - self.nonexistent_path_flags(includes)
     
     @union_of(name='libs')
-    def get_libs(self, libs: OCDSet[str]) -> OCDSet[str]:
+    def get_libs(self, libs: OCDFrozenSet[str]) -> OCDFrozenSet[str]:
         """ Return the union of all flags amassed from the calling
             of all base Config objects' `get_libs()`:
         """
         return libs
     
     @union_of(name='cflags')
-    def get_cflags(self, cflags: OCDSet[str]) -> OCDSet[str]:
+    def get_cflags(self, cflags: OCDFrozenSet[str]) -> OCDFrozenSet[str]:
         """ Return the union of all flags amassed from the calling
             of all base Config objects' `get_cflags()`:
         """
@@ -1393,16 +1392,14 @@ class ConfigUnion(ConfigBase, tx.Collection[ConfigType]):
         # passing only the respective highest-value flags:
         out = self.highest_cxx_standard_level(
               self.highest_optimization_level(cflags))
-        out -= self.nonexistent_path_flags(out)
-        return out
+        return out - self.nonexistent_path_flags(out)
     
     @union_of(name='ldflags')
-    def get_ldflags(self, ldflags: OCDSet[str]) -> OCDSet[str]:
+    def get_ldflags(self, ldflags: OCDFrozenSet[str]) -> OCDFrozenSet[str]:
         """ Return the union of all flags amassed from the calling
             of all base Config objects' `get_ldflags()`:
         """
-        out = ldflags - self.nonexistent_path_flags(ldflags)
-        return out
+        return ldflags - self.nonexistent_path_flags(ldflags)
 
 
 def CC(conf: ConfigType,
