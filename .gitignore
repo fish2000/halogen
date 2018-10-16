@@ -95,4 +95,4 @@ ENV/
 .mypy_cache/
 
 # Pyre
-.pyre
+.pyre/
