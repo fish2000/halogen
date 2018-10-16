@@ -1,6 +1,6 @@
 Cython
 clint
-ctypes
+# ctypes
 multidict
 numpy
 six
