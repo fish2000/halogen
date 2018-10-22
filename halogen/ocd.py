@@ -310,6 +310,7 @@ class SortedNamespace(Namespace[str, T], collections.abc.MutableMapping,
                                          collections.abc.Iterable,
                                          collections.abc.Sized,
                                          metaclass=OCDType):
+    __slots__ = tuple()
     
     """ Generic class, accepts one type parameter: """
     
