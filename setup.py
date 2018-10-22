@@ -3,12 +3,19 @@ from __future__ import print_function
 
 import os
 import os.path
+import sys
 import psutil
 from setuptools import setup, find_packages # import before Cython stuff, to avoid
                                             # overriding Cython’s Extension class.
 from distutils.sysconfig import get_python_inc
 from Cython.Distutils import Extension
 from Cython.Build import cythonize
+
+sys.path.append(os.path.abspath(
+                os.path.join(
+                os.path.dirname(__file__), 'halogen')))
+
+from halogen.config import Macros
 
 try:
     import numpy
@@ -47,8 +54,7 @@ api_extension_sources = [os.path.join('halogen', 'api.pyx')]
 haldol_source_names = ('detail.cc', 'gil.cc', 'structcode.cc', 'terminal.cc', 'typecode.cc')
 haldol_sources = [os.path.join('haldol', source) for source in haldol_source_names]
 
-halogen_base_path = os.path.abspath(os.path.dirname(
-                                    os.path.join('halogen', 'ext')))
+halogen_base_path = os.path.abspath(os.path.dirname('halogen'))
 
 include_dirs = [
     get_python_inc(plat_specific=1),
@@ -61,14 +67,12 @@ include_dirs = [
     os.path.abspath(os.path.join('haldol', 'include')),
     os.path.curdir]
 
-define_macros = []
-define_macros.append(
-    ('VERSION', __version__))
-define_macros.append(
-    ('NPY_NO_DEPRECATED_API', 'NPY_1_7_API_VERSION'))
-define_macros.append(
-    ('PY_ARRAY_UNIQUE_SYMBOL', 'YO_DOGG_I_HEARD_YOU_LIKE_UNIQUE_SYMBOLS'))
-
+macros = Macros()
+macros.define('NDEBUG')
+macros.define('NUMPY')
+macros.define('VERSION',                 __version__)
+macros.define('NPY_NO_DEPRECATED_API',  'NPY_1_7_API_VERSION')
+macros.define('PY_ARRAY_UNIQUE_SYMBOL', 'YO_DOGG_I_HEARD_YOU_LIKE_UNIQUE_SYMBOLS')
 
 setup(name='halide-halogen',
     version=__version__,
@@ -82,7 +86,6 @@ setup(name='halide-halogen',
     url='http://github.com/fish2000/halogen',
     packages=find_packages(),
     package_dir={
-        # 'hal'       : 'hal',
         'haldol'    : 'haldol',
         'halogen'   : 'halogen'
     },
@@ -92,8 +95,8 @@ setup(name='halide-halogen',
         Extension('halogen.api',
             api_extension_sources + haldol_sources,
             language="c++",
-            include_dirs=include_dirs,
-            define_macros=define_macros,
+            include_dirs=[d for d in include_dirs if os.path.isdir(d)],
+            define_macros=macros.to_list(),
             extra_link_args=[
                 '-lHalide'],
             extra_compile_args=[
@@ -101,14 +104,12 @@ setup(name='halide-halogen',
                 '-Wno-unneeded-internal-declaration',
                 '-O3',
                 '-fstrict-aliasing',
-                # '-fno-rtti',
                 '-funroll-loops',
                 '-mtune=native',
                 '-std=c++17',
                 '-stdlib=libc++']
         )],
         nthreads=psutil.cpu_count(),
-        language="c++",
         compiler_directives=dict(language_level=2,
                                  infer_types=True,
                                  embedsignature=True)

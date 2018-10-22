@@ -290,6 +290,7 @@ class SortedList(list, metaclass=OCDType):
 OCDList       = OCDType[list] # this emits the cached type from above
 
 class Namespace(KeyValue[S, T], types.SimpleNamespace):
+    __slots__ = tuple()
     
     """ Generic class, accepts two type parameters: """
     
@@ -462,6 +463,109 @@ def test():
     
     assert len(OCDType.subtypes) == 3
     print_cache(OCDType, 'subtypes')
+    
+    
+    # class Base(object):
+    #     def __init__(self):
+    #         self.base = "in your base"
+    #     def yodogg(self):
+    #         return "i heard you liked attrs"
+    #
+    # class Derived(Base):
+    #
+    #     def doggyo(self):
+    #         # return getattr(super(), 'base')
+    #         # return super().base
+    #         f = getattr(super(), 'yodogg')
+    #         return f()
+    #
+    # d = Derived()
+    # print(d.doggyo())
+    
+    class Descriptor(object):
+        
+        __slots__ = tuplize('name')
+        
+        def __init__(self, *args, **kwargs):
+            pass
+        
+        def __get__(self, instance, cls=None):
+            if cls is None:
+                cls = type(instance)
+        
+        def __set__(self, instance, value):
+            pass
+        
+        def __delete__(self, instance):
+            pass
+        
+        def __set_name__(self, cls, name):
+            self.name = name
+    
 
+
+    class NewType:
+    
+        """NewType creates simple unique types with almost zero runtime
+        overhead. `NewType(name, tp)` is considered a subtype of `tp`
+        by static type checkers. At runtime, NewType(name, tp) creates
+        a callable instance that simply returns its argument when called.
+        Usage::
+
+            UserId = NewType('UserId', int)
+
+            def name_by_id(user_id: UserId) -> str:
+                ...
+
+            UserId('user')          # Fails type check
+
+            name_by_id(42)          # Fails type check
+            name_by_id(UserId(42))  # OK
+
+            num = UserId(5) + 1     # type: int
+        """
+    
+        __slots__ = ('__name__',
+                     '__qualname__',
+                     '__supertype__')
+
+        def __init__(self, name, tp):
+            self.__name__ = self.__qualname__ = name
+            self.__supertype__ = tp
+
+        @staticmethod
+        def __call__(arg):
+            return arg
+
+        def __repr__(self):
+            return f"{type(self).__name__}<" \
+                   f"{self.__qualname__}:" \
+                   f"{self.__supertype__.__name__}>"
+
+        def __hash__(self):
+            return hash((self.__name__, self.__supertype__))
+    
+    
+    YoDogg = NewType('YoDogg', str)
+    YouLikeInts = NewType('YouLikeInts', int)
+    
+    def DoggPrinter(arg: YoDogg) -> YoDogg:
+        print(tx.cast(str, arg))
+        return arg
+    
+    def DoggEvaluator(arg: YouLikeInts) -> int:
+        intarg = tx.cast(int, arg)
+        print(f"Integer argument: {intarg}")
+        return intarg
+    
+    dogg: YoDogg = YoDogg('Dogg, Yo!')
+    DoggPrinter(dogg)
+    
+    inyour: YouLikeInts = YouLikeInts(666)
+    DoggEvaluator(inyour)
+    
+    print(repr(YoDogg))
+    print(repr(YouLikeInts))
+    
 if __name__ == '__main__':
     test()

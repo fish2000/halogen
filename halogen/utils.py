@@ -86,7 +86,9 @@ class Originator(TypingMeta):
              attributes: tx.MutableMapping[str, tx.Any],
                **kwargs) -> type:
         
-        """ Set the __origin__ class attribute to the un-subscripted base class value """
+        """ Metaclass that sets the __origin__ class attribute to the value of
+            the un-subscripted base class value
+        """
         
         if not '__origin__' in attributes:
             
@@ -417,10 +419,11 @@ class TerminalSize(object):
                 if descriptor:
                     os.close(descriptor)
         
-        # … if we were unsuccessfull in reading from all three of the standard I/O
-        # descriptors •and• a bespoke descriptor opened directly on the /dev entry,
-        # make a last-ditch effort to send back values culled from the environment,
-        # with truly last-resort possibilities filled in with hardcoded defaults.
+        # … if we were unsuccessfull in reading from all three of the standard
+        # I/O descriptors •and• a bespoke descriptor opened directly on the
+        # /dev entry, make a last-ditch effort to send back values culled from
+        # the environment, with truly last-resort possibilities filled in with
+        # hardcoded defaults.
         if not sz:
             sz = self.Size(env.get('LINES',   self.DEFAULT_LINES),
                            env.get('COLUMNS', self.DEFAULT_COLUMNS))
@@ -475,13 +478,15 @@ if __name__ == '__main__' and PRINT_ORIGIN_TYPES:
     print()
 
 StringType = tx.TypeVar('StringType', bound=type, covariant=True)
+IsStringType = tx.Callable[[tx.Any], bool]
 
-string_types: tx.Tuple[tx.Type[StringType], ...] = (type(''),
-                                                    type(b''),
-                                                    type(f''),
-                                                    type(r'')) + six.string_types
+string_types: tx.Tuple[tx.Type[StringType], ...] = tuplize(type(''),
+                                                           type(b''),
+                                                           type(f''),
+                                                           type(r''),
+                                                           *six.string_types)
 
-is_string: tx.Callable[[tx.Any], bool] = lambda thing: isinstance(thing, string_types)
+is_string: IsStringType = lambda thing: isinstance(thing, string_types)
 
 WrapArg = tx.TypeVar('WrapArg', covariant=True)
 

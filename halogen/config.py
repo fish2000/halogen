@@ -530,11 +530,14 @@ class Macros(SimpleNamespace[str]):
             return Macro(name, undefine=True)
         return Macro(name, self[name])
     
-    def to_tuple(self) -> tx.Tuple[MacroTuple, ...]:
+    def to_list(self) -> tx.List[MacroTuple]:
         out: tx.List[MacroTuple] = []
         for k, v in self.items():
             out.append(Macro(k, v).to_tuple())
-        return tuple(out)
+        return out
+    
+    def to_tuple(self) -> tx.Tuple[MacroTuple, ...]:
+        return tuple(self.to_list())
     
     def to_string(self) -> str:
         stringified: str = TOKEN.join(Macro(k, v).to_string() \
