@@ -1,7 +1,4 @@
 {
-  "analysis_directories": [
-    "./halogen/"
-  ],
   "source_directories": [
     "./halogen/"
   ],

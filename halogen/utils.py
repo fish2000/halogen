@@ -222,9 +222,7 @@ class MultiNamespace(Namespace[str, T], MultiMapping[str, T],
         return iter(dict(self.mdict()))
     
     def __getattr__(self, key: str) -> T:
-        if not self.initialized():
-            raise KeyError('multidict uninitialized')
-        return self.mdict().getone(key)
+        return self.getone(key)
     
     def __setattr__(self, key: str, val: T):
         if self.initialized():
@@ -233,8 +231,6 @@ class MultiNamespace(Namespace[str, T], MultiMapping[str, T],
             super().__setattr__(key, val)
     
     def add(self, key: str, val: T):
-        if not self.initialized():
-            raise KeyError('multidict uninitialized')
         self.mdict().add(key, val)
     
     def getone(self, key: str) -> T:
@@ -243,8 +239,6 @@ class MultiNamespace(Namespace[str, T], MultiMapping[str, T],
         return self.mdict().getone(key)
     
     def getall(self, key: str) -> tx.Tuple[T, ...]:
-        if not self.initialized():
-            raise KeyError('multidict uninitialized')
         return self.mdict().getall(key)
     
     def count(self, key: str) -> int:
@@ -852,7 +846,7 @@ def test_compile(conf, test_source: str, print_cdb: bool = False) -> bool:
             print(f" ≠ C++ TARGET: {adotout.name}")
             print("")
             
-            output += config.CXX(conf, outfile=os.fspath(adotout),
+            output += config.CXX(conf, outfile=os.fspath(adotout), # type: ignore
                                        infile=os.fspath(tf),
                                        cdb=cdb,
                                        verbose=True)

@@ -41,6 +41,7 @@ __all__ = ('SHARED_LIBRARY_SUFFIX', 'STATIC_LIBRARY_SUFFIX',
                                      'BrewedHalideConfig',
                                      'BrewedImreadConfig',
            'ConfigUnion',
+           'command',
            'CC', 'CXX', 'LD', 'AR',
            'ts')
 
@@ -243,7 +244,7 @@ class ConfigBaseMeta(abc.ABCMeta):
                 base_fields |= frozenset(base.fields)
         attributes['base_fields'] = tuple(base_fields)
         ConfigSubBase.base_field_cache[name] = tuple(base_fields)
-        cls = super(ConfigBaseMeta, metacls).__new__(metacls, name,
+        cls = super(ConfigBaseMeta, metacls).__new__(metacls, name, # type: ignore
                                                               bases,
                                                               attributes,
                                                             **kwargs)
@@ -317,29 +318,31 @@ class ConfigBase(ConfigSubBase, metaclass=ConfigBaseMeta):
         """ Return the path to a subdirectory within this Config instances’ prefix """
         return self.prefix.subpath(subdir, whence, requisite=True)
     
-    def cc_flag_string(self) -> str:
+    def cc_flag_string(self, outfile: str, infile: str) -> str:
         """ Get the string template for the C compiler command """
         cflags: str = self.get_cflags()
-        return           f"{environ_override('CC')} {cflags} -c %s -o %s"
+        return           f"{environ_override('CC')} {cflags} -c {infile} -o {outfile}"
     
-    def cxx_flag_string(self) -> str:
+    def cxx_flag_string(self, outfile: str, infile: str) -> str:
         """ Get the string template for the C++ compiler command """
         cflags: str = self.get_cflags()
-        return          f"{environ_override('CXX')} {cflags} -c %s -o %s"
+        return          f"{environ_override('CXX')} {cflags} -c {infile} -o {outfile}"
     
-    def ld_flag_string(self) -> str:
+    def ld_flag_string(self, outfile: str, *infiles) -> str:
         """ Get the string template for the dynamic linker command """
+        allinfiles: str = " ".join(infiles)
         ldflags: str = self.get_ldflags()
-        return   f"{environ_override('LDCXXSHARED')} {ldflags} %s -o %s"
+        return   f"{environ_override('LDCXXSHARED')} {ldflags} {allinfiles} -o {outfile}"
     
-    def ar_flag_string(self) -> str:
+    def ar_flag_string(self, outfile: str, *infiles) -> str:
         """ Get the string template for the command executing the archiver
             (née the “static linker”)
         """
+        allinfiles: str = " ".join(infiles)
         arflags: str = environ_override('ARFLAGS')
         if 's' not in arflags:
             arflags += 's'
-        return              f"{environ_override('AR')} {arflags} %s %s"
+        return              f"{environ_override('AR')} {arflags} {outfile} {allinfiles}"
     
     def to_string(self,
                   field_list: tx.Optional[tx.Iterable[str]] = None) -> str:
@@ -347,14 +350,14 @@ class ConfigBase(ConfigSubBase, metaclass=ConfigBaseMeta):
             or if none was provided, the iterable-of-strings class variable “fields”.
         """
         if not field_list:
-            field_list: tx.Iterable[str] = type(self).fields
+            field_list: tx.Iterable[str] = getattr(type(self), 'fields', tuple())
         return stringify(self, field_list)
     
     def __repr__(self) -> str:
-        return stringify(self, type(self).fields)
+        return stringify(self, getattr(type(self), 'fields', tuple()))
     
     def __str__(self) -> str:
-        return stringify(self, type(self).fields)
+        return stringify(self, getattr(type(self), 'fields', tuple()))
     
     def __bytes__(self) -> bytes:
         return u8bytes(repr(self))
@@ -400,20 +403,24 @@ class SetWrap(ConfigBase):
         return self.config.get_ldflags()
     
     def includes_set(self) -> tx.Set[str]:
+        global TOKEN
         includes: str = self.get_includes()
-        return { flag.strip() for flag in f" {includes}".split(TOKEN) if len(flag.strip()) }
+        return { flag.strip() for flag in f" {includes}".split(TOKEN) if len(flag.strip()) } # type: ignore
     
     def libs_set(self) -> tx.Set[str]:
+        global TOKEN
         libs: str = self.get_libs()
-        return { flag.strip() for flag in f" {libs}".split(TOKEN) if len(flag.strip()) }
+        return { flag.strip() for flag in f" {libs}".split(TOKEN) if len(flag.strip()) } # type: ignore
     
     def cflags_set(self) -> tx.Set[str]:
+        global TOKEN
         cflags: str = self.get_cflags()
-        return { flag.strip() for flag in f" {cflags}".split(TOKEN) if len(flag.strip()) }
+        return { flag.strip() for flag in f" {cflags}".split(TOKEN) if len(flag.strip()) } # type: ignore
     
     def ldflags_set(self) -> tx.Set[str]:
+        global TOKEN
         ldflags: str = self.get_ldflags()
-        return { flag.strip() for flag in f" {ldflags}".split(TOKEN) if len(flag.strip()) }
+        return { flag.strip() for flag in f" {ldflags}".split(TOKEN) if len(flag.strip()) } # type: ignore
 
 MacroTuple = tx.Tuple[str, str]
 
@@ -540,9 +547,10 @@ class Macros(SimpleNamespace[str]):
         return tuple(self.to_list())
     
     def to_string(self) -> str:
-        stringified: str = TOKEN.join(Macro(k, v).to_string() \
-                                        for k, v in self.items()).strip()
-        return f"{TOKEN.lstrip()}{stringified}"
+        global TOKEN
+        stringified: str = TOKEN.join( # type: ignore
+                           Macro(k, v).to_string() for k, v in self.items()).strip() # type: ignore
+        return f"{TOKEN.lstrip()}{stringified}" # type: ignore
     
     def __str__(self) -> str:
         return self.to_string()
@@ -553,7 +561,7 @@ class Macros(SimpleNamespace[str]):
 FRAMEWORK_RE_STR: str = r"""(^.*)(?:^|/)(\w+).framework(?:/(?:Versions/([^/]+)/)?\2)?$"""
 FRAMEWORK_RE: tx.Optional[re.Pattern] = None
 
-def infoForFramework(filename: str) -> tx.Optional[tx.List[str]]:
+def infoForFramework(filename: str) -> tx.Optional[str]:
     """ Originally from PyObjC: http://bit.ly/2MPVbuz
         … returns (location, name, version) or None
     """
@@ -625,7 +633,7 @@ class PythonConfig(ConfigBase):
         return self.subdirectory("libexec") or self.lib()
     
     def libexecbin(self) -> MaybeStr:
-        return self.subdirectory('bin', whence=self.subdirectory("libexec"))
+        return self.subdirectory('bin', whence=self.subdirectory("libexec")) # type: ignore
     
     def share(self) -> MaybeStr:
         return self.subdirectory("share")
@@ -655,16 +663,16 @@ class PythonConfig(ConfigBase):
             self.framework_path = self.subdirectory('Frameworks')
         return self.framework_path
     
-    def Frameworks(self) -> str:
+    def Frameworks(self) -> MaybeStr:
         return self.framework
     
     def Headers(self) -> str:
-        return os.path.join(self.framework,
+        return os.path.join(self.framework or '',
                             self.framework_name, 'Versions',
                             self.python_version, 'Headers')
 
     def Resources(self) -> str:
-        return os.path.join(self.framework,
+        return os.path.join(self.framework or '',
                             self.framework_name, 'Versions',
                             self.python_version, 'Resources')
     
@@ -860,7 +868,7 @@ class PkgConfig(ConfigBase):
     @classmethod
     def check_package(cls, pkg_name: str) -> bool:
         """ Check a package name for validity against the loaded set of names """
-        return pkg_name in cls.packages
+        return pkg_name in cls.packages # type: ignore
     
     def __init__(self, pkg_name: MaybeStr = None):
         """ Initialize PkgConfig, optionally naming a package (the default is “python3”) """
@@ -885,7 +893,7 @@ class PkgConfig(ConfigBase):
         return self.subdirectory("libexec") or self.lib()
     
     def libexecbin(self) -> MaybeStr:
-        return self.subdirectory('bin', whence=self.subdirectory('libexec'))
+        return self.subdirectory('bin', whence=self.subdirectory('libexec')) # type: ignore
     
     def share(self) -> MaybeStr:
         return self.subdirectory("share")
@@ -909,7 +917,7 @@ class PkgConfig(ConfigBase):
     def get_cflags(self) -> str:
         pc_cflags = back_tick(f"{self.pkgconfig} {self.pkg_name} --cflags",
                               ret_err=False)
-        return f"{TOKEN}{TOKEN.join(self.cflags)} {pc_cflags}".strip()
+        return f"{TOKEN}{TOKEN.join(self.cflags)} {pc_cflags}".strip() # type: ignore
     
     def get_ldflags(self) -> str:
         return back_tick(f"{self.pkgconfig} {self.pkg_name} --libs --static",
@@ -929,9 +937,9 @@ class NumpyConfig(ConfigBase):
     @classmethod
     def get_numpy_include_directory(cls) -> Directory:
         if not hasattr(cls, 'include_path'):
-            import numpy
+            import numpy # type: ignore
             cls.include_path: Directory = Directory(pth=numpy.get_include())
-        return cls.include_path
+        return cls.include_path # type: ignore
     
     def __init__(self):
         """ Prefix is likely /…/numpy/core """
@@ -939,7 +947,7 @@ class NumpyConfig(ConfigBase):
         self.info: tx.DefaultDict[str, OCDSet[tx.Any]] = collections.defaultdict(OCDSet)
         self.macros: Macros = Macros()
         self.prefix: Directory = self.get_numpy_include_directory().parent()
-        import numpy.distutils, numpy.version
+        import numpy.distutils, numpy.version # type: ignore
         for package in self.subpackages:
             infodict: tx.Dict[str, tx.Tuple[str, ...]] = numpy.distutils.misc_util.get_info(package)
             for k, v in infodict.items():
@@ -961,23 +969,23 @@ class NumpyConfig(ConfigBase):
     
     def get_includes(self) -> str:
         return " ".join(f"-I{include_dir}" for include_dir \
-                                 in self.info['include_dirs'])
+                                 in self.info['include_dirs']) # type: ignore
     
     def get_libs(self) -> str:
         return " ".join(f"-l{library}" for library \
-                             in self.info['libraries'])
+                             in self.info['libraries']) # type: ignore
     
     def get_cflags(self) -> str:
         macros: str = self.macros.to_string()
         includes: str = self.get_includes()
-        extra_compile_args: str = " ".join(self.info['extra_compile_args'])
+        extra_compile_args: str = " ".join(self.info['extra_compile_args']) # type: ignore
         return f"{macros} {includes} {extra_compile_args}".strip()
     
     def get_ldflags(self) -> str:
         linkdirs: str = " ".join(f"-L{library_dir}" for library_dir \
-                                          in self.info['library_dirs'])
+                                          in self.info['library_dirs']) # type: ignore
         libs: str = self.get_libs()
-        extra_link_args: str = " ".join(self.info['extra_link_args'])
+        extra_link_args: str = " ".join(self.info['extra_link_args']) # type: ignore
         return f"{linkdirs} {libs} {extra_link_args}".strip()
 
 
@@ -1025,7 +1033,7 @@ class BrewedConfig(ConfigBase):
         return self.subdirectory("libexec") or self.lib()
     
     def libexecbin(self) -> MaybeStr:
-        return self.subdirectory('bin', whence=self.subdirectory('libexec'))
+        return self.subdirectory('bin', whence=self.subdirectory('libexec')) # type: ignore
     
     def share(self) -> MaybeStr:
         return self.subdirectory("share")
@@ -1045,7 +1053,8 @@ class BrewedConfig(ConfigBase):
         return ""
     
     def get_cflags(self) -> str:
-        return f"{TOKEN}{TOKEN.join(self.cflags)} {self.get_includes()}".strip()
+        global TOKEN
+        return f"{TOKEN}{TOKEN.join(self.cflags)} {self.get_includes()}".strip() # type: ignore
     
     def get_ldflags(self) -> str:
         return f"-L{self.lib()}"
@@ -1168,11 +1177,12 @@ class ConfigUnion(ConfigBase, tx.Collection[ConfigType]):
             # N.B. the curly-brace expression below is a set comprehension:
             @wraps(base_function)
             def getter(this) -> str:
+                global TOKEN
                 out: OCDFrozenSet[str] = OCDFrozenSet()
                 for config in this.configs:
                     function_to_call = getattr(config, self.name)
-                    out |= { flag.strip() for flag in f" {function_to_call()}".split(TOKEN) }
-                return (TOKEN.join(sorted(base_function(this, out)))).strip()
+                    out |= { flag.strip() for flag in f" {function_to_call()}".split(TOKEN) } # type: ignore
+                return (TOKEN.join(sorted(base_function(this, out)))).strip() # type: ignore
             return getter
     
     class FlagSet(tx.Collection[str]):
@@ -1266,11 +1276,11 @@ class ConfigUnion(ConfigBase, tx.Collection[ConfigType]):
             from a set of (de-dashed) flags. Returns a new set.
         """
         # Which flags are optflags?
-        optflags: AnySet[str] = flags.intersection(cls.optimization.set)
+        optflags: AnySet[str] = flags.intersection(cls.optimization.set) # type: ignore
         
         # Exit if the `flags` set contained no optflags:
-        if len(optflags) < 1:
-            return flags - cls.fake_optimization_flags(flags)
+        if len(optflags) < 1: # type: ignore
+            return flags - cls.fake_optimization_flags(flags) # type: ignore
         
         # Find the optflag with the highest index into cls.optimization.flags:
         flags_index: int = reduce(lambda x, y: max(x, y),
@@ -1278,7 +1288,7 @@ class ConfigUnion(ConfigBase, tx.Collection[ConfigType]):
                                   optflags))
         
         # Assemble all non-optflags in a new set:
-        out: AnySet[str] = flags - cls.optimization.set
+        out: AnySet[str] = flags - cls.optimization.set # type: ignore
         out -= cls.fake_optimization_flags(flags)
         
         # Append the highest-indexed optflag we found, and return:
@@ -1291,10 +1301,10 @@ class ConfigUnion(ConfigBase, tx.Collection[ConfigType]):
             from a set of (de-dashed) flags. Returns a new set.
         """
         # Which flags are stdflags?
-        stdflags: AnySet[str] = flags.intersection(cls.cxx_standard.set)
+        stdflags: AnySet[str] = flags.intersection(cls.cxx_standard.set) # type: ignore
         
         # Exit if the `flags` set contained no stdflags:
-        if len(stdflags) < 1:
+        if len(stdflags) < 1: # type: ignore
             return flags
         
         # Find the stdflag with the highest index into cls.cxx_standard.flags:
@@ -1303,13 +1313,13 @@ class ConfigUnion(ConfigBase, tx.Collection[ConfigType]):
                                   stdflags))
         
         # Assemble all non-stdflags in a new set:
-        out: AnySet[str] = flags - cls.cxx_standard.set
+        out: AnySet[str] = flags - cls.cxx_standard.set # type: ignore
         
         # Append the highest-indexed stdflag we found, and return:
         out |= { cls.cxx_standard[flags_index] }
         return out
     
-    def __new__(cls, *configs) -> ConfigType:
+    def __new__(cls, *configs) -> "ConfigUnion":
         """ Create either a new, uninitialized ConfigUnion instance, or -
             in the case where the ConfigUnion was constructed with only
             one config instance - just return that sole existing config:
@@ -1319,7 +1329,7 @@ class ConfigUnion(ConfigBase, tx.Collection[ConfigType]):
             raise AttributeError("ConfigUnion requires 1+ config instances")
         elif length == 1:
             return list(configs)[0]
-        instance: ConfigUnion = super(ConfigUnion, cls).__new__(cls)
+        instance: ConfigUnion = super().__new__(cls) # type: ignore
         instance.configs: tx.List[ConfigType] = []
         return instance
     
@@ -1339,22 +1349,22 @@ class ConfigUnion(ConfigBase, tx.Collection[ConfigType]):
     
     def __len__(self) -> int:
         """ The length of a ConfigUnion instance is equal to the number of its sub-configs """
-        return len(self.configs)
+        return len(self.configs) # type: ignore
     
     def __iter__(self) -> tx.Iterator[ConfigType]:
-        return iter(self.configs)
+        return iter(self.configs) # type: ignore
     
     def __getitem__(self, key: int) -> ConfigType:
         """ Access one of the ConfigUnion instances’ sub-configs via subscript """
-        return self.configs[key]
+        return self.configs[key] # type: ignore
     
     def sub_config_types(self) -> OCDFrozenSet[str]:
         """ Retrieve a set of the names of this ConfigUnion instances’ sub-configs """
-        return OCDFrozenSet( config.name for config in self.configs )
+        return OCDFrozenSet( config.name for config in self.configs ) # type: ignore
     
     def __contains__(self, key: tx.Union[tx.AnyStr, ConfigType]) -> bool:
         """ Determine if a config type is contained within this ConfigUnion instance """
-        return getattr(key, 'name', key) in self.sub_config_types()
+        return getattr(key, 'name', key) in self.sub_config_types() # type: ignore
     
     @property
     def name(self) -> str:
@@ -1368,7 +1378,7 @@ class ConfigUnion(ConfigBase, tx.Collection[ConfigType]):
             Internally, this property calls ConfigUnion.sub_config_types(self) to furnish
             itself with the sub-config type list.
         """
-        typelist: str = ", ".join(self.sub_config_types())
+        typelist: str = ", ".join(self.sub_config_types()) # type: ignore
         typename: str = type(self).__name__
         return f"{typename}<{typelist}>"
     
@@ -1377,7 +1387,7 @@ class ConfigUnion(ConfigBase, tx.Collection[ConfigType]):
         """ Return the union of all flags amassed from the calling
             of all base Config objects' `get_includes()`:
         """
-        return includes - self.nonexistent_path_flags(includes)
+        return includes - self.nonexistent_path_flags(includes) # type: ignore
     
     @union_of(name='libs')
     def get_libs(self, libs: OCDFrozenSet[str]) -> OCDFrozenSet[str]:
@@ -1395,64 +1405,69 @@ class ConfigUnion(ConfigBase, tx.Collection[ConfigType]):
         # passing only the respective highest-value flags:
         out = self.highest_cxx_standard_level(
               self.highest_optimization_level(cflags))
-        return out - self.nonexistent_path_flags(out)
+        return out - self.nonexistent_path_flags(out) # type: ignore
     
     @union_of(name='ldflags')
     def get_ldflags(self, ldflags: OCDFrozenSet[str]) -> OCDFrozenSet[str]:
         """ Return the union of all flags amassed from the calling
             of all base Config objects' `get_ldflags()`:
         """
-        return ldflags - self.nonexistent_path_flags(ldflags)
+        return ldflags - self.nonexistent_path_flags(ldflags) # type: ignore
 
 
+def command(func):
+    @wraps(func)
+    def command_function(*args, **kwargs) -> tx.Tuple[str, ...]:
+        return back_tick(func(*args, **kwargs),
+                         ret_err=True,
+                         verbose=kwargs.pop('verbose', DEFAULT_VERBOSITY))
+    return command_function
+
+@command
 def CC(conf: ConfigType,
        outfile: str,
        infile: str,
-     **kwargs) -> tx.Tuple[str, ...]:
+     **kwargs) -> str:
     """ Execute the C compiler, as named in the `CC` environment variable,
         falling back to the compiler specified in Python `sysconfig`:
     """
     cdb: tx.Optional[compiledb.CDBSubBase] = kwargs.pop('cdb', None)
-    command: str = conf.cc_flag_string() % (infile, outfile)
+    command: str = conf.cc_flag_string(outfile, infile)
     if isinstance(cdb, compiledb.CDBSubBase):
         cdb.push(infile, command, directory=kwargs.pop('directory', None),
                                   destination=outfile)
-    return back_tick(command,
-                     ret_err=True,
-                     verbose=kwargs.pop('verbose', DEFAULT_VERBOSITY))
+    return command
 
+@command
 def CXX(conf: ConfigType,
         outfile: str,
         infile: str,
-      **kwargs) -> tx.Tuple[str, ...]:
+      **kwargs) -> str:
     """ Execute the C++ compiler, as named in the `CXX` environment variable,
         falling back to the compiler specified in Python `sysconfig`:
     """
     cdb: tx.Optional[compiledb.CDBSubBase] = kwargs.pop('cdb', None)
-    command: str = conf.cxx_flag_string() % (infile, outfile)
+    command: str = conf.cxx_flag_string(outfile, infile)
     if isinstance(cdb, compiledb.CDBSubBase):
         cdb.push(infile, command, directory=kwargs.pop('directory', None),
                                   destination=outfile)
-    return back_tick(command,
-                     ret_err=True,
-                     verbose=kwargs.pop('verbose', DEFAULT_VERBOSITY))
+    return command
 
+@command
 def LD(conf: ConfigType,
        outfile: str,
       *infiles,
-     **kwargs) -> tx.Tuple[str, ...]:
+     **kwargs) -> str:
     """ Execute the dynamic linker, as named in the `LDCXXSHARED` environment variable,
         falling back to the linker specified in Python `sysconfig`:
     """
-    command: str = conf.ld_flag_string() % (" ".join(infiles), outfile)
-    return back_tick(command,
-                     ret_err=True,
-                     verbose=kwargs.pop('verbose', DEFAULT_VERBOSITY))
+    return conf.ld_flag_string(outfile, *infiles)
 
+@command
 def AR(conf: ConfigType,
        outfile: str,
       *infiles,
-     **kwargs) -> tx.Tuple[str, ...]:
+     **kwargs) -> str:
     """ Execute the library archiver, as named in the `AR` environment variable,
         falling back to the library archiver specified in Python `sysconfig`:
     """
@@ -1461,10 +1476,7 @@ def AR(conf: ConfigType,
     #   b) it has to manually amend 'ARFLAGS' it would seem
     #       b)[1] ... most configuration-getting pc-configgish flag tools
     #                 could not give less fucks about 'ARFLAGS', and so.
-    command: str = conf.ar_flag_string() % (outfile, " ".join(infiles))
-    return back_tick(command,
-                     ret_err=True,
-                     verbose=kwargs.pop('verbose', DEFAULT_VERBOSITY))
+    return conf.ar_flag_string(outfile, *infiles)
 
 
 modulize({

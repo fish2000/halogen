@@ -11,7 +11,7 @@ import os
 from abc import abstractmethod as abstract
 from errors import CDBError
 from filesystem import rm_rf, TemporaryName, Directory
-from utils import stringify, u8bytes, u8str
+from utils import stringify, u8bytes, u8str, tuplize
 
 __all__ = ('CDBSubBase', 'CDBBase',
                          'CDBJsonFile')
@@ -49,7 +49,7 @@ class CDBSubBase(abc.ABC, metaclass=abc.ABCMeta):
 class CDBBase(CDBSubBase, collections.abc.Sequence,
                           collections.abc.Sized):
     
-    fields = ('length',)
+    fields = tuplize('length')
     
     def __init__(self):
         self.clear()
