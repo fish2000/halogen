@@ -63,7 +63,8 @@ class OCDType(Originator):
     
     class TypeAndBases(tx.NamedTuple):
         Type:   tx.Type[ConcreteType]
-        Bases:  tx.Tuple[str, ...]
+        Name:   str = ''
+        Bases:  tx.List[str] = []
         
         @classmethod
         def for_type(cls,
@@ -76,7 +77,9 @@ class OCDType(Originator):
                 if len(mod) > 1:
                     mod += '.'
                 basenames.append(f"{mod}{name}")
-            return cls(newcls, tuplize(*basenames)) # type: ignore
+            return cls(newcls,  # type: ignore
+                       newcls.__qualname__,
+                       basenames)
     
     # The metaclass-internal dictionaries of all generated types:
     types:    tx.Dict[str, TypeAndBases] = collections.OrderedDict()
@@ -159,7 +162,7 @@ class OCDType(Originator):
         get: ClassGetType = getattr(generic, '__class_getitem__',
                             getattr(generic, '__getitem__',
                             classmethod(
-                            lambda cls, *args: tx.Generic.__getitem__(*args))))
+                            lambda cls, *args: tx.Generic.__class_getitem__.__wrapped__(cls, *args))))
         
         key = kwargs.pop('key', None)
         rev = kwargs.pop('reverse', False)
@@ -179,7 +182,7 @@ class OCDType(Originator):
             # supra: https://git.io/fAsNO
             
                     '__args__' : tuplize(typename, clsnamearg, factory),
-              '__parameters__' : tuplize(typename, clsnamearg, factory),
+              '__parameters__' : tuplize(typename),
                   '__origin__' : metacls
         }
         
@@ -429,13 +432,13 @@ def test():
     assert OCDNumpyArray.__bases__ == tuplize(numpy.ndarray,
                                               collections.abc.Iterable)
     assert OCDNumpyArray.__factory__ == numpy.array
-    # assert OCDNumpyArray.__generic__ == tx.Generic
+    assert OCDNumpyArray.__generic__ == tx.Generic
     
     assert SortedMatrix.__base__ == OCDType[numpy.matrix]
     assert SortedMatrix.__base__.__name__ == 'OCDMatrix'
     assert SortedMatrix.__base__.__base__ == numpy.matrixlib.defmatrix.matrix
     assert SortedMatrix.__base__.__factory__ == numpy.asmatrix
-    # assert SortedMatrix.__base__.__generic__ == tx.Generic
+    assert SortedMatrix.__base__.__generic__ == tx.Generic
     
     assert OCDArray('i', range(10)).__len__() == 10
     assert numpy.array([[0, 1, 2], [0, 1, 2], [0, 1, 2]]).__len__() == 3

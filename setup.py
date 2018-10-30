@@ -32,7 +32,7 @@ else:
 __version__ = "<undefined>"
 exec(compile(
     open(os.path.join(
-        os.path.dirname(__file__),
+         os.path.dirname(__file__),
         '__version__.py')).read(),
         '__version__.py', 'exec'))
 

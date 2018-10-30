@@ -32,8 +32,8 @@ from utils import tuplize, u8bytes, u8str
 
 __all__ = ('SHARED_LIBRARY_SUFFIX', 'STATIC_LIBRARY_SUFFIX',
            'DEFAULT_VERBOSITY',
-           'ConfigSubBase',
-           'ConfigBaseMeta', 'environ_override',
+           'environ_override',
+           'ConfigSubBase', 'ConfigBaseMeta',
            'ConfigBase', 'Macro', 'Macros',
            'PythonConfig', 'BrewedPythonConfig',
            'SysConfig', 'PkgConfig', 'NumpyConfig',
@@ -66,6 +66,15 @@ AnySet = tx.Union[tx.Set[TC], tx.FrozenSet[TC],
 # Ancestor type variable annotation:
 Ancestor = tx.TypeVar('Ancestor', bound=abc.ABC, covariant=True)
 
+def environ_override(name: str) -> str:
+    """ environ_override(name) returns either the environment variable
+        named “name” or, failing to find that, the configuration variable
+        from the `sysconfig` module named “name.” This allows environment
+        variables to seamlessly override `sysconfig` variables.
+    """
+    return os.environ.get(name,
+            sysconfig.get_config_var(name) or '')
+
 class ConfigSubBase(abc.ABC, metaclass=abc.ABCMeta):
     
     """ The abstract base class ancestor of all Config-ish classes we define here.
@@ -79,15 +88,23 @@ class ConfigSubBase(abc.ABC, metaclass=abc.ABCMeta):
         are defined below) or, say, use that instance in the construction of a working
         ConfigUnion instance, or what have you.
         
-        (In fact, you may be able to get away with only implementing `cc_flag_string()`,
-        `cxx_flag_string()`, and `get_ldflags()` – those are the only methods explicitly
-        called by CC/CXX/LD; AR doesn’t even use its config-instance parameter at the
-        time of writing.)
+        (In fact, you may be able to get away with only implementing `get_cflags()`
+        and `get_ldflags()` – those are the only methods explicitly called by the
+        CC/CXX/LD module methods; AR doesn’t even use its config-instance parameter
+        at the time of writing.)
         
-        You don’t strictly need to inherit from ConfigSubBase – in fact, that is unwise;
+        This base class also includes:
+        
+        * The definition of the “prefix” property, a property that pretty much all
+          of our Config-ish subclasses rely on (with the notable exception of the 
+          ConfigUnion class, q.v. class definition sub.)
+        * The definition of the “subdirectory(…)” method, the invocation of which
+          is also very popular with the subclasses.
+        
+        You don’t need to inherit directly from ConfigSubBase – in fact, that is unwise;
         I recommend inheriting from ConfigBase (q.v. class definition sub.) as that will
-        get you all of the goodies like FieldList inheritance, the “prefix” property and
-        the “subdirectory()” method, and other stuff you can read about below.
+        get you all of the goodies like FieldList inheritance, plus other stuff you can
+        read about below.
     """
     
     base_field_cache: tx.ClassVar[tx.Dict[str, tx.Tuple[str, ...]]] = collections.OrderedDict()
@@ -96,19 +113,26 @@ class ConfigSubBase(abc.ABC, metaclass=abc.ABCMeta):
     # Prefix get/set/delete methods:
     
     @property
-    @abstract
-    def prefix(self) -> Directory: ...
+    def prefix(self) -> Directory:
+        """ The path to the Python installation prefix """
+        if not hasattr(self, '_prefix'):
+            self._prefix: Directory = Directory(sys.prefix)
+        return getattr(self, '_prefix')
     
     @prefix.setter
-    @abstract
     def prefix(self,
-               value: filesystem.ts.DirectoryLike): ...
+               value: filesystem.ts.DirectoryLike):
+        prefixd: Directory = Directory(value)
+        if not prefixd.exists:
+            raise ValueError(f"prefix path does not exist: {prefixd}")
+        self._prefix: Directory = prefixd
     
     @prefix.deleter
-    @abstract
-    def prefix(self): ...
+    def prefix(self):
+        if hasattr(self, '_prefix'):
+            del self._prefix
     
-    # Name get method:
+    # Abstract name get method:
     
     @property
     @abstract
@@ -117,27 +141,48 @@ class ConfigSubBase(abc.ABC, metaclass=abc.ABCMeta):
     # The `subdirectory` method is used throughout
     # many Config-ish classes:
     
-    @abstract
     def subdirectory(self,
                      subdir: tx.AnyStr,
-                     whence: filesystem.ts.MaybeDirectoryLike = None) -> MaybeStr: ...
+                     whence: filesystem.ts.MaybeDirectoryLike = None) -> MaybeStr:
+        """ Return the path to a subdirectory within this Config instances’ prefix """
+        return self.prefix.subpath(subdir, whence, requisite=True)
     
     # These four methods prepare the command strings,
     # using the result(s) from calling one or more
     # of the get_* methods (q.v. prototypes sub.)
     # to compose their arguments:
     
-    @abstract
-    def cc_flag_string(self) -> str: ...
+    def cc_flag_string(self, outfile: str, infile: str) -> str:
+        """ Get the string template for the C compiler command """
+        cflags: str = self.get_cflags()
+        return           f"{environ_override('CC')} {cflags} -c {infile} -o {outfile}"
     
-    @abstract
-    def cxx_flag_string(self) -> str: ...
+    def cxx_flag_string(self, outfile: str, infile: str) -> str:
+        """ Get the string template for the C++ compiler command """
+        cflags: str = self.get_cflags()
+        return          f"{environ_override('CXX')} {cflags} -c {infile} -o {outfile}"
     
-    @abstract
-    def ld_flag_string(self) -> str: ...
+    def ld_flag_string(self, outfile: str, *infiles) -> str:
+        """ Get the string template for the dynamic linker command """
+        allinfiles: str = " ".join(infiles)
+        ldflags: str = self.get_ldflags()
+        return  f"{environ_override('LDCXXSHARED')} {ldflags} {allinfiles} -o {outfile}"
     
-    @abstract
-    def ar_flag_string(self) -> str: ...
+    @staticmethod
+    def ar_flag_string(outfile: str, *infiles) -> str:
+        """ Get the string template for the command executing the archiver
+            (née the “static linker”)
+        """
+        # This function is the ugly duckling here because:
+        #   a) it does not use the `self` Config-class arg at all, and
+        #   b) it has to manually amend 'ARFLAGS' it would seem
+        #       b)[1] ... most configuration-getting pc-configgish flag tools
+        #                 could not give less fucks about 'ARFLAGS', and so.
+        allinfiles: str = " ".join(infiles)
+        arflags: str = environ_override('ARFLAGS')
+        if 's' not in arflags:
+            arflags += 's'
+        return           f"{environ_override('AR')} {arflags} {outfile} {allinfiles}"
     
     # Stringification and representation methods:
     
@@ -151,8 +196,8 @@ class ConfigSubBase(abc.ABC, metaclass=abc.ABCMeta):
     @abstract
     def __str__(self) -> str: ...
     
-    @abstract
-    def __bytes__(self) -> bytes: ...
+    def __bytes__(self) -> bytes:
+        return u8bytes(repr(self))
     
     # These four get_* methods make up the bare-bones
     # requirement for what a Config-ish class needs
@@ -196,13 +241,13 @@ class FieldList(object):
                                                   'include_dir_fields')
     
     def store(self, *fields):
-        self.stored_fields: frozenset = frozenset(fields)
+        self.stored_fields: tx.FrozenSet[str] = frozenset(fields)
         if self.include_dir_fields:
             self.stored_fields |= frozenset(ConfigBase.dir_fields)
     
     def __init__(self, *more_fields, **kwargs):
         self.include_dir_fields: bool = bool(kwargs.pop('dir_fields', False))
-        self.exclude_fields: frozenset = frozenset(kwargs.pop('exclude', tuple()))
+        self.exclude_fields: tx.FrozenSet[str] = frozenset(kwargs.pop('exclude', tuple()))
         self.store(*more_fields)
     
     def __get__(self,
@@ -252,26 +297,13 @@ class ConfigBaseMeta(abc.ABCMeta):
         ConfigSubBase.field_cache[name] = getattr(cls, 'fields', tuple())
         return cls
 
-def environ_override(name: str) -> str:
-    """ environ_override(name) returns either the environment variable
-        named “name” or, failing to find that, the configuration variable
-        from the `sysconfig` module named “name.” This allows environment
-        variables to seamlessly override `sysconfig` variables.
-    """
-    return os.environ.get(name,
-            sysconfig.get_config_var(name) or '')
-
 class ConfigBase(ConfigSubBase, metaclass=ConfigBaseMeta):
     
     """ The base class for all Config-ish classes we define here. This includes:
         
         * The list of “base fields” and “dir(ectory) fields” -- see the docstring
           below for the inner FieldList class for how these are used.
-        * The definition of the “prefix” property, a property that pretty much all
-          of our Config-ish subclasses rely on (with the notable exception of the 
-          ConfigUnion class, q.v. class definition sub.)
-        * The definition of the “subdirectory(…)” method, the invocation of which
-          is also very popular with the subclasses.
+        * The basic (default) definition for the “name” property
         * Definitions for __repr__(), __str__(), and a “to_string(…)” method --
           all of which should be adequate for, like, 99 percent of all of the
           possible subclasses’ introspection-printing needs; also see docstrings
@@ -288,61 +320,9 @@ class ConfigBase(ConfigSubBase, metaclass=ConfigBaseMeta):
                                                     'share')
     
     @property
-    def prefix(self) -> Directory:
-        """ The path to the Python installation prefix """
-        if not hasattr(self, '_prefix'):
-            self._prefix: Directory = Directory(sys.prefix)
-        return getattr(self, '_prefix')
-    
-    @prefix.setter
-    def prefix(self,
-               value: filesystem.ts.DirectoryLike):
-        prefixd: Directory = Directory(value)
-        if not prefixd.exists:
-            raise ValueError(f"prefix path does not exist: {prefixd}")
-        self._prefix: Directory = prefixd
-    
-    @prefix.deleter
-    def prefix(self):
-        if hasattr(self, '_prefix'):
-            del self._prefix
-    
-    @property
     def name(self) -> str:
         """ The name of the Config instance. This defaults to the name of its class. """
         return type(self).__name__
-    
-    def subdirectory(self,
-                     subdir: tx.AnyStr,
-                     whence: filesystem.ts.MaybeDirectoryLike = None) -> MaybeStr:
-        """ Return the path to a subdirectory within this Config instances’ prefix """
-        return self.prefix.subpath(subdir, whence, requisite=True)
-    
-    def cc_flag_string(self, outfile: str, infile: str) -> str:
-        """ Get the string template for the C compiler command """
-        cflags: str = self.get_cflags()
-        return           f"{environ_override('CC')} {cflags} -c {infile} -o {outfile}"
-    
-    def cxx_flag_string(self, outfile: str, infile: str) -> str:
-        """ Get the string template for the C++ compiler command """
-        cflags: str = self.get_cflags()
-        return          f"{environ_override('CXX')} {cflags} -c {infile} -o {outfile}"
-    
-    def ld_flag_string(self, outfile: str, *infiles) -> str:
-        """ Get the string template for the dynamic linker command """
-        allinfiles: str = " ".join(infiles)
-        ldflags: str = self.get_ldflags()
-        return   f"{environ_override('LDCXXSHARED')} {ldflags} {allinfiles} -o {outfile}"
-    
-    def ar_flag_string(self, outfile: str, *infiles) -> str:
-        """ Get the string template for the command executing the archiver
-            (née the “static linker”)
-        """
-        allinfiles: str = " ".join(infiles)
-        arflags: str = environ_override('ARFLAGS')
-        if 's' not in arflags:
-            arflags += 's'
-        return              f"{environ_override('AR')} {arflags} {outfile} {allinfiles}"
     
     def to_string(self,
                   field_list: tx.Optional[tx.Iterable[str]] = None) -> str:
@@ -358,9 +338,6 @@ class ConfigBase(ConfigSubBase, metaclass=ConfigBaseMeta):
     
     def __str__(self) -> str:
         return stringify(self, getattr(type(self), 'fields', tuple()))
-    
-    def __bytes__(self) -> bytes:
-        return u8bytes(repr(self))
 
 ConfigType = tx.TypeVar('ConfigType', bound=ConfigSubBase, covariant=True)
 
@@ -369,7 +346,7 @@ class SetWrap(ConfigBase):
     fields = FieldList('sub_config_type', 'includes_set',
                                           'libs_set',
                                           'cflags_set',
-                                          'ldflags_set', exclude=['prefix'],
+                                          'ldflags_set', exclude=['prefix', 'config'],
                                                          dir_fields=False)
     def __init__(self, config: ConfigType):
         if not isinstance(config, (ConfigBase, ConfigSubBase)):
@@ -926,7 +903,7 @@ class PkgConfig(ConfigBase):
 
 class NumpyConfig(ConfigBase):
     
-    subpackages: tx.ClassVar[tx.Tuple[str, ...]] = ('npymath', 'mlib')
+    subpackages: tx.ClassVar[tx.Tuple[str, str]] = ('npymath', 'mlib')
     
     fields = FieldList('subpackages',
                        'get_numpy_include_directory',
@@ -1160,7 +1137,7 @@ class ConfigUnion(ConfigBase, tx.Collection[ConfigType]):
                                                     # and return it
         """
         
-        __slots__: tx.ClassVar[tx.Tuple[str, ...]] = tuplize('name')
+        __slots__: tx.ClassVar[tx.Tuple[str]] = tuplize('name')
         
         def __init__(self, name: str):
             """ Initialize the @union_of decorator, stashing the name of the function
@@ -1190,7 +1167,7 @@ class ConfigUnion(ConfigBase, tx.Collection[ConfigType]):
         """ A sugary-sweet class for stowing a set of flags whose order is significant. """
         
         joiner: tx.ClassVar[str] = f",{TOKEN}"
-        __slots__: tx.ClassVar[tx.Tuple[str, ...]] = ('flags', 'set')
+        __slots__: tx.ClassVar[tx.Tuple[str, str]] = ('flags', 'set')
         
         def __init__(self, template: str, flaglist: tx.Iterable[str]):
             self.flags: tx.List[str] = [template % flag for flag in flaglist]
@@ -1471,11 +1448,6 @@ def AR(conf: ConfigType,
     """ Execute the library archiver, as named in the `AR` environment variable,
         falling back to the library archiver specified in Python `sysconfig`:
     """
-    # This function is the ugly duckling here because:
-    #   a) it does not use the `conf` arg at all, and
-    #   b) it has to manually amend 'ARFLAGS' it would seem
-    #       b)[1] ... most configuration-getting pc-configgish flag tools
-    #                 could not give less fucks about 'ARFLAGS', and so.
     return conf.ar_flag_string(outfile, *infiles)
 
 
