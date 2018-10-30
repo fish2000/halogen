@@ -107,9 +107,6 @@ class Originator(TypingMeta):
         if isinstance(obj, type):
             if obj.__module__ == 'builtins':
                 return obj.__qualname__
-            # module = inspect.getmodule(obj)
-            # if module:
-            #     return f'{module.__name__}.{obj.__qualname__}'
             return f'{obj.__module__}.{obj.__qualname__}'
         if obj is ...:
             return('...')
@@ -133,10 +130,6 @@ class Originator(TypingMeta):
             out = unwrapped(cls, params)
         else:
             out = unwrapped(params)
-        # module = inspect.getmodule(origin)
-        # out._name = origin.__name__
-        # if module:
-        #     out.__module__ = module.__name__
         return GenericAlias(out.__origin__,
                             out.__parameters__, name=getattr(out, '_name', origin.__name__),
                                                 inst=getattr(out, '_inst', True))
@@ -216,7 +209,6 @@ class KeyValue(tx.Generic[T, U]):
         if __name__ == '__main__' and PRINT_GENERIC_INFO:
             from pprint import pformat
             print(f"Subclass Name: {cls.__qualname__}")
-            # print(f"Original type: {cls.__origin__.__qualname__}")
             print(f"Parameters({len(cls.__parameters__)}): " \
                         f"{listify(*cls.__parameters__)}")
             if hasattr(cls, '__args__'):
@@ -225,10 +217,6 @@ class KeyValue(tx.Generic[T, U]):
             print(f"Orig Bases({len(cls.__orig_bases__)}): \n" \
                   f"{pformat(listify(*cls.__orig_bases__), indent=4)}")
             print()
-
-# kvmodule = inspect.getmodule(KeyValue)
-# if kvmodule:
-#     KeyValue.__module__ = kvmodule.__name__
 
 class Namespace(KeyValue[T, U], metaclass=Originator):
     __slots__ = tuple()
@@ -292,7 +280,7 @@ class DictNamespace(Namespace[T, U], tx.MutableMapping[T, U],
     
     def __repr__(self) -> str:
         keys = sorted(self.__dict__, key=lambda k: str(k))
-        items = ("{} = {!r}".format(k, self.__dict__[k]) for k in keys)
+        items = ("{}={!r}".format(k, self.__dict__[k]) for k in keys)
         return "{}({})".format(type(self).__name__, ", ".join(items)) # type: ignore
 
 class SimpleNamespace(DictNamespace[str, T]):

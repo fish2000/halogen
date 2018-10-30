@@ -311,7 +311,7 @@ class Namespace(KeyValue[S, T], types.SimpleNamespace):
     
     def __repr__(self) -> str:
         keys = sorted(self.__dict__, key=lambda k: str(k))
-        items = ("{} = {!r}".format(k, self.__dict__[k]) for k in keys)
+        items = ("{}={!r}".format(k, self.__dict__[k]) for k in keys)
         return "{}({})".format(type(self).__name__, ", ".join(items)) # type: ignore
     
 
