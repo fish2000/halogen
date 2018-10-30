@@ -308,6 +308,12 @@ class Namespace(KeyValue[S, T], types.SimpleNamespace):
     
     def __contains__(self, key: S) -> bool:
         return key in self.__dict__
+    
+    def __repr__(self) -> str:
+        keys = sorted(self.__dict__, key=lambda k: str(k))
+        items = ("{} = {!r}".format(k, self.__dict__[k]) for k in keys)
+        return "{}({})".format(type(self).__name__, ", ".join(items)) # type: ignore
+    
 
 class SortedNamespace(Namespace[str, T], collections.abc.MutableMapping,
                                          collections.abc.Iterable,
