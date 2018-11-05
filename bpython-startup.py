@@ -8,15 +8,6 @@ import types
 import typing as tx
 import typing_extensions as tX
 
-from halogen import (api,
-                     cli,
-                     config,
-                     compile,
-                     compiledb,
-                     filesystem,
-                     ocd,
-                     utils)
-
 DISABLE_COLOR: bool = False
 PrintFuncType = tx.Callable[[str, tX._TypingEllipsis], None] # type: ignore
 TestFuncType = tx.Callable[[None], None]
@@ -55,6 +46,33 @@ class ColorForcer(contextlib.AbstractContextManager):
     def __bool__(self) -> bool:
         return self.truthy
 
+def import_halogen_modules():
+    from halogen import (api,
+                         cli,
+                         config,
+                         compile,
+                         compiledb,
+                         filesystem,
+                         ocd,
+                         utils)
+    assert api
+    assert cli
+    assert config
+    assert compile
+    assert compiledb
+    assert filesystem
+    assert ocd
+    assert utils
+    sys.modules.update({
+        'api' : api,
+        'cli' : cli,
+        'config' : config,
+        'compile' : compile,
+        'compiledb' : compiledb,
+        'filesystem' : filesystem,
+        'ocd' : ocd,
+        'utils' : utils
+    })
 
 def test_module(module: types.ModuleType, *, print_func: PrintFuncType = print) -> bool:
     """ Attempt to call `<module>.test()` – using a fallback function
@@ -82,6 +100,7 @@ def test_all(*, return_check_count: bool = False) -> tx.Optional[int]:
         using the function call `test(<module>, print_function=printred)` –
         q.v. `test()` definition supra.
     """
+    import_halogen_modules()
     with ColorForcer() as color_forcer:
         try:
             from clint.textui import puts_err as puts
@@ -125,3 +144,12 @@ if __name__ == '__main__':
     sys.path.append(os.path.dirname(os.path.join(thispath, 'halogen')))
     sys.path.append(os.path.dirname(thispath))
     test_all(return_check_count=True)
+else:
+    from halogen import (api,
+                         cli,
+                         config,
+                         compile,
+                         compiledb,
+                         filesystem,
+                         ocd,
+                         utils)
