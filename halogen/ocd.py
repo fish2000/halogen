@@ -159,10 +159,11 @@ class OCDType(Originator):
         # modulename: str = getattr(metacls, '__module__', 'ocd')
         modulename: str = metacls.prefix.lower()
         generic: type = find_generic_for_type(typename, missing=tx.Generic)
+        unwrapped: ClassGetType = tx.Generic.__class_getitem__.__wrapped__
         get: ClassGetType = getattr(generic, '__class_getitem__',
                             getattr(generic, '__getitem__',
                             classmethod(
-                            lambda cls, *args: tx.Generic.__class_getitem__.__wrapped__(cls, *args))))
+                            lambda cls, *args: unwrapped(cls, *args)))) # type: ignore
         params: tx.Tuple[tx.TypeVar, ...] = getattr(typename, '__parameters__',
                                             getattr(generic,  '__parameters__', tuple()))
         
@@ -285,15 +286,16 @@ class OCDType(Originator):
 ### SPECIALIZATIONS OF OCDType:
 ###
 
-OCDSet        = OCDType[set]
-OCDFrozenSet  = OCDType[frozenset, 'OCDFrozenSet']
-OCDTuple      = OCDType[tuple]
+OCDSet        = OCDType[set]                        # type: ignore
+OCDFrozenSet  = OCDType[frozenset, 'OCDFrozenSet']  # type: ignore
+OCDTuple      = OCDType[tuple]                      # type: ignore
 
 class SortedList(list, metaclass=OCDType):
     """ Generic class, accepts a type parameter """
     pass
 
-OCDList       = OCDType[list] # this emits the cached type from above
+# this emits the cached type from above:
+OCDList       = OCDType[list] # type: ignore
 
 class Namespace(KeyValue[S, T], types.SimpleNamespace):
     __slots__ = tuple()
@@ -336,7 +338,8 @@ class SortedNamespace(Namespace[str, T], collections.abc.MutableMapping,
             raise KeyError("key must be a valid identifier")
         super().__setattr__(key, value)
 
-OCDNamespace  = OCDType[Namespace] # Also generic, with two type params
+# Also generic, with two type params
+OCDNamespace  = OCDType[Namespace] # type: ignore
 
 
 def test_namespace_types():
