@@ -39,9 +39,12 @@ class ColorForcer(contextlib.AbstractContextManager):
             self.truthy = False
         return self
     
-    def __exit__(self, *args) -> bool:
+    def __exit__(self,
+                 exc_type: tx.Any = None,
+                 exc_val: tx.Any = None,
+                 exc_tb: tx.Any = None) -> bool:
         os.unsetenv('CLINT_FORCE_COLOR')
-        return False
+        return exc_type is not None
     
     def __bool__(self) -> bool:
         return self.truthy
