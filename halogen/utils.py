@@ -689,7 +689,7 @@ def current_umask() -> int:
 def masked_permissions(perms=0o666) -> int:
     return perms & ~current_umask()
 
-def modulize(namespace: tx.Dict[str, tx.Any],
+def modulize(namespace: tx.MutableMapping[str, tx.Any],
              modulename: str,
              moduledocs: tx.Optional[str] = None,
              modulefile: tx.Optional[str] = None) -> types.ModuleType:
@@ -711,7 +711,7 @@ def modulize(namespace: tx.Dict[str, tx.Any],
     if modulefile:
         relpath: str = os.path.relpath(modulefile,
                  start=os.path.dirname(__file__))
-        dotpath = re.sub(re.compile(rf"({os.path.sep})"), os.path.extsep, relpath)
+        dotpath: str = re.sub(re.compile(rf"({os.path.sep})"), os.path.extsep, relpath)
         if dotpath.endswith('.py'):
             dotpath = dotpath[:len(dotpath)-3]
         namespacedname: str = f'__dynamic_modules__.halogen.{dotpath}.{modulename}'
@@ -720,7 +720,7 @@ def modulize(namespace: tx.Dict[str, tx.Any],
         namespacedname: str = f'__dynamic_modules__.halogen.{modulename}'
     namespace.update({ '__package__' : namespacedname })
     
-    module = types.ModuleType(namespacedname, moduledocs)
+    module: types.ModuleType = types.ModuleType(namespacedname, moduledocs)
     module.__dict__.update(namespace)
     
     # Add to sys.modules, as per import machinery:
@@ -739,7 +739,7 @@ def append_paths(*putatives) -> tx.Dict[str, bool]:
     out: tx.Dict[str, bool] = {}
     if len(putatives) < 1:
         return out
-    paths: tx.Set[str] = set(sys.path)
+    paths: tx.FrozenSet[str] = frozenset(sys.path)
     append_paths.oldsyspath: tx.Tuple[str, ...] = tuple(sys.path)
     for pth in putatives:
         if hasattr(pth, 'name'):
@@ -847,7 +847,7 @@ def stringify(instance: tx.Any, fields: tx.Iterable[str]) -> str:
     hex_id: str = hex(id(instance))
     return f"{typename}({field_dict_string}) @ {hex_id}"
 
-def suffix_searcher(suffix: str) -> tx.Callable[[tx.AnyStr], bool]:
+def suffix_searcher(suffix: str) -> PredicateType:
     """ Return a boolean function that will search for the given
         file suffix in strings with which it is called, returning
         True when they are found and False when they aren’t.
@@ -866,11 +866,11 @@ def suffix_searcher(suffix: str) -> tx.Callable[[tx.AnyStr], bool]:
         regex_str += rf"\{suffix}$"
     else:
         regex_str += rf"\{os.extsep}{suffix}$"
-    searcher = re.compile(regex_str, re.IGNORECASE).search
+    searcher: PredicateType = re.compile(regex_str, re.IGNORECASE).search
     return lambda searching_for: bool(searcher(searching_for)) # type: ignore
 
 def terminal_print(message: str,
-                   handle: tx.Any = sys.stdout,
+                   handle: tx.IO = sys.stdout,
                    color: str = 'red',
                    asterisk: str = '*'):
     """ Print a string to the terminal, centered and bookended with asterisks
