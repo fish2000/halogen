@@ -6,6 +6,7 @@ import re
 import contextlib
 import types
 import typing as tx
+import typing_extensions as tX
 
 from halogen import (api,
                      cli,
@@ -17,7 +18,7 @@ from halogen import (api,
                      utils)
 
 DISABLE_COLOR: bool = False
-PrintFuncType = tx.Callable[[str, tx._TypingEllipsis], None] # type: ignore
+PrintFuncType = tx.Callable[[str, tX._TypingEllipsis], None] # type: ignore
 TestFuncType = tx.Callable[[None], None]
 ExceptionType = tx.TypeVar('ExceptionType',
                             bound=BaseException,

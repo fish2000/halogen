@@ -10,6 +10,7 @@ import six
 import sys
 import types
 import typing as tx
+import typing_extensions as tX
 
 from functools import wraps
 from multidict import MultiDict                              # type: ignore
@@ -55,7 +56,7 @@ def tuplize(*items) -> tuple:
 def listify(*items) -> list:
     return list(item for item in items if item is not None)
 
-class GenericAlias(tx._GenericAlias, _root=True):
+class GenericAlias(tX._GenericAlias, _root=True):
     __slots__: tx.Tuple[str, ...] = tuple()
     
     def __repr__(self) -> str:
