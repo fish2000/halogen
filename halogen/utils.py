@@ -47,6 +47,7 @@ PRINT_GENERIC_INFO = True
 S = tx.TypeVar('S', bound=str, covariant=True)
 T = tx.TypeVar('T', covariant=True)
 U = tx.TypeVar('U', covariant=True)
+ContraT = tx.TypeVar('ContraT', contravariant=True)
 
 def tuplize(*items) -> tuple:
     return tuple(item for item in items if item is not None)
@@ -55,41 +56,44 @@ def listify(*items) -> list:
     return list(item for item in items if item is not None)
 
 class GenericAlias(tx._GenericAlias, _root=True):
-    __slots__ = tuple()
+    __slots__: tx.Tuple[str, ...] = tuple()
     
-    def __repr__(self):
+    def __repr__(self) -> str:
         """ Bespoke re-implementation of typing._GenericAlias.__repr__ """
-        if (self._name != 'Callable' or
-                len(self.__args__) == 2 and self.__args__[0] is ...):
-            if self._name:
-                module = inspect.getmodule(self)
+        type_repr: tx.Callable[[tx.Any], str] = Originator.type_repr
+        if (self._name != 'Callable' or                               # type: ignore
+                len(self.__args__) == 2 and self.__args__[0] is ...): # type: ignore
+            if self._name:                                            # type: ignore
+                module: tx.Optional[types.ModuleType] = inspect.getmodule(self)
                 if module:
-                    modulename = module.__name__
+                    modulename: str = module.__name__
                     if len(modulename) > 0:
                         modulename += "."
                 else:
-                    modulename = "halogen.utils."
-                name = f"{modulename}{self._name}"
+                    modulename: str = "halogen.utils."
+                name: str = f"{modulename}{self._name}" # type: ignore
             else:
-                name = Originator.type_repr(self.__origin__)
-            if not self._special:
-                args = f'[{", ".join([Originator.type_repr(a) for a in self.__args__])}]'
+                name: str = type_repr(self.__origin__) # type: ignore
+            if not getattr(self, '_special', False):
+                args: str = f'[{", ".join([type_repr(a) for a in self.__args__])}]' # type: ignore
             else:
-                args = ''
+                args: str = ''
             return (f'{name}{args}')
-        if self._special:
+        if getattr(self, '_special', False):
             return 'typing.Callable'
-        return (f'typing.Callable'
-                f'[[{", ".join([Originator.type_repr(a) for a in self.__args__[:-1]])}], '
-                f'{Originator.type_repr(self.__args__[-1])}]')
+        return (f'typing.Callable' # type: ignore
+                f'[[{", ".join([type_repr(a) for a in self.__args__[:-1]])}], '
+                f'{type_repr(self.__args__[-1])}]')
     
-    def copy_with(self, params):
-        return type(self)(self.__origin__,
-                          params, name=self._name,
-                                  inst=self._inst)
+    def copy_with(self, params: tx.Iterable[tx.TypeVar]) -> "GenericAlias":
+        return type(self)(self.__origin__,         # type: ignore
+                          params, name=self._name, # type: ignore
+                                  inst=self._inst) # type: ignore
     
     @classmethod
-    def alias(cls, origin, name=None, params=tuple(), inst=True):
+    def alias(cls, origin, name: tx.Optional[str] = None,
+                         params: tx.Iterable[tx.TypeVar] = tuple(),
+                           inst: bool = True) -> "GenericAlias":
         """ Public implementation of the typing._alias() helper function """
         out = cls(origin,
                   params, special=True,
@@ -100,7 +104,7 @@ class GenericAlias(tx._GenericAlias, _root=True):
 class Originator(TypingMeta):
     
     @staticmethod
-    def type_repr(obj):
+    def type_repr(obj: tx.Any) -> str:
         """ Adapted from `_type_repr(…)`, an internal helper function
             from the “typing” module:
         """
@@ -109,23 +113,23 @@ class Originator(TypingMeta):
                 return obj.__qualname__
             return f'{obj.__module__}.{obj.__qualname__}'
         if obj is ...:
-            return('...')
+            return '...'
         if isinstance(obj, types.FunctionType):
             return obj.__name__
         return repr(obj)
     
-    def __repr__(cls):
+    def __repr__(cls) -> str:
         return cls.type_repr(cls)
     
-    def __getitem__(cls, params):
-        origin = cls.__origin__
+    def __getitem__(cls, params: tx.Iterable[tx.TypeVar]) -> GenericAlias:
+        origin = getattr(cls, '__origin__')
         generic_getitem = hasattr(origin, '__class_getitem__') and \
                           getattr(origin, '__class_getitem__') or \
                           getattr(origin, '__getitem__')
         unwrapped = getattr(generic_getitem, '__wrapped__',
                             generic_getitem)
         signature = inspect.signature(unwrapped)
-        argcount = len(signature.parameters)
+        argcount: int = len(signature.parameters)
         if argcount == 2 and hasattr(cls, '__parameters__'):
             out = unwrapped(cls, params)
         else:
@@ -189,14 +193,19 @@ class Originator(TypingMeta):
         # Return to zero:
         return cls
 
-MultiMap = GenericAlias.alias(MultiMapping,               'MultiMap',        params=(S, T))
-MutableMultiMap = GenericAlias.alias(MutableMultiMapping, 'MutableMultiMap', params=(S, T))
+MultiMap: GenericAlias = GenericAlias.alias(MultiMapping,
+                                           'MultiMap',
+                                            params=(S, T))
+
+MutableMultiMap: GenericAlias = GenericAlias.alias(MutableMultiMapping,
+                                                  'MutableMultiMap',
+                                                   params=(S, T))
 
 class KeyValue(tx.Generic[T, U]):
-    __slots__ = tuple()
+    __slots__: tx.Tuple[str, ...] = tuple()
     
     @classmethod
-    def __repr__(cls):
+    def __repr__(cls) -> str:
         return Originator.type_repr(cls)
     
     @classmethod
@@ -219,7 +228,7 @@ class KeyValue(tx.Generic[T, U]):
             print()
 
 class Namespace(KeyValue[T, U], metaclass=Originator):
-    __slots__ = tuple()
+    __slots__: tx.Tuple[str, ...] = tuple()
     
     @abstract
     def __bool__(self) -> bool: ...
@@ -245,7 +254,7 @@ class DictNamespace(Namespace[T, U], tx.MutableMapping[T, U],
                                      tx.Sized,
                                      tx.Iterable[U],
                                      tx.Container[U]):
-    __slots__ = tuplize('__dict__')
+    __slots__: tx.Tuple[str, ...] = tuplize('__dict__')
     
     def __init__(self, **kwargs):
         self.__dict__.update(kwargs)
@@ -279,18 +288,18 @@ class DictNamespace(Namespace[T, U], tx.MutableMapping[T, U],
         return type(self)(**self.__dict__)
     
     def __repr__(self) -> str:
-        keys = sorted(self.__dict__, key=lambda k: str(k))
-        items = ("{}={!r}".format(k, self.__dict__[k]) for k in keys)
+        keys: tx.List[U] = sorted(self.__dict__, key=lambda k: str(k))
+        items: tx.Generator[T, ContraT, S] = ("{}={!r}".format(k, self.__dict__[k]) for k in keys)
         return "{}({})".format(type(self).__name__, ", ".join(items)) # type: ignore
 
 class SimpleNamespace(DictNamespace[str, T]):
-    __slots__ = tuple()
+    __slots__: tx.Tuple[str, ...] = tuple()
 
 class MultiNamespace(Namespace[str, T], MultiMap[str, T],
                                         tx.MutableMapping[str, T],
                                         tx.Collection[T]):
-    __slots__ = tuplize('_dict',
-                        '_initialized')
+    __slots__: tx.Tuple[str, ...] = tuplize('_dict',
+                                            '_initialized')
     
     def __init__(self, **kwargs):
         self._dict: MutableMultiMap[str, T] = MultiDict()
@@ -373,13 +382,13 @@ BT = tx.TypeVar('BT', bound=type, covariant=True)
 NewTypeCallable = tx.Callable[[BaseType], BaseType]
 
 class TypeSpace(MultiNamespace[CT]):
-    __slots__ = tuplize('for_origin')
+    __slots__: tx.Tuple[str, ...] = tuplize('for_origin')
     
     def __init__(self, **kwargs):
         self.for_origin: DictNamespace[CT, BT] = DictNamespace()
         super().__init__(**kwargs)
     
-    def add_original(self, cls: tx.Type[tx.Any]) -> bool:
+    def add_original(self, cls: tx.Any) -> bool:
         origin: tx.Optional[CT] = getattr(cls, '__origin__', None)
         if not origin:
             return False
@@ -387,7 +396,7 @@ class TypeSpace(MultiNamespace[CT]):
         self.add(cls.__name__, origin)
         return True
     
-    def add_generic(self, cls: tx.Type[tx.Any]) -> bool:
+    def add_generic(self, cls: tx.Any) -> bool:
         origin: tx.Optional[CT] = getattr(cls, '__origin__', None)
         if not origin:
             return False

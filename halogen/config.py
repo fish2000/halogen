@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from __future__ import print_function
+from __future__ import print_function, absolute_import
 
 import abc
 import collections
@@ -20,8 +20,13 @@ from abc import abstractmethod as abstract
 from ctypes.util import find_library
 from functools import wraps
 
-import filesystem
-import compiledb
+try:
+    import filesystem
+    import compiledb
+except ModuleNotFoundError:
+    from halogen import filesystem
+    from halogen import compiledb
+
 from errors import ConfigurationError
 from filesystem import back_tick, script_path, which
 from filesystem import Directory

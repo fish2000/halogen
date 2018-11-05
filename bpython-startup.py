@@ -17,6 +17,9 @@ from halogen import (api,
 DISABLE_COLOR: bool = False
 PrintFuncType = tx.Callable[[str, tx._TypingEllipsis], None]
 TestFuncType = tx.Callable[[None], None]
+ExceptionType = tx.TypeVar('ExceptionType',
+                            bound=BaseException,
+                            covariant=True)
 
 class ColorForcer(contextlib.AbstractContextManager):
     
@@ -40,9 +43,9 @@ class ColorForcer(contextlib.AbstractContextManager):
         return self
     
     def __exit__(self,
-                 exc_type: tx.Any = None,
-                 exc_val: tx.Any = None,
-                 exc_tb: tx.Any = None) -> bool:
+                 exc_type: tx.Optional[tx.Type[ExceptionType]] = None,
+                 exc_val: tx.Optional[ExceptionType] = None,
+                 exc_tb: tx.Optional[types.TracebackType] = None) -> bool:
         os.unsetenv('CLINT_FORCE_COLOR')
         return exc_type is not None
     
@@ -113,4 +116,7 @@ def test_all(*, return_check_count: bool = False) -> tx.Optional[int]:
         return None
 
 if __name__ == '__main__':
+    thispath: str = os.path.abspath(__file__)
+    sys.path.append(os.path.dirname(os.path.join(thispath, 'halogen')))
+    sys.path.append(os.path.dirname(thispath))
     test_all(return_check_count=True)
