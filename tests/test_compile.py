@@ -2,7 +2,7 @@
 from __future__ import print_function
 
 import os
-from basecase import BaseCase
+from basecase import BaseCase # type: ignore
 from halogen.filesystem import cd
 
 class CompileTests(BaseCase):
@@ -34,11 +34,11 @@ class CompileTests(BaseCase):
                 self.assertTrue(gens.archived)
                 gens.preload_all()
                 
-                registered = self.hal.api.registered_generators()
+                registered = self.halapi.registered_generators()
                 self.assertTrue(len(registered) > 0)
                 
-                target_string = self.hal.api.Target.target_from_environment().to_string()
-                self.assertTrue(self.hal.api.Target.validate_target_string(target_string))
+                target_string = self.halapi.Target.target_from_environment().to_string()
+                self.assertTrue(self.halapi.Target.validate_target_string(target_string))
                 
                 with TemporaryDirectory(prefix='test-generate-registered-') as td2:
                     

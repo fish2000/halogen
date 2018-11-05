@@ -4,12 +4,14 @@ from __future__ import print_function
 import os
 import os.path
 import sys
-import psutil
-from setuptools import setup, find_packages # import before Cython stuff, to avoid
-                                            # overriding Cython’s Extension class.
+import psutil # type: ignore
+
+# import before Cython stuff, to avoid
+# overriding Cython’s Extension class:
+from setuptools import setup, find_packages     # type: ignore
 from distutils.sysconfig import get_python_inc
-from Cython.Distutils import Extension
-from Cython.Build import cythonize
+from Cython.Distutils import Extension          # type: ignore
+from Cython.Build import cythonize              # type: ignore
 
 sys.path.append(os.path.abspath(
                 os.path.join(
@@ -18,7 +20,7 @@ sys.path.append(os.path.abspath(
 from halogen.config import Macros
 
 try:
-    import numpy
+    import numpy # type: ignore
 except ImportError:
     class FakeNumpy(object):
         def get_include(self):
@@ -57,8 +59,8 @@ haldol_sources = [os.path.join('haldol', source) for source in haldol_source_nam
 halogen_base_path = os.path.abspath(os.path.dirname('halogen'))
 
 include_dirs = [
-    get_python_inc(plat_specific=1),
-    numpy.get_include(),
+    get_python_inc(plat_specific=True),
+    numpy.get_include(), # type: ignore
     halogen_base_path,
     os.path.join(halogen_base_path, 'ext'),
     # os.path.join(halogen_base_path, 'ext', 'halide'),
@@ -91,8 +93,8 @@ setup(name='halide-halogen',
     },
     package_data=dict(),
     test_suite='nose.collector',
-    ext_modules=cythonize([
-        Extension('halogen.api',
+    ext_modules=cythonize([                 # type: ignore
+        Extension('halogen.api',            # type: ignore
             api_extension_sources + haldol_sources,
             language="c++",
             include_dirs=[d for d in include_dirs if os.path.isdir(d)],

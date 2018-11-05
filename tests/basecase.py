@@ -1,7 +1,7 @@
 
 from __future__ import print_function
 
-from unittest2 import TestCase
+from unittest2 import TestCase # type: ignore
 import sys
 from os.path import abspath, dirname, isdir
 
@@ -11,8 +11,8 @@ class BaseCase(TestCase):
     
     def setUp(self):
         sys.path.append(self.whereat)
-        import hal.api
-        setattr(self, 'hal', hal)
+        import api # type: ignore
+        setattr(self, 'halapi', api)
     
     def tearDown(self):
         from halogen.filesystem import rm_rf
