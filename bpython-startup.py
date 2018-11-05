@@ -78,7 +78,7 @@ def test_all(*, return_check_count: bool = False) -> tx.Optional[int]:
     """
     with ColorForcer() as color_forcer:
         try:
-            from clint.textui import puts
+            from clint.textui import puts_err as puts
             from clint.textui.colored import red
         except ImportError:
             def puts(*args):
