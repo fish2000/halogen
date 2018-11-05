@@ -1,2 +1,3 @@
 #!/usr/bin/env bash
-PYTHONPATH=halogen:. bpython -i bpython-startup.py
+: ${THISDIR:=$(cd $(dirname ${BASH_SOURCE[0]}) && pwd)}
+PYTHONPATH=${THISDIR}/halogen:${THISDIR} bpython -i ${THISDIR}/bpython-startup.py
