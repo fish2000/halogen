@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 from __future__ import print_function
 
-import sys, os, re
+import sys, os
+import re # type: ignore
 import contextlib
 import types
 import typing as tx
