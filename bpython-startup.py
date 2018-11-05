@@ -50,7 +50,7 @@ class ColorForcer(contextlib.AbstractContextManager):
         return self.truthy
 
 
-def test(module: types.ModuleType, *, print_func: PrintFuncType = print) -> bool:
+def test_module(module: types.ModuleType, *, print_func: PrintFuncType = print) -> bool:
     """ Attempt to call `<module>.test()` – using a fallback function
         in the case that `<module>.test()` is not defined – in order
         to run that modules’ inline testsuite
@@ -71,7 +71,7 @@ def test(module: types.ModuleType, *, print_func: PrintFuncType = print) -> bool
         return hasattr(module, 'test')
     return False
 
-def testall(*, return_check_count: bool = False) -> tx.Optional[int]:
+def test_all(*, return_check_count: bool = False) -> tx.Optional[int]:
     """ Attempt to call `<module>.test()` for all halogen modules,
         using the function call `test(<module>, print_function=printred)` –
         q.v. `test()` definition supra.
@@ -103,7 +103,7 @@ def testall(*, return_check_count: bool = False) -> tx.Optional[int]:
         checkcount: int = 0
         
         for module in modules:
-            if test(module, print_func=printred):
+            if test_module(module, print_func=printred):
                 checkcount += 1
         
         printred(f"\nSuccessfully tested {checkcount} modules (of {modcount} total)")
@@ -113,4 +113,4 @@ def testall(*, return_check_count: bool = False) -> tx.Optional[int]:
         return None
 
 if __name__ == '__main__':
-    testall(return_check_count=True)
+    test_all(return_check_count=True)
