@@ -68,7 +68,7 @@ def test(module: types.ModuleType, *, print_func: PrintFuncType = print) -> bool
         return hasattr(module, 'test')
     return False
 
-def testall(*, return_check_count=False) -> tx.Optional[int]:
+def testall(*, return_check_count: bool = False) -> tx.Optional[int]:
     """ Attempt to call `<module>.test()` for all halogen modules,
         using the function call `test(<module>, print_function=printred)` –
         q.v. `test()` definition supra.
