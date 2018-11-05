@@ -7,6 +7,7 @@ import types
 import typing as tx
 
 from halogen import (api,
+                     cli,
                      config,
                      compile,
                      compiledb,
@@ -66,7 +67,7 @@ def test_module(module: types.ModuleType, *, print_func: PrintFuncType = print) 
         return_value = getattr(module, 'test', fallback)()
     except BaseException as exc:
         print_func(f"*** Exception raised in {modname}.test():")
-        print_func(exc)
+        print_func(str(exc))
     else:
         if return_value is not None:
             print_func(f"MODULE {modname} TEST RETURNED:")
@@ -95,6 +96,7 @@ def test_all(*, return_check_count: bool = False) -> tx.Optional[int]:
                                   or (lambda *args: print(*args))
         
         modules: tx.Tuple[types.ModuleType, ...] = (api,
+                                                    cli,
                                                     config,
                                                     compile,
                                                     compiledb,

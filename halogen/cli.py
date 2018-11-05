@@ -84,9 +84,7 @@ def cli(argv=None):
     print('')
     print("TARGETS (%s): %s" % (len(targets), ", ".join(targets)))
 
-
-
-if __name__ == '__main__':
+def test():
     import tempfile
     # cli(sys.argv)
     # cli(['halogen.py', '--help', '--verbose'])
@@ -94,3 +92,6 @@ if __name__ == '__main__':
     cli(['halogen.py', '--output=%s' % tempfile.gettempdir(), '--targets=host,dev,yodogg', 'resize'])
     cli(['halogen.py', 'resize', '--output', tempfile.gettempdir(), '--targets', 'host,dev,yodogg'])
     cli(['halogen.py', 'resize'])
+
+if __name__ == '__main__':
+    test()
