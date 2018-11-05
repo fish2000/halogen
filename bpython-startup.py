@@ -52,16 +52,20 @@ def import_halogen_modules():
                          config,
                          compile,
                          compiledb,
+                         errors,
                          filesystem,
                          ocd,
+                         test_generators,
                          utils)
     assert api
     assert cli
     assert config
     assert compile
     assert compiledb
+    assert errors
     assert filesystem
     assert ocd
+    assert test_generators
     assert utils
     sys.modules.update({
         'api' : api,
@@ -69,8 +73,10 @@ def import_halogen_modules():
         'config' : config,
         'compile' : compile,
         'compiledb' : compiledb,
+        'errors' : errors,
         'filesystem' : filesystem,
         'ocd' : ocd,
+        'test_generators' : test_generators,
         'utils' : utils
     })
 
@@ -121,6 +127,7 @@ def test_all(*, return_check_count: bool = False) -> tx.Optional[int]:
                                                     config,
                                                     compile,
                                                     compiledb,
+                                                    errors,
                                                     filesystem,
                                                     ocd,
                                                     utils)
@@ -138,18 +145,20 @@ def test_all(*, return_check_count: bool = False) -> tx.Optional[int]:
             return checkcount
         return None
 
+import_halogen_modules()
+from halogen import (api,
+                     cli,
+                     config,
+                     compile,
+                     compiledb,
+                     errors,
+                     filesystem,
+                     ocd,
+                     utils)
+
 if __name__ == '__main__':
     assert re # SHUT UP, PYFLAKES!!
     thispath: str = os.path.abspath(__file__)
     sys.path.append(os.path.dirname(os.path.join(thispath, 'halogen')))
     sys.path.append(os.path.dirname(thispath))
     test_all(return_check_count=True)
-else:
-    from halogen import (api,
-                         cli,
-                         config,
-                         compile,
-                         compiledb,
-                         filesystem,
-                         ocd,
-                         utils)
