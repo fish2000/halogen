@@ -55,7 +55,7 @@ def test_module(module: types.ModuleType, *, print_func: PrintFuncType = print) 
         in the case that `<module>.test()` is not defined – in order
         to run that modules’ inline testsuite
     """
-    modname: str = module.__name__
+    modname: str = getattr(module, '__name__', "<unknown>")
     print_func(f"TESTING MODULE: {modname}")
     fallback: TestFuncType = lambda: print_func(f"No inline test for module: {modname}\n")
     return_value: tx.Any = None
