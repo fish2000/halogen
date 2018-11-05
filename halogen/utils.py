@@ -289,7 +289,7 @@ class DictNamespace(Namespace[T, U], tx.MutableMapping[T, U],
     
     def __repr__(self) -> str:
         keys: tx.List[U] = sorted(self.__dict__, key=lambda k: str(k))
-        items: tx.Generator[T, ContraT, S] = ("{}={!r}".format(k, self.__dict__[k]) for k in keys)
+        items: tx.Generator[T, ContraT, str] = ("{}={!r}".format(k, self.__dict__[k]) for k in keys)
         return "{}({})".format(type(self).__name__, ", ".join(items)) # type: ignore
 
 class SimpleNamespace(DictNamespace[str, T]):
@@ -612,15 +612,15 @@ if __name__ == '__main__' and PRINT_ORIGIN_TYPES:
     print()
 
 StringType = tx.TypeVar('StringType', bound=type, covariant=True)
-IsStringType = tx.Callable[[tx.Any], bool]
+PredicateType = tx.Callable[[tx.Any], bool]
 
 string_types: tx.Tuple[tx.Type[StringType], ...] = tuplize(type(''),
                                                            type(b''),
                                                            type(f''),
                                                            type(r''),
-                                                           *six.string_types)
+                                                          *six.string_types)
 
-is_string: IsStringType = lambda thing: isinstance(thing, string_types)
+is_string: PredicateType = lambda thing: isinstance(thing, string_types)
 
 WrapArg = tx.TypeVar('WrapArg', covariant=True)
 
@@ -680,13 +680,13 @@ def memoize(function):
     return memoized
 
 @memoize
-def current_umask():
+def current_umask() -> int:
     import os
     mask = os.umask(0)
     os.umask(mask)
     return mask
 
-def masked_permissions(perms=0o666):
+def masked_permissions(perms=0o666) -> int:
     return perms & ~current_umask()
 
 def modulize(namespace: tx.Dict[str, tx.Any],

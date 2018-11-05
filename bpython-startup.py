@@ -2,7 +2,7 @@
 from __future__ import print_function
 
 import sys, os
-import re # type: ignore
+import re
 import contextlib
 import types
 import typing as tx
@@ -119,6 +119,7 @@ def test_all(*, return_check_count: bool = False) -> tx.Optional[int]:
         return None
 
 if __name__ == '__main__':
+    assert re # SHUT UP, PYFLAKES!!
     thispath: str = os.path.abspath(__file__)
     sys.path.append(os.path.dirname(os.path.join(thispath, 'halogen')))
     sys.path.append(os.path.dirname(thispath))
