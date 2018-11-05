@@ -117,7 +117,7 @@ class OCDType(Originator):
         typename = tx.cast(type, typename)
         if not hasattr(typename, '__name__'):
             raise TypeError("OCDType is a templated type, "
-                            "it must be specialized using a Python typevar "
+                            "it must be specialized using a Python type "
                            f"(not a {type(typename)})")
         if typename.__name__ in metacls.types or \
            typename.__name__ in metacls.subtypes:
@@ -163,6 +163,8 @@ class OCDType(Originator):
                             getattr(generic, '__getitem__',
                             classmethod(
                             lambda cls, *args: tx.Generic.__class_getitem__.__wrapped__(cls, *args))))
+        params: tx.Tuple[tx.TypeVar, ...] = getattr(typename, '__parameters__',
+                                            getattr(generic,  '__parameters__', tuple()))
         
         key = kwargs.pop('key', None)
         rev = kwargs.pop('reverse', False)
@@ -181,9 +183,10 @@ class OCDType(Originator):
             # q.v. inline notes to the Python 3 `typing` module
             # supra: https://git.io/fAsNO
             
-                    '__args__' : tuplize(typename, clsnamearg, factory),
-              '__parameters__' : tuplize(typename),
-                  '__origin__' : metacls
+                    '__args__' : tuplize(typename),
+              '__parameters__' : params,
+            '__getitem_args__' : tuplize(typename, clsnamearg, factory),
+                  '__origin__' : generic
         }
         
         # Using a factory -- a callable that returns an instance of the type,
@@ -313,7 +316,7 @@ class Namespace(KeyValue[S, T], types.SimpleNamespace):
         keys = sorted(self.__dict__, key=lambda k: str(k))
         items = ("{}={!r}".format(k, self.__dict__[k]) for k in keys)
         return "{}({})".format(type(self).__name__, ", ".join(items)) # type: ignore
-    
+
 
 class SortedNamespace(Namespace[str, T], collections.abc.MutableMapping,
                                          collections.abc.Iterable,
@@ -398,7 +401,9 @@ def test():
                                      factory=numpy.asmatrix,
                                      key=lambda x: abs(x), reverse=True): pass
     
-    ocd_settttts = OCDType[set]
+    OCDMatrix     = OCDType[numpy.matrix]
+    
+    ocd_settttts  = OCDType[set]
     
     """ 1. Assert-check properties of specializations and subtypes: """
     
@@ -412,11 +417,38 @@ def test():
     
     assert OCDSet[T]
     assert OCDSet[str]
-    assert SortedMatrix[T]
+    assert SortedList[T]        # this is generic because find_generic_for_type() works for `list`
+    assert SortedNamespace[T]   # this is generic because it inherits from all my crazy `utils` shit
+    assert OCDArray[T]
+    assert OCDNumpyArray[T]
+    assert OCDMatrix[T]
+    # assert SortedMatrix[T]
+    
+    assert OCDMatrix.__generic__ == tx.Generic
+    
+    pprint(SortedMatrix.__mro__)
+    pprint(OCDMatrix.__mro__)
+    pprint(OCDNumpyArray.__mro__)
+    
+    # pprint(SortedMatrix.__parameters__)
+    # pprint(OCDMatrix.__parameters__)
+    # pprint(OCDNumpyArray.__parameters__)
+    
+    # pprint(SortedMatrix.__args__)
+    # pprint(OCDMatrix.__args__)
+    # pprint(OCDNumpyArray.__args__)
+    
     # print(type(OCDSet[T, S]))
     # pprint(type(OCDSet[S]))
+    
+    pprint(OCDFrozenSet[T])     # typing.FrozenSet[+T]
+    pprint(OCDArray[T])         # typing.Generic[+T]
+    pprint(OCDNumpyArray[T])    # typing.Generic[+T]
+    pprint(OCDMatrix[T])        # typing.Generic[+T]
+    pprint(SortedList[T])       # utils.OCDList[~T] (?!)
+    pprint(SortedNamespace[T])  # __main__.SortedNamespace[+T]
+    
     pprint(OCDSet[T])
-    pprint(OCDFrozenSet[str])
     pprint(OCDSet.__origin__)
     pprint(OCDSet.__generic__)
     pprint(OCDSet[T].__origin__)

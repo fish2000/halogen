@@ -126,7 +126,7 @@ class Originator(TypingMeta):
                             generic_getitem)
         signature = inspect.signature(unwrapped)
         argcount = len(signature.parameters)
-        if argcount == 2:
+        if argcount == 2 and hasattr(cls, '__parameters__'):
             out = unwrapped(cls, params)
         else:
             out = unwrapped(params)
