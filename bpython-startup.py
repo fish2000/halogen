@@ -17,7 +17,7 @@ from halogen import (api,
                      utils)
 
 DISABLE_COLOR: bool = False
-PrintFuncType = tx.Callable[[str, tx._TypingEllipsis], None]
+PrintFuncType = tx.Callable[[str, tx._TypingEllipsis], None] # type: ignore
 TestFuncType = tx.Callable[[None], None]
 ExceptionType = tx.TypeVar('ExceptionType',
                             bound=BaseException,
