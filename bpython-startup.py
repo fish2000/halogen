@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 from __future__ import print_function
 
 import sys, os
@@ -47,16 +49,17 @@ class ColorForcer(contextlib.AbstractContextManager):
         return self.truthy
 
 def import_halogen_modules():
-    from halogen import (api,
-                         cli,
-                         config,
-                         compile,
-                         compiledb,
-                         errors,
-                         filesystem,
-                         ocd,
-                         test_generators,
-                         utils)
+    # from halogen import (api,
+    #                      cli,
+    #                      config,
+    #                      compile,
+    #                      compiledb,
+    #                      errors,
+    #                      filesystem,
+    #                      ocd,
+    #                      test_generators,
+    #                      utils)
+    from halogen import api, cli, config, compile, compiledb, errors, filesystem, ocd, test_generators, utils
     assert api
     assert cli
     assert config
@@ -130,6 +133,7 @@ def test_all(*, return_check_count: bool = False) -> tx.Optional[int]:
                                                     errors,
                                                     filesystem,
                                                     ocd,
+                                                    test_generators,
                                                     utils)
         
         modcount: int = len(modules)
@@ -145,20 +149,24 @@ def test_all(*, return_check_count: bool = False) -> tx.Optional[int]:
             return checkcount
         return None
 
-import_halogen_modules()
-from halogen import (api,
-                     cli,
-                     config,
-                     compile,
-                     compiledb,
-                     errors,
-                     filesystem,
-                     ocd,
-                     utils)
-
 if __name__ == '__main__':
     assert re # SHUT UP, PYFLAKES!!
     thispath: str = os.path.abspath(__file__)
     sys.path.append(os.path.dirname(os.path.join(thispath, 'halogen')))
     sys.path.append(os.path.dirname(thispath))
+    import_halogen_modules()
+
+# from halogen import (api,
+#                      cli,
+#                      config,
+#                      compile,
+#                      compiledb,
+#                      errors,
+#                      filesystem,
+#                      ocd,
+#                      utils)
+
+from halogen import api, cli, config, compile, compiledb, errors, filesystem, ocd, test_generators, utils
+
+if __name__ == '__main__':
     test_all(return_check_count=True)

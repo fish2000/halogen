@@ -159,19 +159,19 @@ class ConfigSubBase(abc.ABC, metaclass=abc.ABCMeta):
     
     def cc_flag_string(self, outfile: str, infile: str) -> str:
         """ Get the string template for the C compiler command """
-        cflags: str = self.get_cflags()
+        cflags: str = self.get_cflags().strip()
         return           f"{environ_override('CC')} {cflags} -c {infile} -o {outfile}"
     
     def cxx_flag_string(self, outfile: str, infile: str) -> str:
         """ Get the string template for the C++ compiler command """
-        cflags: str = self.get_cflags()
+        cflags: str = self.get_cflags().strip()
         return          f"{environ_override('CXX')} {cflags} -c {infile} -o {outfile}"
     
     def ld_flag_string(self, outfile: str, *infiles) -> str:
         """ Get the string template for the dynamic linker command """
         allinfiles: str = " ".join(infiles)
-        ldflags: str = self.get_ldflags()
-        return  f"{environ_override('LDCXXSHARED')} {ldflags} {allinfiles} -o {outfile}"
+        ldflags: str = self.get_ldflags().strip()
+        return  f"{environ_override('LDCXXSHARED')} {ldflags} {allinfiles.strip()} -o {outfile}"
     
     @staticmethod
     def ar_flag_string(outfile: str, *infiles) -> str:
@@ -187,7 +187,7 @@ class ConfigSubBase(abc.ABC, metaclass=abc.ABCMeta):
         arflags: str = environ_override('ARFLAGS')
         if 's' not in arflags:
             arflags += 's'
-        return           f"{environ_override('AR')} {arflags} {outfile} {allinfiles}"
+        return           f"{environ_override('AR')} {arflags} {outfile} {allinfiles.strip()}"
     
     # Stringification and representation methods:
     
@@ -219,6 +219,22 @@ class ConfigSubBase(abc.ABC, metaclass=abc.ABCMeta):
     
     @abstract
     def get_ldflags(self) -> str: ...
+    
+    # Shortcut methods for calling the get_* methods
+    # and returning with the output split into tokens
+    # as a tuple of strings:
+    
+    def get_includes_as_tuple(self) -> tx.Tuple[str, ...]:
+        return tuple(self.get_includes().split())
+    
+    def get_libs_as_tuple(self) -> tx.Tuple[str, ...]:
+        return tuple(self.get_libs().split())
+    
+    def get_cflags_as_tuple(self) -> tx.Tuple[str, ...]:
+        return tuple(self.get_cflags().split())
+    
+    def get_ldflags_as_tuple(self) -> tx.Tuple[str, ...]:
+        return tuple(self.get_ldflags().split())
 
 
 class FieldList(object):
@@ -547,11 +563,10 @@ def infoForFramework(filename: str) -> tx.Optional[str]:
     """ Originally from PyObjC: http://bit.ly/2MPVbuz
         … returns (location, name, version) or None
     """
-    global FRAMEWORK_RE
+    global FRAMEWORK_RE, FRAMEWORK_RE_STR
     if FRAMEWORK_RE is None:
-        import re
         FRAMEWORK_RE = re.compile(FRAMEWORK_RE_STR)
-    is_framework: tx.List[str] = FRAMEWORK_RE.findall(filename)
+    is_framework: tx.Optional[tx.List[str]] = FRAMEWORK_RE.findall(filename)
     if not is_framework:
         return None
     return is_framework[-1]
@@ -752,20 +767,34 @@ class SysConfig(PythonConfig):
                             self.framework_name, 'Versions',
                             self.python_version, 'Resources')
     
+    @property
+    def name(self) -> str:
+        """ The name of the Config instance. In this case, it is the name of the class,
+            along with the value of the “with_openssl” instance variable, specifying
+            whether or not to include OpenSSL-related flags in its output.
+        """
+        # with_openssl: str = self.with_openssl and "True" or "False"
+        out: str = f"{type(self).__name__}"
+        if self.with_openssl:
+            out += "(with_openssl=“True”)"
+        return out
+    
     def get_includes(self) -> str:
-        out: str = f"-I{sysconfig.get_path('include')}"
+        global TOKEN
+        out: str = f"{TOKEN}I{sysconfig.get_path('include')}".strip()
         if sysconfig.get_path("include") != \
            sysconfig.get_path("platinclude"):
-            out += f" -I{sysconfig.get_path('platinclude')}"
+            out += f"{TOKEN}I{sysconfig.get_path('platinclude')}"
             out = out.strip()
         if self.with_openssl:
             out += f" {environ_override('OPENSSL_INCLUDES')}"
         return out.strip()
     
     def get_libs(self) -> str:
-        out: str = f"-l{self.library_name} " \
+        global TOKEN
+        out: str = f"{TOKEN}l{self.library_name} " \
                    f"{environ_override('LIBS')} " \
-                   f"{environ_override('SYSLIBS')}"
+                   f"{environ_override('SYSLIBS')}".strip()
         if not environ_override('PYTHONFRAMEWORK'):
             out += f" {environ_override('LINKFORSHARED')}".strip()
         if self.with_openssl:
@@ -773,18 +802,20 @@ class SysConfig(PythonConfig):
         return out.strip()
     
     def get_cflags(self) -> str:
-        out: str = f"-I{sysconfig.get_path('include')} " \
+        global TOKEN
+        out: str = f"{TOKEN}I{sysconfig.get_path('include')} " \
                    f"{environ_override('CFLAGS')} " \
                    f"{environ_override('CXXFLAGS')}".strip()
         if sysconfig.get_path("include") != \
            sysconfig.get_path("platinclude"):
-            out = f"-I{sysconfig.get_path('platinclude')} " \
+            out = f"{TOKEN}I{sysconfig.get_path('platinclude')} " \
                   f"{out.strip()}".strip()
         if self.with_openssl:
             out += f" {environ_override('OPENSSL_INCLUDES')}"
         return out.strip()
     
     def get_ldflags(self) -> str:
+        global TOKEN
         ldstring: str = ""
         libpths: tx.Tuple[str, ...] = (environ_override('LIBDIR'),
                                        environ_override('LIBPL'),
@@ -794,10 +825,10 @@ class SysConfig(PythonConfig):
                 ldstring += f"{TOKEN}L{pth}"
         if self.with_openssl:
             ldstring += f" {environ_override('OPENSSL_LDFLAGS')}"
-        out: str = f"{ldstring.strip()} " \
-                   f"-l{self.library_name} " \
+        out: str = f"{ldstring.strip()}" \
+                   f"{TOKEN}l{self.library_name} " \
                    f"{environ_override('LIBS')} " \
-                   f"{environ_override('SYSLIBS')}"
+                   f"{environ_override('SYSLIBS')}".strip()
         if not environ_override('PYTHONFRAMEWORK'):
             out += f" {environ_override('LINKFORSHARED')}"
         if self.with_openssl:
@@ -897,6 +928,7 @@ class PkgConfig(ConfigBase):
                          ret_err=False)
     
     def get_cflags(self) -> str:
+        global TOKEN
         pc_cflags = back_tick(f"{self.pkgconfig} {self.pkg_name} --cflags",
                               ret_err=False)
         return f"{TOKEN}{TOKEN.join(self.cflags)} {pc_cflags}".strip() # type: ignore
@@ -950,12 +982,14 @@ class NumpyConfig(ConfigBase):
         return self.subdirectory("lib")
     
     def get_includes(self) -> str:
-        return " ".join(f"-I{include_dir}" for include_dir \
-                                 in self.info['include_dirs']) # type: ignore
+        global TOKEN
+        return " ".join(f"{TOKEN}I{include_dir}".strip() for include_dir \
+                                               in self.info['include_dirs']) # type: ignore
     
     def get_libs(self) -> str:
-        return " ".join(f"-l{library}" for library \
-                             in self.info['libraries']) # type: ignore
+        global TOKEN
+        return " ".join(f"{TOKEN}l{library}".strip() for library \
+                                           in self.info['libraries']) # type: ignore
     
     def get_cflags(self) -> str:
         macros: str = self.macros.to_string()
@@ -964,8 +998,9 @@ class NumpyConfig(ConfigBase):
         return f"{macros} {includes} {extra_compile_args}".strip()
     
     def get_ldflags(self) -> str:
-        linkdirs: str = " ".join(f"-L{library_dir}" for library_dir \
-                                          in self.info['library_dirs']) # type: ignore
+        global TOKEN
+        linkdirs: str = " ".join(f"{TOKEN}L{library_dir}".strip() for library_dir \
+                                                        in self.info['library_dirs']) # type: ignore
         libs: str = self.get_libs()
         extra_link_args: str = " ".join(self.info['extra_link_args']) # type: ignore
         return f"{linkdirs} {libs} {extra_link_args}".strip()
@@ -1029,7 +1064,8 @@ class BrewedConfig(ConfigBase):
         return f"{type(self).__name__}(brew_name=“{self.brew_name}”)"
     
     def get_includes(self) -> str:
-        return f"-I{self.include()}"
+        global TOKEN
+        return f"{TOKEN}I{self.include()}".strip()
     
     def get_libs(self) -> str:
         return ""
@@ -1039,7 +1075,8 @@ class BrewedConfig(ConfigBase):
         return f"{TOKEN}{TOKEN.join(self.cflags)} {self.get_includes()}".strip() # type: ignore
     
     def get_ldflags(self) -> str:
-        return f"-L{self.lib()}"
+        global TOKEN
+        return f"{TOKEN}L{self.lib()}".strip()
 
 
 class BrewedHalideConfig(BrewedConfig):
@@ -1067,10 +1104,12 @@ class BrewedHalideConfig(BrewedConfig):
         return type(self).__name__
     
     def get_libs(self) -> str:
-        return f"-l{self.library}"
+        global TOKEN
+        return f"{TOKEN}l{self.library}".strip()
     
     def get_ldflags(self) -> str:
-        return f"-L{self.lib()} -l{self.library}"
+        global TOKEN
+        return f"{TOKEN}L{self.lib()}{TOKEN}l{self.library}".strip()
 
 
 class BrewedImreadConfig(BrewedConfig):
@@ -1197,9 +1236,11 @@ class ConfigUnion(ConfigBase, tx.Collection[ConfigType]):
             return self.flags.index(value)
         
         def __repr__(self) -> str:
+            global TOKEN
             return f"[{TOKEN}{self.joiner.join(self.flags)} ]"
         
         def __str__(self) -> str:
+            global TOKEN
             return f"[{TOKEN}{self.joiner.join(self.flags)} ]"
         
         def __bytes__(self) -> bytes:
