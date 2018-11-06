@@ -88,10 +88,10 @@ def generate(*generators, **arguments):
     
     # ARGUMENT POST-PROCESS BOUNDS-CHECKS:
     
-    if len(generators) < 1:
+    if len(generators) == 0:
         raise GenerationError(">=1 generator is required")
     
-    if len(generator_names) < 1:
+    if len(generator_names) == 0:
         raise GenerationError(">=1 generator name is required")
     
     if not generators.issubset(generator_names):
@@ -157,7 +157,7 @@ def generate(*generators, **arguments):
         
         if verbose:
             print(f"MODULE: {u8str(module.name)} ({u8str(module)})")
-            print('-' * max(terminal_width, 100))
+            print('=' * max(terminal_width, 100))
         
         # The module-compilation call:
         module.compile(output)
@@ -175,27 +175,33 @@ def test():
     """ Run the inline tests for the halogen.generate module """
     
     import api # type: ignore
-    import tempfile
-    from config import DEFAULT_VERBOSITY
+    import os
+    from filesystem import TemporaryDirectory
+    from utils import tuplize
     
     assert str(api.Target()) != 'host'
+    registered_generators = api.registered_generators()
     
-    print(api.registered_generators())
-    
-    generate('my_first_generator',
-        verbose=DEFAULT_VERBOSITY,
-        target='host',
-        output_directory=tempfile.gettempdir())
-    
-    generate('my_second_generator',
-        verbose=DEFAULT_VERBOSITY,
-        target='host',
-        output_directory=tempfile.gettempdir())
-    
-    generate('brighten',
-        verbose=DEFAULT_VERBOSITY,
-        target='host',
-        output_directory=tempfile.gettempdir())
+    if len(registered_generators) > 0:
+        print(registered_generators)
+        print()
+        
+        with TemporaryDirectory(prefix='yo-dogg-') as td:
+            
+            generate(*tuplize('my_first_generator'),
+                target='host',
+                output_directory=os.fspath(td))
+            
+            generate(*tuplize('my_second_generator'),
+                target='host',
+                output_directory=os.fspath(td))
+            
+            generate(*tuplize('my_brightest_generator'),
+                target='host',
+                output_directory=os.fspath(td))
+    else:
+        print("No registered generators found, skipping inline tests")
+        # print()
 
 if __name__ == '__main__':
     test()

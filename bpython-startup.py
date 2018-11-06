@@ -49,17 +49,18 @@ class ColorForcer(contextlib.AbstractContextManager):
         return self.truthy
 
 def import_halogen_modules():
-    # from halogen import (api,
-    #                      cli,
-    #                      config,
-    #                      compile,
-    #                      compiledb,
-    #                      errors,
-    #                      filesystem,
-    #                      ocd,
-    #                      test_generators,
-    #                      utils)
-    from halogen import api, cli, config, compile, compiledb, errors, filesystem, ocd, test_generators, utils
+    from halogen import (api,
+                         cli,
+                         config,
+                         compile,
+                         compiledb,
+                         errors,
+                         filesystem,
+                         generate,
+                         ocd,
+                         test_generators,
+                         utils)
+    # from halogen import api, cli, config, compile, compiledb, errors, filesystem, generate, ocd, test_generators, utils
     assert api
     assert cli
     assert config
@@ -67,6 +68,7 @@ def import_halogen_modules():
     assert compiledb
     assert errors
     assert filesystem
+    assert generate
     assert ocd
     assert test_generators
     assert utils
@@ -78,6 +80,7 @@ def import_halogen_modules():
         'compiledb' : compiledb,
         'errors' : errors,
         'filesystem' : filesystem,
+        'generate' : generate,
         'ocd' : ocd,
         'test_generators' : test_generators,
         'utils' : utils
@@ -132,6 +135,7 @@ def test_all(*, return_check_count: bool = False) -> tx.Optional[int]:
                                                     compiledb,
                                                     errors,
                                                     filesystem,
+                                                    generate,
                                                     ocd,
                                                     test_generators,
                                                     utils)
@@ -156,17 +160,19 @@ if __name__ == '__main__':
     sys.path.append(os.path.dirname(thispath))
     import_halogen_modules()
 
-# from halogen import (api,
-#                      cli,
-#                      config,
-#                      compile,
-#                      compiledb,
-#                      errors,
-#                      filesystem,
-#                      ocd,
-#                      utils)
+from halogen import (api,
+                     cli,
+                     config,
+                     compile,
+                     compiledb,
+                     errors,
+                     filesystem,
+                     generate,
+                     ocd,
+                     test_generators,
+                     utils)
 
-from halogen import api, cli, config, compile, compiledb, errors, filesystem, ocd, test_generators, utils
+# from halogen import api, cli, config, compile, compiledb, errors, filesystem, ocd, test_generators, utils
 
 if __name__ == '__main__':
     test_all(return_check_count=True)
