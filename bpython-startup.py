@@ -60,7 +60,6 @@ def import_halogen_modules():
                          ocd,
                          test_generators,
                          utils)
-    # from halogen import api, cli, config, compile, compiledb, errors, filesystem, generate, ocd, test_generators, utils
     assert api
     assert cli
     assert config
@@ -171,8 +170,6 @@ from halogen import (api,
                      ocd,
                      test_generators,
                      utils)
-
-# from halogen import api, cli, config, compile, compiledb, errors, filesystem, ocd, test_generators, utils
 
 if __name__ == '__main__':
     test_all(return_check_count=True)
