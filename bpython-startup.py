@@ -10,11 +10,6 @@ import types
 import typing as tx
 import typing_extensions as tX
 
-if __package__ is None or __package__ == '':
-    from halogen.utils import terminal_width
-else:
-    from .utils import terminal_width
-
 DISABLE_COLOR: bool = False
 PrintFuncType = tx.Callable[[str, tX._TypingEllipsis], None] # type: ignore
 TestFuncType = tx.Callable[[None], None]
@@ -95,6 +90,11 @@ def test_module(module: types.ModuleType, *, print_func: PrintFuncType = print) 
         in the case that `<module>.test()` is not defined – in order
         to run that modules’ inline testsuite
     """
+    if __package__ is None or __package__ == '':
+        from halogen.utils import terminal_width
+    else:
+        from .utils import terminal_width
+    
     modname: str = getattr(module, '__name__', "<unknown>")
     
     print_func('=' * terminal_width)
