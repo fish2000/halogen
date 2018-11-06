@@ -26,9 +26,16 @@ except ImportError:
         def get_include(self):
             return os.path.curdir
     numpy = FakeNumpy()
-    print("NUMPY NOT FOUND (using shim)")
+    print("import: NUMPY NOT FOUND (using shim)")
 else:
     print(f"import: module {numpy.__name__} found")
+
+try:
+    import pythran # type: ignore
+except ImportError:
+    print("import: PYTHRAN NOT FOUND")
+else:
+    print(f"import: module {pythran.__name__} found")
 
 # VERSION & METADATA
 __version__ = "<undefined>"
