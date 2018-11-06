@@ -706,7 +706,7 @@ class BrewedPythonConfig(PythonConfig):
         if not brew_name:
             brew_name = 'python'
         self.brew_name: str = brew_name
-        prefix: str = back_tick(f"{self.brew} --prefix {self.brew_name}", ret_err=False)
+        prefix: str = back_tick(f"{self.brew} --prefix {self.brew_name}")
         super(BrewedPythonConfig, self).__init__(prefix=prefix)
     
     def include(self) -> MaybeStr:
@@ -891,7 +891,7 @@ class PkgConfig(ConfigBase):
             pkg_name = 'python3'
         self.pkg_name: str = pkg_name
         self.add_package(pkg_name)
-        self.prefix = back_tick(f"{self.pkgconfig} {self.pkg_name} --variable=prefix", ret_err=False)
+        self.prefix = back_tick(f"{self.pkgconfig} {self.pkg_name} --variable=prefix")
     
     def bin(self) -> MaybeStr:
         return self.subdirectory("bin")
@@ -920,22 +920,18 @@ class PkgConfig(ConfigBase):
         return f"{type(self).__name__}(pkg_name=“{self.pkg_name}”)"
     
     def get_includes(self) -> str:
-        return back_tick(f"{self.pkgconfig} {self.pkg_name} --cflags-only-I",
-                         ret_err=False)
+        return back_tick(f"{self.pkgconfig} {self.pkg_name} --cflags-only-I")
     
     def get_libs(self) -> str:
-        return back_tick(f"{self.pkgconfig} {self.pkg_name} --libs-only-l --libs-only-other --static",
-                         ret_err=False)
+        return back_tick(f"{self.pkgconfig} {self.pkg_name} --libs-only-l --libs-only-other --static")
     
     def get_cflags(self) -> str:
         global TOKEN
-        pc_cflags = back_tick(f"{self.pkgconfig} {self.pkg_name} --cflags",
-                              ret_err=False)
+        pc_cflags = back_tick(f"{self.pkgconfig} {self.pkg_name} --cflags")
         return f"{TOKEN}{TOKEN.join(self.cflags)} {pc_cflags}".strip() # type: ignore
     
     def get_ldflags(self) -> str:
-        return back_tick(f"{self.pkgconfig} {self.pkg_name} --libs --static",
-                         ret_err=False)
+        return back_tick(f"{self.pkgconfig} {self.pkg_name} --libs --static")
 
 
 class NumpyConfig(ConfigBase):
@@ -1034,8 +1030,7 @@ class BrewedConfig(ConfigBase):
         if not brew_name:
             brew_name = 'halide'
         self.brew_name: str = brew_name
-        self.prefix: filesystem.ts.DirectoryLike = back_tick(f"{self.brew} --prefix {self.brew_name}",
-                                                               ret_err=False)
+        self.prefix: filesystem.ts.DirectoryLike = back_tick(f"{self.brew} --prefix {self.brew_name}")
     
     def bin(self) -> MaybeStr:
         return self.subdirectory("bin")
@@ -1134,7 +1129,7 @@ class BrewedImreadConfig(BrewedConfig):
         """ Complete override of BrewedConfig’s __init__ method: """
         if self.imread_config is None:
             self.imread_config = which('imread-config')
-        self.prefix: filesystem.ts.DirectoryLike = back_tick(f"{self.imread_config} --prefix", ret_err=False)
+        self.prefix: filesystem.ts.DirectoryLike = back_tick(f"{self.imread_config} --prefix")
     
     @property
     def name(self) -> str:
@@ -1142,16 +1137,16 @@ class BrewedImreadConfig(BrewedConfig):
         return type(self).__name__
     
     def get_includes(self) -> str:
-        return back_tick(f"{self.imread_config} --includes", ret_err=False)
+        return back_tick(f"{self.imread_config} --includes")
     
     def get_libs(self) -> str:
-        return back_tick(f"{self.imread_config} --libs", ret_err=False)
+        return back_tick(f"{self.imread_config} --libs")
     
     def get_cflags(self) -> str:
-        return back_tick(f"{self.imread_config} --cflags", ret_err=False)
+        return back_tick(f"{self.imread_config} --cflags")
     
     def get_ldflags(self) -> str:
-        return back_tick(f"{self.imread_config} --ldflags", ret_err=False)
+        return back_tick(f"{self.imread_config} --ldflags")
 
 
 class ConfigUnion(ConfigBase, tx.Collection[ConfigType]):
