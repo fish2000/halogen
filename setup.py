@@ -13,12 +13,6 @@ from distutils.sysconfig import get_python_inc
 from Cython.Distutils import Extension          # type: ignore
 from Cython.Build import cythonize              # type: ignore
 
-sys.path.append(os.path.abspath(
-                os.path.join(
-                os.path.dirname(__file__), 'halogen')))
-
-from halogen.config import Macros
-
 try:
     import numpy # type: ignore
 except ImportError:
@@ -36,6 +30,12 @@ except ImportError:
     print("import: PYTHRAN NOT FOUND")
 else:
     print(f"import: module {pythran.__name__} found")
+
+sys.path.append(os.path.abspath(
+                os.path.join(
+                os.path.dirname(__file__), 'halogen')))
+
+from halogen.config import Macros
 
 # VERSION & METADATA
 __version__ = "<undefined>"
