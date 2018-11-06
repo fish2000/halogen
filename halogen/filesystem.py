@@ -20,8 +20,12 @@ except ImportError:
 from functools import wraps
 from tempfile import _TemporaryFileWrapper as TemporaryFileWrapperBase
 
-from errors import ExecutionError, FilesystemError
-from utils import memoize, modulize, stringify, suffix_searcher, u8bytes, u8str
+if __package__ is None or __package__ == '':
+    from errors import ExecutionError, FilesystemError
+    from utils import memoize, stringify, suffix_searcher, u8bytes, u8str
+else:
+    from .errors import ExecutionError, FilesystemError
+    from .utils import memoize, stringify, suffix_searcher, u8bytes, u8str
 
 __all__ = ('DEFAULT_PATH',
            'DEFAULT_PREFIX',
@@ -33,8 +37,7 @@ __all__ = ('DEFAULT_PATH',
            'Directory',
            'cd', 'wd',
            'TemporaryDirectory', 'Intermediate',
-           'NamedTemporaryFile',
-           'ts')
+           'NamedTemporaryFile')
 
 __dir__ = lambda: list(__all__)
 
@@ -1152,12 +1155,12 @@ def NamedTemporaryFile(mode='w+b', buffer_size=-1,
             os.close(descriptor)
         raise FilesystemError(str(base_exception))
 
-modulize({
-         'DirectoryLike' : DirectoryLike,
-    'MaybeDirectoryLike' : MaybeDirectoryLike
-}, 'filesystem.ts', """Typenames local to the filesystem module""", __file__)
-
-import filesystem.ts as ts # type: ignore
+# modulize({
+#          'DirectoryLike' : DirectoryLike,
+#     'MaybeDirectoryLike' : MaybeDirectoryLike
+# }, 'filesystem.ts', """Typenames local to the filesystem module""", __file__)
+#
+# import filesystem.ts as ts # type: ignore
 
 del TemporaryFileWrapperBase
 del DirectoryLike
@@ -1334,9 +1337,9 @@ def test():
     assert not tdp.exists
     
     # Check the 'ts' submodule:
-    assert ts
-    assert ts.DirectoryLike
-    assert ts.MaybeDirectoryLike
+    # assert ts
+    # assert ts.DirectoryLike
+    # assert ts.MaybeDirectoryLike
     
 
 if __name__ == '__main__':

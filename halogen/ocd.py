@@ -8,7 +8,10 @@ import collections.abc
 import types
 import typing as tx
 
-from utils import KeyValue, Originator, tuplize
+if __package__ is None or __package__ == '':
+    from utils import KeyValue, Originator, tuplize
+else:
+    from .utils import KeyValue, Originator, tuplize
 
 __all__ = ('OCDType',
            'OCDSet', 'OCDFrozenSet',
@@ -95,7 +98,10 @@ class OCDType(Originator):
             Returns the newly specialized type, as per metaclass type creation.
         """
         from string import capwords
-        from utils import find_generic_for_type
+        if __package__ is None or __package__ == '':
+            from utils import find_generic_for_type
+        else:
+            from .utils import find_generic_for_type
         
         # Validate covariant typevar argument:
         
@@ -346,7 +352,10 @@ def test_namespace_types():
     """ Test instances of various SimpleNamespace subclasses """
     
     from pprint import pformat
-    from utils import terminal_size
+    if __package__ is None or __package__ == '':
+        from utils import terminal_size
+    else:
+        from .utils import terminal_size
     
     nsdata: tx.Dict[str, str] = {
                 'yo' : 'dogg',
@@ -387,8 +396,11 @@ def test_namespace_types():
 def test():
     """ Inline tests for OCDType and friends """
     
-    from utils import print_cache
     from pprint import pprint
+    if __package__ is None or __package__ == '':
+        from utils import print_cache
+    else:
+        from .utils import print_cache
     
     """ 0. Set up some specializations and subtypes for testing: """
     

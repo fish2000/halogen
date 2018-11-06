@@ -10,9 +10,15 @@ import json
 import os
 
 from abc import abstractmethod as abstract
-from errors import CDBError
-from filesystem import rm_rf, TemporaryName, Directory
-from utils import stringify, u8bytes, u8str, tuplize
+
+if __package__ is None or __package__ == '':
+    from errors import CDBError
+    from filesystem import rm_rf, TemporaryName, Directory
+    from utils import stringify, u8bytes, u8str, tuplize
+else:
+    from .errors import CDBError
+    from .filesystem import rm_rf, TemporaryName, Directory
+    from .utils import stringify, u8bytes, u8str, tuplize
 
 __all__ = ('CDBSubBase', 'CDBBase',
                          'CDBJsonFile')

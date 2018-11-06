@@ -697,8 +697,7 @@ def modulize(namespace: tx.MutableMapping[str, tx.Any],
     
     """ Convert a dictionary mapping into a legit Python module """
     
-    import os
-    import re
+    import os, re
     
     # Update the namespace with '__all__' and '__dir__':
     if '__all__' not in namespace:
@@ -957,9 +956,15 @@ def test_compile(conf, test_source: str, print_cdb: bool = False) -> bool:
         by a given halogen.config.ConfigBase subclass instance.
     """
     import os
-    import config
-    from compiledb import CDBBase
-    from filesystem import NamedTemporaryFile, TemporaryName
+    
+    if __package__ is None or __package__ == '':
+        import config
+        from compiledb import CDBBase
+        from filesystem import NamedTemporaryFile, TemporaryName
+    else:
+        from . import config
+        from .compiledb import CDBBase
+        from .filesystem import NamedTemporaryFile, TemporaryName
     
     width: int = terminal_size().width
     bytelength: int = len(test_source)

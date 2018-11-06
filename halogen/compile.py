@@ -8,18 +8,30 @@ import os
 import sys
 import typing as tx
 
-import config
-import filesystem
-from compiledb import CDBJsonFile
-from config import SHARED_LIBRARY_SUFFIX, STATIC_LIBRARY_SUFFIX, DEFAULT_VERBOSITY
-from errors import HalogenError, GeneratorLoaderError, GenerationError
-from generate import default_emits, valid_emits
-from generate import generate, preload
-from filesystem import rm_rf, temporary, TemporaryName
-from filesystem import Directory, cd
-from filesystem import TemporaryDirectory, Intermediate
-from ocd import OCDFrozenSet, OCDList
-from utils import is_string, listify, tuplize, u8str
+if __package__ is None or __package__ == '':
+    import config
+    from compiledb import CDBJsonFile
+    from config import SHARED_LIBRARY_SUFFIX, STATIC_LIBRARY_SUFFIX, DEFAULT_VERBOSITY
+    from errors import HalogenError, GeneratorLoaderError, GenerationError
+    from generate import default_emits, valid_emits
+    from generate import generate, preload
+    from filesystem import rm_rf, temporary, TemporaryName
+    from filesystem import Directory, cd
+    from filesystem import TemporaryDirectory, Intermediate
+    from ocd import OCDFrozenSet, OCDList
+    from utils import is_string, listify, tuplize, u8str
+else:
+    from . import config
+    from .compiledb import CDBJsonFile
+    from .config import SHARED_LIBRARY_SUFFIX, STATIC_LIBRARY_SUFFIX, DEFAULT_VERBOSITY
+    from .errors import HalogenError, GeneratorLoaderError, GenerationError
+    from .generate import default_emits, valid_emits
+    from .generate import generate, preload
+    from .filesystem import rm_rf, temporary, TemporaryName
+    from .filesystem import Directory, cd
+    from .filesystem import TemporaryDirectory, Intermediate
+    from .ocd import OCDFrozenSet, OCDList
+    from .utils import is_string, listify, tuplize, u8str
 
 __all__ = ('CONF', 'DEFAULT_MAXIMUM_GENERATOR_COUNT',
            'CompilerError', 'LinkerError', 'ArchiverError',
@@ -30,8 +42,8 @@ __dir__ = lambda: list(__all__)
 
 DEFAULT_MAXIMUM_GENERATOR_COUNT = 1024
 
-CONF: config.ts.ConfigType = config.ConfigUnion(config.SysConfig(),
-                                                config.BrewedHalideConfig())
+CONF = config.ConfigUnion(config.SysConfig(),
+                          config.BrewedHalideConfig())
 
 # A few bespoke errors ... because yes on the occasions I do indulge myself,
 # my version of a real TREAT-YO-SELF bender is: exception subclasses. It is true.
@@ -548,7 +560,10 @@ class Generators(contextlib.AbstractContextManager):
             just toss back an empty set without making any calls into Halide whatsoever.
         """
         if self.preloaded:
-            import api # type: ignore
+            if __package__ is None or __package__ == '':
+                import api # type: ignore
+            else:
+                from . import api
             return OCDFrozenSet(api.registered_generators())
         return OCDFrozenSet()
     
@@ -681,13 +696,18 @@ def test(MAXIMUM_GENERATORS=255):
     
     import tempfile
     from contextlib import ExitStack
-    from utils import terminal_width
     from pprint import pprint
-    import api # type: ignore
     
-    directory: filesystem.ts.DirectoryLike = Directory(pth="/Users/fish/Dropbox/halogen/tests/generators")
-    destination: filesystem.ts.DirectoryLike = Directory(pth=os.path.join(tempfile.gettempdir(), "yodogg"))
-    zip_destination: filesystem.ts.DirectoryLike = os.path.realpath("/tmp")
+    if __package__ is None or __package__ == '':
+        from halogen import api # type: ignore
+        from utils import terminal_width
+    else:
+        from . import api
+        from .utils import terminal_width
+    
+    directory = Directory(pth="/Users/fish/Dropbox/halogen/tests/generators")
+    destination = Directory(pth=os.path.join(tempfile.gettempdir(), "yodogg"))
+    zip_destination = os.path.realpath("/tmp")
     
     with TemporaryDirectory(prefix='yo-dogg-') as td:
         

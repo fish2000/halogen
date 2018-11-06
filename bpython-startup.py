@@ -10,6 +10,11 @@ import types
 import typing as tx
 import typing_extensions as tX
 
+if __package__ is None or __package__ == '':
+    from halogen.utils import terminal_width
+else:
+    from .utils import terminal_width
+
 DISABLE_COLOR: bool = False
 PrintFuncType = tx.Callable[[str, tX._TypingEllipsis], None] # type: ignore
 TestFuncType = tx.Callable[[None], None]
@@ -72,17 +77,17 @@ def import_halogen_modules():
     assert test_generators
     assert utils
     sys.modules.update({
-        'api' : api,
-        'cli' : cli,
-        'config' : config,
-        'compile' : compile,
-        'compiledb' : compiledb,
-        'errors' : errors,
-        'filesystem' : filesystem,
-        'generate' : generate,
-        'ocd' : ocd,
-        'test_generators' : test_generators,
-        'utils' : utils
+        'halogen.api' : api,
+        'halogen.cli' : cli,
+        'halogen.config' : config,
+        'halogen.compile' : compile,
+        'halogen.compiledb' : compiledb,
+        'halogen.errors' : errors,
+        'halogen.filesystem' : filesystem,
+        'halogen.generate' : generate,
+        'halogen.ocd' : ocd,
+        'halogen.test_generators' : test_generators,
+        'halogen.utils' : utils
     })
 
 def test_module(module: types.ModuleType, *, print_func: PrintFuncType = print) -> bool:
@@ -91,7 +96,11 @@ def test_module(module: types.ModuleType, *, print_func: PrintFuncType = print) 
         to run that modules’ inline testsuite
     """
     modname: str = getattr(module, '__name__', "<unknown>")
+    
+    print_func('=' * terminal_width)
     print_func(f"TESTING MODULE: {modname}")
+    print_func('-' * terminal_width)
+    
     fallback: TestFuncType = lambda: print_func(f"No inline test for module: {modname}\n")
     return_value: tx.Any = None
     try:
@@ -114,7 +123,7 @@ def test_all(*, return_check_count: bool = False) -> tx.Optional[int]:
     import_halogen_modules()
     with ColorForcer() as color_forcer:
         try:
-            from clint.textui import puts_err as puts
+            from clint.textui import puts
             from clint.textui.colored import red
         except ImportError:
             def puts(*args):

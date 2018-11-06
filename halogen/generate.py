@@ -3,8 +3,12 @@
 
 from __future__ import print_function
 from types import MappingProxyType as mappingproxy
-from ocd import OCDFrozenSet
 import typing as tx
+
+if __package__ is None or __package__ == '':
+    from ocd import OCDFrozenSet
+else:
+    from .ocd import OCDFrozenSet
 
 __all__ = ('valid_emits', 'emit_defaults',
                           'default_emits',
@@ -37,8 +41,12 @@ def preload(library_path, **kwargs):
         We also use a memoization cache to avoid loading anything twice.
     """
     import os, ctypes
-    from config import DEFAULT_VERBOSITY
-    from errors import GeneratorLoaderError
+    if __package__ is None or __package__ == '':
+        from config import DEFAULT_VERBOSITY
+        from errors import GeneratorLoaderError
+    else:
+        from .config import DEFAULT_VERBOSITY
+        from .errors import GeneratorLoaderError
     verbose = bool(kwargs.pop('verbose', DEFAULT_VERBOSITY))
     
     # initialize the memoization cache, if we haven’t already:
@@ -70,11 +78,18 @@ def generate(*generators, **arguments):
     """ Invoke halogen.api.Module.compile(…) with the proper arguments. This function
         was concieved with replacing GenGen.cpp’s options in mind. """
     import os
-    import api # type: ignore
-    from config import DEFAULT_VERBOSITY
-    from errors import GenerationError
-    from filesystem import Directory
-    from utils import terminal_width, u8bytes, u8str
+    if __package__ is None or __package__ == '':
+        import api # type: ignore
+        from config import DEFAULT_VERBOSITY
+        from errors import GenerationError
+        from filesystem import Directory
+        from utils import terminal_width, u8bytes, u8str
+    else:
+        from . import api # type: ignore
+        from .config import DEFAULT_VERBOSITY
+        from .errors import GenerationError
+        from .filesystem import Directory
+        from .utils import terminal_width, u8bytes, u8str
     
     # ARGUMENT PROCESSING:
     
@@ -174,10 +189,15 @@ def test():
     
     """ Run the inline tests for the halogen.generate module """
     
-    import api # type: ignore
     import os
-    from filesystem import TemporaryDirectory
-    from utils import tuplize
+    if __package__ is None or __package__ == '':
+        import api # type: ignore
+        from filesystem import TemporaryDirectory
+        from utils import tuplize
+    else:
+        from . import api # type: ignore
+        from .filesystem import TemporaryDirectory
+        from .utils import tuplize
     
     assert str(api.Target()) != 'host'
     registered_generators = api.registered_generators()

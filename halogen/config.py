@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from __future__ import print_function, absolute_import
+from __future__ import print_function
 
 import abc
 import collections
@@ -20,20 +20,24 @@ from abc import abstractmethod as abstract
 from ctypes.util import find_library
 from functools import wraps
 
-try:
-    import filesystem
+if __package__ is None or __package__ == '':
     import compiledb
-except ModuleNotFoundError:
-    from halogen import filesystem
-    from halogen import compiledb
-
-from errors import ConfigurationError
-from filesystem import back_tick, script_path, which
-from filesystem import Directory
-from ocd import OCDSet, OCDFrozenSet
-from utils import SimpleNamespace
-from utils import is_string, modulize, stringify
-from utils import tuplize, u8bytes, u8str
+    from errors import ConfigurationError
+    from filesystem import back_tick, script_path, which
+    from filesystem import Directory
+    from ocd import OCDSet, OCDFrozenSet
+    from utils import SimpleNamespace
+    from utils import is_string, stringify
+    from utils import tuplize, u8bytes, u8str
+else:
+    from . import compiledb
+    from .errors import ConfigurationError
+    from .filesystem import back_tick, script_path, which
+    from .filesystem import Directory
+    from .ocd import OCDSet, OCDFrozenSet
+    from .utils import SimpleNamespace
+    from .utils import is_string, stringify
+    from .utils import tuplize, u8bytes, u8str
 
 __all__ = ('SHARED_LIBRARY_SUFFIX', 'STATIC_LIBRARY_SUFFIX',
            'DEFAULT_VERBOSITY',
@@ -47,8 +51,7 @@ __all__ = ('SHARED_LIBRARY_SUFFIX', 'STATIC_LIBRARY_SUFFIX',
                                      'BrewedImreadConfig',
            'ConfigUnion',
            'command',
-           'CC', 'CXX', 'LD', 'AR',
-           'ts')
+           'CC', 'CXX', 'LD', 'AR')
 
 __dir__ = lambda: list(__all__)
 
@@ -126,7 +129,7 @@ class ConfigSubBase(abc.ABC, metaclass=abc.ABCMeta):
     
     @prefix.setter
     def prefix(self,
-               value: filesystem.ts.DirectoryLike):
+               value):
         prefixd: Directory = Directory(value)
         if not prefixd.exists:
             raise ValueError(f"prefix path does not exist: {prefixd}")
@@ -148,7 +151,7 @@ class ConfigSubBase(abc.ABC, metaclass=abc.ABCMeta):
     
     def subdirectory(self,
                      subdir: tx.AnyStr,
-                     whence: filesystem.ts.MaybeDirectoryLike = None) -> MaybeStr:
+                     whence = None) -> MaybeStr:
         """ Return the path to a subdirectory within this Config instances’ prefix """
         return self.prefix.subpath(subdir, whence, requisite=True)
     
@@ -609,7 +612,7 @@ class PythonConfig(ConfigBase):
     # the path to the 'Frameworks' directory (empty before calls):
     framework_path: MaybeStr = None
     
-    def __init__(self, prefix: filesystem.ts.MaybeDirectoryLike = None):
+    def __init__(self, prefix = None):
         """ Initialize PythonConfig, optionally specifying a system prefix """
         if self.pyconfigpath is None:
             self.pyconfigpath = which(self.pyconfig)
@@ -1030,7 +1033,7 @@ class BrewedConfig(ConfigBase):
         if not brew_name:
             brew_name = 'halide'
         self.brew_name: str = brew_name
-        self.prefix: filesystem.ts.DirectoryLike = back_tick(f"{self.brew} --prefix {self.brew_name}")
+        self.prefix = back_tick(f"{self.brew} --prefix {self.brew_name}")
     
     def bin(self) -> MaybeStr:
         return self.subdirectory("bin")
@@ -1129,7 +1132,7 @@ class BrewedImreadConfig(BrewedConfig):
         """ Complete override of BrewedConfig’s __init__ method: """
         if self.imread_config is None:
             self.imread_config = which('imread-config')
-        self.prefix: filesystem.ts.DirectoryLike = back_tick(f"{self.imread_config} --prefix")
+        self.prefix = back_tick(f"{self.imread_config} --prefix")
     
     @property
     def name(self) -> str:
@@ -1492,17 +1495,17 @@ def AR(conf: ConfigType,
     return conf.ar_flag_string(outfile, *infiles)
 
 
-modulize({
-               'MaybeStr' : MaybeStr,
-             'MacroTuple' : MacroTuple,
-                  'Macro' : Macro,
-                 'Macros' : Macros,
-                 'AnySet' : AnySet,
-               'Ancestor' : Ancestor,
-             'ConfigType' : ConfigType
-}, 'config.ts', "Typenames local to the config module", __file__)
-
-import config.ts as ts # type: ignore
+# modulize({
+#                'MaybeStr' : MaybeStr,
+#              'MacroTuple' : MacroTuple,
+#                   'Macro' : Macro,
+#                  'Macros' : Macros,
+#                  'AnySet' : AnySet,
+#                'Ancestor' : Ancestor,
+#              'ConfigType' : ConfigType
+# }, 'config.ts', "Typenames local to the config module", __file__)
+#
+# import config.ts as ts # type: ignore
 
 del find_library
 del TC
@@ -1513,27 +1516,33 @@ del Ancestor
 # del ConfigType
 
 def test():
-    from utils import print_config
-    from utils import test_compile
-    from utils import print_cache
-    import test_generators
+    if __package__ is None or __package__ == '':
+        from utils import print_config
+        from utils import test_compile
+        from utils import print_cache
+        import test_generators
+    else:
+        from .utils import print_config
+        from .utils import test_compile
+        from .utils import print_cache
+        from . import test_generators
     
-    brewedHalideConfig: ts.ConfigType = BrewedHalideConfig()
-    brewedPythonConfig: ts.ConfigType = BrewedPythonConfig()
-    pythonConfig: ts.ConfigType = PythonConfig()
-    sysConfig: ts.ConfigType = SysConfig()
-    pkgConfig: ts.ConfigType = PkgConfig()
-    numpyConfig: ts.ConfigType = NumpyConfig()
+    brewedHalideConfig: ConfigType = BrewedHalideConfig()
+    brewedPythonConfig: ConfigType = BrewedPythonConfig()
+    pythonConfig: ConfigType = PythonConfig()
+    sysConfig: ConfigType = SysConfig()
+    pkgConfig: ConfigType = PkgConfig()
+    numpyConfig: ConfigType = NumpyConfig()
     
     sysConfigSetWrap: SetWrap = SetWrap(sysConfig)
     numpyConfigSetWrap: SetWrap = SetWrap(numpyConfig)
     
-    configUnionOne: ts.ConfigType = ConfigUnion(SysConfig(with_openssl=True))
-    configUnion: ts.ConfigType    = ConfigUnion(brewedHalideConfig, sysConfig)
-    configUnionAll: ts.ConfigType = ConfigUnion(brewedHalideConfig, sysConfig,
-                                                brewedPythonConfig, pythonConfig,
-                                                                    pkgConfig,
-                                                                    numpyConfig)
+    configUnionOne: ConfigType = ConfigUnion(SysConfig(with_openssl=True))
+    configUnion: ConfigType    = ConfigUnion(brewedHalideConfig, sysConfig)
+    configUnionAll: ConfigType = ConfigUnion(brewedHalideConfig, sysConfig,
+                                             brewedPythonConfig, pythonConfig,
+                                                                 pkgConfig,
+                                                                 numpyConfig)
     
     configUnionSetWrap: SetWrap = SetWrap(configUnion)
     
@@ -1568,11 +1577,11 @@ def test():
     print_cache(ConfigBase, 'field_cache')
     
     # Check “ts” submodule:
-    assert ts
-    assert ts.MaybeStr
-    assert ts.AnySet
-    assert ts.Ancestor
-    assert ts.ConfigType
+    # assert ts
+    # assert ts.MaybeStr
+    # assert ts.AnySet
+    # assert ts.Ancestor
+    # assert ts.ConfigType
 
 
 def corefoundation_check():
@@ -1585,9 +1594,14 @@ def corefoundation_check():
         print("CoreFoundation module not found, skipping PyObjC test")
         return
     
-    from utils import print_config
-    from utils import test_compile
-    import test_generators
+    if __package__ is None or __package__ == '':
+        from utils import print_config
+        from utils import test_compile
+        import test_generators
+    else:
+        from .utils import print_config
+        from .utils import test_compile
+        from . import test_generators
     
     FUNC_NAME_WTF = CFBundleGetValueForInfoDictionaryKey
     bundle_id: str = 'org.python.python'
@@ -1600,9 +1614,9 @@ def corefoundation_check():
     # prefix = os.path.dirname(os.path.dirname(bundlepath))
     prefix: Directory = bundlepath.parent().parent()
     
-    brewedHalideConfig: ts.ConfigType = BrewedHalideConfig()
-    pyConfig: ts.ConfigType = PythonConfig(prefix)
-    configUnion: ts.ConfigType = ConfigUnion(brewedHalideConfig, pyConfig)
+    brewedHalideConfig: ConfigType = BrewedHalideConfig()
+    pyConfig: ConfigType = PythonConfig(prefix)
+    configUnion: ConfigType = ConfigUnion(brewedHalideConfig, pyConfig)
     
     """ 5. Dump the ConfigUnion instance used in the CoreFoundation test: """
     
