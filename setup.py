@@ -4,10 +4,10 @@ from __future__ import print_function
 import os
 import os.path
 import sys
-import psutil # type: ignore
 
 # import before Cython stuff, to avoid
 # overriding Cython’s Extension class:
+from psutil import cpu_count                    # type: ignore
 from setuptools import setup, find_packages     # type: ignore
 from distutils.sysconfig import get_python_inc
 from Cython.Distutils import Extension          # type: ignore
@@ -111,7 +111,7 @@ setup(name='halide-halogen',
                 '-std=c++17',
                 '-stdlib=libc++']
         )],
-        nthreads=psutil.cpu_count(),
+        nthreads=cpu_count(),
         compiler_directives=dict(language_level=2,
                                  infer_types=True,
                                  embedsignature=True)
