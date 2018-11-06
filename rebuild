@@ -5,11 +5,15 @@ set -x
 : ${THISDIR:=$(cd $(dirname ${BASH_SOURCE[0]}) && pwd)}
 : ${PROJECT:=$(dirname $THISDIR)}
 
+# yes 'y' | pip uninstall pythran
+
 rm -rf ${THISDIR}/build
 rm -rf ${THISDIR}/halogen/__pycache__/
 rm -rf ${THISDIR}/tests/__pycache__/
 rm -f ${THISDIR}/halogen/api.cpython-*-darwin.so
 
 python ${THISDIR}/setup.py build_ext --inplace
+
+# pip install -U pythran
 
 set +x
