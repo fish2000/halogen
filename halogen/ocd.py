@@ -9,9 +9,9 @@ import types
 import typing as tx
 
 if __package__ is None or __package__ == '':
-    from utils import KeyValue, Originator, tuplize
+    from utils import KeyValue, Originator, TypeAndBases, tuplize
 else:
-    from .utils import KeyValue, Originator, tuplize
+    from .utils import KeyValue, Originator, TypeAndBases, tuplize
 
 __all__ = ('OCDType',
            'OCDSet', 'OCDFrozenSet',
@@ -27,10 +27,12 @@ TypeFactory = tx.Callable[..., tx.Any]
 MaybeFactory = tx.Optional[TypeFactory]
 F = tx.TypeVar('F', bound=TypeFactory, covariant=True)
 
-ConcreteType = tx.TypeVar('ConcreteType', bound=type, covariant=True)
-NamedTupType = tx.TypeVar('NamedTupType', bound=tx.NamedTuple, covariant=True)
+# ConcreteType = tx.TypeVar('ConcreteType', bound=type, covariant=True)
+# NamedTupType = tx.TypeVar('NamedTupType', bound=tx.NamedTuple, covariant=True)
 ClassGetType = tx.Callable[[tx._GenericAlias, tx.Tuple[type, ...]], # type: ignore
                             tx._GenericAlias]                       # type: ignore
+PredicateType = tx.Callable[..., bool]
+MaybePredicate = tx.Optional[PredicateType]
 
 class OCDType(Originator):
     
@@ -62,31 +64,11 @@ class OCDType(Originator):
     
     # The metaclass-internal name prefix, used to name generated
     # types, á la Objective-C naming prefixes:
-    prefix: str = "OCD"
-    
-    class TypeAndBases(tx.NamedTuple):
-        Type:   tx.Type[ConcreteType]
-        Name:   str = ''
-        Bases:  tx.List[str] = []
-        
-        @classmethod
-        def for_type(cls,
-                  newcls: tx.Type[ConcreteType]) -> "OCDType.TypeAndBases":
-            basenames: tx.List[str] = []
-            for base in newcls.__bases__:
-                name: str = getattr(base, '__qualname__',
-                            getattr(base, '__name__'))
-                mod: str = getattr(base, '__module__', '')
-                if len(mod) > 1:
-                    mod += '.'
-                basenames.append(f"{mod}{name}")
-            return cls(newcls,  # type: ignore
-                       newcls.__qualname__,
-                       basenames)
+    prefix: tx.ClassVar[str] = "OCD"
     
     # The metaclass-internal dictionaries of all generated types:
-    types:    tx.Dict[str, TypeAndBases] = collections.OrderedDict()
-    subtypes: tx.Dict[str, TypeAndBases] = collections.OrderedDict()
+    types:    tx.ClassVar[tx.Dict[str, TypeAndBases]] = collections.OrderedDict()
+    subtypes: tx.ClassVar[tx.Dict[str, TypeAndBases]] = collections.OrderedDict()
     
     @classmethod
     def __class_getitem__(metacls,
@@ -173,8 +155,8 @@ class OCDType(Originator):
         params: tx.Tuple[tx.TypeVar, ...] = getattr(typename, '__parameters__',
                                             getattr(generic,  '__parameters__', tuple()))
         
-        key = kwargs.pop('key', None)
-        rev = kwargs.pop('reverse', False)
+        key: MaybePredicate = kwargs.pop('key', None)
+        rev: bool = kwargs.pop('reverse', False)
         
         attributes: tx.Dict[str, tx.Any] = {
            '__class_getitem__' : get,
@@ -216,7 +198,7 @@ class OCDType(Originator):
         # metaclasses’ __new__(…) method, and stash it in a
         # metaclass-local dict keyed with the generated classname:
         
-        baseset: list = kwargs.pop('baseset', [])
+        baseset: tx.List[type] = kwargs.pop('baseset', [])
         
         cls = type(clsname, tuplize(typename,
                                    *baseset,
@@ -224,18 +206,8 @@ class OCDType(Originator):
                             dict(attributes),
                           **kwargs)
         
-        metacls.types[clsname] = metacls.TypeAndBases.for_type(cls)
+        metacls.types[clsname] = TypeAndBases.for_type(cls)
         return cls
-    
-    @classmethod
-    def __prepare__(metacls,
-                       name: str,
-                      bases: tx.Iterable[type],
-                   **kwargs) -> tx.MutableMapping[str, tx.Any]:
-        """ Call out to super (currently utils.Originator): """
-        return super().__prepare__(name,
-                                   bases,
-                                 **kwargs)
     
     def __new__(metacls,
                    name: str,
@@ -248,6 +220,9 @@ class OCDType(Originator):
             on that specialization for forwarding to Python’s class-creation
             apparatus:
         """
+        if name in metacls.subtypes:
+            return metacls.subtypes[name].Type
+        
         subbase: type = object
         for basecls in bases:
             if issubclass(basecls, (tx.Iterable,
@@ -256,16 +231,16 @@ class OCDType(Originator):
                 break
         
         # DON’T KNOW ABOUT YOU BUT I AM UN:
-        debaser = tuplize(subbase,
-                          collections.abc.Iterable, # type: ignore
-                          collections.abc.Iterator) # type: ignore
+        debaser: tx.Tuple[type, ...] = tuplize(subbase,
+                                               collections.abc.Iterable, # type: ignore
+                                               collections.abc.Iterator) # type: ignore
         
-        subname = kwargs.pop('subname', None)
-        factory = kwargs.pop('factory', None)
-        key = kwargs.pop('key', None)
-        rev = kwargs.pop('reverse', False)
+        subname: MaybeString = kwargs.pop('subname', None)
+        factory: MaybeFactory = kwargs.pop('factory', None)
+        key: MaybePredicate = kwargs.pop('key', None)
+        rev: bool = kwargs.pop('reverse', False)
         
-        baseset = [chien for chien in bases if chien not in debaser]
+        baseset: tx.List[type] = [chien for chien in bases if chien not in debaser]
         
         # Create the base ancestor with a direct call to “__class_getitem__(…)”
         # -- which, note, will fail if no bases were specified; if `subbase`
@@ -285,7 +260,7 @@ class OCDType(Originator):
                                        dict(attributes),
                                      **kwargs)
         
-        metacls.subtypes[name] = metacls.TypeAndBases.for_type(cls)
+        metacls.subtypes[name] = TypeAndBases.for_type(cls)
         return cls
 
 ###
@@ -428,8 +403,6 @@ def test():
     assert not hasattr(ocd_settttts, '__factory__')
     assert ocd_settttts.__generic__ == tx.Set
     
-    # pprint(dir(ocd_settttts))
-    
     assert OCDSet[T]
     assert OCDSet[str]
     assert SortedList[T]        # this is generic because find_generic_for_type() works for `list`
@@ -437,44 +410,88 @@ def test():
     assert OCDArray[T]
     assert OCDNumpyArray[T]
     assert OCDMatrix[T]
-    # assert SortedMatrix[T]
+    assert SortedMatrix[T]      # this is generic because I fixed `utils.Originator.__getitem__(…)`
     
     assert OCDMatrix.__generic__ == tx.Generic
     
-    pprint(SortedMatrix.__mro__)
-    pprint(OCDMatrix.__mro__)
-    pprint(OCDNumpyArray.__mro__)
+    pprint(SortedMatrix.__mro__)    # (__main__.test.<locals>.SortedMatrix,
+                                    # <class 'ocd.OCDMatrix'>,
+                                    # <class 'numpy.matrixlib.defmatrix.matrix'>,
+                                    # <class 'numpy.ndarray'>,
+                                    # <class 'collections.abc.Iterable'>,
+                                    # <class 'object'>)
+    
+    pprint(OCDMatrix.__mro__)       # (<class 'ocd.OCDMatrix'>,
+                                    # <class 'numpy.matrixlib.defmatrix.matrix'>,
+                                    # <class 'numpy.ndarray'>,
+                                    # <class 'collections.abc.Iterable'>,
+                                    # <class 'object'>)
+    
+    pprint(OCDNumpyArray.__mro__)   # (<class 'ocd.OCDNumpyArray'>,
+                                    # <class 'numpy.ndarray'>,
+                                    # <class 'collections.abc.Iterable'>,
+                                    # <class 'object'>)
+    
+    print()
     
     # pprint(SortedMatrix.__parameters__)
     # pprint(OCDMatrix.__parameters__)
     # pprint(OCDNumpyArray.__parameters__)
-    
     # pprint(SortedMatrix.__args__)
     # pprint(OCDMatrix.__args__)
     # pprint(OCDNumpyArray.__args__)
     
-    # print(type(OCDSet[T, S]))
-    # pprint(type(OCDSet[S]))
+    try:
+        # Generics take only one type parameter:
+        print(type(OCDSet[T, S]))
+    except TypeError as exc:
+        assert 'Too many parameters' in str(exc)
+    else:
+        assert False, "`OCDSet[T, S]` didn’t raise!"
     
+    pprint(OCDSet[T])           # typing.Set[+T]
     pprint(OCDFrozenSet[T])     # typing.FrozenSet[+T]
     pprint(OCDArray[T])         # typing.Generic[+T]
     pprint(OCDNumpyArray[T])    # typing.Generic[+T]
     pprint(OCDMatrix[T])        # typing.Generic[+T]
-    pprint(SortedList[T])       # utils.OCDList[~T] (?!)
+    pprint(OCDTuple[T, ...])    # typing.Tuple[+T, ...]
+    pprint(OCDTuple[T])         # typing.Tuple[+T]
+    pprint(OCDTuple[T, S])      # typing.Tuple[+T, +S]
+    pprint(OCDList[T])          # typing.List[+T]
+    pprint(SortedList[T])       # ocd.OCDList[~T] (PHEW.)
     pprint(SortedNamespace[T])  # __main__.SortedNamespace[+T]
+    pprint(SortedMatrix[T])     # __main__.test.<locals>.SortedMatrix[+T]
+    
+    print()
     
     pprint(OCDSet[T])
     pprint(OCDSet.__origin__)
     pprint(OCDSet.__generic__)
     pprint(OCDSet[T].__origin__)
+    
+    print()
+    
     pprint(SortedList[T])
     pprint(SortedList.__origin__)
     pprint(SortedList.__generic__)
     pprint(SortedList[T].__origin__)
+    
+    print()
+    
+    pprint(OCDList[T])
+    pprint(OCDList.__origin__)
+    pprint(OCDList.__generic__)
+    pprint(OCDList[T].__origin__)
+    
+    print()
+    
     pprint(OCDNamespace[S, T])
     pprint(OCDNamespace.__origin__)
     pprint(OCDNamespace.__generic__)
     pprint(OCDNamespace[S, T].__origin__)
+    
+    print()
+    
     pprint(SortedNamespace[T])
     pprint(SortedNamespace.__origin__)
     pprint(SortedNamespace.__generic__)
@@ -559,8 +576,6 @@ def test():
         def __set_name__(self, cls, name):
             self.name = name
     
-
-
     class NewType:
     
         """NewType creates simple unique types with almost zero runtime

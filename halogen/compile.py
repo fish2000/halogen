@@ -699,7 +699,7 @@ def test(MAXIMUM_GENERATORS=255):
     from pprint import pprint
     
     if __package__ is None or __package__ == '':
-        from halogen import api # type: ignore
+        import api # type: ignore
         from utils import terminal_width
     else:
         from . import api

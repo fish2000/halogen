@@ -17,12 +17,13 @@ from multidict import MultiDict                              # type: ignore
 from multidict._abc import _TypingMeta as TypingMeta         # type: ignore
 from multidict._abc import MultiMapping, MutableMultiMapping # type: ignore
 
-__all__ = ('tuplize', 'listify',
+__all__ = ('UTF8_ENCODING',
+           'tuplize', 'listify',
            'Originator', 
            'GenericAlias', 'KeyValue', 'Namespace', 'DictNamespace',
                                                     'SimpleNamespace',
                                                     'MultiNamespace',
-                                                    'TypeSpace',
+                                                    'TypeAndBases', 'TypeSpace',
                                                     'ty',
            'find_generic_for_type',
            'TerminalSize', 'terminal_size', 'terminal_width',
@@ -44,42 +45,48 @@ __dir__ = lambda: list(__all__)
 abstract = None # SHUT UP, PYFLAKES!!
 PRINT_ORIGIN_TYPES = True
 PRINT_GENERIC_INFO = True
+UTF8_ENCODING = 'UTF-8'
 
 S = tx.TypeVar('S', bound=str, covariant=True)
 T = tx.TypeVar('T', covariant=True)
 U = tx.TypeVar('U', covariant=True)
 ContraT = tx.TypeVar('ContraT', contravariant=True)
 
-def tuplize(*items) -> tuple:
+def tuplize(*items) -> tx.Tuple[tx.Any, ...]:
     return tuple(item for item in items if item is not None)
 
-def listify(*items) -> list:
+def listify(*items) -> tx.List[tx.Any]:
     return list(item for item in items if item is not None)
 
 class GenericAlias(tX._GenericAlias, _root=True):
-    __slots__: tx.Tuple[str, ...] = tuple()
+    __slots__: tx.Tuple[str, ...] = tuplize('__origin__', '__args__')
     
     def __repr__(self) -> str:
         """ Bespoke re-implementation of typing._GenericAlias.__repr__ """
         type_repr: tx.Callable[[tx.Any], str] = Originator.type_repr
+        name: str = ''
+        args: str = ''
+        modulename: str = ''
+        origin: tx.Type[tx.Any] = self.__origin__
         if (self._name != 'Callable' or                               # type: ignore
                 len(self.__args__) == 2 and self.__args__[0] is ...): # type: ignore
             if self._name:                                            # type: ignore
-                module: tx.Optional[types.ModuleType] = inspect.getmodule(self)
-                if module:
-                    modulename: str = module.__name__
-                    if len(modulename) > 0:
-                        modulename += "."
+                if not hasattr(origin, '__module__'):
+                    module: tx.Optional[types.ModuleType] = inspect.getmodule(origin)
+                    if module:
+                        modulename += module.__name__
+                    else:
+                        modulename += "utils"
                 else:
-                    modulename: str = "halogen.utils."
-                name: str = f"{modulename}{self._name}" # type: ignore
+                    modulename += origin.__module__
+                if len(modulename) > 0:
+                    modulename += "."
+                name += f"{modulename}{self._name}" # type: ignore
             else:
-                name: str = type_repr(self.__origin__) # type: ignore
+                name += type_repr(origin) # type: ignore
             if not getattr(self, '_special', False):
-                args: str = f'[{", ".join([type_repr(a) for a in self.__args__])}]' # type: ignore
-            else:
-                args: str = ''
-            return (f'{name}{args}')
+                args += f'[{", ".join([type_repr(a) for a in self.__args__])}]' # type: ignore
+            return f'{name}{args}'
         if getattr(self, '_special', False):
             return 'typing.Callable'
         return (f'typing.Callable' # type: ignore
@@ -112,6 +119,13 @@ class Originator(TypingMeta):
         if isinstance(obj, type):
             if obj.__module__ == 'builtins':
                 return obj.__qualname__
+            if not hasattr(obj, '__module__'):
+                module: tx.Optional[types.ModuleType] = inspect.getmodule(obj)
+                modulename: str = module.__name__
+            else:
+                modulename: str = obj.__module__
+            if modulename:
+                return f'{modulename}.{obj.__qualname__}'
             return f'{obj.__module__}.{obj.__qualname__}'
         if obj is ...:
             return '...'
@@ -122,16 +136,24 @@ class Originator(TypingMeta):
     def __repr__(cls) -> str:
         return cls.type_repr(cls)
     
-    def __getitem__(cls, params: tx.Iterable[tx.TypeVar]) -> GenericAlias:
-        origin = getattr(cls, '__origin__')
+    def __getitem__(cls,
+                 params: tx.Union[tx.TypeVar,
+                                  tx.Iterable[tx.TypeVar]]) -> GenericAlias:
+        if not hasattr(params, '__iter__') or params.__class__ is type:
+            params: tx.Tuple[tx.TypeVar, ...] = tuplize(params)
+        else:
+            params: tx.Tuple[tx.TypeVar, ...] = tuplize(*params)
+        origin: tx.Type[tx.Any] = getattr(cls, '__origin__')
         generic_getitem = hasattr(origin, '__class_getitem__') and \
                           getattr(origin, '__class_getitem__') or \
                           getattr(origin, '__getitem__')
         unwrapped = getattr(generic_getitem, '__wrapped__',
                             generic_getitem)
-        signature = inspect.signature(unwrapped)
+        signature: inspect.Signature = inspect.signature(unwrapped)
         argcount: int = len(signature.parameters)
         if argcount == 2 and hasattr(cls, '__parameters__'):
+            if len(params) > 0:
+                cls.__parameters__ = params
             out = unwrapped(cls, params)
         else:
             out = unwrapped(params)
@@ -382,6 +404,45 @@ BaseType = tx.TypeVar('BaseType', covariant=True)
 BT = tx.TypeVar('BT', bound=type, covariant=True)
 NewTypeCallable = tx.Callable[[BaseType], BaseType]
 
+class NamedTupleMeta(tx.NamedTupleMeta):
+    def __new__(metacls,
+                   name: str,
+                  bases: tx.Iterable[type],
+             attributes: tx.MutableMapping[str, tx.Any],
+               **kwargs) -> tx.Type[ConcreteType]:
+        out: tx.Type[ConcreteType] = super().__new__(metacls, name, # type: ignore
+                                                              bases,
+                                                              attributes,
+                                                            **kwargs)
+        out.__origin__: tx.Type[BaseType] = bases[0].__base__
+        return out
+
+class NamedTuple(tx.NamedTuple, metaclass=NamedTupleMeta):
+    _root: tx.ClassVar[bool] = True
+
+class TypeAndBases(NamedTuple):
+    """ A typed NamedTuple subclass for storing a type plus a list
+        of the stringified names of all of its bases:
+    """
+    Type:   tx.Type[ConcreteType]
+    Name:   str = ''
+    Bases:  tx.List[str] = []
+    
+    @classmethod
+    def for_type(cls,
+              newcls: tx.Type[ConcreteType]) -> "TypeAndBases":
+        basenames: tx.List[str] = []
+        for base in newcls.__bases__:
+            name: str = getattr(base, '__qualname__',
+                        getattr(base, '__name__'))
+            mod: str = getattr(base, '__module__', '')
+            if len(mod) > 1:
+                mod += '.'
+            basenames.append(f"{mod}{name}")
+        return cls(newcls,  # type: ignore
+                   newcls.__qualname__,
+                   basenames)
+
 class TypeSpace(MultiNamespace[CT]):
     __slots__: tx.Tuple[str, ...] = tuplize('for_origin')
     
@@ -434,6 +495,7 @@ ty.add_original(Namespace)
 ty.add_original(DictNamespace)
 ty.add_original(SimpleNamespace)
 ty.add_original(MultiNamespace)
+ty.add_original(TypeAndBases)
 ty.add_original(TypeSpace)
 
 def find_generic_for_type(cls: tx.Type[ConcreteType],
@@ -792,11 +854,11 @@ remove_paths.oldsyspath: tx.Tuple[str, ...] = tuple()
 
 def u8encode(source: tx.Any) -> bytes:
     """ Encode a source as bytes using the UTF-8 codec """
-    return bytes(source, encoding='UTF-8')
+    return bytes(source, encoding=UTF8_ENCODING)
 
 def u8bytes(source: tx.Any) -> bytes:
-    """ Encode a source as bytes using the UTF-8 codec, guaranteeing a
-        proper return value without raising an error
+    """ Encode a source as bytes using the UTF-8 codec, guaranteeing
+        a proper return value without raising an error
     """
     if type(source) is bytes:
         return source
@@ -816,7 +878,7 @@ def u8str(source: tx.Any) -> str:
     """ Encode a source as a Python string, guaranteeing a proper return
         value without raising an error
     """
-    return u8bytes(source).decode('UTF-8')
+    return u8bytes(source).decode(UTF8_ENCODING)
 
 def stringify(instance: tx.Any, fields: tx.Iterable[str]) -> str:
     """ Stringify an object instance, using an iterable field list to

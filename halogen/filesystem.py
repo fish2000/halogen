@@ -268,8 +268,8 @@ class TypeLocker(abc.ABCMeta):
             halogen.filesystem.Directory(…) class, per arguments:
         """
         # Always replace the “directory” method anew:
-        attributes['directory'] = classmethod(
-                                      lambda cls, pth=None: \
+        attributes['directory'] = staticmethod(
+                                      lambda pth=None: \
                                       metacls.types['Directory'](pth=pth))
         cls = super(TypeLocker, metacls).__new__(metacls, name,
                                                           bases,
@@ -472,7 +472,7 @@ class TemporaryName(collections.abc.Hashable,
             raise FilesystemError("Copying requires a place to which to copy")
         import shutil
         if self.exists:
-            return shutil.copy2(self.name, os.fspath(destination))
+            return shutil.copy2(self._name, os.fspath(destination))
         return False
     
     def do_not_destroy(self):
@@ -531,12 +531,18 @@ class TemporaryName(collections.abc.Hashable,
         return self.exists
     
     def __eq__(self, other):
-        return os.path.samefile(self._name,
-                                os.fspath(other))
+        try:
+            return os.path.samefile(self._name,
+                                    os.fspath(other))
+        except FileNotFoundError:
+            return False
     
     def __ne__(self, other):
-        return not os.path.samefile(self._name,
-                                    os.fspath(other))
+        try:
+            return not os.path.samefile(self._name,
+                                        os.fspath(other))
+        except FileNotFoundError:
+            return True
     
     def __hash__(self):
         return hash((self._name, self.exists))
@@ -747,7 +753,7 @@ class Directory(collections.abc.Hashable,
             if self.did_change_back:
                 # return to pristine state:
                 self.ctx_initialize()
-                return exc_type is None
+                return exc_type is not None
         # return to pristine state:
         self.ctx_initialize()
         return False

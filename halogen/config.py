@@ -1435,8 +1435,12 @@ class ConfigUnion(ConfigBase, tx.Collection[ConfigType]):
         """
         return ldflags - self.nonexistent_path_flags(ldflags) # type: ignore
 
+CommandType = tx.Callable[[ConfigType, str, str, tx._TypingEllipsis], str]
+VariadicCommandType = tx.Callable[[ConfigType, str, tx._TypingEllipsis], str]
+CommandFuncType = tx.Union[CommandType, VariadicCommandType]
+WrappedCommandFuncType = tx.Callable[..., tx.Tuple[str, ...]]
 
-def command(func):
+def command(func: CommandFuncType) -> WrappedCommandFuncType:
     @wraps(func)
     def command_function(*args, **kwargs) -> tx.Tuple[str, ...]:
         return back_tick(func(*args, **kwargs),

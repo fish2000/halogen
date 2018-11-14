@@ -10,6 +10,11 @@ import types
 import typing as tx
 import typing_extensions as tX
 
+if __package__ is None or __package__ == '':
+    from halogen.utils import terminal_size
+else:
+    from .utils import terminal_size
+
 DISABLE_COLOR: bool = False
 PrintFuncType = tx.Callable[[str, tX._TypingEllipsis], None] # type: ignore
 TestFuncType = tx.Callable[[None], None]
@@ -85,21 +90,20 @@ def import_halogen_modules():
         'halogen.utils' : utils
     })
 
-def test_module(module: types.ModuleType, *, print_func: PrintFuncType = print) -> bool:
+def test_module(module: types.ModuleType, *,
+            print_func: PrintFuncType = print) -> bool:
     """ Attempt to call `<module>.test()` – using a fallback function
         in the case that `<module>.test()` is not defined – in order
         to run that modules’ inline testsuite
     """
-    if __package__ is None or __package__ == '':
-        from halogen.utils import terminal_width
-    else:
-        from .utils import terminal_width
+    modname: str = getattr(module, '__qualname__',
+                   getattr(module, '__name__',
+                                   "<unknown>"))
+    width: int = terminal_size().width
     
-    modname: str = getattr(module, '__name__', "<unknown>")
-    
-    print_func('=' * terminal_width)
+    print('=' * width)
     print_func(f"TESTING MODULE: {modname}")
-    print_func('-' * terminal_width)
+    print('-' * width)
     
     fallback: TestFuncType = lambda: print_func(f"No inline test for module: {modname}\n")
     return_value: tx.Any = None
@@ -120,7 +124,6 @@ def test_all(*, return_check_count: bool = False) -> tx.Optional[int]:
         using the function call `test(<module>, print_function=printred)` –
         q.v. `test()` definition supra.
     """
-    import_halogen_modules()
     with ColorForcer() as color_forcer:
         try:
             from clint.textui import puts
