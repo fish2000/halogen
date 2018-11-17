@@ -425,7 +425,7 @@ class TypeAndBases(NamedTuple):
         of the stringified names of all of its bases:
     """
     Type:   tx.Type[ConcreteType]
-    Name:   str = ''
+    Name:   str
     Bases:  tx.List[str] = []
     
     @classmethod
@@ -514,7 +514,7 @@ class TerminalSize(object):
     class Size(tx.NamedTuple):
         
         height: int = 25
-        width: int = 120
+        width: int = 105
         
         @property
         def area(self) -> int:
@@ -545,7 +545,7 @@ class TerminalSize(object):
     Descriptor = ty.NewType('Descriptor', int)
     
     DEFAULT_LINES:   int = 25
-    DEFAULT_COLUMNS: int = 130
+    DEFAULT_COLUMNS: int = 105
     MINIMUM_LINES:   int = 25
     MINIMUM_COLUMNS: int = 25
     
