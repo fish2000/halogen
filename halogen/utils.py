@@ -907,7 +907,8 @@ class TerminalSize(object):
                 pass
             finally:
                 if descriptor:
-                    os.close(descriptor)
+                    os.close(tx.cast(int,
+                                     descriptor))
         
         # … if we were unsuccessfull in reading from all three of the standard
         # I/O descriptors •and• a bespoke descriptor opened directly on the
