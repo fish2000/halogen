@@ -53,12 +53,34 @@ U = tx.TypeVar('U', covariant=True)
 ContraT = tx.TypeVar('ContraT', contravariant=True)
 
 def tuplize(*items) -> tx.Tuple[tx.Any, ...]:
+    """ Return a new tuple containing all non-`None` arguments """
     return tuple(item for item in items if item is not None)
 
 def listify(*items) -> tx.List[tx.Any]:
+    """ Return a new list containing all non-`None` arguments """
     return list(item for item in items if item is not None)
 
 class GenericAlias(tX._GenericAlias, _root=True):
+    """ `utils.GenericAlias` is a re-wrapped and sugar-coated user-facing
+        descendant of the `typing._GenericAlias` class.
+        
+        It directly inherits from `typing._GenericAlias` – the foundational
+        class of the `typing` module – and exposes this very useful part of
+        the `typing` API’s implementation details.
+        
+        The extensive `__repr__` implementation is a far more complete and
+        generically useful version of the `typing._GenericAlias.__repr__(…)`
+        mechanism – it completely replaces the ancestor funtionality without
+        making any `super()` calls. 
+        
+        Our `utils.GenericAlias` also furnishes `copy_with(…)` – q.v. the
+        `typing._GenericAlias` method supra. – and offers the user a class
+        method `alias(…)` that works much like the private `typing._alias`
+        helper function.
+        
+        (Note that `__init__` has not been overriden, preserving the core
+        of the ancestor behavior mechanisms.)
+    """
     __slots__: tx.Tuple[str, ...] = tuplize('__origin__', '__args__')
     
     def __repr__(self) -> str:
@@ -94,6 +116,11 @@ class GenericAlias(tX._GenericAlias, _root=True):
                 f'{type_repr(self.__args__[-1])}]')
     
     def copy_with(self, params: tx.Iterable[tx.TypeVar]) -> "GenericAlias":
+        """ This method works almost exactly like the ancestor method
+            of the same name, with the notable exception that the type
+            of instance returned is dynamically determined instead of
+            hard-coded to a specific class. 
+        """
         return type(self)(self.__origin__,         # type: ignore
                           params, name=self._name, # type: ignore
                                   inst=self._inst) # type: ignore
@@ -110,11 +137,30 @@ class GenericAlias(tX._GenericAlias, _root=True):
         return out
 
 class Originator(TypingMeta):
+    """ The Originator metaclass assists in creating generics.
+        
+        As the name suggests, it will attempt to discern the best value
+        to use for an “__origin__” class-level value during class creation.
+        
+        It imbues those classes for which it is meta with `__origin__`,
+        a class-based `__repr__` (based on the ``typing._type_repr`` internal
+        helper function), and a class-based `__getitem__` implementation
+        that leverages `utils.GenericAlias` (q.v. class definition supra.)
+        
+        Additionally, it exports the `abc.abstractmethod` decorator in the
+        attribute namespace of the classes it creates, renaming it `abstract`
+        for your convenience; one can decorate methods as `@abstract` without
+        bothering to import from `abc` or write out the full cumbersome  name
+        `@abc.abstractmethod` every time… YOU’RE WELCOME
+    """
     
     @staticmethod
     def type_repr(obj: tx.Any) -> str:
         """ Adapted from `_type_repr(…)`, an internal helper function
-            from the “typing” module:
+            from the “typing” module. This implementation extends the
+            functionality of the original through the use of `inspect`
+            to ascertain the module from which the object to be repr’d
+            is definitively known.
         """
         if isinstance(obj, type):
             if obj.__module__ == 'builtins':
@@ -134,11 +180,29 @@ class Originator(TypingMeta):
         return repr(obj)
     
     def __repr__(cls) -> str:
+        """ A default class-based `__repr__` implementation using `type_repr()`
+            (q.v. static method implemenation supra.)
+        """
         return cls.type_repr(cls)
     
     def __getitem__(cls,
                  params: tx.Union[tx.TypeVar,
                                   tx.Iterable[tx.TypeVar]]) -> GenericAlias:
+        """ A wrapper method for getting a GenericAlias instance
+            through calls to the generic version of the `__origin__` class
+            method for “specialization” (aka. the generics’ `__getitem__`
+            or `__class_getitem__` method).
+            
+            Internally, the `__getitem__` or `__class_getitem__` call is
+            probed for a wrapper decorator, which if present is circumvented
+            through any `__wrapped__` attribute value. The `inspect` module
+            is then used to examine the signature of the call, and arguments
+            are configured as needed. 
+            
+            Any instances of `typing._GenericAlias` returned through this
+            process is itself examined, and the results are upgraded to
+            a `utils.GenericAlias` instance value to then be returned.
+        """
         if not hasattr(params, '__iter__') or params.__class__ is type:
             params: tx.Tuple[tx.TypeVar, ...] = tuplize(params)
         else:
@@ -225,10 +289,33 @@ MutableMultiMap: GenericAlias = GenericAlias.alias(MutableMultiMapping,
                                                    params=(S, T))
 
 class KeyValue(tx.Generic[T, U]):
+    """ A generic key-value ancestor class.
+        
+        Both the key type and the value type are covariant, and must
+        be specified by child inheritors of `KeyValue`. Subclasses
+        may choose to either employ fixed parameter names via `__slots__`,
+        or may instead eschew these in favor of the default attribute
+        instance-dictionary mechanism.
+        
+        Subclasses will automatically have an `__origin__` value set
+        for them via the `__init_subclass__` hook; subclasses defining
+        `__init_subclass__` for themselves must make a call to the ancestor
+        implementation:
+        
+            super().__init_subclass() # NO ARGS OR KWARGS IN SUPER CALL
+        
+        A class-level `__repr__` is included, with the implementation
+        making use of the static method `Originator.type_repr()` (q.v.
+        method definition supra.)
+    """
     __slots__: tx.Tuple[str, ...] = tuple()
     
     @classmethod
     def __repr__(cls) -> str:
+        """ Since `utils.KeyValue` does not use `utils.Originator` as
+            its metaclass, we delegate `__repr__(…)` directly to the
+            `utils.Originator.type_repr(¬)` class method.
+        """
         return Originator.type_repr(cls)
     
     @classmethod
@@ -251,6 +338,22 @@ class KeyValue(tx.Generic[T, U]):
             print()
 
 class Namespace(KeyValue[T, U], metaclass=Originator):
+    """ A generic abstract base class for defining namespaces.
+        
+        Concrete implementors of the Namespace abstract class require
+        method definitions for `__bool__(self)`, `__len__(self)`,
+        `__contains__(self, T)`, and most importantly `__iter__(self)`.
+        
+        The methods `__bool__` and `__contains__` return “bool” types,
+        `__len__` of course returns an “int” type, and the `__iter__`
+        method must return an iterator yielding instances of this
+        Namespace’s value type – specifically `typing.Iterator[U]`
+        is the `__iter__` methods’ return type.
+        
+        Also required is a `__repr__(self) -> str` method definition,
+        and an implementation for `get(self, T, value[T])` which
+        returns `typing.Optional[U]` – a value type instance or `None`.
+    """
     __slots__: tx.Tuple[str, ...] = tuple()
     
     @abstract
@@ -277,9 +380,28 @@ class DictNamespace(Namespace[T, U], tx.MutableMapping[T, U],
                                      tx.Sized,
                                      tx.Iterable[U],
                                      tx.Container[U]):
+    """ A generic, concrete namespace class that implements several
+        abstract interfaces; most notably `utils.Namespace` (q.v.
+        abstract base class definition supra.)
+    
+        In addition to `utils.Namespace`, `DictNamespace` furnishes
+        implementations for `typing.MutableMapping`, `typing.Sized`,
+        `typing.Iterable`, and `typing.Container`.
+        
+        The mechanism of `DictNamespace` exposes many of attributes
+        and methods of the instances’ internal `__dict__`. Since
+        the internal `__dict__` is specified as a `__slots__` entry,
+        any subclasses of `DictNamespace` can safely define their own
+        `__slots__` values in order to distinguish between instance
+        attributes used in implementations, and those that comprise
+        the data payload of those instances.
+    """
     __slots__: tx.Tuple[str, ...] = tuplize('__dict__')
     
     def __init__(self, **kwargs):
+        """ Initialize a new DictNamespace instance, optionally
+            passing initial namespace values as keyword arguments:
+        """
         self.__dict__.update(kwargs)
     
     def __bool__(self) -> bool:
@@ -316,47 +438,113 @@ class DictNamespace(Namespace[T, U], tx.MutableMapping[T, U],
         return "{}({})".format(type(self).__name__, ", ".join(items)) # type: ignore
 
 class SimpleNamespace(DictNamespace[str, T]):
+    """ This SimpleNamespace class has functionality and semantics
+        analogous to `types.SimpleNamespace`; it is generic in its
+        covariant value type, and enforces the use of string values
+        in its invariant key type.
+    """
     __slots__: tx.Tuple[str, ...] = tuple()
 
 class MultiNamespace(Namespace[str, T], MultiMap[str, T],
                                         tx.MutableMapping[str, T],
                                         tx.Collection[T]):
+    """ A generic, concrete namespace class, based on ``MultiDict``,
+        a one-key-to-many-values dictionary class from the eponymous
+        `multidict` module (q.v. https://github.com/aio-libs/multidict
+        module code GitHub repo sub.) implementing several abstract
+        interfaces; most notably `utils.Namespace` (q.v. abstract base
+        class definition supra.) and `multidict._abc.MultiMapping`.
+        
+        Besides `utils.Namespace` and `multidict._abc.MultiMapping`,
+        `MultiNamespace` furnishes implementations for the
+        `typing.MutableMapping` and `typing.Collection` abstract
+        generic base classes (the latter of which implicitly includes
+        the `typing.Sized`, `typing.Iterable`, and `typing.Container`
+        interface requirements).
+        
+        `MultiNamespace` stores its `multidict.MultiDict` instance
+        in a `__slots__`-based attribute; `MultiNamespace` instances
+        use the `multidict.MultiDict` instance value much as its
+        class-heirarchy sibling `utils.DictNamespace` employs the
+        instance `__dict__`. 
+        
+        In addition to the required methods, this class also furnishes
+        a handful of its own one-off methods that specifically pertain
+        to the multiple-value-mapping paradigm: `count(¬T)`, `getone(¬T)`,
+        `getall(¬T)`, and `zero(¬T)` allow multiple values to be queried
+        and accessed. 
+        
+        The internally-used `mdict()` method is unobfuscatedly exposed,
+        allowing the instances’ underlying `multidict.MultiDict` to be
+        directly manipulated by users.
+    """
     __slots__: tx.Tuple[str, ...] = tuplize('_dict',
                                             '_initialized')
     
     def __init__(self, **kwargs):
+        """ Initialize a new MultiNamespace instance, optionally
+            passing initial namespace values as keyword arguments:
+        """
         self._dict: MutableMultiMap[str, T] = MultiDict()
         self._dict.update(kwargs)
         self._initialized: bool = True
     
     def initialized(self) -> bool:
+        """ Returns a boolean indicating whether or not the instance
+            has been successfully initialized – defined by whether or
+            not the `__init__` method has finished running.
+        """
         try:
             return super().__getattribute__('_initialized')
         except:
             return False
     
     def mdict(self) -> MutableMultiMap[str, T]:
+        """ Return a reference to the `MultiNamespace` instances’
+            internal `multidict.MultiDict`.
+        """
         return super().__getattribute__('_dict')
     
     def __bool__(self) -> bool:
+        """ The namespace is truthy if it contains one or more
+            key-value pairs, and falsey if it is empty.
+        """
         return bool(self.mdict())
     
     def __len__(self) -> int:
+        """ The namespaces’ length is equal to the number of
+            individual keys it contains (irrespective of how
+            many values are associated with any of those keys).
+        """
         return len(self.mdict())
     
     def __contains__(self, key: str) -> bool:
+        """ A namespace contains a key if that key has at least
+            one value associated with it.
+        """
         return key in self.mdict()
     
     def __getitem__(self, key: str) -> T:
+        """ Return the namespace value most recently associated
+            with the given key.
+        """
         return self.mdict()[key]
     
     def __setitem__(self, key: str, val: T):
+        """ Associate a new value with a given key, preserving
+            any of namespace values that were added previously.
+        """
         self.mdict()[key] = val
     
     def __delitem__(self, key: str):
+        """ Delete all values associated with a given key. """
         del self.mdict()[key]
     
     def __iter__(self) -> tx.Iterator[T]:
+        """ Return an iterator over a flattened dict containing
+            the namespaces’ keys associated with each of the values
+            most recently added for that key.
+        """
         return iter(dict(self.mdict()))
     
     def __getattr__(self, key: str) -> T:
@@ -369,33 +557,55 @@ class MultiNamespace(Namespace[str, T], MultiMap[str, T],
             super().__setattr__(key, val)
     
     def add(self, key: str, val: T):
+        """ Associate a new value with a given key, preserving
+            any of namespace values that were added previously.
+        """
         self.mdict().add(key, val)
     
     def getone(self, key: str) -> T:
+        """ Return the namespace value most recently associated
+            with the given key.
+        """
         return self.mdict().getone(key)
     
     def getall(self, key: str) -> tx.Tuple[T, ...]:
+        """ Return a tuple populated with all namespace values
+            that are associated with a given key.
+        """
         return self.mdict().getall(key)
     
     def get(self, key: str,
         default_value: tx.Optional[T] = None) -> tx.Optional[T]:
+        """ Return either the value most recently associated with a
+            given key, or a default value if no values are found. 
+        """
         return (key in self.mdict()) and self.getone(key) or default_value
     
     def count(self, key: str) -> int:
+        """ Query the namespace for the number of values that
+            are associated with a given key.
+        """
         return (key in self.mdict()) and len(self.getall(key)) or 0
     
     def zero(self, key: str) -> bool:
+        """ Remove all values associated with the given key
+            from the namespace instance.
+        """
         if key in self.mdict():
             del self.mdict()[key]
             return True
         return False
     
     def __copy__(self):
+        """ Return a shallow copy of the `MultiNamespace` instance. """
         out = type(self)()
         out.mdict().update(self.mdict())
         return out
     
     def __repr__(self) -> str:
+        """ The `MultiNamespace` representation is the same as that
+            of its internal `multidict.MultiDict` instance.
+        """
         return repr(self.mdict())
 
 ConcreteType = tx.TypeVar('ConcreteType', bound=type, covariant=True)
@@ -405,6 +615,10 @@ BT = tx.TypeVar('BT', bound=type, covariant=True)
 NewTypeCallable = tx.Callable[[BaseType], BaseType]
 
 class NamedTupleMeta(tx.NamedTupleMeta):
+    """ An extension of the `typing.NamedTupleMeta` metaclass that
+        sets the `__origin__` value on those classes it creates,
+        per the base classes of the newly created class.
+    """
     def __new__(metacls,
                    name: str,
                   bases: tx.Iterable[type],
@@ -418,6 +632,9 @@ class NamedTupleMeta(tx.NamedTupleMeta):
         return out
 
 class NamedTuple(tx.NamedTuple, metaclass=NamedTupleMeta):
+    """ A public version of the `typing.NamedTuple` class that utilizes
+        `utils.NamedTupleMeta` to establish an `__origin__` class value.
+    """
     _root: tx.ClassVar[bool] = True
 
 class TypeAndBases(NamedTuple):
@@ -431,6 +648,10 @@ class TypeAndBases(NamedTuple):
     @classmethod
     def for_type(cls,
               newcls: tx.Type[ConcreteType]) -> "TypeAndBases":
+        """ A convenient class method for obtaining a populated
+            `utils.TypeAndBases` instance from a class, filling in
+            values for `Name` and `Bases` per that class value.
+        """
         basenames: tx.List[str] = []
         for base in newcls.__bases__:
             name: str = getattr(base, '__qualname__',
@@ -444,13 +665,52 @@ class TypeAndBases(NamedTuple):
                    basenames)
 
 class TypeSpace(MultiNamespace[CT]):
+    """ A `TypeSpace` instance correlates classes both by the name
+        and the value of their origin classes. 
+        
+        The original use-case of the `TypeSpace` namespace was to
+        provide a way to look up the generic version of a concrete
+        (and likely built-in) Python class, e.g.:
+        
+            types = TypeSpace()
+            types.add_generics_from_module(typing)
+            ListT = typing.List
+            
+            assert types.list == ListT              # lookup by name
+            assert types.for_origin[list] == ListT  # lookup by type
+        
+        … `TypeSpace` namespaces require that a type is either an
+       “original type” (with an `__origin__` pointing to one of
+        its bases) or a generic type, whose `__origin__` points to
+        a corresponding non-generic concrete type. Depending on
+        how `__origin__` is used, one adds the type to a `TypeSpace`
+        instance through a call to either `add_original(cls)` or
+        `add_generic(cls)`. Either way, `__origin__` must be set
+        on the type to something valid.
+        
+        A method wrapping `typing.NewType` is provided, for creating
+        a new type while properly add it to the `TypeSpace` instance,
+        predictably named `NewType(…)` with the same signature as
+        the `typing` module function; `NewTypeMember(…)` does the same
+        thing but further wraps the new type as a `staticmethod()`,
+        allowing the returned new types to be used as class members
+        without any `self`-passing arity issues cropping up.
+    """
+    
     __slots__: tx.Tuple[str, ...] = tuplize('for_origin')
     
     def __init__(self, **kwargs):
+        """ Initialize a new TypeSpace instance, optionally passing
+            initial namespace values as keyword arguments:
+        """
         self.for_origin: DictNamespace[CT, BT] = DictNamespace()
         super().__init__(**kwargs)
     
     def add_original(self, cls: tx.Any) -> bool:
+        """ Add an original (non-generic) class to the TypeSpace instance.
+            The class being addded to the TypeSpace must posess a meaningful
+            accessible class-variable “__origin__” value.
+        """
         origin: tx.Optional[CT] = getattr(cls, '__origin__', None)
         if not origin:
             return False
@@ -459,6 +719,7 @@ class TypeSpace(MultiNamespace[CT]):
         return True
     
     def add_generic(self, cls: tx.Any) -> bool:
+        """ Add a generic class to the TypeSpace instance. """
         origin: tx.Optional[CT] = getattr(cls, '__origin__', None)
         if not origin:
             return False
@@ -467,6 +728,10 @@ class TypeSpace(MultiNamespace[CT]):
         return True
     
     def add_generics_from_module(self, module: types.ModuleType) -> int:
+        """ Add all the generic classes exported from a given module.
+            The module’s members are enumerated with `dir()` and as such
+            no private or unexported members of the module will be added.
+        """
         generic_count: int = 0
         for key in dir(module):
             modattr = getattr(module, key)
@@ -474,13 +739,28 @@ class TypeSpace(MultiNamespace[CT]):
                 generic_count += 1
         return generic_count
     
-    def NewType(self, name: str, basetype: tx.Type[BT]) -> NewTypeCallable:
+    def NewType(self,
+                name: str,
+            basetype: tx.Type[BT]) -> NewTypeCallable:
+        """ Wraps typing.NewType(…) in a function that
+            a) sets __origin__ on the returned new-type factory function, and
+            b) stores the new-type factory in the TypeSpace instance. 
+        """
         func: NewTypeCallable = tx.NewType(name, basetype)
         func.__origin__ = basetype
         basename: str = basetype.__name__
         self.for_origin[basetype] = func
         self.add(basename, func)
         return func
+    
+    def NewTypeMember(self,
+                      name: str,
+                  basetype: tx.Type[BT]) -> NewTypeCallable:
+        """ Returns the value of TypeSpace.NewType(self, …) wrapped in a
+            call to staticmethod(), allowing the return value to be bound
+            to a class-variable instance without any “self”-passing issues.
+        """
+        return staticmethod(self.NewType(name, basetype))
 
 ty: TypeSpace[ConcreteType] = TypeSpace()
 
@@ -501,6 +781,18 @@ ty.add_original(TypeSpace)
 def find_generic_for_type(cls: tx.Type[ConcreteType],
                           missing: tx.Optional[
                                    tx.Type[ConcreteType]] = None) -> tx.Optional[type]:
+    """ Find the generic version of a type.
+        
+        An optional default return value specifies what to return if
+        no generic type is found to correspond to a given type; if
+        this value is unspecified, `None` is returned for types for
+        which no generics can be found.
+        
+        Currently, generic types are limited to what the `typing` module
+        defines as exports. So `find_generic_for_type(list)` returns
+        `typing.List`, but `find_generic_for_type(numpy.ndarray)` will
+        not magically conjure a generic Numpy array type.
+    """
     if not hasattr(cls, '__mro__'):
         return missing
     for t in cls.__mro__:
@@ -542,7 +834,7 @@ class TerminalSize(object):
             return self._replace(
                  **self._asdict())
     
-    Descriptor = ty.NewType('Descriptor', int)
+    Descriptor = ty.NewTypeMember('Descriptor', int)
     
     DEFAULT_LINES:   int = 25
     DEFAULT_COLUMNS: int = 105
@@ -592,6 +884,7 @@ class TerminalSize(object):
     def fetch_terminal_size_values(self) -> Size:
         import os
         env = os.environ
+        Descriptor = self.Descriptor
         
         # Adapted from this: http://stackoverflow.com/a/566752/298171
         # … first, attempt to pluck out the CGWINSZ terminal values using
@@ -604,7 +897,7 @@ class TerminalSize(object):
         # in which our process is ensconced, open a descriptor on it for reaing,
         # and use that descriptor to once again attempt to read CGWINSZ values 
         # for the terminal:
-        descriptor: self.Descriptor = 0
+        descriptor: Descriptor = Descriptor(0)
         if not sz:
             try:
                 descriptor = os.open(os.ctermid(),
