@@ -678,6 +678,7 @@ class TypeSpace(MultiNamespace[CT]):
             
             assert types.list == ListT              # lookup by name
             assert types.for_origin[list] == ListT  # lookup by type
+            assert ListT.__origin__ == list         # confirm origin
         
         … `TypeSpace` namespaces require that a type is either an
        “original type” (with an `__origin__` pointing to one of
