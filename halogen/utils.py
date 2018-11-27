@@ -18,7 +18,7 @@ from multidict._abc import _TypingMeta as TypingMeta         # type: ignore
 from multidict._abc import MultiMapping, MutableMultiMapping # type: ignore
 
 __all__ = ('UTF8_ENCODING',
-           'tuplize', 'listify',
+           'tuplize', 'uniquify', 'listify',
            'Originator', 
            'GenericAlias', 'KeyValue', 'Namespace', 'DictNamespace',
                                                     'SimpleNamespace',
@@ -55,6 +55,10 @@ ContraT = tx.TypeVar('ContraT', contravariant=True)
 def tuplize(*items) -> tx.Tuple[tx.Any, ...]:
     """ Return a new tuple containing all non-`None` arguments """
     return tuple(item for item in items if item is not None)
+
+def uniquify(*items) -> tx.Tuple[tx.Any, ...]:
+    """ Return a tuple with a unique set of all non-`None` arguments """
+    return tuple(frozenset(item for item in items if item is not None))
 
 def listify(*items) -> tx.List[tx.Any]:
     """ Return a new list containing all non-`None` arguments """
@@ -203,7 +207,7 @@ class Originator(TypingMeta):
             process is itself examined, and the results are upgraded to
             a `utils.GenericAlias` instance value to then be returned.
         """
-        if not hasattr(params, '__iter__') or params.__class__ is type:
+        if not hasattr(params, '__iter__') or type(params) is type:
             params: tx.Tuple[tx.TypeVar, ...] = tuplize(params)
         else:
             params: tx.Tuple[tx.TypeVar, ...] = tuplize(*params)
@@ -373,6 +377,9 @@ class Namespace(KeyValue[T, U], metaclass=Originator):
         default_value: tx.Optional[U] = None) -> tx.Optional[U]: ...
     
     @abstract
+    def __copy__(self) -> KeyValue[T, U]: ...
+    
+    @abstract
     def __repr__(self) -> str: ...
 
 
@@ -426,10 +433,18 @@ class DictNamespace(Namespace[T, U], tx.MutableMapping[T, U],
         default_value: tx.Optional[U] = None) -> tx.Optional[U]:
         return self.__dict__.get(key, default_value)
     
+    def pop(self, key: T,
+        default_value: tx.Optional[U] = None) -> U:
+        return self.__dict__.pop(key, default_value)
+    
+    def update(self, iterable:tx.Optional[tx.Iterable] = None,
+                   **kwargs):
+        self.__dict__.update(iterable or tuple(), **kwargs)
+    
     def __iter__(self) -> tx.Iterator[U]:
         return iter(self.__dict__)
     
-    def __copy__(self):
+    def __copy__(self) -> KeyValue[T, U]:
         return type(self)(**self.__dict__)
     
     def __repr__(self) -> str:
@@ -581,6 +596,13 @@ class MultiNamespace(Namespace[str, T], MultiMap[str, T],
         """
         return (key in self.mdict()) and self.getone(key) or default_value
     
+    def pop(self, key: str,
+        default_value: tx.Optional[U] = None) -> str:
+        return self.mdict().pop(key, default_value)
+    
+    def update(self, other):
+        self.mdict().update(other)
+    
     def count(self, key: str) -> int:
         """ Query the namespace for the number of values that
             are associated with a given key.
@@ -596,7 +618,7 @@ class MultiNamespace(Namespace[str, T], MultiMap[str, T],
             return True
         return False
     
-    def __copy__(self):
+    def __copy__(self) -> KeyValue[str, T]:
         """ Return a shallow copy of the `MultiNamespace` instance. """
         out = type(self)()
         out.mdict().update(self.mdict())
@@ -972,11 +994,11 @@ if __name__ == '__main__' and PRINT_ORIGIN_TYPES:
 StringType = tx.TypeVar('StringType', bound=type, covariant=True)
 PredicateType = tx.Callable[[tx.Any], bool]
 
-string_types: tx.Tuple[tx.Type[StringType], ...] = tuplize(type(''),
-                                                           type(b''),
-                                                           type(f''),
-                                                           type(r''),
-                                                          *six.string_types)
+string_types: tx.Tuple[tx.Type[StringType], ...] = uniquify(type(''),
+                                                            type(b''),
+                                                            type(f''),
+                                                            type(r''),
+                                                           *six.string_types)
 
 is_string: PredicateType = lambda thing: isinstance(thing, string_types)
 
@@ -1016,6 +1038,10 @@ class Memoizer(dict):
         else:
             self.original_function = wrap_value(value)
     
+    @property
+    def __wrapped__(self):
+        return self.original_function
+    
     def __call__(self, function=None):
         if function is None:
             function = self.original
@@ -1024,7 +1050,7 @@ class Memoizer(dict):
         @wraps(function)
         def memoized(*args):
             return self[tuplize(*args)]
-        memoized.__original__ = function
+        memoized.__wrapped__ = function
         memoized.__instance__ = self
         return memoized
 
@@ -1033,7 +1059,7 @@ def memoize(function):
     @wraps(function)
     def memoized(*args):
         return memoinstance[tuplize(*args)]
-    memoized.__original__ = function
+    memoized.__wrapped__ = function
     memoized.__instance__ = memoinstance
     return memoized
 
@@ -1043,6 +1069,12 @@ def current_umask() -> int:
     mask = os.umask(0)
     os.umask(mask)
     return mask
+
+def reset_umask(perms: int):
+    out = perms & ~current_umask()
+    if perms:
+        del current_umask.__instance__[tuple()]
+    return out
 
 def masked_permissions(perms=0o666) -> int:
     return perms & ~current_umask()
@@ -1055,12 +1087,18 @@ def modulize(namespace: tx.MutableMapping[str, tx.Any],
     """ Convert a dictionary mapping into a legit Python module """
     
     import os, re
+    ns_all: tx.Optional[tx.Iterable[str]] = None
     
     # Update the namespace with '__all__' and '__dir__':
     if '__all__' not in namespace:
         ns_all = tuplize(*sorted(namespace.keys()))
         namespace.update({
-            '__all__' : ns_all,
+            '__all__' : ns_all
+        })
+    if '__dir__' not in namespace:
+        if ns_all is None:
+            ns_all = namespace['__all__']
+        namespace.update({
             '__dir__' : lambda: list(ns_all)
         })
     
@@ -1071,11 +1109,19 @@ def modulize(namespace: tx.MutableMapping[str, tx.Any],
         dotpath: str = re.sub(re.compile(rf"({os.path.sep})"), os.path.extsep, relpath)
         if dotpath.endswith('.py'):
             dotpath = dotpath[:len(dotpath)-3]
-        namespacedname: str = f'__dynamic_modules__.halogen.{dotpath}.{modulename}'
+        namespacedname: str = os.path.extsep.join(tuplize('__dynamic_modules__',
+                                                          'halogen',
+                                                           dotpath,
+                                                           modulename))
         namespace.update({ '__file__' : modulefile })
     else:
-        namespacedname: str = f'__dynamic_modules__.halogen.{modulename}'
-    namespace.update({ '__package__' : namespacedname })
+        namespacedname: str = os.path.extsep.join(tuplize('__dynamic_modules__',
+                                                          'halogen',
+                                                           modulename))
+    namespace.update({
+           '__name__' : modulename,
+        '__package__' : namespacedname
+    })
     
     module: types.ModuleType = types.ModuleType(namespacedname, moduledocs)
     module.__dict__.update(namespace)
@@ -1159,7 +1205,7 @@ def u8bytes(source: tx.Any) -> bytes:
         return source
     elif type(source) is str:
         return u8encode(source)
-    elif isinstance(source, six.string_types):
+    elif isinstance(source, string_types):
         return u8encode(source)
     elif isinstance(source, (int, float)):
         return u8encode(str(source))
@@ -1422,12 +1468,16 @@ def test():
                                     start=os.path.dirname(__file__))
     print(f"RELFILE: {relfile}")
     
-    ns = {
-             'func' : lambda: print("Yo Dogg"),
-        'otherfunc' : lambda string=None: print(string or 'no dogg.'),
-          # '__all__' : ('func', 'otherfunc'),
-          # '__dir__' : lambda: ['func', 'otherfunc']
-    }
+    # ns = {
+    #          'func' : lambda: print("Yo Dogg"),
+    #     'otherfunc' : lambda string=None: print(string or 'no dogg.'),
+    #       # '__all__' : ('func', 'otherfunc'),
+    #       # '__dir__' : lambda: ['func', 'otherfunc']
+    # }
+    
+    NSType = DictNamespace[str, types.LambdaType]
+    ns: NSType = DictNamespace(func=lambda: print("Yo Dogg"),
+                          otherfunc=lambda string=None: print(string or 'no dogg.'))
     
     modulize(ns, 'wat', "WHAT THE HELL PEOPLE", __file__)
     import wat # type: ignore
@@ -1437,6 +1487,12 @@ def test():
     wat.otherfunc("Oh, Dogg!")
     
     # Inspect module:
+    assert type(wat) == types.ModuleType
+    assert wat.__all__ == ('func', 'otherfunc')
+    assert dir(wat) == ['func', 'otherfunc']
+    assert type(wat.func) == types.FunctionType
+    assert type(wat.otherfunc) == types.FunctionType
+    
     # contents = ", ".join(sorted(wat.__dict__.keys()))
     contents: str = pformat(wat.__dict__, indent=4, width=terminal_size().width)
     print(f"Imported module name:      {wat.__name__}")

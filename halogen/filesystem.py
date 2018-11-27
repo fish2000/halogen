@@ -753,7 +753,7 @@ class Directory(collections.abc.Hashable,
             if self.did_change_back:
                 # return to pristine state:
                 self.ctx_initialize()
-                return exc_type is not None
+                return exc_type is None
         # return to pristine state:
         self.ctx_initialize()
         return False
