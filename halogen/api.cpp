@@ -1835,7 +1835,7 @@ struct __pyx_obj_7halogen_3api___pyx_scope_struct__to_string {
  *             # ... right now the keys and values look to be exactly the same always, sooo:
  *             metadata_str = b", ".join(b"%s" % k for k in metadata_dict.keys())             # <<<<<<<<<<<<<<
  *             field_values += (b""" metadata={ %s } """ % metadata_str,)
- *         return b"%s(%s) @ %s" % (u8bytes(type(self).__name__),
+ *         return b"%s(%s) @ %s" % (u8encode(type(self).__name__),
  */
 struct __pyx_obj_7halogen_3api___pyx_scope_struct_1_genexpr {
   PyObject_HEAD
@@ -1849,9 +1849,9 @@ struct __pyx_obj_7halogen_3api___pyx_scope_struct_1_genexpr {
 
 /* "halogen/api.pyx":1033
  *             field_values += (b""" metadata={ %s } """ % metadata_str,)
- *         return b"%s(%s) @ %s" % (u8bytes(type(self).__name__),
+ *         return b"%s(%s) @ %s" % (u8encode(type(self).__name__),
  *                                  b", ".join(field_value.strip() for field_value in field_values),             # <<<<<<<<<<<<<<
- *                                  u8bytes(hex(id(self))))
+ *                                  u8encode(hex(id(self))))
  * 
  */
 struct __pyx_obj_7halogen_3api___pyx_scope_struct_2_genexpr {
@@ -21351,7 +21351,7 @@ static PyObject *__pyx_gb_7halogen_3api_6Module_9to_string_2generator(__pyx_Coro
  *             # ... right now the keys and values look to be exactly the same always, sooo:
  *             metadata_str = b", ".join(b"%s" % k for k in metadata_dict.keys())             # <<<<<<<<<<<<<<
  *             field_values += (b""" metadata={ %s } """ % metadata_str,)
- *         return b"%s(%s) @ %s" % (u8bytes(type(self).__name__),
+ *         return b"%s(%s) @ %s" % (u8encode(type(self).__name__),
  */
 
 static PyObject *__pyx_pf_7halogen_3api_6Module_9to_string_genexpr(PyObject *__pyx_self) {
@@ -21503,9 +21503,9 @@ static PyObject *__pyx_gb_7halogen_3api_6Module_9to_string_5generator1(__pyx_Cor
 
 /* "halogen/api.pyx":1033
  *             field_values += (b""" metadata={ %s } """ % metadata_str,)
- *         return b"%s(%s) @ %s" % (u8bytes(type(self).__name__),
+ *         return b"%s(%s) @ %s" % (u8encode(type(self).__name__),
  *                                  b", ".join(field_value.strip() for field_value in field_values),             # <<<<<<<<<<<<<<
- *                                  u8bytes(hex(id(self))))
+ *                                  u8encode(hex(id(self))))
  * 
  */
 
@@ -21912,7 +21912,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_20to_string(struct __pyx_obj_7ha
  *             # ... right now the keys and values look to be exactly the same always, sooo:
  *             metadata_str = b", ".join(b"%s" % k for k in metadata_dict.keys())             # <<<<<<<<<<<<<<
  *             field_values += (b""" metadata={ %s } """ % metadata_str,)
- *         return b"%s(%s) @ %s" % (u8bytes(type(self).__name__),
+ *         return b"%s(%s) @ %s" % (u8encode(type(self).__name__),
  */
     __pyx_t_4 = __pyx_pf_7halogen_3api_6Module_9to_string_genexpr(((PyObject*)__pyx_cur_scope)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1030, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
@@ -21926,7 +21926,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_20to_string(struct __pyx_obj_7ha
  *             # ... right now the keys and values look to be exactly the same always, sooo:
  *             metadata_str = b", ".join(b"%s" % k for k in metadata_dict.keys())
  *             field_values += (b""" metadata={ %s } """ % metadata_str,)             # <<<<<<<<<<<<<<
- *         return b"%s(%s) @ %s" % (u8bytes(type(self).__name__),
+ *         return b"%s(%s) @ %s" % (u8encode(type(self).__name__),
  *                                  b", ".join(field_value.strip() for field_value in field_values),
  */
     __pyx_t_2 = PyNumber_Remainder(__pyx_kp_b_metadata_s, __pyx_v_metadata_str); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1031, __pyx_L1_error)
@@ -21956,22 +21956,22 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_20to_string(struct __pyx_obj_7ha
   /* "halogen/api.pyx":1032
  *             metadata_str = b", ".join(b"%s" % k for k in metadata_dict.keys())
  *             field_values += (b""" metadata={ %s } """ % metadata_str,)
- *         return b"%s(%s) @ %s" % (u8bytes(type(self).__name__),             # <<<<<<<<<<<<<<
+ *         return b"%s(%s) @ %s" % (u8encode(type(self).__name__),             # <<<<<<<<<<<<<<
  *                                  b", ".join(field_value.strip() for field_value in field_values),
- *                                  u8bytes(hex(id(self))))
+ *                                  u8encode(hex(id(self))))
  */
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)Py_TYPE(((PyObject *)__pyx_v_self))), __pyx_n_s_name); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1032, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_4 = __pyx_f_7halogen_3api_u8bytes(__pyx_t_2, 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1032, __pyx_L1_error)
+  __pyx_t_4 = __pyx_f_7halogen_3api_u8encode(__pyx_t_2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1032, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
   /* "halogen/api.pyx":1033
  *             field_values += (b""" metadata={ %s } """ % metadata_str,)
- *         return b"%s(%s) @ %s" % (u8bytes(type(self).__name__),
+ *         return b"%s(%s) @ %s" % (u8encode(type(self).__name__),
  *                                  b", ".join(field_value.strip() for field_value in field_values),             # <<<<<<<<<<<<<<
- *                                  u8bytes(hex(id(self))))
+ *                                  u8encode(hex(id(self))))
  * 
  */
   __pyx_t_2 = __pyx_pf_7halogen_3api_6Module_9to_string_3genexpr(((PyObject*)__pyx_cur_scope)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1033, __pyx_L1_error)
@@ -21981,9 +21981,9 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_20to_string(struct __pyx_obj_7ha
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
   /* "halogen/api.pyx":1034
- *         return b"%s(%s) @ %s" % (u8bytes(type(self).__name__),
+ *         return b"%s(%s) @ %s" % (u8encode(type(self).__name__),
  *                                  b", ".join(field_value.strip() for field_value in field_values),
- *                                  u8bytes(hex(id(self))))             # <<<<<<<<<<<<<<
+ *                                  u8encode(hex(id(self))))             # <<<<<<<<<<<<<<
  * 
  *     def __bytes__(self):
  */
@@ -21992,16 +21992,16 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_20to_string(struct __pyx_obj_7ha
   __pyx_t_7 = __Pyx_PyObject_CallOneArg(__pyx_builtin_hex, __pyx_t_2); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1034, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __pyx_f_7halogen_3api_u8bytes(__pyx_t_7, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1034, __pyx_L1_error)
+  __pyx_t_2 = __pyx_f_7halogen_3api_u8encode(__pyx_t_7); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1034, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
 
   /* "halogen/api.pyx":1032
  *             metadata_str = b", ".join(b"%s" % k for k in metadata_dict.keys())
  *             field_values += (b""" metadata={ %s } """ % metadata_str,)
- *         return b"%s(%s) @ %s" % (u8bytes(type(self).__name__),             # <<<<<<<<<<<<<<
+ *         return b"%s(%s) @ %s" % (u8encode(type(self).__name__),             # <<<<<<<<<<<<<<
  *                                  b", ".join(field_value.strip() for field_value in field_values),
- *                                  u8bytes(hex(id(self))))
+ *                                  u8encode(hex(id(self))))
  */
   __pyx_t_7 = PyTuple_New(3); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1032, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
@@ -22047,7 +22047,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_20to_string(struct __pyx_obj_7ha
 }
 
 /* "halogen/api.pyx":1036
- *                                  u8bytes(hex(id(self))))
+ *                                  u8encode(hex(id(self))))
  * 
  *     def __bytes__(self):             # <<<<<<<<<<<<<<
  *         return self.to_string()
@@ -22106,7 +22106,7 @@ static PyObject *__pyx_pf_7halogen_3api_6Module_22__bytes__(struct __pyx_obj_7ha
   goto __pyx_L0;
 
   /* "halogen/api.pyx":1036
- *                                  u8bytes(hex(id(self))))
+ *                                  u8encode(hex(id(self))))
  * 
  *     def __bytes__(self):             # <<<<<<<<<<<<<<
  *         return self.to_string()

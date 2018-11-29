@@ -1029,9 +1029,9 @@ cdef class Module:
             # ... right now the keys and values look to be exactly the same always, sooo:
             metadata_str = b", ".join(b"%s" % k for k in metadata_dict.keys())
             field_values += (b""" metadata={ %s } """ % metadata_str,)
-        return b"%s(%s) @ %s" % (u8bytes(type(self).__name__),
+        return b"%s(%s) @ %s" % (u8encode(type(self).__name__),
                                  b", ".join(field_value.strip() for field_value in field_values),
-                                 u8bytes(hex(id(self))))
+                                 u8encode(hex(id(self))))
     
     def __bytes__(self):
         return self.to_string()
