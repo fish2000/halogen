@@ -117,7 +117,7 @@ cpdef bytes u8bytes(object source):
 
 cpdef str u8str(object source):
     """ Custom version of u8str(…) for use in Cython extensions: """
-    return u8bytes(source).decode('UTF-8')
+    return type(source) is str and source or u8bytes(source).decode('UTF-8')
 
 def stringify(object instance not None,
               object fields not None):

@@ -1162,7 +1162,7 @@ def append_paths(*putatives) -> tx.Dict[str, bool]:
         continue
     return out
 
-append_paths.oldsyspath: tx.Tuple[str, ...] = tuple()
+append_paths.oldsyspath: tx.Tuple[str, ...] = tuple(sys.path)
 
 def remove_paths(*putatives) -> tx.Dict[str, bool]:
     """ Mutate `sys.path` by removing one or more existing paths --
@@ -1191,7 +1191,7 @@ def remove_paths(*putatives) -> tx.Dict[str, bool]:
     sys.path = list(paths)
     return out
 
-remove_paths.oldsyspath: tx.Tuple[str, ...] = tuple()
+remove_paths.oldsyspath: tx.Tuple[str, ...] = tuple(sys.path)
 
 def u8encode(source: tx.Any) -> bytes:
     """ Encode a source as bytes using the UTF-8 codec """
@@ -1219,7 +1219,8 @@ def u8str(source: tx.Any) -> str:
     """ Encode a source as a Python string, guaranteeing a proper return
         value without raising an error
     """
-    return u8bytes(source).decode(UTF8_ENCODING)
+    return type(source) is str and source \
+                        or u8bytes(source).decode(UTF8_ENCODING)
 
 def stringify(instance: tx.Any, fields: tx.Iterable[str]) -> str:
     """ Stringify an object instance, using an iterable field list to
@@ -1241,7 +1242,7 @@ def stringify(instance: tx.Any, fields: tx.Iterable[str]) -> str:
         field_value = getattr(instance, field, "")
         field_value = callable(field_value) and field_value() or field_value
         if field_value:
-            field_dict.update({ str(field) : field_value })
+            field_dict.update({ u8str(field) : field_value })
     field_dict_items: tx.List[str] = []
     for k, v in field_dict.items():
         field_dict_items.append(f'''{k}="{v}"''')

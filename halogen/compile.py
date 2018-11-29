@@ -245,12 +245,12 @@ class Generators(contextlib.AbstractContextManager):
         self.MAXIMUM =  int(kwargs.pop('maximum', DEFAULT_MAXIMUM_GENERATOR_COUNT))
         self.VERBOSE = bool(kwargs.pop('verbose', DEFAULT_VERBOSITY))
         self.conf = conf
-        self.prefix = prefix
-        self.suffix = suffix.lower()
-        self.do_shared = do_shared
-        self.do_static = do_static
-        self.do_preload = do_shared and do_preload
-        self.use_cdb = use_cdb
+        self.prefix = u8str(prefix)
+        self.suffix = u8str(suffix).lower()
+        self.do_shared = bool(do_shared)
+        self.do_static = bool(do_static)
+        self.do_preload = bool(do_shared) and bool(do_preload)
+        self.use_cdb = bool(use_cdb)
         self.directory = Directory(pth=directory)
         if not self.directory.exists:
             raise CompilerError(f"Non-existant generator source directory: {self.directory}")
@@ -341,7 +341,7 @@ class Generators(contextlib.AbstractContextManager):
             pre-linked object code compilation artifacts will be named “something.cc.o”
             or whatever.
         """
-        return u8str(f"{self.suffix}{os.extsep}o")
+        return f"{self.suffix}{os.extsep}o"
     
     @property
     def compilation_database(self):
