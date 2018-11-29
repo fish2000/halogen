@@ -489,77 +489,77 @@ cdef class Outputs:
     
     @property
     def object_name(self):
-        return <string>self.__this__.object_name
+        return self.__this__.object_name.decode('UTF-8')
     @object_name.setter
     def object_name(self, object value not None):
         self.__this__.object_name = <string>u8bytes(value)
     
     @property
     def assembly_name(self):
-        return <string>self.__this__.assembly_name
+        return self.__this__.assembly_name.decode('UTF-8')
     @assembly_name.setter
     def assembly_name(self, object value not None):
         self.__this__.assembly_name = <string>u8bytes(value)
     
     @property
     def bitcode_name(self):
-        return <string>self.__this__.bitcode_name
+        return self.__this__.bitcode_name.decode('UTF-8')
     @bitcode_name.setter
     def bitcode_name(self, object value not None):
         self.__this__.bitcode_name = <string>u8bytes(value)
     
     @property
     def llvm_assembly_name(self):
-        return <string>self.__this__.llvm_assembly_name
+        return self.__this__.llvm_assembly_name.decode('UTF-8')
     @llvm_assembly_name.setter
     def llvm_assembly_name(self, object value not None):
         self.__this__.llvm_assembly_name = <string>u8bytes(value)
     
     @property
     def c_header_name(self):
-        return <string>self.__this__.c_header_name
+        return self.__this__.c_header_name.decode('UTF-8')
     @c_header_name.setter
     def c_header_name(self, object value not None):
         self.__this__.c_header_name = <string>u8bytes(value)
     
     @property
     def c_source_name(self):
-        return <string>self.__this__.c_source_name
+        return self.__this__.c_source_name.decode('UTF-8')
     @c_source_name.setter
     def c_source_name(self, object value not None):
         self.__this__.c_source_name = <string>u8bytes(value)
     
     @property
     def python_extension_name(self):
-        return <string>self.__this__.python_extension_name
+        return self.__this__.python_extension_name.decode('UTF-8')
     @python_extension_name.setter
     def python_extension_name(self, object value not None):
         self.__this__.python_extension_name = <string>u8bytes(value)
     
     @property
     def stmt_name(self):
-        return <string>self.__this__.stmt_name
+        return self.__this__.stmt_name.decode('UTF-8')
     @stmt_name.setter
     def stmt_name(self, object value not None):
         self.__this__.stmt_name = <string>u8bytes(value)
     
     @property
     def stmt_html_name(self):
-        return <string>self.__this__.stmt_html_name
+        return self.__this__.stmt_html_name.decode('UTF-8')
     @stmt_html_name.setter
     def stmt_html_name(self, object value not None):
         self.__this__.stmt_html_name = <string>u8bytes(value)
     
     @property
     def static_library_name(self):
-        return <string>self.__this__.static_library_name
+        return self.__this__.static_library_name.decode('UTF-8')
     @static_library_name.setter
     def static_library_name(self, object value not None):
         self.__this__.static_library_name = <string>u8bytes(value)
     
     @property
     def schedule_name(self):
-        return <string>self.__this__.schedule_name
+        return self.__this__.schedule_name.decode('UTF-8')
     @schedule_name.setter
     def schedule_name(self, object value not None):
         self.__this__.schedule_name = <string>u8bytes(value)

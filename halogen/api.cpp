@@ -11856,7 +11856,7 @@ static int __pyx_pf_7halogen_3api_7Outputs_2__cinit__(struct __pyx_obj_7halogen_
  * 
  *     @property
  *     def object_name(self):             # <<<<<<<<<<<<<<
- *         return <string>self.__this__.object_name
+ *         return self.__this__.object_name.decode('UTF-8')
  *     @object_name.setter
  */
 
@@ -11882,12 +11882,12 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_11object_name___get__(struct __
   /* "halogen/api.pyx":492
  *     @property
  *     def object_name(self):
- *         return <string>self.__this__.object_name             # <<<<<<<<<<<<<<
+ *         return self.__this__.object_name.decode('UTF-8')             # <<<<<<<<<<<<<<
  *     @object_name.setter
  *     def object_name(self, object value not None):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_convert_PyBytes_string_to_py_std__in_string(((std::string)__pyx_v_self->__pyx___this__.object_name)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 492, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_decode_cpp_string(__pyx_v_self->__pyx___this__.object_name, 0, PY_SSIZE_T_MAX, NULL, NULL, PyUnicode_DecodeUTF8); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 492, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -11897,7 +11897,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_11object_name___get__(struct __
  * 
  *     @property
  *     def object_name(self):             # <<<<<<<<<<<<<<
- *         return <string>self.__this__.object_name
+ *         return self.__this__.object_name.decode('UTF-8')
  *     @object_name.setter
  */
 
@@ -11913,7 +11913,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_11object_name___get__(struct __
 }
 
 /* "halogen/api.pyx":494
- *         return <string>self.__this__.object_name
+ *         return self.__this__.object_name.decode('UTF-8')
  *     @object_name.setter
  *     def object_name(self, object value not None):             # <<<<<<<<<<<<<<
  *         self.__this__.object_name = <string>u8bytes(value)
@@ -11961,7 +11961,7 @@ static int __pyx_pf_7halogen_3api_7Outputs_11object_name_2__set__(struct __pyx_o
   __pyx_v_self->__pyx___this__.object_name = ((std::string)__pyx_t_2);
 
   /* "halogen/api.pyx":494
- *         return <string>self.__this__.object_name
+ *         return self.__this__.object_name.decode('UTF-8')
  *     @object_name.setter
  *     def object_name(self, object value not None):             # <<<<<<<<<<<<<<
  *         self.__this__.object_name = <string>u8bytes(value)
@@ -11984,7 +11984,7 @@ static int __pyx_pf_7halogen_3api_7Outputs_11object_name_2__set__(struct __pyx_o
  * 
  *     @property
  *     def assembly_name(self):             # <<<<<<<<<<<<<<
- *         return <string>self.__this__.assembly_name
+ *         return self.__this__.assembly_name.decode('UTF-8')
  *     @assembly_name.setter
  */
 
@@ -12010,12 +12010,12 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_13assembly_name___get__(struct 
   /* "halogen/api.pyx":499
  *     @property
  *     def assembly_name(self):
- *         return <string>self.__this__.assembly_name             # <<<<<<<<<<<<<<
+ *         return self.__this__.assembly_name.decode('UTF-8')             # <<<<<<<<<<<<<<
  *     @assembly_name.setter
  *     def assembly_name(self, object value not None):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_convert_PyBytes_string_to_py_std__in_string(((std::string)__pyx_v_self->__pyx___this__.assembly_name)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 499, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_decode_cpp_string(__pyx_v_self->__pyx___this__.assembly_name, 0, PY_SSIZE_T_MAX, NULL, NULL, PyUnicode_DecodeUTF8); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 499, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -12025,7 +12025,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_13assembly_name___get__(struct 
  * 
  *     @property
  *     def assembly_name(self):             # <<<<<<<<<<<<<<
- *         return <string>self.__this__.assembly_name
+ *         return self.__this__.assembly_name.decode('UTF-8')
  *     @assembly_name.setter
  */
 
@@ -12041,7 +12041,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_13assembly_name___get__(struct 
 }
 
 /* "halogen/api.pyx":501
- *         return <string>self.__this__.assembly_name
+ *         return self.__this__.assembly_name.decode('UTF-8')
  *     @assembly_name.setter
  *     def assembly_name(self, object value not None):             # <<<<<<<<<<<<<<
  *         self.__this__.assembly_name = <string>u8bytes(value)
@@ -12089,7 +12089,7 @@ static int __pyx_pf_7halogen_3api_7Outputs_13assembly_name_2__set__(struct __pyx
   __pyx_v_self->__pyx___this__.assembly_name = ((std::string)__pyx_t_2);
 
   /* "halogen/api.pyx":501
- *         return <string>self.__this__.assembly_name
+ *         return self.__this__.assembly_name.decode('UTF-8')
  *     @assembly_name.setter
  *     def assembly_name(self, object value not None):             # <<<<<<<<<<<<<<
  *         self.__this__.assembly_name = <string>u8bytes(value)
@@ -12112,7 +12112,7 @@ static int __pyx_pf_7halogen_3api_7Outputs_13assembly_name_2__set__(struct __pyx
  * 
  *     @property
  *     def bitcode_name(self):             # <<<<<<<<<<<<<<
- *         return <string>self.__this__.bitcode_name
+ *         return self.__this__.bitcode_name.decode('UTF-8')
  *     @bitcode_name.setter
  */
 
@@ -12138,12 +12138,12 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_12bitcode_name___get__(struct _
   /* "halogen/api.pyx":506
  *     @property
  *     def bitcode_name(self):
- *         return <string>self.__this__.bitcode_name             # <<<<<<<<<<<<<<
+ *         return self.__this__.bitcode_name.decode('UTF-8')             # <<<<<<<<<<<<<<
  *     @bitcode_name.setter
  *     def bitcode_name(self, object value not None):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_convert_PyBytes_string_to_py_std__in_string(((std::string)__pyx_v_self->__pyx___this__.bitcode_name)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 506, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_decode_cpp_string(__pyx_v_self->__pyx___this__.bitcode_name, 0, PY_SSIZE_T_MAX, NULL, NULL, PyUnicode_DecodeUTF8); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 506, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -12153,7 +12153,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_12bitcode_name___get__(struct _
  * 
  *     @property
  *     def bitcode_name(self):             # <<<<<<<<<<<<<<
- *         return <string>self.__this__.bitcode_name
+ *         return self.__this__.bitcode_name.decode('UTF-8')
  *     @bitcode_name.setter
  */
 
@@ -12169,7 +12169,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_12bitcode_name___get__(struct _
 }
 
 /* "halogen/api.pyx":508
- *         return <string>self.__this__.bitcode_name
+ *         return self.__this__.bitcode_name.decode('UTF-8')
  *     @bitcode_name.setter
  *     def bitcode_name(self, object value not None):             # <<<<<<<<<<<<<<
  *         self.__this__.bitcode_name = <string>u8bytes(value)
@@ -12217,7 +12217,7 @@ static int __pyx_pf_7halogen_3api_7Outputs_12bitcode_name_2__set__(struct __pyx_
   __pyx_v_self->__pyx___this__.bitcode_name = ((std::string)__pyx_t_2);
 
   /* "halogen/api.pyx":508
- *         return <string>self.__this__.bitcode_name
+ *         return self.__this__.bitcode_name.decode('UTF-8')
  *     @bitcode_name.setter
  *     def bitcode_name(self, object value not None):             # <<<<<<<<<<<<<<
  *         self.__this__.bitcode_name = <string>u8bytes(value)
@@ -12240,7 +12240,7 @@ static int __pyx_pf_7halogen_3api_7Outputs_12bitcode_name_2__set__(struct __pyx_
  * 
  *     @property
  *     def llvm_assembly_name(self):             # <<<<<<<<<<<<<<
- *         return <string>self.__this__.llvm_assembly_name
+ *         return self.__this__.llvm_assembly_name.decode('UTF-8')
  *     @llvm_assembly_name.setter
  */
 
@@ -12266,12 +12266,12 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_18llvm_assembly_name___get__(st
   /* "halogen/api.pyx":513
  *     @property
  *     def llvm_assembly_name(self):
- *         return <string>self.__this__.llvm_assembly_name             # <<<<<<<<<<<<<<
+ *         return self.__this__.llvm_assembly_name.decode('UTF-8')             # <<<<<<<<<<<<<<
  *     @llvm_assembly_name.setter
  *     def llvm_assembly_name(self, object value not None):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_convert_PyBytes_string_to_py_std__in_string(((std::string)__pyx_v_self->__pyx___this__.llvm_assembly_name)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 513, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_decode_cpp_string(__pyx_v_self->__pyx___this__.llvm_assembly_name, 0, PY_SSIZE_T_MAX, NULL, NULL, PyUnicode_DecodeUTF8); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 513, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -12281,7 +12281,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_18llvm_assembly_name___get__(st
  * 
  *     @property
  *     def llvm_assembly_name(self):             # <<<<<<<<<<<<<<
- *         return <string>self.__this__.llvm_assembly_name
+ *         return self.__this__.llvm_assembly_name.decode('UTF-8')
  *     @llvm_assembly_name.setter
  */
 
@@ -12297,7 +12297,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_18llvm_assembly_name___get__(st
 }
 
 /* "halogen/api.pyx":515
- *         return <string>self.__this__.llvm_assembly_name
+ *         return self.__this__.llvm_assembly_name.decode('UTF-8')
  *     @llvm_assembly_name.setter
  *     def llvm_assembly_name(self, object value not None):             # <<<<<<<<<<<<<<
  *         self.__this__.llvm_assembly_name = <string>u8bytes(value)
@@ -12345,7 +12345,7 @@ static int __pyx_pf_7halogen_3api_7Outputs_18llvm_assembly_name_2__set__(struct 
   __pyx_v_self->__pyx___this__.llvm_assembly_name = ((std::string)__pyx_t_2);
 
   /* "halogen/api.pyx":515
- *         return <string>self.__this__.llvm_assembly_name
+ *         return self.__this__.llvm_assembly_name.decode('UTF-8')
  *     @llvm_assembly_name.setter
  *     def llvm_assembly_name(self, object value not None):             # <<<<<<<<<<<<<<
  *         self.__this__.llvm_assembly_name = <string>u8bytes(value)
@@ -12368,7 +12368,7 @@ static int __pyx_pf_7halogen_3api_7Outputs_18llvm_assembly_name_2__set__(struct 
  * 
  *     @property
  *     def c_header_name(self):             # <<<<<<<<<<<<<<
- *         return <string>self.__this__.c_header_name
+ *         return self.__this__.c_header_name.decode('UTF-8')
  *     @c_header_name.setter
  */
 
@@ -12394,12 +12394,12 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_13c_header_name___get__(struct 
   /* "halogen/api.pyx":520
  *     @property
  *     def c_header_name(self):
- *         return <string>self.__this__.c_header_name             # <<<<<<<<<<<<<<
+ *         return self.__this__.c_header_name.decode('UTF-8')             # <<<<<<<<<<<<<<
  *     @c_header_name.setter
  *     def c_header_name(self, object value not None):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_convert_PyBytes_string_to_py_std__in_string(((std::string)__pyx_v_self->__pyx___this__.c_header_name)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 520, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_decode_cpp_string(__pyx_v_self->__pyx___this__.c_header_name, 0, PY_SSIZE_T_MAX, NULL, NULL, PyUnicode_DecodeUTF8); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 520, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -12409,7 +12409,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_13c_header_name___get__(struct 
  * 
  *     @property
  *     def c_header_name(self):             # <<<<<<<<<<<<<<
- *         return <string>self.__this__.c_header_name
+ *         return self.__this__.c_header_name.decode('UTF-8')
  *     @c_header_name.setter
  */
 
@@ -12425,7 +12425,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_13c_header_name___get__(struct 
 }
 
 /* "halogen/api.pyx":522
- *         return <string>self.__this__.c_header_name
+ *         return self.__this__.c_header_name.decode('UTF-8')
  *     @c_header_name.setter
  *     def c_header_name(self, object value not None):             # <<<<<<<<<<<<<<
  *         self.__this__.c_header_name = <string>u8bytes(value)
@@ -12473,7 +12473,7 @@ static int __pyx_pf_7halogen_3api_7Outputs_13c_header_name_2__set__(struct __pyx
   __pyx_v_self->__pyx___this__.c_header_name = ((std::string)__pyx_t_2);
 
   /* "halogen/api.pyx":522
- *         return <string>self.__this__.c_header_name
+ *         return self.__this__.c_header_name.decode('UTF-8')
  *     @c_header_name.setter
  *     def c_header_name(self, object value not None):             # <<<<<<<<<<<<<<
  *         self.__this__.c_header_name = <string>u8bytes(value)
@@ -12496,7 +12496,7 @@ static int __pyx_pf_7halogen_3api_7Outputs_13c_header_name_2__set__(struct __pyx
  * 
  *     @property
  *     def c_source_name(self):             # <<<<<<<<<<<<<<
- *         return <string>self.__this__.c_source_name
+ *         return self.__this__.c_source_name.decode('UTF-8')
  *     @c_source_name.setter
  */
 
@@ -12522,12 +12522,12 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_13c_source_name___get__(struct 
   /* "halogen/api.pyx":527
  *     @property
  *     def c_source_name(self):
- *         return <string>self.__this__.c_source_name             # <<<<<<<<<<<<<<
+ *         return self.__this__.c_source_name.decode('UTF-8')             # <<<<<<<<<<<<<<
  *     @c_source_name.setter
  *     def c_source_name(self, object value not None):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_convert_PyBytes_string_to_py_std__in_string(((std::string)__pyx_v_self->__pyx___this__.c_source_name)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 527, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_decode_cpp_string(__pyx_v_self->__pyx___this__.c_source_name, 0, PY_SSIZE_T_MAX, NULL, NULL, PyUnicode_DecodeUTF8); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 527, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -12537,7 +12537,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_13c_source_name___get__(struct 
  * 
  *     @property
  *     def c_source_name(self):             # <<<<<<<<<<<<<<
- *         return <string>self.__this__.c_source_name
+ *         return self.__this__.c_source_name.decode('UTF-8')
  *     @c_source_name.setter
  */
 
@@ -12553,7 +12553,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_13c_source_name___get__(struct 
 }
 
 /* "halogen/api.pyx":529
- *         return <string>self.__this__.c_source_name
+ *         return self.__this__.c_source_name.decode('UTF-8')
  *     @c_source_name.setter
  *     def c_source_name(self, object value not None):             # <<<<<<<<<<<<<<
  *         self.__this__.c_source_name = <string>u8bytes(value)
@@ -12601,7 +12601,7 @@ static int __pyx_pf_7halogen_3api_7Outputs_13c_source_name_2__set__(struct __pyx
   __pyx_v_self->__pyx___this__.c_source_name = ((std::string)__pyx_t_2);
 
   /* "halogen/api.pyx":529
- *         return <string>self.__this__.c_source_name
+ *         return self.__this__.c_source_name.decode('UTF-8')
  *     @c_source_name.setter
  *     def c_source_name(self, object value not None):             # <<<<<<<<<<<<<<
  *         self.__this__.c_source_name = <string>u8bytes(value)
@@ -12624,7 +12624,7 @@ static int __pyx_pf_7halogen_3api_7Outputs_13c_source_name_2__set__(struct __pyx
  * 
  *     @property
  *     def python_extension_name(self):             # <<<<<<<<<<<<<<
- *         return <string>self.__this__.python_extension_name
+ *         return self.__this__.python_extension_name.decode('UTF-8')
  *     @python_extension_name.setter
  */
 
@@ -12650,12 +12650,12 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_21python_extension_name___get__
   /* "halogen/api.pyx":534
  *     @property
  *     def python_extension_name(self):
- *         return <string>self.__this__.python_extension_name             # <<<<<<<<<<<<<<
+ *         return self.__this__.python_extension_name.decode('UTF-8')             # <<<<<<<<<<<<<<
  *     @python_extension_name.setter
  *     def python_extension_name(self, object value not None):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_convert_PyBytes_string_to_py_std__in_string(((std::string)__pyx_v_self->__pyx___this__.python_extension_name)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 534, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_decode_cpp_string(__pyx_v_self->__pyx___this__.python_extension_name, 0, PY_SSIZE_T_MAX, NULL, NULL, PyUnicode_DecodeUTF8); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 534, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -12665,7 +12665,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_21python_extension_name___get__
  * 
  *     @property
  *     def python_extension_name(self):             # <<<<<<<<<<<<<<
- *         return <string>self.__this__.python_extension_name
+ *         return self.__this__.python_extension_name.decode('UTF-8')
  *     @python_extension_name.setter
  */
 
@@ -12681,7 +12681,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_21python_extension_name___get__
 }
 
 /* "halogen/api.pyx":536
- *         return <string>self.__this__.python_extension_name
+ *         return self.__this__.python_extension_name.decode('UTF-8')
  *     @python_extension_name.setter
  *     def python_extension_name(self, object value not None):             # <<<<<<<<<<<<<<
  *         self.__this__.python_extension_name = <string>u8bytes(value)
@@ -12729,7 +12729,7 @@ static int __pyx_pf_7halogen_3api_7Outputs_21python_extension_name_2__set__(stru
   __pyx_v_self->__pyx___this__.python_extension_name = ((std::string)__pyx_t_2);
 
   /* "halogen/api.pyx":536
- *         return <string>self.__this__.python_extension_name
+ *         return self.__this__.python_extension_name.decode('UTF-8')
  *     @python_extension_name.setter
  *     def python_extension_name(self, object value not None):             # <<<<<<<<<<<<<<
  *         self.__this__.python_extension_name = <string>u8bytes(value)
@@ -12752,7 +12752,7 @@ static int __pyx_pf_7halogen_3api_7Outputs_21python_extension_name_2__set__(stru
  * 
  *     @property
  *     def stmt_name(self):             # <<<<<<<<<<<<<<
- *         return <string>self.__this__.stmt_name
+ *         return self.__this__.stmt_name.decode('UTF-8')
  *     @stmt_name.setter
  */
 
@@ -12778,12 +12778,12 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_9stmt_name___get__(struct __pyx
   /* "halogen/api.pyx":541
  *     @property
  *     def stmt_name(self):
- *         return <string>self.__this__.stmt_name             # <<<<<<<<<<<<<<
+ *         return self.__this__.stmt_name.decode('UTF-8')             # <<<<<<<<<<<<<<
  *     @stmt_name.setter
  *     def stmt_name(self, object value not None):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_convert_PyBytes_string_to_py_std__in_string(((std::string)__pyx_v_self->__pyx___this__.stmt_name)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 541, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_decode_cpp_string(__pyx_v_self->__pyx___this__.stmt_name, 0, PY_SSIZE_T_MAX, NULL, NULL, PyUnicode_DecodeUTF8); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 541, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -12793,7 +12793,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_9stmt_name___get__(struct __pyx
  * 
  *     @property
  *     def stmt_name(self):             # <<<<<<<<<<<<<<
- *         return <string>self.__this__.stmt_name
+ *         return self.__this__.stmt_name.decode('UTF-8')
  *     @stmt_name.setter
  */
 
@@ -12809,7 +12809,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_9stmt_name___get__(struct __pyx
 }
 
 /* "halogen/api.pyx":543
- *         return <string>self.__this__.stmt_name
+ *         return self.__this__.stmt_name.decode('UTF-8')
  *     @stmt_name.setter
  *     def stmt_name(self, object value not None):             # <<<<<<<<<<<<<<
  *         self.__this__.stmt_name = <string>u8bytes(value)
@@ -12857,7 +12857,7 @@ static int __pyx_pf_7halogen_3api_7Outputs_9stmt_name_2__set__(struct __pyx_obj_
   __pyx_v_self->__pyx___this__.stmt_name = ((std::string)__pyx_t_2);
 
   /* "halogen/api.pyx":543
- *         return <string>self.__this__.stmt_name
+ *         return self.__this__.stmt_name.decode('UTF-8')
  *     @stmt_name.setter
  *     def stmt_name(self, object value not None):             # <<<<<<<<<<<<<<
  *         self.__this__.stmt_name = <string>u8bytes(value)
@@ -12880,7 +12880,7 @@ static int __pyx_pf_7halogen_3api_7Outputs_9stmt_name_2__set__(struct __pyx_obj_
  * 
  *     @property
  *     def stmt_html_name(self):             # <<<<<<<<<<<<<<
- *         return <string>self.__this__.stmt_html_name
+ *         return self.__this__.stmt_html_name.decode('UTF-8')
  *     @stmt_html_name.setter
  */
 
@@ -12906,12 +12906,12 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_14stmt_html_name___get__(struct
   /* "halogen/api.pyx":548
  *     @property
  *     def stmt_html_name(self):
- *         return <string>self.__this__.stmt_html_name             # <<<<<<<<<<<<<<
+ *         return self.__this__.stmt_html_name.decode('UTF-8')             # <<<<<<<<<<<<<<
  *     @stmt_html_name.setter
  *     def stmt_html_name(self, object value not None):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_convert_PyBytes_string_to_py_std__in_string(((std::string)__pyx_v_self->__pyx___this__.stmt_html_name)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 548, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_decode_cpp_string(__pyx_v_self->__pyx___this__.stmt_html_name, 0, PY_SSIZE_T_MAX, NULL, NULL, PyUnicode_DecodeUTF8); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 548, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -12921,7 +12921,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_14stmt_html_name___get__(struct
  * 
  *     @property
  *     def stmt_html_name(self):             # <<<<<<<<<<<<<<
- *         return <string>self.__this__.stmt_html_name
+ *         return self.__this__.stmt_html_name.decode('UTF-8')
  *     @stmt_html_name.setter
  */
 
@@ -12937,7 +12937,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_14stmt_html_name___get__(struct
 }
 
 /* "halogen/api.pyx":550
- *         return <string>self.__this__.stmt_html_name
+ *         return self.__this__.stmt_html_name.decode('UTF-8')
  *     @stmt_html_name.setter
  *     def stmt_html_name(self, object value not None):             # <<<<<<<<<<<<<<
  *         self.__this__.stmt_html_name = <string>u8bytes(value)
@@ -12985,7 +12985,7 @@ static int __pyx_pf_7halogen_3api_7Outputs_14stmt_html_name_2__set__(struct __py
   __pyx_v_self->__pyx___this__.stmt_html_name = ((std::string)__pyx_t_2);
 
   /* "halogen/api.pyx":550
- *         return <string>self.__this__.stmt_html_name
+ *         return self.__this__.stmt_html_name.decode('UTF-8')
  *     @stmt_html_name.setter
  *     def stmt_html_name(self, object value not None):             # <<<<<<<<<<<<<<
  *         self.__this__.stmt_html_name = <string>u8bytes(value)
@@ -13008,7 +13008,7 @@ static int __pyx_pf_7halogen_3api_7Outputs_14stmt_html_name_2__set__(struct __py
  * 
  *     @property
  *     def static_library_name(self):             # <<<<<<<<<<<<<<
- *         return <string>self.__this__.static_library_name
+ *         return self.__this__.static_library_name.decode('UTF-8')
  *     @static_library_name.setter
  */
 
@@ -13034,12 +13034,12 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_19static_library_name___get__(s
   /* "halogen/api.pyx":555
  *     @property
  *     def static_library_name(self):
- *         return <string>self.__this__.static_library_name             # <<<<<<<<<<<<<<
+ *         return self.__this__.static_library_name.decode('UTF-8')             # <<<<<<<<<<<<<<
  *     @static_library_name.setter
  *     def static_library_name(self, object value not None):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_convert_PyBytes_string_to_py_std__in_string(((std::string)__pyx_v_self->__pyx___this__.static_library_name)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 555, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_decode_cpp_string(__pyx_v_self->__pyx___this__.static_library_name, 0, PY_SSIZE_T_MAX, NULL, NULL, PyUnicode_DecodeUTF8); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 555, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -13049,7 +13049,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_19static_library_name___get__(s
  * 
  *     @property
  *     def static_library_name(self):             # <<<<<<<<<<<<<<
- *         return <string>self.__this__.static_library_name
+ *         return self.__this__.static_library_name.decode('UTF-8')
  *     @static_library_name.setter
  */
 
@@ -13065,7 +13065,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_19static_library_name___get__(s
 }
 
 /* "halogen/api.pyx":557
- *         return <string>self.__this__.static_library_name
+ *         return self.__this__.static_library_name.decode('UTF-8')
  *     @static_library_name.setter
  *     def static_library_name(self, object value not None):             # <<<<<<<<<<<<<<
  *         self.__this__.static_library_name = <string>u8bytes(value)
@@ -13113,7 +13113,7 @@ static int __pyx_pf_7halogen_3api_7Outputs_19static_library_name_2__set__(struct
   __pyx_v_self->__pyx___this__.static_library_name = ((std::string)__pyx_t_2);
 
   /* "halogen/api.pyx":557
- *         return <string>self.__this__.static_library_name
+ *         return self.__this__.static_library_name.decode('UTF-8')
  *     @static_library_name.setter
  *     def static_library_name(self, object value not None):             # <<<<<<<<<<<<<<
  *         self.__this__.static_library_name = <string>u8bytes(value)
@@ -13136,7 +13136,7 @@ static int __pyx_pf_7halogen_3api_7Outputs_19static_library_name_2__set__(struct
  * 
  *     @property
  *     def schedule_name(self):             # <<<<<<<<<<<<<<
- *         return <string>self.__this__.schedule_name
+ *         return self.__this__.schedule_name.decode('UTF-8')
  *     @schedule_name.setter
  */
 
@@ -13162,12 +13162,12 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_13schedule_name___get__(struct 
   /* "halogen/api.pyx":562
  *     @property
  *     def schedule_name(self):
- *         return <string>self.__this__.schedule_name             # <<<<<<<<<<<<<<
+ *         return self.__this__.schedule_name.decode('UTF-8')             # <<<<<<<<<<<<<<
  *     @schedule_name.setter
  *     def schedule_name(self, object value not None):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_convert_PyBytes_string_to_py_std__in_string(((std::string)__pyx_v_self->__pyx___this__.schedule_name)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 562, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_decode_cpp_string(__pyx_v_self->__pyx___this__.schedule_name, 0, PY_SSIZE_T_MAX, NULL, NULL, PyUnicode_DecodeUTF8); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 562, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -13177,7 +13177,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_13schedule_name___get__(struct 
  * 
  *     @property
  *     def schedule_name(self):             # <<<<<<<<<<<<<<
- *         return <string>self.__this__.schedule_name
+ *         return self.__this__.schedule_name.decode('UTF-8')
  *     @schedule_name.setter
  */
 
@@ -13193,7 +13193,7 @@ static PyObject *__pyx_pf_7halogen_3api_7Outputs_13schedule_name___get__(struct 
 }
 
 /* "halogen/api.pyx":564
- *         return <string>self.__this__.schedule_name
+ *         return self.__this__.schedule_name.decode('UTF-8')
  *     @schedule_name.setter
  *     def schedule_name(self, object value not None):             # <<<<<<<<<<<<<<
  *         self.__this__.schedule_name = <string>u8bytes(value)
@@ -13241,7 +13241,7 @@ static int __pyx_pf_7halogen_3api_7Outputs_13schedule_name_2__set__(struct __pyx
   __pyx_v_self->__pyx___this__.schedule_name = ((std::string)__pyx_t_2);
 
   /* "halogen/api.pyx":564
- *         return <string>self.__this__.schedule_name
+ *         return self.__this__.schedule_name.decode('UTF-8')
  *     @schedule_name.setter
  *     def schedule_name(self, object value not None):             # <<<<<<<<<<<<<<
  *         self.__this__.schedule_name = <string>u8bytes(value)
