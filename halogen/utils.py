@@ -434,7 +434,7 @@ class DictNamespace(Namespace[T, U], tx.MutableMapping[T, U],
         return self.__dict__.get(key, default_value)
     
     def pop(self, key: T,
-        default_value: tx.Optional[U] = None) -> U:
+        default_value: tx.Optional[U] = None) -> tx.Optional[U]:
         return self.__dict__.pop(key, default_value)
     
     def update(self, iterable:tx.Optional[tx.Iterable] = None,
@@ -451,6 +451,9 @@ class DictNamespace(Namespace[T, U], tx.MutableMapping[T, U],
         keys: tx.List[U] = sorted(self.__dict__, key=lambda k: str(k))
         items: tx.Generator[T, ContraT, str] = ("{}={!r}".format(k, self.__dict__[k]) for k in keys)
         return "{}({})".format(type(self).__name__, ", ".join(items)) # type: ignore
+    
+    def __eq__(self, other: Namespace[T, U]):
+        return self.__dict__ == getattr(other, '__dict__', {})
 
 class SimpleNamespace(DictNamespace[str, T]):
     """ This SimpleNamespace class has functionality and semantics
