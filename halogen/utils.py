@@ -1196,6 +1196,50 @@ def remove_paths(*putatives) -> tx.Dict[str, bool]:
 
 remove_paths.oldsyspath: tx.Tuple[str, ...] = tuple(sys.path)
 
+class Tree(collections.defaultdict):
+    
+    def __init__(self, root=False, *values):
+        super(Tree, self).__init__(Tree)
+        self.__root = root
+        self.values = set(*values)
+    
+    def get(self, key, default_value=None):
+        self.setdefault(key, default_value or self.default_factory())
+        return super(Tree, self).get(key)
+    
+    @property
+    def subkeys(self):
+        return tuple(self.keys())
+    
+    def __len__(self):
+        if not len(self.subkeys):
+            return len(self.values)
+        return sum(len(self[subkey]) for subkey in self.subkeys)
+
+class MimeTypes(object):
+    
+    def parse_mimefile(self, mimefile):
+        with open(mimefile, 'r') as handle:
+            for mimeline in handle:
+                if '{' not in mimeline and '}' not in mimeline:
+                    self.parse_mime(mimeline.lstrip('#').lstrip().rstrip(';'))
+    
+    def parse_mime(self, mime):
+        typestring, (*suffixes) = mime.split()
+        if '/' not in typestring:
+            raise ValueError('Bad mimetype: %s' % typestring)
+        mimetype, subtypestring = typestring.split('/')
+        subtypes = subtypestring.split('.')
+        base = self.mimes.get(mimetype)
+        for subtype in subtypes:
+            base = base.get(subtype)
+        base.values |= { *suffixes }
+    
+    def __init__(self, *mimefiles):
+        self.mimes = Tree(root=True)
+        for mimefile in mimefiles:
+            self.parse_mimefile(mimefile)
+
 def u8encode(source: tx.Any) -> bytes:
     """ Encode a source as bytes using the UTF-8 codec """
     return bytes(source, encoding=UTF8_ENCODING)
