@@ -171,6 +171,7 @@ if __name__ == '__main__':
     sys.path.append(os.path.dirname(thispath))
     import_halogen_modules()
 
+# Import Halogen stuff to the bpython environment:
 from halogen import (api,
                      cli,
                      config,
@@ -182,6 +183,9 @@ from halogen import (api,
                      ocd,
                      test_generators,
                      utils)
+
+# This is the only star-import I am OK with:
+from replenv import *
 
 if __name__ == '__main__':
     test_all(return_check_count=True)
