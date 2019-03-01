@@ -26,6 +26,7 @@ __all__ = ('UTF8_ENCODING',
                                                     'TypeAndBases', 'TypeSpace',
                                                     'ty',
            'find_generic_for_type',
+           'Size',
            'TerminalSize', 'terminal_size', 'terminal_width',
                                             'terminal_height',
            'wrap_value', 'Memoizer', 'memoize',
@@ -826,39 +827,38 @@ def find_generic_for_type(cls: tx.Type[ConcreteType],
             return ty.for_origin.get(t)
     return missing
 
+class Size(tx.NamedTuple):
+    
+    height: int = 25
+    width: int = 105
+    
+    @property
+    def area(self) -> int:
+        """ Compute total area """
+        return self.width * self.height
+    
+    @property
+    def perimeter(self) -> int:
+        """ Calculate perimeter of the size’s bounding box """
+        return (self.width * 2) + \
+               (self.height * 2)
+    
+    @property
+    def lines(self) -> int:
+        """ known also as how high, the height, the tallness … """
+        return self.height
+    
+    @property
+    def columns(self) -> int:
+        """ a.k.a how long, width, the x-dimension etc """
+        return self.width
+    
+    def copy(self) -> tx.NamedTuple:
+        """ Duplicate the Size instance """
+        return self._replace(
+             **self._asdict())
 
 class TerminalSize(object):
-    
-    class Size(tx.NamedTuple):
-        
-        height: int = 25
-        width: int = 105
-        
-        @property
-        def area(self) -> int:
-            """ Compute total area """
-            return self.width * self.height
-        
-        @property
-        def perimeter(self) -> int:
-            """ Calculate perimeter of the size’s bounding box """
-            return (self.width * 2) + \
-                   (self.height * 2)
-        
-        @property
-        def lines(self) -> int:
-            """ known also as how high, the height, the tallness … """
-            return self.height
-        
-        @property
-        def columns(self) -> int:
-            """ a.k.a how long, width, the x-dimension etc """
-            return self.width
-        
-        def copy(self) -> tx.NamedTuple:
-            """ Duplicate the Size instance """
-            return self._replace(
-                 **self._asdict())
     
     Descriptor = ty.NewTypeMember('Descriptor', int)
     
@@ -888,7 +888,7 @@ class TerminalSize(object):
         except:
             return None
         
-        return cls.Size(*cr) # type: ignore
+        return Size(*cr) # type: ignore
     
     def __init__(self, DEFAULT_LINES:   tx.Optional[int] = None,
                        DEFAULT_COLUMNS: tx.Optional[int] = None):
@@ -915,9 +915,9 @@ class TerminalSize(object):
         # Adapted from this: http://stackoverflow.com/a/566752/298171
         # … first, attempt to pluck out the CGWINSZ terminal values using
         # the stdin/stdout/stderr file descriptor numbers:
-        sz: tx.Optional[self.Size] = self.ioctl_GWINSZ(0) or \
-                                     self.ioctl_GWINSZ(1) or \
-                                     self.ioctl_GWINSZ(2)
+        sz: tx.Optional[Size] = self.ioctl_GWINSZ(0) or \
+                                self.ioctl_GWINSZ(1) or \
+                                self.ioctl_GWINSZ(2)
         
         # … if that did not work, get the /dev entry name of the terminal
         # in which our process is ensconced, open a descriptor on it for reaing,
@@ -942,14 +942,14 @@ class TerminalSize(object):
         # the environment, with truly last-resort possibilities filled in with
         # hardcoded defaults.
         if not sz:
-            sz = self.Size(env.get('LINES',   self.DEFAULT_LINES),
-                           env.get('COLUMNS', self.DEFAULT_COLUMNS))
+            sz = Size(env.get('LINES',   self.DEFAULT_LINES),
+                      env.get('COLUMNS', self.DEFAULT_COLUMNS))
         
         # Return plain tuple:
         return sz
     
     def store_terminal_size(self) -> Size:
-        size: self.Size = self.fetch_terminal_size_values()
+        size: Size = self.fetch_terminal_size_values()
         self.cache.append(size)
         return size
     
