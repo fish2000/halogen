@@ -186,6 +186,7 @@ from halogen import (api,
 
 # This is the only star-import I am OK with:
 from replenv import *
+from replutilities import *
 
 if __name__ == '__main__':
     test_all(return_check_count=True)
