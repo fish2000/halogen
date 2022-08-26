@@ -65,7 +65,7 @@ def listify(*items) -> tx.List[tx.Any]:
     """ Return a new list containing all non-`None` arguments """
     return list(item for item in items if item is not None)
 
-class GenericAlias(tX._GenericAlias, _root=True):
+class GenericAlias(tX._AnnotatedAlias, _root=True):
     """ `utils.GenericAlias` is a re-wrapped and sugar-coated user-facing
         descendant of the `typing._GenericAlias` class.
         
@@ -136,9 +136,7 @@ class GenericAlias(tX._GenericAlias, _root=True):
                            inst: bool = True) -> "GenericAlias":
         """ Public implementation of the typing._alias() helper function """
         out = cls(origin,
-                  params, special=True,
-                          inst=inst,
-                          name=name or origin.__name__)
+                  params)
         return out
 
 class Originator(TypingMeta):
@@ -218,8 +216,12 @@ class Originator(TypingMeta):
                           getattr(origin, '__getitem__')
         unwrapped = getattr(generic_getitem, '__wrapped__',
                             generic_getitem)
-        signature: inspect.Signature = inspect.signature(unwrapped)
-        argcount: int = len(signature.parameters)
+        try:
+            signature: inspect.Signature = inspect.signature(unwrapped)
+        except ValueError:
+            argcount: int = 1
+        else:
+            argcount: int = len(signature.parameters)
         if argcount == 2 and hasattr(cls, '__parameters__'):
             if len(params) > 0:
                 cls.__parameters__ = params
@@ -227,8 +229,7 @@ class Originator(TypingMeta):
         else:
             out = unwrapped(params)
         return GenericAlias(out.__origin__,
-                            out.__parameters__, name=getattr(out, '_name', origin.__name__),
-                                                inst=getattr(out, '_inst', True))
+                            out.__parameters__)
     
     @classmethod
     def __prepare__(metacls,
@@ -464,8 +465,7 @@ class SimpleNamespace(DictNamespace[str, T]):
     """
     __slots__: tx.Tuple[str, ...] = tuple()
 
-class MultiNamespace(Namespace[str, T], MultiMap[str, T],
-                                        tx.MutableMapping[str, T],
+class MultiNamespace(Namespace[str, T], tx.MutableMapping[str, T],
                                         tx.Collection[T]):
     """ A generic, concrete namespace class, based on ``MultiDict``,
         a one-key-to-many-values dictionary class from the eponymous
@@ -504,7 +504,7 @@ class MultiNamespace(Namespace[str, T], MultiMap[str, T],
         """ Initialize a new MultiNamespace instance, optionally
             passing initial namespace values as keyword arguments:
         """
-        self._dict: MutableMultiMap[str, T] = MultiDict()
+        self._dict = MultiDict()
         self._dict.update(kwargs)
         self._initialized: bool = True
     
@@ -518,7 +518,7 @@ class MultiNamespace(Namespace[str, T], MultiMap[str, T],
         except:
             return False
     
-    def mdict(self) -> MutableMultiMap[str, T]:
+    def mdict(self):
         """ Return a reference to the `MultiNamespace` instances’
             internal `multidict.MultiDict`.
         """
@@ -661,9 +661,9 @@ class NamedTuple(tx.NamedTuple, metaclass=NamedTupleMeta):
     """ A public version of the `typing.NamedTuple` class that utilizes
         `utils.NamedTupleMeta` to establish an `__origin__` class value.
     """
-    _root: tx.ClassVar[bool] = True
+    _root = True
 
-class TypeAndBases(NamedTuple):
+class TypeAndBases(tx.NamedTuple):
     """ A typed NamedTuple subclass for storing a type plus a list
         of the stringified names of all of its bases:
     """
@@ -1225,7 +1225,7 @@ class MimeTypes(object):
                     self.parse_mime(mimeline.lstrip('#').lstrip().rstrip(';'))
     
     def parse_mime(self, mime):
-        typestring, (*suffixes) = mime.split()
+        typestring, *suffixes = mime.split()
         if '/' not in typestring:
             raise ValueError('Bad mimetype: %s' % typestring)
         mimetype, subtypestring = typestring.split('/')

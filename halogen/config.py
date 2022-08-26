@@ -23,7 +23,7 @@ from functools import wraps
 if __package__ is None or __package__ == '':
     import compiledb
     from errors import ConfigurationError
-    from filesystem import back_tick, script_path, which
+    from filesystem import back_tick, script_path
     from filesystem import Directory
     from ocd import OCDSet, OCDFrozenSet
     from utils import SimpleNamespace
@@ -32,7 +32,7 @@ if __package__ is None or __package__ == '':
 else:
     from . import compiledb
     from .errors import ConfigurationError
-    from .filesystem import back_tick, script_path, which
+    from .filesystem import back_tick, script_path
     from .filesystem import Directory
     from .ocd import OCDSet, OCDFrozenSet
     from .utils import SimpleNamespace
@@ -73,6 +73,36 @@ AnySet = tx.Union[tx.Set[TC], tx.FrozenSet[TC],
 
 # Ancestor type variable annotation:
 Ancestor = tx.TypeVar('Ancestor', bound=abc.ABC, covariant=True)
+
+def which(binary_name, pathvar=None, pathsep=None):
+    """ Deduces the path corresponding to an executable name,
+        as per the UNIX command `which`. Optionally takes an
+        override for the $PATH environment variable.
+        Always returns a string - an empty one for those
+        executables that cannot be found.
+    """
+    # The original version of this relied on the `find_executable(…)`
+    # function from `distutils.spawn` – it’s been rewritten to use the
+    # CLU internals (which is actually faster, and also betterer).
+    if not pathvar:
+        pathvar = which.pathvar
+    
+    # Allow specification of weird path separators:
+    if not pathsep:
+        pathsep = os.pathsep
+    
+    # The “filter(None, …)” clause removes nonexistant paths, as path
+    # instances evaluated in boolean context have a value that reflects
+    # whether or not they exist:
+    for path in filter(None, (Directory(p) for p in pathvar.split(pathsep))):
+        if binary_name in path:
+            if os.path.exists(path.subpath(binary_name)):
+                return path.subpath(binary_name)
+    
+    # Empty string indicates failure, bubkiss, nada:
+    return ''
+
+which.pathvar = os.environ.get('PATH')
 
 def environ_override(name: str) -> str:
     """ environ_override(name) returns either the environment variable
@@ -1558,22 +1588,22 @@ def test():
     print_config(pkgConfig)
     print_config(numpyConfig)
     print_config(numpyConfigSetWrap)
-    print_config(brewedPythonConfig)
-    print_config(pythonConfig)
+    # print_config(brewedPythonConfig)
+    # print_config(pythonConfig)
     print_config(configUnionOne)
     print_config(configUnion)
     print_config(configUnionSetWrap)
-    print_config(configUnionAll)
+    # print_config(configUnionAll)
     
     """ 2. Test compilation with different configs: """
     
     test_compile(brewedHalideConfig, test_generators.brighten_source)
     test_compile(configUnionSetWrap, test_generators.brighten_source)
-    test_compile(configUnionAll,     test_generators.brighten_source)
+    # test_compile(configUnionAll,     test_generators.brighten_source)
     
     test_compile(brewedHalideConfig, test_generators.autoscheduler_source)
     test_compile(configUnionSetWrap, test_generators.autoscheduler_source)
-    test_compile(configUnionAll,     test_generators.autoscheduler_source)
+    # test_compile(configUnionAll,     test_generators.autoscheduler_source)
     
     """ 3. Reveal the cached field-value dictionary: """
     

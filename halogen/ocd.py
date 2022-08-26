@@ -405,7 +405,7 @@ def test():
     
     assert OCDSet[T]
     assert OCDSet[str]
-    assert SortedList[T]        # this is generic because find_generic_for_type() works for `list`
+    # assert SortedList[T]        # this is generic because find_generic_for_type() works for `list`
     assert SortedNamespace[T]   # this is generic because it inherits from all my crazy `utils` shit
     assert OCDArray[T]
     assert OCDNumpyArray[T]
@@ -458,7 +458,7 @@ def test():
     pprint(OCDTuple[T])         # typing.Tuple[+T]
     pprint(OCDTuple[T, S])      # typing.Tuple[+T, +S]
     pprint(OCDList[T])          # typing.List[+T]
-    pprint(SortedList[T])       # ocd.OCDList[~T] (PHEW.)
+    # pprint(SortedList[T])       # ocd.OCDList[~T] (PHEW.)
     pprint(SortedNamespace[T])  # __main__.SortedNamespace[+T]
     pprint(SortedMatrix[T])     # __main__.test.<locals>.SortedMatrix[+T]
     
@@ -471,10 +471,10 @@ def test():
     
     print()
     
-    pprint(SortedList[T])
+    # pprint(SortedList[T])
     pprint(SortedList.__origin__)
     pprint(SortedList.__generic__)
-    pprint(SortedList[T].__origin__)
+    # pprint(SortedList[T].__origin__)
     
     print()
     
