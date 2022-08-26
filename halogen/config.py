@@ -1650,7 +1650,8 @@ def corefoundation_check():
     
     brewedHalideConfig: ConfigType = BrewedHalideConfig()
     pyConfig: ConfigType = PythonConfig(prefix)
-    configUnion: ConfigType = ConfigUnion(brewedHalideConfig, pyConfig)
+    sysConfig: ConfigType = SysConfig()
+    configUnion: ConfigType = ConfigUnion(brewedHalideConfig, sysConfig)
     
     """ 5. Dump the ConfigUnion instance used in the CoreFoundation test: """
     

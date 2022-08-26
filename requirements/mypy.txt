@@ -1,7 +1,7 @@
 -r install.txt
 mypy
 mypy_extensions
-typeshed
+# typeshed
 typed-ast
 typing
 typing_extensions

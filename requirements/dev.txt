@@ -5,5 +5,5 @@ flake8-pyi
 pyre-check
 pythran
 pywatchman
-typeshed
+# typeshed
 typing
